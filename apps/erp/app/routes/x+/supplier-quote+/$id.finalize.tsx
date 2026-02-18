@@ -128,8 +128,6 @@ export async function action(args: ActionFunctionArgs) {
       );
     }
 
-    // Copy price breaks from supplierQuoteLinePrice → supplierPartPrice
-    // This makes prices available for customer quote costing immediately
     const supplierId = quote.data.supplierId;
     if (!supplierId) throw new Error("Supplier quote has no supplier");
 
@@ -141,7 +139,6 @@ export async function action(args: ActionFunctionArgs) {
       );
       if (linePrices.length === 0) continue;
 
-      // Find or create the supplierPart record for this item+supplier
       const existingPart = await client
         .from("supplierPart")
         .select("id")
@@ -155,7 +152,6 @@ export async function action(args: ActionFunctionArgs) {
       if (existingPart.data?.id) {
         supplierPartId = existingPart.data.id;
       } else {
-        // Create a new supplierPart record
         const newPart = await client
           .from("supplierPart")
           .insert({
@@ -180,15 +176,11 @@ export async function action(args: ActionFunctionArgs) {
 
       if (!supplierPartId) continue;
 
-      // Upsert price breaks into supplierPartPrice
       const conversionFactor = line.conversionFactor ?? 1;
 
       for (const price of linePrices) {
         if (!price.supplierUnitPrice || price.supplierUnitPrice === 0) continue;
 
-        // Use the pre-computed unitPrice (= supplierUnitPrice / exchangeRate)
-        // which is already in company currency but still in purchase units.
-        // Divide by conversionFactor to get inventory unit price.
         const unitPriceInInventoryUnit =
           (price.unitPrice ?? 0) / conversionFactor;
 
@@ -216,8 +208,6 @@ export async function action(args: ActionFunctionArgs) {
         }
       }
 
-      // Update supplierPart.unitPrice with the best (lowest) unit price
-      // across all tiers — gives purchasing a quick "best available" reference
       const bestPrice = linePrices
         .filter((p) => p.unitPrice != null && p.unitPrice !== 0)
         .sort(

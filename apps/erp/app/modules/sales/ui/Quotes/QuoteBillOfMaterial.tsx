@@ -687,8 +687,6 @@ function MaterialForm({
     });
   };
 
-  // Lookup the best (lowest) price for a Buy item at a given quantity
-  // from supplierPartPrice across all vendors (SAP behavior)
   const lookupBuyPrice = useCallback(
     async (itemId: string, qty: number, fallbackCost: number) => {
       if (!carbon) return fallbackCost;
@@ -702,8 +700,6 @@ function MaterialForm({
 
       const supplierPartIds = supplierParts.data.map((sp) => sp.id);
 
-      // Find the lowest price across all vendors for applicable qty tiers
-      // (SAP behavior: lowest valid PIR price wins)
       const priceBreak = await carbon
         .from("supplierPartPrice")
         .select("unitPrice")
@@ -717,7 +713,6 @@ function MaterialForm({
         return priceBreak.data.unitPrice;
       }
 
-      // Fall back to supplierPart.unitPrice (lowest across vendors)
       const lowestSupplierPrice = supplierParts.data
         .filter((sp) => sp.unitPrice != null)
         .sort((a, b) => (a.unitPrice ?? 0) - (b.unitPrice ?? 0))[0];
@@ -778,7 +773,6 @@ function MaterialForm({
     }
   };
 
-  // Re-lookup price when quantity changes for Buy parts
   const onQuantityChange = useCallback(
     async (newQty: number) => {
       setItemData((d) => ({ ...d, quantity: newQty }));

@@ -1503,16 +1503,11 @@ serve(async (req: Request) => {
             .forEach((line) => {
               const key = `${line.itemId}-${quote.data.supplierId}`;
               const selectedLine = selectedLines![line.id!];
-              // Calculate unit price in inventory unit (company currency)
-              // exchangeRate = supplier currency per 1 company currency (e.g., 130 JPY/USD)
-              // So: company price = supplierUnitPrice / exchangeRate
-              // Then divide by conversionFactor to get inventory unit price
               const exchangeRate = quote.data.exchangeRate ?? 1;
               const unitPriceInInventoryUnit =
                 (selectedLine.supplierUnitPrice /
                   (exchangeRate === 0 ? 1 : exchangeRate)) /
                 (line.conversionFactor ?? 1);
-              // Calculate quantity in inventory units
               const quantityInInventoryUnits =
                 selectedLine.quantity * (line.conversionFactor ?? 1);
 
@@ -1524,7 +1519,6 @@ serve(async (req: Request) => {
                 conversionFactor: line.conversionFactor,
                 itemId: line.itemId!,
                 createdBy: userId,
-                // New pricing fields
                 unitPrice: unitPriceInInventoryUnit,
                 lastPurchaseDate: new Date().toISOString(),
                 lastPOQuantity: quantityInInventoryUnits,
@@ -1545,7 +1539,6 @@ serve(async (req: Request) => {
                   .columns(["itemId", "supplierId", "companyId"])
                   .doUpdateSet((eb) => ({
                     supplierPartId: eb.ref("excluded.supplierPartId"),
-                    // Update pricing fields on conflict
                     unitPrice: eb.ref("excluded.unitPrice"),
                     lastPurchaseDate: eb.ref("excluded.lastPurchaseDate"),
                     lastPOQuantity: eb.ref("excluded.lastPOQuantity"),
@@ -1554,8 +1547,6 @@ serve(async (req: Request) => {
               )
               .execute();
 
-            // Also upsert into supplierPartPrice with sourceType='PurchaseOrder'
-            // This confirms the price tier for the specific quantity ordered
             const supplierParts = await trx
               .selectFrom("supplierPart")
               .select(["id", "itemId"])
@@ -1585,8 +1576,6 @@ serve(async (req: Request) => {
               const selectedLine = selectedLines![line.id!];
               const exchangeRate = quote.data.exchangeRate ?? 1;
               const conversionFactor = line.conversionFactor ?? 1;
-              // exchangeRate = supplier currency per 1 company currency
-              // Divide to convert to company currency, then divide by conversionFactor
               const unitPriceInInventoryUnit =
                 (selectedLine.supplierUnitPrice /
                   (exchangeRate === 0 ? 1 : exchangeRate)) /
@@ -1621,8 +1610,6 @@ serve(async (req: Request) => {
                 .execute();
             }
 
-            // Update each supplierPart with the best (lowest) price and its
-            // corresponding MOQ across all tiers (quotes + POs + manual)
             for (const [, spId] of supplierPartIdByItemId) {
               const bestTier = await trx
                 .selectFrom("supplierPartPrice")

@@ -202,9 +202,9 @@ const PackingSlipPDF = ({
 
         {/* Rows */}
         {shipmentLines
-          .filter((line) => line.shippedQuantity > 0)
+          .filter((line) => line?.shippedQuantity ?? 0 > 0)
           .map((line) => {
-            const barcodeDataUrl = generateBarcode(line.itemReadableId);
+            const barcodeDataUrl = generateBarcode(line?.itemReadableId || "");
             const trackedEntitiesForLine = trackedEntities.filter(
               (entity) =>
                 (entity.attributes as TrackedEntityAttributes)?.[

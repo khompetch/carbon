@@ -38,5 +38,12 @@ packages/database/supabase/seed.sql
 
 .react-router
 
-packages/cad-rust
-packages/cad-engine
+# Rust
+**/target/
+**/*.rs.bk
+**/pkg/
+**/pkg/
+
+# C++ (cad-engine)
+**/build/
+!**/build/.gitkeep

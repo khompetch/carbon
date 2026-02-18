@@ -136,7 +136,7 @@ const SupplierPartForm = ({
                   currency: baseCurrency
                 }}
               />
-              {/* Show last purchase info if available (read-only) */}
+              {/* last purchase info (read-only) */}
               {initialValues.lastPurchaseDate && (
                 <div className="text-sm text-muted-foreground bg-muted/50 rounded-md p-3 space-y-1">
                   <div className="font-medium text-foreground">
