@@ -23251,6 +23251,9 @@ export default {
             $ref: "#/parameters/rowFilter.supplierPartPrice.updatedAt",
           },
           {
+            $ref: "#/parameters/rowFilter.supplierPartPrice.leadTime",
+          },
+          {
             $ref: "#/parameters/select",
           },
           {
@@ -23340,6 +23343,9 @@ export default {
             $ref: "#/parameters/rowFilter.supplierPartPrice.updatedAt",
           },
           {
+            $ref: "#/parameters/rowFilter.supplierPartPrice.leadTime",
+          },
+          {
             $ref: "#/parameters/preferReturn",
           },
         ],
@@ -23381,6 +23387,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.supplierPartPrice.updatedAt",
+          },
+          {
+            $ref: "#/parameters/rowFilter.supplierPartPrice.leadTime",
           },
           {
             $ref: "#/parameters/body.supplierPartPrice",
@@ -79514,6 +79523,7 @@ export default {
         "companyId",
         "createdBy",
         "createdAt",
+        "leadTime",
       ],
       properties: {
         supplierPartId: {
@@ -79567,6 +79577,11 @@ export default {
         updatedAt: {
           format: "timestamp with time zone",
           type: "string",
+        },
+        leadTime: {
+          default: 0,
+          format: "numeric",
+          type: "number",
         },
       },
       type: "object",
@@ -111120,6 +111135,12 @@ export default {
     },
     "rowFilter.supplierPartPrice.updatedAt": {
       name: "updatedAt",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.supplierPartPrice.leadTime": {
+      name: "leadTime",
       required: false,
       in: "query",
       type: "string",

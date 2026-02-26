@@ -8,6 +8,7 @@ import { redirect, useLoaderData, useNavigate, useParams } from "react-router";
 import type { PartSummary } from "~/modules/items";
 import { supplierPartValidator, upsertSupplierPart } from "~/modules/items";
 import { SupplierPartForm } from "~/modules/items/ui/Item";
+import { getDatabaseClient } from "~/services/database.server";
 import { setCustomFields } from "~/utils/form";
 import { path } from "~/utils/path";
 
@@ -92,24 +93,32 @@ export async function action({ request, params }: ActionFunctionArgs) {
     const priceBreaks = JSON.parse(priceBreaksRaw as string) as {
       quantity: number;
       unitPrice: number;
+      leadTime: number;
     }[];
-    await client
-      .from("supplierPartPrice")
-      .delete()
-      .eq("supplierPartId", supplierPartId);
-    if (priceBreaks.length > 0) {
-      await client.from("supplierPartPrice").insert(
-        priceBreaks.map((pb) => ({
-          supplierPartId,
-          quantity: pb.quantity,
-          unitPrice: pb.unitPrice,
-          sourceType: "Manual Entry" as const,
-          companyId,
-          createdBy: userId,
-          updatedBy: userId
-        }))
-      );
-    }
+    const db = getDatabaseClient();
+    await db.transaction().execute(async (trx) => {
+      await trx
+        .deleteFrom("supplierPartPrice")
+        .where("supplierPartId", "=", supplierPartId)
+        .execute();
+      if (priceBreaks.length > 0) {
+        await trx
+          .insertInto("supplierPartPrice")
+          .values(
+            priceBreaks.map((pb) => ({
+              supplierPartId,
+              quantity: pb.quantity,
+              unitPrice: pb.unitPrice,
+              leadTime: pb.leadTime ?? 0,
+              sourceType: "Manual Entry" as const,
+              companyId,
+              createdBy: userId,
+              updatedBy: userId
+            }))
+          )
+          .execute();
+      }
+    });
   }
 
   throw redirect(

@@ -42,10 +42,9 @@ import {
 import type { PurchaseInvoice } from "~/modules/invoicing";
 import { purchaseInvoiceLineValidator } from "~/modules/invoicing";
 import { getSupplierPartPriceBreaks } from "~/modules/items";
-import type { MethodItemType } from "~/modules/shared";
+import { type MethodItemType, resolveSupplierPrice } from "~/modules/shared";
 import { useItems } from "~/stores";
 import { path } from "~/utils/path";
-import { resolveSupplierPrice } from "~/utils/pricing";
 
 type PurchaseInvoiceLineFormProps = {
   initialValues: z.infer<typeof purchaseInvoiceLineValidator> & {

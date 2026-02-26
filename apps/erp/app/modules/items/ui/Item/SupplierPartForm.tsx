@@ -122,6 +122,10 @@ const SupplierPartForm = ({
     }))
   );
 
+  const hasInvalidPriceBreaks = priceBreaks.some(
+    (pb) => pb.quantity <= 0 || pb.unitPrice <= 0
+  );
+
   const isEditing = initialValues.id !== undefined;
   const isDisabled = isEditing
     ? !permissions.can("update", "parts")
@@ -212,7 +216,11 @@ const SupplierPartForm = ({
           <DrawerFooter>
             <HStack>
               <Submit
-                isDisabled={isDisabled || fetcher.state !== "idle"}
+                isDisabled={
+                  isDisabled ||
+                  hasInvalidPriceBreaks ||
+                  fetcher.state !== "idle"
+                }
                 isLoading={fetcher.state !== "idle"}
                 withBlocker={false}
               >

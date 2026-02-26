@@ -189,6 +189,7 @@ export async function action(args: ActionFunctionArgs) {
             supplierPartId,
             quantity: price.quantity ?? 1,
             unitPrice: unitPriceInInventoryUnit,
+            leadTime: price.leadTime ?? 0,
             sourceType: "Quote",
             sourceDocumentId: id,
             companyId,

@@ -50,6 +50,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     const priceBreaks = JSON.parse(priceBreaksRaw as string) as {
       quantity: number;
       unitPrice: number;
+      leadTime: number;
     }[];
     if (priceBreaks.length > 0) {
       await client.from("supplierPartPrice").insert(
@@ -57,6 +58,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
           supplierPartId: newSupplierPartId,
           quantity: pb.quantity,
           unitPrice: pb.unitPrice,
+          leadTime: pb.leadTime ?? 0,
           sourceType: "Manual Entry" as const,
           companyId,
           createdBy: userId,

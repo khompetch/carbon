@@ -5,8 +5,8 @@ import type { ActionFunctionArgs } from "react-router";
 import { redirect } from "react-router";
 import { getSupplierPriceBreaksForItems } from "~/modules/items";
 import { upsertQuoteLineMethod } from "~/modules/sales/sales.service";
+import { lookupBuyPriceFromMap } from "~/modules/shared";
 import { path, requestReferrer } from "~/utils/path";
-import { lookupBuyPriceFromMap } from "~/utils/pricing";
 
 export async function action({ request, params }: ActionFunctionArgs) {
   const { client, companyId, userId } = await requirePermissions(request, {

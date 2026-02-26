@@ -47,11 +47,10 @@ import {
   isPurchaseOrderLocked,
   purchaseOrderLineValidator
 } from "~/modules/purchasing";
-import type { MethodItemType } from "~/modules/shared";
+import { type MethodItemType, resolveSupplierPrice } from "~/modules/shared";
 import type { action } from "~/routes/x+/purchase-order+/$orderId.$lineId.details";
 import { useItems } from "~/stores";
 import { path } from "~/utils/path";
-import { resolveSupplierPrice } from "~/utils/pricing";
 import DeletePurchaseOrderLine from "./DeletePurchaseOrderLine";
 
 type PurchaseOrderLineFormProps = {

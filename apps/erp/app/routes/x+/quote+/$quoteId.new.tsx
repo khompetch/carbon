@@ -11,9 +11,9 @@ import {
   upsertQuoteLineMethod,
   upsertQuoteLinePrices
 } from "~/modules/sales";
+import { lookupBuyPriceFromMap } from "~/modules/shared";
 import { setCustomFields } from "~/utils/form";
 import { path } from "~/utils/path";
-import { lookupBuyPriceFromMap } from "~/utils/pricing";
 
 export async function action({ request, params }: ActionFunctionArgs) {
   assertIsPost(request);

@@ -36334,6 +36334,7 @@ export type Database = {
           companyId: string
           createdAt: string
           createdBy: string
+          leadTime: number
           quantity: number
           sourceDocumentId: string | null
           sourceType: Database["public"]["Enums"]["supplierPartPriceSourceType"]
@@ -36346,6 +36347,7 @@ export type Database = {
           companyId: string
           createdAt?: string
           createdBy: string
+          leadTime?: number
           quantity?: number
           sourceDocumentId?: string | null
           sourceType?: Database["public"]["Enums"]["supplierPartPriceSourceType"]
@@ -36358,6 +36360,7 @@ export type Database = {
           companyId?: string
           createdAt?: string
           createdBy?: string
+          leadTime?: number
           quantity?: number
           sourceDocumentId?: string | null
           sourceType?: Database["public"]["Enums"]["supplierPartPriceSourceType"]
@@ -52101,14 +52104,14 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "address_countryCode_fkey"
-            columns: ["customerCountryCode"]
+            columns: ["invoiceCountryCode"]
             isOneToOne: false
             referencedRelation: "country"
             referencedColumns: ["alpha2"]
           },
           {
             foreignKeyName: "address_countryCode_fkey"
-            columns: ["invoiceCountryCode"]
+            columns: ["customerCountryCode"]
             isOneToOne: false
             referencedRelation: "country"
             referencedColumns: ["alpha2"]
