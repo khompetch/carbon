@@ -28,9 +28,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
     JSON.parse((formData.get("quantities") ?? "[]") as string)
   );
 
-  const categoryMarkupsByQuantity = JSON.parse(
-    (formData.get("categoryMarkupsByQuantity") as string) ?? "{}"
-  ) as Record<string, Record<string, number>>;
+  const categoryMarkupsByQuantityValidator = z.record(
+    z.record(z.number().min(0))
+  );
+  const categoryMarkupsByQuantity =
+    categoryMarkupsByQuantityValidator.safeParse(
+      JSON.parse((formData.get("categoryMarkupsByQuantity") as string) ?? "{}")
+    );
 
   if (unitPricesByQuantity.success === false) {
     return data(
@@ -46,6 +50,20 @@ export async function action({ request, params }: ActionFunctionArgs) {
     );
   }
 
+  if (categoryMarkupsByQuantity.success === false) {
+    return data(
+      { data: null, errors: "Invalid category markups" },
+      { status: 400 }
+    );
+  }
+
+  if (unitPricesByQuantity.data.length !== quantities.data.length) {
+    return data(
+      { data: null, errors: "Prices and quantities must have the same length" },
+      { status: 400 }
+    );
+  }
+
   const inserts = unitPricesByQuantity.data.map((unitPrice, index) => {
     const quantity = quantities.data[index];
     return {
@@ -55,7 +73,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       discountPercent: 0,
       leadTime: 0,
       createdBy: userId,
-      categoryMarkups: categoryMarkupsByQuantity[quantity] ?? undefined
+      categoryMarkups: categoryMarkupsByQuantity.data[quantity] ?? undefined
     };
   });
 

@@ -291,23 +291,15 @@ const QuotePDF = ({
           const unitPriceFormatter = getCurrencyFormatter(
             currencyCode,
             locale,
-            line.unitPricePrecision
+            line.unitPricePrecision ?? 2
           );
 
           const additionalCharges = line.additionalCharges ?? {};
 
           return (
-            <View
-              key={line.id}
-              wrap={false}
-              style={
-                line.quantity.length > 1
-                  ? tw("border-l-2 border-blue-300")
-                  : undefined
-              }
-            >
+            <View key={line.id} wrap={false}>
               {line.status !== "No Quote" ? (
-                line.quantity.map((quantity, index) => {
+                line.quantity?.map((quantity, index) => {
                   const prices = pricesByLine[line.id] ?? [];
                   const price = prices.find((p) => p.quantity === quantity);
                   const unitPrice = price?.convertedUnitPrice ?? 0;

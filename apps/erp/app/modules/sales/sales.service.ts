@@ -2603,10 +2603,13 @@ export async function calculatePricesForQuantities(
 
   const { costCategoryKeys } = await import("~/modules/sales/sales.models");
 
-  // 1. Parallel fetch
-  const [settingsResult, quoteResult, lineResult] = await Promise.all([
-    client.from("companySettings").select("quoteLineCategoryMarkups").single(),
-    client.from("quote").select("exchangeRate").eq("id", quoteId).single(),
+  // 1. Fetch quote (with companyId) and line in parallel
+  const [quoteResult, lineResult] = await Promise.all([
+    client
+      .from("quote")
+      .select("companyId, exchangeRate")
+      .eq("id", quoteId)
+      .single(),
     client
       .from("quoteLine")
       .select("unitPricePrecision")
@@ -2614,7 +2617,16 @@ export async function calculatePricesForQuantities(
       .single()
   ]);
 
-  if (settingsResult.error || quoteResult.error || lineResult.error) return;
+  if (quoteResult.error || lineResult.error) return;
+
+  // Fetch settings filtered by company (required for service-role access)
+  const settingsResult = await client
+    .from("companySettings")
+    .select("quoteLineCategoryMarkups")
+    .eq("id", quoteResult.data.companyId)
+    .single();
+
+  if (settingsResult.error) return;
 
   const exchangeRate = quoteResult.data.exchangeRate ?? 1;
   const precision = lineResult.data.unitPricePrecision ?? 2;
@@ -2681,14 +2693,36 @@ export async function recalculateQuoteLinePrices(
 
   if (!existingPrices.data?.length) return;
 
-  // 2. Fetch line precision
-  const lineResult = await client
-    .from("quoteLine")
-    .select("unitPricePrecision")
-    .eq("id", quoteLineId)
-    .single();
+  // 2. Fetch line precision and company default markups
+  const [lineResult, quoteResult] = await Promise.all([
+    client
+      .from("quoteLine")
+      .select("unitPricePrecision")
+      .eq("id", quoteLineId)
+      .single(),
+    client.from("quote").select("companyId").eq("id", quoteId).single()
+  ]);
 
   const precision = lineResult.data?.unitPricePrecision ?? 2;
+
+  // Fetch default markups to use as fallback for legacy rows without categoryMarkups
+  let defaultMarkups: Record<string, number> = {};
+  if (quoteResult.data?.companyId) {
+    const settingsResult = await client
+      .from("companySettings")
+      .select("quoteLineCategoryMarkups")
+      .eq("id", quoteResult.data.companyId)
+      .single();
+
+    const rawDefaults =
+      (settingsResult.data?.quoteLineCategoryMarkups as Record<
+        string,
+        number
+      >) ?? {};
+    for (const [key, value] of Object.entries(rawDefaults)) {
+      defaultMarkups[key] = value * 100;
+    }
+  }
 
   // 3. Build cost effects
   const result = await buildCostEffects(client, quoteLineId);
@@ -2699,7 +2733,9 @@ export async function recalculateQuoteLinePrices(
   // 4. Recompute prices using each row's stored categoryMarkups
   const updatedRows = existingPrices.data.map((row) => {
     const qty = row.quantity;
-    const markups = (row.categoryMarkups as Record<string, number>) ?? {};
+    const rowMarkups = (row.categoryMarkups as Record<string, number>) ?? {};
+    const markups =
+      Object.keys(rowMarkups).length > 0 ? rowMarkups : defaultMarkups;
 
     const categoryCosts: Record<string, number> = {};
     for (const key of costCategoryKeys) {
@@ -2728,9 +2764,20 @@ export async function recalculateQuoteLinePrices(
   });
 
   // 5. Delete existing and re-insert with updated prices
-  await client.from("quoteLinePrice").delete().eq("quoteLineId", quoteLineId);
+  const deleteResult = await client
+    .from("quoteLinePrice")
+    .delete()
+    .eq("quoteLineId", quoteLineId);
 
-  await client.from("quoteLinePrice").insert(updatedRows);
+  if (deleteResult.error) {
+    throw new Error(`Failed to delete prices: ${deleteResult.error.message}`);
+  }
+
+  const insertResult = await client.from("quoteLinePrice").insert(updatedRows);
+
+  if (insertResult.error) {
+    throw new Error(`Failed to insert prices: ${insertResult.error.message}`);
+  }
 }
 
 export async function upsertQuoteLineMethod(
