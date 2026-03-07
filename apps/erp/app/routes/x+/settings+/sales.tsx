@@ -19,6 +19,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  cn,
   generateHTML,
   Heading,
   HStack,
@@ -506,15 +507,39 @@ const costCategoryKeys = [
   "outsideCost"
 ] as const;
 
-const categoryLabels: Record<string, string> = {
-  materialCost: "Material",
-  partCost: "Part",
-  toolCost: "Tool",
-  consumableCost: "Consumable",
-  laborCost: "Labor",
-  machineCost: "Machine",
-  overheadCost: "Overhead",
-  outsideCost: "Outside"
+const categoryLabels: Record<string, { label: string; description: string }> = {
+  materialCost: {
+    label: "Material",
+    description: "Raw materials"
+  },
+  partCost: {
+    label: "Part",
+    description: "Made and purchased parts"
+  },
+  toolCost: {
+    label: "Tool",
+    description: "Jigs, fixtures, and other tools"
+  },
+  consumableCost: {
+    label: "Consumable",
+    description: "Consumables like lubricants, gloves, and other small items"
+  },
+  laborCost: {
+    label: "Labor",
+    description: "Service and labor costs"
+  },
+  machineCost: {
+    label: "Machine",
+    description: "Time the machine is running"
+  },
+  overheadCost: {
+    label: "Overhead",
+    description: "Administrative and other operational costs"
+  },
+  outsideCost: {
+    label: "Outside",
+    description: "Services performed by third parties"
+  }
 };
 
 function CategoryMarkupsCard({
@@ -555,21 +580,39 @@ function CategoryMarkupsCard({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {costCategoryKeys.map((key) => (
-              <Number
+          <VStack>
+            {costCategoryKeys.map((key, index) => (
+              <HStack
                 key={key}
-                name={key}
-                label={categoryLabels[key]}
-                formatOptions={{
-                  style: "percent",
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 2
-                }}
-                minValue={0}
-              />
+                className={cn(
+                  "justify-between items-center w-full",
+                  index !== costCategoryKeys.length - 1 &&
+                    "border-b border-border pb-4"
+                )}
+              >
+                <VStack spacing={0} className="flex flex-1">
+                  <span className="text-sm font-medium">
+                    {categoryLabels[key].label}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {categoryLabels[key].description}
+                  </span>
+                </VStack>
+                <div className="flex flex-shrink-0">
+                  <Number
+                    name={key}
+                    label=""
+                    formatOptions={{
+                      style: "percent",
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 2
+                    }}
+                    minValue={0}
+                  />
+                </div>
+              </HStack>
             ))}
-          </div>
+          </VStack>
         </CardContent>
         <CardFooter>
           <Submit
