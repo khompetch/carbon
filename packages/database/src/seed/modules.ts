@@ -3,7 +3,6 @@ const modules = [
   "Documents",
   "Inventory",
   "Invoicing",
-  "Messaging",
   "Parts",
   "Production",
   "Purchasing",

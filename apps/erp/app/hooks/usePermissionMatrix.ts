@@ -61,7 +61,7 @@ const ALL_ACTIONS: readonly PermissionAction[] = [
 ] as const;
 
 /** Modules that should be hidden from all permission UIs */
-const HIDDEN_MODULES = new Set(["messaging", "items", "timecards"]);
+const HIDDEN_MODULES = new Set(["items", "timecards"]);
 
 // ---------------------------------------------------------------------------
 // Hook

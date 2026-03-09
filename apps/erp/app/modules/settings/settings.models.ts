@@ -10,7 +10,6 @@ export const modulesType = [
   "Inventory",
   "Items",
   "Production",
-  // "Messaging",
   "Purchasing",
   "Quality",
   "Resources",

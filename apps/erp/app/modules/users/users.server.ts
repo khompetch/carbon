@@ -762,7 +762,7 @@ export function makeEmptyPermissionsFromModules(data: Module[]) {
   return data.reduce<
     Record<string, { name: string; permission: CompanyPermission }>
   >((acc, m) => {
-    if (m.name) {
+    if (m.name && m.name !== "Messaging") {
       acc[m.name] = {
         name: m.name.toLowerCase(),
         permission: {
@@ -841,6 +841,11 @@ export function makeCompanyPermissionsFromClaims(
     delete permissions["items"];
   }
 
+  if ("messaging" in permissions) {
+    // biome-ignore lint/complexity/useLiteralKeys: suppressed due to migration
+    delete permissions["messaging"];
+  }
+
   return { permissions, role };
 }
 
@@ -892,6 +897,11 @@ export function makePermissionsFromClaims(claims: Json[] | null) {
     delete permissions["items"];
   }
 
+  if ("messaging" in permissions) {
+    // biome-ignore lint/complexity/useLiteralKeys: suppressed due to migration
+    delete permissions["messaging"];
+  }
+
   return { permissions, role };
 }
 
@@ -933,6 +943,11 @@ export function makeCompanyPermissionsFromEmployeeType(
   if ("items" in result) {
     // biome-ignore lint/complexity/useLiteralKeys: suppressed due to migration
     delete result["items"];
+  }
+
+  if ("Messaging" in result) {
+    // biome-ignore lint/complexity/useLiteralKeys: suppressed due to migration
+    delete result["Messaging"];
   }
 
   return result;
