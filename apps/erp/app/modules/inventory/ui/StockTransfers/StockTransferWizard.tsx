@@ -573,8 +573,8 @@ function TransferGrid({ locationId }: { locationId: string }) {
                     );
                   } else {
                     // Calculate default quantity:
-                    // Amount needed to bring "to" bin to 0 available (fulfill requirements)
-                    // Capped by what's available in "from" bin
+                    // Amount needed to bring "to" shelve to 0 available (fulfill requirements)
+                    // Capped by what's available in "from" shelve
                     const quantityNeeded = Math.max(
                       0,
                       toItem.quantityRequired - toItem.quantityOnHand
@@ -1009,7 +1009,7 @@ function TransferTable({
                 <LuTriangleAlert className="h-6 w-6 flex-shrink-0" />
               </div>
               <span className="text-xs font-mono font-light text-foreground uppercase">
-                No bins exist
+                No shelves exist
               </span>
             </div>
           ) : (
