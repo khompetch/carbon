@@ -1,12 +1,23 @@
-import { Button, cn, Menubar, SplitButton } from "@carbon/react";
+import {
+  Button,
+  cn,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+  Menubar,
+  SplitButton
+} from "@carbon/react";
 import { useOptimisticLocation } from "@carbon/remix";
-import { LuCircle, LuCreditCard } from "react-icons/lu";
+import { LuChevronDown, LuCircle, LuCreditCard } from "react-icons/lu";
 import {
   RiProgress2Line,
   RiProgress4Line,
   RiProgress8Line
 } from "react-icons/ri";
 import { Link, useNavigate } from "react-router";
+import { useSuppliers } from "~/stores/suppliers";
 import { path } from "~/utils/path";
 import type { SupplierInteraction } from "../../types";
 
@@ -60,6 +71,7 @@ const SupplierInteractionState = ({
 }: SupplierInteractionStateProps) => {
   const { pathname } = useOptimisticLocation();
   const navigate = useNavigate();
+  const [suppliers] = useSuppliers();
 
   // Determine if we're in "RFQ mode" (viewing from purchasing RFQ) or "interaction mode" (viewing from quote/order)
   const isRfqMode = currentRfq !== undefined && currentRfq !== null;
@@ -166,45 +178,77 @@ const SupplierInteractionState = ({
 
           // Quote State
           if (state === "Quote" && hasQuotes) {
-            const quoteItems = quotes.map((quote) => ({
-              id: quote.id!,
-              label: quote.supplierQuoteId
-                ? `${quote.supplierQuoteId}${
-                    quote.revisionId && quote.revisionId > 0
-                      ? `-${quote.revisionId}`
-                      : ""
-                  }`
-                : `Quote ${quote.id}`,
-              path: path.to.supplierQuoteDetails(quote.id!)
-            }));
+            const quoteItems = quotes
+              .map((quote) => {
+                const supplierName =
+                  ("supplier" in quote ? quote.supplier?.name : undefined) ??
+                  suppliers.find((s) => s.id === quote.supplierId)?.name;
 
-            const firstPath = quoteItems[0]?.path;
+                return {
+                  id: quote.id!,
+                  label: supplierName
+                    ? `${supplierName}${
+                        quote.supplierQuoteId
+                          ? ` (${quote.supplierQuoteId}${
+                              quote.revisionId && quote.revisionId > 0
+                                ? `-${quote.revisionId}`
+                                : ""
+                            })`
+                          : ""
+                      }`
+                    : quote.supplierQuoteId
+                      ? `${quote.supplierQuoteId}${
+                          quote.revisionId && quote.revisionId > 0
+                            ? `-${quote.revisionId}`
+                            : ""
+                        }`
+                      : `Quote ${quote.id}`,
+                  path: path.to.supplierQuoteDetails(quote.id!)
+                };
+              })
+              .sort((a, b) => a.label.localeCompare(b.label));
+
             const hasMultiple = quoteItems.length > 1;
-            const isCurrent = quoteItems.some((item) =>
+            const currentItem = quoteItems.find((item) =>
               pathname.includes(item.path)
             );
+            const isCurrent = !!currentItem;
 
             if (hasMultiple) {
               return (
-                <SplitButton
-                  key={state}
-                  leftIcon={
-                    <Icon
-                      className={cn(
-                        isCurrent && "text-emerald-500",
-                        !isCurrent && "opacity-80 hover:opacity-100"
-                      )}
-                    />
-                  }
-                  variant="ghost"
-                  onClick={() => navigate(firstPath)}
-                  dropdownItems={quoteItems.map((item) => ({
-                    label: item.label,
-                    onClick: () => navigate(item.path)
-                  }))}
-                >
-                  Quote
-                </SplitButton>
+                <DropdownMenu key={state}>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      leftIcon={
+                        <Icon
+                          className={cn(
+                            isCurrent && "text-emerald-500",
+                            !isCurrent && "opacity-80 hover:opacity-100"
+                          )}
+                        />
+                      }
+                      rightIcon={<LuChevronDown className="h-3 w-3" />}
+                      variant="ghost"
+                    >
+                      Quote
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuRadioGroup
+                      value={currentItem?.id}
+                      onValueChange={(id) => {
+                        const item = quoteItems.find((q) => q.id === id);
+                        if (item) navigate(item.path);
+                      }}
+                    >
+                      {quoteItems.map((item) => (
+                        <DropdownMenuRadioItem key={item.id} value={item.id}>
+                          {item.label}
+                        </DropdownMenuRadioItem>
+                      ))}
+                    </DropdownMenuRadioGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               );
             } else {
               return (
@@ -221,7 +265,7 @@ const SupplierInteractionState = ({
                   variant="ghost"
                   asChild
                 >
-                  <Link to={firstPath}>Quote</Link>
+                  <Link to={quoteItems[0]?.path}>Quote</Link>
                 </Button>
               );
             }

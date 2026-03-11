@@ -112,6 +112,7 @@ const SupplierQuoteProperties = () => {
 
   return (
     <VStack
+      key={routeData?.quote?.id}
       spacing={4}
       className="w-96 bg-card h-full overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-accent border-l border-border px-4 py-2 text-sm"
     >
