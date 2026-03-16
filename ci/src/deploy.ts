@@ -10,6 +10,7 @@ export type Workspace = {
   seeded: boolean;
 
   // AWS Configuration
+  aws: boolean;
   aws_account_id: string | null;
   aws_region: string | null;
 
@@ -95,6 +96,7 @@ async function deploy(): Promise<void> {
     try {
       console.log(`✅ 🥚 Migrating ${workspace.id}`);
       const {
+        aws,
         aws_account_id,
         aws_region,
         domain_name,
@@ -143,7 +145,7 @@ async function deploy(): Promise<void> {
         xero_webhook_secret,
       } = workspace;
 
-      if (["app", "staging"].includes(slug)) {
+      if (!aws) {
         continue;
       }
 
