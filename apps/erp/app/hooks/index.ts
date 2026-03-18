@@ -17,6 +17,7 @@ import { usePermissions } from "./usePermissions";
 import { useRealtime } from "./useRealtime";
 import { useScrollPosition } from "./useScrollPosition";
 import { useSettings } from "./useSettings";
+import { useTrainingPanel } from "./useTrainingPanel";
 import { useUser } from "./useUser";
 
 export {
@@ -35,6 +36,7 @@ export {
   useRouteData,
   useScrollPosition,
   useSettings,
+  useTrainingPanel,
   useUrlParams,
   useUser
 };

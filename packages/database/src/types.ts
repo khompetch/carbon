@@ -40401,7 +40401,6 @@ export type Database = {
         Row: {
           about: string
           acknowledgedITAR: boolean
-          acknowledgedUniversity: boolean
           active: boolean | null
           admin: boolean | null
           avatarUrl: string | null
@@ -40409,6 +40408,7 @@ export type Database = {
           developer: boolean | null
           email: string
           firstName: string
+          flags: Json
           fullName: string | null
           id: string
           lastName: string
@@ -40417,7 +40417,6 @@ export type Database = {
         Insert: {
           about?: string
           acknowledgedITAR?: boolean
-          acknowledgedUniversity?: boolean
           active?: boolean | null
           admin?: boolean | null
           avatarUrl?: string | null
@@ -40425,6 +40424,7 @@ export type Database = {
           developer?: boolean | null
           email: string
           firstName?: string
+          flags?: Json
           fullName?: string | null
           id: string
           lastName?: string
@@ -40433,7 +40433,6 @@ export type Database = {
         Update: {
           about?: string
           acknowledgedITAR?: boolean
-          acknowledgedUniversity?: boolean
           active?: boolean | null
           admin?: boolean | null
           avatarUrl?: string | null
@@ -40441,6 +40440,7 @@ export type Database = {
           developer?: boolean | null
           email?: string
           firstName?: string
+          flags?: Json
           fullName?: string | null
           id?: string
           lastName?: string
@@ -44766,7 +44766,7 @@ export type Database = {
           assignee: string | null
           closeDate: string | null
           companyId: string | null
-          ContainmentStatus: string | null
+          containmentStatus: string | null
           content: Json | null
           createdAt: string | null
           createdBy: string | null
@@ -49115,14 +49115,14 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "address_countryCode_fkey"
-            columns: ["customerCountryCode"]
+            columns: ["supplierCountryCode"]
             isOneToOne: false
             referencedRelation: "country"
             referencedColumns: ["alpha2"]
           },
           {
             foreignKeyName: "address_countryCode_fkey"
-            columns: ["supplierCountryCode"]
+            columns: ["customerCountryCode"]
             isOneToOne: false
             referencedRelation: "country"
             referencedColumns: ["alpha2"]

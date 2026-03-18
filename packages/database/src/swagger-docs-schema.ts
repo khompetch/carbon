@@ -10861,7 +10861,7 @@ export default {
             $ref: "#/parameters/rowFilter.issues.items",
           },
           {
-            $ref: "#/parameters/rowFilter.issues.ContainmentStatus",
+            $ref: "#/parameters/rowFilter.issues.containmentStatus",
           },
           {
             $ref: "#/parameters/select",
@@ -50053,10 +50053,10 @@ export default {
             $ref: "#/parameters/rowFilter.user.admin",
           },
           {
-            $ref: "#/parameters/rowFilter.user.acknowledgedUniversity",
+            $ref: "#/parameters/rowFilter.user.acknowledgedITAR",
           },
           {
-            $ref: "#/parameters/rowFilter.user.acknowledgedITAR",
+            $ref: "#/parameters/rowFilter.user.flags",
           },
           {
             $ref: "#/parameters/select",
@@ -50154,10 +50154,10 @@ export default {
             $ref: "#/parameters/rowFilter.user.admin",
           },
           {
-            $ref: "#/parameters/rowFilter.user.acknowledgedUniversity",
+            $ref: "#/parameters/rowFilter.user.acknowledgedITAR",
           },
           {
-            $ref: "#/parameters/rowFilter.user.acknowledgedITAR",
+            $ref: "#/parameters/rowFilter.user.flags",
           },
           {
             $ref: "#/parameters/preferReturn",
@@ -50209,10 +50209,10 @@ export default {
             $ref: "#/parameters/rowFilter.user.admin",
           },
           {
-            $ref: "#/parameters/rowFilter.user.acknowledgedUniversity",
+            $ref: "#/parameters/rowFilter.user.acknowledgedITAR",
           },
           {
-            $ref: "#/parameters/rowFilter.user.acknowledgedITAR",
+            $ref: "#/parameters/rowFilter.user.flags",
           },
           {
             $ref: "#/parameters/body.user",
@@ -74431,7 +74431,7 @@ export default {
           },
           type: "array",
         },
-        ContainmentStatus: {
+        containmentStatus: {
           format: "text",
           type: "string",
         },
@@ -92913,8 +92913,8 @@ export default {
         "lastName",
         "about",
         "createdAt",
-        "acknowledgedUniversity",
         "acknowledgedITAR",
+        "flags",
       ],
       properties: {
         id: {
@@ -92973,15 +92973,13 @@ export default {
           format: "boolean",
           type: "boolean",
         },
-        acknowledgedUniversity: {
-          default: false,
-          format: "boolean",
-          type: "boolean",
-        },
         acknowledgedITAR: {
           default: false,
           format: "boolean",
           type: "boolean",
+        },
+        flags: {
+          format: "jsonb",
         },
       },
       type: "object",
@@ -105619,8 +105617,8 @@ export default {
       in: "query",
       type: "string",
     },
-    "rowFilter.issues.ContainmentStatus": {
-      name: "ContainmentStatus",
+    "rowFilter.issues.containmentStatus": {
+      name: "containmentStatus",
       required: false,
       in: "query",
       type: "string",
@@ -126555,14 +126553,14 @@ export default {
       in: "query",
       type: "string",
     },
-    "rowFilter.user.acknowledgedUniversity": {
-      name: "acknowledgedUniversity",
+    "rowFilter.user.acknowledgedITAR": {
+      name: "acknowledgedITAR",
       required: false,
       in: "query",
       type: "string",
     },
-    "rowFilter.user.acknowledgedITAR": {
-      name: "acknowledgedITAR",
+    "rowFilter.user.flags": {
+      name: "flags",
       required: false,
       in: "query",
       type: "string",

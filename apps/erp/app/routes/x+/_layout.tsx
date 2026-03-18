@@ -29,6 +29,8 @@ import {
 } from "react-router";
 import { RealtimeDataProvider } from "~/components";
 import { PrimaryNavigation, Topbar } from "~/components/Layout";
+import TrainingPanel from "~/components/TrainingPanel";
+import { useTrainingPanel } from "~/hooks/useTrainingPanel";
 import {
   getCompanies,
   getCompanyIntegrations,
@@ -150,6 +152,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function AuthenticatedRoute() {
   const { session, user } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
+  const { isOpen, training, dismiss } = useTrainingPanel();
 
   useNProgress();
   useKeyboardWedge({
@@ -193,6 +196,11 @@ export default function AuthenticatedRoute() {
                   </main>
                 </div>
               </div>
+              <TrainingPanel
+                training={training}
+                isOpen={isOpen}
+                onDismiss={dismiss}
+              />
             </TooltipProvider>
           </RealtimeDataProvider>
         </CarbonProvider>

@@ -28,10 +28,13 @@ type Defaults = {
   locationId: string | null;
 };
 
+type UserFlags = Record<string, boolean>;
+
 type User = PersonalData & {
   company: Company;
   groups: Groups;
   defaults: Defaults;
+  flags: UserFlags;
 };
 
 export function useUser(): User {
@@ -55,7 +58,8 @@ export function useUser(): User {
       ...data.user,
       company: data.company,
       groups: data.groups,
-      defaults: data.defaults ?? { locationId: null }
+      defaults: data.defaults ?? { locationId: null },
+      flags: data.user.flags ?? {}
     };
   }
 

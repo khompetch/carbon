@@ -96,3 +96,27 @@ export const userPermissionsValidator = z.object({
   update: z.boolean(),
   delete: z.boolean()
 });
+
+export const validUserFlags = [
+  "academy",
+  "training:quotes",
+  "training:salesOrders",
+  "training:salesInvoices",
+  "training:jobs",
+  "training:suppliers",
+  "training:purchaseOrders",
+  "training:parts",
+  "training:inventory",
+  "training:quality"
+] as const;
+
+export type UserFlagKey = (typeof validUserFlags)[number];
+
+const userFlagKeyValidator = z.enum(validUserFlags);
+
+export const userFlagValidator = z.object({
+  flag: userFlagKeyValidator,
+  value: z.boolean()
+});
+
+export const userFlagsValidator = z.record(userFlagKeyValidator, z.boolean());
