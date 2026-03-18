@@ -201,22 +201,7 @@ async function deploy(): Promise<void> {
         continue;
       }
 
-      if (!openai_api_key) {
-        console.log(`🔴🍳 Missing OpenAI API key for ${workspace.id}`);
-        continue;
-      }
-
-      if (!posthog_api_host) {
-        console.log(`🔴🍳 Missing Posthog API host for ${workspace.id}`);
-        continue;
-      }
-
-      if (!posthog_project_public_key) {
-        console.log(
-          `🔴🍳 Missing posthog project public key for ${workspace.id}`
-        );
-        continue;
-      }
+      
 
       if (!resend_api_key) {
         console.log(`🔴🍳 Missing Resend API key for ${workspace.id}`);
