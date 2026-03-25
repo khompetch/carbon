@@ -1290,12 +1290,11 @@ export const modules: Config = [
               },
               {
                 id: "gauges-calibrations",
-                loomUrl:
-                  "https://www.loom.com/share/51e0c6dd053b4a3e904fc795d4fc298f?sid=0bb2081d-6bc4-4efb-8361-d2717dda9781",
+                loomUrl: "https://www.loom.com/share/e78ae8fb641f4543b1bc4980e9c3acaa",
                 name: "Gauges and Calibrations",
                 description:
                   "Learn how to manage measurement equipment and calibration schedules.",
-                duration: 0
+                duration: 133
               }
             ]
           }
