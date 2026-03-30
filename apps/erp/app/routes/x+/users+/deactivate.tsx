@@ -1,11 +1,9 @@
-import { CarbonEdition, error, safeRedirect, success } from "@carbon/auth";
+import { error, safeRedirect, success } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { deactivateUser } from "@carbon/auth/users.server";
 import { validationError, validator } from "@carbon/form";
 import type { userAdminTask } from "@carbon/jobs/trigger/user-admin";
-import { updateSubscriptionQuantityForCompany } from "@carbon/stripe/stripe.server";
-import { Edition } from "@carbon/utils";
 import { tasks } from "@trigger.dev/sdk";
 import type { ActionFunctionArgs } from "react-router";
 import { redirect } from "react-router";
@@ -28,10 +26,8 @@ export async function action({ request }: ActionFunctionArgs) {
 
   if (users.length === 1) {
     const [userId] = users;
+    // deactivateUser() handles Stripe subscription quantity update internally
     const result = await deactivateUser(client, userId, companyId);
-    if (result.success && CarbonEdition === Edition.Cloud) {
-      await updateSubscriptionQuantityForCompany(companyId);
-    }
 
     throw redirect(safeRedirect(redirectTo), await flash(request, result));
   } else {

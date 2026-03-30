@@ -2,13 +2,11 @@ import { task } from "@trigger.dev/sdk";
 import { z } from "zod";
 
 import type { Result } from "@carbon/auth";
-import { CarbonEdition, getAppUrl, RESEND_DOMAIN } from "@carbon/auth";
+import { getAppUrl, RESEND_DOMAIN } from "@carbon/auth";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { deactivateUser } from "@carbon/auth/users.server";
 import { InviteEmail } from "@carbon/documents/email";
 import { sendEmail } from "@carbon/lib/resend.server";
-import { updateSubscriptionQuantityForCompany } from "@carbon/stripe/stripe.server";
-import { Edition } from "@carbon/utils";
 import { render } from "@react-email/components";
 import { nanoid } from "nanoid";
 
@@ -38,14 +36,12 @@ export const userAdminTask = task({
     switch (payload.type) {
       case "deactivate":
         console.log(`🚭 Deactivating ${payload.id}`);
+        // deactivateUser() handles Stripe subscription quantity update internally
         result = await deactivateUser(
           serviceRole,
           payload.id,
           payload.companyId
         );
-        if (result.success && CarbonEdition === Edition.Cloud) {
-          await updateSubscriptionQuantityForCompany(payload.companyId);
-        }
         break;
       case "resend":
         const { id: userId, companyId, location, ip } = payload;

@@ -278,6 +278,11 @@ export async function deactivateUser(
     }
   }
 
+  // Clear stale permission cache
+  if (result && result.success) {
+    await redis.del(getPermissionCacheKey(userId));
+  }
+
   // Update Stripe subscription quantity after successful deactivation
   if (result && result.success && CarbonEdition === Edition.Cloud) {
     await updateSubscriptionQuantityForCompany(companyId);

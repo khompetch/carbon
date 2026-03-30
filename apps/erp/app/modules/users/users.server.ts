@@ -131,11 +131,23 @@ async function activateCustomer(
     companyId: string;
   }
 ) {
-  return client
+  const result = await client
     .from("customerAccount")
     .update({ active: true })
     .eq("id", userId)
-    .eq("companyId", companyId);
+    .eq("companyId", companyId)
+    .select("id");
+
+  if (!result.error && (!result.data || result.data.length === 0)) {
+    return {
+      data: null,
+      error: {
+        message: `Customer account not found for user ${userId} in company ${companyId}. The account may have been deleted during deactivation.`
+      }
+    };
+  }
+
+  return result;
 }
 
 async function activateEmployee(
@@ -148,11 +160,23 @@ async function activateEmployee(
     companyId: string;
   }
 ) {
-  return client
+  const result = await client
     .from("employee")
     .update({ active: true })
     .eq("id", userId)
-    .eq("companyId", companyId);
+    .eq("companyId", companyId)
+    .select("id");
+
+  if (!result.error && (!result.data || result.data.length === 0)) {
+    return {
+      data: null,
+      error: {
+        message: `Employee record not found for user ${userId} in company ${companyId}. The record may have been deleted during deactivation.`
+      }
+    };
+  }
+
+  return result;
 }
 
 async function activateSupplier(
@@ -165,11 +189,23 @@ async function activateSupplier(
     companyId: string;
   }
 ) {
-  return client
+  const result = await client
     .from("supplierAccount")
     .update({ active: true })
     .eq("id", userId)
-    .eq("companyId", companyId);
+    .eq("companyId", companyId)
+    .select("id");
+
+  if (!result.error && (!result.data || result.data.length === 0)) {
+    return {
+      data: null,
+      error: {
+        message: `Supplier account not found for user ${userId} in company ${companyId}. The account may have been deleted during deactivation.`
+      }
+    };
+  }
+
+  return result;
 }
 
 export async function addUserToCompany(
