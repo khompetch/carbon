@@ -4,10 +4,13 @@ import {
   getBrowserEnv,
   getCarbon
 } from "@carbon/auth";
+import { flashClientMiddleware } from "@carbon/auth/middleware/flash.client";
 import {
-  getOrRefreshAuthSession,
-  getSessionFlash
-} from "@carbon/auth/session.server";
+  flashHeadersContext,
+  flashMiddleware,
+  flashResultContext
+} from "@carbon/auth/middleware/flash.server";
+import { getOrRefreshAuthSession } from "@carbon/auth/session.server";
 import { validator } from "@carbon/form";
 import {
   Button,
@@ -18,7 +21,6 @@ import {
   Progress,
   Toaster,
   TooltipProvider,
-  toast,
   useDisclosure
 } from "@carbon/react";
 import { getPreferenceHeaders, useMode } from "@carbon/remix";
@@ -27,7 +29,6 @@ import { I18nProvider } from "@react-aria/i18n";
 import { Analytics } from "@vercel/analytics/react";
 import { motion } from "framer-motion";
 import type React from "react";
-import { useEffect } from "react";
 import { LuChevronDown, LuFingerprint, LuMoon, LuSun } from "react-icons/lu";
 import type {
   ActionFunctionArgs,
@@ -55,6 +56,9 @@ import AvatarMenu from "./components/AvatarMenu";
 import { useOptionalUser } from "./hooks/useUser";
 import { path } from "./utils/path";
 
+export const middleware = [flashMiddleware];
+export const clientMiddleware = [flashClientMiddleware];
+
 export function links() {
   return [
     { rel: "stylesheet", href: Tailwind },
@@ -70,7 +74,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
   const {
     CARBON_EDITION,
     CARBON_API_URL,
@@ -116,8 +120,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
     challengeAttempts = attempts.data ?? [];
   }
 
-  const sessionFlash = await getSessionFlash(request);
-
   return data(
     {
       challengeAttempts,
@@ -132,12 +134,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
       lessonCompletions,
       mode: getMode(request),
       preferences: getPreferenceHeaders(request),
-      result: sessionFlash?.result,
+      result: context.get(flashResultContext),
       user,
       session
     },
     {
-      headers: sessionFlash?.headers
+      headers: context.get(flashHeadersContext) ?? undefined
     }
   );
 }
@@ -194,22 +196,12 @@ function Document({
 export default function App() {
   const loaderData = useLoaderData<typeof loader>();
   const env = loaderData?.env ?? {};
-  const result = loaderData?.result;
   const prefs = loaderData?.preferences;
   const theme = "zinc";
 
   const challengeAttempts = loaderData?.challengeAttempts ?? [];
 
   const disclosure = useDisclosure();
-
-  /* Toast Messages */
-  useEffect(() => {
-    if (result?.success === true) {
-      toast.success(result.message);
-    } else if (result?.message) {
-      toast.error(result.message);
-    }
-  }, [result]);
 
   /* Dark/Light Mode */
   const mode = useMode();

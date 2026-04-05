@@ -1,12 +1,16 @@
 import { CONTROLLED_ENVIRONMENT, error, getBrowserEnv } from "@carbon/auth";
-import { getSessionFlash } from "@carbon/auth/session.server";
+import { flashClientMiddleware } from "@carbon/auth/middleware/flash.client";
+import {
+  flashHeadersContext,
+  flashMiddleware,
+  flashResultContext
+} from "@carbon/auth/middleware/flash.server";
 import { validator } from "@carbon/form";
 import {
   Button,
   Heading,
   OperatingSystemContextProvider,
-  Toaster,
-  toast
+  Toaster
 } from "@carbon/react";
 import { getPreferenceHeaders, useMode } from "@carbon/remix";
 import type { Theme } from "@carbon/utils";
@@ -14,7 +18,6 @@ import { modeValidator, themes } from "@carbon/utils";
 import { I18nProvider } from "@react-aria/i18n";
 import { Analytics } from "@vercel/analytics/react";
 import type React from "react";
-import { useEffect } from "react";
 import type {
   ActionFunctionArgs,
   LoaderFunctionArgs,
@@ -37,6 +40,9 @@ import Tailwind from "~/styles/tailwind.css?url";
 import type { Route } from "./+types/root";
 import { getTheme } from "./services/theme.server";
 
+export const middleware = [flashMiddleware];
+export const clientMiddleware = [flashClientMiddleware];
+
 export function links() {
   return [
     { rel: "stylesheet", href: Tailwind },
@@ -53,7 +59,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
   const {
     CARBON_EDITION,
     CARBON_API_URL,
@@ -67,8 +73,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
     VERCEL_ENV,
     VERCEL_URL
   } = getBrowserEnv();
-
-  const sessionFlash = await getSessionFlash(request);
 
   return data(
     {
@@ -88,10 +92,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
       mode: getMode(request),
       theme: getTheme(request),
       preferences: getPreferenceHeaders(request),
-      result: sessionFlash?.result
+      result: context.get(flashResultContext)
     },
     {
-      headers: sessionFlash?.headers
+      headers: context.get(flashHeadersContext) ?? undefined
     }
   );
 }
@@ -185,26 +189,8 @@ function Document({
 export default function App() {
   const loaderData = useLoaderData<typeof loader>();
   const env = loaderData?.env ?? {};
-  const result = loaderData?.result;
   const theme = loaderData?.theme ?? "zinc";
   const prefs = loaderData?.preferences;
-
-  /* Toast Messages */
-  useEffect(() => {
-    if (result?.success === true) {
-      toast.success(result.message);
-    } else if (result?.message) {
-      toast.error(result.message);
-    }
-  }, [result]);
-
-  /* Flash Overlay 
-  useEffect(() => {
-    if (result?.flash) {
-      flashOverlay.flash(result.flash);
-    }
-  }, [result]);
-  */
 
   /* Dark/Light Mode */
   const mode = useMode();

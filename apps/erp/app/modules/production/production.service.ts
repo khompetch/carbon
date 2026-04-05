@@ -95,25 +95,24 @@ export async function convertSalesOrderLinesToJobs(
 
   for await (const line of lines) {
     if (line.methodType === "Make to Order" && line.itemId) {
-      const itemManufacturing = await client
-        .from("itemReplenishment")
-        .select("*")
-        .eq("itemId", line.itemId)
-        .eq("companyId", companyId)
-        .single();
-
-      const lotSize = itemManufacturing.data?.lotSize ?? 0;
-      const totalQuantity = line.saleQuantity ?? 0;
-      const totalJobs = lotSize > 0 ? Math.ceil(totalQuantity / lotSize) : 1;
-
-      const jobsToCreate = Math.max(1, totalJobs);
-
       const manufacturing = await client
         .from("itemReplenishment")
         .select("*")
         .eq("itemId", line.itemId)
         .eq("companyId", companyId)
         .single();
+
+      const lotSize = manufacturing.data?.lotSize ?? 0;
+      const totalQuantity = line.saleQuantity ?? 0;
+      const totalJobs = lotSize > 0 ? Math.ceil(totalQuantity / lotSize) : 1;
+
+      const jobsToCreate = Math.max(1, totalJobs);
+
+      const defaultLocation = await client
+        .from("location")
+        .select("id")
+        .eq("companyId", companyId)
+        .limit(1);
 
       for await (const index of Array.from({ length: jobsToCreate }).keys()) {
         const nextSequence = await client.rpc("get_next_sequence", {
@@ -138,12 +137,6 @@ export async function convertSalesOrderLinesToJobs(
 
         let locationId = line.locationId ?? salesOrder.data?.locationId;
         if (!locationId) {
-          const defaultLocation = await client
-            .from("location")
-            .select("id")
-            .eq("companyId", companyId)
-            .limit(1);
-
           if (defaultLocation.data && defaultLocation.data.length > 0) {
             locationId = defaultLocation.data?.[0]?.id;
           } else {

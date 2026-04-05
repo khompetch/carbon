@@ -89,7 +89,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const client = getCarbon(accessToken);
 
-  // parallelize the requests
+  // Parallelize all requests
   const [
     companies,
     stripeCustomer,
@@ -100,7 +100,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
     user,
     claims,
     groups,
-    defaults
+    defaults,
+    auditLogEnabled
   ] = await Promise.all([
     getCompanies(client, userId),
     getStripeCustomerByCompanyId(companyId, userId),
@@ -111,7 +112,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
     getUser(client, userId),
     getUserClaims(userId, companyId),
     getUserGroups(client, userId),
-    getUserDefaults(client, userId, companyId)
+    getUserDefaults(client, userId, companyId),
+    isAuditLogEnabled(client, companyId)
   ]);
 
   if (!claims || user.error || !user.data || !groups.data) {
@@ -144,7 +146,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       expiresIn,
       expiresAt
     },
-    auditLogEnabled: await isAuditLogEnabled(client, companyId),
+    auditLogEnabled,
     company,
     companies: companies.data ?? [],
     companySettings: companySettings.data,
