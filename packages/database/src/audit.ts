@@ -269,7 +269,7 @@ export async function isAuditLogEnabled(
     .from("company")
     .select("auditLogEnabled")
     .eq("id", companyId)
-    .single();
+    .maybeSingle();
 
   if (error) {
     throw new Error(`Failed to check audit log status: ${error.message}`);
