@@ -8,12 +8,6 @@ on:
       - completed
     branches:
       - main
-  # Also trigger on jobs package changes pushed to main
-  push:
-    branches:
-      - main
-    paths:
-      - "packages/jobs/**"
   workflow_dispatch:
 
 jobs:

@@ -5,7 +5,7 @@
     "@typescript/native-preview": "^7.0.0-dev.20260330.1",
     "csv-parse": "^5.5.0",
     "husky": "^8.0.3",
-    "lint-staged": "^13.1.2",
+    "lint-staged": "^16.4.0",
     "npm-run-all": "^4.1.5",
     "patch-package": "^8.0.1",
     "postcss-nesting": "12.1.5",
@@ -86,7 +86,7 @@
   "packageManager": "npm@10.8.2",
   "dependencies": {
     "@opentelemetry/semantic-conventions": "^1.38.0",
-    "@react-router/remix-routes-option-adapter": "^7.12.0",
+    "@react-router/remix-routes-option-adapter": "7.12.0",
     "cookie": "1.1.1",
     "dompurify": "3.3.3",
     "fast-uri": "^3.1.0",
