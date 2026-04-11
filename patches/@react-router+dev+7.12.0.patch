@@ -1,0 +1,12 @@
+diff --git a/node_modules/@react-router/dev/dist/cli/index.js b/node_modules/@react-router/dev/dist/cli/index.js
+index da54c0d..75761fd 100644
+--- a/node_modules/@react-router/dev/dist/cli/index.js
++++ b/node_modules/@react-router/dev/dist/cli/index.js
+@@ -1622,6 +1622,7 @@ async function cleanViteManifests(environmentsOptions, ctx) {
+         await (0, import_promises2.rm)(viteManifestPath, { force: true, recursive: true });
+       }
+       let viteDir = path7.dirname(viteManifestPath);
++      if (!(0, import_node_fs3.existsSync)(viteDir)) return;
+       let viteDirFiles = await (0, import_promises2.readdir)(viteDir, { recursive: true });
+       if (viteDirFiles.length === 0) {
+         await (0, import_promises2.rm)(viteDir, { force: true, recursive: true });
