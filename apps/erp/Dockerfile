@@ -12,7 +12,7 @@ RUN npm install --legacy-peer-deps
 
 FROM deps AS build
 ARG NODE_OPTIONS
-ENV NODE_OPTIONS=${NODE_OPTIONS:-"--max-old-space-size=8192"}
+ENV NODE_OPTIONS=${NODE_OPTIONS:-"--max-old-space-size=16384"}
 # Build only ERP and its deps
 RUN npx lingui compile --namespace es
 RUN npx turbo run build --filter=./apps/erp
