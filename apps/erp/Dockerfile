@@ -14,7 +14,7 @@ FROM deps AS build
 ARG NODE_OPTIONS
 ENV NODE_OPTIONS=${NODE_OPTIONS:-"--max-old-space-size=4096"}
 # Build only ERP and its deps
-RUN cd apps/erp && npx lingui compile && cd ../..
+RUN cd apps/erp && npx lingui compile --config ../../lingui.config.js && cd ../..
 RUN npx turbo run build --filter=./apps/erp
 
 FROM node:20-slim

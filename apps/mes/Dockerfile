@@ -14,7 +14,7 @@ FROM deps AS build
 ARG NODE_OPTIONS
 ENV NODE_OPTIONS=${NODE_OPTIONS:-"--max-old-space-size=4096"}
 # Build only MES and its deps
-RUN cd apps/mes && npx lingui compile && cd ../..
+RUN cd apps/mes && npx lingui compile --config ../../lingui.config.js && cd ../..
 RUN npx turbo run build --filter=./apps/mes
 
 FROM node:20-slim
