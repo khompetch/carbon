@@ -130,7 +130,7 @@
   },
   "private": true,
   "scripts": {
-    "build": "lingui compile --config ../../lingui.config.js && react-router build",
+    "build": "lingui compile --config ../../lingui.config.js --namespace es && react-router build",
     "clean": "rimraf .cache .turbo node_modules dist build",
     "dev": "react-router dev",
     "dev:novu": "npx novu@latest dev --port 3000",
