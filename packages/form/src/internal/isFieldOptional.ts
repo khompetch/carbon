@@ -1,52 +1,104 @@
-import { z } from "zod";
+import { type ZodSchema, z } from "zod";
 import { stringToPathArray } from "../utils";
 
-type ZodSchema = z.ZodTypeAny;
-
-function unwrapSchema(schema: ZodSchema): {
+type UnwrapResult = {
   schema: ZodSchema;
   isOptional: boolean;
-} {
-  let current: ZodSchema = schema;
+  hasDefault: boolean;
+};
+
+function unwrapSchema(
+  schema: ZodSchema,
+  io: "input" | "output" = "output"
+): UnwrapResult {
+  let current = schema;
   let isOptional = false;
+  let hasDefault = false;
+  const seen = new Set<ZodSchema>();
 
   while (true) {
-    if (
-      current instanceof z.ZodOptional ||
-      current instanceof z.ZodDefault ||
-      current instanceof z.ZodCatch
-    ) {
-      isOptional = true;
-      current = current._def.innerType;
-      continue;
-    }
+    if (seen.has(current)) return { schema: current, isOptional, hasDefault };
+    seen.add(current);
 
-    if (current instanceof z.ZodEffects) {
-      current = current._def.schema;
-      continue;
-    }
+    const def: any = (current as any)._zod?.def ?? (current as any)._def;
+    const type: string | undefined = def?.type ?? def?.typeName;
 
-    if (current instanceof z.ZodNullable) {
-      current = current.unwrap();
-      continue;
-    }
+    switch (type) {
+      // optionality wrappers
+      case "optional":
+      case "ZodOptional":
+        isOptional = true;
+        current = def.innerType;
+        continue;
 
-    if (current instanceof z.ZodBranded) {
-      current = current.unwrap();
-      continue;
-    }
+      case "default":
+      case "ZodDefault":
+        isOptional = true;
+        hasDefault = true;
+        current = def.innerType;
+        continue;
 
-    if (current instanceof z.ZodReadonly) {
-      current = current.unwrap();
-      continue;
-    }
+      case "prefault":
+        isOptional = true;
+        hasDefault = true;
+        current = def.innerType;
+        continue;
 
-    if (current instanceof z.ZodPipeline) {
-      current = current._def.out;
-      continue;
-    }
+      case "catch":
+      case "ZodCatch":
+        isOptional = true;
+        current = def.innerType;
+        continue;
 
-    return { schema: current, isOptional };
+      // nullable — semantically distinct from optional
+      case "nullable":
+      case "ZodNullable":
+        current = def.innerType;
+        continue;
+
+      // transparent wrappers
+      case "readonly":
+      case "ZodReadonly":
+        current = def.innerType;
+        continue;
+
+      case "nonoptional":
+        isOptional = false;
+        current = def.innerType;
+        continue;
+
+      case "promise":
+      case "ZodPromise":
+        current = def.innerType;
+        continue;
+
+      case "ZodBranded":
+        current = def.type;
+        continue;
+
+      // lazy — resolve the thunk
+      case "lazy":
+      case "ZodLazy": {
+        const inner = (current as any)._zod?.innerType ?? def.getter?.();
+        if (!inner) return { schema: current, isOptional, hasDefault };
+        current = inner;
+        continue;
+      }
+
+      // pipe — direction matters
+      case "pipe":
+      case "ZodPipeline":
+        current = io === "input" ? def.in : def.out;
+        continue;
+
+      // effects (v3 refine/transform/preprocess)
+      case "ZodEffects":
+        current = def.schema;
+        continue;
+
+      default:
+        return { schema: current, isOptional, hasDefault };
+    }
   }
 }
 
@@ -86,6 +138,8 @@ export function isFieldOptional(
   schema: ZodSchema | undefined,
   fieldName: string
 ): boolean | undefined {
+  const dir = "input"; // Can be a param
+
   if (!schema || !fieldName) return undefined;
 
   const path = stringToPathArray(fieldName);
@@ -95,7 +149,7 @@ export function isFieldOptional(
   for (const segment of path) {
     if (!current) return undefined;
 
-    const unwrapped = unwrapSchema(current);
+    const unwrapped = unwrapSchema(current, dir);
     current = unwrapped.schema;
     optionalFromParent = optionalFromParent || unwrapped.isOptional;
 
@@ -104,6 +158,6 @@ export function isFieldOptional(
 
   if (!current) return undefined;
 
-  const final = unwrapSchema(current);
+  const final = unwrapSchema(current, dir);
   return optionalFromParent || final.isOptional;
 }

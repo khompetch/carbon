@@ -385,7 +385,9 @@ const PurchaseInvoiceLineForm = ({
                   />
 
                   <FormControl className="col-span-2">
-                    <FormLabel isOptional>Description</FormLabel>
+                    <FormLabel isOptional>
+                      <Trans>Description</Trans>
+                    </FormLabel>
                     <Input
                       value={itemData.description}
                       onChange={(e) =>

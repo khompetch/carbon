@@ -12,7 +12,7 @@ import {
   useDebounce,
   VStack
 } from "@carbon/react";
-import { useLingui } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useGooglePlaces } from "~/hooks/useGooglePlaces";
 import Country from "./Country";
@@ -149,7 +149,7 @@ const AddressAutocomplete = ({
   const addressAutocompleteField = (
     <FormControl isInvalid={!!error}>
       <FormLabel htmlFor={address1Field} isOptional={isAddressLine1Optional}>
-        {t`Address Line 1`}
+        <Trans>Address Line 1</Trans>
       </FormLabel>
       <div className="relative w-full" ref={containerRef}>
         <Command shouldFilter={false} className="bg-transparent">
