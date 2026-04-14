@@ -50,7 +50,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   return {
     salesInvoiceLine: salesInvoiceLine?.data ?? null,
-    files: getOpportunityLineDocuments(client, companyId, lineId, itemId)
+    files: await getOpportunityLineDocuments(client, companyId, lineId, itemId)
   };
 }
 

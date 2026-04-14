@@ -44,11 +44,14 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const { lineId } = params;
   if (!lineId) throw notFound("lineId not found");
 
-  const purchaseInvoiceLine = await getPurchaseInvoiceLine(client, lineId);
+  const [purchaseInvoiceLine, files] = await Promise.all([
+    getPurchaseInvoiceLine(client, lineId),
+    getSupplierInteractionLineDocuments(client, companyId, lineId)
+  ]);
 
   return {
     purchaseInvoiceLine: purchaseInvoiceLine?.data ?? null,
-    files: getSupplierInteractionLineDocuments(client, companyId, lineId)
+    files
   };
 }
 
