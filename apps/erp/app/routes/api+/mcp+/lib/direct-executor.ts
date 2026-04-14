@@ -61,16 +61,6 @@ export async function executeFunction(
   }
   const normalizedArgs = args && typeof args === "object" ? args : undefined;
 
-  console.log("[DirectExecutor] Executing function:", functionName);
-  console.log(
-    "[DirectExecutor] Args:",
-    JSON.stringify(normalizedArgs, null, 2)
-  );
-  console.log("[DirectExecutor] Context:", {
-    companyId: context.companyId,
-    userId: context.userId
-  });
-
   if (isMcpBlockedTool(functionName)) {
     return {
       success: false,
@@ -90,17 +80,12 @@ export async function executeFunction(
 
   const moduleName = parts[0];
   const funcName = parts.slice(1).join("_");
-  console.log("[DirectExecutor] Module:", moduleName, "Function:", funcName);
 
   // Get the module functions
   const moduleFunctions =
     functionRegistry[moduleName as keyof typeof functionRegistry];
   if (!moduleFunctions) {
     console.error("[DirectExecutor] Module not found:", moduleName);
-    console.log(
-      "[DirectExecutor] Available modules:",
-      Object.keys(functionRegistry)
-    );
     throw new Error(`Module not found: ${moduleName}`);
   }
 
@@ -113,13 +98,8 @@ export async function executeFunction(
       "in module",
       moduleName
     );
-    console.log(
-      "[DirectExecutor] Available functions in module:",
-      Object.keys(moduleFunctions)
-    );
     throw new Error(`Function not found: ${funcName} in module ${moduleName}`);
   }
-  console.log("[DirectExecutor] Function found successfully");
 
   try {
     // Get function parameter names by converting to string and parsing
@@ -131,41 +111,25 @@ export async function executeFunction(
         ?.map((p: string) => p.trim().split(/[=\s]/)[0])
         ?.filter((p: string) => p) || [];
 
-    console.log("[DirectExecutor] Function parameters:", paramNames);
-
     // Build arguments array based on parameter names
     const functionArgs: any[] = [];
 
     for (const paramName of paramNames) {
       if (paramName === "client") {
         functionArgs.push(context.client);
-        console.log("[DirectExecutor] Added client to args");
       } else if (paramName === "userId") {
         const userIdValue = normalizedArgs?.userId || context.userId;
         functionArgs.push(userIdValue);
-        console.log("[DirectExecutor] Added userId to args:", userIdValue);
       } else if (paramName === "companyId") {
         const companyIdValue = normalizedArgs?.companyId || context.companyId;
         functionArgs.push(companyIdValue);
-        console.log(
-          "[DirectExecutor] Added companyId to args:",
-          companyIdValue
-        );
       } else if (paramName === "args") {
         // For 'args' parameter, pass the entire args object or a default
         // This is the parameter that most service functions expect
         const argsValue = normalizedArgs || {};
         functionArgs.push(argsValue);
-        console.log(
-          "[DirectExecutor] Added args object:",
-          JSON.stringify(argsValue, null, 2)
-        );
       } else if (normalizedArgs && paramName in normalizedArgs) {
         functionArgs.push(normalizedArgs[paramName]);
-        console.log(
-          `[DirectExecutor] Added ${paramName} from args:`,
-          normalizedArgs[paramName]
-        );
       } else if (
         normalizedArgs &&
         Object.keys(normalizedArgs).length === 1 &&
@@ -174,36 +138,14 @@ export async function executeFunction(
         // If single arg that doesn't match param names, use it as positional
         const value = Object.values(normalizedArgs)[0];
         functionArgs.push(value);
-        console.log("[DirectExecutor] Added single positional arg:", value);
       } else {
         // Skip optional parameters
-        console.log(
-          `[DirectExecutor] Skipping optional parameter: ${paramName}`
-        );
         continue;
       }
     }
 
-    console.log(
-      "[DirectExecutor] Calling function with args:",
-      functionArgs.length,
-      "arguments"
-    );
-    // Don't log the client object as it causes circular reference
-    const loggableArgs = functionArgs.map((arg, i) => {
-      if (paramNames[i] === "client") return "[SupabaseClient]";
-      return arg;
-    });
-    console.log(
-      "[DirectExecutor] Actual args being passed:",
-      JSON.stringify(loggableArgs, null, 2)
-    );
-
     // Execute the function
     let result = await (func as Function)(...functionArgs);
-
-    console.log("[DirectExecutor] Function executed successfully");
-    console.log("[DirectExecutor] Raw result type:", typeof result);
 
     // Check if result is a Supabase query builder (it's thenable but not yet executed)
     // Supabase queries are thenable objects that need to be awaited
@@ -212,58 +154,13 @@ export async function executeFunction(
       typeof result === "object" &&
       typeof result.then === "function"
     ) {
-      console.log(
-        "[DirectExecutor] Result is thenable (likely Supabase query), awaiting execution..."
-      );
       try {
         const executedResult = await result;
-        console.log("[DirectExecutor] Query executed successfully");
-        console.log(
-          "[DirectExecutor] Executed result type:",
-          typeof executedResult
-        );
-        if (executedResult && typeof executedResult === "object") {
-          console.log(
-            "[DirectExecutor] Result has keys:",
-            Object.keys(executedResult)
-          );
-          if ("data" in executedResult) {
-            console.log(
-              "[DirectExecutor] Result has data property, length:",
-              Array.isArray(executedResult.data)
-                ? executedResult.data.length
-                : "not array"
-            );
-          }
-          if ("error" in executedResult) {
-            console.log(
-              "[DirectExecutor] Result has error:",
-              executedResult.error
-            );
-          }
-          if ("count" in executedResult) {
-            console.log("[DirectExecutor] Result count:", executedResult.count);
-          }
-        }
         result = executedResult;
       } catch (queryError: any) {
         console.error("[DirectExecutor] Query execution failed:", queryError);
         throw queryError;
       }
-    }
-
-    // Log result safely
-    try {
-      const resultPreview = JSON.stringify(result, null, 2).substring(0, 500);
-      console.log("[DirectExecutor] Final result preview:", resultPreview);
-    } catch (_e) {
-      console.log(
-        "[DirectExecutor] Could not stringify result, likely contains circular references"
-      );
-      console.log(
-        "[DirectExecutor] Result keys:",
-        result && typeof result === "object" ? Object.keys(result) : "N/A"
-      );
     }
 
     return {
