@@ -34,7 +34,7 @@ import {
   VStack
 } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { flushSync } from "react-dom";
 import {
   LuCheck,
@@ -111,8 +111,13 @@ const MakeMethodTools = ({
   const [selectedVersion, setSelectedVersion] =
     useState<MakeMethod>(activeMethod);
 
+  // Reset selectedVersion when itemId or activeMethod changes
+  useEffect(() => {
+    setSelectedVersion(activeMethod);
+  }, [itemId, activeMethod]);
+
   return (
-    <>
+    <Fragment key={itemId}>
       <Menubar>
         <HStack className="w-full justify-between">
           <HStack spacing={0}>
@@ -463,7 +468,7 @@ const MakeMethodTools = ({
           onCancel={activeMethodModal.onClose}
         />
       )}
-    </>
+    </Fragment>
   );
 };
 

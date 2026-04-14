@@ -32,7 +32,7 @@ import {
 } from "@carbon/react";
 import { labelSizes } from "@carbon/utils";
 import { Trans, useLingui } from "@lingui/react/macro";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   LuChevronRight,
   LuGitBranch,
@@ -254,7 +254,7 @@ const JobMakeMethodTools = ({ makeMethod }: { makeMethod?: JobMakeMethod }) => {
   });
 
   return (
-    <>
+    <Fragment key={jobId}>
       {permissions.can("update", "production") &&
         (isJobMethod || isJobMakeMethod) && (
           <Menubar>
@@ -618,7 +618,7 @@ const JobMakeMethodTools = ({ makeMethod }: { makeMethod?: JobMakeMethod }) => {
           }}
         />
       )}
-    </>
+    </Fragment>
   );
 };
 

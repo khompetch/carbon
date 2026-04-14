@@ -30,7 +30,7 @@ import {
   VStack
 } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   LuChevronRight,
   LuGitBranch,
@@ -226,7 +226,7 @@ const QuoteMakeMethodTools = () => {
   });
 
   return (
-    <>
+    <Fragment key={lineId}>
       {line &&
         permissions.can("update", "sales") &&
         (isQuoteLineMethod || isQuoteMakeMethod) && (
@@ -598,7 +598,7 @@ const QuoteMakeMethodTools = () => {
           }}
         />
       )}
-    </>
+    </Fragment>
   );
 };
 
