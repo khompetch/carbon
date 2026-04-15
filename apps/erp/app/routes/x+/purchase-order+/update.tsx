@@ -25,18 +25,20 @@ export async function action({ request }: ActionFunctionArgs) {
       .in("id", ids as string[]);
   }
 
-  // Check if any of the POs are locked
-  const purchaseOrders = await client
-    .from("purchaseOrder")
-    .select("status")
-    .in("id", ids as string[]);
-  const lockedError = requireUnlockedBulk({
-    statuses: (purchaseOrders.data ?? []).map((d) => d.status),
-    checkFn: isPurchaseOrderLocked,
-    message: "Cannot modify a confirmed purchase order."
-  });
-  if (lockedError) {
-    return lockedError;
+  // Check if any of the POs are locked except for deliveryDate
+  if (field !== "deliveryDate") {
+    const purchaseOrders = await client
+      .from("purchaseOrder")
+      .select("status")
+      .in("id", ids as string[]);
+    const lockedError = requireUnlockedBulk({
+      statuses: (purchaseOrders.data ?? []).map((d) => d.status),
+      checkFn: isPurchaseOrderLocked,
+      message: "Cannot modify a confirmed purchase order."
+    });
+    if (lockedError) {
+      return lockedError;
+    }
   }
 
   if (typeof value !== "string" && value !== null) {
