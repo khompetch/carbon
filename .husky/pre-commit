@@ -9,7 +9,7 @@ if git diff --cached --name-only | grep -qE '\.(tsx?|jsx?)$|\.po$'; then
   npm run lingui:compile
   
   # Add compiled locale files to the commit
-  git add packages/locale/locales/**/*.mjs packages/locale/locales/**/*.po
+  git add packages/locale/locales/**/*.po
 fi
 
 # Regenerate MCP tools if any .service.ts file was modified
