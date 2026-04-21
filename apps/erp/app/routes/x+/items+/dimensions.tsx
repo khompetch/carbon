@@ -31,16 +31,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const settings = await getCompanySettings(client, companyId);
 
-  const [materialDimensions] = await Promise.all([
-    getMaterialDimensions(client, companyId, {
-      limit,
-      offset,
-      sorts,
-      search,
-      filters,
-      isMetric: settings?.data?.useMetric ?? false
-    })
-  ]);
+  const materialDimensions = await getMaterialDimensions(client, companyId, {
+    limit,
+    offset,
+    sorts,
+    search,
+    filters,
+    isMetric: settings?.data?.useMetric ?? false
+  });
 
   if (materialDimensions.error) {
     console.error(materialDimensions.error);

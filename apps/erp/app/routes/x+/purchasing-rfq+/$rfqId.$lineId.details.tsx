@@ -43,9 +43,9 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   if (!rfqId) throw new Error("Could not find rfqId");
   if (!lineId) throw new Error("Could not find lineId");
 
-  const serviceRole = await getCarbonServiceRole();
+  const serviceRole = getCarbonServiceRole();
 
-  const [line] = await Promise.all([getPurchasingRFQLine(serviceRole, lineId)]);
+  const line = await getPurchasingRFQLine(serviceRole, lineId);
 
   if (line.error) {
     throw redirect(

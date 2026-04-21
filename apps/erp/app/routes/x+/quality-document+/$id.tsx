@@ -216,9 +216,22 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const { id } = params;
   if (!id) throw new Error("Could not find id");
 
-  const [document, tags] = await Promise.all([
-    getQualityDocument(client, id),
-    getTagsList(client, companyId, "qualityDocument")
+  const serviceRole = getCarbonServiceRole();
+  // Kick off approval in parallel — it only needs document.status, so we chain
+  // off the document fetch rather than waiting for Promise.all to settle.
+  const documentPromise = getQualityDocument(client, id);
+  const [document, tags, approval] = await Promise.all([
+    documentPromise,
+    getTagsList(client, companyId, "qualityDocument"),
+    documentPromise.then((d) =>
+      getQualityDocumentApprovalContext(
+        serviceRole,
+        id,
+        d.data?.status ?? null,
+        companyId,
+        userId
+      )
+    )
   ]);
 
   if (document.error) {
@@ -227,16 +240,6 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
       await flash(request, error(document.error, "Failed to load document"))
     );
   }
-
-  const serviceRole = getCarbonServiceRole();
-  const status = document.data?.status ?? null;
-  const approval = await getQualityDocumentApprovalContext(
-    serviceRole,
-    id,
-    status,
-    companyId,
-    userId
-  );
 
   return {
     document: document.data,

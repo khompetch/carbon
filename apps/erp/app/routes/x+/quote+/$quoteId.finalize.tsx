@@ -40,7 +40,7 @@ export async function action(args: ActionFunctionArgs) {
   let fileName: string;
   let documentFilePath: string;
 
-  const [quote] = await Promise.all([getQuote(client, quoteId)]);
+  const quote = await getQuote(client, quoteId);
   if (quote.error) {
     throw redirect(
       path.to.quote(quoteId),
@@ -48,16 +48,14 @@ export async function action(args: ActionFunctionArgs) {
     );
   }
 
-  const [externalLink] = await Promise.all([
-    upsertExternalLink(client, {
-      id: quote.data.externalLinkId ?? undefined, // TODO
-      documentType: "Quote",
-      documentId: quoteId,
-      customerId: quote.data.customerId,
-      expiresAt: quote.data.expirationDate,
-      companyId
-    })
-  ]);
+  const externalLink = await upsertExternalLink(client, {
+    id: quote.data.externalLinkId ?? undefined, // TODO
+    documentType: "Quote",
+    documentId: quoteId,
+    customerId: quote.data.customerId,
+    expiresAt: quote.data.expirationDate,
+    companyId
+  });
 
   if (externalLink.data && quote.data.externalLinkId !== externalLink.data.id) {
     await client

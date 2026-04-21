@@ -29,15 +29,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const { limit, offset, sorts, filters } =
     getGenericQueryFilters(searchParams);
 
-  const [quotes] = await Promise.all([
-    getSupplierQuotes(client, companyId, {
-      search,
-      limit,
-      offset,
-      sorts,
-      filters
-    })
-  ]);
+  const quotes = await getSupplierQuotes(client, companyId, {
+    search,
+    limit,
+    offset,
+    sorts,
+    filters
+  });
 
   if (quotes.error) {
     redirect(

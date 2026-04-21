@@ -46,7 +46,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
   const serviceRole = await getCarbonServiceRole();
 
-  const [line] = await Promise.all([getSalesRFQLine(serviceRole, lineId)]);
+  const line = await getSalesRFQLine(serviceRole, lineId);
 
   if (line.error) {
     throw redirect(

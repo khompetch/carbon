@@ -29,15 +29,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
     );
   }
 
-  const [update] = await Promise.all([
-    updateIssueStatus(client, {
-      id,
-      status,
-      assignee: ["Closed"].includes(status) ? null : undefined,
-      closeDate: ["Closed"].includes(status) ? new Date().toISOString() : null,
-      updatedBy: userId
-    })
-  ]);
+  const update = await updateIssueStatus(client, {
+    id,
+    status,
+    assignee: ["Closed"].includes(status) ? null : undefined,
+    closeDate: ["Closed"].includes(status) ? new Date().toISOString() : null,
+    updatedBy: userId
+  });
   if (update.error) {
     throw redirect(
       requestReferrer(request) ?? path.to.issueDetails(id),

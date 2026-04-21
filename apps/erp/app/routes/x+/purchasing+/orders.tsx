@@ -31,17 +31,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const { limit, offset, sorts, filters } =
     getGenericQueryFilters(searchParams);
 
-  const [purchasOrders] = await Promise.all([
-    getPurchaseOrders(client, companyId, {
-      search,
-      status,
-      supplierId,
-      limit,
-      offset,
-      sorts,
-      filters
-    })
-  ]);
+  const purchasOrders = await getPurchaseOrders(client, companyId, {
+    search,
+    status,
+    supplierId,
+    limit,
+    offset,
+    sorts,
+    filters
+  });
 
   if (purchasOrders.error) {
     redirect(

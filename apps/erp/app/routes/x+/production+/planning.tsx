@@ -72,21 +72,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
     WEEKS_TO_PLAN
   );
 
-  const [items] = await Promise.all([
-    getProductionPlanning(
-      client,
-      locationId,
-      companyId,
-      periods.map((p) => p.id),
-      {
-        search,
-        limit,
-        offset,
-        sorts,
-        filters
-      }
-    )
-  ]);
+  const items = await getProductionPlanning(
+    client,
+    locationId,
+    companyId,
+    periods.map((p) => p.id),
+    {
+      search,
+      limit,
+      offset,
+      sorts,
+      filters
+    }
+  );
 
   if (items.error) {
     redirect(

@@ -39,9 +39,7 @@ export async function action(args: ActionFunctionArgs) {
 
     const serviceRole = getCarbonServiceRole();
 
-    const [salesOrder] = await Promise.all([
-      getSalesOrder(serviceRole, orderId)
-    ]);
+    const salesOrder = await getSalesOrder(serviceRole, orderId);
     if (salesOrder.error) {
       return {
         success: false,

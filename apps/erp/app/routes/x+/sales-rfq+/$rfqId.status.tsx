@@ -57,15 +57,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
     }
   }
 
-  const [update] = await Promise.all([
-    updateSalesRFQStatus(client, {
-      id,
-      status,
-      noQuoteReasonId,
-      assignee: status === "Closed" ? null : undefined,
-      updatedBy: userId
-    })
-  ]);
+  const update = await updateSalesRFQStatus(client, {
+    id,
+    status,
+    noQuoteReasonId,
+    assignee: status === "Closed" ? null : undefined,
+    updatedBy: userId
+  });
 
   if (update.error) {
     throw redirect(

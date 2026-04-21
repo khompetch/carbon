@@ -37,9 +37,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     view: "settings"
   });
 
-  const [companySettings] = await Promise.all([
-    getCompanySettings(client, companyId)
-  ]);
+  const companySettings = await getCompanySettings(client, companyId);
   if (!companySettings.data)
     throw redirect(
       path.to.settings,

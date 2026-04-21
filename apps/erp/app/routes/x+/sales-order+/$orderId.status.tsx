@@ -27,14 +27,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
     );
   }
 
-  const [update] = await Promise.all([
-    updateSalesOrderStatus(client, {
-      id,
-      status,
-      assignee: ["Closed"].includes(status) ? null : undefined,
-      updatedBy: userId
-    })
-  ]);
+  const update = await updateSalesOrderStatus(client, {
+    id,
+    status,
+    assignee: ["Closed"].includes(status) ? null : undefined,
+    updatedBy: userId
+  });
   if (update.error) {
     throw redirect(
       requestReferrer(request) ?? path.to.salesOrderDetails(id),

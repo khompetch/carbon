@@ -100,9 +100,7 @@ export async function action(args: ActionFunctionArgs) {
     };
   }
 
-  const [salesInvoice] = await Promise.all([
-    getSalesInvoice(serviceRole, invoiceId)
-  ]);
+  const salesInvoice = await getSalesInvoice(serviceRole, invoiceId);
   if (salesInvoice.error) {
     return {
       success: false,

@@ -30,9 +30,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     view: "accounting"
   });
 
-  const [defaultAccounts] = await Promise.all([
-    getDefaultAccounts(client, companyId)
-  ]);
+  const defaultAccounts = await getDefaultAccounts(client, companyId);
 
   if (defaultAccounts.error || !defaultAccounts.data) {
     throw redirect(

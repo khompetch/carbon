@@ -39,7 +39,7 @@ export const handle: Handle = {
 export async function loader({ request }: LoaderFunctionArgs) {
   const { client, userId } = await requirePermissions(request, {});
 
-  const [user] = await Promise.all([getAccount(client, userId)]);
+  const user = await getAccount(client, userId);
 
   if (user.error || !user.data) {
     throw redirect(

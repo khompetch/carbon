@@ -56,14 +56,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
     );
   }
 
-  const [update] = await Promise.all([
-    updatePurchaseInvoiceStatus(client, {
-      id,
-      status,
-      assignee: !["Partially Paid"].includes(status) ? null : undefined,
-      updatedBy: userId
-    })
-  ]);
+  const update = await updatePurchaseInvoiceStatus(client, {
+    id,
+    status,
+    assignee: !["Partially Paid"].includes(status) ? null : undefined,
+    updatedBy: userId
+  });
   if (update.error) {
     throw redirect(
       requestReferrer(request) ?? path.to.purchaseInvoiceDetails(id),

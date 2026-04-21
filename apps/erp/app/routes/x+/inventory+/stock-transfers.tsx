@@ -60,16 +60,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
     locationId = locations.data?.[0].id as string;
   }
 
-  const [stockTransfers] = await Promise.all([
-    getStockTransfers(client, companyId, {
-      locationId,
-      search,
-      limit,
-      offset,
-      sorts,
-      filters
-    })
-  ]);
+  const stockTransfers = await getStockTransfers(client, companyId, {
+    locationId,
+    search,
+    limit,
+    offset,
+    sorts,
+    filters
+  });
 
   if (stockTransfers.error) {
     console.error(stockTransfers.error);

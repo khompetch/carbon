@@ -26,9 +26,11 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const { itemId } = params;
   if (!itemId) throw new Error("Could not find itemId");
 
-  const [consumablePurchasingResult] = await Promise.all([
-    getItemReplenishment(client, itemId, companyId)
-  ]);
+  const consumablePurchasingResult = await getItemReplenishment(
+    client,
+    itemId,
+    companyId
+  );
 
   if (consumablePurchasingResult.error) {
     throw redirect(

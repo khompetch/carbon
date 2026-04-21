@@ -28,15 +28,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const { limit, offset, sorts, filters } =
     getGenericQueryFilters(searchParams);
 
-  const [materialGrades] = await Promise.all([
-    getMaterialGrades(client, companyId, {
-      limit,
-      offset,
-      sorts,
-      search,
-      filters
-    })
-  ]);
+  const materialGrades = await getMaterialGrades(client, companyId, {
+    limit,
+    offset,
+    sorts,
+    search,
+    filters
+  });
 
   if (materialGrades.error) {
     console.error(materialGrades.error);

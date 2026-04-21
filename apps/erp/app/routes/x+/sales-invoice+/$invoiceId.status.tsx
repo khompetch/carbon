@@ -28,14 +28,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
     );
   }
 
-  const [update] = await Promise.all([
-    updateSalesInvoiceStatus(client, {
-      id,
-      status,
-      assignee: !["Partially Paid"].includes(status) ? null : undefined,
-      updatedBy: userId
-    })
-  ]);
+  const update = await updateSalesInvoiceStatus(client, {
+    id,
+    status,
+    assignee: !["Partially Paid"].includes(status) ? null : undefined,
+    updatedBy: userId
+  });
 
   if (update.error) {
     throw redirect(

@@ -30,17 +30,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
     );
   }
 
-  const [update] = await Promise.all([
-    updateStockTransferStatus(client, {
-      id,
-      status,
-      assignee: ["Completed"].includes(status) ? null : undefined,
-      completedAt: ["Completed"].includes(status)
-        ? new Date().toISOString()
-        : null,
-      updatedBy: userId
-    })
-  ]);
+  const update = await updateStockTransferStatus(client, {
+    id,
+    status,
+    assignee: ["Completed"].includes(status) ? null : undefined,
+    completedAt: ["Completed"].includes(status)
+      ? new Date().toISOString()
+      : null,
+    updatedBy: userId
+  });
   if (update.error) {
     throw redirect(
       requestReferrer(request) ?? path.to.stockTransfer(id),

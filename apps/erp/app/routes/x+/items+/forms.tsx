@@ -28,15 +28,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const { limit, offset, sorts, filters } =
     getGenericQueryFilters(searchParams);
 
-  const [materialForms] = await Promise.all([
-    getMaterialForms(client, companyId, {
-      limit,
-      offset,
-      sorts,
-      search,
-      filters
-    })
-  ]);
+  const materialForms = await getMaterialForms(client, companyId, {
+    limit,
+    offset,
+    sorts,
+    search,
+    filters
+  });
 
   if (materialForms.error) {
     throw redirect(

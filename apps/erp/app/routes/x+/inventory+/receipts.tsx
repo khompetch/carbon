@@ -26,15 +26,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const { limit, offset, sorts, filters } =
     getGenericQueryFilters(searchParams);
 
-  const [receipts] = await Promise.all([
-    getReceipts(client, companyId, {
-      search,
-      limit,
-      offset,
-      sorts,
-      filters
-    })
-  ]);
+  const receipts = await getReceipts(client, companyId, {
+    search,
+    limit,
+    offset,
+    sorts,
+    filters
+  });
 
   if (receipts.error) {
     throw redirect(

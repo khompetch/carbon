@@ -28,16 +28,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const { limit, offset, sorts, filters } =
     getGenericQueryFilters(searchParams);
 
-  const [categories] = await Promise.all([
-    getAccountCategories(client, companyId, {
-      search,
+  const categories = await getAccountCategories(client, companyId, {
+    search,
 
-      limit,
-      offset,
-      sorts,
-      filters
-    })
-  ]);
+    limit,
+    offset,
+    sorts,
+    filters
+  });
 
   if (categories.error) {
     redirect(

@@ -23,7 +23,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const { jobId } = params;
   if (!jobId) throw notFound("jobId not found");
 
-  const [jobOperations] = await Promise.all([getJobOperations(client, jobId)]);
+  const jobOperations = await getJobOperations(client, jobId);
 
   const operationOptions =
     jobOperations.data?.map((operation) => ({

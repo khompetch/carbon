@@ -51,15 +51,13 @@ export async function action({ request }: ActionFunctionArgs) {
   // TODO: move all of this to transaction
   // biome-ignore lint/correctness/noUnusedVariables: suppressed due to migration
   const { baseCurrencyCode, ...locationData } = validation.data;
-  const [locationInsert] = await Promise.all([
-    upsertLocation(client, {
-      ...locationData,
-      name: "Headquarters",
-      companyId,
-      timezone: getLocalTimeZone(),
-      createdBy: userId
-    })
-  ]);
+  const locationInsert = await upsertLocation(client, {
+    ...locationData,
+    name: "Headquarters",
+    companyId,
+    timezone: getLocalTimeZone(),
+    createdBy: userId
+  });
 
   if (locationInsert.error) {
     console.error(locationInsert.error);

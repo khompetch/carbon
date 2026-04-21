@@ -1,7 +1,7 @@
 import { handleRequest as vercelHandleRequest } from "@vercel/react-router/entry.server";
 import type { EntryContext, RouterContextProvider } from "react-router";
 
-export const streamTimeout = 5_000;
+export const streamTimeout = 35_000;
 
 export default function handleRequest(
   request: Request,
