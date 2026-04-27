@@ -69,6 +69,7 @@ export interface CreateAuditLogEntry {
   actorId: string | null;
   diff?: AuditDiff | null;
   metadata?: AuditMetadata | null;
+  createdAt?: string;
 }
 
 /**

@@ -273,7 +273,8 @@ export const auditFunction = inngest.createFunction(
                   operation,
                   actorId: entryActorId,
                   diff: effectiveDiff,
-                  metadata: entryMetadata
+                  metadata: entryMetadata,
+                  createdAt: record.event.timestamp
                 });
                 entriesCreatedForRecord++;
               } else if (isExtensionTable(tableConfig)) {
@@ -285,7 +286,8 @@ export const auditFunction = inngest.createFunction(
                   operation,
                   actorId: entryActorId,
                   diff: effectiveDiff,
-                  metadata: entryMetadata
+                  metadata: entryMetadata,
+                  createdAt: record.event.timestamp
                 });
                 entriesCreatedForRecord++;
               } else if (isChildTable(tableConfig)) {
@@ -307,7 +309,8 @@ export const auditFunction = inngest.createFunction(
                   operation,
                   actorId: entryActorId,
                   diff: effectiveDiff,
-                  metadata: entryMetadata
+                  metadata: entryMetadata,
+                  createdAt: record.event.timestamp
                 });
                 entriesCreatedForRecord++;
               } else if (isIndirectTable(tableConfig)) {
