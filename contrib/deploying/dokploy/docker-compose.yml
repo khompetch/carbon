@@ -1,0 +1,90 @@
+###############################################################################
+# Carbon on Dokploy — erp + mes only, pointing at a Supabase instance that is
+# already running in Dokploy (or anywhere else reachable from this VPS).
+#
+# Unlike ../simple-docker-caddy (which runs a full self-hosted Supabase stack
+# via Docker Swarm), this file assumes Supabase already exists and only runs
+# what Carbon still needs: the two apps, Redis, and Inngest. Domain routing
+# and HTTPS are handled by Dokploy's own Traefik setup — configure hostnames
+# in the Dokploy UI, not here.
+#
+# Deploy: in Dokploy, create an Application of type "Docker Compose" pointing
+# at this repo, with Compose Path set to
+# contrib/deploying/dokploy/docker-compose.yml. See README.md in this folder
+# for the full walkthrough (where to get Supabase values, migrations, etc).
+###############################################################################
+
+services:
+  erp:
+    build:
+      context: ../../..
+      dockerfile: Dockerfile
+      args:
+        APP: erp
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 6s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+
+  mes:
+    build:
+      context: ../../..
+      dockerfile: Dockerfile
+      args:
+        APP: mes
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 6s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+
+  # Session/permission cache + rate limiting (REDIS_URL is required by @carbon/env).
+  # Delete this service and point REDIS_URL at an existing instance instead if
+  # Dokploy already runs a shared Redis you'd rather reuse.
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  # Self-hosted background job runner. Skip this service and set
+  # INNGEST_EVENT_KEY/INNGEST_SIGNING_KEY from an Inngest Cloud account instead
+  # if you'd rather not run it yourself.
+  inngest:
+    image: inngest/inngest:v1.19.4
+    command:
+      - inngest
+      - start
+      - --sqlite-dir
+      - /data
+      - --sdk-url
+      - http://erp:3000/api/inngest
+      - --sdk-url
+      - http://mes:3000/api/inngest
+    env_file: .env
+    volumes:
+      - inngest-data:/data
+    restart: unless-stopped
+
+volumes:
+  redis-data:
+  inngest-data:
