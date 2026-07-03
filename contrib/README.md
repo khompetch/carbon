@@ -11,4 +11,4 @@ They are not load-bearing for development (`crbn up`) or the managed cloud build
 | Recipe | What it does |
 |---|---|
 | [`deploying/simple-docker-caddy`](deploying/simple-docker-caddy) | Self-host the full stack (ERP + MES + Supabase + Redis + Inngest) on a **single Linux VPS** with a single-node **Docker Swarm** and an auto-HTTPS **Caddy** reverse proxy. Swarm secrets, host hardening, backups included. |
-| [`deploying/dokploy`](deploying/dokploy) | Deploy just ERP + MES as a **Dokploy** Docker Compose application, pointing at a **Supabase instance you already run** (e.g. also on Dokploy) instead of standing up a second one. |
+| [`deploying/dokploy`](deploying/dokploy) | Self-host the full stack (ERP + MES + Supabase + Redis + Inngest) as a single **Dokploy** Docker Compose application — the same idea as `simple-docker-caddy` but for Dokploy's own Traefik/env-var model instead of Docker Swarm + Caddy. |
