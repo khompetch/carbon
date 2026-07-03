@@ -31,6 +31,7 @@ import { ItemLifecycleBadge } from "./ItemLifecycleBadge";
 import ItemThumbnail from "./ItemThumbnail";
 import Location from "./Location";
 import New from "./New";
+import PeriodSelector from "./PeriodSelector";
 import RealtimeDataProvider from "./RealtimeDataProvider";
 import SearchFilter from "./SearchFilter";
 import { SearchLandingPage } from "./SearchLandingPage";
@@ -68,6 +69,7 @@ export {
   ModuleIcon,
   New,
   OperationStatusIcon,
+  PeriodSelector,
   PrintButton,
   RealtimeDataProvider,
   SearchFilter,

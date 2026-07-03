@@ -1,6 +1,6 @@
 {
-  "generated": "2026-06-30T20:37:19.952Z",
-  "totalTools": 1249,
+  "generated": "2026-07-03T02:39:35.521Z",
+  "totalTools": 1254,
   "modules": 15,
   "tools": [
     {
@@ -304,6 +304,94 @@
           }
         },
         "required": [
+          "startDate",
+          "endDate"
+        ]
+      }
+    },
+    {
+      "name": "accounting_getAccountLedger",
+      "module": "accounting",
+      "classification": "READ",
+      "description": "get account ledger",
+      "paramCount": 5,
+      "serviceParams": [
+        "client",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "endDate": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "limit": {
+            "type": "number"
+          },
+          "offset": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "accountId",
+          "startDate",
+          "endDate",
+          "limit",
+          "offset"
+        ]
+      }
+    },
+    {
+      "name": "accounting_getAccountLedgerSummary",
+      "module": "accounting",
+      "classification": "READ",
+      "description": "get account ledger summary",
+      "paramCount": 3,
+      "serviceParams": [
+        "client",
+        "companyGroupId",
+        "companyId",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "endDate": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "accountId",
           "startDate",
           "endDate"
         ]
@@ -2832,8 +2920,7 @@
       ],
       "injectAuth": [
         "companyId",
-        "createdBy",
-        "updatedBy"
+        "createdBy"
       ],
       "schema": {
         "type": "object",
@@ -3253,6 +3340,48 @@
         },
         "required": [
           "documentId"
+        ]
+      }
+    },
+    {
+      "name": "documents_insertDocumentExtraction",
+      "module": "documents",
+      "classification": "WRITE",
+      "description": "insert document extraction",
+      "paramCount": 4,
+      "serviceParams": [
+        "client",
+        "data"
+      ],
+      "injectAuth": [
+        "companyId",
+        "createdBy",
+        "updatedBy"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "storagePath": {
+            "type": "string"
+          },
+          "documentType": {
+            "type": "string",
+            "enum": [
+              "purchaseInvoice",
+              "salesRfq"
+            ]
+          },
+          "sourceDocument": {
+            "type": "string"
+          },
+          "sourceDocumentId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "storagePath",
+          "documentType",
+          "sourceDocument"
         ]
       }
     },
@@ -5338,8 +5467,7 @@
       ],
       "injectAuth": [
         "companyId",
-        "createdBy",
-        "updatedBy"
+        "createdBy"
       ],
       "schema": {
         "type": "object",
@@ -7527,7 +7655,7 @@
       "module": "invoicing",
       "classification": "WRITE",
       "description": "insert purchase invoice",
-      "paramCount": 14,
+      "paramCount": 15,
       "serviceParams": [
         "client",
         "input"
@@ -7578,6 +7706,9 @@
           },
           "exchangeRateUpdatedAt": {
             "type": "string"
+          },
+          "supplierShippingCost": {
+            "type": "number"
           },
           "customFields": {}
         },
@@ -12391,6 +12522,57 @@
       }
     },
     {
+      "name": "items_matchItemIdByText",
+      "module": "items",
+      "classification": "WRITE",
+      "description": "match item id by text",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "companyId",
+        "candidates"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "candidates": {}
+        },
+        "required": [
+          "candidates"
+        ]
+      }
+    },
+    {
+      "name": "items_resolveItemIdFromExtractedText",
+      "module": "items",
+      "classification": "WRITE",
+      "description": "resolve item id from extracted text",
+      "paramCount": 2,
+      "serviceParams": [
+        "client",
+        "companyId",
+        "party",
+        "candidates"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "party": {},
+          "candidates": {}
+        },
+        "required": [
+          "party",
+          "candidates"
+        ]
+      }
+    },
+    {
       "name": "items_upsertPart",
       "module": "items",
       "classification": "WRITE",
@@ -15263,7 +15445,9 @@
       "paramCount": 1,
       "serviceParams": [
         "client",
-        "productionEventId"
+        "productionEventId",
+        "companyId",
+        "userId"
       ],
       "injectAuth": [
         "companyId"

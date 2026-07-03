@@ -1,7 +1,7 @@
 import { IconButton } from "@carbon/react";
-import { useLingui } from "@lingui/react/macro";
-import { useEffect, useState } from "react";
-import { LuArrowUpRight, LuTrash } from "react-icons/lu";
+import { Trans, useLingui } from "@lingui/react/macro";
+import { type ReactNode, useEffect, useState } from "react";
+import { LuArrowUpRight, LuFileText, LuPlay, LuTrash } from "react-icons/lu";
 import { COLLECTIONS, PAGE_COPY } from "../content";
 import { SETUP_GROUPS } from "../content/setup";
 import { filterByModule, flagKey } from "../logic";
@@ -22,6 +22,56 @@ import {
   useHubActions,
   useResolveScreenUrl
 } from "./state";
+
+// Docs/Video badges for a whole module, shown on the group header — the same
+// two-button pattern the Plan page uses for its phase resources. Carbon's docs
+// and academy are organised per module, so the links live at the group level.
+function GroupLearnLinks({
+  docsUrl,
+  academyUrl
+}: {
+  docsUrl?: string;
+  academyUrl?: string;
+}) {
+  if (!docsUrl && !academyUrl) return null;
+  return (
+    <div className="flex items-center gap-2 text-xs">
+      {docsUrl ? (
+        <LearnLink href={docsUrl} icon={<LuFileText className="size-3" />}>
+          <Trans>Docs</Trans>
+        </LearnLink>
+      ) : null}
+      {academyUrl ? (
+        <LearnLink href={academyUrl} icon={<LuPlay className="size-3" />}>
+          <Trans>Video</Trans>
+        </LearnLink>
+      ) : null}
+    </div>
+  );
+}
+
+function LearnLink({
+  href,
+  icon,
+  children
+}: {
+  href: string;
+  icon: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="shrink-0 inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 font-medium text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
+    >
+      {icon}
+      {children}
+      <LuArrowUpRight className="size-3 opacity-60" />
+    </a>
+  );
+}
 
 const DEF = COLLECTIONS.setup;
 const FLAG = DEF.flag!;
@@ -65,6 +115,12 @@ export function SetupMapView() {
             number={group.n}
             title={i18n._(group.title)}
             subtitle={i18n._(group.desc)}
+            aside={
+              <GroupLearnLinks
+                docsUrl={group.docsUrl}
+                academyUrl={group.academyUrl}
+              />
+            }
           >
             <SectionList>
               {rows.map((row) => {
