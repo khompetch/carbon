@@ -83,15 +83,22 @@ repo's root `Dockerfile` and pulls the pinned Supabase/Redis/Inngest images.
 
 ## 6. Apply database migrations (once, after first deploy)
 
-```bash
-pnpm exec supabase migration up --include-all \
-  --db-url "postgresql://supabase_admin:<POSTGRES_PASSWORD>@<kong-or-postgres-host>:5432/postgres"
-```
+The `postgres` service isn't published outside the Docker network, and Kong
+only proxies HTTP (auth/rest/storage/realtime) — it can't carry a raw Postgres
+connection. Run the migration from *inside* the compose network instead:
 
-Run this from a machine with this repo checked out and `pnpm install` already
-done, or from a shell opened into the running `erp` container via Dokploy's
-terminal/exec feature (where the `postgres` hostname resolves on the compose
-network). Substitute the `POSTGRES_PASSWORD` you generated in step 1.
+1. Open a terminal into the running `erp` container via Dokploy's
+   terminal/exec feature (the image ships the full repo checkout at `/repo`,
+   including `pnpm`).
+2. `cd /repo/packages/database`
+3. Run, substituting the `POSTGRES_PASSWORD` you generated in step 1 (the
+   hostname stays exactly `postgres` — that's the compose service name,
+   resolvable because this shell is on the same network):
+
+   ```bash
+   pnpm exec supabase migration up --include-all \
+     --db-url "postgresql://supabase_admin:<POSTGRES_PASSWORD>@postgres:5432/postgres"
+   ```
 
 ## 7. Verify
 
