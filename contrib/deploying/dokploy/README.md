@@ -110,3 +110,41 @@ curl -f https://erp.example.com/health
 curl -f https://mes.example.com/health
 curl -f https://supabase.example.com/auth/v1/health
 ```
+
+Then log in at `https://erp.example.com/login` with the email you want as the
+first admin — there's no separate account-bootstrap script. An unknown email
+gets a 6-digit verification code (sent via `RESEND_API_KEY`, so that must be
+set) and is walked into the onboarding wizard, which creates the first
+company and makes that user its owner. `GOTRUE_DISABLE_SIGNUP=true` does not
+block this — Carbon's signup goes through the Supabase admin API
+(service-role key), a separate path from GoTrue's public self-service signup.
+
+## Troubleshooting
+
+**"Failed to send verification code" on first login** — `RESEND_API_KEY` is
+missing/invalid, or `RESEND_DOMAIN` isn't a verified sending domain in your
+Resend account. Check the `erp` container logs right after a login attempt
+for the underlying Resend error. To unblock testing without email delivery,
+set `DISABLE_RESEND=1` on `erp` and redeploy — the verification code gets
+printed to the `erp` logs instead of emailed (not for production use, since
+other features like user invites also go through Resend).
+
+**An edge function fails with `worker boot error: ... could not find an
+appropriate entrypoint`** (e.g. onboarding's "Fatal: failed to seed company")
+— `edge-runtime` bind-mounts `packages/database/supabase/functions` and
+`packages/dev/docker/edge-main` from the repo checkout. Docker only
+evaluates a bind mount when a container is *created*, not on every start —
+if `edge-runtime` was created before a `git pull` populated those
+directories (e.g. it wasn't recreated on some earlier deploy while other
+services were), it keeps serving an empty, stale view of them indefinitely.
+Fix: force it to recreate —
+
+```bash
+cd <dokploy-compose-checkout>/contrib/deploying/dokploy
+docker compose up -d --force-recreate edge-runtime
+```
+
+or trigger a full **Redeploy** from the Dokploy UI, which recreates every
+service. Confirm with `docker exec <edge-runtime-container> ls -la
+/home/deno/functions/<function-name>/` — it should show `index.ts`, not an
+empty directory.
