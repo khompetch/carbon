@@ -93,11 +93,14 @@ connection. Run the migration from *inside* the compose network instead:
 2. `cd /repo/packages/database`
 3. Run, substituting the `POSTGRES_PASSWORD` you generated in step 1 (the
    hostname stays exactly `postgres` — that's the compose service name,
-   resolvable because this shell is on the same network):
+   resolvable because this shell is on the same network). The bundled
+   Postgres doesn't have TLS configured, so the connection must explicitly
+   disable it — otherwise the CLI fails with `tls error (server refused TLS
+   connection)`:
 
    ```bash
-   pnpm exec supabase migration up --include-all \
-     --db-url "postgresql://supabase_admin:<POSTGRES_PASSWORD>@postgres:5432/postgres"
+   PGSSLMODE=disable pnpm exec supabase migration up --include-all \
+     --db-url "postgresql://supabase_admin:<POSTGRES_PASSWORD>@postgres:5432/postgres?sslmode=disable"
    ```
 
 ## 7. Verify
