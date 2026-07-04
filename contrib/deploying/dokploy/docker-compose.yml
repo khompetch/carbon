@@ -1,0 +1,335 @@
+###############################################################################
+# Carbon on Dokploy — full stack: erp + mes + a self-hosted Supabase + Redis +
+# Inngest, as a single plain Docker Compose v2 project (not Docker Swarm).
+#
+# This bundles its own Supabase (Postgres, GoTrue, PostgREST, Realtime,
+# Storage, postgres-meta, Kong, Studio, Edge Functions) rather than pointing
+# at an external one. It's adapted from ../simple-docker-caddy (the Swarm +
+# Caddy recipe) with two differences: plain environment variables instead of
+# Docker Swarm secrets (Dokploy's Environment panel already stores these
+# securely), and no bundled reverse proxy — Dokploy's own Traefik handles
+# domains + HTTPS.
+#
+# Deploy: in Dokploy, create an Application of type "Docker Compose" pointing
+# at this repo, with Compose Path set to
+# contrib/deploying/dokploy/docker-compose.yml, then map a domain to each of
+# `erp` (port 3000), `mes` (port 3000), and `kong` (port 8000 — the Supabase
+# gateway). See README.md in this folder for the full walkthrough, including
+# how to generate the secrets in .env.example.
+###############################################################################
+
+services:
+  # ─────────────────────────────── Apps ──────────────────────────────────────
+  erp:
+    build:
+      context: ../../..
+      dockerfile: Dockerfile
+      args:
+        APP: erp
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres?sslmode=disable
+      REDIS_URL: redis://redis:6379
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 6s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+    depends_on:
+      - kong
+      - redis
+
+  mes:
+    build:
+      context: ../../..
+      dockerfile: Dockerfile
+      args:
+        APP: mes
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres?sslmode=disable
+      REDIS_URL: redis://redis:6379
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 6s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+    depends_on:
+      - kong
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  inngest:
+    image: inngest/inngest:v1.19.4
+    command:
+      - inngest
+      - start
+      - --sqlite-dir
+      - /data
+      - --sdk-url
+      - http://erp:3000/api/inngest
+      - --sdk-url
+      - http://mes:3000/api/inngest
+    env_file: .env
+    volumes:
+      - inngest-data:/data
+    restart: unless-stopped
+
+  # ──────────────────────────── Supabase (self-hosted) ─────────────────────────
+  postgres:
+    image: supabase/postgres:15.14.1.112
+    entrypoint: ["/carbon/bin/run.sh"]
+    # Do NOT override shared_preload_libraries here: the image's own
+    # postgresql.conf already preloads the full set Carbon needs
+    # (pg_stat_statements, pg_net, pg_cron, pgsodium, supabase_vault, …).
+    command:
+      - docker-entrypoint.sh
+      - postgres
+      - -c
+      - config_file=/etc/postgresql/postgresql.conf
+    environment:
+      POSTGRES_HOST: /var/run/postgresql
+      POSTGRES_PORT: "5432"
+      PGPORT: "5432"
+      POSTGRES_DB: postgres
+      PGDATABASE: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      JWT_EXP: "3600"
+      # Performance knobs consumed by 02-performance.sh (ALTER SYSTEM) on first init.
+      CARBON_PG_MAX_CONNECTIONS: ${PG_MAX_CONNECTIONS:-100}
+      CARBON_PG_SHARED_BUFFERS: ${PG_SHARED_BUFFERS:-512MB}
+      CARBON_PG_EFFECTIVE_CACHE_SIZE: ${PG_EFFECTIVE_CACHE_SIZE:-1536MB}
+      CARBON_PG_WORK_MEM: ${PG_WORK_MEM:-8MB}
+      CARBON_PG_MAINTENANCE_WORK_MEM: ${PG_MAINTENANCE_WORK_MEM:-128MB}
+    volumes:
+      - ./bin/run.sh:/carbon/bin/run.sh:ro
+      - pgdata:/var/lib/postgresql/data
+      - ./postgres/01-roles.sh:/docker-entrypoint-initdb.d/zz-carbon-01-roles.sh:ro
+      - ./postgres/02-performance.sh:/docker-entrypoint-initdb.d/zz-carbon-02-performance.sh:ro
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-h", "127.0.0.1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  gotrue:
+    image: supabase/gotrue:v2.189.0
+    entrypoint: ["/carbon/bin/run.sh"]
+    command: ["auth"]
+    environment:
+      GOTRUE_API_HOST: 0.0.0.0
+      GOTRUE_API_PORT: "9999"
+      API_EXTERNAL_URL: ${SUPABASE_URL}
+      GOTRUE_DB_DRIVER: postgres
+      GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:${POSTGRES_PASSWORD}@postgres:5432/postgres
+      GOTRUE_SITE_URL: ${ERP_URL}
+      GOTRUE_URI_ALLOW_LIST: ${ERP_URL},${MES_URL}
+      GOTRUE_DISABLE_SIGNUP: ${GOTRUE_DISABLE_SIGNUP:-true}
+      GOTRUE_JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      GOTRUE_JWT_EXP: "3600"
+      GOTRUE_JWT_DEFAULT_GROUP_NAME: authenticated
+      GOTRUE_JWT_ADMIN_ROLES: service_role
+      GOTRUE_JWT_AUD: authenticated
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
+      GOTRUE_MAILER_AUTOCONFIRM: "false"
+      GOTRUE_SMTP_HOST: ${GOTRUE_SMTP_HOST:-}
+      GOTRUE_SMTP_PORT: ${GOTRUE_SMTP_PORT:-587}
+      GOTRUE_SMTP_USER: ${GOTRUE_SMTP_USER:-}
+      GOTRUE_SMTP_PASS: ${GOTRUE_SMTP_PASSWORD:-}
+      GOTRUE_SMTP_ADMIN_EMAIL: ${GOTRUE_SMTP_ADMIN_EMAIL:-}
+      GOTRUE_SMTP_SENDER_NAME: ${GOTRUE_SMTP_SENDER_NAME:-Carbon}
+      GOTRUE_EXTERNAL_GOOGLE_ENABLED: ${GOOGLE_AUTH_ENABLED:-false}
+      GOTRUE_EXTERNAL_GOOGLE_CLIENT_ID: ${SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID:-}
+      GOTRUE_EXTERNAL_GOOGLE_SECRET: ${SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_SECRET:-}
+      GOTRUE_EXTERNAL_GOOGLE_REDIRECT_URI: ${SUPABASE_AUTH_EXTERNAL_GOOGLE_REDIRECT_URI:-}
+      GOTRUE_EXTERNAL_AZURE_ENABLED: ${AZURE_AUTH_ENABLED:-false}
+      GOTRUE_EXTERNAL_AZURE_CLIENT_ID: ${SUPABASE_AUTH_EXTERNAL_AZURE_CLIENT_ID:-}
+      GOTRUE_EXTERNAL_AZURE_SECRET: ${SUPABASE_AUTH_EXTERNAL_AZURE_CLIENT_SECRET:-}
+      GOTRUE_EXTERNAL_AZURE_REDIRECT_URI: ${SUPABASE_AUTH_EXTERNAL_AZURE_REDIRECT_URI:-}
+      GOTRUE_MAILER_TEMPLATES_MAGIC_LINK: ${ERP_URL}/templates/magic-link.html
+      GOTRUE_MAILER_TEMPLATES_INVITE: ${ERP_URL}/templates/invite.html
+    volumes:
+      - ./bin/run.sh:/carbon/bin/run.sh:ro
+    restart: unless-stopped
+
+  postgrest:
+    image: postgrest/postgrest:v13.0.8
+    environment:
+      PGRST_DB_URI: postgres://authenticator:${POSTGRES_PASSWORD}@postgres:5432/postgres
+      PGRST_DB_SCHEMAS: public,storage,graphql_public
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      PGRST_DB_USE_LEGACY_GUCS: "false"
+      PGRST_APP_SETTINGS_JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      PGRST_APP_SETTINGS_JWT_EXP: "3600"
+    restart: unless-stopped
+
+  realtime:
+    image: supabase/realtime:v2.89.0
+    entrypoint: ["/carbon/bin/run.sh"]
+    command: ["/usr/bin/tini", "-s", "-g", "--", "/app/run.sh", "/app/bin/server"]
+    networks:
+      default:
+        aliases: [realtime-dev]
+    environment:
+      PORT: "4000"
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_USER: supabase_admin
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: postgres
+      DB_AFTER_CONNECT_QUERY: "SET search_path TO _realtime"
+      DB_ENC_KEY: ${REALTIME_DB_ENC_KEY:-supabaserealtime}
+      API_JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      METRICS_JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      # Override in .env for a production deployment (see .env.example).
+      SECRET_KEY_BASE: ${REALTIME_SECRET_KEY_BASE:-UpNVntn3cDxHJpq99YMc1T1AQgQpc8kfYTuRgBiYa15BLrx8etQoXz3gZv1/u2oq}
+      APP_NAME: realtime
+      ERL_AFLAGS: -proto_dist inet_tcp
+      DNS_NODES: "''"
+      RLIMIT_NOFILE: "10000"
+      SEED_SELF_HOST: "true"
+      RUN_JANITOR: "true"
+      DISABLE_HEALTHCHECK_LOGGING: "true"
+    volumes:
+      - ./bin/run.sh:/carbon/bin/run.sh:ro
+    restart: unless-stopped
+
+  storage:
+    image: supabase/storage-api:v1.58.4
+    entrypoint: ["/carbon/bin/run.sh"]
+    command: ["docker-entrypoint.sh", "node", "dist/start/server.js"]
+    environment:
+      ANON_KEY: ${SUPABASE_ANON_KEY}
+      SERVICE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      POSTGREST_URL: http://postgrest:3000
+      PGRST_JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      DATABASE_URL: postgres://supabase_storage_admin:${POSTGRES_PASSWORD}@postgres:5432/postgres
+      FILE_SIZE_LIMIT: "52428800"
+      STORAGE_BACKEND: file
+      FILE_STORAGE_BACKEND_PATH: /var/lib/storage
+      TENANT_ID: stub
+      REGION: stub
+      GLOBAL_S3_BUCKET: stub
+      ENABLE_IMAGE_TRANSFORMATION: "false"
+    volumes:
+      - ./bin/run.sh:/carbon/bin/run.sh:ro
+      - storage:/var/lib/storage
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5000/status').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+  meta:
+    image: supabase/postgres-meta:v0.96.5
+    entrypoint: ["/carbon/bin/run.sh"]
+    command: ["docker-entrypoint.sh", "node", "dist/server/server.js"]
+    environment:
+      PG_META_PORT: "8080"
+      PG_META_DB_HOST: postgres
+      PG_META_DB_PORT: "5432"
+      PG_META_DB_NAME: postgres
+      PG_META_DB_USER: supabase_admin
+      PG_META_DB_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./bin/run.sh:/carbon/bin/run.sh:ro
+    restart: unless-stopped
+
+  # Internal DB admin UI — not domain-mapped by default. See README for how to
+  # reach it (SSH tunnel, or map a Dokploy domain with basic-auth yourself).
+  studio:
+    image: supabase/studio:2026.04.28-sha-89d08a2
+    entrypoint: ["/carbon/bin/run.sh"]
+    command: ["docker-entrypoint.sh", "node", "apps/studio/server.js"]
+    environment:
+      # Next.js standalone binds to $HOSTNAME, which Docker sets to the
+      # container ID (-> overlay IP only). Force 0.0.0.0 so the healthcheck
+      # on 127.0.0.1 and requests via kong/Dokploy both reach it.
+      HOSTNAME: 0.0.0.0
+      STUDIO_PG_META_URL: http://meta:8080
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DEFAULT_ORGANIZATION_NAME: Carbon
+      DEFAULT_PROJECT_NAME: Carbon
+      SUPABASE_URL: http://kong:8000
+      SUPABASE_PUBLIC_URL: ${SUPABASE_URL}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+      SUPABASE_SERVICE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+    volumes:
+      - ./bin/run.sh:/carbon/bin/run.sh:ro
+    # The image's built-in healthcheck demands HTTP 200 from
+    # /api/platform/profile with no start_period, which kills a studio that is
+    # in fact serving. Override with a lenient check + a boot grace period.
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/platform/profile').then(()=>process.exit(0)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+
+  edge-runtime:
+    image: supabase/edge-runtime:v1.74.0
+    entrypoint: ["/carbon/bin/run.sh"]
+    command: ["edge-runtime", "start", "--main-service", "/home/deno/main"]
+    environment:
+      JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      SUPABASE_URL: http://kong:8000
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
+      VERIFY_JWT: ${EDGE_VERIFY_JWT:-false}
+    volumes:
+      - ./bin/run.sh:/carbon/bin/run.sh:ro
+      - ../../../packages/database/supabase/functions:/home/deno/functions:ro
+      - ../../../packages/database/src:/home/src:ro
+      - ../../../packages/dev/docker/edge-main:/home/deno/main:ro
+    restart: unless-stopped
+
+  # Public API gateway — the only Supabase service that needs a Dokploy domain
+  # (map it to SUPABASE_URL/SUPABASE_HOST below). Aggregates auth/rest/storage/
+  # realtime/functions behind one origin.
+  kong:
+    image: kong:2.8.1
+    environment:
+      KONG_DATABASE: "off"
+      KONG_DECLARATIVE_CONFIG: /home/kong/kong.yml
+      KONG_DNS_ORDER: LAST,A,CNAME
+      KONG_PLUGINS: request-transformer,cors,key-auth,acl,basic-auth
+    volumes:
+      - ../../../packages/dev/docker/kong.yml:/home/kong/kong.yml:ro
+    healthcheck:
+      test: ["CMD", "kong", "health"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  storage:
+  redis-data:
+  inngest-data:
