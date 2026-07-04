@@ -32,6 +32,9 @@ services:
       PORT: "3000"
       SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres?sslmode=disable
       REDIS_URL: redis://redis:6379
+      # Without this, inngest.send()/the SDK default to Inngest Cloud instead
+      # of the bundled self-hosted server, and fail auth against it.
+      INNGEST_BASE_URL: http://inngest:8288
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 15s
@@ -42,6 +45,7 @@ services:
     depends_on:
       - kong
       - redis
+      - inngest
 
   mes:
     build:
@@ -55,6 +59,7 @@ services:
       PORT: "3000"
       SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres?sslmode=disable
       REDIS_URL: redis://redis:6379
+      INNGEST_BASE_URL: http://inngest:8288
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 15s
@@ -65,6 +70,7 @@ services:
     depends_on:
       - kong
       - redis
+      - inngest
 
   redis:
     image: redis:7-alpine
