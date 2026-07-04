@@ -133,6 +133,13 @@ services:
       timeout: 5s
       retries: 20
     restart: unless-stopped
+    # Supabase Studio's default project config expects the Postgres host to
+    # be named `db` (the convention in official self-host Supabase compose
+    # files) — alias it here so `meta`/`studio` resolve it without needing
+    # their own config changes. Reachable as either `postgres` or `db`.
+    networks:
+      default:
+        aliases: [db]
 
   gotrue:
     image: supabase/gotrue:v2.189.0
