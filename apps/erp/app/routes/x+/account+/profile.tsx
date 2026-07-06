@@ -40,13 +40,14 @@ import {
   useLoaderData,
   useRevalidator
 } from "react-router";
+import { useLocale } from "@react-aria/i18n";
 import {
   accountProfileValidator,
   getAccount,
   updateAvatar,
   updatePublicAccount
 } from "~/modules/account";
-import { ProfileForm } from "~/modules/account/ui/Profile";
+import { ProfileForm, ProfileLanguageForm } from "~/modules/account/ui/Profile";
 import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
 
@@ -212,6 +213,7 @@ export default function AccountProfile() {
   const deleteFetcher = useFetcher();
   const renameFetcher = useFetcher();
   const { revalidate } = useRevalidator();
+  const { locale } = useLocale();
   const passkeysEnabled = isAuthProviderEnabled("passkey");
   const [registering, setRegistering] = useState(false);
   const [selectedPasskey, setSelectedPasskey] = useState<Passkey | null>(null);
@@ -295,6 +297,8 @@ export default function AccountProfile() {
   return (
     <VStack spacing={4} className="pb-6">
       <ProfileForm user={user} />
+
+      <ProfileLanguageForm locale={locale} />
 
       {passwordEnabled && (
         <Card>
