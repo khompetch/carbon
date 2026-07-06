@@ -22,9 +22,11 @@ export const accountLanguageValidator = z.object({
 
 export const accountPasswordValidator = z
   .object({
-    currentPassword: z
-      .string()
-      .min(6, { message: "Current password is required" }),
+    // Optional because a first-time set has no current password to give —
+    // the action requires it once the user has previously set one.
+    currentPassword: zfd.text(
+      z.string().min(6, { message: "Current password is required" }).optional()
+    ),
     password: z.string().min(6, { message: "Password is required" }),
     confirmPassword: z
       .string()

@@ -391,6 +391,38 @@ export async function resetPassword(accessToken: string, password: string) {
   return true;
 }
 
+// Every account is created with a random throwaway password, so this flag is
+// what distinguishes "user chose a password" from "still on the unknowable
+// default" — it gates whether changing the password requires the current one.
+// Fails CLOSED: an inability to read the flag returns true so the caller
+// requires the current password rather than skipping the check on a transient
+// admin-API error.
+export async function getUserHasSetPassword(userId: string): Promise<boolean> {
+  const { data, error } =
+    await getCarbonServiceRole().auth.admin.getUserById(userId);
+
+  if (error || !data?.user) return true;
+
+  return data.user.app_metadata?.hasSetPassword === true;
+}
+
+export async function setUserPassword(userId: string, password: string) {
+  const client = getCarbonServiceRole();
+
+  const { data: existing, error: getUserError } =
+    await client.auth.admin.getUserById(userId);
+  if (getUserError || !existing?.user) return null;
+
+  const { error } = await client.auth.admin.updateUserById(userId, {
+    password,
+    app_metadata: { ...existing.user.app_metadata, hasSetPassword: true }
+  });
+
+  if (error) return null;
+
+  return true;
+}
+
 export async function sendInviteByEmail(
   email: string,
   data?: Record<string, unknown>

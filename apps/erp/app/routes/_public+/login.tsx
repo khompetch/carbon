@@ -8,11 +8,14 @@ import {
   error,
   isAuthProviderEnabled,
   magicLinkValidator,
-  RATE_LIMIT
+  passwordLoginValidator,
+  RATE_LIMIT,
+  safeRedirect
 } from "@carbon/auth";
 import {
   sendMagicLink,
   signInWithBypassEmail,
+  signInWithEmail,
   verifyAuthSession
 } from "@carbon/auth/auth.server";
 import {
@@ -23,7 +26,14 @@ import {
 } from "@carbon/auth/session.server";
 import { getUserByEmail } from "@carbon/auth/users.server";
 import { sendVerificationCode } from "@carbon/auth/verification.server";
-import { Hidden, Input, Submit, ValidatedForm, validator } from "@carbon/form";
+import {
+  Hidden,
+  Input,
+  Password,
+  Submit,
+  ValidatedForm,
+  validator
+} from "@carbon/form";
 import { Ratelimit, redis } from "@carbon/kv";
 import {
   Alert,
@@ -71,6 +81,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const hasOutlookAuth = isAuthProviderEnabled("azure");
   const hasGoogleAuth = isAuthProviderEnabled("google");
   const hasPasskeyAuth = isAuthProviderEnabled("passkey");
+  const hasPasswordAuth = isAuthProviderEnabled("password");
 
   if (authSession) {
     if (await verifyAuthSession(authSession)) {
@@ -78,7 +89,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
     const cookieHeaders = await clearAuthCookies(request);
     return data(
-      { hasOutlookAuth, hasGoogleAuth, hasPasskeyAuth },
+      { hasOutlookAuth, hasGoogleAuth, hasPasskeyAuth, hasPasswordAuth },
       { headers: cookieHeaders }
     );
   }
@@ -86,8 +97,36 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return {
     hasOutlookAuth,
     hasGoogleAuth,
-    hasPasskeyAuth
+    hasPasskeyAuth,
+    hasPasswordAuth
   };
+}
+
+async function verifyTurnstile(turnstileToken: string | undefined, ip: string) {
+  if (
+    CarbonEdition !== Edition.Cloud ||
+    CLOUDFLARE_TURNSTILE_SITE_KEY === "1x00000000000000000000AA"
+  ) {
+    return true;
+  }
+
+  const verifyResponse = await fetch(
+    "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({
+        secret: CLOUDFLARE_TURNSTILE_SECRET_KEY ?? "",
+        response: turnstileToken ?? "",
+        remoteip: ip
+      })
+    }
+  );
+
+  const verifyData = await verifyResponse.json();
+  return !!verifyData.success;
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -107,37 +146,23 @@ export async function action({ request }: ActionFunctionArgs) {
     );
   }
 
-  const validation = await validator(magicLinkValidator).validate(
-    await request.formData()
-  );
-
-  if (validation.error) {
-    return error(validation.error, "Invalid email address");
-  }
-
-  const { email, turnstileToken } = validation.data;
+  const formData = await request.formData();
 
   if (
-    CarbonEdition === Edition.Cloud &&
-    CLOUDFLARE_TURNSTILE_SITE_KEY !== "1x00000000000000000000AA"
+    formData.get("intent") === "password" &&
+    isAuthProviderEnabled("password")
   ) {
-    const verifyResponse = await fetch(
-      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: new URLSearchParams({
-          secret: CLOUDFLARE_TURNSTILE_SECRET_KEY ?? "",
-          response: turnstileToken ?? "",
-          remoteip: ip
-        })
-      }
+    const validation = await validator(passwordLoginValidator).validate(
+      formData
     );
 
-    const verifyData = await verifyResponse.json();
-    if (!verifyData.success) {
+    if (validation.error) {
+      return error(validation.error, "Invalid email or password");
+    }
+
+    const { email, password, redirectTo, turnstileToken } = validation.data;
+
+    if (!(await verifyTurnstile(turnstileToken, ip))) {
       return data(
         error(null, "Bot verification failed. Please try again."),
         await flash(
@@ -146,6 +171,43 @@ export async function action({ request }: ActionFunctionArgs) {
         )
       );
     }
+
+    const user = await getUserByEmail(email);
+    // Same generic message for unknown user and wrong password — don't leak
+    // which of the two failed.
+    const authSession = user.data?.active
+      ? await signInWithEmail(email, password)
+      : null;
+
+    if (!authSession) {
+      return data(
+        { success: false, message: "Invalid email/password combination" },
+        await flash(request, error(null, "Failed to sign in"))
+      );
+    }
+
+    const sessionCookie = await setAuthSession(request, { authSession });
+    return redirect(safeRedirect(redirectTo), {
+      headers: [["Set-Cookie", sessionCookie]]
+    });
+  }
+
+  const validation = await validator(magicLinkValidator).validate(formData);
+
+  if (validation.error) {
+    return error(validation.error, "Invalid email address");
+  }
+
+  const { email, turnstileToken } = validation.data;
+
+  if (!(await verifyTurnstile(turnstileToken, ip))) {
+    return data(
+      error(null, "Bot verification failed. Please try again."),
+      await flash(
+        request,
+        error(null, "Bot verification failed. Please try again.")
+      )
+    );
   }
 
   const user = await getUserByEmail(email);
@@ -197,12 +259,15 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function LoginRoute() {
   const { t } = useLingui();
-  const { hasOutlookAuth, hasGoogleAuth, hasPasskeyAuth } =
+  const { hasOutlookAuth, hasGoogleAuth, hasPasskeyAuth, hasPasswordAuth } =
     useLoaderData<typeof loader>();
 
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") ?? undefined;
   const [mode, setMode] = useState<"login" | "signup" | "verify">("login");
+  const [authMode, setAuthMode] = useState<"magic-link" | "password">(
+    "magic-link"
+  );
   const [signupEmail, setSignupEmail] = useState<string>("");
   const [turnstileToken, setTurnstileToken] = useState<string>("");
   const [passkeySupported, setPasskeySupported] = useState(false);
@@ -415,14 +480,22 @@ export default function LoginRoute() {
           </VStack>
         ) : (
           <ValidatedForm
+            key={authMode}
             fetcher={fetcher}
-            validator={magicLinkValidator}
+            validator={
+              authMode === "password"
+                ? passwordLoginValidator
+                : magicLinkValidator
+            }
             defaultValues={{ redirectTo }}
             method="post"
             action="/login"
           >
             <Hidden name="redirectTo" value={redirectTo} type="hidden" />
             <Hidden name="turnstileToken" value={turnstileToken} />
+            {authMode === "password" && (
+              <Hidden name="intent" value="password" />
+            )}
             <VStack spacing={2}>
               {fetcher.data?.success === false && fetcher.data?.message && (
                 <Alert variant="destructive">
@@ -489,6 +562,15 @@ export default function LoginRoute() {
                 autoComplete={hasPasskeyAuth ? "email webauthn" : "email"}
               />
 
+              {authMode === "password" && (
+                <Password
+                  name="password"
+                  label=""
+                  placeholder={t`Password`}
+                  autoComplete="current-password"
+                />
+              )}
+
               <Submit
                 isDisabled={
                   fetcher.state !== "idle" ||
@@ -500,8 +582,35 @@ export default function LoginRoute() {
                 withBlocker={false}
                 variant="secondary"
               >
-                <Trans>Sign in with Email</Trans>
+                {authMode === "password" ? (
+                  <Trans>Sign in</Trans>
+                ) : (
+                  <Trans>Sign in with Email</Trans>
+                )}
               </Submit>
+
+              {hasPasswordAuth && authMode === "magic-link" && (
+                <Button
+                  type="button"
+                  variant="link"
+                  size="sm"
+                  className="w-full"
+                  onClick={() => setAuthMode("password")}
+                >
+                  <Trans>Sign in with password instead</Trans>
+                </Button>
+              )}
+              {authMode === "password" && (
+                <Button
+                  type="button"
+                  variant="link"
+                  size="sm"
+                  className="w-full"
+                  onClick={() => setAuthMode("magic-link")}
+                >
+                  <Trans>Forgot password? Sign in with email link</Trans>
+                </Button>
+              )}
               {!!CLOUDFLARE_TURNSTILE_SITE_KEY && (
                 <div className="w-full flex justify-center">
                   <Turnstile
