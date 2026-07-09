@@ -26,6 +26,7 @@ else, drop the `postgres`/`gotrue`/`postgrest`/`realtime`/`storage`/`meta`/
 | `bin/run.sh` | Neutral `exec "$@"` entrypoint shim — lets several Supabase images' proven CMD arrays be reused unchanged without Swarm secrets. |
 | `postgres/01-roles.sh`, `postgres/02-performance.sh` | Postgres role bootstrap and tuning, run once on first init. |
 | `scripts/gen-supabase-keys.sh` | Generates the Supabase JWT key trio (openssl only). |
+| `scripts/backup.sh` | Nightly-able backup: Postgres dump + storage volume archive. |
 
 ## 1. Generate secrets
 
@@ -110,6 +111,47 @@ curl -f https://erp.example.com/health
 curl -f https://mes.example.com/health
 curl -f https://supabase.example.com/auth/v1/health
 ```
+
+## 8. Backups
+
+A complete backup is **two paired artifacts** — restore them together, never
+one without the other:
+
+- **`db.sql.gz`** — `pg_dump` of the whole database: business data, auth
+  users, and the *storage metadata* (`storage.buckets` / `storage.objects`).
+- **`storage.tar.gz`** — the `storage` Docker volume: the actual uploaded
+  files (documents, avatars, 3D models) that the metadata points at. This
+  stack runs Supabase Storage with `STORAGE_BACKEND: file`, so uploads live
+  on this volume, not in Postgres.
+
+Run on the VPS (auto-detects the Dokploy project from the running
+`supabase/postgres` container; override with `PROJECT=<name>`):
+
+```bash
+./scripts/backup.sh
+# -> ./backups/carbon-<timestamp>/{db.sql.gz,storage.tar.gz}
+```
+
+Schedule it nightly and ship the result off the VPS — a copy on the same
+machine is not a backup:
+
+```bash
+# crontab -e  (02:17 nightly, keep 14 local days, then sync offsite)
+17 2 * * * cd /path/to/carbon/contrib/deploying/dokploy && RETENTION_DAYS=14 BACKUP_DIR=/var/backups/carbon ./scripts/backup.sh && rclone sync /var/backups/carbon remote:carbon-backups
+```
+
+Restore:
+
+```bash
+# database
+gunzip -c db.sql.gz | docker exec -i <project>-postgres-1 psql -U postgres postgres
+# storage volume
+docker run --rm -v <project>_storage:/data -v "$PWD:/in:ro" alpine:3 \
+  sh -c 'rm -rf /data/* && tar xzf /in/storage.tar.gz -C /data'
+```
+
+Test a restore at least once (e.g. into a scratch Dokploy project) — an
+untested backup is not a backup.
 
 Then log in at `https://erp.example.com/login` with the email you want as the
 first admin — there's no separate account-bootstrap script. An unknown email
