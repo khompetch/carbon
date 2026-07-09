@@ -721,6 +721,9 @@ msgstr "All Items"
 msgid "All jobs completed"
 msgstr "All jobs completed"
 
+msgid "All Locations"
+msgstr "All Locations"
+
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "All members of selected groups and selected individuals will be able to approve requests"
 
@@ -1470,6 +1473,9 @@ msgstr "Automatically release the job when the kanban is scanned"
 
 msgid "Automatically start the job when the kanban is scanned"
 msgstr "Automatically start the job when the kanban is scanned"
+
+msgid "Availability"
+msgstr "Availability"
 
 msgid "available"
 msgstr "available"
@@ -3812,6 +3818,9 @@ msgstr "Download PDF"
 msgid "Download template"
 msgstr "Download template"
 
+msgid "Downtime"
+msgstr "Downtime"
+
 msgid "Draft"
 msgstr "Draft"
 
@@ -5424,6 +5433,9 @@ msgstr "Go-live timing holds if each gate is cleared on schedule"
 msgid "Going live on Carbon"
 msgstr "Going live on Carbon"
 
+msgid "Good"
+msgstr "Good"
+
 #. placeholder {0}: user.firstName
 msgid "Good afternoon, {0}"
 msgstr "Good afternoon, {0}"
@@ -6433,6 +6445,9 @@ msgstr "List Options"
 
 msgid "List Parameters"
 msgstr "List Parameters"
+
+msgid "Live"
+msgstr "Live"
 
 msgid "Live in weeks, not quarters. Most of the product is already built."
 msgstr "Live in weeks, not quarters. Most of the product is already built."
@@ -7613,6 +7628,9 @@ msgstr "No printer configured"
 msgid "No printers configured. Click \"Add Printer\" to create one."
 msgstr "No printers configured. Click \"Add Printer\" to create one."
 
+msgid "No production data within range"
+msgstr "No production data within range"
+
 msgid "No Quote"
 msgstr "No Quote"
 
@@ -7753,6 +7771,15 @@ msgstr "Number"
 
 msgid "Number of inventory units per purchase unit"
 msgstr "Number of inventory units per purchase unit"
+
+msgid "OEE"
+msgstr "OEE"
+
+msgid "OEE by Process"
+msgstr "OEE by Process"
+
+msgid "OEE by Work Center"
+msgstr "OEE by Work Center"
 
 msgid "OEE Impact"
 msgstr "OEE Impact"
@@ -8295,6 +8322,9 @@ msgstr "Percentage of Lot"
 
 msgid "Perfect for low-cost evaluation"
 msgstr "Perfect for low-cost evaluation"
+
+msgid "Performance"
+msgstr "Performance"
 
 msgid "Period"
 msgstr "Period"
@@ -9720,6 +9750,9 @@ msgstr "Running inventory after each week's supply and demand — the line."
 msgid "Running Total"
 msgstr "Running Total"
 
+msgid "Runtime"
+msgstr "Runtime"
+
 msgid "S-1 (coarsest special)"
 msgstr "S-1 (coarsest special)"
 
@@ -9931,6 +9964,9 @@ msgstr "Scopes"
 
 msgid "Scrap"
 msgstr "Scrap"
+
+msgid "Scrap by Reason"
+msgstr "Scrap by Reason"
 
 msgid "Scrap Percent"
 msgstr "Scrap Percent"

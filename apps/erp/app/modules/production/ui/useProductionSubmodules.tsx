@@ -2,6 +2,7 @@ import { useLingui } from "@lingui/react/macro";
 import {
   LuChartLine,
   LuCirclePlay,
+  LuGauge,
   LuListChecks,
   LuSquareChartGantt,
   LuSquareKanban,
@@ -25,6 +26,12 @@ export default function useProductionSubmodules() {
           to: path.to.jobs,
           icon: <LuCirclePlay />,
           table: "job"
+        },
+        {
+          name: t`OEE`,
+          to: path.to.productionOee,
+          icon: <LuGauge />,
+          role: "employee"
         },
         {
           name: t`Procedures`,

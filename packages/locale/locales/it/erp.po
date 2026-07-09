@@ -721,6 +721,9 @@ msgstr "Tutti gli articoli"
 msgid "All jobs completed"
 msgstr "Tutti i lavori completati"
 
+msgid "All Locations"
+msgstr ""
+
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "Tutti i membri dei gruppi selezionati e gli individui selezionati potranno approvare le richieste"
 
@@ -1470,6 +1473,9 @@ msgstr "Rilascia automaticamente il lavoro quando il kanban viene scansionato"
 
 msgid "Automatically start the job when the kanban is scanned"
 msgstr "Avvia automaticamente il lavoro quando il kanban viene scansionato"
+
+msgid "Availability"
+msgstr ""
 
 msgid "available"
 msgstr "disponibile"
@@ -3812,6 +3818,9 @@ msgstr "Scarica PDF"
 msgid "Download template"
 msgstr "Scarica modello"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "Bozza"
 
@@ -5424,6 +5433,9 @@ msgstr "La tempistica di go-live rimane valida se ogni gate viene superato secon
 msgid "Going live on Carbon"
 msgstr "Passaggio in produzione su Carbon"
 
+msgid "Good"
+msgstr ""
+
 #. placeholder {0}: user.firstName
 msgid "Good afternoon, {0}"
 msgstr "Buongiorno, {0}"
@@ -6433,6 +6445,9 @@ msgstr "Opzioni Elenco"
 
 msgid "List Parameters"
 msgstr "Parametri Elenco"
+
+msgid "Live"
+msgstr ""
 
 msgid "Live in weeks, not quarters. Most of the product is already built."
 msgstr "Attivo in settimane, non in trimestri. La maggior parte del prodotto è già costruita."
@@ -7613,6 +7628,9 @@ msgstr "Nessuna stampante configurata"
 msgid "No printers configured. Click \"Add Printer\" to create one."
 msgstr "Nessuna stampante configurata. Fai clic su \"Aggiungi stampante\" per crearne una."
 
+msgid "No production data within range"
+msgstr ""
+
 msgid "No Quote"
 msgstr "Nessuna offerta"
 
@@ -7753,6 +7771,15 @@ msgstr "Numero"
 
 msgid "Number of inventory units per purchase unit"
 msgstr "Numero di unità di inventario per unità di acquisto"
+
+msgid "OEE"
+msgstr ""
+
+msgid "OEE by Process"
+msgstr ""
+
+msgid "OEE by Work Center"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "Impatto OEE"
@@ -8295,6 +8322,9 @@ msgstr "Percentuale del Lotto"
 
 msgid "Perfect for low-cost evaluation"
 msgstr "Perfetto per una valutazione a basso costo"
+
+msgid "Performance"
+msgstr ""
 
 msgid "Period"
 msgstr "Periodo"
@@ -9720,6 +9750,9 @@ msgstr "Inventario aggiornato dopo la domanda e l'offerta di ogni settimana — 
 msgid "Running Total"
 msgstr "Totale Progressivo"
 
+msgid "Runtime"
+msgstr ""
+
 msgid "S-1 (coarsest special)"
 msgstr "S-1 (speciale più grossolano)"
 
@@ -9931,6 +9964,9 @@ msgstr "Ambiti"
 
 msgid "Scrap"
 msgstr "Scarto"
+
+msgid "Scrap by Reason"
+msgstr ""
 
 msgid "Scrap Percent"
 msgstr "Percentuale di Scarto"

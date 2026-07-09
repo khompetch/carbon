@@ -721,6 +721,9 @@ msgstr "Tüm Öğeler"
 msgid "All jobs completed"
 msgstr "Tüm işler tamamlandı"
 
+msgid "All Locations"
+msgstr ""
+
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "Seçilen gruplardaki ve bireylerdeki tüm üyeler talepleri onaylayabilecektir"
 
@@ -1470,6 +1473,9 @@ msgstr "Kanban taranmış olduğunda işi otomatik olarak serbest bırak"
 
 msgid "Automatically start the job when the kanban is scanned"
 msgstr "Kanban taranıp iş otomatik olarak başlatılır"
+
+msgid "Availability"
+msgstr ""
 
 msgid "available"
 msgstr "mevcut"
@@ -3812,6 +3818,9 @@ msgstr "PDF'i İndir"
 msgid "Download template"
 msgstr "Şablon indir"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "Taslak"
 
@@ -5424,6 +5433,9 @@ msgstr "Canlı yayına geçiş zamanlaması, her kapı zamanında açılırsa ge
 msgid "Going live on Carbon"
 msgstr "Carbon'da canlı yayına geçme"
 
+msgid "Good"
+msgstr ""
+
 #. placeholder {0}: user.firstName
 msgid "Good afternoon, {0}"
 msgstr "İyi öğleden sonra, {0}"
@@ -6433,6 +6445,9 @@ msgstr "Liste Seçenekleri"
 
 msgid "List Parameters"
 msgstr "Liste Parametreleri"
+
+msgid "Live"
+msgstr ""
 
 msgid "Live in weeks, not quarters. Most of the product is already built."
 msgstr "Haftalar içinde canlı olun, çeyrekler değil. Ürünün çoğu zaten oluşturulmuş."
@@ -7613,6 +7628,9 @@ msgstr "Yazıcı yapılandırılmadı"
 msgid "No printers configured. Click \"Add Printer\" to create one."
 msgstr "Yapılandırılmış yazıcı yok. Bir tane oluşturmak için \"Yazıcı Ekle\"'ye tıklayın."
 
+msgid "No production data within range"
+msgstr ""
+
 msgid "No Quote"
 msgstr "Teklif Yok"
 
@@ -7753,6 +7771,15 @@ msgstr "Numara"
 
 msgid "Number of inventory units per purchase unit"
 msgstr "Satın alma birimi başına envanter birimi sayısı"
+
+msgid "OEE"
+msgstr ""
+
+msgid "OEE by Process"
+msgstr ""
+
+msgid "OEE by Work Center"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "OEE Etkisi"
@@ -8295,6 +8322,9 @@ msgstr "Lot Yüzdesi"
 
 msgid "Perfect for low-cost evaluation"
 msgstr "Düşük maliyetli değerlendirme için mükemmel"
+
+msgid "Performance"
+msgstr ""
 
 msgid "Period"
 msgstr "Dönem"
@@ -9720,6 +9750,9 @@ msgstr "Her haftalık arz ve talep sonrası çalışan envanter — satır."
 msgid "Running Total"
 msgstr "Kümülatif Toplam"
 
+msgid "Runtime"
+msgstr ""
+
 msgid "S-1 (coarsest special)"
 msgstr "S-1 (en kalın özel)"
 
@@ -9931,6 +9964,9 @@ msgstr "Kapsamlar"
 
 msgid "Scrap"
 msgstr "Hurda"
+
+msgid "Scrap by Reason"
+msgstr ""
 
 msgid "Scrap Percent"
 msgstr "Hurda Yüzdesi"

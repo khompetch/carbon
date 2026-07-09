@@ -5,6 +5,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: th\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
 msgid " A supplier is a business or person who sells you parts or services."
 msgstr ""
@@ -714,6 +720,9 @@ msgstr ""
 
 msgid "All jobs completed"
 msgstr ""
+
+msgid "All Locations"
+msgstr "ทุกสถานที่"
 
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr ""
@@ -1464,6 +1473,9 @@ msgstr ""
 
 msgid "Automatically start the job when the kanban is scanned"
 msgstr ""
+
+msgid "Availability"
+msgstr "อัตราความพร้อมเดินเครื่อง"
 
 msgid "available"
 msgstr ""
@@ -3643,7 +3655,7 @@ msgid "Detail"
 msgstr ""
 
 msgid "Details"
-msgstr ""
+msgstr "รายละเอียด"
 
 msgid "Diagram saved"
 msgstr ""
@@ -3805,6 +3817,9 @@ msgstr ""
 
 msgid "Download template"
 msgstr ""
+
+msgid "Downtime"
+msgstr "เวลาหยุดเครื่อง"
 
 msgid "Draft"
 msgstr ""
@@ -5418,6 +5433,9 @@ msgstr ""
 msgid "Going live on Carbon"
 msgstr ""
 
+msgid "Good"
+msgstr "ของดี"
+
 #. placeholder {0}: user.firstName
 msgid "Good afternoon, {0}"
 msgstr ""
@@ -6427,6 +6445,9 @@ msgstr ""
 
 msgid "List Parameters"
 msgstr ""
+
+msgid "Live"
+msgstr "สด"
 
 msgid "Live in weeks, not quarters. Most of the product is already built."
 msgstr ""
@@ -7607,6 +7628,9 @@ msgstr ""
 msgid "No printers configured. Click \"Add Printer\" to create one."
 msgstr ""
 
+msgid "No production data within range"
+msgstr "ไม่มีข้อมูลการผลิตในช่วงที่เลือก"
+
 msgid "No Quote"
 msgstr ""
 
@@ -7747,6 +7771,15 @@ msgstr ""
 
 msgid "Number of inventory units per purchase unit"
 msgstr ""
+
+msgid "OEE"
+msgstr "OEE"
+
+msgid "OEE by Process"
+msgstr "OEE ตามกระบวนการ"
+
+msgid "OEE by Work Center"
+msgstr "OEE ตามศูนย์งาน"
 
 msgid "OEE Impact"
 msgstr ""
@@ -8290,6 +8323,9 @@ msgstr ""
 msgid "Perfect for low-cost evaluation"
 msgstr ""
 
+msgid "Performance"
+msgstr "ประสิทธิภาพการเดินเครื่อง"
+
 msgid "Period"
 msgstr ""
 
@@ -8390,7 +8426,7 @@ msgid "Plan Type"
 msgstr ""
 
 msgid "Planned"
-msgstr ""
+msgstr "เวลาตามแผน"
 
 msgid "Planned End"
 msgstr ""
@@ -8662,7 +8698,7 @@ msgid "process"
 msgstr ""
 
 msgid "Process"
-msgstr ""
+msgstr "กระบวนการ"
 
 msgid "Process Name"
 msgstr ""
@@ -8944,7 +8980,7 @@ msgid "quality"
 msgstr ""
 
 msgid "Quality"
-msgstr ""
+msgstr "อัตราคุณภาพ"
 
 msgid "Quality Document approval rule"
 msgstr ""
@@ -9580,7 +9616,7 @@ msgid "Revoke Invites"
 msgstr ""
 
 msgid "Rework"
-msgstr ""
+msgstr "งานแก้ไข"
 
 msgid "RFQ"
 msgstr ""
@@ -9713,6 +9749,9 @@ msgstr ""
 
 msgid "Running Total"
 msgstr ""
+
+msgid "Runtime"
+msgstr "เวลาเดินเครื่อง"
 
 msgid "S-1 (coarsest special)"
 msgstr ""
@@ -9924,7 +9963,10 @@ msgid "Scopes"
 msgstr ""
 
 msgid "Scrap"
-msgstr ""
+msgstr "ของเสีย"
+
+msgid "Scrap by Reason"
+msgstr "ของเสียตามสาเหตุ"
 
 msgid "Scrap Percent"
 msgstr ""
@@ -13329,7 +13371,7 @@ msgid "Work center"
 msgstr ""
 
 msgid "Work Center"
-msgstr ""
+msgstr "ศูนย์งาน"
 
 msgid "Work Center Utilization"
 msgstr ""

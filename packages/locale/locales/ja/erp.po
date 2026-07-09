@@ -721,6 +721,9 @@ msgstr "すべてのアイテム"
 msgid "All jobs completed"
 msgstr "すべてのジョブが完了しました"
 
+msgid "All Locations"
+msgstr ""
+
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "選択されたグループのすべてのメンバーと選択された個人が承認リクエストを承認できます"
 
@@ -1470,6 +1473,9 @@ msgstr "カンバンがスキャンされたときに自動的にジョブをリ
 
 msgid "Automatically start the job when the kanban is scanned"
 msgstr "カンバンがスキャンされたときに自動的にジョブを開始します"
+
+msgid "Availability"
+msgstr ""
 
 msgid "available"
 msgstr "利用可能"
@@ -3812,6 +3818,9 @@ msgstr "PDFをダウンロード"
 msgid "Download template"
 msgstr "テンプレートをダウンロード"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "下書き"
 
@@ -5424,6 +5433,9 @@ msgstr "各ゲートがスケジュール通りにクリアされれば、本番
 msgid "Going live on Carbon"
 msgstr "Carbonで本番稼働"
 
+msgid "Good"
+msgstr ""
+
 #. placeholder {0}: user.firstName
 msgid "Good afternoon, {0}"
 msgstr "こんにちは、{0}"
@@ -6433,6 +6445,9 @@ msgstr "リストオプション"
 
 msgid "List Parameters"
 msgstr "リストパラメータ"
+
+msgid "Live"
+msgstr ""
 
 msgid "Live in weeks, not quarters. Most of the product is already built."
 msgstr "数週間で導入でき、四半期単位ではありません。製品のほとんどはすでに構築されています。"
@@ -7613,6 +7628,9 @@ msgstr "プリンターが設定されていません"
 msgid "No printers configured. Click \"Add Printer\" to create one."
 msgstr "プリンターが設定されていません。「プリンターを追加」をクリックして作成してください。"
 
+msgid "No production data within range"
+msgstr ""
+
 msgid "No Quote"
 msgstr "見積なし"
 
@@ -7753,6 +7771,15 @@ msgstr "数字"
 
 msgid "Number of inventory units per purchase unit"
 msgstr "購買単位あたりの在庫単位数"
+
+msgid "OEE"
+msgstr ""
+
+msgid "OEE by Process"
+msgstr ""
+
+msgid "OEE by Work Center"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "OEE影響"
@@ -8295,6 +8322,9 @@ msgstr "ロットの割合"
 
 msgid "Perfect for low-cost evaluation"
 msgstr "低コスト評価に最適"
+
+msgid "Performance"
+msgstr ""
 
 msgid "Period"
 msgstr "期間"
@@ -9720,6 +9750,9 @@ msgstr "毎週の需給の後に実行されるインベントリ — ライン�
 msgid "Running Total"
 msgstr "実行中の合計"
 
+msgid "Runtime"
+msgstr ""
+
 msgid "S-1 (coarsest special)"
 msgstr "S-1（最も粗い特殊）"
 
@@ -9931,6 +9964,9 @@ msgstr "スコープ"
 
 msgid "Scrap"
 msgstr "スクラップ"
+
+msgid "Scrap by Reason"
+msgstr ""
 
 msgid "Scrap Percent"
 msgstr "スクラップ率"

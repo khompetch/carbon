@@ -721,6 +721,9 @@ msgstr "所有项目"
 msgid "All jobs completed"
 msgstr "所有工作已完成"
 
+msgid "All Locations"
+msgstr ""
+
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "所选组的所有成员和所选个人将能够批准请求"
 
@@ -1470,6 +1473,9 @@ msgstr "当扫描看板时自动释放作业"
 
 msgid "Automatically start the job when the kanban is scanned"
 msgstr "当扫描看板时自动启动作业"
+
+msgid "Availability"
+msgstr ""
 
 msgid "available"
 msgstr "可用"
@@ -3812,6 +3818,9 @@ msgstr "下载 PDF"
 msgid "Download template"
 msgstr "下载模板"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "草稿"
 
@@ -5424,6 +5433,9 @@ msgstr "如果每个阶段都按时通过，上线时间表将保持不变"
 msgid "Going live on Carbon"
 msgstr "在 Carbon 上线"
 
+msgid "Good"
+msgstr ""
+
 #. placeholder {0}: user.firstName
 msgid "Good afternoon, {0}"
 msgstr "下午好，{0}"
@@ -6433,6 +6445,9 @@ msgstr "列表选项"
 
 msgid "List Parameters"
 msgstr "列表参数"
+
+msgid "Live"
+msgstr ""
 
 msgid "Live in weeks, not quarters. Most of the product is already built."
 msgstr "在几周内上线，而不是几个季度。产品的大部分已经构建完成。"
@@ -7613,6 +7628,9 @@ msgstr "未配置打印机"
 msgid "No printers configured. Click \"Add Printer\" to create one."
 msgstr "未配置打印机。点击\"添加打印机\"创建一个。"
 
+msgid "No production data within range"
+msgstr ""
+
 msgid "No Quote"
 msgstr "无报价"
 
@@ -7753,6 +7771,15 @@ msgstr "数字"
 
 msgid "Number of inventory units per purchase unit"
 msgstr "每个采购单位的库存单位数"
+
+msgid "OEE"
+msgstr ""
+
+msgid "OEE by Process"
+msgstr ""
+
+msgid "OEE by Work Center"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "OEE 影响"
@@ -8295,6 +8322,9 @@ msgstr "批次百分比"
 
 msgid "Perfect for low-cost evaluation"
 msgstr "非常适合低成本评估"
+
+msgid "Performance"
+msgstr ""
 
 msgid "Period"
 msgstr "期间"
@@ -9720,6 +9750,9 @@ msgstr "每周供应和需求后运行的库存 — 该行。"
 msgid "Running Total"
 msgstr "运行总计"
 
+msgid "Runtime"
+msgstr ""
+
 msgid "S-1 (coarsest special)"
 msgstr "S-1（最粗特殊）"
 
@@ -9931,6 +9964,9 @@ msgstr "范围"
 
 msgid "Scrap"
 msgstr "报废"
+
+msgid "Scrap by Reason"
+msgstr ""
 
 msgid "Scrap Percent"
 msgstr "废料百分比"

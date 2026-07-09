@@ -721,6 +721,9 @@ msgstr "Wszystkie elementy"
 msgid "All jobs completed"
 msgstr "Wszystkie zadania ukończone"
 
+msgid "All Locations"
+msgstr ""
+
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "Wszyscy członkowie wybranych grup i wybrane osoby będą mogły zatwierdzać żądania"
 
@@ -1470,6 +1473,9 @@ msgstr "Automatycznie zwolnij zadanie po zeskanowaniu kanban"
 
 msgid "Automatically start the job when the kanban is scanned"
 msgstr "Automatycznie uruchom zadanie po zeskanowaniu kanban"
+
+msgid "Availability"
+msgstr ""
 
 msgid "available"
 msgstr "dostępne"
@@ -3812,6 +3818,9 @@ msgstr "Pobierz PDF"
 msgid "Download template"
 msgstr "Pobierz szablon"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "Wersja robocza"
 
@@ -5424,6 +5433,9 @@ msgstr "Harmonogram wdrożenia zostanie utrzymany, jeśli każdy etap zostanie u
 msgid "Going live on Carbon"
 msgstr "Uruchomienie na platformie Carbon"
 
+msgid "Good"
+msgstr ""
+
 #. placeholder {0}: user.firstName
 msgid "Good afternoon, {0}"
 msgstr "Dobry wieczór, {0}"
@@ -6433,6 +6445,9 @@ msgstr "Opcje listy"
 
 msgid "List Parameters"
 msgstr "Parametry listy"
+
+msgid "Live"
+msgstr ""
 
 msgid "Live in weeks, not quarters. Most of the product is already built."
 msgstr "Wdrażaj w tygodnie, nie w kwartały. Większość produktu jest już gotowa."
@@ -7613,6 +7628,9 @@ msgstr "Brak skonfigurowanej drukarki"
 msgid "No printers configured. Click \"Add Printer\" to create one."
 msgstr "Brak skonfigurowanych drukarek. Kliknij „Dodaj drukarkę\", aby utworzyć jedną."
 
+msgid "No production data within range"
+msgstr ""
+
 msgid "No Quote"
 msgstr "Brak oferty"
 
@@ -7753,6 +7771,15 @@ msgstr "Liczba"
 
 msgid "Number of inventory units per purchase unit"
 msgstr "Liczba jednostek inwentarza na jednostkę zakupu"
+
+msgid "OEE"
+msgstr ""
+
+msgid "OEE by Process"
+msgstr ""
+
+msgid "OEE by Work Center"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "Wpływ OEE"
@@ -8295,6 +8322,9 @@ msgstr "Procent partii"
 
 msgid "Perfect for low-cost evaluation"
 msgstr "Idealne do niedrogiej oceny"
+
+msgid "Performance"
+msgstr ""
 
 msgid "Period"
 msgstr "Okres"
@@ -9720,6 +9750,9 @@ msgstr "Zapasy uruchomiane po tygodniowej podaży i popycie — linia."
 msgid "Running Total"
 msgstr "Suma bieżąca"
 
+msgid "Runtime"
+msgstr ""
+
 msgid "S-1 (coarsest special)"
 msgstr "S-1 (najgrubsze specjalne)"
 
@@ -9931,6 +9964,9 @@ msgstr "Zakresy"
 
 msgid "Scrap"
 msgstr "Złom"
+
+msgid "Scrap by Reason"
+msgstr ""
 
 msgid "Scrap Percent"
 msgstr "Procent odpadów"

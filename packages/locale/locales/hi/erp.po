@@ -721,6 +721,9 @@ msgstr "सभी आइटम"
 msgid "All jobs completed"
 msgstr "सभी नौकरियां पूरी हुईं"
 
+msgid "All Locations"
+msgstr ""
+
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "चयनित समूहों के सभी सदस्य और चयनित व्यक्ति अनुरोधों को मंजूरी दे सकेंगे"
 
@@ -1470,6 +1473,9 @@ msgstr "कनबन स्कैन किए जाने पर जॉब क
 
 msgid "Automatically start the job when the kanban is scanned"
 msgstr "कनबन स्कैन किए जाने पर जॉब को स्वचालित रूप से शुरू करें"
+
+msgid "Availability"
+msgstr ""
 
 msgid "available"
 msgstr "उपलब्ध"
@@ -3812,6 +3818,9 @@ msgstr "PDF डाउनलोड करें"
 msgid "Download template"
 msgstr "टेम्पलेट डाउनलोड करें"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "ड्राफ्ट"
 
@@ -5424,6 +5433,9 @@ msgstr "यदि प्रत्येक गेट समय पर क्ल�
 msgid "Going live on Carbon"
 msgstr "कार्बन पर लाइव जाना"
 
+msgid "Good"
+msgstr ""
+
 #. placeholder {0}: user.firstName
 msgid "Good afternoon, {0}"
 msgstr "शुभ दोपहर, {0}"
@@ -6433,6 +6445,9 @@ msgstr "सूची विकल्प"
 
 msgid "List Parameters"
 msgstr "सूची पैरामीटर"
+
+msgid "Live"
+msgstr ""
 
 msgid "Live in weeks, not quarters. Most of the product is already built."
 msgstr "हफ्तों में लाइव हो जाएं, महीनों में नहीं। अधिकांश उत्पाद पहले से ही बनाया जा चुका है।"
@@ -7613,6 +7628,9 @@ msgstr "कोई प्रिंटर कॉन्फ़िगर नहीं
 msgid "No printers configured. Click \"Add Printer\" to create one."
 msgstr "कोई प्रिंटर कॉन्फ़िगर नहीं किया गया है। एक बनाने के लिए \"प्रिंटर जोड़ें\" पर क्लिक करें।"
 
+msgid "No production data within range"
+msgstr ""
+
 msgid "No Quote"
 msgstr "कोई उद्धरण नहीं"
 
@@ -7753,6 +7771,15 @@ msgstr "संख्या"
 
 msgid "Number of inventory units per purchase unit"
 msgstr "प्रति क्रय इकाई इन्वेंटरी इकाइयों की संख्या"
+
+msgid "OEE"
+msgstr ""
+
+msgid "OEE by Process"
+msgstr ""
+
+msgid "OEE by Work Center"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "OEE प्रभाव"
@@ -8295,6 +8322,9 @@ msgstr "लॉट का प्रतिशत"
 
 msgid "Perfect for low-cost evaluation"
 msgstr "कम लागत मूल्यांकन के लिए बिल्कुल सही"
+
+msgid "Performance"
+msgstr ""
 
 msgid "Period"
 msgstr "अवधि"
@@ -9720,6 +9750,9 @@ msgstr "प्रत्येक सप्ताह की आपूर्ति
 msgid "Running Total"
 msgstr "कुल चल रहा है"
 
+msgid "Runtime"
+msgstr ""
+
 msgid "S-1 (coarsest special)"
 msgstr "S-1 (सबसे मोटे विशेष)"
 
@@ -9931,6 +9964,9 @@ msgstr "स्कोप"
 
 msgid "Scrap"
 msgstr "स्क्रैप"
+
+msgid "Scrap by Reason"
+msgstr ""
 
 msgid "Scrap Percent"
 msgstr "स्क्रैप प्रतिशत"
