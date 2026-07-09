@@ -26,6 +26,11 @@ services:
       dockerfile: Dockerfile
       args:
         APP: erp
+        # The Dockerfile defaults the build heap to ~8 GB, sized for CI. On a
+        # shared VPS that also runs the whole stack this OOMs — cap it. Pair
+        # with COMPOSE_PARALLEL_LIMIT=1 (see .env.example) so erp and mes
+        # don't build simultaneously.
+        NODE_OPTIONS: "--max-old-space-size=4096"
     env_file: .env
     environment:
       NODE_ENV: production
@@ -53,6 +58,7 @@ services:
       dockerfile: Dockerfile
       args:
         APP: mes
+        NODE_OPTIONS: "--max-old-space-size=4096"
     env_file: .env
     environment:
       NODE_ENV: production

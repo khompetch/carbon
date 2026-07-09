@@ -190,3 +190,29 @@ or trigger a full **Redeploy** from the Dokploy UI, which recreates every
 service. Confirm with `docker exec <edge-runtime-container> ls -la
 /home/deno/functions/<function-name>/` — it should show `index.ts`, not an
 empty directory.
+
+**Deploy hangs during the app build (around `rendering chunks...`)** — the
+VPS ran out of memory. Docker Compose builds `erp` and `mes` in parallel by
+default, the app build is memory-hungry at its Vite chunk-rendering peak, and
+the whole running stack is competing for the same RAM. Confirm with `free -h`
+(no free memory/swap) and `dmesg | grep -iE "oom|killed process"`. Fix all
+three of:
+
+1. **Add swap** (once, persists across reboots):
+
+   ```bash
+   fallocate -l 8G /swapfile && chmod 600 /swapfile
+   mkswap /swapfile && swapon /swapfile
+   echo '/swapfile none swap sw 0 0' >> /etc/fstab
+   sysctl vm.swappiness=10
+   ```
+
+2. **Build one image at a time** — set `COMPOSE_PARALLEL_LIMIT=1` in the
+   application's environment (already in `.env.example`).
+3. **Cap the build heap** — the compose file passes
+   `NODE_OPTIONS: --max-old-space-size=4096` as a build arg (the Dockerfile's
+   default assumes an ~8 GB build machine).
+
+Builds get slower but complete. For frequent deploys on a small VPS, the
+longer-term fix is building the images in CI (e.g. GitHub Actions → a
+registry) and pointing the compose `image:` at them instead of `build:`.
