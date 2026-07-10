@@ -156,64 +156,6 @@ export const getEmailDarkModeCSS = () => {
   `;
 };
 
-// Light/dark toggle for the react-email preview server only. Rendered when
-// EMAIL_DEV_PREVIEW is set (scripts/email-dev.mjs sets it) — real sends never
-// include it. CSS-only: a hidden checkbox plus html:has(:checked) rules that
-// force the same classes the prefers-color-scheme media query flips in real
-// clients, so both modes can be checked without changing the OS theme.
-function PreviewThemeToggle() {
-  const dark = emailTheme.dark;
-  const on = "html:has(#__preview-dark-toggle:checked)";
-  const css = `
-    #__preview-dark-toggle { display: none; }
-    .preview-theme-label {
-      position: fixed; top: 12px; right: 12px; z-index: 2147483647;
-      cursor: pointer; user-select: none;
-      font-family: Helvetica, Arial, sans-serif; font-size: 12px;
-      padding: 6px 12px; border-radius: 999px;
-      border: 1px solid ${emailTheme.light.border};
-      background-color: ${emailTheme.light.background};
-      color: ${emailTheme.light.foreground};
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-    .preview-theme-label .preview-label-dark { display: none; }
-    ${on} .preview-theme-label {
-      border-color: ${dark.border};
-      background-color: ${dark.background};
-      color: ${dark.foreground};
-    }
-    ${on} .preview-theme-label .preview-label-dark { display: inline; }
-    ${on} .preview-theme-label .preview-label-light { display: none; }
-
-    ${on} .email-body {
-      background-color: ${dark.background} !important;
-      color: ${dark.foreground} !important;
-    }
-    ${on} .email-container { border-color: ${dark.border} !important; }
-    ${on} .email-text { color: ${dark.foreground} !important; }
-    ${on} .email-muted { color: ${dark.muted} !important; }
-    ${on} .email-secondary { color: ${dark.secondary} !important; }
-    ${on} .email-accent {
-      color: ${dark.accent} !important;
-      border-color: ${dark.accent} !important;
-    }
-    ${on} .email-border { border-color: ${dark.border} !important; }
-    ${on} .dark-mode-hide { display: none !important; }
-    ${on} .dark-mode-show { display: block !important; }
-  `;
-  return (
-    <>
-      <input type="checkbox" id="__preview-dark-toggle" />
-      {/* biome-ignore lint/a11y/noLabelWithoutControl: htmlFor is set */}
-      <label className="preview-theme-label" htmlFor="__preview-dark-toggle">
-        <span className="preview-label-light">🌙 Preview dark mode</span>
-        <span className="preview-label-dark">☀️ Preview light mode</span>
-      </label>
-      <style>{css}</style>
-    </>
-  );
-}
-
 // Comprehensive email theme provider that wraps everything
 interface EmailThemeProviderProps {
   children: React.ReactNode;
@@ -228,10 +170,6 @@ export function EmailThemeProvider({
   additionalHeadContent,
   disableDarkMode = false
 }: EmailThemeProviderProps) {
-  const isDevPreview =
-    typeof process !== "undefined" &&
-    process.env.EMAIL_DEV_PREVIEW === "1" &&
-    !disableDarkMode;
   return (
     <Html className={disableDarkMode ? "disable-dark-mode" : ""}>
       <Tailwind>
@@ -309,7 +247,6 @@ export function EmailThemeProvider({
         </Head>
         {preview}
         {children}
-        {isDevPreview && <PreviewThemeToggle />}
       </Tailwind>
     </Html>
   );
