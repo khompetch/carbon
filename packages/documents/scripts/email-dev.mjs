@@ -26,10 +26,14 @@ console.log(`
   ➜ Templates: ${dir}
   ➜ Env files: ${loadedEnvFiles.join(", ") || "none found"}
   ➜ ERP_URL:   ${process.env.ERP_URL || "(not set — asset URLs will be broken)"}
+  ➜ Theme:     toggle light/dark from the top-right of each preview
 `);
 
+// EMAIL_DEV_PREVIEW makes EmailThemeProvider render the light/dark toggle —
+// preview-server only, never set on real send paths.
 const result = spawnSync("email", ["dev", "--dir", dir, "--port", port], {
-  stdio: "inherit"
+  stdio: "inherit",
+  env: { ...process.env, EMAIL_DEV_PREVIEW: "1" }
 });
 // spawnSync reports launch failures (e.g. binary missing) via result.error
 // with status null — without this check the script exits 0 printing nothing.
