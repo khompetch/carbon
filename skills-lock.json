@@ -1,15 +1,17 @@
 {
   "version": 1,
   "skills": {
-    "agent-browser": {
-      "source": "vercel-labs/agent-browser",
+    "rust-best-practices": {
+      "source": "apollographql/skills",
       "sourceType": "github",
-      "computedHash": "3c1e3549339c98c44c8c75f676f56ebc0adcd4494ec27b7f1851f7c5a7c2deaf"
+      "skillPath": "skills/rust-best-practices/SKILL.md",
+      "computedHash": "fd336f2f772eb46ddf8658de5f9dd8faa1f35615b316665307fc82eeb4b2e658"
     },
-    "make-interfaces-feel-better": {
-      "source": "jakubkrehel/make-interfaces-feel-better",
+    "supabase-postgres-best-practices": {
+      "source": "supabase/agent-skills",
       "sourceType": "github",
-      "computedHash": "54b6e221bbe4e2d1a8461c3f9ecabe69daf891f964e9ee5e699c323daa018f2e"
+      "skillPath": "skills/supabase-postgres-best-practices/SKILL.md",
+      "computedHash": "0d2c4857a7d6fdcd3fbc46e458fa4c497f029cab89a01548b3defce203003932"
     }
   }
 }

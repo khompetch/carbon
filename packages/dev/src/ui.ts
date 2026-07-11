@@ -167,6 +167,16 @@ export function summaryLines(
       url("inngest", ports.PORT_INNGEST),
       branchPrefix ? ports.PORT_INNGEST : undefined
     ),
+    ...(apps.includes("geometry")
+      ? [
+          row(
+            pc.yellow,
+            "Geometry",
+            url("geometry", ports.PORT_GEOMETRY),
+            branchPrefix ? ports.PORT_GEOMETRY : undefined
+          )
+        ]
+      : []),
     `${pc.gray(pc.bold("Postgres".padEnd(8)))}  ${pc.gray(dbUrl)}`
   );
   return lines;

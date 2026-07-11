@@ -1,4 +1,17 @@
 import { trigger } from "@carbon/jobs";
+import { isInternalEmail } from "@carbon/utils";
+import { redirect } from "react-router";
+import { path } from "~/utils/path";
+
+/**
+ * Assemblies (animated work instructions) are internal-only while the module
+ * matures. Mirrors the backups gate in settings.
+ */
+export function requireAssembliesInternal(email: string | null) {
+  if (!isInternalEmail(email)) {
+    throw redirect(path.to.production);
+  }
+}
 
 /**
  * Triggers a job scheduling task via inngest.

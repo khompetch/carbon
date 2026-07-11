@@ -1,28 +1,28 @@
-import { Button, cn } from "@carbon/react";
+import { Badge, Button, cn } from "@carbon/react";
 import { Plural, Trans, useLingui } from "@lingui/react/macro";
 import { useEffect, useRef } from "react";
 import {
   LuArrowRight,
   LuArrowUpRight,
-  LuCheck,
-  LuCircleHelp,
   LuPartyPopper,
   LuPlay
 } from "react-icons/lu";
+import { BOARD_TASKS } from "../content/board";
 import { SPINE } from "../content/spine";
 import {
+  boardTasksForTier,
   effectiveGateStatus,
-  effectiveProductStatus,
   gatesDone,
   type NextAction,
   nextAction,
   ownerForStep,
-  type Signals,
-  spineForTier
+  spineForTier,
+  stepTaskProgress
 } from "../logic";
 import type { GateValue, StepDef, Tier } from "../types";
+import { GanttChart } from "./GanttChart";
 import { GuidedUpsellCard } from "./GuidedUpsellCard";
-import { OWNER_TOKENS } from "./primitives";
+import { DerivedStatus, OWNER_TOKENS } from "./primitives";
 import { useCheckMap, useSignals, useTier } from "./state";
 
 // Carbon-app routing + video resolution are injected by the ERP route (they use
@@ -60,6 +60,7 @@ export function OnboardingHub({
   const map = useCheckMap();
   const signals = useSignals();
   const spine = spineForTier(SPINE, tier);
+  const tasks = boardTasksForTier(BOARD_TASKS, tier);
 
   const done = gatesDone(spine, map, signals);
   const total = spine.length;
@@ -101,7 +102,7 @@ export function OnboardingHub({
             className="size-7 hidden dark:block"
           />
         </div>
-        <h1 className="text-3xl font-semibold tracking-tight text-balance">
+        <h1 className="text-3xl font-medium tracking-tight text-balance">
           {companyName ? (
             <Trans>Welcome, {companyName}</Trans>
           ) : (
@@ -126,12 +127,12 @@ export function OnboardingHub({
       ) : null}
 
       {done === total ? (
-        <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 shadow-button-base p-6 flex items-center gap-4 motion-safe:animate-in motion-safe:fade-in-50 motion-safe:zoom-in-95 motion-safe:duration-500">
+        <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-6 flex items-center gap-4 motion-safe:animate-in motion-safe:fade-in-50 motion-safe:zoom-in-95 motion-safe:duration-500">
           <div className="shrink-0 size-12 rounded-2xl bg-emerald-500/15 flex items-center justify-center">
             <LuPartyPopper className="text-2xl text-emerald-600 dark:text-emerald-400" />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="text-lg font-semibold tracking-tight">
+            <div className="text-lg font-medium tracking-tight">
               <Trans>You're live on Carbon</Trans>
             </div>
             <p className="text-sm text-muted-foreground mt-0.5">
@@ -149,11 +150,12 @@ export function OnboardingHub({
         </div>
       ) : null}
 
-      <div className="rounded-2xl border bg-card shadow-button-base overflow-hidden">
+      <div className="rounded-2xl border bg-card overflow-hidden">
         <div className="flex items-end justify-between gap-4 flex-wrap p-6 pb-4 border-b">
-          <div className="text-2xl font-semibold tracking-tight">
-            <span className="tabular-nums">{done}</span>{" "}
-            <Trans>of {total} phases complete</Trans>
+          <div className="text-base font-medium tracking-tight">
+            <Trans>
+              {done} of {total} phases complete
+            </Trans>
           </div>
           <span className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground">
             <span
@@ -168,7 +170,12 @@ export function OnboardingHub({
 
         <div className="flex gap-1.5 px-6 py-4">
           {spine.map((step) => {
-            const st = effectiveGateStatus(step, map, signals);
+            const st = effectiveGateStatus(
+              step,
+              map,
+              signals,
+              stepTaskProgress(tasks, step.key, map)
+            );
             return (
               <div
                 key={step.key}
@@ -191,9 +198,13 @@ export function OnboardingHub({
               key={step.key}
               step={step}
               tier={tier}
-              status={effectiveGateStatus(step, map, signals)}
-              map={map}
-              signals={signals}
+              status={effectiveGateStatus(
+                step,
+                map,
+                signals,
+                stepTaskProgress(tasks, step.key, map)
+              )}
+              progress={stepTaskProgress(tasks, step.key, map)}
               onOpenInPlan={onOpenInPlan}
             />
           ))}
@@ -203,6 +214,8 @@ export function OnboardingHub({
       {tier === "self_serve" && onContactExpert ? (
         <GuidedUpsellCard onContactExpert={onContactExpert} />
       ) : null}
+
+      <GanttChart steps={spine} />
     </div>
   );
 }
@@ -227,15 +240,15 @@ function NextStepCard({
     : undefined;
 
   return (
-    <div className="rounded-2xl border border-primary/30 bg-primary/5 shadow-button-base p-5 flex items-start gap-4 motion-safe:animate-in motion-safe:fade-in-50 motion-safe:slide-in-from-bottom-2 motion-safe:duration-300">
-      <div className="shrink-0 size-9 rounded-xl bg-primary/15 flex items-center justify-center text-sm font-semibold tabular-nums text-primary">
+    <div className="rounded-2xl border border-border p-5 flex items-start gap-4 motion-safe:animate-in motion-safe:fade-in-50 motion-safe:slide-in-from-bottom-2 motion-safe:duration-300">
+      <div className="shrink-0 size-9 rounded-xl bg-primary/15 flex items-center justify-center text-sm font-medium tabular-nums text-primary">
         {action.gateNumber}
       </div>
       <div className="flex-1 min-w-0">
-        <div className="text-xxs uppercase tracking-wide font-medium text-primary">
+        <div className="text-xxs uppercase text-muted-foreground tracking-wide font-medium">
           <Trans>Next step</Trans>
         </div>
-        <div className="text-base font-semibold tracking-tight mt-0.5">
+        <div className="text-base font-medium tracking-tight mt-0.5">
           {i18n._(action.title)}
         </div>
         {action.detail ? (
@@ -289,41 +302,39 @@ function NextStepCard({
 
 // A flat gate row. No inline accordion — the per-step breakdown lives in the
 // Project Plan, so clicking the row jumps to that step's plan card. The status
-// box is display-only here: gates are completed in the plan (by ticking tasks or
-// the gate itself), and this command center reflects that state.
+// indicator is display-only (and deliberately not a checkbox): phases complete
+// on their own as their plan tasks finish, and this command center reflects
+// that state.
 function GateRow({
   step,
   tier,
   status,
-  map,
-  signals,
+  progress,
   onOpenInPlan
 }: {
   step: StepDef;
   tier: Tier;
   status: GateValue;
-  map: Map<string, string>;
-  signals: Signals;
+  progress: { done: number; total: number };
   onOpenInPlan: (stepKey: string) => void;
 }) {
   const { t, i18n } = useLingui();
-  const nested = step.nested ?? [];
-  const nestedDone = nested.filter(
-    (n) => effectiveProductStatus(n, map, signals) === "done"
-  ).length;
 
   return (
     <li className="p-5 pl-6 transition-colors hover:bg-primary/[0.02]">
       <div className="flex items-start gap-4">
-        <button
-          type="button"
-          onClick={() => onOpenInPlan(step.key)}
-          aria-label={`${i18n._(step.title)} · ${status}. ${t`Update this in the project plan.`}`}
-          title={t`Update this in the project plan`}
-          className="shrink-0 rounded-md"
-        >
-          <StatusBox status={status} interactive={false} ariaLabel="" />
-        </button>
+        <DerivedStatus
+          status={status}
+          fraction={
+            progress.total > 0 ? progress.done / progress.total : undefined
+          }
+          tooltip={
+            status === "done"
+              ? t`The "${i18n._(step.title)}" phase is done — its "${i18n._(step.gate)}" checkpoint has been passed.`
+              : t`The "${i18n._(step.title)}" phase checks itself off once all of its tasks in the project plan are done.`
+          }
+          className="size-5 mt-1"
+        />
         <button
           type="button"
           onClick={() => onOpenInPlan(step.key)}
@@ -332,24 +343,21 @@ function GateRow({
           <div className="flex items-center gap-2 flex-wrap">
             <span
               className={cn(
-                "text-sm font-semibold transition-colors group-hover:text-primary",
-                status === "done" && "text-muted-foreground"
+                "text-sm font-medium transition-colors group-hover:text-primary",
+                status === "done" && "line-through text-muted-foreground"
               )}
             >
               {step.n} · {i18n._(step.title)}
             </span>
-            <span className="text-xxs uppercase tracking-wide rounded px-1.5 py-0.5 border text-muted-foreground font-medium">
-              <Trans>Checkpoint:</Trans> {i18n._(step.gate)}
-            </span>
-            {nested.length ? (
+            {progress.total > 0 ? (
               <span className="text-xxs text-muted-foreground tabular-nums">
-                {nestedDone}/{nested.length} <Trans>done</Trans>
+                {progress.done}/{progress.total} <Trans>done</Trans>
               </span>
             ) : null}
             {tier !== "self_serve" ? (
-              <span className="text-xxs uppercase tracking-wide rounded px-1.5 py-0.5 border text-muted-foreground font-medium ml-auto">
+              <Badge variant="outline" className="ml-auto">
                 {i18n._(OWNER_TOKENS[ownerForStep(step, tier)].label)}
-              </span>
+              </Badge>
             ) : null}
             <LuArrowRight
               className={cn(
@@ -369,65 +377,5 @@ function GateRow({
         </button>
       </div>
     </li>
-  );
-}
-
-function StatusBox({
-  status,
-  small,
-  ariaLabel,
-  onClick,
-  interactive = true
-}: {
-  status: GateValue;
-  small?: boolean;
-  ariaLabel: string;
-  onClick?: () => void;
-  interactive?: boolean;
-}) {
-  const boxClass = cn(
-    "shrink-0 flex items-center justify-center rounded-md border transition-colors",
-    small ? "size-5 mt-0.5" : "size-6 mt-0.5",
-    interactive && "active:scale-[0.96]",
-    status === "done"
-      ? "bg-emerald-500 border-emerald-500 text-white"
-      : status === "prog"
-        ? "border-primary text-primary bg-primary/10"
-        : cn(
-            "bg-card border-input text-transparent",
-            interactive && "hover:border-primary"
-          )
-  );
-
-  const content =
-    status === "done" ? (
-      <LuCheck className={small ? "size-3" : "size-3.5"} />
-    ) : status === "prog" ? (
-      <span
-        className={cn("rounded-full bg-primary", small ? "size-1.5" : "size-2")}
-      />
-    ) : (
-      <LuCircleHelp className="size-0" />
-    );
-
-  // Derived gates (those with nested steps) are not manual checkboxes — they
-  // reflect their steps, so render a non-interactive indicator instead.
-  if (!interactive) {
-    return (
-      <span aria-label={ariaLabel} title={ariaLabel} className={boxClass}>
-        {content}
-      </span>
-    );
-  }
-
-  return (
-    <button
-      type="button"
-      aria-label={ariaLabel}
-      onClick={onClick}
-      className={boxClass}
-    >
-      {content}
-    </button>
   );
 }
