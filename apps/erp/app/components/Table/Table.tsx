@@ -40,7 +40,12 @@ import {
   getCoreRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import type { CSSProperties, ReactElement, ReactNode } from "react";
+import type {
+  CSSProperties,
+  MutableRefObject,
+  ReactElement,
+  ReactNode
+} from "react";
 import {
   Fragment,
   useCallback,
@@ -97,6 +102,8 @@ interface TableProps<T extends object> {
   primaryAction?: ReactNode;
   table?: string;
   title?: string;
+  // Optional node rendered immediately after the title (e.g. a status badge).
+  titleBadge?: ReactNode;
   withInlineEditing?: boolean;
   withPagination?: boolean;
   withSavedView?: boolean;
@@ -236,6 +243,7 @@ const Table = <T extends object>({
   primaryAction,
   table: tableName,
   title,
+  titleBadge,
   withInlineEditing = false,
   withPagination = true,
   withSavedView = false,
@@ -282,6 +290,9 @@ const Table = <T extends object>({
     ? controlledRowSelection
     : internalRowSelection;
   const setRowSelection = onRowSelectionChange ?? setInternalRowSelection;
+
+  // Anchor row (by id) for shift-click range selection.
+  const selectionAnchorRef = useRef<string | null>(null);
 
   /* Clear row selection when data changes. Skip when rows have stable ids
      (getRowId) or selection is controlled — the selection survives data
@@ -396,11 +407,24 @@ const Table = <T extends object>({
   const {
     accessors: columnAccessors,
     exportValues,
-    sortKeyToLabel
+    sortKeyToLabel,
+    exportOnlyColumns
   } = useMemo(
     () => buildColumnMaps(columns, translateLabel),
     [columns, translateLabel]
   );
+
+  // Export-only columns must never render in the grid. Force them hidden in the
+  // table state without mutating the stored columnVisibility (so saved-view
+  // state stays correct). The CSV side reads the same `exportOnlyColumns` list
+  // (passed to Download) to include them regardless of visibility — both halves
+  // are driven by the one `meta.exportOnly` flag, not by visibility coincidence.
+  const effectiveColumnVisibility = useMemo(() => {
+    if (!exportOnlyColumns.length) return columnVisibility;
+    const next = { ...columnVisibility };
+    for (const id of exportOnlyColumns) next[id] = false;
+    return next;
+  }, [columnVisibility, exportOnlyColumns]);
 
   const internalColumns = useMemo(() => {
     let result: ColumnDef<T>[] = [];
@@ -410,7 +434,7 @@ const Table = <T extends object>({
       );
     }
     if (withSelectableRows) {
-      result.push(...getRowSelectionColumn<T>());
+      result.push(...getRowSelectionColumn<T>(selectionAnchorRef));
     }
     result.push(...columns);
     if (renderContextMenu) {
@@ -431,7 +455,7 @@ const Table = <T extends object>({
     data: internalData,
     columns: internalColumns,
     state: {
-      columnVisibility,
+      columnVisibility: effectiveColumnVisibility,
       columnOrder,
       columnPinning,
       rowSelection
@@ -857,6 +881,7 @@ const Table = <T extends object>({
       <TableHeader
         columnAccessors={columnAccessors}
         exportValues={exportValues}
+        exportOnlyColumns={exportOnlyColumns}
         sortKeyToLabel={sortKeyToLabel}
         columnOrder={columnOrder}
         columnPinning={columnPinning}
@@ -875,6 +900,7 @@ const Table = <T extends object>({
         setEditMode={setEditMode}
         table={tableName}
         title={title}
+        titleBadge={titleBadge}
         withInlineEditing={withInlineEditing}
         withPagination={withPagination}
         withSavedView={withSavedView}
@@ -1208,7 +1234,9 @@ const Table = <T extends object>({
   );
 };
 
-function getRowSelectionColumn<T>(): ColumnDef<T>[] {
+function getRowSelectionColumn<T>(
+  anchorRef: MutableRefObject<string | null>
+): ColumnDef<T>[] {
   return [
     {
       id: "Select",
@@ -1223,16 +1251,45 @@ function getRowSelectionColumn<T>(): ColumnDef<T>[] {
           {...{
             checked: table.getIsAllRowsSelected(),
             indeterminate: table.getIsSomeRowsSelected(),
-            onChange: table.getToggleAllRowsSelectedHandler()
+            onChange: (checked: boolean) => {
+              table.toggleAllRowsSelected(checked);
+              anchorRef.current = null;
+            }
           }}
         />
       ),
-      cell: ({ row }) => (
+      cell: ({ row, table }) => (
         <IndeterminateCheckbox
           {...{
             checked: row.getIsSelected(),
             indeterminate: row.getIsSomeSelected(),
-            onChange: row.getToggleSelectedHandler()
+            onChange: (checked: boolean, shiftKey: boolean) => {
+              const rows = table.getRowModel().rows;
+              const clickedIndex = rows.findIndex((r) => r.id === row.id);
+              const anchorIndex =
+                anchorRef.current == null
+                  ? -1
+                  : rows.findIndex((r) => r.id === anchorRef.current);
+
+              if (shiftKey && anchorIndex !== -1 && clickedIndex !== -1) {
+                const start = Math.min(anchorIndex, clickedIndex);
+                const end = Math.max(anchorIndex, clickedIndex);
+                table.setRowSelection((prev) => {
+                  const next = { ...prev };
+                  for (let i = start; i <= end; i++) {
+                    const id = rows[i].id;
+                    if (checked) next[id] = true;
+                    else delete next[id];
+                  }
+                  return next;
+                });
+                // Keep the anchor fixed so the range can be re-dragged.
+                return;
+              }
+
+              row.toggleSelected(checked);
+              anchorRef.current = row.id;
+            }
           }}
         />
       )

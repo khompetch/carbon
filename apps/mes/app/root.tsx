@@ -7,6 +7,7 @@ import {
 } from "@carbon/auth/middleware/flash.server";
 import { validator } from "@carbon/form";
 import { LocaleProvider, resolveLanguage } from "@carbon/locale";
+import { requestIdMiddleware } from "@carbon/logger/middleware.server";
 import {
   Button,
   Heading,
@@ -45,7 +46,7 @@ import Tailwind from "~/styles/tailwind.css?url";
 import type { Route } from "./+types/root";
 import { getTheme } from "./services/theme.server";
 
-export const middleware = [flashMiddleware];
+export const middleware = [requestIdMiddleware, flashMiddleware];
 export const clientMiddleware = [flashClientMiddleware];
 
 export const links: Route.LinksFunction = () => [
@@ -99,6 +100,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     CARBON_API_URL,
     CONTROLLED_ENVIRONMENT,
     ERP_URL,
+    LOG_LEVEL,
     MES_URL,
     NODE_ENV,
     POSTHOG_API_HOST,
@@ -121,6 +123,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
         CARBON_API_URL,
         CONTROLLED_ENVIRONMENT,
         ERP_URL,
+        LOG_LEVEL,
         MES_URL,
         NODE_ENV,
         POSTHOG_API_HOST,
@@ -231,7 +234,7 @@ function Document({
         <Toaster position="bottom-right" visibleToasts={5} />
         <ScrollRestoration />
         <Scripts />
-        {!CONTROLLED_ENVIRONMENT && <Analytics />}
+        {!CONTROLLED_ENVIRONMENT && import.meta.env.PROD && <Analytics />}
       </body>
     </html>
   );
