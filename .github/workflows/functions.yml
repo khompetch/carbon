@@ -39,16 +39,21 @@ jobs:
 
       # workflow_run does not support path filters natively, so check whether the
       # triggering commit actually touched the edge functions. Skipped for manual runs.
+      # We diff locally (checkout above uses fetch-depth: 0, so full history is
+      # present) rather than dorny/paths-filter, which tried to `git fetch` the
+      # base as a refspec — `<sha>~1` is a valid revision but not a valid refspec,
+      # so that fetch failed with "invalid refspec".
       - name: Check for function changes
         id: filter
         if: ${{ github.event_name == 'workflow_run' }}
-        uses: dorny/paths-filter@v3
-        with:
-          base: ${{ github.event.workflow_run.head_sha }}~1
-          ref: ${{ github.event.workflow_run.head_sha }}
-          filters: |
-            functions:
-              - 'packages/database/supabase/functions/**'
+        run: |
+          head='${{ github.event.workflow_run.head_sha }}'
+          changed=$(git diff --name-only "${head}~1" "${head}" -- packages/database/supabase/functions)
+          if [ -n "$changed" ]; then
+            echo "functions=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "functions=false" >> "$GITHUB_OUTPUT"
+          fi
 
       # Give ECS / infra a moment to stabilize after the deploy. Skipped for manual runs.
       - name: Wait for infrastructure to stabilize
