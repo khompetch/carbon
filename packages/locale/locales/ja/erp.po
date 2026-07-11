@@ -350,6 +350,9 @@ msgstr "能力"
 msgid "About"
 msgstr "について"
 
+msgid "Absorption"
+msgstr "吸収"
+
 msgid "Academy"
 msgstr "アカデミー"
 
@@ -427,6 +430,9 @@ msgstr "会計: GL、AR、AP、および月末決算"
 
 msgid "Accounts"
 msgstr "アカウント"
+
+msgid "Accounts for recording differences between actual and standard costs"
+msgstr "実際原価と標準原価の差異を記録するためのアカウント"
 
 msgid "Accounts Payable"
 msgstr "買掛金"
@@ -1325,10 +1331,10 @@ msgstr "このジョブをリリースしてもよろしいですか？ショッ
 
 #. placeholder {0}: supplierName(deleteTarget.supplierId)
 msgid "Are you sure you want to remove {0} as a supplier for this item? This cannot be undone."
-msgstr ""
+msgstr "本当に{0}をこのアイテムのサプライヤーから削除してもよろしいですか?この操作は取り消せません。"
 
 msgid "Are you sure you want to remove {supplierName} as a supplier for this item? This cannot be undone."
-msgstr ""
+msgstr "このアイテムのサプライヤーとして{supplierName}を削除してもよろしいですか？この操作は取り消せません。"
 
 msgid "Are you sure you want to remove this item from the price list? This cannot be undone."
 msgstr "このアイテムを価格リストから削除してもよろしいですか？この操作は取り消せません。"
@@ -1398,6 +1404,9 @@ msgstr "資産"
 
 msgid "Asset Account"
 msgstr "資産勘定"
+
+msgid "Asset account for advance payments made to suppliers before goods or services are received"
+msgstr "商品またはサービスが受け取られる前に仕入先に行われた前払いを記録するための資産アカウント"
 
 msgid "Asset Acquisition Cost"
 msgstr "資産取得原価"
@@ -2293,9 +2302,6 @@ msgstr "現金およびバンク取引のデフォルトアカウントを構成
 msgid "Configure default accounts for inventory management"
 msgstr "在庫管理のデフォルトアカウントを構成する"
 
-msgid "Configure default accounts for purchasing and COGS"
-msgstr "購買とCOGSのデフォルトアカウントを構成する"
-
 msgid "Configure default accounts for vendor and supplier transactions"
 msgstr "ベンダーとサプライヤー取引のデフォルトアカウントを構成する"
 
@@ -2976,6 +2982,12 @@ msgstr "クレジット勘定"
 msgid "Credit account when labor/machine time is absorbed into WIP"
 msgstr "労力/機械時間がWIPに吸収される場合のクレジット勘定"
 
+msgid "Credit account when overhead is absorbed into WIP"
+msgstr "製造間接費がWIPに吸収される場合のクレジットアカウント"
+
+msgid "Credit accounts used when manufacturing costs are absorbed into WIP"
+msgstr "製造原価がWIPに吸収される場合に使用されるクレジットアカウント"
+
 msgid "Credits & Debits"
 msgstr "クレジット＆デビット"
 
@@ -3352,6 +3364,9 @@ msgstr "売上と収益のデフォルト口座"
 msgid "Default accounts for tax-related transactions"
 msgstr "税関連取引のデフォルト口座"
 
+msgid "Default accounts for the cost of goods sold and indirect purchases"
+msgstr "売上原価と間接購買のデフォルトアカウント"
+
 msgid "Default Approver"
 msgstr "デフォルト承認者"
 
@@ -3659,7 +3674,7 @@ msgid "Delete Suggestion"
 msgstr "提案を削除"
 
 msgid "Delete supplier"
-msgstr ""
+msgstr "サプライヤーを削除"
 
 msgid "Delete Supplier"
 msgstr "サプライヤーを削除"
@@ -5470,6 +5485,9 @@ msgstr "労働またはマシンコストが生産ジョブに吸収されると
 
 msgid "GL account credited when labor or machine cost is absorbed into a production job."
 msgstr "資産の処分時に累積減価償却費をクリアするためにデビットされるGLアカウント。"
+
+msgid "GL account credited when manufacturing overhead is absorbed into a production job."
+msgstr "製造間接費が生産ジョブに吸収される場合にクレジットされるGLアカウント。"
 
 msgid "GL account debited to clear accumulated depreciation when an asset is disposed."
 msgstr "顧客請求書が転記されるときにデビットされるGLアカウント。顧客が支払うときにクリアされます。"
@@ -8284,6 +8302,12 @@ msgstr "超過適用額"
 msgid "Overdue"
 msgstr "期限超過"
 
+msgid "Overhead Absorption"
+msgstr "製造間接費吸収"
+
+msgid "Overhead Absorption (default)"
+msgstr "製造間接費吸収（デフォルト）"
+
 msgid "Overhead Rate"
 msgstr "オーバーヘッドレート"
 
@@ -9122,9 +9146,6 @@ msgstr "購買と売上原価"
 
 msgid "Purchasing"
 msgstr "購買"
-
-msgid "Purchasing & Cost of Goods"
-msgstr "品質"
 
 msgid "Purchasing & Inventory"
 msgstr "購買・在庫"
@@ -10926,6 +10947,9 @@ msgstr "標準"
 msgid "Standard cloud Carbon fits how your company runs"
 msgstr "標準クラウドCarbonはあなたの会社の運営方法に適合します"
 
+msgid "Standard Cost Variances"
+msgstr "標準原価差異"
+
 msgid "Standard factor"
 msgstr "標準係数"
 
@@ -11226,7 +11250,7 @@ msgid "Supplier Overview"
 msgstr "仕入先概要"
 
 msgid "Supplier Part"
-msgstr ""
+msgstr "サプライヤー部品"
 
 msgid "Supplier Part ID"
 msgstr "仕入先部品ID"
@@ -11245,6 +11269,9 @@ msgstr "仕入先の支払割引"
 
 msgid "Supplier Payment Discounts (default)"
 msgstr "仕入先の支払割引（デフォルト）"
+
+msgid "Supplier Prepayments"
+msgstr "仕入先前払金"
 
 msgid "supplier process"
 msgstr "仕入先プロセス"
@@ -12258,7 +12285,7 @@ msgid "This storage type is currently used by {usageCount} storage unit{0}."
 msgstr "このストレージタイプは現在{usageCount}個のストレージユニット{0}で使用されています。"
 
 msgid "this supplier"
-msgstr ""
+msgstr "このサプライヤー"
 
 msgid "This updates the theme for all users of the application"
 msgstr "これはアプリケーションのすべてのユーザーのテーマを更新します"

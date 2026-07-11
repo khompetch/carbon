@@ -350,6 +350,9 @@ msgstr "возможность"
 msgid "About"
 msgstr "О программе"
 
+msgid "Absorption"
+msgstr "Абсорбция"
+
 msgid "Academy"
 msgstr "Академия"
 
@@ -427,6 +430,9 @@ msgstr "Бухгалтерия: ГЛ, АР, АП и закрытие месяц�
 
 msgid "Accounts"
 msgstr "Учетные записи"
+
+msgid "Accounts for recording differences between actual and standard costs"
+msgstr "Счета для учета разниц между фактическими и стандартными затратами"
 
 msgid "Accounts Payable"
 msgstr "Кредиторская задолженность"
@@ -1325,10 +1331,10 @@ msgstr "Вы уверены, что хотите выпустить эту ра�
 
 #. placeholder {0}: supplierName(deleteTarget.supplierId)
 msgid "Are you sure you want to remove {0} as a supplier for this item? This cannot be undone."
-msgstr ""
+msgstr "Вы уверены, что хотите удалить {0} как поставщика для этого товара? Это действие невозможно отменить."
 
 msgid "Are you sure you want to remove {supplierName} as a supplier for this item? This cannot be undone."
-msgstr ""
+msgstr "Вы уверены, что хотите удалить {supplierName} как поставщика для этого товара? Это действие невозможно отменить."
 
 msgid "Are you sure you want to remove this item from the price list? This cannot be undone."
 msgstr "Вы уверены, что хотите удалить этот товар из прайс-листа? Это действие невозможно отменить."
@@ -1398,6 +1404,9 @@ msgstr "Актив"
 
 msgid "Asset Account"
 msgstr "Счет активов"
+
+msgid "Asset account for advance payments made to suppliers before goods or services are received"
+msgstr "Счет активов для авансовых платежей поставщикам до получения товаров или услуг"
 
 msgid "Asset Acquisition Cost"
 msgstr "Первоначальная стоимость активов"
@@ -2293,9 +2302,6 @@ msgstr "Настроить счета по умолчанию для опера�
 msgid "Configure default accounts for inventory management"
 msgstr "Настроить счета по умолчанию для управления запасами"
 
-msgid "Configure default accounts for purchasing and COGS"
-msgstr "Настроить счета по умолчанию для закупок и СПС"
-
 msgid "Configure default accounts for vendor and supplier transactions"
 msgstr "Настроить счета по умолчанию для операций с продавцом и поставщиком"
 
@@ -2976,6 +2982,12 @@ msgstr "Счет кредита"
 msgid "Credit account when labor/machine time is absorbed into WIP"
 msgstr "Счет кредита при поглощении времени труда/машины в WIP"
 
+msgid "Credit account when overhead is absorbed into WIP"
+msgstr "Кредитовый счет при поглощении накладных расходов в незавершенное производство"
+
+msgid "Credit accounts used when manufacturing costs are absorbed into WIP"
+msgstr "Кредитовые счета, используемые при поглощении производственных затрат в незавершенное производство"
+
 msgid "Credits & Debits"
 msgstr "Кредиты и дебеты"
 
@@ -3352,6 +3364,9 @@ msgstr "Счета по умолчанию для продаж и доходов
 msgid "Default accounts for tax-related transactions"
 msgstr "Счета по умолчанию для налоговых операций"
 
+msgid "Default accounts for the cost of goods sold and indirect purchases"
+msgstr "Счета по умолчанию для стоимости проданных товаров и косвенных покупок"
+
 msgid "Default Approver"
 msgstr "Утверждающий по умолчанию"
 
@@ -3659,7 +3674,7 @@ msgid "Delete Suggestion"
 msgstr "Удалить предложение"
 
 msgid "Delete supplier"
-msgstr ""
+msgstr "Удалить поставщика"
 
 msgid "Delete Supplier"
 msgstr "Удалить поставщика"
@@ -5470,6 +5485,9 @@ msgstr "Счет, на который зачисляется сумма при �
 
 msgid "GL account credited when labor or machine cost is absorbed into a production job."
 msgstr "Счет, по которому дебетуется сумма для списания накопленной амортизации при утилизации актива."
+
+msgid "GL account credited when manufacturing overhead is absorbed into a production job."
+msgstr "Счет главной книги, кредитуемый при поглощении производственных накладных расходов в производственный заказ."
 
 msgid "GL account debited to clear accumulated depreciation when an asset is disposed."
 msgstr "Счет, по которому дебетуется сумма при регистрации счета-фактуры клиента; сторнируется при оплате клиентом."
@@ -8284,6 +8302,12 @@ msgstr "Переприменено на"
 msgid "Overdue"
 msgstr "Просрочено"
 
+msgid "Overhead Absorption"
+msgstr "Абсорбция накладных расходов"
+
+msgid "Overhead Absorption (default)"
+msgstr "Абсорбция накладных расходов (по умолчанию)"
+
 msgid "Overhead Rate"
 msgstr "Ставка накладных расходов"
 
@@ -9122,9 +9146,6 @@ msgstr "Закупки и стоимость проданных товаров"
 
 msgid "Purchasing"
 msgstr "Закупки"
-
-msgid "Purchasing & Cost of Goods"
-msgstr "качество"
 
 msgid "Purchasing & Inventory"
 msgstr "Закупки и инвентаризация"
@@ -10926,6 +10947,9 @@ msgstr "Стандартный"
 msgid "Standard cloud Carbon fits how your company runs"
 msgstr "Стандартное облачное решение Carbon соответствует тому, как работает ваша компания"
 
+msgid "Standard Cost Variances"
+msgstr "Отклонения стандартной стоимости"
+
 msgid "Standard factor"
 msgstr "Стандартный коэффициент"
 
@@ -11226,7 +11250,7 @@ msgid "Supplier Overview"
 msgstr "Обзор поставщика"
 
 msgid "Supplier Part"
-msgstr ""
+msgstr "Поставщик Детали"
 
 msgid "Supplier Part ID"
 msgstr "ID поставщика детали"
@@ -11245,6 +11269,9 @@ msgstr "Скидки по платежам поставщика"
 
 msgid "Supplier Payment Discounts (default)"
 msgstr "Скидки по платежам поставщика (по умолчанию)"
+
+msgid "Supplier Prepayments"
+msgstr "Авансовые платежи поставщикам"
 
 msgid "supplier process"
 msgstr "Процесс поставщика"
@@ -12258,7 +12285,7 @@ msgid "This storage type is currently used by {usageCount} storage unit{0}."
 msgstr "Этот тип хранилища в настоящее время используется {usageCount} хранилищем{0}."
 
 msgid "this supplier"
-msgstr ""
+msgstr "этот поставщик"
 
 msgid "This updates the theme for all users of the application"
 msgstr "Это обновляет тему для всех пользователей приложения"

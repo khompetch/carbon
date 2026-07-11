@@ -350,6 +350,9 @@ msgstr "क्षमता"
 msgid "About"
 msgstr "के बारे में"
 
+msgid "Absorption"
+msgstr "अवशोषण"
+
 msgid "Academy"
 msgstr "अकादमी"
 
@@ -427,6 +430,9 @@ msgstr "लेखांकन: GL, AR, AP, और महीने के अं�
 
 msgid "Accounts"
 msgstr "खाते"
+
+msgid "Accounts for recording differences between actual and standard costs"
+msgstr "वास्तविक और मानक लागत के बीच अंतर दर्ज करने के लिए खाते"
 
 msgid "Accounts Payable"
 msgstr "देय खाते"
@@ -1325,10 +1331,10 @@ msgstr "क्या आप सुनिश्चित हैं कि आप 
 
 #. placeholder {0}: supplierName(deleteTarget.supplierId)
 msgid "Are you sure you want to remove {0} as a supplier for this item? This cannot be undone."
-msgstr ""
+msgstr "क्या आप सुनिश्चित हैं कि आप इस आइटम के लिए {0} को आपूर्तिकर्ता के रूप में हटाना चाहते हैं? यह पूर्ववत नहीं किया जा सकता।"
 
 msgid "Are you sure you want to remove {supplierName} as a supplier for this item? This cannot be undone."
-msgstr ""
+msgstr "क्या आप सुनिश्चित हैं कि आप इस आइटम के लिए {supplierName} को आपूर्तिकर्ता के रूप में हटाना चाहते हैं? यह पूर्ववत नहीं किया जा सकता।"
 
 msgid "Are you sure you want to remove this item from the price list? This cannot be undone."
 msgstr "क्या आप सुनिश्चित हैं कि आप इस आइटम को मूल्य सूची से हटाना चाहते हैं? यह पूर्ववत नहीं किया जा सकता।"
@@ -1398,6 +1404,9 @@ msgstr "संपत्ति"
 
 msgid "Asset Account"
 msgstr "संपत्ति खाता"
+
+msgid "Asset account for advance payments made to suppliers before goods or services are received"
+msgstr "आपूर्तिकर्ताओं को माल या सेवाएं प्राप्त करने से पहले किए गए अग्रिम भुगतान के लिए संपत्ति खाता"
 
 msgid "Asset Acquisition Cost"
 msgstr "परिसंपत्ति अधिग्रहण लागत"
@@ -2293,9 +2302,6 @@ msgstr "नकद और बैंकिंग लेनदेन के लि�
 msgid "Configure default accounts for inventory management"
 msgstr "इन्वेंटरी प्रबंधन के लिए डिफ़ॉल्ट खाते कॉन्फ़िगर करें"
 
-msgid "Configure default accounts for purchasing and COGS"
-msgstr "खरीद और COGS के लिए डिफ़ॉल्ट खाते कॉन्फ़िगर करें"
-
 msgid "Configure default accounts for vendor and supplier transactions"
 msgstr "विक्रेता और आपूर्तिकर्ता लेनदेन के लिए डिफ़ॉल्ट खाते कॉन्फ़िगर करें"
 
@@ -2976,6 +2982,12 @@ msgstr "क्रेडिट खाता"
 msgid "Credit account when labor/machine time is absorbed into WIP"
 msgstr "क्रेडिट खाता जब श्रम / मशीन समय WIP में अवशोषित होता है"
 
+msgid "Credit account when overhead is absorbed into WIP"
+msgstr "जब ओवरहेड को WIP में अवशोषित किया जाता है तो क्रेडिट खाता"
+
+msgid "Credit accounts used when manufacturing costs are absorbed into WIP"
+msgstr "जब विनिर्माण लागत को WIP में अवशोषित किया जाता है तब उपयोग किए जाने वाले क्रेडिट खाते"
+
 msgid "Credits & Debits"
 msgstr "क्रेडिट और डेबिट"
 
@@ -3352,6 +3364,9 @@ msgstr "बिक्री और आय के लिए डिफ़ॉल्�
 msgid "Default accounts for tax-related transactions"
 msgstr "कर संबंधी लेनदेन के लिए डिफ़ॉल्ट खाते"
 
+msgid "Default accounts for the cost of goods sold and indirect purchases"
+msgstr "बेचे गए सामानों की लागत और अप्रत्यक्ष खरीद के लिए डिफ़ॉल्ट खाते"
+
 msgid "Default Approver"
 msgstr "डिफ़ॉल्ट अनुमोदक"
 
@@ -3659,7 +3674,7 @@ msgid "Delete Suggestion"
 msgstr "सुझाव हटाएं"
 
 msgid "Delete supplier"
-msgstr ""
+msgstr "आपूर्तिकर्ता हटाएं"
 
 msgid "Delete Supplier"
 msgstr "आपूर्तिकर्ता हटाएं"
@@ -5470,6 +5485,9 @@ msgstr "GL खाता जब श्रम या मशीन लागत ए
 
 msgid "GL account credited when labor or machine cost is absorbed into a production job."
 msgstr "GL खाता जब एक संपत्ति का निपटान किया जाता है तो जमा किए गए मूल्यह्रास को साफ करने के लिए डेबिट किया जाता है।"
+
+msgid "GL account credited when manufacturing overhead is absorbed into a production job."
+msgstr "जब विनिर्माण ओवरहेड को एक उत्पादन कार्य में अवशोषित किया जाता है तो GL खाता क्रेडिट किया जाता है।"
 
 msgid "GL account debited to clear accumulated depreciation when an asset is disposed."
 msgstr "GL खाता जब ग्राहक चालान पोस्ट किया जाता है तो डेबिट किया जाता है; जब ग्राहक भुगतान करता है तो साफ किया जाता है।"
@@ -8284,6 +8302,12 @@ msgstr "अत्यधिक लागू किया गया"
 msgid "Overdue"
 msgstr "अतिदेय"
 
+msgid "Overhead Absorption"
+msgstr "ओवरहेड अवशोषण"
+
+msgid "Overhead Absorption (default)"
+msgstr "ओवरहेड अवशोषण (डिफ़ॉल्ट)"
+
 msgid "Overhead Rate"
 msgstr "ओवरहेड दर"
 
@@ -9122,9 +9146,6 @@ msgstr "क्रय और बेचे गए माल की लागत"
 
 msgid "Purchasing"
 msgstr "क्रय"
-
-msgid "Purchasing & Cost of Goods"
-msgstr "गुणवत्ता"
 
 msgid "Purchasing & Inventory"
 msgstr "क्रय और इन्वेंटरी"
@@ -10926,6 +10947,9 @@ msgstr "मानक"
 msgid "Standard cloud Carbon fits how your company runs"
 msgstr "मानक क्लाउड कार्बन आपकी कंपनी के संचालन के तरीके के अनुरूप है"
 
+msgid "Standard Cost Variances"
+msgstr "मानक लागत विचरण"
+
 msgid "Standard factor"
 msgstr "मानक कारक"
 
@@ -11226,7 +11250,7 @@ msgid "Supplier Overview"
 msgstr "आपूर्तिकर्ता अवलोकन"
 
 msgid "Supplier Part"
-msgstr ""
+msgstr "आपूर्तिकर्ता भाग"
 
 msgid "Supplier Part ID"
 msgstr "आपूर्तिकर्ता भाग ID"
@@ -11245,6 +11269,9 @@ msgstr "आपूर्तिकर्ता भुगतान छूट"
 
 msgid "Supplier Payment Discounts (default)"
 msgstr "आपूर्तिकर्ता भुगतान छूट (डिफ़ॉल्ट)"
+
+msgid "Supplier Prepayments"
+msgstr "आपूर्तिकर्ता अग्रिम भुगतान"
 
 msgid "supplier process"
 msgstr "आपूर्तिकर्ता प्रक्रिया"
@@ -12258,7 +12285,7 @@ msgid "This storage type is currently used by {usageCount} storage unit{0}."
 msgstr "यह स्टोरेज प्रकार वर्तमान में {usageCount} स्टोरेज यूनिट{0} द्वारा उपयोग किया जा रहा है।"
 
 msgid "this supplier"
-msgstr ""
+msgstr "यह आपूर्तिकर्ता"
 
 msgid "This updates the theme for all users of the application"
 msgstr "यह एप्लिकेशन के सभी उपयोगकर्ताओं के लिए थीम को अपडेट करता है"

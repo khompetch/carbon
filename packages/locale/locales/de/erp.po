@@ -350,6 +350,9 @@ msgstr "Fähigkeit"
 msgid "About"
 msgstr "Über"
 
+msgid "Absorption"
+msgstr "Absorption"
+
 msgid "Academy"
 msgstr "Academy"
 
@@ -427,6 +430,9 @@ msgstr "Buchhaltung: Hauptbuch, Debitorenbuchhaltung, Kreditorenbuchhaltung und 
 
 msgid "Accounts"
 msgstr "Konten"
+
+msgid "Accounts for recording differences between actual and standard costs"
+msgstr "Konten zur Erfassung von Unterschieden zwischen tatsächlichen und Standardkosten"
 
 msgid "Accounts Payable"
 msgstr "Verbindlichkeiten aus Lieferungen und Leistungen"
@@ -1325,10 +1331,10 @@ msgstr "Sind Sie sicher, dass Sie diesen Auftrag freigeben möchten? Er wird auf
 
 #. placeholder {0}: supplierName(deleteTarget.supplierId)
 msgid "Are you sure you want to remove {0} as a supplier for this item? This cannot be undone."
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie {0} als Lieferant für diesen Artikel entfernen möchten? Dies kann nicht rückgängig gemacht werden."
 
 msgid "Are you sure you want to remove {supplierName} as a supplier for this item? This cannot be undone."
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie {supplierName} als Lieferant für diesen Artikel entfernen möchten? Dies kann nicht rückgängig gemacht werden."
 
 msgid "Are you sure you want to remove this item from the price list? This cannot be undone."
 msgstr "Sind Sie sicher, dass Sie diesen Artikel aus der Preisliste entfernen möchten? Dies kann nicht rückgängig gemacht werden."
@@ -1398,6 +1404,9 @@ msgstr "Anlage"
 
 msgid "Asset Account"
 msgstr "Vermögenskonto"
+
+msgid "Asset account for advance payments made to suppliers before goods or services are received"
+msgstr "Aktivkonto für Vorauszahlungen an Lieferanten vor Erhalt von Waren oder Dienstleistungen"
 
 msgid "Asset Acquisition Cost"
 msgstr "Vermögensanschaffungskosten"
@@ -2293,9 +2302,6 @@ msgstr "Standardkonten für Bargeld- und Banktransaktionen konfigurieren"
 msgid "Configure default accounts for inventory management"
 msgstr "Standardkonten für Bestandsverwaltung konfigurieren"
 
-msgid "Configure default accounts for purchasing and COGS"
-msgstr "Standardkonten für Einkauf und COGS konfigurieren"
-
 msgid "Configure default accounts for vendor and supplier transactions"
 msgstr "Standardkonten für Anbieter- und Lieferantentransaktionen konfigurieren"
 
@@ -2976,6 +2982,12 @@ msgstr "Gutschriftkonto"
 msgid "Credit account when labor/machine time is absorbed into WIP"
 msgstr "Gutschriftkonto, wenn Arbeits- / Maschinenzeit in WIP aufgenommen wird"
 
+msgid "Credit account when overhead is absorbed into WIP"
+msgstr "Aktivkonto, wenn Gemeinkosten in laufende Arbeiten aufgenommen werden"
+
+msgid "Credit accounts used when manufacturing costs are absorbed into WIP"
+msgstr "Aktienkonten, die verwendet werden, wenn Herstellungskosten in laufende Arbeiten aufgenommen werden"
+
 msgid "Credits & Debits"
 msgstr "Gutschriften & Belastungen"
 
@@ -3352,6 +3364,9 @@ msgstr "Standardkonten für Verkauf und Einkommen"
 msgid "Default accounts for tax-related transactions"
 msgstr "Standardkonten für steuerbezogene Transaktionen"
 
+msgid "Default accounts for the cost of goods sold and indirect purchases"
+msgstr "Standardkonten für die Kosten der verkauften Waren und indirekte Käufe"
+
 msgid "Default Approver"
 msgstr "Standardgenehmiger"
 
@@ -3659,7 +3674,7 @@ msgid "Delete Suggestion"
 msgstr "Vorschlag löschen"
 
 msgid "Delete supplier"
-msgstr ""
+msgstr "Lieferant löschen"
 
 msgid "Delete Supplier"
 msgstr "Lieferant löschen"
@@ -5470,6 +5485,9 @@ msgstr "GL-Konto, das gutgeschrieben wird, wenn Arbeits- oder Maschinenkosten in
 
 msgid "GL account credited when labor or machine cost is absorbed into a production job."
 msgstr "GL-Konto, das belastet wird, um die angesammelte Abschreibung zu löschen, wenn ein Vermögenswert veräußert wird."
+
+msgid "GL account credited when manufacturing overhead is absorbed into a production job."
+msgstr "Sachkonto, das belastet wird, wenn Herstellungsgemeinkosten in einen Produktionsauftrag aufgenommen werden."
 
 msgid "GL account debited to clear accumulated depreciation when an asset is disposed."
 msgstr "GL-Konto, das belastet wird, wenn eine Kundenrechnung gebucht wird; gelöscht, wenn der Kunde bezahlt."
@@ -8284,6 +8302,12 @@ msgstr "Überangewendet um"
 msgid "Overdue"
 msgstr "Überfällig"
 
+msgid "Overhead Absorption"
+msgstr "Gemeinkosten-Absorption"
+
+msgid "Overhead Absorption (default)"
+msgstr "Gemeinkosten-Absorption (Standard)"
+
 msgid "Overhead Rate"
 msgstr "Gemeinkostensatz"
 
@@ -9122,9 +9146,6 @@ msgstr "Einkauf & Kosten der verkauften Waren"
 
 msgid "Purchasing"
 msgstr "Beschaffung"
-
-msgid "Purchasing & Cost of Goods"
-msgstr "Qualität"
 
 msgid "Purchasing & Inventory"
 msgstr "Beschaffung & Bestand"
@@ -10926,6 +10947,9 @@ msgstr "Standard"
 msgid "Standard cloud Carbon fits how your company runs"
 msgstr "Standard Cloud Carbon passt zu Ihrer Unternehmensweise"
 
+msgid "Standard Cost Variances"
+msgstr "Standardkosten-Abweichungen"
+
 msgid "Standard factor"
 msgstr "Standardfaktor"
 
@@ -11226,7 +11250,7 @@ msgid "Supplier Overview"
 msgstr "Lieferantenübersicht"
 
 msgid "Supplier Part"
-msgstr ""
+msgstr "Lieferantenteil"
 
 msgid "Supplier Part ID"
 msgstr "Lieferanten-Artikel-ID"
@@ -11245,6 +11269,9 @@ msgstr "Lieferanten-Zahlungsrabatte"
 
 msgid "Supplier Payment Discounts (default)"
 msgstr "Lieferanten-Zahlungsrabatte (Standard)"
+
+msgid "Supplier Prepayments"
+msgstr "Lieferanten-Vorauszahlungen"
 
 msgid "supplier process"
 msgstr "Lieferantenprozess"
@@ -12258,7 +12285,7 @@ msgid "This storage type is currently used by {usageCount} storage unit{0}."
 msgstr "Dieser Speichertyp wird derzeit von {usageCount} Speichereinheit{0} verwendet."
 
 msgid "this supplier"
-msgstr ""
+msgstr "dieser Lieferant"
 
 msgid "This updates the theme for all users of the application"
 msgstr "Dies aktualisiert das Design für alle Benutzer der Anwendung"
