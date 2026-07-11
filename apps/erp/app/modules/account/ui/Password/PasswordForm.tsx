@@ -13,7 +13,11 @@ import { Password, Submit } from "~/components/Form";
 import { path } from "~/utils/path";
 import { accountPasswordValidator } from "../../account.models";
 
-const PasswordForm = () => {
+type PasswordFormProps = {
+  hasSetPassword: boolean;
+};
+
+const PasswordForm = ({ hasSetPassword }: PasswordFormProps) => {
   const { t } = useLingui();
   const [passwordsMatch, setPasswordsMatch] = useState(false);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -38,12 +42,18 @@ const PasswordForm = () => {
       >
         <CardHeader>
           <CardTitle>
-            <Trans>Update Password</Trans>
+            {hasSetPassword ? (
+              <Trans>Update Password</Trans>
+            ) : (
+              <Trans>Set Password</Trans>
+            )}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <VStack spacing={4} className="my-4 max-w-[440px]">
-            <Password name="currentPassword" label={t`Current Password`} />
+            {hasSetPassword && (
+              <Password name="currentPassword" label={t`Current Password`} />
+            )}
             <Password
               ref={passwordRef}
               onChange={onPasswordChange}
@@ -60,7 +70,11 @@ const PasswordForm = () => {
         </CardContent>
         <CardFooter>
           <Submit isDisabled={!passwordsMatch} withBlocker={false}>
-            Update Password
+            {hasSetPassword ? (
+              <Trans>Update Password</Trans>
+            ) : (
+              <Trans>Set Password</Trans>
+            )}
           </Submit>
         </CardFooter>
       </ValidatedForm>

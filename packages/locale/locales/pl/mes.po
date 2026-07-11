@@ -390,6 +390,9 @@ msgstr "Zakończ {0}"
 msgid "Finish Anyways"
 msgstr "Zakończ mimo wszystko"
 
+msgid "Forgot password? Sign in with email link"
+msgstr ""
+
 msgid "Forgot to Clock Out?"
 msgstr "Zapomniałeś zakończyć zmianę?"
 
@@ -722,6 +725,9 @@ msgstr "Część"
 msgid "Passed Inspection"
 msgstr "Inspekcja zaliczona"
 
+msgid "Password"
+msgstr ""
+
 msgid "Pause"
 msgstr "Pauza"
 
@@ -951,6 +957,9 @@ msgstr "Brakuje"
 msgid "Short pick {itemName}"
 msgstr "Krótki pick {itemName}"
 
+msgid "Sign in"
+msgstr ""
+
 msgid "Sign in with Email"
 msgstr "Zaloguj się przez e-mail"
 
@@ -962,6 +971,9 @@ msgstr "Zaloguj się przez Outlook"
 
 msgid "Sign in with Passkey"
 msgstr "Zaloguj się za pomocą klucza dostępu"
+
+msgid "Sign in with password instead"
+msgstr ""
 
 msgid "Sign Out"
 msgstr "Wyloguj się"

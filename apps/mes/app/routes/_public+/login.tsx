@@ -6,16 +6,30 @@ import {
   error,
   isAuthProviderEnabled,
   magicLinkValidator,
-  RATE_LIMIT
+  passwordLoginValidator,
+  RATE_LIMIT,
+  safeRedirect
 } from "@carbon/auth";
-import { sendMagicLink, verifyAuthSession } from "@carbon/auth/auth.server";
+import {
+  sendMagicLink,
+  signInWithEmail,
+  verifyAuthSession
+} from "@carbon/auth/auth.server";
 import {
   clearAuthCookies,
   flash,
-  getAuthSession
+  getAuthSession,
+  setAuthSession
 } from "@carbon/auth/session.server";
 import { getUserByEmail } from "@carbon/auth/users.server";
-import { Hidden, Input, Submit, ValidatedForm, validator } from "@carbon/form";
+import {
+  Hidden,
+  Input,
+  Password,
+  Submit,
+  ValidatedForm,
+  validator
+} from "@carbon/form";
 import { Ratelimit, redis } from "@carbon/kv";
 import {
   Alert,
@@ -60,6 +74,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const hasOutlookAuth = isAuthProviderEnabled("azure");
   const hasGoogleAuth = isAuthProviderEnabled("google");
   const hasPasskeyAuth = isAuthProviderEnabled("passkey");
+  const hasPasswordAuth = isAuthProviderEnabled("password");
 
   const authSession = await getAuthSession(request);
   if (authSession) {
@@ -68,12 +83,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
     const cookieHeaders = await clearAuthCookies(request);
     return data(
-      { hasOutlookAuth, hasGoogleAuth, hasPasskeyAuth },
+      { hasOutlookAuth, hasGoogleAuth, hasPasskeyAuth, hasPasswordAuth },
       { headers: cookieHeaders }
     );
   }
 
-  return { hasOutlookAuth, hasGoogleAuth, hasPasskeyAuth };
+  return { hasOutlookAuth, hasGoogleAuth, hasPasskeyAuth, hasPasswordAuth };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -93,9 +108,42 @@ export async function action({ request }: ActionFunctionArgs) {
     );
   }
 
-  const validation = await validator(magicLinkValidator).validate(
-    await request.formData()
-  );
+  const formData = await request.formData();
+
+  if (
+    formData.get("intent") === "password" &&
+    isAuthProviderEnabled("password")
+  ) {
+    const validation = await validator(passwordLoginValidator).validate(
+      formData
+    );
+
+    if (validation.error) {
+      return error(validation.error, "Invalid email or password");
+    }
+
+    const { email, password, redirectTo } = validation.data;
+    const user = await getUserByEmail(email);
+    // Same generic message for unknown user and wrong password — don't leak
+    // which of the two failed.
+    const authSession = user.data?.active
+      ? await signInWithEmail(email, password)
+      : null;
+
+    if (!authSession) {
+      return data(
+        { success: false, message: "Invalid email/password combination" },
+        await flash(request, error(null, "Failed to sign in"))
+      );
+    }
+
+    const sessionCookie = await setAuthSession(request, { authSession });
+    return redirect(safeRedirect(redirectTo), {
+      headers: [["Set-Cookie", sessionCookie]]
+    });
+  }
+
+  const validation = await validator(magicLinkValidator).validate(formData);
 
   if (validation.error) {
     return error(validation.error, "Invalid email address");
@@ -125,11 +173,14 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function LoginRoute() {
   const { t } = useLingui();
-  const { hasOutlookAuth, hasGoogleAuth, hasPasskeyAuth } =
+  const { hasOutlookAuth, hasGoogleAuth, hasPasskeyAuth, hasPasswordAuth } =
     useLoaderData<typeof loader>();
 
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") ?? undefined;
+  const [authMode, setAuthMode] = useState<"magic-link" | "password">(
+    "magic-link"
+  );
 
   const fetcher = useFetcher<
     { success: true } | { success: false; message: string }
@@ -299,12 +350,20 @@ export default function LoginRoute() {
           </>
         ) : (
           <ValidatedForm
+            key={authMode}
             fetcher={fetcher}
-            validator={magicLinkValidator}
+            validator={
+              authMode === "password"
+                ? passwordLoginValidator
+                : magicLinkValidator
+            }
             defaultValues={{ redirectTo }}
             method="post"
           >
             <Hidden name="redirectTo" value={redirectTo} type="hidden" />
+            {authMode === "password" && (
+              <Hidden name="intent" value="password" />
+            )}
             <VStack spacing={2}>
               {fetcher.data?.success === false && fetcher.data?.message && (
                 <Alert variant="destructive">
@@ -371,6 +430,15 @@ export default function LoginRoute() {
                 autoComplete={hasPasskeyAuth ? "email webauthn" : "email"}
               />
 
+              {authMode === "password" && (
+                <Password
+                  name="password"
+                  label=""
+                  placeholder={t`Password`}
+                  autoComplete="current-password"
+                />
+              )}
+
               <Submit
                 isDisabled={fetcher.state !== "idle"}
                 isLoading={fetcher.state === "submitting"}
@@ -379,8 +447,35 @@ export default function LoginRoute() {
                 withBlocker={false}
                 variant="secondary"
               >
-                <Trans>Sign in with Email</Trans>
+                {authMode === "password" ? (
+                  <Trans>Sign in</Trans>
+                ) : (
+                  <Trans>Sign in with Email</Trans>
+                )}
               </Submit>
+
+              {hasPasswordAuth && authMode === "magic-link" && (
+                <Button
+                  type="button"
+                  variant="link"
+                  size="sm"
+                  className="w-full"
+                  onClick={() => setAuthMode("password")}
+                >
+                  <Trans>Sign in with password instead</Trans>
+                </Button>
+              )}
+              {authMode === "password" && (
+                <Button
+                  type="button"
+                  variant="link"
+                  size="sm"
+                  className="w-full"
+                  onClick={() => setAuthMode("magic-link")}
+                >
+                  <Trans>Forgot password? Sign in with email link</Trans>
+                </Button>
+              )}
             </VStack>
           </ValidatedForm>
         )}

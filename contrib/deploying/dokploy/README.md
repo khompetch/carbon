@@ -26,6 +26,7 @@ else, drop the `postgres`/`gotrue`/`postgrest`/`realtime`/`storage`/`meta`/
 | `bin/run.sh` | Neutral `exec "$@"` entrypoint shim — lets several Supabase images' proven CMD arrays be reused unchanged without Swarm secrets. |
 | `postgres/01-roles.sh`, `postgres/02-performance.sh` | Postgres role bootstrap and tuning, run once on first init. |
 | `scripts/gen-supabase-keys.sh` | Generates the Supabase JWT key trio (openssl only). |
+| `scripts/backup.sh` | Nightly-able backup: Postgres dump + storage volume archive. |
 
 ## 1. Generate secrets
 
@@ -83,15 +84,25 @@ repo's root `Dockerfile` and pulls the pinned Supabase/Redis/Inngest images.
 
 ## 6. Apply database migrations (once, after first deploy)
 
-```bash
-pnpm exec supabase migration up --include-all \
-  --db-url "postgresql://supabase_admin:<POSTGRES_PASSWORD>@<kong-or-postgres-host>:5432/postgres"
-```
+The `postgres` service isn't published outside the Docker network, and Kong
+only proxies HTTP (auth/rest/storage/realtime) — it can't carry a raw Postgres
+connection. Run the migration from *inside* the compose network instead:
 
-Run this from a machine with this repo checked out and `pnpm install` already
-done, or from a shell opened into the running `erp` container via Dokploy's
-terminal/exec feature (where the `postgres` hostname resolves on the compose
-network). Substitute the `POSTGRES_PASSWORD` you generated in step 1.
+1. Open a terminal into the running `erp` container via Dokploy's
+   terminal/exec feature (the image ships the full repo checkout at `/repo`,
+   including `pnpm`).
+2. `cd /repo/packages/database`
+3. Run, substituting the `POSTGRES_PASSWORD` you generated in step 1 (the
+   hostname stays exactly `postgres` — that's the compose service name,
+   resolvable because this shell is on the same network). The bundled
+   Postgres doesn't have TLS configured, so the connection must explicitly
+   disable it — otherwise the CLI fails with `tls error (server refused TLS
+   connection)`:
+
+   ```bash
+   PGSSLMODE=disable pnpm exec supabase migration up --include-all \
+     --db-url "postgresql://supabase_admin:<POSTGRES_PASSWORD>@postgres:5432/postgres?sslmode=disable"
+   ```
 
 ## 7. Verify
 
@@ -100,3 +111,108 @@ curl -f https://erp.example.com/health
 curl -f https://mes.example.com/health
 curl -f https://supabase.example.com/auth/v1/health
 ```
+
+## 8. Backups
+
+A complete backup is **two paired artifacts** — restore them together, never
+one without the other:
+
+- **`db.sql.gz`** — `pg_dump` of the whole database: business data, auth
+  users, and the *storage metadata* (`storage.buckets` / `storage.objects`).
+- **`storage.tar.gz`** — the `storage` Docker volume: the actual uploaded
+  files (documents, avatars, 3D models) that the metadata points at. This
+  stack runs Supabase Storage with `STORAGE_BACKEND: file`, so uploads live
+  on this volume, not in Postgres.
+
+Run on the VPS (auto-detects the Dokploy project from the running
+`supabase/postgres` container; override with `PROJECT=<name>`):
+
+```bash
+./scripts/backup.sh
+# -> ./backups/carbon-<timestamp>/{db.sql.gz,storage.tar.gz}
+```
+
+Schedule it nightly and ship the result off the VPS — a copy on the same
+machine is not a backup:
+
+```bash
+# crontab -e  (02:17 nightly, keep 14 local days, then sync offsite)
+17 2 * * * cd /path/to/carbon/contrib/deploying/dokploy && RETENTION_DAYS=14 BACKUP_DIR=/var/backups/carbon ./scripts/backup.sh && rclone sync /var/backups/carbon remote:carbon-backups
+```
+
+Restore:
+
+```bash
+# database
+gunzip -c db.sql.gz | docker exec -i <project>-postgres-1 psql -U postgres postgres
+# storage volume
+docker run --rm -v <project>_storage:/data -v "$PWD:/in:ro" alpine:3 \
+  sh -c 'rm -rf /data/* && tar xzf /in/storage.tar.gz -C /data'
+```
+
+Test a restore at least once (e.g. into a scratch Dokploy project) — an
+untested backup is not a backup.
+
+Then log in at `https://erp.example.com/login` with the email you want as the
+first admin — there's no separate account-bootstrap script. An unknown email
+gets a 6-digit verification code (sent via `RESEND_API_KEY`, so that must be
+set) and is walked into the onboarding wizard, which creates the first
+company and makes that user its owner. `GOTRUE_DISABLE_SIGNUP=true` does not
+block this — Carbon's signup goes through the Supabase admin API
+(service-role key), a separate path from GoTrue's public self-service signup.
+
+## Troubleshooting
+
+**"Failed to send verification code" on first login** — `RESEND_API_KEY` is
+missing/invalid, or `RESEND_DOMAIN` isn't a verified sending domain in your
+Resend account. Check the `erp` container logs right after a login attempt
+for the underlying Resend error. To unblock testing without email delivery,
+set `DISABLE_RESEND=1` on `erp` and redeploy — the verification code gets
+printed to the `erp` logs instead of emailed (not for production use, since
+other features like user invites also go through Resend).
+
+**An edge function fails with `worker boot error: ... could not find an
+appropriate entrypoint`** (e.g. onboarding's "Fatal: failed to seed company")
+— `edge-runtime` bind-mounts `packages/database/supabase/functions` and
+`packages/dev/docker/edge-main` from the repo checkout. Docker only
+evaluates a bind mount when a container is *created*, not on every start —
+if `edge-runtime` was created before a `git pull` populated those
+directories (e.g. it wasn't recreated on some earlier deploy while other
+services were), it keeps serving an empty, stale view of them indefinitely.
+Fix: force it to recreate —
+
+```bash
+cd <dokploy-compose-checkout>/contrib/deploying/dokploy
+docker compose up -d --force-recreate edge-runtime
+```
+
+or trigger a full **Redeploy** from the Dokploy UI, which recreates every
+service. Confirm with `docker exec <edge-runtime-container> ls -la
+/home/deno/functions/<function-name>/` — it should show `index.ts`, not an
+empty directory.
+
+**Deploy hangs during the app build (around `rendering chunks...`)** — the
+VPS ran out of memory. Docker Compose builds `erp` and `mes` in parallel by
+default, the app build is memory-hungry at its Vite chunk-rendering peak, and
+the whole running stack is competing for the same RAM. Confirm with `free -h`
+(no free memory/swap) and `dmesg | grep -iE "oom|killed process"`. Fix all
+three of:
+
+1. **Add swap** (once, persists across reboots):
+
+   ```bash
+   fallocate -l 8G /swapfile && chmod 600 /swapfile
+   mkswap /swapfile && swapon /swapfile
+   echo '/swapfile none swap sw 0 0' >> /etc/fstab
+   sysctl vm.swappiness=10
+   ```
+
+2. **Build one image at a time** — set `COMPOSE_PARALLEL_LIMIT=1` in the
+   application's environment (already in `.env.example`).
+3. **Cap the build heap** — the compose file passes
+   `NODE_OPTIONS: --max-old-space-size=4096` as a build arg (the Dockerfile's
+   default assumes an ~8 GB build machine).
+
+Builds get slower but complete. For frequent deploys on a small VPS, the
+longer-term fix is building the images in CI (e.g. GitHub Actions → a
+registry) and pointing the compose `image:` at them instead of `build:`.

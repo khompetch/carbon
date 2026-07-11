@@ -390,6 +390,9 @@ msgstr "Завершить {0}"
 msgid "Finish Anyways"
 msgstr "Завершить в любом случае"
 
+msgid "Forgot password? Sign in with email link"
+msgstr ""
+
 msgid "Forgot to Clock Out?"
 msgstr "Забыли отметить уход?"
 
@@ -722,6 +725,9 @@ msgstr "Деталь"
 msgid "Passed Inspection"
 msgstr "Контроль пройден"
 
+msgid "Password"
+msgstr ""
+
 msgid "Pause"
 msgstr "Пауза"
 
@@ -951,6 +957,9 @@ msgstr "Недостача"
 msgid "Short pick {itemName}"
 msgstr "Короткий отбор {itemName}"
 
+msgid "Sign in"
+msgstr ""
+
 msgid "Sign in with Email"
 msgstr "Войти по электронной почте"
 
@@ -962,6 +971,9 @@ msgstr "Войти через Outlook"
 
 msgid "Sign in with Passkey"
 msgstr "Войти с помощью Passkey"
+
+msgid "Sign in with password instead"
+msgstr ""
 
 msgid "Sign Out"
 msgstr "Выйти"

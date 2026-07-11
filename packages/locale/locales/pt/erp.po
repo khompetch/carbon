@@ -762,6 +762,9 @@ msgstr "Todos os Itens"
 msgid "All jobs completed"
 msgstr "Todos os trabalhos concluídos"
 
+msgid "All Locations"
+msgstr ""
+
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "Todos os membros dos grupos selecionados e indivíduos selecionados poderão aprovar solicitações"
 
@@ -1545,6 +1548,9 @@ msgstr "Liberar automaticamente o trabalho quando o kanban é digitalizado"
 
 msgid "Automatically start the job when the kanban is scanned"
 msgstr "Iniciar automaticamente o trabalho quando o kanban é digitalizado"
+
+msgid "Availability"
+msgstr ""
 
 msgid "available"
 msgstr "disponível"
@@ -3943,6 +3949,9 @@ msgstr "Baixar PDF"
 msgid "Download template"
 msgstr "Baixar modelo"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "Rascunho"
 
@@ -5283,6 +5292,9 @@ msgstr "Para empresas dos EUA que lidam com dados ITAR"
 msgid "Forecast method: <0>{0}</0>. This row was not derived from active jobs, so no parent sources are available."
 msgstr "Método de previsão: <0>{0}</0>. Esta linha não foi derivada de trabalhos ativos, portanto nenhuma fonte pai está disponível."
 
+msgid "Forgot password? Sign in with email link"
+msgstr ""
+
 msgid "Forgot to Clock Out?"
 msgstr "Esqueceu de Registrar a Saída?"
 
@@ -5579,6 +5591,9 @@ msgstr "O cronograma de ativação é mantido se cada etapa for concluída confo
 
 msgid "Going live on Carbon"
 msgstr "Entrar em produção no Carbon"
+
+msgid "Good"
+msgstr ""
 
 #. placeholder {0}: user.firstName
 msgid "Good afternoon, {0}"
@@ -6607,6 +6622,12 @@ msgstr "Opções de Lista"
 
 msgid "List Parameters"
 msgstr "Parâmetros de Lista"
+
+msgid "Live"
+msgstr ""
+
+msgid "Live in weeks, not quarters. Most of the product is already built."
+msgstr "Implemente em semanas, não em trimestres. A maioria do produto já está construída."
 
 msgid "Live on Carbon"
 msgstr "Ao vivo no Carbon"
@@ -7806,6 +7827,9 @@ msgstr "Nenhuma impressora configurada"
 msgid "No printers configured. Click \"Add Printer\" to create one."
 msgstr "Nenhuma impressora configurada. Clique em \"Adicionar Impressora\" para criar uma."
 
+msgid "No production data within range"
+msgstr ""
+
 msgid "No Quote"
 msgstr "Sem Cotação"
 
@@ -7949,6 +7973,15 @@ msgstr "Número"
 
 msgid "Number of inventory units per purchase unit"
 msgstr "Número de unidades de inventário por unidade de compra"
+
+msgid "OEE"
+msgstr ""
+
+msgid "OEE by Process"
+msgstr ""
+
+msgid "OEE by Work Center"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "Impacto OEE"
@@ -8387,6 +8420,9 @@ msgstr "Passar"
 msgid "Passed"
 msgstr "Aprovado"
 
+msgid "Password"
+msgstr ""
+
 msgid "Path"
 msgstr "Caminho"
 
@@ -8479,6 +8515,9 @@ msgstr "Percentagem do Lote"
 
 msgid "Perfect for low-cost evaluation"
 msgstr "Perfeito para avaliação de baixo custo"
+
+msgid "Performance"
+msgstr ""
 
 msgid "Period"
 msgstr "Período"
@@ -9907,6 +9946,9 @@ msgstr "Inventário em execução após o suprimento e demanda de cada semana �
 msgid "Running Total"
 msgstr "Total em Execução"
 
+msgid "Runtime"
+msgstr ""
+
 msgid "S-1 (coarsest special)"
 msgstr "S-1 (mais especial grosseiro)"
 
@@ -10118,6 +10160,9 @@ msgstr "Escopos"
 
 msgid "Scrap"
 msgstr "Sucata"
+
+msgid "Scrap by Reason"
+msgstr ""
 
 msgid "Scrap Percent"
 msgstr "Percentual de Sucata"
@@ -10466,6 +10511,9 @@ msgstr "Defina valores de projeção de demanda para cada semana"
 msgid "Set due date"
 msgstr "Definir data de vencimento"
 
+msgid "Set Password"
+msgstr ""
+
 msgid "Set Pricing"
 msgstr "Definir Preço"
 
@@ -10710,6 +10758,9 @@ msgstr "Exibido como um fundo suave atrás de cada página dos PDFs gerados"
 msgid "Shown to the user when this rule fails."
 msgstr "Mostrado ao usuário quando esta regra falha."
 
+msgid "Sign in"
+msgstr ""
+
 msgid "Sign in with Email"
 msgstr "Entrar com Email"
 
@@ -10721,6 +10772,9 @@ msgstr "Entrar com Outlook"
 
 msgid "Sign in with Passkey"
 msgstr "Entrar com Passkey"
+
+msgid "Sign in with password instead"
+msgstr ""
 
 msgid "Sign Out"
 msgstr "Sair"

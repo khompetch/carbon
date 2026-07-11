@@ -390,6 +390,9 @@ msgstr "Finish {0}"
 msgid "Finish Anyways"
 msgstr "Finish Anyways"
 
+msgid "Forgot password? Sign in with email link"
+msgstr "Forgot password? Sign in with email link"
+
 msgid "Forgot to Clock Out?"
 msgstr "Forgot to Clock Out?"
 
@@ -722,6 +725,9 @@ msgstr "Part"
 msgid "Passed Inspection"
 msgstr "Passed Inspection"
 
+msgid "Password"
+msgstr "Password"
+
 msgid "Pause"
 msgstr "Pause"
 
@@ -951,6 +957,9 @@ msgstr "Short"
 msgid "Short pick {itemName}"
 msgstr "Short pick {itemName}"
 
+msgid "Sign in"
+msgstr "Sign in"
+
 msgid "Sign in with Email"
 msgstr "Sign in with Email"
 
@@ -962,6 +971,9 @@ msgstr "Sign in with Outlook"
 
 msgid "Sign in with Passkey"
 msgstr "Sign in with Passkey"
+
+msgid "Sign in with password instead"
+msgstr "Sign in with password instead"
 
 msgid "Sign Out"
 msgstr "Sign Out"

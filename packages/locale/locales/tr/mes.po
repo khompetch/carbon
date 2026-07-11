@@ -390,6 +390,9 @@ msgstr "Bitir {0}"
 msgid "Finish Anyways"
 msgstr "Yine de Bitir"
 
+msgid "Forgot password? Sign in with email link"
+msgstr ""
+
 msgid "Forgot to Clock Out?"
 msgstr "Çıkış yapmayı unuttunuz mu?"
 
@@ -722,6 +725,9 @@ msgstr "Parça"
 msgid "Passed Inspection"
 msgstr "Kontrolden Geçti"
 
+msgid "Password"
+msgstr ""
+
 msgid "Pause"
 msgstr "Duraklat"
 
@@ -951,6 +957,9 @@ msgstr "Azalt"
 msgid "Short pick {itemName}"
 msgstr "Kısmi toplama {itemName}"
 
+msgid "Sign in"
+msgstr ""
+
 msgid "Sign in with Email"
 msgstr "E-posta ile Giriş Yap"
 
@@ -962,6 +971,9 @@ msgstr "Outlook ile giriş yap"
 
 msgid "Sign in with Passkey"
 msgstr "Passkey ile Giriş Yap"
+
+msgid "Sign in with password instead"
+msgstr ""
 
 msgid "Sign Out"
 msgstr "Oturumu Kapat"

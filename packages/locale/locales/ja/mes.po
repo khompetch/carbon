@@ -390,6 +390,9 @@ msgstr "完了 {0}"
 msgid "Finish Anyways"
 msgstr "とにかく完了"
 
+msgid "Forgot password? Sign in with email link"
+msgstr ""
+
 msgid "Forgot to Clock Out?"
 msgstr "退勤打刻を忘れましたか？"
 
@@ -722,6 +725,9 @@ msgstr "パーツ"
 msgid "Passed Inspection"
 msgstr "検査合格"
 
+msgid "Password"
+msgstr ""
+
 msgid "Pause"
 msgstr "一時停止"
 
@@ -951,6 +957,9 @@ msgstr "不足"
 msgid "Short pick {itemName}"
 msgstr "短いピック {itemName}"
 
+msgid "Sign in"
+msgstr ""
+
 msgid "Sign in with Email"
 msgstr "メールでサインイン"
 
@@ -962,6 +971,9 @@ msgstr "Outlookでサインイン"
 
 msgid "Sign in with Passkey"
 msgstr "パスキーでサインイン"
+
+msgid "Sign in with password instead"
+msgstr ""
 
 msgid "Sign Out"
 msgstr "サインアウト"

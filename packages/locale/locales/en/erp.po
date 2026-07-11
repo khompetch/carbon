@@ -762,6 +762,9 @@ msgstr "All Items"
 msgid "All jobs completed"
 msgstr "All jobs completed"
 
+msgid "All Locations"
+msgstr "All Locations"
+
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "All members of selected groups and selected individuals will be able to approve requests"
 
@@ -1545,6 +1548,9 @@ msgstr "Automatically release the job when the kanban is scanned"
 
 msgid "Automatically start the job when the kanban is scanned"
 msgstr "Automatically start the job when the kanban is scanned"
+
+msgid "Availability"
+msgstr "Availability"
 
 msgid "available"
 msgstr "available"
@@ -3943,6 +3949,9 @@ msgstr "Download PDF"
 msgid "Download template"
 msgstr "Download template"
 
+msgid "Downtime"
+msgstr "Downtime"
+
 msgid "Draft"
 msgstr "Draft"
 
@@ -5283,6 +5292,9 @@ msgstr "For US companies handling ITAR data"
 msgid "Forecast method: <0>{0}</0>. This row was not derived from active jobs, so no parent sources are available."
 msgstr "Forecast method: <0>{0}</0>. This row was not derived from active jobs, so no parent sources are available."
 
+msgid "Forgot password? Sign in with email link"
+msgstr "Forgot password? Sign in with email link"
+
 msgid "Forgot to Clock Out?"
 msgstr "Forgot to Clock Out?"
 
@@ -5579,6 +5591,9 @@ msgstr "Go-live timing holds if each gate is cleared on schedule"
 
 msgid "Going live on Carbon"
 msgstr "Going live on Carbon"
+
+msgid "Good"
+msgstr "Good"
 
 #. placeholder {0}: user.firstName
 msgid "Good afternoon, {0}"
@@ -6607,6 +6622,12 @@ msgstr "List Options"
 
 msgid "List Parameters"
 msgstr "List Parameters"
+
+msgid "Live"
+msgstr "Live"
+
+msgid "Live in weeks, not quarters. Most of the product is already built."
+msgstr "Live in weeks, not quarters. Most of the product is already built."
 
 msgid "Live on Carbon"
 msgstr "Live on Carbon"
@@ -7806,6 +7827,9 @@ msgstr "No printer configured"
 msgid "No printers configured. Click \"Add Printer\" to create one."
 msgstr "No printers configured. Click \"Add Printer\" to create one."
 
+msgid "No production data within range"
+msgstr "No production data within range"
+
 msgid "No Quote"
 msgstr "No Quote"
 
@@ -7949,6 +7973,15 @@ msgstr "Number"
 
 msgid "Number of inventory units per purchase unit"
 msgstr "Number of inventory units per purchase unit"
+
+msgid "OEE"
+msgstr "OEE"
+
+msgid "OEE by Process"
+msgstr "OEE by Process"
+
+msgid "OEE by Work Center"
+msgstr "OEE by Work Center"
 
 msgid "OEE Impact"
 msgstr "OEE Impact"
@@ -8387,6 +8420,9 @@ msgstr "Pass"
 msgid "Passed"
 msgstr "Passed"
 
+msgid "Password"
+msgstr "Password"
+
 msgid "Path"
 msgstr "Path"
 
@@ -8479,6 +8515,9 @@ msgstr "Percentage of Lot"
 
 msgid "Perfect for low-cost evaluation"
 msgstr "Perfect for low-cost evaluation"
+
+msgid "Performance"
+msgstr "Performance"
 
 msgid "Period"
 msgstr "Period"
@@ -9907,6 +9946,9 @@ msgstr "Running inventory after each week's supply and demand — the line."
 msgid "Running Total"
 msgstr "Running Total"
 
+msgid "Runtime"
+msgstr "Runtime"
+
 msgid "S-1 (coarsest special)"
 msgstr "S-1 (coarsest special)"
 
@@ -10118,6 +10160,9 @@ msgstr "Scopes"
 
 msgid "Scrap"
 msgstr "Scrap"
+
+msgid "Scrap by Reason"
+msgstr "Scrap by Reason"
 
 msgid "Scrap Percent"
 msgstr "Scrap Percent"
@@ -10466,6 +10511,9 @@ msgstr "Set demand projection values for each week"
 msgid "Set due date"
 msgstr "Set due date"
 
+msgid "Set Password"
+msgstr "Set Password"
+
 msgid "Set Pricing"
 msgstr "Set Pricing"
 
@@ -10710,6 +10758,9 @@ msgstr "Shown as a faint background behind every page of generated PDFs"
 msgid "Shown to the user when this rule fails."
 msgstr "Shown to the user when this rule fails."
 
+msgid "Sign in"
+msgstr "Sign in"
+
 msgid "Sign in with Email"
 msgstr "Sign in with Email"
 
@@ -10721,6 +10772,9 @@ msgstr "Sign in with Outlook"
 
 msgid "Sign in with Passkey"
 msgstr "Sign in with Passkey"
+
+msgid "Sign in with password instead"
+msgstr "Sign in with password instead"
 
 msgid "Sign Out"
 msgstr "Sign Out"

@@ -30,22 +30,24 @@ import {
 import { msg } from "@lingui/core/macro";
 import { startRegistration } from "@simplewebauthn/browser";
 import { useState } from "react";
-import { LuFingerprint, LuTrash2 } from "react-icons/lu";
+import { LuFingerprint, LuLock, LuTrash2 } from "react-icons/lu";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import {
   data,
+  Link,
   redirect,
   useFetcher,
   useLoaderData,
   useRevalidator
 } from "react-router";
+import { useLocale } from "@react-aria/i18n";
 import {
   accountProfileValidator,
   getAccount,
   updateAvatar,
   updatePublicAccount
 } from "~/modules/account";
-import { ProfileForm } from "~/modules/account/ui/Profile";
+import { ProfileForm, ProfileLanguageForm } from "~/modules/account/ui/Profile";
 import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
 
@@ -211,6 +213,7 @@ export default function AccountProfile() {
   const deleteFetcher = useFetcher();
   const renameFetcher = useFetcher();
   const { revalidate } = useRevalidator();
+  const { locale } = useLocale();
   const passkeysEnabled = isAuthProviderEnabled("passkey");
   const [registering, setRegistering] = useState(false);
   const [selectedPasskey, setSelectedPasskey] = useState<Passkey | null>(null);
@@ -289,9 +292,36 @@ export default function AccountProfile() {
     closePasskeyDrawer();
   };
 
+  const passwordEnabled = isAuthProviderEnabled("password");
+
   return (
     <VStack spacing={4} className="pb-6">
       <ProfileForm user={user} />
+
+      <ProfileLanguageForm locale={locale} />
+
+      {passwordEnabled && (
+        <Card>
+          <CardHeader>
+            <HStack className="justify-between">
+              <div>
+                <CardTitle>Password</CardTitle>
+                <CardDescription>
+                  Set a password to sign in with your email and password instead
+                  of a magic link.
+                </CardDescription>
+              </div>
+              <Button
+                variant="secondary"
+                leftIcon={<LuLock className="size-4" />}
+                asChild
+              >
+                <Link to={path.to.accountPassword}>Manage Password</Link>
+              </Button>
+            </HStack>
+          </CardHeader>
+        </Card>
+      )}
 
       {passkeysEnabled && (
         <Card>

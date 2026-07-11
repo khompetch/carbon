@@ -390,6 +390,9 @@ msgstr "{0} को समाप्त करें"
 msgid "Finish Anyways"
 msgstr "वैसे भी समाप्त करें"
 
+msgid "Forgot password? Sign in with email link"
+msgstr ""
+
 msgid "Forgot to Clock Out?"
 msgstr "घड़ी से बाहर निकलना भूल गए?"
 
@@ -722,6 +725,9 @@ msgstr "भाग"
 msgid "Passed Inspection"
 msgstr "निरीक्षण पास किया"
 
+msgid "Password"
+msgstr ""
+
 msgid "Pause"
 msgstr "रोकें"
 
@@ -951,6 +957,9 @@ msgstr "कम"
 msgid "Short pick {itemName}"
 msgstr "Short pick {itemName}"
 
+msgid "Sign in"
+msgstr ""
+
 msgid "Sign in with Email"
 msgstr "ईमेल के साथ साइन इन करें"
 
@@ -962,6 +971,9 @@ msgstr "Outlook के साथ साइन इन करें"
 
 msgid "Sign in with Passkey"
 msgstr "पासकी के साथ साइन इन करें"
+
+msgid "Sign in with password instead"
+msgstr ""
 
 msgid "Sign Out"
 msgstr "साइन आउट"

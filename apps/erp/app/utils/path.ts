@@ -147,6 +147,7 @@ export const path = {
         generatePath(`${api}/items/${itemId}/recipe-processes`),
       productionKpi: (key: string) =>
         generatePath(`${api}/production/kpi/${key}`),
+      productionOee: `${api}/production/oee`,
       quoteBillOfMaterials: (
         methodId: string,
         withOperations: boolean = false
@@ -1522,6 +1523,7 @@ export const path = {
     deletePrinterRoute: (id: string) =>
       generatePath(`${x}/settings/printing/${id}/delete`),
     production: `${x}/production`,
+    productionOee: `${x}/production/oee`,
     productionPlanning: `${x}/production/planning`,
     productionPlanningItem: (itemId: string) =>
       generatePath(`${x}/production/planning/${itemId}`),

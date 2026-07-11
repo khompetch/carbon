@@ -111,7 +111,12 @@ export function getEnv(
  * Server env
  */
 
-export type AuthProvider = "email" | "google" | "azure" | "passkey";
+export type AuthProvider =
+  | "email"
+  | "password"
+  | "google"
+  | "azure"
+  | "passkey";
 
 export const AUTH_PROVIDERS =
   getEnv("AUTH_PROVIDERS", {

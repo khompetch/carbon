@@ -13,8 +13,7 @@ import {
 } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useMemo } from "react";
-import { Hidden, Select, Submit } from "~/components/Form";
-import { path } from "~/utils/path";
+import { Select, Submit } from "~/components/Form";
 import { accountLanguageValidator } from "../../account.models";
 
 const ProfileLanguageForm = ({ locale }: { locale: string }) => {
@@ -28,7 +27,9 @@ const ProfileLanguageForm = ({ locale }: { locale: string }) => {
   return (
     <ValidatedForm
       method="post"
-      action={path.to.profile}
+      // Reuse the cookie-setting endpoint the avatar-menu switcher uses; the
+      // root loader revalidates after submit and re-renders in the new locale.
+      action="/api/locale"
       validator={accountLanguageValidator}
       defaultValues={{
         locale: resolveLanguage(locale)
@@ -46,7 +47,6 @@ const ProfileLanguageForm = ({ locale }: { locale: string }) => {
         </CardHeader>
         <CardContent>
           <Select name="locale" label={t`Language`} options={options} />
-          <Hidden name="intent" value="locale" />
         </CardContent>
         <CardFooter>
           <Submit>

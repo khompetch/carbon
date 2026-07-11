@@ -762,6 +762,9 @@ msgstr "すべてのアイテム"
 msgid "All jobs completed"
 msgstr "すべてのジョブが完了しました"
 
+msgid "All Locations"
+msgstr ""
+
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "選択されたグループのすべてのメンバーと選択された個人が承認リクエストを承認できます"
 
@@ -1545,6 +1548,9 @@ msgstr "カンバンがスキャンされたときに自動的にジョブをリ
 
 msgid "Automatically start the job when the kanban is scanned"
 msgstr "カンバンがスキャンされたときに自動的にジョブを開始します"
+
+msgid "Availability"
+msgstr ""
 
 msgid "available"
 msgstr "利用可能"
@@ -3943,6 +3949,9 @@ msgstr "PDFをダウンロード"
 msgid "Download template"
 msgstr "テンプレートをダウンロード"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "下書き"
 
@@ -5283,6 +5292,9 @@ msgstr "ITAR データを扱う米国企業向け"
 msgid "Forecast method: <0>{0}</0>. This row was not derived from active jobs, so no parent sources are available."
 msgstr "予測方法: <0>{0}</0>。この行はアクティブなジョブから派生していないため、親ソースは利用できません。"
 
+msgid "Forgot password? Sign in with email link"
+msgstr ""
+
 msgid "Forgot to Clock Out?"
 msgstr "時刻記録を忘れましたか？"
 
@@ -5579,6 +5591,9 @@ msgstr "各ゲートがスケジュール通りにクリアされれば、本番
 
 msgid "Going live on Carbon"
 msgstr "Carbonで本番稼働"
+
+msgid "Good"
+msgstr ""
 
 #. placeholder {0}: user.firstName
 msgid "Good afternoon, {0}"
@@ -6607,6 +6622,12 @@ msgstr "リストオプション"
 
 msgid "List Parameters"
 msgstr "リストパラメータ"
+
+msgid "Live"
+msgstr ""
+
+msgid "Live in weeks, not quarters. Most of the product is already built."
+msgstr "数週間で導入でき、四半期単位ではありません。製品のほとんどはすでに構築されています。"
 
 msgid "Live on Carbon"
 msgstr "Carbonで稼働中"
@@ -7806,6 +7827,9 @@ msgstr "プリンターが設定されていません"
 msgid "No printers configured. Click \"Add Printer\" to create one."
 msgstr "プリンターが設定されていません。「プリンターを追加」をクリックして作成してください。"
 
+msgid "No production data within range"
+msgstr ""
+
 msgid "No Quote"
 msgstr "見積なし"
 
@@ -7949,6 +7973,15 @@ msgstr "数字"
 
 msgid "Number of inventory units per purchase unit"
 msgstr "購買単位あたりの在庫単位数"
+
+msgid "OEE"
+msgstr ""
+
+msgid "OEE by Process"
+msgstr ""
+
+msgid "OEE by Work Center"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "OEE影響"
@@ -8387,6 +8420,9 @@ msgstr "合格"
 msgid "Passed"
 msgstr "完了"
 
+msgid "Password"
+msgstr ""
+
 msgid "Path"
 msgstr "パス"
 
@@ -8479,6 +8515,9 @@ msgstr "ロットの割合"
 
 msgid "Perfect for low-cost evaluation"
 msgstr "低コスト評価に最適"
+
+msgid "Performance"
+msgstr ""
 
 msgid "Period"
 msgstr "期間"
@@ -9907,6 +9946,9 @@ msgstr "毎週の需給の後に実行されるインベントリ — ライン�
 msgid "Running Total"
 msgstr "実行中の合計"
 
+msgid "Runtime"
+msgstr ""
+
 msgid "S-1 (coarsest special)"
 msgstr "S-1（最も粗い特殊）"
 
@@ -10118,6 +10160,9 @@ msgstr "スコープ"
 
 msgid "Scrap"
 msgstr "スクラップ"
+
+msgid "Scrap by Reason"
+msgstr ""
 
 msgid "Scrap Percent"
 msgstr "スクラップ率"
@@ -10466,6 +10511,9 @@ msgstr "毎週の需要予測値を設定してください"
 msgid "Set due date"
 msgstr "期限を設定"
 
+msgid "Set Password"
+msgstr ""
+
 msgid "Set Pricing"
 msgstr "価格設定"
 
@@ -10710,6 +10758,9 @@ msgstr "生成されたPDFの各ページの背景に薄く表示されます"
 msgid "Shown to the user when this rule fails."
 msgstr "このルールが失敗したときにユーザーに表示されます。"
 
+msgid "Sign in"
+msgstr ""
+
 msgid "Sign in with Email"
 msgstr "メールでサインイン"
 
@@ -10721,6 +10772,9 @@ msgstr "Outlookでサインイン"
 
 msgid "Sign in with Passkey"
 msgstr "パスキーでサインイン"
+
+msgid "Sign in with password instead"
+msgstr ""
 
 msgid "Sign Out"
 msgstr "サインアウト"

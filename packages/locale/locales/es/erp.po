@@ -762,6 +762,9 @@ msgstr "Todos los artículos"
 msgid "All jobs completed"
 msgstr "Todos los trabajos completados"
 
+msgid "All Locations"
+msgstr ""
+
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "Todos los miembros de los grupos seleccionados e individuos seleccionados podrán aprobar solicitudes"
 
@@ -1545,6 +1548,9 @@ msgstr "Liberar automáticamente el trabajo cuando se escanea el kanban"
 
 msgid "Automatically start the job when the kanban is scanned"
 msgstr "Iniciar automáticamente el trabajo cuando se escanea el kanban"
+
+msgid "Availability"
+msgstr ""
 
 msgid "available"
 msgstr "disponible"
@@ -3943,6 +3949,9 @@ msgstr "Descargar PDF"
 msgid "Download template"
 msgstr "Descargar plantilla"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "Borrador"
 
@@ -5283,6 +5292,9 @@ msgstr "Para empresas estadounidenses que manejan datos ITAR"
 msgid "Forecast method: <0>{0}</0>. This row was not derived from active jobs, so no parent sources are available."
 msgstr "Método de pronóstico: <0>{0}</0>. Esta fila no se derivó de trabajos activos, por lo que no hay fuentes principales disponibles."
 
+msgid "Forgot password? Sign in with email link"
+msgstr ""
+
 msgid "Forgot to Clock Out?"
 msgstr "¿Olvidaste marcar la salida?"
 
@@ -5579,6 +5591,9 @@ msgstr "El cronograma de puesta en marcha se mantiene si cada puerta se despeja 
 
 msgid "Going live on Carbon"
 msgstr "Puesta en marcha en Carbon"
+
+msgid "Good"
+msgstr ""
 
 #. placeholder {0}: user.firstName
 msgid "Good afternoon, {0}"
@@ -6607,6 +6622,12 @@ msgstr "Opciones de lista"
 
 msgid "List Parameters"
 msgstr "Parámetros de Lista"
+
+msgid "Live"
+msgstr ""
+
+msgid "Live in weeks, not quarters. Most of the product is already built."
+msgstr "Vive en semanas, no en trimestres. La mayoría del producto ya está construido."
 
 msgid "Live on Carbon"
 msgstr "En vivo en Carbon"
@@ -7806,6 +7827,9 @@ msgstr "Sin impresora configurada"
 msgid "No printers configured. Click \"Add Printer\" to create one."
 msgstr "No hay impresoras configuradas. Haz clic en \"Agregar impresora\" para crear una."
 
+msgid "No production data within range"
+msgstr ""
+
 msgid "No Quote"
 msgstr "Sin Cotización"
 
@@ -7949,6 +7973,15 @@ msgstr "Número"
 
 msgid "Number of inventory units per purchase unit"
 msgstr "Número de unidades de inventario por unidad de compra"
+
+msgid "OEE"
+msgstr ""
+
+msgid "OEE by Process"
+msgstr ""
+
+msgid "OEE by Work Center"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "Impacto OEE"
@@ -8387,6 +8420,9 @@ msgstr "Aprobar"
 msgid "Passed"
 msgstr "Aprobado"
 
+msgid "Password"
+msgstr ""
+
 msgid "Path"
 msgstr "Ruta"
 
@@ -8479,6 +8515,9 @@ msgstr "Porcentaje del Lote"
 
 msgid "Perfect for low-cost evaluation"
 msgstr "Perfecto para evaluación de bajo costo"
+
+msgid "Performance"
+msgstr ""
 
 msgid "Period"
 msgstr "Período"
@@ -9907,6 +9946,9 @@ msgstr "Inventario en ejecución después del suministro y la demanda de cada se
 msgid "Running Total"
 msgstr "Total Acumulado"
 
+msgid "Runtime"
+msgstr ""
+
 msgid "S-1 (coarsest special)"
 msgstr "S-1 (más grueso especial)"
 
@@ -10118,6 +10160,9 @@ msgstr "Alcances"
 
 msgid "Scrap"
 msgstr "Desecho"
+
+msgid "Scrap by Reason"
+msgstr ""
 
 msgid "Scrap Percent"
 msgstr "Porcentaje de Rechazo"
@@ -10466,6 +10511,9 @@ msgstr "Establecer valores de proyección de demanda para cada semana"
 msgid "Set due date"
 msgstr "Establecer fecha de vencimiento"
 
+msgid "Set Password"
+msgstr ""
+
 msgid "Set Pricing"
 msgstr "Establecer Precio"
 
@@ -10710,6 +10758,9 @@ msgstr "Se muestra como un fondo tenue detrás de cada página de los PDF genera
 msgid "Shown to the user when this rule fails."
 msgstr "Se muestra al usuario cuando esta regla falla."
 
+msgid "Sign in"
+msgstr ""
+
 msgid "Sign in with Email"
 msgstr "Iniciar sesión con correo electrónico"
 
@@ -10721,6 +10772,9 @@ msgstr "Iniciar sesión con Outlook"
 
 msgid "Sign in with Passkey"
 msgstr "Iniciar sesión con Passkey"
+
+msgid "Sign in with password instead"
+msgstr ""
 
 msgid "Sign Out"
 msgstr "Cerrar sesión"

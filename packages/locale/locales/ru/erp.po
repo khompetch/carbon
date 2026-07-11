@@ -762,6 +762,9 @@ msgstr "Все элементы"
 msgid "All jobs completed"
 msgstr "Все работы завершены"
 
+msgid "All Locations"
+msgstr ""
+
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "Все члены выбранных групп и выбранные лица смогут одобрять запросы"
 
@@ -1545,6 +1548,9 @@ msgstr "Автоматически отпустить задание при ск
 
 msgid "Automatically start the job when the kanban is scanned"
 msgstr "Автоматически запустить задание при сканировании канбана"
+
+msgid "Availability"
+msgstr ""
 
 msgid "available"
 msgstr "доступно"
@@ -3943,6 +3949,9 @@ msgstr "Скачать PDF"
 msgid "Download template"
 msgstr "Скачать шаблон"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "Черновик"
 
@@ -5283,6 +5292,9 @@ msgstr "Для компаний США, работающих с данными I
 msgid "Forecast method: <0>{0}</0>. This row was not derived from active jobs, so no parent sources are available."
 msgstr "Метод прогнозирования: <0>{0}</0>. Эта строка не была получена из активных заданий, поэтому родительские источники недоступны."
 
+msgid "Forgot password? Sign in with email link"
+msgstr ""
+
 msgid "Forgot to Clock Out?"
 msgstr "Забыли отметить уход?"
 
@@ -5579,6 +5591,9 @@ msgstr "Сроки запуска соблюдаются, если каждый 
 
 msgid "Going live on Carbon"
 msgstr "Запуск на Carbon"
+
+msgid "Good"
+msgstr ""
 
 #. placeholder {0}: user.firstName
 msgid "Good afternoon, {0}"
@@ -6607,6 +6622,12 @@ msgstr "Параметры списка"
 
 msgid "List Parameters"
 msgstr "Параметры списка"
+
+msgid "Live"
+msgstr ""
+
+msgid "Live in weeks, not quarters. Most of the product is already built."
+msgstr "Начните работу за недели, а не за кварталы. Большая часть продукта уже готова."
 
 msgid "Live on Carbon"
 msgstr "Работает на Carbon"
@@ -7806,6 +7827,9 @@ msgstr "Принтер не настроен"
 msgid "No printers configured. Click \"Add Printer\" to create one."
 msgstr "Принтеры не настроены. Нажмите «Добавить принтер» для создания."
 
+msgid "No production data within range"
+msgstr ""
+
 msgid "No Quote"
 msgstr "Нет предложения"
 
@@ -7949,6 +7973,15 @@ msgstr "Число"
 
 msgid "Number of inventory units per purchase unit"
 msgstr "Количество единиц запасов на единицу закупки"
+
+msgid "OEE"
+msgstr ""
+
+msgid "OEE by Process"
+msgstr ""
+
+msgid "OEE by Work Center"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "Влияние OEE"
@@ -8387,6 +8420,9 @@ msgstr "Пройти"
 msgid "Passed"
 msgstr "Пройдено"
 
+msgid "Password"
+msgstr ""
+
 msgid "Path"
 msgstr "Путь"
 
@@ -8479,6 +8515,9 @@ msgstr "Процент партии"
 
 msgid "Perfect for low-cost evaluation"
 msgstr "Идеально для недорогой оценки"
+
+msgid "Performance"
+msgstr ""
 
 msgid "Period"
 msgstr "Период"
@@ -9907,6 +9946,9 @@ msgstr "Инвентарь, обновляемый после еженедель
 msgid "Running Total"
 msgstr "Итоговая сумма"
 
+msgid "Runtime"
+msgstr ""
+
 msgid "S-1 (coarsest special)"
 msgstr "S-1 (самый грубый специальный)"
 
@@ -10118,6 +10160,9 @@ msgstr "Области"
 
 msgid "Scrap"
 msgstr "Брак"
+
+msgid "Scrap by Reason"
+msgstr ""
 
 msgid "Scrap Percent"
 msgstr "Процент брака"
@@ -10466,6 +10511,9 @@ msgstr "Установите значения прогноза спроса дл
 msgid "Set due date"
 msgstr "Установить срок"
 
+msgid "Set Password"
+msgstr ""
+
 msgid "Set Pricing"
 msgstr "Установить цену"
 
@@ -10710,6 +10758,9 @@ msgstr "Отображается как бледный фон на каждой 
 msgid "Shown to the user when this rule fails."
 msgstr "Показывается пользователю при ошибке этого правила."
 
+msgid "Sign in"
+msgstr ""
+
 msgid "Sign in with Email"
 msgstr "Войти с помощью электронной почты"
 
@@ -10721,6 +10772,9 @@ msgstr "Войти через Outlook"
 
 msgid "Sign in with Passkey"
 msgstr "Войти с помощью Passkey"
+
+msgid "Sign in with password instead"
+msgstr ""
 
 msgid "Sign Out"
 msgstr "Выход"

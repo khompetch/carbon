@@ -14,6 +14,7 @@ Work orders (jobs), scheduling, routings (operations), bill of materials, proced
 - **Assembly Instructions are internal-only** (feature flag) while the module matures: the nav entry is in `internalOnlyRoutes` (`useProductionSubmodules.tsx`, via `useFlags().isInternal`), and `requireAssembliesInternal` (`production.server.ts`) redirects non-internal users out of `production/assemblies`, `production/assemblies/new`, and every `x+/assembly+` route (layout loader). Mirrors the settings backups gate; drop the gates to ship publicly.
 - **Maintenance Dispatch** — reactive/scheduled repair for work centers with comments, events, items, and linked work centers.
 - **Scheduling** — infinite-capacity backward scheduling via `schedule` edge function. MUST use `triggerJobSchedule` to reschedule, never direct date writes.
+- **OEE Dashboard** — `/x/production/oee` (route `x+/production+/oee.tsx` + resource route `api+/production.oee.ts`, components in `ui/Oee/`). Availability from productionEvent runtime vs location-shift planned time minus maintenance downtime (`oeeImpact` Down/Planned); Performance from `makeDurations` standards vs runtime; Quality from productionQuantity. Spec: `.ai/specs/2026-07-09-oee-dashboard.md`.
 
 ## Safety
 

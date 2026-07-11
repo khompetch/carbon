@@ -762,6 +762,9 @@ msgstr "Tous les articles"
 msgid "All jobs completed"
 msgstr "Tous les travaux sont terminés"
 
+msgid "All Locations"
+msgstr ""
+
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "Tous les membres des groupes sélectionnés et les individus sélectionnés pourront approuver les demandes"
 
@@ -1545,6 +1548,9 @@ msgstr "Libérer automatiquement la tâche lorsque le kanban est scanné"
 
 msgid "Automatically start the job when the kanban is scanned"
 msgstr "Démarrer automatiquement le travail lorsque le kanban est scanné"
+
+msgid "Availability"
+msgstr ""
 
 msgid "available"
 msgstr "disponible"
@@ -3943,6 +3949,9 @@ msgstr "Télécharger le PDF"
 msgid "Download template"
 msgstr "Télécharger le modèle"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "Brouillon"
 
@@ -5283,6 +5292,9 @@ msgstr "Pour les entreprises américaines traitant des données ITAR"
 msgid "Forecast method: <0>{0}</0>. This row was not derived from active jobs, so no parent sources are available."
 msgstr "Méthode de prévision : <0>{0}</0>. Cette ligne n'a pas été dérivée de tâches actives, donc aucune source parent n'est disponible."
 
+msgid "Forgot password? Sign in with email link"
+msgstr ""
+
 msgid "Forgot to Clock Out?"
 msgstr "Oublié de pointer la sortie ?"
 
@@ -5579,6 +5591,9 @@ msgstr "Le calendrier de mise en production est respecté si chaque étape est v
 
 msgid "Going live on Carbon"
 msgstr "Mise en ligne sur Carbon"
+
+msgid "Good"
+msgstr ""
 
 #. placeholder {0}: user.firstName
 msgid "Good afternoon, {0}"
@@ -6607,6 +6622,12 @@ msgstr "Options de liste"
 
 msgid "List Parameters"
 msgstr "Paramètres de liste"
+
+msgid "Live"
+msgstr ""
+
+msgid "Live in weeks, not quarters. Most of the product is already built."
+msgstr "Vivez en semaines, pas en trimestres. La plupart du produit est déjà construit."
 
 msgid "Live on Carbon"
 msgstr "En direct sur Carbon"
@@ -7806,6 +7827,9 @@ msgstr "Aucune imprimante configurée"
 msgid "No printers configured. Click \"Add Printer\" to create one."
 msgstr "Aucune imprimante configurée. Cliquez sur « Ajouter une imprimante » pour en créer une."
 
+msgid "No production data within range"
+msgstr ""
+
 msgid "No Quote"
 msgstr "Pas de devis"
 
@@ -7949,6 +7973,15 @@ msgstr "Nombre"
 
 msgid "Number of inventory units per purchase unit"
 msgstr "Nombre d'unités d'inventaire par unité d'achat"
+
+msgid "OEE"
+msgstr ""
+
+msgid "OEE by Process"
+msgstr ""
+
+msgid "OEE by Work Center"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "Impact OEE"
@@ -8387,6 +8420,9 @@ msgstr "Réussir"
 msgid "Passed"
 msgstr "Réussi"
 
+msgid "Password"
+msgstr ""
+
 msgid "Path"
 msgstr "Chemin"
 
@@ -8479,6 +8515,9 @@ msgstr "Pourcentage du lot"
 
 msgid "Perfect for low-cost evaluation"
 msgstr "Parfait pour une évaluation à faible coût"
+
+msgid "Performance"
+msgstr ""
 
 msgid "Period"
 msgstr "Période"
@@ -9907,6 +9946,9 @@ msgstr "Stocks renouvelés après l'offre et la demande de chaque semaine — la
 msgid "Running Total"
 msgstr "Total cumulé"
 
+msgid "Runtime"
+msgstr ""
+
 msgid "S-1 (coarsest special)"
 msgstr "S-1 (spécial le plus grossier)"
 
@@ -10118,6 +10160,9 @@ msgstr "Portées"
 
 msgid "Scrap"
 msgstr "Déchet"
+
+msgid "Scrap by Reason"
+msgstr ""
 
 msgid "Scrap Percent"
 msgstr "Pourcentage de rebut"
@@ -10466,6 +10511,9 @@ msgstr "Définir les valeurs de projection de la demande pour chaque semaine"
 msgid "Set due date"
 msgstr "Définir la date d'échéance"
 
+msgid "Set Password"
+msgstr ""
+
 msgid "Set Pricing"
 msgstr "Définir la tarification"
 
@@ -10710,6 +10758,9 @@ msgstr "Affiché en arrière-plan discret sur chaque page des PDF générés"
 msgid "Shown to the user when this rule fails."
 msgstr "Affiché à l'utilisateur lorsque cette règle échoue."
 
+msgid "Sign in"
+msgstr ""
+
 msgid "Sign in with Email"
 msgstr "Se connecter avec Email"
 
@@ -10721,6 +10772,9 @@ msgstr "Se connecter avec Outlook"
 
 msgid "Sign in with Passkey"
 msgstr "Se connecter avec Passkey"
+
+msgid "Sign in with password instead"
+msgstr ""
 
 msgid "Sign Out"
 msgstr "Se déconnecter"

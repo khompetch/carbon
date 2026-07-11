@@ -26,12 +26,20 @@ services:
       dockerfile: Dockerfile
       args:
         APP: erp
+        # The Dockerfile defaults the build heap to ~8 GB, sized for CI. On a
+        # shared VPS that also runs the whole stack this OOMs — cap it. Pair
+        # with COMPOSE_PARALLEL_LIMIT=1 (see .env.example) so erp and mes
+        # don't build simultaneously.
+        NODE_OPTIONS: "--max-old-space-size=4096"
     env_file: .env
     environment:
       NODE_ENV: production
       PORT: "3000"
       SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres?sslmode=disable
       REDIS_URL: redis://redis:6379
+      # Without this, inngest.send()/the SDK default to Inngest Cloud instead
+      # of the bundled self-hosted server, and fail auth against it.
+      INNGEST_BASE_URL: http://inngest:8288
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 15s
@@ -42,6 +50,7 @@ services:
     depends_on:
       - kong
       - redis
+      - inngest
 
   mes:
     build:
@@ -49,12 +58,14 @@ services:
       dockerfile: Dockerfile
       args:
         APP: mes
+        NODE_OPTIONS: "--max-old-space-size=4096"
     env_file: .env
     environment:
       NODE_ENV: production
       PORT: "3000"
       SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres?sslmode=disable
       REDIS_URL: redis://redis:6379
+      INNGEST_BASE_URL: http://inngest:8288
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 15s
@@ -65,6 +76,7 @@ services:
     depends_on:
       - kong
       - redis
+      - inngest
 
   redis:
     image: redis:7-alpine
@@ -133,6 +145,13 @@ services:
       timeout: 5s
       retries: 20
     restart: unless-stopped
+    # Supabase Studio's default project config expects the Postgres host to
+    # be named `db` (the convention in official self-host Supabase compose
+    # files) — alias it here so `meta`/`studio` resolve it without needing
+    # their own config changes. Reachable as either `postgres` or `db`.
+    networks:
+      default:
+        aliases: [db]
 
   gotrue:
     image: supabase/gotrue:v2.189.0

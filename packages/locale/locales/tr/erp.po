@@ -762,6 +762,9 @@ msgstr "Tüm Öğeler"
 msgid "All jobs completed"
 msgstr "Tüm işler tamamlandı"
 
+msgid "All Locations"
+msgstr ""
+
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "Seçilen gruplardaki ve bireylerdeki tüm üyeler talepleri onaylayabilecektir"
 
@@ -1545,6 +1548,9 @@ msgstr "Kanban taranmış olduğunda işi otomatik olarak serbest bırak"
 
 msgid "Automatically start the job when the kanban is scanned"
 msgstr "Kanban taranıp iş otomatik olarak başlatılır"
+
+msgid "Availability"
+msgstr ""
 
 msgid "available"
 msgstr "mevcut"
@@ -3943,6 +3949,9 @@ msgstr "PDF'i İndir"
 msgid "Download template"
 msgstr "Şablon indir"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "Taslak"
 
@@ -5283,6 +5292,9 @@ msgstr "ITAR verilerini işleyen ABD şirketleri için"
 msgid "Forecast method: <0>{0}</0>. This row was not derived from active jobs, so no parent sources are available."
 msgstr "Tahmin yöntemi: <0>{0}</0>. Bu satır aktif işlerden türetilmediği için üst kaynaklar mevcut değil."
 
+msgid "Forgot password? Sign in with email link"
+msgstr ""
+
 msgid "Forgot to Clock Out?"
 msgstr "Çıkış yapmayı unuttunuz mu?"
 
@@ -5579,6 +5591,9 @@ msgstr "Canlı yayına geçiş zamanlaması, her kapı zamanında açılırsa ge
 
 msgid "Going live on Carbon"
 msgstr "Carbon'da canlı yayına geçme"
+
+msgid "Good"
+msgstr ""
 
 #. placeholder {0}: user.firstName
 msgid "Good afternoon, {0}"
@@ -6607,6 +6622,12 @@ msgstr "Liste Seçenekleri"
 
 msgid "List Parameters"
 msgstr "Liste Parametreleri"
+
+msgid "Live"
+msgstr ""
+
+msgid "Live in weeks, not quarters. Most of the product is already built."
+msgstr "Haftalar içinde canlı olun, çeyrekler değil. Ürünün çoğu zaten oluşturulmuş."
 
 msgid "Live on Carbon"
 msgstr "Carbon'da Canlı"
@@ -7806,6 +7827,9 @@ msgstr "Yazıcı yapılandırılmadı"
 msgid "No printers configured. Click \"Add Printer\" to create one."
 msgstr "Yapılandırılmış yazıcı yok. Bir tane oluşturmak için \"Yazıcı Ekle\"'ye tıklayın."
 
+msgid "No production data within range"
+msgstr ""
+
 msgid "No Quote"
 msgstr "Teklif Yok"
 
@@ -7949,6 +7973,15 @@ msgstr "Numara"
 
 msgid "Number of inventory units per purchase unit"
 msgstr "Satın alma birimi başına envanter birimi sayısı"
+
+msgid "OEE"
+msgstr ""
+
+msgid "OEE by Process"
+msgstr ""
+
+msgid "OEE by Work Center"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "OEE Etkisi"
@@ -8387,6 +8420,9 @@ msgstr "Geçerli"
 msgid "Passed"
 msgstr "Geçti"
 
+msgid "Password"
+msgstr ""
+
 msgid "Path"
 msgstr "Yol"
 
@@ -8479,6 +8515,9 @@ msgstr "Lot Yüzdesi"
 
 msgid "Perfect for low-cost evaluation"
 msgstr "Düşük maliyetli değerlendirme için mükemmel"
+
+msgid "Performance"
+msgstr ""
 
 msgid "Period"
 msgstr "Dönem"
@@ -9907,6 +9946,9 @@ msgstr "Her haftalık arz ve talep sonrası çalışan envanter — satır."
 msgid "Running Total"
 msgstr "Kümülatif Toplam"
 
+msgid "Runtime"
+msgstr ""
+
 msgid "S-1 (coarsest special)"
 msgstr "S-1 (en kalın özel)"
 
@@ -10118,6 +10160,9 @@ msgstr "Kapsamlar"
 
 msgid "Scrap"
 msgstr "Hurda"
+
+msgid "Scrap by Reason"
+msgstr ""
 
 msgid "Scrap Percent"
 msgstr "Hurda Yüzdesi"
@@ -10466,6 +10511,9 @@ msgstr "Her hafta için talep projeksiyon değerleri ayarlayın"
 msgid "Set due date"
 msgstr "Son son tarihi belirle"
 
+msgid "Set Password"
+msgstr ""
+
 msgid "Set Pricing"
 msgstr "Fiyatlandırmayı Ayarla"
 
@@ -10710,6 +10758,9 @@ msgstr "Oluşturulan PDF'lerin her sayfasının arkasında soluk bir arka plan o
 msgid "Shown to the user when this rule fails."
 msgstr "Bu kural başarısız olduğunda kullanıcıya gösterilir."
 
+msgid "Sign in"
+msgstr ""
+
 msgid "Sign in with Email"
 msgstr "E-posta ile Giriş Yap"
 
@@ -10721,6 +10772,9 @@ msgstr "Outlook ile giriş yap"
 
 msgid "Sign in with Passkey"
 msgstr "Passkey ile Giriş Yap"
+
+msgid "Sign in with password instead"
+msgstr ""
 
 msgid "Sign Out"
 msgstr "Oturumu Kapat"
