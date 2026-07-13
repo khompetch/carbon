@@ -117,6 +117,8 @@ export const path = {
         generatePath(
           `${api}/mrp${locationId ? `?location=${locationId}` : ""}`
         ),
+      modelConvertStatus: (modelUploadId: string) =>
+        generatePath(`${api}/model/convert-status/${modelUploadId}`),
       modelUpload: `${api}/model/upload`,
       onShapeBom: (documentId: string, versionId: string, elementId: string) =>
         generatePath(
@@ -527,8 +529,12 @@ export const path = {
     assemblyInstructions: `${x}/production/assemblies`,
     assemblyInstructionStatus: (id: string) =>
       generatePath(`${x}/assembly/${id}/status`),
+    assemblyJobsCancel: (id: string) =>
+      generatePath(`${x}/assembly/${id}/jobs/cancel`),
     assemblyModelConvert: (id: string) =>
       generatePath(`${x}/assembly/${id}/model/convert`),
+    assemblyModelInvalidate: (id: string) =>
+      generatePath(`${x}/assembly/${id}/model/invalidate`),
     assemblyPlanRerun: (id: string) =>
       generatePath(`${x}/assembly/${id}/plan/rerun`),
     deleteAssemblyInstruction: (id: string) =>
@@ -542,6 +548,8 @@ export const path = {
       generatePath(`${x}/assembly/${id}/steps/motion/${stepId}`),
     assemblyInstructionStepComponents: (id: string, stepId: string) =>
       generatePath(`${x}/assembly/${id}/steps/components/${stepId}`),
+    assemblyInstructionStepComponentsReassign: (id: string) =>
+      generatePath(`${x}/assembly/${id}/steps/components/reassign`),
     deleteAssemblyInstructionStep: (id: string, stepId: string) =>
       generatePath(`${x}/assembly/${id}/steps/delete/${stepId}`),
     assemblyInstructionStepOrder: (id: string) =>

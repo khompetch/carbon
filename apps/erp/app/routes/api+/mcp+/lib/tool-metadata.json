@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-12T19:03:31.549Z",
-  "totalTools": 1304,
+  "generated": "2026-07-12T23:58:14.390Z",
+  "totalTools": 1306,
   "modules": 15,
   "tools": [
     {
@@ -19984,6 +19984,31 @@
       }
     },
     {
+      "name": "production_invalidateAssemblyModelCache",
+      "module": "production",
+      "classification": "WRITE",
+      "description": "invalidate assembly model cache",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "modelUploadId"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "modelUploadId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "modelUploadId"
+        ]
+      }
+    },
+    {
       "name": "production_upsertAssemblyInstructionStep",
       "module": "production",
       "classification": "WRITE",
@@ -20127,6 +20152,50 @@
         "required": [
           "id",
           "componentNodeIds"
+        ]
+      }
+    },
+    {
+      "name": "production_reassignAssemblyStepComponents",
+      "module": "production",
+      "classification": "WRITE",
+      "description": "reassign assembly step components",
+      "paramCount": 4,
+      "serviceParams": [
+        "db",
+        "data"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "assemblyInstructionId": {
+            "type": "string"
+          },
+          "targetStepId": {
+            "type": "string"
+          },
+          "componentNodeIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "move",
+              "duplicate",
+              "remove"
+            ]
+          }
+        },
+        "required": [
+          "assemblyInstructionId",
+          "componentNodeIds",
+          "mode"
         ]
       }
     },
