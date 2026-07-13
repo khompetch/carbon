@@ -466,12 +466,6 @@ msgstr "प्राप्य खाते"
 msgid "Accounts receivable for amounts owed by customers"
 msgstr "ग्राहकों द्वारा देय राशियों के लिए प्राप्य खाते।"
 
-msgid "Accrual account debited at shipment to recognize the receivable before the sales invoice posts; cleared when the invoice posts."
-msgstr "एक अप्रैल खाता जो शिपमेंट पर डेबिट किया जाता है ताकि बिक्रय चालान पोस्ट होने से पहले प्राप्य को पहचाना जा सके; जब चालान पोस्ट होता है तो क्लीयर किया जाता है।"
-
-msgid "Accrual for inventory shipped but not yet invoiced to customer"
-msgstr "शिप की गई लेकिन अभी तक ग्राहक को बिल न किए गए इन्वेंटरी के लिए अप्रैल।"
-
 msgid "Accumulated Depreciation"
 msgstr "संचयी मूल्यह्रास"
 
@@ -3445,9 +3439,6 @@ msgstr "आपकी आधार मुद्रा में लेनदे�
 msgid "Default CC Recipients"
 msgstr "डिफ़ॉल्ट CC प्राप्तकर्ता"
 
-msgid "Default GL account that holds inventory value; debited on receipt, credited on shipment/issue."
-msgstr "डिफ़ॉल्ट GL खाता जो इन्वेंटरी मान धारण करता है; प्राप्ति पर डेबिट किया जाता है, शिपमेंट/जारी पर क्रेडिट किया जाता है।"
-
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "जब कोई विशिष्ट बैंक खाता नहीं चुना जाता है तो नकद लेनदेन के लिए उपयोग किया जाने वाला डिफ़ॉल्ट GL खाता।"
 
@@ -5318,6 +5309,12 @@ msgstr "समाप्त करने के लिए"
 msgid "Finished goods"
 msgstr "फिनिशें"
 
+msgid "Finished Goods"
+msgstr "तैयार माल"
+
+msgid "Finished Goods (default)"
+msgstr "तैयार माल (डिफ़ॉल्ट)"
+
 msgid "finishes"
 msgstr "नियमित MACRS अनुसूची शुरू होने से पहले लिया गया पहले वर्ष का अतिरिक्त कटौती।"
 
@@ -5632,6 +5629,12 @@ msgstr "GL खाता जो मानक लागत और वास्त�
 
 msgid "GL account that holds the value of jobs in production until they post to finished goods."
 msgstr "GL खाता जो उत्पादन में कार्यों का मान रखता है जब तक वे तैयार माल को पोस्ट नहीं करते।"
+
+msgid "GL account that holds the value of manufactured goods (Make items); debited on job completion, credited on shipment."
+msgstr "GL खाता जो निर्मित माल का मूल्य रखता है (Make आइटम); नौकरी पूरी होने पर डेबिट किया जाता है, शिपमेंट पर क्रेडिट किया जाता है।"
+
+msgid "GL account that holds the value of purchased stock and components (Buy items); debited on receipt, credited on issue/shipment."
+msgstr "GL खाता जो खरीदे गए स्टॉक और घटकों का मूल्य रखता है (Buy आइटम); रसीद पर डेबिट किया जाता है, जारी/शिपमेंट पर क्रेडिट किया जाता है।"
 
 msgid "GL account used when a customer pays before an invoice is issued; cleared when the invoice posts."
 msgstr "GL खाता जिसका उपयोग तब किया जाता है जब ग्राहक चालान जारी होने से पहले भुगतान करता है; जब चालान पोस्ट किया जाता है तो साफ किया जाता है।"
@@ -6222,9 +6225,6 @@ msgstr "इन्वेंटरी"
 msgid "Inventory"
 msgstr "इन्वेंटरी"
 
-msgid "Inventory (default)"
-msgstr "इन्वेंटरी (डिफ़ॉल्ट)"
-
 msgid "Inventory accuracy"
 msgstr "इन्वेंटरी सटीकता"
 
@@ -6260,12 +6260,6 @@ msgstr "इन्वेंटरी जॉब नोटिफिकेशन"
 
 msgid "Inventory Qty"
 msgstr "इन्वेंटरी मात्रा"
-
-msgid "Inventory Shipped Not Invoiced"
-msgstr "इन्वेंटरी भेजी गई अचालान"
-
-msgid "Inventory Shipped Not Invoiced (default)"
-msgstr "इन्वेंटरी भेजी गई अचालान (डिफ़ॉल्ट)"
 
 msgid "Inventory Tracking"
 msgstr "इन्वेंटरी ट्रैकिंग"
@@ -8172,6 +8166,12 @@ msgstr "इस स्थान पर सेवा उपयोग के लि
 msgid "On-hand inventory remains"
 msgstr "हाथ में इन्वेंटरी बची है"
 
+msgid "On-hand value of manufactured goods (Make items)"
+msgstr "निर्मित माल का मौजूदा मूल्य (Make आइटम)"
+
+msgid "On-hand value of purchased stock and components (Buy items)"
+msgstr "खरीदे गए स्टॉक और घटकों का मौजूदा मूल्य (Buy आइटम)"
+
 msgid "On-time delivery"
 msgstr "समय पर डिलीवरी"
 
@@ -8987,9 +8987,6 @@ msgstr "मूल्य निर्धारण नियम"
 msgid "Pricing Trace"
 msgstr "मूल्य निर्धारण ट्रेस"
 
-msgid "Primary account for on-hand inventory valuation"
-msgstr "बैंक लेनदेन के लिए प्राथमिक नकद खाता"
-
 msgid "Primary cash account for bank transactions"
 msgstr "प्रक्रिया"
 
@@ -9463,6 +9460,12 @@ msgstr "इसे जल्दी उठाएं और स्पष्ट र�
 
 msgid "Rate Limit"
 msgstr "दर सीमा"
+
+msgid "Raw Materials"
+msgstr "कच्चा माल"
+
+msgid "Raw Materials (default)"
+msgstr "कच्चा माल (डिफ़ॉल्ट)"
 
 msgid "Re-keying between quoting, the floor, and finance"
 msgstr "उद्धरण, फर्श और वित्त के बीच पुनः-कुंजीकरण"

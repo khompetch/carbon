@@ -466,12 +466,6 @@ msgstr "Crediti verso clienti"
 msgid "Accounts receivable for amounts owed by customers"
 msgstr "Crediti verso clienti per importi dovuti dai clienti."
 
-msgid "Accrual account debited at shipment to recognize the receivable before the sales invoice posts; cleared when the invoice posts."
-msgstr "Conto di accantonamento addebitato al trasporto per riconoscere il credito prima che la fattura di vendita venga registrata; annullato quando la fattura viene registrata."
-
-msgid "Accrual for inventory shipped but not yet invoiced to customer"
-msgstr "Accantonamento per inventario spedito ma non ancora fatturato al cliente."
-
 msgid "Accumulated Depreciation"
 msgstr "Fondo di ammortamento"
 
@@ -3445,9 +3439,6 @@ msgstr "Conto di cassa predefinito per le transazioni nella tua valuta di base."
 msgid "Default CC Recipients"
 msgstr "Destinatari CC predefiniti"
 
-msgid "Default GL account that holds inventory value; debited on receipt, credited on shipment/issue."
-msgstr "Conto GL predefinito che contiene il valore dell'inventario; addebitato alla ricezione, accreditato alla spedizione/emissione."
-
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "Conto GL predefinito utilizzato per le transazioni in contanti quando non è selezionato uno specifico conto bancario."
 
@@ -5318,6 +5309,12 @@ msgstr "Finisci a"
 msgid "Finished goods"
 msgstr "Finiture"
 
+msgid "Finished Goods"
+msgstr "Prodotti Finiti"
+
+msgid "Finished Goods (default)"
+msgstr "Prodotti Finiti (predefinito)"
+
 msgid "finishes"
 msgstr "Deduzione aggiuntiva del primo anno presa prima dell'inizio del calendario MACRS regolare."
 
@@ -5632,6 +5629,12 @@ msgstr "Conto GL che acquisisce la differenza tra il costo standard e il costo d
 
 msgid "GL account that holds the value of jobs in production until they post to finished goods."
 msgstr "Conto GL che tiene il valore dei lavori in produzione fino a quando non vengono registrati come prodotti finiti."
+
+msgid "GL account that holds the value of manufactured goods (Make items); debited on job completion, credited on shipment."
+msgstr "Conto di contabilità generale che contiene il valore dei beni fabbricati (articoli Make); addebitato al completamento del lavoro, accreditato sulla spedizione."
+
+msgid "GL account that holds the value of purchased stock and components (Buy items); debited on receipt, credited on issue/shipment."
+msgstr "Conto di contabilità generale che contiene il valore delle scorte acquistate e dei componenti (articoli Buy); addebitato al ricevimento, accreditato su emissione/spedizione."
 
 msgid "GL account used when a customer pays before an invoice is issued; cleared when the invoice posts."
 msgstr "Conto GL utilizzato quando un cliente paga prima dell'emissione di una fattura; svuotato quando la fattura viene registrata."
@@ -6222,9 +6225,6 @@ msgstr "inventario"
 msgid "Inventory"
 msgstr "Inventario"
 
-msgid "Inventory (default)"
-msgstr "Inventario (predefinito)"
-
 msgid "Inventory accuracy"
 msgstr "Precisione dell'inventario"
 
@@ -6260,12 +6260,6 @@ msgstr "Notifiche Lavoro Inventario"
 
 msgid "Inventory Qty"
 msgstr "Quantità Inventario"
-
-msgid "Inventory Shipped Not Invoiced"
-msgstr "Inventario Spedito Non Fatturato"
-
-msgid "Inventory Shipped Not Invoiced (default)"
-msgstr "Inventario Spedito Non Fatturato (predefinito)"
 
 msgid "Inventory Tracking"
 msgstr "Tracciamento Inventario"
@@ -8172,6 +8166,12 @@ msgstr "Quantità minima da mantenere per uso in servizio presso questa ubicazio
 msgid "On-hand inventory remains"
 msgstr "L'inventario disponibile rimane"
 
+msgid "On-hand value of manufactured goods (Make items)"
+msgstr "Valore disponibile dei beni fabbricati (articoli Make)"
+
+msgid "On-hand value of purchased stock and components (Buy items)"
+msgstr "Valore disponibile delle scorte acquistate e dei componenti (articoli Buy)"
+
 msgid "On-time delivery"
 msgstr "Consegna puntuale"
 
@@ -8987,9 +8987,6 @@ msgstr "Regole di Prezzo"
 msgid "Pricing Trace"
 msgstr "Traccia Prezzi"
 
-msgid "Primary account for on-hand inventory valuation"
-msgstr "Conto cassa principale per le transazioni bancarie"
-
 msgid "Primary cash account for bank transactions"
 msgstr "procedura"
 
@@ -9463,6 +9460,12 @@ msgstr "segnalalo presto e segnalalo chiaramente. Un problema identificato nella
 
 msgid "Rate Limit"
 msgstr "Limite di Velocità"
+
+msgid "Raw Materials"
+msgstr "Materie Prime"
+
+msgid "Raw Materials (default)"
+msgstr "Materie Prime (predefinito)"
 
 msgid "Re-keying between quoting, the floor, and finance"
 msgstr "Reinserimento dati tra preventivazione, produzione e finanza"

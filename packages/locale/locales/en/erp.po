@@ -466,12 +466,6 @@ msgstr "Accounts Receivable"
 msgid "Accounts receivable for amounts owed by customers"
 msgstr "Accounts receivable for amounts owed by customers"
 
-msgid "Accrual account debited at shipment to recognize the receivable before the sales invoice posts; cleared when the invoice posts."
-msgstr "Accrual account debited at shipment to recognize the receivable before the sales invoice posts; cleared when the invoice posts."
-
-msgid "Accrual for inventory shipped but not yet invoiced to customer"
-msgstr "Accrual for inventory shipped but not yet invoiced to customer"
-
 msgid "Accumulated Depreciation"
 msgstr "Accumulated Depreciation"
 
@@ -3445,9 +3439,6 @@ msgstr "Default cash account for transactions in your base currency."
 msgid "Default CC Recipients"
 msgstr "Default CC Recipients"
 
-msgid "Default GL account that holds inventory value; debited on receipt, credited on shipment/issue."
-msgstr "Default GL account that holds inventory value; debited on receipt, credited on shipment/issue."
-
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "Default GL account used for cash transactions when no specific bank account is selected."
 
@@ -5318,6 +5309,12 @@ msgstr "Finish To"
 msgid "Finished goods"
 msgstr "Finished goods"
 
+msgid "Finished Goods"
+msgstr "Finished Goods"
+
+msgid "Finished Goods (default)"
+msgstr "Finished Goods (default)"
+
 msgid "finishes"
 msgstr "finishes"
 
@@ -5632,6 +5629,12 @@ msgstr "GL account that captures the difference between standard cost and actual
 
 msgid "GL account that holds the value of jobs in production until they post to finished goods."
 msgstr "GL account that holds the value of jobs in production until they post to finished goods."
+
+msgid "GL account that holds the value of manufactured goods (Make items); debited on job completion, credited on shipment."
+msgstr "GL account that holds the value of manufactured goods (Make items); debited on job completion, credited on shipment."
+
+msgid "GL account that holds the value of purchased stock and components (Buy items); debited on receipt, credited on issue/shipment."
+msgstr "GL account that holds the value of purchased stock and components (Buy items); debited on receipt, credited on issue/shipment."
 
 msgid "GL account used when a customer pays before an invoice is issued; cleared when the invoice posts."
 msgstr "GL account used when a customer pays before an invoice is issued; cleared when the invoice posts."
@@ -6222,9 +6225,6 @@ msgstr "inventory"
 msgid "Inventory"
 msgstr "Inventory"
 
-msgid "Inventory (default)"
-msgstr "Inventory (default)"
-
 msgid "Inventory accuracy"
 msgstr "Inventory accuracy"
 
@@ -6260,12 +6260,6 @@ msgstr "Inventory Job Notifications"
 
 msgid "Inventory Qty"
 msgstr "Inventory Qty"
-
-msgid "Inventory Shipped Not Invoiced"
-msgstr "Inventory Shipped Not Invoiced"
-
-msgid "Inventory Shipped Not Invoiced (default)"
-msgstr "Inventory Shipped Not Invoiced (default)"
 
 msgid "Inventory Tracking"
 msgstr "Inventory Tracking"
@@ -8172,6 +8166,12 @@ msgstr "On-hand floor to maintain for service use at this location"
 msgid "On-hand inventory remains"
 msgstr "On-hand inventory remains"
 
+msgid "On-hand value of manufactured goods (Make items)"
+msgstr "On-hand value of manufactured goods (Make items)"
+
+msgid "On-hand value of purchased stock and components (Buy items)"
+msgstr "On-hand value of purchased stock and components (Buy items)"
+
 msgid "On-time delivery"
 msgstr "On-time delivery"
 
@@ -8987,9 +8987,6 @@ msgstr "Pricing Rules"
 msgid "Pricing Trace"
 msgstr "Pricing Trace"
 
-msgid "Primary account for on-hand inventory valuation"
-msgstr "Primary account for on-hand inventory valuation"
-
 msgid "Primary cash account for bank transactions"
 msgstr "Primary cash account for bank transactions"
 
@@ -9463,6 +9460,12 @@ msgstr "raise it early and raise it plainly. A problem named in week 2 is a smal
 
 msgid "Rate Limit"
 msgstr "Rate Limit"
+
+msgid "Raw Materials"
+msgstr "Raw Materials"
+
+msgid "Raw Materials (default)"
+msgstr "Raw Materials (default)"
 
 msgid "Re-keying between quoting, the floor, and finance"
 msgstr "Re-keying between quoting, the floor, and finance"

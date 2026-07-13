@@ -466,12 +466,6 @@ msgstr "应收账款"
 msgid "Accounts receivable for amounts owed by customers"
 msgstr "客户应付金额的应收账款。"
 
-msgid "Accrual account debited at shipment to recognize the receivable before the sales invoice posts; cleared when the invoice posts."
-msgstr "在装运时借记的应计账户，以在销售发票转记之前确认应收账款；转记发票时清除。"
-
-msgid "Accrual for inventory shipped but not yet invoiced to customer"
-msgstr "已发货但尚未对客户开票的库存的应计费用。"
-
 msgid "Accumulated Depreciation"
 msgstr "累计折旧"
 
@@ -3445,9 +3439,6 @@ msgstr "您基础货币中交易的默认现金账户。"
 msgid "Default CC Recipients"
 msgstr "默认抄送收件人"
 
-msgid "Default GL account that holds inventory value; debited on receipt, credited on shipment/issue."
-msgstr "保存库存价值的默认GL账户; 在收据上借记，在发货/发行时贷记。"
-
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "未选择特定银行账户时用于现金交易的默认GL账户。"
 
@@ -5318,6 +5309,12 @@ msgstr "完成至"
 msgid "Finished goods"
 msgstr "表面处理"
 
+msgid "Finished Goods"
+msgstr "成品"
+
+msgid "Finished Goods (default)"
+msgstr "成品（默认）"
+
 msgid "finishes"
 msgstr "在常规MACRS计划开始之前采取的第一年额外扣除。"
 
@@ -5632,6 +5629,12 @@ msgstr "捕获标准成本和实际采购成本之间差异的GL账户。"
 
 msgid "GL account that holds the value of jobs in production until they post to finished goods."
 msgstr "持有生产中的工作价值的GL账户，直到它们过帐到成品。"
+
+msgid "GL account that holds the value of manufactured goods (Make items); debited on job completion, credited on shipment."
+msgstr "持有制造商品（制造项）价值的总帐账户；在工作完成时记借，在发货时记贷。"
+
+msgid "GL account that holds the value of purchased stock and components (Buy items); debited on receipt, credited on issue/shipment."
+msgstr "持有采购的库存和组件（采购项）价值的总帐账户；在收货时记借，在发货/发货时记贷。"
 
 msgid "GL account used when a customer pays before an invoice is issued; cleared when the invoice posts."
 msgstr "当客户在发票签发前付款时使用的GL账户; 发票过帐时清除。"
@@ -6222,9 +6225,6 @@ msgstr "库存"
 msgid "Inventory"
 msgstr "库存"
 
-msgid "Inventory (default)"
-msgstr "库存（默认）"
-
 msgid "Inventory accuracy"
 msgstr "库存准确性"
 
@@ -6260,12 +6260,6 @@ msgstr "库存工作通知"
 
 msgid "Inventory Qty"
 msgstr "库存数量"
-
-msgid "Inventory Shipped Not Invoiced"
-msgstr "已发货库存未开票"
-
-msgid "Inventory Shipped Not Invoiced (default)"
-msgstr "已发货库存未开票（默认）"
 
 msgid "Inventory Tracking"
 msgstr "库存追踪"
@@ -8172,6 +8166,12 @@ msgstr "在此位置维护用于服务的最低库存"
 msgid "On-hand inventory remains"
 msgstr "现有库存仍然存在"
 
+msgid "On-hand value of manufactured goods (Make items)"
+msgstr "制造商品（制造项）的现有价值"
+
+msgid "On-hand value of purchased stock and components (Buy items)"
+msgstr "采购的库存和组件（采购项）的现有价值"
+
 msgid "On-time delivery"
 msgstr "准时交付"
 
@@ -8987,9 +8987,6 @@ msgstr "定价规则"
 msgid "Pricing Trace"
 msgstr "定价追踪"
 
-msgid "Primary account for on-hand inventory valuation"
-msgstr "银行交易的主要现金账户"
-
 msgid "Primary cash account for bank transactions"
 msgstr "程序"
 
@@ -9463,6 +9460,12 @@ msgstr "尽早提出问题，直言不讳地提出。第2周发现的问题很�
 
 msgid "Rate Limit"
 msgstr "速率限制"
+
+msgid "Raw Materials"
+msgstr "原材料"
+
+msgid "Raw Materials (default)"
+msgstr "原材料（默认）"
 
 msgid "Re-keying between quoting, the floor, and finance"
 msgstr "在报价、车间和财务之间重复输入数据"

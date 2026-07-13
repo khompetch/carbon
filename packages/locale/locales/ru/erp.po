@@ -466,12 +466,6 @@ msgstr "Дебиторская задолженность"
 msgid "Accounts receivable for amounts owed by customers"
 msgstr "Дебиторская задолженность клиентов за задолженные суммы."
 
-msgid "Accrual account debited at shipment to recognize the receivable before the sales invoice posts; cleared when the invoice posts."
-msgstr "Счет накоплений, дебетуемый при отгрузке для признания дебиторской задолженности до учета счета-фактуры продажи; закрывается при учете счета-фактуры."
-
-msgid "Accrual for inventory shipped but not yet invoiced to customer"
-msgstr "Начисления за материально-производственные запасы, отправленные, но еще не выставленные счетом клиенту."
-
 msgid "Accumulated Depreciation"
 msgstr "Накопленная амортизация"
 
@@ -3445,9 +3439,6 @@ msgstr "Счет наличных денежных средств по умол�
 msgid "Default CC Recipients"
 msgstr "Получатели CC по умолчанию"
 
-msgid "Default GL account that holds inventory value; debited on receipt, credited on shipment/issue."
-msgstr "Счет GL по умолчанию, на котором хранится стоимость запасов; дебет при получении, кредит при отправке/выпуске."
-
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "Счет GL по умолчанию, используемый для операций с наличными деньгами, когда не выбран конкретный банковский счет."
 
@@ -5318,6 +5309,12 @@ msgstr "Завершить в"
 msgid "Finished goods"
 msgstr "Отделки"
 
+msgid "Finished Goods"
+msgstr "Готовая продукция"
+
+msgid "Finished Goods (default)"
+msgstr "Готовая продукция (по умолчанию)"
+
 msgid "finishes"
 msgstr "Дополнительное вычитание в первый год, произведённое до начала обычного графика МАКРС."
 
@@ -5632,6 +5629,12 @@ msgstr "Счет GL, который фиксирует разницу между
 
 msgid "GL account that holds the value of jobs in production until they post to finished goods."
 msgstr "Счет GL, который хранит стоимость работ в производстве, пока они не будут зачислены на готовую продукцию."
+
+msgid "GL account that holds the value of manufactured goods (Make items); debited on job completion, credited on shipment."
+msgstr "Счёт главной книги, который содержит стоимость произведённых товаров (Товары на производство); дебетуется при завершении работы, кредитуется при отправке."
+
+msgid "GL account that holds the value of purchased stock and components (Buy items); debited on receipt, credited on issue/shipment."
+msgstr "Счёт главной книги, который содержит стоимость приобретённого запаса и компонентов (Покупные товары); дебетуется при получении, кредитуется при выпуске/отправке."
 
 msgid "GL account used when a customer pays before an invoice is issued; cleared when the invoice posts."
 msgstr "Счет GL, который используется, когда клиент платит до выдачи счета; очищается при проведении счета."
@@ -6222,9 +6225,6 @@ msgstr "инвентарь"
 msgid "Inventory"
 msgstr "Инвентарь"
 
-msgid "Inventory (default)"
-msgstr "Инвентарь (по умолчанию)"
-
 msgid "Inventory accuracy"
 msgstr "Точность инвентаризации"
 
@@ -6260,12 +6260,6 @@ msgstr "Уведомления о завершении работ по инве�
 
 msgid "Inventory Qty"
 msgstr "Кол-во в инвентаре"
-
-msgid "Inventory Shipped Not Invoiced"
-msgstr "Инвентарь отправленный не выставлен счет"
-
-msgid "Inventory Shipped Not Invoiced (default)"
-msgstr "Инвентарь отправленный не выставлен счет (по умолчанию)"
 
 msgid "Inventory Tracking"
 msgstr "Отслеживание запасов"
@@ -8172,6 +8166,12 @@ msgstr "Минимальный остаток для обслуживания в
 msgid "On-hand inventory remains"
 msgstr "Остаток на складе"
 
+msgid "On-hand value of manufactured goods (Make items)"
+msgstr "Текущая стоимость произведённых товаров (Товары на производство)"
+
+msgid "On-hand value of purchased stock and components (Buy items)"
+msgstr "Текущая стоимость приобретённого запаса и компонентов (Покупные товары)"
+
 msgid "On-time delivery"
 msgstr "Своевременная доставка"
 
@@ -8987,9 +8987,6 @@ msgstr "Правила цен"
 msgid "Pricing Trace"
 msgstr "Трассировка цен"
 
-msgid "Primary account for on-hand inventory valuation"
-msgstr "Основной кассовый счет для банковских транзакций"
-
 msgid "Primary cash account for bank transactions"
 msgstr "процедура"
 
@@ -9463,6 +9460,12 @@ msgstr "поднимайте проблемы рано и говорите о н
 
 msgid "Rate Limit"
 msgstr "Ограничение скорости"
+
+msgid "Raw Materials"
+msgstr "Сырьё и материалы"
+
+msgid "Raw Materials (default)"
+msgstr "Сырьё и материалы (по умолчанию)"
 
 msgid "Re-keying between quoting, the floor, and finance"
 msgstr "Повторный ввод данных между расчётом, цехом и финансами"

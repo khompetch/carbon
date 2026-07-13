@@ -466,12 +466,6 @@ msgstr "Alacak hesapları"
 msgid "Accounts receivable for amounts owed by customers"
 msgstr "Müşteriler tarafından borçlu olunan tutarlar için alacak hesapları."
 
-msgid "Accrual account debited at shipment to recognize the receivable before the sales invoice posts; cleared when the invoice posts."
-msgstr "Satış faturası deftere geçmeden önce alacağı tanımak için sevkiyat sırasında borçlandırılan bir tahakkuk hesabı; fatura deftere geçildiğinde temizlenir."
-
-msgid "Accrual for inventory shipped but not yet invoiced to customer"
-msgstr "Sevk edilmiş ancak müşteriye faturası kesilmemiş envanter için tahakkuk."
-
 msgid "Accumulated Depreciation"
 msgstr "Birikmiş amortisman"
 
@@ -3445,9 +3439,6 @@ msgstr "Temel para biriminizde işlemler için varsayılan kasa hesabı."
 msgid "Default CC Recipients"
 msgstr "Varsayılan Bilgi Ekleyicileri"
 
-msgid "Default GL account that holds inventory value; debited on receipt, credited on shipment/issue."
-msgstr "Envanter değerini tutan varsayılan GL hesabı; alımda borçlandırılır, sevkiyat/çıkışta alacaklandırılır."
-
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "Belirli bir banka hesabı seçilmediğinde nakit işlemler için kullanılan varsayılan GL hesabı."
 
@@ -5318,6 +5309,12 @@ msgstr "Bitirmek İçin"
 msgid "Finished goods"
 msgstr "Tamamlamalar"
 
+msgid "Finished Goods"
+msgstr "Bitmiş Ürünler"
+
+msgid "Finished Goods (default)"
+msgstr "Bitmiş Ürünler (varsayılan)"
+
 msgid "finishes"
 msgstr "Normal MACRS programı başlamadan önce alınan ilk yıl ek indirimi."
 
@@ -5632,6 +5629,12 @@ msgstr "Standart maliyet ile fiili satın alma maliyeti arasındaki farkı yakal
 
 msgid "GL account that holds the value of jobs in production until they post to finished goods."
 msgstr "İşleri tamamlanmış mal olarak kaydetene kadar üretimde olan işlerin değerini tutan GL hesabı."
+
+msgid "GL account that holds the value of manufactured goods (Make items); debited on job completion, credited on shipment."
+msgstr "Üretilen malların değerini tutan genel muhasebe hesabı (Üretim ürünleri); iş tamamlandığında borçlandırılır, sevkiyatta alacaklandırılır."
+
+msgid "GL account that holds the value of purchased stock and components (Buy items); debited on receipt, credited on issue/shipment."
+msgstr "Satın alınan stok ve bileşenlerin değerini tutan genel muhasebe hesabı (Satın alma ürünleri); alışta borçlandırılır, çıkış/sevkiyatta alacaklandırılır."
 
 msgid "GL account used when a customer pays before an invoice is issued; cleared when the invoice posts."
 msgstr "Bir müşteri fatura çıkarılmadan önce ödeme yaptığında kullanılan GL hesabı; fatura nakledildiğinde temizlenir."
@@ -6222,9 +6225,6 @@ msgstr "envanter"
 msgid "Inventory"
 msgstr "Stok"
 
-msgid "Inventory (default)"
-msgstr "Envanter (varsayılan)"
-
 msgid "Inventory accuracy"
 msgstr "Envanter doğruluğu"
 
@@ -6260,12 +6260,6 @@ msgstr "Envanter İş Bildirimleri"
 
 msgid "Inventory Qty"
 msgstr "Stok Miktarı"
-
-msgid "Inventory Shipped Not Invoiced"
-msgstr "Envanter Gönderildi Faturasız"
-
-msgid "Inventory Shipped Not Invoiced (default)"
-msgstr "Envanter Gönderildi Faturasız (varsayılan)"
 
 msgid "Inventory Tracking"
 msgstr "Stok Takibi"
@@ -8172,6 +8166,12 @@ msgstr "Bu konumdaki servis kullanımı için korunacak minimum stok seviyesi"
 msgid "On-hand inventory remains"
 msgstr "Eldeki envanter kaldı"
 
+msgid "On-hand value of manufactured goods (Make items)"
+msgstr "Üretilen malların (Üretim ürünleri) eldeki değeri"
+
+msgid "On-hand value of purchased stock and components (Buy items)"
+msgstr "Satın alınan stok ve bileşenlerin (Satın alma ürünleri) eldeki değeri"
+
 msgid "On-time delivery"
 msgstr "Zamanında teslimat"
 
@@ -8987,9 +8987,6 @@ msgstr "Fiyatlandırma Kuralları"
 msgid "Pricing Trace"
 msgstr "Fiyatlandırma İzleme"
 
-msgid "Primary account for on-hand inventory valuation"
-msgstr "Banka işlemleri için ana nakit hesabı"
-
 msgid "Primary cash account for bank transactions"
 msgstr "prosedür"
 
@@ -9463,6 +9460,12 @@ msgstr "bunu erken ve açık bir şekilde dile getir. 2. haftada adı konulan bi
 
 msgid "Rate Limit"
 msgstr "Hız Sınırı"
+
+msgid "Raw Materials"
+msgstr "Ham Maddeler"
+
+msgid "Raw Materials (default)"
+msgstr "Ham Maddeler (varsayılan)"
 
 msgid "Re-keying between quoting, the floor, and finance"
 msgstr "Tekliflendirme, üretim ve muhasebe arasında veri yeniden girişi"

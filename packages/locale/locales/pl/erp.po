@@ -466,12 +466,6 @@ msgstr "Rozrachunki z odbiorcami"
 msgid "Accounts receivable for amounts owed by customers"
 msgstr "Rozrachunki z odbiorcami za kwoty należne od odbiorców."
 
-msgid "Accrual account debited at shipment to recognize the receivable before the sales invoice posts; cleared when the invoice posts."
-msgstr "Konto przychodu obciążone przy wysyłce, aby rozpoznać należność przed zaksięgowaniem faktury sprzedaży; rozliczane przy zaksięgowaniu faktury."
-
-msgid "Accrual for inventory shipped but not yet invoiced to customer"
-msgstr "Accrual dla zapasów wysłanych, ale nie jeszcze zafakturowanych klientowi."
-
 msgid "Accumulated Depreciation"
 msgstr "Skumulowana amortyzacja"
 
@@ -3445,9 +3439,6 @@ msgstr "Domyślne konto gotówkowe dla transakcji w Twojej walucie bazowej."
 msgid "Default CC Recipients"
 msgstr "Domyślni odbiorcy DW"
 
-msgid "Default GL account that holds inventory value; debited on receipt, credited on shipment/issue."
-msgstr "Domyślne konto GL, które przechowuje wartość zapasów; obciążane przy otrzymaniu, kredytowane przy wysyłce/wydaniu."
-
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "Domyślne konto GL używane do transakcji gotówkowych, gdy nie wybrano określonego konta bankowego."
 
@@ -5318,6 +5309,12 @@ msgstr "Zakończyć do"
 msgid "Finished goods"
 msgstr "Wykończenia"
 
+msgid "Finished Goods"
+msgstr "Wyroby gotowe"
+
+msgid "Finished Goods (default)"
+msgstr "Wyroby gotowe (domyślnie)"
+
 msgid "finishes"
 msgstr "Dodatkowe odliczenie w pierwszym roku wykonane przed rozpoczęciem regularnego harmonogramu MACRS."
 
@@ -5632,6 +5629,12 @@ msgstr "Konto GL, które przechwytuje różnicę między kosztem standardowym a 
 
 msgid "GL account that holds the value of jobs in production until they post to finished goods."
 msgstr "Konto GL, które przechowuje wartość prac w produkcji do momentu ich zaksięgowania jako produktów gotowych."
+
+msgid "GL account that holds the value of manufactured goods (Make items); debited on job completion, credited on shipment."
+msgstr "Konto GL, które przechowuje wartość wyrobów wytworzonych (Pozycje produkcyjne); obciążane po zakończeniu zadania, uznawane przy wysyłce."
+
+msgid "GL account that holds the value of purchased stock and components (Buy items); debited on receipt, credited on issue/shipment."
+msgstr "Konto GL, które przechowuje wartość zakupionego materiału i komponentów (Pozycje zakupowe); obciążane przy odbiorze, uznawane przy wydaniu/wysyłce."
 
 msgid "GL account used when a customer pays before an invoice is issued; cleared when the invoice posts."
 msgstr "Konto GL używane, gdy klient płaci przed wystawieniem faktury; czyszczone po zaksięgowaniu faktury."
@@ -6222,9 +6225,6 @@ msgstr "zapasy"
 msgid "Inventory"
 msgstr "Zapasy"
 
-msgid "Inventory (default)"
-msgstr "Zapasy (domyślne)"
-
 msgid "Inventory accuracy"
 msgstr "Dokładność inwentarza"
 
@@ -6260,12 +6260,6 @@ msgstr "Powiadomienia o zadaniach inwentaryzacyjnych"
 
 msgid "Inventory Qty"
 msgstr "Ilość w magazynie"
-
-msgid "Inventory Shipped Not Invoiced"
-msgstr "Wysłane Zapasy Niezafakturowane"
-
-msgid "Inventory Shipped Not Invoiced (default)"
-msgstr "Wysłane Zapasy Niezafakturowane (domyślne)"
 
 msgid "Inventory Tracking"
 msgstr "Śledzenie zapasów"
@@ -8172,6 +8166,12 @@ msgstr "Minimalna ilość do utrzymania na potrzeby serwisu w tej lokalizacji"
 msgid "On-hand inventory remains"
 msgstr "Pozostały zapas w magazynie"
 
+msgid "On-hand value of manufactured goods (Make items)"
+msgstr "Wartość dostępna wyrobów wytworzonych (Pozycje produkcyjne)"
+
+msgid "On-hand value of purchased stock and components (Buy items)"
+msgstr "Wartość dostępna zakupionego materiału i komponentów (Pozycje zakupowe)"
+
 msgid "On-time delivery"
 msgstr "Dostawa na czas"
 
@@ -8987,9 +8987,6 @@ msgstr "Reguły cenowe"
 msgid "Pricing Trace"
 msgstr "Śledzenie cen"
 
-msgid "Primary account for on-hand inventory valuation"
-msgstr "Główne konto kasowe dla transakcji bankowych"
-
 msgid "Primary cash account for bank transactions"
 msgstr "procedura"
 
@@ -9463,6 +9460,12 @@ msgstr "zgłoś to wcześnie i zgłoś to jasno. Problem zidentyfikowany w tygod
 
 msgid "Rate Limit"
 msgstr "Limit Szybkości"
+
+msgid "Raw Materials"
+msgstr "Surowce"
+
+msgid "Raw Materials (default)"
+msgstr "Surowce (domyślnie)"
 
 msgid "Re-keying between quoting, the floor, and finance"
 msgstr "Ponowne wprowadzanie danych między ofertowaniem, halą produkcyjną i finansami"

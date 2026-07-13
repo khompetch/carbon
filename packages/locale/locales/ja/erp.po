@@ -466,12 +466,6 @@ msgstr "売掛金"
 msgid "Accounts receivable for amounts owed by customers"
 msgstr "顧客に支払う金額の売掛金。"
 
-msgid "Accrual account debited at shipment to recognize the receivable before the sales invoice posts; cleared when the invoice posts."
-msgstr "販売請求書が転記される前に売掛金を認識するために転記の際にデビットされる発生主義勘定。請求書が転記されるとクリアされます。"
-
-msgid "Accrual for inventory shipped but not yet invoiced to customer"
-msgstr "シップされたが顧客にまだ請求されていない在庫の発生主義。"
-
 msgid "Accumulated Depreciation"
 msgstr "累計減価償却費"
 
@@ -3445,9 +3439,6 @@ msgstr "あなたの基本通貨での取引のためのデフォルト現金勘
 msgid "Default CC Recipients"
 msgstr "デフォルトCC受信者"
 
-msgid "Default GL account that holds inventory value; debited on receipt, credited on shipment/issue."
-msgstr "在庫値を保持するデフォルトGLアカウント; 受け取り時に借方記入、出荷/発行時に貸方記入されます。"
-
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "特定の銀行口座が選択されていない場合、現金取引に使用されるデフォルトGLアカウント。"
 
@@ -5318,6 +5309,12 @@ msgstr "完成先"
 msgid "Finished goods"
 msgstr "フィニッシュ"
 
+msgid "Finished Goods"
+msgstr "完成品"
+
+msgid "Finished Goods (default)"
+msgstr "完成品（デフォルト）"
+
 msgid "finishes"
 msgstr "通常のMACRSスケジュールが始まる前に取られた初年度の追加控除。"
 
@@ -5632,6 +5629,12 @@ msgstr "標準原価と実際の購入原価の差を捕捉するGLアカウン�
 
 msgid "GL account that holds the value of jobs in production until they post to finished goods."
 msgstr "生産中のジョブの価値を保有し、完成品にポストされるまでのGLアカウント。"
+
+msgid "GL account that holds the value of manufactured goods (Make items); debited on job completion, credited on shipment."
+msgstr "製造品（メイク品目）の価値を保有する総勘定元帳勘定。ジョブ完了時に借方記入され、出荷時に貸方記入されます。"
+
+msgid "GL account that holds the value of purchased stock and components (Buy items); debited on receipt, credited on issue/shipment."
+msgstr "購入在庫および部品（買入品目）の価値を保有する総勘定元帳勘定。受取時に借方記入され、払出/出荷時に貸方記入されます。"
 
 msgid "GL account used when a customer pays before an invoice is issued; cleared when the invoice posts."
 msgstr "クライアントが請求書を発行する前に支払う場合に使用されるGLアカウント; 請求書が転記されるとクリアされます。"
@@ -6222,9 +6225,6 @@ msgstr "在庫"
 msgid "Inventory"
 msgstr "在庫"
 
-msgid "Inventory (default)"
-msgstr "在庫（デフォルト）"
-
 msgid "Inventory accuracy"
 msgstr "在庫精度"
 
@@ -6260,12 +6260,6 @@ msgstr "在庫ジョブ通知"
 
 msgid "Inventory Qty"
 msgstr "在庫数量"
-
-msgid "Inventory Shipped Not Invoiced"
-msgstr "在庫出荷未請求"
-
-msgid "Inventory Shipped Not Invoiced (default)"
-msgstr "在庫出荷未請求（デフォルト）"
 
 msgid "Inventory Tracking"
 msgstr "在庫追跡"
@@ -8172,6 +8166,12 @@ msgstr "このロケーションでのサービス使用のために維持する
 msgid "On-hand inventory remains"
 msgstr "現在庫が残っています"
 
+msgid "On-hand value of manufactured goods (Make items)"
+msgstr "製造品（メイク品目）の現在高価値"
+
+msgid "On-hand value of purchased stock and components (Buy items)"
+msgstr "購入在庫および部品（買入品目）の現在高価値"
+
 msgid "On-time delivery"
 msgstr "オンタイム配送"
 
@@ -8987,9 +8987,6 @@ msgstr "価格設定ルール"
 msgid "Pricing Trace"
 msgstr "価格トレース"
 
-msgid "Primary account for on-hand inventory valuation"
-msgstr "銀行取引の主要現金アカウント"
-
 msgid "Primary cash account for bank transactions"
 msgstr "手順"
 
@@ -9463,6 +9460,12 @@ msgstr "早期に報告し、明確に報告してください。2週目に特�
 
 msgid "Rate Limit"
 msgstr "レート制限"
+
+msgid "Raw Materials"
+msgstr "原材料"
+
+msgid "Raw Materials (default)"
+msgstr "原材料（デフォルト）"
 
 msgid "Re-keying between quoting, the floor, and finance"
 msgstr "見積、現場、財務間での再入力"

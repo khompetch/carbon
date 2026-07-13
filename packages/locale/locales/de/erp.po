@@ -466,12 +466,6 @@ msgstr "Forderungen aus Lieferungen und Leistungen"
 msgid "Accounts receivable for amounts owed by customers"
 msgstr "Forderungen aus Lieferungen und Leistungen für Beträge, die Kunden schulden."
 
-msgid "Accrual account debited at shipment to recognize the receivable before the sales invoice posts; cleared when the invoice posts."
-msgstr "Abgrenzungskonto, das beim Versand belastet wird, um die Forderung zu erfassen, bevor die Verkaufsrechnung gebucht wird; wird gelöscht, wenn die Rechnung gebucht wird."
-
-msgid "Accrual for inventory shipped but not yet invoiced to customer"
-msgstr "Rückstellung für Bestände, die versandt, aber noch nicht dem Kunden berechnet wurden."
-
 msgid "Accumulated Depreciation"
 msgstr "Kumulierte Abschreibung"
 
@@ -3445,9 +3439,6 @@ msgstr "Standard-Bargeldkonto für Transaktionen in Ihrer Basiswährung."
 msgid "Default CC Recipients"
 msgstr "Standard-CC-Empfänger"
 
-msgid "Default GL account that holds inventory value; debited on receipt, credited on shipment/issue."
-msgstr "Standard-GL-Konto, das den Bestandswert hält; wird belastet bei Eingang, wird gutgeschrieben bei Versand/Ausgang."
-
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "Standard-GL-Konto für Bargeldtransaktionen, wenn kein spezifisches Bankkonto ausgewählt ist."
 
@@ -5318,6 +5309,12 @@ msgstr "Fertigstellen zu"
 msgid "Finished goods"
 msgstr "Oberflächen"
 
+msgid "Finished Goods"
+msgstr "Fertigerzeugnisse"
+
+msgid "Finished Goods (default)"
+msgstr "Fertigerzeugnisse (Standard)"
+
 msgid "finishes"
 msgstr "Zusätzlicher Abzug im ersten Jahr, bevor der reguläre MACRS-Plan beginnt."
 
@@ -5632,6 +5629,12 @@ msgstr "GL-Konto, das die Differenz zwischen Standardkosten und tatsächlichen E
 
 msgid "GL account that holds the value of jobs in production until they post to finished goods."
 msgstr "GL-Konto, das den Wert von Arbeitsaufträgen in der Produktion hält, bis sie auf fertige Waren buchen."
+
+msgid "GL account that holds the value of manufactured goods (Make items); debited on job completion, credited on shipment."
+msgstr "Sachkonto, das den Wert hergestellter Waren (Herstellartikel) enthält; belastet bei Auftragsabschluss, entlastet bei Versand."
+
+msgid "GL account that holds the value of purchased stock and components (Buy items); debited on receipt, credited on issue/shipment."
+msgstr "Sachkonto, das den Wert gekaufter Bestände und Komponenten (Kaufartikel) enthält; belastet bei Eingang, entlastet bei Entnahme/Versand."
 
 msgid "GL account used when a customer pays before an invoice is issued; cleared when the invoice posts."
 msgstr "GL-Konto, das verwendet wird, wenn ein Kunde vor Ausstellung einer Rechnung bezahlt; wird gelöscht, wenn die Rechnung gebucht wird."
@@ -6222,9 +6225,6 @@ msgstr "Bestand"
 msgid "Inventory"
 msgstr "Bestand"
 
-msgid "Inventory (default)"
-msgstr "Bestand (Standard)"
-
 msgid "Inventory accuracy"
 msgstr "Bestandsgenauigkeit"
 
@@ -6260,12 +6260,6 @@ msgstr "Bestandsverwaltungs-Jobbenachrichtigungen"
 
 msgid "Inventory Qty"
 msgstr "Bestandsmenge"
-
-msgid "Inventory Shipped Not Invoiced"
-msgstr "Bestand Verschifft Nicht in Rechnung gestellt"
-
-msgid "Inventory Shipped Not Invoiced (default)"
-msgstr "Bestand Verschifft Nicht in Rechnung gestellt (Standard)"
 
 msgid "Inventory Tracking"
 msgstr "Bestandsverfolgung"
@@ -8172,6 +8166,12 @@ msgstr "Mindestbestand zur Wartung für die Nutzung an diesem Standort"
 msgid "On-hand inventory remains"
 msgstr "Bestandsinventar vorhanden"
 
+msgid "On-hand value of manufactured goods (Make items)"
+msgstr "Bestandswert hergestellter Waren (Herstellartikel)"
+
+msgid "On-hand value of purchased stock and components (Buy items)"
+msgstr "Bestandswert gekaufter Bestände und Komponenten (Kaufartikel)"
+
 msgid "On-time delivery"
 msgstr "Pünktliche Lieferung"
 
@@ -8987,9 +8987,6 @@ msgstr "Preisregeln"
 msgid "Pricing Trace"
 msgstr "Preisablauf"
 
-msgid "Primary account for on-hand inventory valuation"
-msgstr "Hauptkasse für Banktransaktionen"
-
 msgid "Primary cash account for bank transactions"
 msgstr "Verfahren"
 
@@ -9463,6 +9460,12 @@ msgstr "Sprechen Sie es früh an und sprechen Sie es deutlich an. Ein Problem, d
 
 msgid "Rate Limit"
 msgstr "Ratenlimit"
+
+msgid "Raw Materials"
+msgstr "Rohstoffe"
+
+msgid "Raw Materials (default)"
+msgstr "Rohstoffe (Standard)"
 
 msgid "Re-keying between quoting, the floor, and finance"
 msgstr "Erneute Eingabe zwischen Angebotserstellung, Produktion und Finanzen"
