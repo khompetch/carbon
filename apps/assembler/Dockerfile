@@ -67,8 +67,17 @@ COPY crates ./crates
 COPY apps/assembler ./apps/assembler
 # Point the cxx bridges at the static OCCT + static FCL/ccd (build.rs picks
 # `static=` when it finds a .a at the prefix). Eigen headers from apt.
+#
+# Build the x86_64 Fargate fleet for AVX2/FMA (x86-64-v3) so the planner's
+# collision-heavy loops and the Eigen/FCL math vectorize — matching the -march on
+# the C++ collision shim (crates/collision/build.rs). Conservative fleet baseline,
+# NOT target-cpu=native (which bakes the build box's ISA and SIGILLs on older
+# CPUs). Lives here (not .cargo/config.toml, which isn't copied into this build
+# context anyway) so it actually applies to the deploy target; env is
+# target-scoped, so cross-compiles/other arches are untouched.
 ENV OCCT_PREFIX=/opt/occt OCCT_LINK=static \
-    FCL_PREFIX=/opt/fcl LIBCCD_PREFIX=/opt/fcl EIGEN_PREFIX=/usr OCTOMAP_PREFIX=/usr
+    FCL_PREFIX=/opt/fcl LIBCCD_PREFIX=/opt/fcl EIGEN_PREFIX=/usr OCTOMAP_PREFIX=/usr \
+    CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS="-C target-cpu=x86-64-v3"
 # Cache mounts: the cargo registry and the target dir survive across builds,
 # so a code-only change relinks instead of recompiling every dependency.
 # The binary is copied out because cache mounts vanish after the RUN.
