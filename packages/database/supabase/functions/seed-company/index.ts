@@ -17,6 +17,7 @@ import {
   nonConformanceRequiredActions,
   nonConformanceTypes,
   paymentTerms,
+  periodCloseTaskDefinitions,
   scrapReasons,
   sequences,
   unitOfMeasures,
@@ -294,6 +295,20 @@ serve(async (req: Request) => {
       await trx
         .insertInto("sequence")
         .values(sequences.map((s) => ({ ...s, companyId })))
+        .execute();
+
+      // period-close checklist definitions (system template rows). The table is
+      // new on this branch and not yet in the cloud-generated Kysely types, so
+      // the insert goes through a cast (mirrors accounting.service.ts).
+      await (trx as any)
+        .insertInto("periodCloseTaskDefinition")
+        .values(
+          periodCloseTaskDefinitions.map((d) => ({
+            ...d,
+            companyId,
+            createdBy: "system",
+          }))
+        )
         .execute();
 
       // Shared tables: only seed for new groups (existing groups already have these)

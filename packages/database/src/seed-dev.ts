@@ -28,6 +28,7 @@ import {
   nonConformanceRequiredActions,
   nonConformanceTypes,
   paymentTerms,
+  periodCloseTaskDefinitions,
   scrapReasons,
   sequences,
   unitOfMeasures
@@ -311,6 +312,25 @@ async function seedDev() {
         await client.query(
           `INSERT INTO "unitOfMeasure" (name, code, "companyId", "createdBy") VALUES ($1, $2, $3, 'system')`,
           [uom.name, uom.code, companyId]
+        );
+      }
+
+      // Seed period-close checklist definitions
+      for (const d of periodCloseTaskDefinitions) {
+        await client.query(
+          `INSERT INTO "periodCloseTaskDefinition" (name, "taskType", "autoCheckKey", "sortOrder", required, severity, active, "isSystem", "companyId", "createdBy")
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'system')`,
+          [
+            d.name,
+            d.taskType,
+            d.autoCheckKey,
+            d.sortOrder,
+            d.required,
+            d.severity,
+            d.active,
+            d.isSystem,
+            companyId
+          ]
         );
       }
 

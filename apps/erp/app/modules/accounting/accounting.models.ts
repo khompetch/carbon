@@ -485,6 +485,68 @@ export const journalEntrySourceTypes = [
 
 export const journalEntryStatuses = ["Draft", "Posted", "Reversed"] as const;
 
+export const periodCloseStatuses = ["Open", "Locked", "Closed"] as const;
+
+export const accountingPeriodTransitionValidator = z.object({
+  intent: z.enum(["lock", "unlock", "close", "reopen"]),
+  periodId: z.string().min(1, { message: "Period is required" })
+});
+
+export const generateFiscalYearPeriodsValidator = z.object({
+  intent: z.literal("generate"),
+  fiscalYear: zfd.numeric(z.number().int().min(2000).max(2200))
+});
+
+// --- NetSuite-style period close checklist ---------------------------------
+export const periodCloseTaskTypes = ["Auto", "Action", "Manual"] as const;
+export const periodCloseTaskSeverities = ["Blocker", "Warning"] as const;
+export const periodCloseTaskStatuses = ["Open", "Done", "Skipped"] as const;
+
+// Complete an Action/Manual checklist task (Auto tasks are system-evaluated).
+export const closeTaskCompleteValidator = z.object({
+  intent: z.literal("completeTask"),
+  taskId: z.string().min(1, { message: "Task is required" }),
+  notes: zfd.text(z.string().optional())
+});
+
+// Skip a Warning/Manual task — a non-empty reason is always required, and the
+// service additionally rejects skipping Blocker tasks.
+export const closeTaskSkipValidator = z.object({
+  intent: z.literal("skipTask"),
+  taskId: z.string().min(1, { message: "Task is required" }),
+  skippedReason: z
+    .string()
+    .trim()
+    .min(1, { message: "A reason is required to skip a task" })
+});
+
+// Add an ad-hoc task to a single period's checklist (definitionId stays null).
+export const addCloseTaskValidator = z.object({
+  intent: z.literal("addTask"),
+  periodId: z.string().min(1, { message: "Period is required" }),
+  name: z.string().min(1, { message: "Name is required" }),
+  taskType: z.enum(periodCloseTaskTypes, {
+    errorMap: () => ({ message: "Task type is required" })
+  }),
+  required: zfd.checkbox(),
+  assigneeId: zfd.text(z.string().optional())
+});
+
+// Create/update a company-level close task definition (template row).
+export const periodCloseTaskDefinitionValidator = z.object({
+  id: zfd.text(z.string().optional()),
+  name: z.string().min(1, { message: "Name is required" }),
+  taskType: z.enum(periodCloseTaskTypes, {
+    errorMap: () => ({ message: "Task type is required" })
+  }),
+  autoCheckKey: zfd.text(z.string().optional()),
+  sortOrder: zfd.numeric(z.number().int().min(0)),
+  required: zfd.checkbox(),
+  severity: zfd.text(z.enum(periodCloseTaskSeverities).optional()),
+  active: zfd.checkbox(),
+  defaultAssigneeId: zfd.text(z.string().optional())
+});
+
 export const journalEntryValidator = z.object({
   id: zfd.text(z.string().optional()),
   description: z.string().optional(),

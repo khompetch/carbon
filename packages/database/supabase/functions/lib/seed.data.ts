@@ -813,6 +813,95 @@ export const fiscalYearSettings = {
 } as const;
 
 /**
+ * Default period-close checklist (NetSuite-style). Seeded per company as system
+ * task definitions; getPeriodCloseChecklist instantiates a periodCloseTask per
+ * period from the active definitions. `autoCheckKey` binds Auto tasks to a
+ * readiness evaluator in accounting.service.ts (computePeriodReadiness).
+ */
+export const periodCloseTaskDefinitions = [
+  {
+    name: "Post pending operational documents",
+    taskType: "Auto",
+    autoCheckKey: "pending-postings",
+    sortOrder: 1,
+    required: true,
+    severity: "Blocker",
+    active: true,
+    isSystem: true
+  },
+  {
+    name: "Post or re-date draft journal entries",
+    taskType: "Auto",
+    autoCheckKey: "draft-journals",
+    sortOrder: 2,
+    required: true,
+    severity: "Blocker",
+    active: true,
+    isSystem: true
+  },
+  {
+    name: "Lock the period",
+    taskType: "Action",
+    autoCheckKey: null,
+    sortOrder: 3,
+    required: true,
+    severity: null,
+    active: true,
+    isSystem: true
+  },
+  {
+    name: "Post depreciation runs covering the period",
+    taskType: "Auto",
+    autoCheckKey: "draft-depreciation",
+    sortOrder: 4,
+    required: true,
+    severity: "Warning",
+    active: true,
+    isSystem: true
+  },
+  {
+    name: "Match & eliminate intercompany transactions",
+    taskType: "Auto",
+    autoCheckKey: "unmatched-ic",
+    sortOrder: 5,
+    required: true,
+    severity: "Warning",
+    active: true,
+    isSystem: true
+  },
+  {
+    name: "Review negative on-hand inventory",
+    taskType: "Action",
+    autoCheckKey: null,
+    sortOrder: 6,
+    required: true,
+    severity: null,
+    active: true,
+    isSystem: true
+  },
+  {
+    name: "Trial balance in balance for the period",
+    taskType: "Auto",
+    autoCheckKey: "tb-balanced",
+    sortOrder: 7,
+    required: true,
+    severity: "Blocker",
+    active: true,
+    isSystem: true
+  },
+  {
+    name: "Review financial statements",
+    taskType: "Action",
+    autoCheckKey: null,
+    sortOrder: 8,
+    required: true,
+    severity: null,
+    active: true,
+    isSystem: true
+  }
+];
+
+/**
  * Default location seeded for new companies
  * Required for inventory quantities, jobs, and other location-dependent features
  */

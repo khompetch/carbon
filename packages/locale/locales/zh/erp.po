@@ -51,6 +51,10 @@ msgstr "{0} 天"
 msgid "{0} deleted successfully"
 msgstr "{0} 已成功删除"
 
+#. placeholder {0}: task.autoCheck.count
+msgid "{0} draft journal entries"
+msgstr "{0} 份草稿日记账条目"
+
 #. placeholder {0}: mappings.length
 msgid "{0} lines to map"
 msgstr "{0} 行待映射"
@@ -70,6 +74,10 @@ msgstr "{0}个有余额的供应商"
 #. placeholder {0}: lotEntities.length - inspected
 msgid "{0} un-sampled entities will be released to Available. Sampled passes stay Available and sampled failures stay Rejected."
 msgstr "{0} 个未采样的实体将被释放到可用状态。已采样的合格品保持可用状态，已采样的不合格品保持被拒绝状态。"
+
+#. placeholder {0}: task.autoCheck.count
+msgid "{0} unposted documents"
+msgstr "{0} 份未过账单据"
 
 #. placeholder {0}: file.name
 msgid "{0} uploaded successfully"
@@ -142,6 +150,15 @@ msgstr "0-4 周"
 
 msgid "1 day"
 msgstr "1 天"
+
+msgid "1 draft journal entry"
+msgstr "1 份草稿日记账条目"
+
+msgid "1 unposted document"
+msgstr "1 份未过账单据"
+
+msgid "12 monthly periods"
+msgstr "12个月度期间"
 
 msgid "13+ weeks"
 msgstr "13周以上"
@@ -423,6 +440,9 @@ msgid "Accounting is enabled"
 msgstr "会计已启用"
 
 msgid "Accounting period"
+msgstr "会计期间"
+
+msgid "Accounting Periods"
 msgstr "会计期间"
 
 msgid "Accounting: GL, AR, AP, and month-end close"
@@ -840,6 +860,10 @@ msgstr "将计划时间表锚定到实际日期。留空以获得相对的、按
 
 msgid "AND"
 msgstr "且"
+
+#. placeholder {0}: count - documents.length
+msgid "And {0} more — resolve these to see the rest."
+msgstr "还有 {0} 份 — 解决这些以查看其余部分。"
 
 msgid "and {remaining} more"
 msgstr "和 {remaining} 个更多"
@@ -1857,6 +1881,9 @@ msgstr "校准"
 msgid "Called a method in Carbon — the components plus operations that produce a part."
 msgstr "在Carbon中称为方法—生成零件的组件和操作。"
 
+msgid "Can't delete this period"
+msgstr "无法删除此期间"
+
 msgid "Can't disable the only active break. Add another break or toggle the override's Active instead."
 msgstr "无法禁用唯一的活跃价格段。请添加另一个价格段或改为切换覆盖的\"活跃\"状态。"
 
@@ -1907,6 +1934,9 @@ msgstr "无法向未保存的操作添加步骤"
 
 msgid "Cannot add tools to unsaved operation"
 msgstr "无法向未保存的操作添加工具"
+
+msgid "Cannot close yet"
+msgstr "无法关闭"
 
 msgid "Cannot convert RFQ to quote"
 msgstr "无法将RFQ转换为报价"
@@ -2055,6 +2085,9 @@ msgstr "会计科目表"
 msgid "Chat"
 msgstr "聊天"
 
+msgid "Check the item ledger for any items with a negative on-hand quantity as of period end — usually a missing receipt or an out-of-order posting that distorts inventory value and cost of goods sold. Mark it done once reviewed, or skip with a reason."
+msgstr "检查物料分类账中期末库存数量为负的任何物料——通常是缺少收货或发布顺序不对导致库存价值和销货成本失真。审查后标记为完成，或跳过并说明原因。"
+
 msgid "Check your email"
 msgstr "检查您的电子邮件"
 
@@ -2134,8 +2167,17 @@ msgstr "自 {0} 起已打卡"
 msgid "Close"
 msgstr "关闭"
 
+msgid "Close {periodLabel}"
+msgstr "关闭{periodLabel}"
+
 msgid "Close Date"
 msgstr "关闭日期"
+
+msgid "Close Period"
+msgstr "关闭期间"
+
+msgid "Close Status"
+msgstr "关闭状态"
 
 msgid "Closed"
 msgstr "已关闭"
@@ -2390,6 +2432,9 @@ msgstr "确认映射"
 msgid "Confirm Password"
 msgstr "确认密码"
 
+msgid "Confirm Skip"
+msgstr "确认跳过"
+
 msgid "Confirmed incoming stock — purchase & production orders (bars above zero)."
 msgstr "确认的入库存货 — 采购和生产订单（零以上的条形图）。"
 
@@ -2398,6 +2443,9 @@ msgstr "确认的出库存货 — 销售订单和工作物料（零以下的条�
 
 msgid "Confirming locks the counted quantities. Review the warnings below, then post the count to apply the adjustments."
 msgstr "确认将锁定计数数量。查看下面的警告，然后发布计数以应用调整。"
+
+msgid "Confirms every posted journal entry in the period has equal debits and credits. If any entry is out of balance the trial balance won't tie out, so it must be corrected before the period can close."
+msgstr "确认期间内每笔已过账日记账条目都有相等的借贷金额。如果任何条目不平衡，试算平衡表将无法对账，因此必须在期间结束前进行更正。"
 
 msgid "Connect Carbon to your accounting, project management, and CAD tools and much more."
 msgstr "将 Carbon 连接到您的会计、项目管理和 CAD 工具等更多应用。"
@@ -2967,6 +3015,9 @@ msgstr "已创建 webhook"
 msgid "Created work center"
 msgstr "已创建工作中心"
 
+msgid "Creates the 12 monthly periods for a fiscal year. Periods that already exist are kept."
+msgstr "为会计年度创建12个月度期间。已存在的期间保持不变。"
+
 msgid "Creating part..."
 msgstr "正在创建零件..."
 
@@ -2987,6 +3038,9 @@ msgstr "制造费用吸收到在产品中时的贷方科目"
 
 msgid "Credit accounts used when manufacturing costs are absorbed into WIP"
 msgstr "制造成本吸收到在产品中时使用的贷方科目"
+
+msgid "Credit Memo"
+msgstr "贷方备忘录"
 
 msgid "Credits & Debits"
 msgstr "贷项和借项"
@@ -3331,6 +3385,9 @@ msgstr "借方"
 msgid "Debit Account"
 msgstr "借方账户"
 
+msgid "Debit Memo"
+msgstr "借方备忘录"
+
 msgid "Decide what an operator sees if they try to issue a batch or serial that's already expired."
 msgstr "决定操作员在尝试发放已过期的批次或序列号时看到的内容。"
 
@@ -3463,6 +3520,9 @@ msgstr "删除"
 msgid "Delete {name}"
 msgstr "删除 {name}"
 
+msgid "Delete {periodLabel}"
+msgstr "删除{periodLabel}"
+
 msgid "Delete {storageUnitName}"
 msgstr "删除 {storageUnitName}"
 
@@ -3573,6 +3633,9 @@ msgstr "删除付款"
 
 msgid "Delete Payment Term"
 msgstr "删除付款条款"
+
+msgid "Delete Period"
+msgstr "删除期间"
 
 msgid "Delete Picking List"
 msgstr "删除拣货单"
@@ -3779,6 +3842,9 @@ msgstr "折旧方法（默认）"
 msgid "Depreciation reversal when a fixed asset is disposed"
 msgstr "处置固定资产时的折旧冲回"
 
+msgid "Depreciation runs ending in this period that are still Draft should be posted so the period reflects the correct depreciation expense and accumulated depreciation. Skip with a reason if depreciation doesn't apply this period."
+msgstr "在本期结束的折旧运行若仍为草稿状态，应进行过账，以便期间反映正确的折旧费用和累积折旧。如果本期不适用折旧，请说明原因跳过。"
+
 msgid "Depreciation Start Date"
 msgstr "折旧开始日期"
 
@@ -3972,6 +4038,9 @@ msgstr "草稿"
 
 msgid "Draft is editable; Active is in use and requires a new version to change; Archived is retired."
 msgstr "草稿可编辑；活动中正在使用，需要新版本才能更改；已归档已停用。"
+
+msgid "Draft Journal Entries"
+msgstr "草稿日记账条目"
 
 msgid "Drag & drop files, or click to browse"
 msgstr "拖放文件，或点击浏览"
@@ -4682,6 +4751,9 @@ msgstr "每个条件都必须匹配"
 msgid "Every in-scope test passes in your configured system, with your data."
 msgstr "您配置的系统中的每项范围内测试都通过了，使用您的数据。"
 
+msgid "Every required task must be Done or Skipped before the period can be closed."
+msgstr "期间关闭前，每项必需任务都必须完成或跳过。"
+
 msgid "Every row was imported successfully."
 msgstr "每一行都已成功导入。"
 
@@ -5255,6 +5327,9 @@ msgstr "首次操作"
 msgid "First-year additional deduction taken before the regular MACRS schedule begins."
 msgstr "固定资产"
 
+msgid "Fiscal year"
+msgstr "会计年度"
+
 msgid "Fiscal Year"
 msgstr "财政年度"
 
@@ -5281,6 +5356,9 @@ msgstr "固定资产"
 
 msgid "Fixed cost amortization variance when batch size differs from standard"
 msgstr "收益和损失"
+
+msgid "Fixed once accounting periods have been posted to or closed. Delete all open periods to change it."
+msgstr "会计期间过账或关闭后即固定。删除所有开放期间以更改。"
 
 msgid "Fixed Reorder"
 msgstr "固定重新订购"
@@ -5414,11 +5492,20 @@ msgstr "总分类账"
 msgid "General Ledger and month-end close"
 msgstr "总账和月末结账"
 
+msgid "Generate"
+msgstr "生成"
+
 msgid "Generate a new 4-digit PIN. Share it with the operator so they can pin in at MES terminals."
 msgstr "生成新的4位PIN码。与操作员分享，以便他们可以在MES终端上登录。"
 
 msgid "Generate and send customer invoices"
 msgstr "生成并发送客户发票"
+
+msgid "Generate fiscal year"
+msgstr "生成会计年度"
+
+msgid "Generate Fiscal Year"
+msgstr "生成会计年度"
 
 msgid "Generate material IDs and descriptions based on the properties of the material."
 msgstr "根据材料的属性生成材料ID和描述。"
@@ -6096,6 +6183,9 @@ msgstr "此处未命名的集成"
 msgid "Intercompany"
 msgstr "公司间"
 
+msgid "Intercompany transactions involving this company that are still Unmatched should be matched and eliminated, so consolidated results don't double-count activity between entities."
+msgstr "涉及本公司且仍未匹配的公司间交易应进行匹配和消除，以便合并结果不会重复计算实体之间的交易。"
+
 msgid "Interest"
 msgstr "利息"
 
@@ -6415,6 +6505,12 @@ msgstr "日记"
 msgid "Journal Entries"
 msgstr "日记账分录"
 
+msgid "Journal entries dated in this period that are still Draft must be posted, or re-dated into a later open period. Draft entries aren't part of the ledger, so their debits and credits would be missing from the close."
+msgstr "本期日期的日记账条目如仍为草稿状态，必须进行过账或重新标记日期至较晚的开放期间。草稿条目不属于分类账，因此其借贷金额会在结账时遗漏。"
+
+msgid "Journal Entry"
+msgstr "日记账条目"
+
 msgid "Kanban"
 msgstr "看板"
 
@@ -6698,6 +6794,15 @@ msgstr "位置"
 msgid "Lock"
 msgstr "锁定"
 
+msgid "Lock Period"
+msgstr "锁定期间"
+
+msgid "Locked"
+msgstr "已锁定"
+
+msgid "Locking makes the period read-only for operational documents (receipts, shipments, invoices) while still allowing accounting adjustments like depreciation and disposals. A period must be locked before it can be closed."
+msgstr "锁定使期间对于业务单据（收据、装运、发票）为只读，同时仍允许进行折旧和处置等会计调整。期间在结束前必须被锁定。"
+
 msgid "Log In"
 msgstr "登录"
 
@@ -6926,6 +7031,9 @@ msgid "Mark Dark Mode"
 msgstr "标记深色模式"
 
 msgid "Mark done"
+msgstr "标记为完成"
+
+msgid "Mark Done"
 msgstr "标记为完成"
 
 msgid "Mark Light Mode"
@@ -8075,6 +8183,9 @@ msgstr "从报价到收款的一个系统"
 
 msgid "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 msgstr "只有草稿程序可以编辑。创建新版本以更改活动或已归档的程序。"
+
+msgid "Only empty, open periods can be deleted."
+msgstr "仅可删除空白的开放期间。"
 
 msgid "Onshape Status"
 msgstr "Onshape 状态"
@@ -9371,6 +9482,9 @@ msgstr "原因账户"
 msgid "Reason for declining (Optional)"
 msgstr "拒绝原因（可选）"
 
+msgid "Reason for skipping (required)"
+msgstr "跳过原因（必填）"
+
 msgid "Reasons"
 msgstr "原因"
 
@@ -9406,6 +9520,9 @@ msgstr "收货请求日期"
 
 msgid "Receipts"
 msgstr "收据"
+
+msgid "Receipts, shipments, sales invoices, purchase invoices, payments, and credit/debit memos that are still Draft or Pending must be posted or voided — both documents dated in this period and undated documents that would receive a date in it when posted. Until they post, their amounts aren't in the general ledger, so the period would be understated."
+msgstr "仍为草稿或待处理状态的收据、装运、销售发票、采购发票、付款和贷方/借方备忘录必须进行过账或作废 — 包括本期日期的单据和过账时将在本期确定日期的无日期单据。在它们过账前，其金额不在总账中，因此期间会被低估。"
 
 msgid "Receivables"
 msgstr "应收账款（默认）"
@@ -9821,6 +9938,9 @@ msgstr "反向收费销售税 (默认)"
 
 msgid "Reverse the related journal entries"
 msgstr "反转相关日记账分录"
+
+msgid "Review the period's balance sheet and income statement and confirm the figures look right. This is a manual sign-off — mark it done once you have reviewed them."
+msgstr "审查期间的资产负债表和损益表，并确认数字正确。这是手动签核 — 审查后标记为完成。"
 
 msgid "Revision"
 msgstr "修订版"
@@ -10821,6 +10941,9 @@ msgstr "大小"
 msgid "Sizes"
 msgstr "尺寸"
 
+msgid "Skip"
+msgstr "跳过"
+
 msgid "Skip Existing"
 msgstr "跳过现有"
 
@@ -11436,6 +11559,9 @@ msgstr "目标版本"
 msgid "Target Version"
 msgstr "目标版本"
 
+msgid "Task"
+msgstr "任务"
+
 msgid "tasks"
 msgstr "任务"
 
@@ -11577,6 +11703,9 @@ msgstr "所有已记账的日记账行书，按账户汇总 - 仅在公司启用
 
 msgid "The buckets you track costs against"
 msgstr "您用来追踪成本的分类"
+
+msgid "The capital assets you own and depreciate"
+msgstr "您拥有并折旧的固定资产"
 
 msgid "The Carbon user responsible for this customer relationship; emails and reminders about this customer route to them."
 msgstr "负责此客户关系的Carbon用户；关于此客户的电子邮件和提醒会路由给他们。"
@@ -11893,6 +12022,9 @@ msgstr "财政年度开始的月份；期间从该月份开始编号。"
 msgid "The month your tax year begins; may differ from the fiscal year in some jurisdictions."
 msgstr "税务年度开始的月份；在某些司法管辖区可能与财政年度不同。"
 
+msgid "The monthly periods you post into and close"
+msgstr "您过账并关闭的月度期间"
+
 msgid "The most likely failure mode the requester suspects; the technician confirms or replaces this on close-out, and the difference between suspected and actual feeds reliability reports."
 msgstr "请求者怀疑的最可能的失败模式；技术人员在关闭时确认或替换此项，疑似与实际之间的差异会影响可靠性报告。"
 
@@ -12190,6 +12322,9 @@ msgstr "没有未结清的发票可以应用这些信用额。"
 msgid "These custom fields will only be available for entities with the same tags"
 msgstr "这些自定义字段仅适用于具有相同标签的实体"
 
+msgid "These documents haven't posted to the general ledger, so their amounts are missing from this period. Post or void each one — an undated document receives the posting day's date when it posts."
+msgstr "这些单据尚未过账到总账，因此其金额在本期缺失。过账或作废每一份 — 无日期单据过账时将收到过账日的日期。"
+
 msgid "These email addresses will be automatically CC'd on all emails sent to suppliers (quotes, purchase orders, etc.)."
 msgstr "这些电子邮件地址将自动抄送到发送给供应商的所有电子邮件（报价单、采购订单等）。"
 
@@ -12198,6 +12333,9 @@ msgstr "这些电子邮件地址将自动抄送到发送给客户的所有报价
 
 msgid "These jobs have operations assigned to this work center:"
 msgstr "这些工作有分配给此工作中心的操作："
+
+msgid "These journal entries are still Draft, so their debits and credits aren't in the ledger for this period. Post each one, or re-date it into a later open period."
+msgstr "这些日记账条目仍为草稿状态，因此其借贷金额不在本期分类账中。过账每一份，或将其重新标记日期至较晚的开放期间。"
 
 msgid "This completes the Discovery step."
 msgstr "这完成了发现步骤。"
@@ -12270,6 +12408,9 @@ msgstr "这个零件已过时（无库存）。"
 
 msgid "This part is superseded and set to Stock Only — it's replenished to its spares reserve floor, independent of demand."
 msgstr "此零件已被替代并设置为仅库存 — 它补充到其备件储备下限，与需求无关。"
+
+msgid "This period has no journal entries posted to it and can be permanently deleted. This cannot be undone."
+msgstr "此期间未过账任何日记账分录，可以永久删除。此操作无法撤销。"
 
 msgid "This Quarter"
 msgstr "本季度"
@@ -12731,6 +12872,9 @@ msgstr "取消链接"
 msgid "Unlink job from sales order?"
 msgstr "从销售订单取消关联工作？"
 
+msgid "Unlock"
+msgstr "解锁"
+
 msgid "Unmapped Extracted Lines"
 msgstr "未映射的提取行"
 
@@ -12740,6 +12884,9 @@ msgstr "取消拣选"
 #. placeholder {0}: pickedLots[0].trackedEntity.readableId
 msgid "Unpick {0}"
 msgstr "取消拣选 {0}"
+
+msgid "Unposted Documents"
+msgstr "未过账单据"
 
 msgid "Unreceived POs"
 msgstr "未收到的采购订单"
@@ -13146,6 +13293,9 @@ msgstr "查看应付账款"
 msgid "View Payment"
 msgstr "查看付款"
 
+msgid "View Period"
+msgstr "查看期间"
+
 msgid "View permissions"
 msgstr "查看权限"
 
@@ -13409,6 +13559,9 @@ msgstr "此收据正在履行 — 采购订单、退货、入库转移或无父�
 msgid "What this shipment is fulfilling — a sales order, an outbound transfer, an RMA return, or a manual shipment."
 msgstr "此出货正在履行 — 销售订单、出站转移、RMA退货或手动出货。"
 
+msgid "What this task means"
+msgstr "此任务的含义"
+
 msgid "What this time entry counts as — Labor (operator time), Machine (run time), or Setup (changeover time); each rolls up under a different rate."
 msgstr "此时间条目计数为 — 劳动(操作员时间)、机器(运行时间)或设置(切换时间);每个在不同的费率下汇总。"
 
@@ -13522,6 +13675,9 @@ msgstr "当此特定批次/序列号过期时;驱动FEFO选择和消费时的保
 
 msgid "When you committed to deliver; planning treats this as the demand-due-date for fulfillment."
 msgstr "当您承诺交货时;计划将其视为履行的需求到期日期。"
+
+msgid "When your fiscal and tax years start"
+msgstr "您的会计年度和税务年度的开始时间"
 
 msgid "Where an operation runs; carries labor and quoting rates, with overhead the difference between them."
 msgstr "操作执行的位置。carries劳动和报价费率,开销是它们之间的差异。"
@@ -13839,9 +13995,6 @@ msgstr "您的数据可访问且相对干净"
 
 msgid "Your Email"
 msgstr "你的电子邮件"
-
-msgid "Your fiscal year and its accounting periods"
-msgstr "您的财政年度及其会计期间"
 
 msgid "Your general-ledger accounts and their structure"
 msgstr "您的总账账户及其结构"

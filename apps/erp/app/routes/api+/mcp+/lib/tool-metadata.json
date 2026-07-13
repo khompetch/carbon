@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-13T00:20:05.651Z",
-  "totalTools": 1306,
+  "generated": "2026-07-13T00:26:41.147Z",
+  "totalTools": 1325,
   "modules": 15,
   "tools": [
     {
@@ -821,11 +821,12 @@
       "module": "accounting",
       "classification": "READ",
       "description": "get or create accounting period",
-      "paramCount": 1,
+      "paramCount": 2,
       "serviceParams": [
         "client",
         "companyId",
-        "date"
+        "date",
+        "source"
       ],
       "injectAuth": [
         "companyId"
@@ -835,10 +836,518 @@
         "properties": {
           "date": {
             "type": "string"
+          },
+          "source": {}
+        },
+        "required": [
+          "date",
+          "source"
+        ]
+      }
+    },
+    {
+      "name": "accounting_getAccountingPeriods",
+      "module": "accounting",
+      "classification": "READ",
+      "description": "get accounting periods",
+      "paramCount": 0,
+      "serviceParams": [
+        "client",
+        "companyId"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "accounting_getAccountingPeriodDeletability",
+      "module": "accounting",
+      "classification": "READ",
+      "description": "get accounting period deletability",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "periodId",
+        "companyId"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "periodId": {
+            "type": "string"
           }
         },
         "required": [
-          "date"
+          "periodId"
+        ]
+      }
+    },
+    {
+      "name": "accounting_deleteAccountingPeriod",
+      "module": "accounting",
+      "classification": "DESTRUCTIVE",
+      "description": "delete accounting period",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "periodId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "periodId"
+        ]
+      }
+    },
+    {
+      "name": "accounting_getFiscalCalendarCommitted",
+      "module": "accounting",
+      "classification": "READ",
+      "description": "get fiscal calendar committed",
+      "paramCount": 0,
+      "serviceParams": [
+        "client",
+        "companyId"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "accounting_lockAccountingPeriod",
+      "module": "accounting",
+      "classification": "WRITE",
+      "description": "lock accounting period",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "periodId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "periodId"
+        ]
+      }
+    },
+    {
+      "name": "accounting_unlockAccountingPeriod",
+      "module": "accounting",
+      "classification": "WRITE",
+      "description": "unlock accounting period",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "periodId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "periodId"
+        ]
+      }
+    },
+    {
+      "name": "accounting_closeAccountingPeriod",
+      "module": "accounting",
+      "classification": "WRITE",
+      "description": "close accounting period",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "db",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId",
+        "updatedBy"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "periodId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "periodId"
+        ]
+      }
+    },
+    {
+      "name": "accounting_closePeriodWithChecklist",
+      "module": "accounting",
+      "classification": "WRITE",
+      "description": "close period with checklist",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "db",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId",
+        "updatedBy"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "periodId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "periodId"
+        ]
+      }
+    },
+    {
+      "name": "accounting_reopenAccountingPeriod",
+      "module": "accounting",
+      "classification": "WRITE",
+      "description": "reopen accounting period",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "periodId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "periodId"
+        ]
+      }
+    },
+    {
+      "name": "accounting_createFiscalYearPeriods",
+      "module": "accounting",
+      "classification": "WRITE",
+      "description": "create fiscal year periods",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId",
+        "createdBy",
+        "updatedBy"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "fiscalYear": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "fiscalYear"
+        ]
+      }
+    },
+    {
+      "name": "accounting_getPeriodCloseReadiness",
+      "module": "accounting",
+      "classification": "READ",
+      "description": "get period close readiness",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "companyId",
+        "periodId"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "periodId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "periodId"
+        ]
+      }
+    },
+    {
+      "name": "accounting_evaluateCloseChecklist",
+      "module": "accounting",
+      "classification": "WRITE",
+      "description": "evaluate close checklist",
+      "paramCount": 3,
+      "serviceParams": [
+        "tasks",
+        "checks",
+        "closeStatus"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "tasks": {
+            "type": "array",
+            "items": {}
+          },
+          "checks": {
+            "type": "array",
+            "items": {}
+          },
+          "closeStatus": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "tasks",
+          "checks",
+          "closeStatus"
+        ]
+      }
+    },
+    {
+      "name": "accounting_getPeriodCloseChecklist",
+      "module": "accounting",
+      "classification": "READ",
+      "description": "get period close checklist",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "companyId",
+        "periodId"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "periodId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "periodId"
+        ]
+      }
+    },
+    {
+      "name": "accounting_completeCloseTask",
+      "module": "accounting",
+      "classification": "WRITE",
+      "description": "complete close task",
+      "paramCount": 2,
+      "serviceParams": [
+        "client",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "taskId"
+        ]
+      }
+    },
+    {
+      "name": "accounting_skipCloseTask",
+      "module": "accounting",
+      "classification": "WRITE",
+      "description": "skip close task",
+      "paramCount": 2,
+      "serviceParams": [
+        "client",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "string"
+          },
+          "skippedReason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "taskId",
+          "skippedReason"
+        ]
+      }
+    },
+    {
+      "name": "accounting_addCloseTask",
+      "module": "accounting",
+      "classification": "WRITE",
+      "description": "add close task",
+      "paramCount": 5,
+      "serviceParams": [
+        "client",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId",
+        "createdBy",
+        "updatedBy"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "periodId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "taskType": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "assigneeId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "periodId",
+          "name",
+          "taskType",
+          "required"
+        ]
+      }
+    },
+    {
+      "name": "accounting_getPeriodCloseTaskDefinitions",
+      "module": "accounting",
+      "classification": "READ",
+      "description": "get period close task definitions",
+      "paramCount": 0,
+      "serviceParams": [
+        "client",
+        "companyId"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "accounting_upsertPeriodCloseTaskDefinition",
+      "module": "accounting",
+      "classification": "WRITE",
+      "description": "upsert period close task definition",
+      "paramCount": 3,
+      "serviceParams": [
+        "client",
+        "definition"
+      ],
+      "injectAuth": [
+        "companyId",
+        "createdBy",
+        "updatedBy"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "taskType": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "accounting_deletePeriodCloseTaskDefinition",
+      "module": "accounting",
+      "classification": "DESTRUCTIVE",
+      "description": "delete period close task definition",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
         ]
       }
     },
