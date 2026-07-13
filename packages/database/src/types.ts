@@ -16906,6 +16906,7 @@ export type Database = {
         Row: {
           comment: string | null
           companyId: string
+          correctionOfItemLedgerId: string | null
           createdAt: string
           createdBy: string
           documentId: string | null
@@ -16931,6 +16932,7 @@ export type Database = {
         Insert: {
           comment?: string | null
           companyId: string
+          correctionOfItemLedgerId?: string | null
           createdAt?: string
           createdBy?: string
           documentId?: string | null
@@ -16956,6 +16958,7 @@ export type Database = {
         Update: {
           comment?: string | null
           companyId?: string
+          correctionOfItemLedgerId?: string | null
           createdAt?: string
           createdBy?: string
           documentId?: string | null
@@ -56761,6 +56764,7 @@ export type Database = {
         Row: {
           comment: string | null
           companyId: string | null
+          correctionOfItemLedgerId: string | null
           createdAt: string | null
           createdBy: string | null
           documentId: string | null
@@ -56788,6 +56792,7 @@ export type Database = {
           trackedEntityStatus:
             | Database["public"]["Enums"]["trackedEntityStatus"]
             | null
+          updatedBy: string | null
         }
         Relationships: [
           {
@@ -56887,6 +56892,41 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "trackedEntity"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "itemLedger_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "itemLedger_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "itemLedger_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "itemLedger_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "itemLedger_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
           },
           {
             foreignKeyName: "partLeger_companyId_fkey"
@@ -60043,14 +60083,14 @@ export type Database = {
           },
           {
             foreignKeyName: "partner_id_fkey"
-            columns: ["supplierLocationId"]
+            columns: ["id"]
             isOneToOne: false
             referencedRelation: "supplierLocation"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "partner_id_fkey"
-            columns: ["id"]
+            columns: ["supplierLocationId"]
             isOneToOne: false
             referencedRelation: "supplierLocation"
             referencedColumns: ["id"]
@@ -65074,14 +65114,14 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "address_countryCode_fkey"
-            columns: ["customerCountryCode"]
+            columns: ["invoiceCountryCode"]
             isOneToOne: false
             referencedRelation: "country"
             referencedColumns: ["alpha2"]
           },
           {
             foreignKeyName: "address_countryCode_fkey"
-            columns: ["invoiceCountryCode"]
+            columns: ["customerCountryCode"]
             isOneToOne: false
             referencedRelation: "country"
             referencedColumns: ["alpha2"]

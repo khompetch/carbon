@@ -2441,9 +2441,6 @@ msgstr "पुष्टि की गई आने वाली स्टॉक 
 msgid "Confirmed outgoing stock — sales orders & job materials (bars below zero)."
 msgstr "पुष्टि की गई आने वाली स्टॉक — बिक्री आदेश और नौकरी सामग्री (बार शून्य से नीचे)।"
 
-msgid "Confirming locks the counted quantities. Review the warnings below, then post the count to apply the adjustments."
-msgstr "पुष्टि करने से गिनी गई मात्राएं लॉक हो जाती हैं। नीचे दी गई चेतावनियों की समीक्षा करें, फिर समायोजन लागू करने के लिए गणना पोस्ट करें।"
-
 msgid "Confirms every posted journal entry in the period has equal debits and credits. If any entry is out of balance the trial balance won't tie out, so it must be corrected before the period can close."
 msgstr "पुष्टि करता है कि अवधि में हर पोस्ट की गई जर्नल प्रविष्टि में बराबर डेबिट और क्रेडिट हैं। यदि कोई प्रविष्टि असंतुलित है तो ट्रायल बैलेंस मेल नहीं खाएगा, इसलिए अवधि बंद होने से पहले इसे ठीक किया जाना चाहिए।"
 
@@ -2729,6 +2726,12 @@ msgstr "सही उत्तर"
 msgid "Correct Answers"
 msgstr "सही उत्तर"
 
+msgid "Correction"
+msgstr "सुधार"
+
+msgid "Corrections"
+msgstr "सुधार"
+
 msgid "Corrective action"
 msgstr "सुधारात्मक कार्रवाई"
 
@@ -2799,6 +2802,9 @@ msgstr "कार्य पुनर्निर्धारित नहीं 
 
 msgid "Count"
 msgstr "गिनती"
+
+msgid "Count History"
+msgstr "गणना इतिहास"
 
 msgid "Count ID"
 msgstr "गणना आईडी"
@@ -8383,6 +8389,12 @@ msgstr "ऑर्डर जमा किए गए"
 msgid "Origin"
 msgstr "मूल"
 
+msgid "Original"
+msgstr "मूल"
+
+msgid "Original Count"
+msgstr "मूल गणना"
+
 msgid "Other Income account for FX gains when a payment settles a foreign-currency invoice at a more favorable rate"
 msgstr "विदेशी मुद्रा लाभ के लिए अन्य आय खाता जब कोई भुगतान विदेशी-मुद्रा चालान को अधिक अनुकूल दर पर निपटाता है"
 
@@ -8875,6 +8887,15 @@ msgstr "पोस्ट किया गया"
 
 msgid "Posted By"
 msgstr "द्वारा पोस्ट किया गया"
+
+msgid "Posted once, no rectifications."
+msgstr "एक बार पोस्ट किया गया, कोई सुधार नहीं।"
+
+msgid "Posted once, rectified {rectifications} times."
+msgstr "एक बार पोस्ट किया गया, {rectifications} बार सुधारा गया।"
+
+msgid "Posted once, rectified 1 time."
+msgstr "एक बार पोस्ट किया गया, 1 बार सुधारा गया।"
 
 msgid "Posting"
 msgstr "अग्रिम भुगतान"
@@ -9615,6 +9636,12 @@ msgstr "रिकॉर्ड"
 msgid "Recovery Period"
 msgstr "पंजीकृत करें"
 
+msgid "Rectification {rectifyNumber}"
+msgstr "सुधार {rectifyNumber}"
+
+msgid "Rectify"
+msgstr "सुधारें"
+
 msgid "Redirecting to verification page..."
 msgstr "सत्यापन पृष्ठ पर पुनः निर्देशित किया जा रहा है..."
 
@@ -9941,6 +9968,9 @@ msgstr "संबंधित जर्नल प्रविष्टियो�
 
 msgid "Review the period's balance sheet and income statement and confirm the figures look right. This is a manual sign-off — mark it done once you have reviewed them."
 msgstr "अवधि की बैलेंस शीट और आय विवरण की समीक्षा करें और पुष्टि करें कि आंकड़े सही लगते हैं। यह एक मैनुअल साइन-ऑफ है — एक बार समीक्षा करने के बाद इसे पूर्ण चिह्नित करें।"
+
+msgid "Review the warnings below, then post the count to apply the adjustments."
+msgstr "नीचे दी गई चेतावनियों की समीक्षा करें, फिर समायोजन लागू करने के लिए गणना पोस्ट करें।"
 
 msgid "Revision"
 msgstr "संस्करण"

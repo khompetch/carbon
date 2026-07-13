@@ -2441,9 +2441,6 @@ msgstr "Onaylanan gelen stok — satın alma ve üretim siparişleri (sıfırın
 msgid "Confirmed outgoing stock — sales orders & job materials (bars below zero)."
 msgstr "Onaylanan giden stok — satış siparişleri ve iş malzemeleri (sıfırın altındaki çubuklar)."
 
-msgid "Confirming locks the counted quantities. Review the warnings below, then post the count to apply the adjustments."
-msgstr "Sayıyı onaylamak, sayılan miktarları kilitler. Aşağıdaki uyarıları gözden geçirin, ardından ayarlamaları uygulamak için sayıyı gönderin."
-
 msgid "Confirms every posted journal entry in the period has equal debits and credits. If any entry is out of balance the trial balance won't tie out, so it must be corrected before the period can close."
 msgstr "Dönem içinde deftere geçen her muhasebe kaydının eşit borç ve alacak tutarlarına sahip olduğunu doğrular. Herhangi bir kayıt dengeli değilse, deneme dengesi uyuşmayacak, bu nedenle dönem kapatılmadan önce düzeltilmesi gerekir."
 
@@ -2729,6 +2726,12 @@ msgstr "Doğru Cevap"
 msgid "Correct Answers"
 msgstr "Doğru Cevaplar"
 
+msgid "Correction"
+msgstr "Düzeltme"
+
+msgid "Corrections"
+msgstr "Düzeltmeler"
+
 msgid "Corrective action"
 msgstr "Düzeltici Eylem"
 
@@ -2799,6 +2802,9 @@ msgstr "İş yeniden planlanamadı. Lütfen tekrar deneyin."
 
 msgid "Count"
 msgstr "Adet"
+
+msgid "Count History"
+msgstr "Sayım Geçmişi"
 
 msgid "Count ID"
 msgstr "Sayım Kimliği"
@@ -8383,6 +8389,12 @@ msgstr "Siparişler gönderildi"
 msgid "Origin"
 msgstr "Kaynak"
 
+msgid "Original"
+msgstr "Orijinal"
+
+msgid "Original Count"
+msgstr "Orijinal Sayım"
+
 msgid "Other Income account for FX gains when a payment settles a foreign-currency invoice at a more favorable rate"
 msgstr "Bir ödeme yabancı para birimindeki bir faturayı daha uygun bir oranda kapatırken FX kazançları için Diğer Gelir hesabı"
 
@@ -8875,6 +8887,15 @@ msgstr "Gönderilen Tarih"
 
 msgid "Posted By"
 msgstr "Gönderen"
+
+msgid "Posted once, no rectifications."
+msgstr "Bir kez gönderildi, düzeltme yapılmadı."
+
+msgid "Posted once, rectified {rectifications} times."
+msgstr "Bir kez gönderildi, {rectifications} kez düzeltildi."
+
+msgid "Posted once, rectified 1 time."
+msgstr "Bir kez gönderildi, 1 kez düzeltildi."
 
 msgid "Posting"
 msgstr "Ön Ödemeler"
@@ -9615,6 +9636,12 @@ msgstr "Kayıtlar"
 msgid "Recovery Period"
 msgstr "Kayıt Yap"
 
+msgid "Rectification {rectifyNumber}"
+msgstr "Düzeltme {rectifyNumber}"
+
+msgid "Rectify"
+msgstr "Düzelt"
+
 msgid "Redirecting to verification page..."
 msgstr "Doğrulama sayfasına yönlendiriliyor..."
 
@@ -9941,6 +9968,9 @@ msgstr "İlgili günlük girişlerini tersine çevir"
 
 msgid "Review the period's balance sheet and income statement and confirm the figures look right. This is a manual sign-off — mark it done once you have reviewed them."
 msgstr "Dönemin bilançosunu ve gelir tablosunu gözden geçirin ve rakamların doğru göründüğünü doğrulayın. Bu manuel bir onay — bunları gözden geçirdikten sonra bitti olarak işaretleyin."
+
+msgid "Review the warnings below, then post the count to apply the adjustments."
+msgstr "Aşağıdaki uyarıları gözden geçirin, ardından ayarlamaları uygulamak için sayımı gönderin."
 
 msgid "Revision"
 msgstr "Revizyon"

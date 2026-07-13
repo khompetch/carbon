@@ -2441,9 +2441,6 @@ msgstr "Confirmed incoming stock — purchase & production orders (bars above ze
 msgid "Confirmed outgoing stock — sales orders & job materials (bars below zero)."
 msgstr "Confirmed outgoing stock — sales orders & job materials (bars below zero)."
 
-msgid "Confirming locks the counted quantities. Review the warnings below, then post the count to apply the adjustments."
-msgstr "Confirming locks the counted quantities. Review the warnings below, then post the count to apply the adjustments."
-
 msgid "Confirms every posted journal entry in the period has equal debits and credits. If any entry is out of balance the trial balance won't tie out, so it must be corrected before the period can close."
 msgstr "Confirms every posted journal entry in the period has equal debits and credits. If any entry is out of balance the trial balance won't tie out, so it must be corrected before the period can close."
 
@@ -2729,6 +2726,12 @@ msgstr "Correct Answer"
 msgid "Correct Answers"
 msgstr "Correct Answers"
 
+msgid "Correction"
+msgstr "Correction"
+
+msgid "Corrections"
+msgstr "Corrections"
+
 msgid "Corrective action"
 msgstr "Corrective action"
 
@@ -2799,6 +2802,9 @@ msgstr "Couldn't reschedule the job. Please try again."
 
 msgid "Count"
 msgstr "Count"
+
+msgid "Count History"
+msgstr "Count History"
 
 msgid "Count ID"
 msgstr "Count ID"
@@ -8383,6 +8389,12 @@ msgstr "Orders submitted"
 msgid "Origin"
 msgstr "Origin"
 
+msgid "Original"
+msgstr "Original"
+
+msgid "Original Count"
+msgstr "Original Count"
+
 msgid "Other Income account for FX gains when a payment settles a foreign-currency invoice at a more favorable rate"
 msgstr "Other Income account for FX gains when a payment settles a foreign-currency invoice at a more favorable rate"
 
@@ -8875,6 +8887,15 @@ msgstr "Posted At"
 
 msgid "Posted By"
 msgstr "Posted By"
+
+msgid "Posted once, no rectifications."
+msgstr "Posted once, no rectifications."
+
+msgid "Posted once, rectified {rectifications} times."
+msgstr "Posted once, rectified {rectifications} times."
+
+msgid "Posted once, rectified 1 time."
+msgstr "Posted once, rectified 1 time."
 
 msgid "Posting"
 msgstr "Posting"
@@ -9615,6 +9636,12 @@ msgstr "Records"
 msgid "Recovery Period"
 msgstr "Recovery Period"
 
+msgid "Rectification {rectifyNumber}"
+msgstr "Rectification {rectifyNumber}"
+
+msgid "Rectify"
+msgstr "Rectify"
+
 msgid "Redirecting to verification page..."
 msgstr "Redirecting to verification page..."
 
@@ -9941,6 +9968,9 @@ msgstr "Reverse the related journal entries"
 
 msgid "Review the period's balance sheet and income statement and confirm the figures look right. This is a manual sign-off — mark it done once you have reviewed them."
 msgstr "Review the period's balance sheet and income statement and confirm the figures look right. This is a manual sign-off — mark it done once you have reviewed them."
+
+msgid "Review the warnings below, then post the count to apply the adjustments."
+msgstr "Review the warnings below, then post the count to apply the adjustments."
 
 msgid "Revision"
 msgstr "Revision"

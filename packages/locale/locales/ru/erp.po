@@ -2441,9 +2441,6 @@ msgstr "Подтвержденный входящий запас — заказ�
 msgid "Confirmed outgoing stock — sales orders & job materials (bars below zero)."
 msgstr "Подтвержденный исходящий запас — заказы на продажу и материалы работ (столбцы ниже нуля)."
 
-msgid "Confirming locks the counted quantities. Review the warnings below, then post the count to apply the adjustments."
-msgstr "Подтверждение блокирует подсчитанные количества. Проверьте предупреждения ниже, а затем опубликуйте подсчет, чтобы применить корректировки."
-
 msgid "Confirms every posted journal entry in the period has equal debits and credits. If any entry is out of balance the trial balance won't tie out, so it must be corrected before the period can close."
 msgstr "Проверяет, что каждая опубликованная запись в журнале за период имеет равные дебеты и кредиты. Если какая-либо запись не сбалансирована, пробный баланс не совпадёт, поэтому её необходимо исправить перед закрытием периода."
 
@@ -2729,6 +2726,12 @@ msgstr "Правильный ответ"
 msgid "Correct Answers"
 msgstr "Правильные ответы"
 
+msgid "Correction"
+msgstr "Исправление"
+
+msgid "Corrections"
+msgstr "Исправления"
+
 msgid "Corrective action"
 msgstr "Корректирующее действие"
 
@@ -2799,6 +2802,9 @@ msgstr "Не удалось перепланировать задание. По�
 
 msgid "Count"
 msgstr "Количество"
+
+msgid "Count History"
+msgstr "История подсчета"
 
 msgid "Count ID"
 msgstr "ID подсчета"
@@ -8383,6 +8389,12 @@ msgstr "Заказы отправлены"
 msgid "Origin"
 msgstr "Источник"
 
+msgid "Original"
+msgstr "Оригинал"
+
+msgid "Original Count"
+msgstr "Исходный подсчет"
+
 msgid "Other Income account for FX gains when a payment settles a foreign-currency invoice at a more favorable rate"
 msgstr "Счет прочих доходов для прибыли от валютных операций при расчете по иностранной валюте по более выгодному курсу"
 
@@ -8875,6 +8887,15 @@ msgstr "Опубликовано в"
 
 msgid "Posted By"
 msgstr "Опубликовано"
+
+msgid "Posted once, no rectifications."
+msgstr "Опубликовано один раз, без исправлений."
+
+msgid "Posted once, rectified {rectifications} times."
+msgstr "Опубликовано один раз, исправлено {rectifications} раз(а)."
+
+msgid "Posted once, rectified 1 time."
+msgstr "Опубликовано один раз, исправлено 1 раз."
 
 msgid "Posting"
 msgstr "Авансовые платежи"
@@ -9615,6 +9636,12 @@ msgstr "Записи"
 msgid "Recovery Period"
 msgstr "Зарегистрировать"
 
+msgid "Rectification {rectifyNumber}"
+msgstr "Исправление {rectifyNumber}"
+
+msgid "Rectify"
+msgstr "Исправить"
+
 msgid "Redirecting to verification page..."
 msgstr "Перенаправление на страницу проверки..."
 
@@ -9941,6 +9968,9 @@ msgstr "Отменить связанные записи в журнале"
 
 msgid "Review the period's balance sheet and income statement and confirm the figures look right. This is a manual sign-off — mark it done once you have reviewed them."
 msgstr "Проверьте балансовый лист и отчёт о прибылях и убытках за период и подтвердите, что цифры выглядят правильно. Это ручное утверждение — отметьте как завершённое после их проверки."
+
+msgid "Review the warnings below, then post the count to apply the adjustments."
+msgstr "Просмотрите предупреждения ниже, а затем опубликуйте подсчет для применения корректировок."
 
 msgid "Revision"
 msgstr "Редакция"

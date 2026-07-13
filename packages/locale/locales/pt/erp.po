@@ -2441,9 +2441,6 @@ msgstr "Estoque de entrada confirmado — pedidos de compra e produção (barras
 msgid "Confirmed outgoing stock — sales orders & job materials (bars below zero)."
 msgstr "Estoque de saída confirmado — pedidos de vendas e materiais de trabalho (barras abaixo de zero)."
 
-msgid "Confirming locks the counted quantities. Review the warnings below, then post the count to apply the adjustments."
-msgstr "Confirmar bloqueia as quantidades contadas. Revise os avisos abaixo e, em seguida, poste a contagem para aplicar os ajustes."
-
 msgid "Confirms every posted journal entry in the period has equal debits and credits. If any entry is out of balance the trial balance won't tie out, so it must be corrected before the period can close."
 msgstr "Confirma que cada lançamento de diário lançado no período tem débitos e créditos iguais. Se algum lançamento estiver fora de equilíbrio, o balancete não se equilibrará, portanto deve ser corrigido antes do fechamento do período."
 
@@ -2729,6 +2726,12 @@ msgstr "Resposta Correta"
 msgid "Correct Answers"
 msgstr "Respostas Corretas"
 
+msgid "Correction"
+msgstr "Correção"
+
+msgid "Corrections"
+msgstr "Correções"
+
 msgid "Corrective action"
 msgstr "Ação Corretiva"
 
@@ -2799,6 +2802,9 @@ msgstr "Não foi possível reagendar o trabalho. Por favor, tente novamente."
 
 msgid "Count"
 msgstr "Contagem"
+
+msgid "Count History"
+msgstr "Histórico de Contagem"
 
 msgid "Count ID"
 msgstr "ID de Contagem"
@@ -8383,6 +8389,12 @@ msgstr "Pedidos enviados"
 msgid "Origin"
 msgstr "Origem"
 
+msgid "Original"
+msgstr "Original"
+
+msgid "Original Count"
+msgstr "Contagem Original"
+
 msgid "Other Income account for FX gains when a payment settles a foreign-currency invoice at a more favorable rate"
 msgstr "Conta de Outras Receitas para ganhos de câmbio quando um pagamento liquida uma fatura em moeda estrangeira a uma taxa mais favorável"
 
@@ -8875,6 +8887,15 @@ msgstr "Postado em"
 
 msgid "Posted By"
 msgstr "Postado Por"
+
+msgid "Posted once, no rectifications."
+msgstr "Postado uma vez, sem retificações."
+
+msgid "Posted once, rectified {rectifications} times."
+msgstr "Postado uma vez, retificado {rectifications} vezes."
+
+msgid "Posted once, rectified 1 time."
+msgstr "Postado uma vez, retificado 1 vez."
 
 msgid "Posting"
 msgstr "Adiantamentos"
@@ -9615,6 +9636,12 @@ msgstr "Registros"
 msgid "Recovery Period"
 msgstr "Registrar"
 
+msgid "Rectification {rectifyNumber}"
+msgstr "Retificação {rectifyNumber}"
+
+msgid "Rectify"
+msgstr "Retificar"
+
 msgid "Redirecting to verification page..."
 msgstr "Redirecionando para página de verificação..."
 
@@ -9941,6 +9968,9 @@ msgstr "Reverter os lançamentos contábeis relacionados"
 
 msgid "Review the period's balance sheet and income statement and confirm the figures look right. This is a manual sign-off — mark it done once you have reviewed them."
 msgstr "Revise o balanço patrimonial e demonstração de resultado do período e confirme se os valores parecem corretos. Esta é uma aprovação manual — marque como concluído depois de tê-los revisado."
+
+msgid "Review the warnings below, then post the count to apply the adjustments."
+msgstr "Revise os avisos abaixo, depois poste a contagem para aplicar os ajustes."
 
 msgid "Revision"
 msgstr "Revisão"

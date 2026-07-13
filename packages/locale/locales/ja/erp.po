@@ -2441,9 +2441,6 @@ msgstr "確認された入荷在庫 — 購買および生産注文（ゼロ以�
 msgid "Confirmed outgoing stock — sales orders & job materials (bars below zero)."
 msgstr "確認された出荷在庫 — 販売注文とジョブ材料（ゼロ未満のバー）。"
 
-msgid "Confirming locks the counted quantities. Review the warnings below, then post the count to apply the adjustments."
-msgstr "確認すると、カウント済みの数量がロックされます。以下の警告を確認してから、カウントを転記して調整を適用してください。"
-
 msgid "Confirms every posted journal entry in the period has equal debits and credits. If any entry is out of balance the trial balance won't tie out, so it must be corrected before the period can close."
 msgstr "当期中に転記されたすべての仕訳が借方と貸方で一致していることを確認します。仕訳が不均衡な場合、試算表が合致しないため、当期を終了する前に修正する必要があります。"
 
@@ -2729,6 +2726,12 @@ msgstr "正解"
 msgid "Correct Answers"
 msgstr "正解"
 
+msgid "Correction"
+msgstr "修正"
+
+msgid "Corrections"
+msgstr "修正"
+
 msgid "Corrective action"
 msgstr "是正処置"
 
@@ -2799,6 +2802,9 @@ msgstr "ジョブを再スケジュールできませんでした。もう一度
 
 msgid "Count"
 msgstr "数"
+
+msgid "Count History"
+msgstr "カウント履歴"
 
 msgid "Count ID"
 msgstr "カウントID"
@@ -8383,6 +8389,12 @@ msgstr "注文が送信されました"
 msgid "Origin"
 msgstr "オリジン"
 
+msgid "Original"
+msgstr "元"
+
+msgid "Original Count"
+msgstr "元のカウント"
+
 msgid "Other Income account for FX gains when a payment settles a foreign-currency invoice at a more favorable rate"
 msgstr "支払いが外貨建て請求書をより有利なレートで決済する場合のFX利益に対するその他の収益勘定"
 
@@ -8875,6 +8887,15 @@ msgstr "投稿日時"
 
 msgid "Posted By"
 msgstr "投稿者"
+
+msgid "Posted once, no rectifications."
+msgstr "1回投稿され、修正がありません。"
+
+msgid "Posted once, rectified {rectifications} times."
+msgstr "1回投稿され、{rectifications}回修正されました。"
+
+msgid "Posted once, rectified 1 time."
+msgstr "1回投稿され、1回修正されました。"
 
 msgid "Posting"
 msgstr "前払金"
@@ -9615,6 +9636,12 @@ msgstr "記録"
 msgid "Recovery Period"
 msgstr "登録"
 
+msgid "Rectification {rectifyNumber}"
+msgstr "修正 {rectifyNumber}"
+
+msgid "Rectify"
+msgstr "修正"
+
 msgid "Redirecting to verification page..."
 msgstr "検証ページにリダイレクト中..."
 
@@ -9941,6 +9968,9 @@ msgstr "関連する仕訳エントリを取り消す"
 
 msgid "Review the period's balance sheet and income statement and confirm the figures look right. This is a manual sign-off — mark it done once you have reviewed them."
 msgstr "当期の貸借対照表と損益計算書を確認し、数字が正しいことを確認してください。これは手動による認可です。確認後、完了とマークしてください。"
+
+msgid "Review the warnings below, then post the count to apply the adjustments."
+msgstr "下の警告を確認してから、カウントを投稿して調整を適用してください。"
 
 msgid "Revision"
 msgstr "リビジョン"

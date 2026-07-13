@@ -2441,9 +2441,6 @@ msgstr "确认的入库存货 — 采购和生产订单（零以上的条形图�
 msgid "Confirmed outgoing stock — sales orders & job materials (bars below zero)."
 msgstr "确认的出库存货 — 销售订单和工作物料（零以下的条形图）。"
 
-msgid "Confirming locks the counted quantities. Review the warnings below, then post the count to apply the adjustments."
-msgstr "确认将锁定计数数量。查看下面的警告，然后发布计数以应用调整。"
-
 msgid "Confirms every posted journal entry in the period has equal debits and credits. If any entry is out of balance the trial balance won't tie out, so it must be corrected before the period can close."
 msgstr "确认期间内每笔已过账日记账条目都有相等的借贷金额。如果任何条目不平衡，试算平衡表将无法对账，因此必须在期间结束前进行更正。"
 
@@ -2729,6 +2726,12 @@ msgstr "正确答案"
 msgid "Correct Answers"
 msgstr "正确答案"
 
+msgid "Correction"
+msgstr "纠正"
+
+msgid "Corrections"
+msgstr "纠正"
+
 msgid "Corrective action"
 msgstr "纠正措施"
 
@@ -2799,6 +2802,9 @@ msgstr "无法重新安排作业。请重试。"
 
 msgid "Count"
 msgstr "数量"
+
+msgid "Count History"
+msgstr "盘点历史"
 
 msgid "Count ID"
 msgstr "盘点ID"
@@ -8383,6 +8389,12 @@ msgstr "订单已提交"
 msgid "Origin"
 msgstr "来源"
 
+msgid "Original"
+msgstr "原始"
+
+msgid "Original Count"
+msgstr "原始盘点"
+
 msgid "Other Income account for FX gains when a payment settles a foreign-currency invoice at a more favorable rate"
 msgstr "当付款以更优惠的汇率结清外币发票时，外汇收益的其他收入账户"
 
@@ -8875,6 +8887,15 @@ msgstr "发布于"
 
 msgid "Posted By"
 msgstr "发布者"
+
+msgid "Posted once, no rectifications."
+msgstr "已过账一次，无纠正。"
+
+msgid "Posted once, rectified {rectifications} times."
+msgstr "已过账一次，已纠正 {rectifications} 次。"
+
+msgid "Posted once, rectified 1 time."
+msgstr "已过账一次，已纠正 1 次。"
 
 msgid "Posting"
 msgstr "预付款"
@@ -9615,6 +9636,12 @@ msgstr "记录"
 msgid "Recovery Period"
 msgstr "注册"
 
+msgid "Rectification {rectifyNumber}"
+msgstr "纠正 {rectifyNumber}"
+
+msgid "Rectify"
+msgstr "纠正"
+
 msgid "Redirecting to verification page..."
 msgstr "正在重定向到验证页面..."
 
@@ -9941,6 +9968,9 @@ msgstr "反转相关日记账分录"
 
 msgid "Review the period's balance sheet and income statement and confirm the figures look right. This is a manual sign-off — mark it done once you have reviewed them."
 msgstr "审查期间的资产负债表和损益表，并确认数字正确。这是手动签核 — 审查后标记为完成。"
+
+msgid "Review the warnings below, then post the count to apply the adjustments."
+msgstr "查看下面的警告，然后过账盘点以应用调整。"
 
 msgid "Revision"
 msgstr "修订版"

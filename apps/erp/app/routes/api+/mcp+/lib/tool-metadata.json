@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-13T00:26:41.147Z",
-  "totalTools": 1325,
+  "generated": "2026-07-13T13:11:38.566Z",
+  "totalTools": 1327,
   "modules": 15,
   "tools": [
     {
@@ -5976,10 +5976,10 @@
       "module": "inventory",
       "classification": "WRITE",
       "description": "insert manual inventory adjustment",
-      "paramCount": 10,
+      "paramCount": 1,
       "serviceParams": [
         "client",
-        "inventoryAdjustment"
+        "// `requiresSerialTracking` is a form-only flag for the validator's serial\n  // quantity guard — the route strips it before calling this.\n  inventoryAdjustment"
       ],
       "injectAuth": [
         "companyId",
@@ -5988,45 +5988,10 @@
       "schema": {
         "type": "object",
         "properties": {
-          "itemId": {
-            "type": "string"
-          },
-          "locationId": {
-            "type": "string"
-          },
-          "storageUnitId": {
-            "type": "string"
-          },
-          "originalStorageUnitId": {
-            "type": "string"
-          },
-          "adjustmentType": {
-            "type": "string",
-            "enum": [
-              "...itemLedgerTypes",
-              "Set Quantity"
-            ]
-          },
-          "quantity": {
-            "type": "number"
-          },
-          "trackedEntityId": {
-            "type": "string"
-          },
-          "readableId": {
-            "type": "string"
-          },
-          "expirationDate": {
-            "type": "string"
-          },
-          "comment": {
-            "type": "string"
-          }
+          "// `requiresSerialTracking` is a form-only flag for the validator's serial\n  // quantity guard — the route strips it before calling this.\n  inventoryAdjustment": {}
         },
         "required": [
-          "itemId",
-          "locationId",
-          "adjustmentType"
+          "// `requiresSerialTracking` is a form-only flag for the validator's serial\n  // quantity guard — the route strips it before calling this.\n  inventoryAdjustment"
         ]
       }
     },
@@ -6169,6 +6134,32 @@
       }
     },
     {
+      "name": "inventory_getInventoryCountMovements",
+      "module": "inventory",
+      "classification": "READ",
+      "description": "get inventory count movements",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "companyId",
+        "inventoryCountId"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "inventoryCountId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "inventoryCountId"
+        ]
+      }
+    },
+    {
       "name": "inventory_insertInventoryCount",
       "module": "inventory",
       "classification": "WRITE",
@@ -6274,6 +6265,29 @@
         "required": [
           "inventoryCountId",
           "locationId"
+        ]
+      }
+    },
+    {
+      "name": "inventory_rectifyInventoryCount",
+      "module": "inventory",
+      "classification": "WRITE",
+      "description": "rectify inventory count",
+      "paramCount": 1,
+      "serviceParams": [
+        "db",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "args": {}
+        },
+        "required": [
+          "args"
         ]
       }
     },
@@ -6665,7 +6679,7 @@
       "module": "inventory",
       "classification": "WRITE",
       "description": "upsert stock transfer line",
-      "paramCount": 8,
+      "paramCount": 1,
       "serviceParams": [
         "client",
         "stockTransferLine"
@@ -6678,34 +6692,10 @@
       "schema": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "stockTransferId": {
-            "type": "string"
-          },
-          "itemId": {
-            "type": "string"
-          },
-          "fromStorageUnitId": {
-            "type": "string"
-          },
-          "toStorageUnitId": {
-            "type": "string"
-          },
-          "quantity": {
-            "type": "number"
-          },
-          "pickedQuantity": {
-            "type": "number"
-          },
-          "requiresBatchTracking": {
-            "type": "string"
-          }
+          "stockTransferLine": {}
         },
         "required": [
-          "stockTransferId",
-          "itemId"
+          "stockTransferLine"
         ]
       }
     },

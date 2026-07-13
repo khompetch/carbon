@@ -2441,9 +2441,6 @@ msgstr "Bestätigter eingehender Bestand — Kauf- und Produktionsaufträge (Bal
 msgid "Confirmed outgoing stock — sales orders & job materials (bars below zero)."
 msgstr "Bestätigter ausgehender Bestand — Verkaufsaufträge & Auftragsmaterial (Balken unter Null)."
 
-msgid "Confirming locks the counted quantities. Review the warnings below, then post the count to apply the adjustments."
-msgstr "Das Bestätigen sperrt die gezählten Mengen. Überprüfen Sie die Warnungen unten und buchen Sie dann die Inventur, um die Anpassungen anzuwenden."
-
 msgid "Confirms every posted journal entry in the period has equal debits and credits. If any entry is out of balance the trial balance won't tie out, so it must be corrected before the period can close."
 msgstr "Bestätigt, dass jeder gebuchte Journaleintrag in der Periode gleiche Belastungen und Gutschriften hat. Wenn ein Eintrag nicht ausgeglichen ist, stimmt die Probebilanz nicht überein, daher muss er korrigiert werden, bevor die Periode geschlossen werden kann."
 
@@ -2729,6 +2726,12 @@ msgstr "Richtige Antwort"
 msgid "Correct Answers"
 msgstr "Richtige Antworten"
 
+msgid "Correction"
+msgstr "Korrektur"
+
+msgid "Corrections"
+msgstr "Korrektionen"
+
 msgid "Corrective action"
 msgstr "Korrekturmaßnahme"
 
@@ -2799,6 +2802,9 @@ msgstr "Der Auftrag konnte nicht umgeplant werden. Bitte versuchen Sie es erneut
 
 msgid "Count"
 msgstr "Anzahl"
+
+msgid "Count History"
+msgstr "Zählverlauf"
 
 msgid "Count ID"
 msgstr "Zählung-ID"
@@ -8383,6 +8389,12 @@ msgstr "Bestellungen eingereicht"
 msgid "Origin"
 msgstr "Ursprung"
 
+msgid "Original"
+msgstr "Original"
+
+msgid "Original Count"
+msgstr "Ursprüngliche Anzahl"
+
 msgid "Other Income account for FX gains when a payment settles a foreign-currency invoice at a more favorable rate"
 msgstr "Sonstige Einnahmen für Wechselkursgewinne, wenn eine Zahlung eine Rechnung in Fremdwährung zu einem günstigeren Kurs ausgleicht"
 
@@ -8875,6 +8887,15 @@ msgstr "Gepostet am"
 
 msgid "Posted By"
 msgstr "Gepostet von"
+
+msgid "Posted once, no rectifications."
+msgstr "Einmal gepostet, keine Berichtigungen."
+
+msgid "Posted once, rectified {rectifications} times."
+msgstr "Einmal gepostet, {rectifications} Mal berichtigt."
+
+msgid "Posted once, rectified 1 time."
+msgstr "Einmal gepostet, 1 Mal berichtigt."
 
 msgid "Posting"
 msgstr "Vorauszahlungen"
@@ -9615,6 +9636,12 @@ msgstr "Aufzeichnungen"
 msgid "Recovery Period"
 msgstr "Registrieren"
 
+msgid "Rectification {rectifyNumber}"
+msgstr "Berichtigung {rectifyNumber}"
+
+msgid "Rectify"
+msgstr "Berichtigen"
+
 msgid "Redirecting to verification page..."
 msgstr "Wird zur Verifizierungsseite weitergeleitet..."
 
@@ -9941,6 +9968,9 @@ msgstr "Kehren Sie die zugehörigen Journaleinträge um"
 
 msgid "Review the period's balance sheet and income statement and confirm the figures look right. This is a manual sign-off — mark it done once you have reviewed them."
 msgstr "Überprüfen Sie die Bilanz und die Gewinn- und Verlustrechnung der Periode und bestätigen Sie, dass die Zahlen korrekt aussehen. Dies ist eine manuelle Genehmigung – markieren Sie sie als erledigt, sobald Sie diese überprüft haben."
+
+msgid "Review the warnings below, then post the count to apply the adjustments."
+msgstr "Überprüfen Sie die folgenden Warnungen und posten Sie dann die Anzahl, um die Anpassungen anzuwenden."
 
 msgid "Revision"
 msgstr "Revision"

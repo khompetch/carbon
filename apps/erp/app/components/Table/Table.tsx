@@ -20,6 +20,7 @@ import {
   Tr,
   useEscape,
   useMount,
+  useOutsideClick,
   VStack
 } from "@carbon/react";
 import { clamp } from "@carbon/utils";
@@ -105,6 +106,9 @@ interface TableProps<T extends object> {
   // Optional node rendered immediately after the title (e.g. a status badge).
   titleBadge?: ReactNode;
   withInlineEditing?: boolean;
+  // When true, the table starts in edit mode and the Edit/Lock toggle is hidden
+  // (editing is always on — e.g. a Draft document that is inherently editable).
+  forceEditMode?: boolean;
   withPagination?: boolean;
   withSavedView?: boolean;
   withSearch?: boolean;
@@ -112,12 +116,18 @@ interface TableProps<T extends object> {
   withSimpleSorting?: boolean;
   sort?: ReactNode;
   getRowId?: (originalRow: T, index: number) => string;
+  // Optional per-row class (e.g. to highlight rows that failed validation).
+  getRowClassName?: (originalRow: T) => string | undefined;
   rowSelection?: RowSelectionState;
   onRowSelectionChange?: OnChangeFn<RowSelectionState>;
   onSelectedRowsChange?: (selectedRows: T[]) => void;
   renderActions?: (selectedRows: T[]) => ReactNode;
   renderContextMenu?: (row: T) => JSX.Element | null;
   renderExpandedRow?: (row: T) => ReactNode;
+  // When `renderExpandedRow` is set, gates which rows can expand (show a chevron
+  // + toggle). Defaults to all rows. Use it so only parents with children get an
+  // affordance, like a tree's `hasChildren`.
+  canExpandRow?: (row: T) => boolean;
 }
 
 type AggregateFunction = "sum" | "average" | "min" | "max" | "median" | "count";
@@ -245,6 +255,7 @@ const Table = <T extends object>({
   title,
   titleBadge,
   withInlineEditing = false,
+  forceEditMode = false,
   withPagination = true,
   withSavedView = false,
   withSearch = true,
@@ -252,12 +263,14 @@ const Table = <T extends object>({
   withSimpleSorting = true,
   sort,
   getRowId,
+  getRowClassName,
   rowSelection: controlledRowSelection,
   onRowSelectionChange,
   onSelectedRowsChange,
   renderActions,
   renderContextMenu,
-  renderExpandedRow
+  renderExpandedRow,
+  canExpandRow
 }: TableProps<T>) => {
   const { i18n } = useLingui();
   const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -430,7 +443,12 @@ const Table = <T extends object>({
     let result: ColumnDef<T>[] = [];
     if (renderExpandedRow) {
       result.push(
-        ...getExpandColumn<T>(expandedRows, toggleRowExpanded, translateLabel)
+        ...getExpandColumn<T>(
+          expandedRows,
+          toggleRowExpanded,
+          translateLabel,
+          canExpandRow
+        )
       );
     }
     if (withSelectableRows) {
@@ -446,6 +464,7 @@ const Table = <T extends object>({
     renderContextMenu,
     withSelectableRows,
     renderExpandedRow,
+    canExpandRow,
     expandedRows,
     toggleRowExpanded,
     translateLabel
@@ -508,7 +527,7 @@ const Table = <T extends object>({
     }
   }, [rowSelection, onSelectedRowsChange]);
 
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(forceEditMode);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedCell, setSelectedCell] = useState<Position>(null);
 
@@ -529,6 +548,21 @@ const Table = <T extends object>({
   useEscape(() => {
     setIsEditing(false);
     focusOnSelectedCell();
+  });
+
+  // Clicking outside the table clears the selected cell (and ends any edit). A
+  // cell's editable input commits on blur first, so the value is saved before
+  // this runs. Portaled dropdowns (e.g. a cell's combobox popover) render
+  // outside the container but belong to an active edit — ignore clicks in them.
+  useOutsideClick({
+    ref: tableContainerRef,
+    enabled: selectedCell != null,
+    handler: (e) => {
+      const target = e.target as HTMLElement | null;
+      if (target?.closest("[data-radix-popper-content-wrapper]")) return;
+      setIsEditing(false);
+      setSelectedCell(null);
+    }
   });
 
   const onSelectedCellChange = useCallback(
@@ -902,6 +936,7 @@ const Table = <T extends object>({
         title={title}
         titleBadge={titleBadge}
         withInlineEditing={withInlineEditing}
+        forceEditMode={forceEditMode}
         withPagination={withPagination}
         withSavedView={withSavedView}
         withSearch={withSearch}
@@ -1105,9 +1140,12 @@ const Table = <T extends object>({
               </Thead>
               <Tbody>
                 {rows.map((row) => {
+                  const rowExpandable =
+                    !!renderExpandedRow &&
+                    (!canExpandRow || canExpandRow(row.original));
                   const isRowExpanded =
-                    renderExpandedRow && expandedRows[row.index];
-                  const handleRowClick = renderExpandedRow
+                    rowExpandable && expandedRows[row.index];
+                  const handleRowClick = rowExpandable
                     ? () => toggleRowExpanded(row.index)
                     : undefined;
                   const rowContent = renderContextMenu ? (
@@ -1130,9 +1168,10 @@ const Table = <T extends object>({
                             onCellClick={onCellClick}
                             onCellUpdate={onCellUpdate}
                             onClick={handleRowClick}
-                            className={
-                              renderExpandedRow ? "cursor-pointer" : undefined
-                            }
+                            className={cn(
+                              rowExpandable && "cursor-pointer",
+                              getRowClassName?.(row.original)
+                            )}
                           />
                         </ContextMenuTrigger>
                         <ContextMenuContent className="w-128">
@@ -1157,9 +1196,10 @@ const Table = <T extends object>({
                       onCellClick={onCellClick}
                       onCellUpdate={onCellUpdate}
                       onClick={handleRowClick}
-                      className={
-                        renderExpandedRow ? "cursor-pointer" : undefined
-                      }
+                      className={cn(
+                        rowExpandable && "cursor-pointer",
+                        getRowClassName?.(row.original)
+                      )}
                     />
                   );
 
@@ -1320,7 +1360,8 @@ function getActionColumn<T>(
 function getExpandColumn<T>(
   expandedRows: Record<number, boolean>,
   toggleRowExpanded: (rowIndex: number) => void,
-  translateLabel: (value: string) => string
+  translateLabel: (value: string) => string,
+  canExpandRow?: (row: T) => boolean
 ): ColumnDef<T>[] {
   return [
     {
@@ -1329,6 +1370,8 @@ function getExpandColumn<T>(
       enablePinning: true,
       header: () => <span className="sr-only">{translateLabel("Expand")}</span>,
       cell: ({ row }) => {
+        // No chevron for rows that have nothing to reveal (tree `hasChildren`).
+        if (canExpandRow && !canExpandRow(row.original)) return null;
         const isExpanded = expandedRows[row.index] ?? false;
         return (
           <button
