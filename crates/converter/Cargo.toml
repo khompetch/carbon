@@ -9,6 +9,7 @@ license.workspace = true
 
 [dependencies]
 occt-bridge = { path = "../occt-bridge" }
+gltf.workspace = true
 nalgebra.workspace = true
 serde.workspace = true
 serde_json.workspace = true

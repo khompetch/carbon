@@ -1,29 +1,27 @@
 //! Write a GLB from the tessellated assembly tree — port of `app/glb.py`. The
 //! glTF node tree mirrors graph.json 1:1, every node carries `extras.nodeId`,
 //! identical parts (same geometryHash) share one mesh, materials dedupe by RGBA.
-//! We write the container ourselves (not byte-identical to pygltflib, but the
-//! same node/mesh/material contract the viewer depends on).
+//! The container is assembled by the `gltf` crate (`gltf::binary::Glb`); we build
+//! the typed `gltf::json::Root` rather than hand-writing JSON.
 
 use crate::graph::{AssemblyNode, PartMesh};
-use serde_json::{json, Value};
+use gltf::json;
+use json::validation::{Checked::Valid, USize64};
+use std::borrow::Cow;
 use std::collections::HashMap;
 
-const ARRAY_BUFFER: i64 = 34962;
-const ELEMENT_ARRAY_BUFFER: i64 = 34963;
-const FLOAT: i64 = 5126;
-const UNSIGNED_INT: i64 = 5125;
-const DEFAULT_COLOR: [f64; 4] = [0.65, 0.65, 0.65, 1.0];
+const DEFAULT_COLOR: [f32; 4] = [0.65, 0.65, 0.65, 1.0];
 const IDENTITY: [f64; 16] = [
     1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
 ];
 
 struct Builder {
     blob: Vec<u8>,
-    buffer_views: Vec<Value>,
-    accessors: Vec<Value>,
-    meshes: Vec<Value>,
-    materials: Vec<Value>,
-    nodes: Vec<Value>,
+    buffer_views: Vec<json::buffer::View>,
+    accessors: Vec<json::Accessor>,
+    meshes: Vec<json::Mesh>,
+    materials: Vec<json::Material>,
+    nodes: Vec<json::Node>,
     mesh_by_hash: HashMap<String, usize>,
     material_by_color: HashMap<String, usize>,
 }
@@ -42,33 +40,46 @@ impl Builder {
         }
     }
 
-    fn append_buffer_view(&mut self, data: &[u8], target: i64) -> usize {
+    fn append_buffer_view(&mut self, data: &[u8], target: json::buffer::Target) -> usize {
         while self.blob.len() % 4 != 0 {
             self.blob.push(0);
         }
         let offset = self.blob.len();
         self.blob.extend_from_slice(data);
-        self.buffer_views.push(json!({
-            "buffer": 0, "byteOffset": offset, "byteLength": data.len(), "target": target
-        }));
+        self.buffer_views.push(json::buffer::View {
+            buffer: json::Index::new(0),
+            byte_length: USize64::from(data.len()),
+            byte_offset: Some(USize64::from(offset)),
+            byte_stride: None,
+            target: Some(Valid(target)),
+            name: None,
+            extensions: Default::default(),
+            extras: Default::default(),
+        });
         self.buffer_views.len() - 1
     }
 
     fn material(&mut self, color: Option<[f64; 4]>) -> usize {
-        let rgba = color.unwrap_or(DEFAULT_COLOR);
+        let rgba = color.map_or(DEFAULT_COLOR, |c| [c[0] as f32, c[1] as f32, c[2] as f32, c[3] as f32]);
         let key = format!("{:?}", rgba);
         if let Some(&i) = self.material_by_color.get(&key) {
             return i;
         }
-        self.materials.push(json!({
-            "pbrMetallicRoughness": {
-                "baseColorFactor": rgba.to_vec(),
-                "metallicFactor": 0.1,
-                "roughnessFactor": 0.8
+        self.materials.push(json::Material {
+            alpha_mode: Valid(if rgba[3] < 1.0 {
+                json::material::AlphaMode::Blend
+            } else {
+                json::material::AlphaMode::Opaque
+            }),
+            double_sided: false,
+            pbr_metallic_roughness: json::material::PbrMetallicRoughness {
+                base_color_factor: json::material::PbrBaseColorFactor(rgba),
+                metallic_factor: json::material::StrengthFactor(0.1),
+                roughness_factor: json::material::StrengthFactor(0.8),
+                ..Default::default()
             },
-            "alphaMode": if rgba[3] < 1.0 { "BLEND" } else { "OPAQUE" },
-            "doubleSided": false
-        }));
+            ..Default::default()
+        });
         let i = self.materials.len() - 1;
         self.material_by_color.insert(key, i);
         i
@@ -106,54 +117,126 @@ impl Builder {
             }
         }
 
-        let pos_view = self.append_buffer_view(&pos_bytes, ARRAY_BUFFER);
-        let nrm_view = self.append_buffer_view(&nrm_bytes, ARRAY_BUFFER);
-        let idx_view = self.append_buffer_view(&idx_bytes, ELEMENT_ARRAY_BUFFER);
+        let pos_view = self.append_buffer_view(&pos_bytes, json::buffer::Target::ArrayBuffer);
+        let nrm_view = self.append_buffer_view(&nrm_bytes, json::buffer::Target::ArrayBuffer);
+        let idx_view = self.append_buffer_view(&idx_bytes, json::buffer::Target::ElementArrayBuffer);
 
-        self.accessors.push(json!({
-            "bufferView": pos_view, "componentType": FLOAT, "count": positions.len(),
-            "type": "VEC3", "min": min.to_vec(), "max": max.to_vec()
-        }));
+        self.accessors.push(json::Accessor {
+            buffer_view: Some(json::Index::new(pos_view as u32)),
+            byte_offset: Some(USize64(0)),
+            count: USize64::from(positions.len()),
+            component_type: Valid(json::accessor::GenericComponentType(
+                json::accessor::ComponentType::F32,
+            )),
+            type_: Valid(json::accessor::Type::Vec3),
+            min: Some(serde_json::json!(min.to_vec())),
+            max: Some(serde_json::json!(max.to_vec())),
+            name: None,
+            normalized: false,
+            sparse: None,
+            extensions: Default::default(),
+            extras: Default::default(),
+        });
         let pos_acc = self.accessors.len() - 1;
-        self.accessors.push(json!({
-            "bufferView": nrm_view, "componentType": FLOAT, "count": normals.len(), "type": "VEC3"
-        }));
+        self.accessors.push(json::Accessor {
+            buffer_view: Some(json::Index::new(nrm_view as u32)),
+            byte_offset: Some(USize64(0)),
+            count: USize64::from(normals.len()),
+            component_type: Valid(json::accessor::GenericComponentType(
+                json::accessor::ComponentType::F32,
+            )),
+            type_: Valid(json::accessor::Type::Vec3),
+            min: None,
+            max: None,
+            name: None,
+            normalized: false,
+            sparse: None,
+            extensions: Default::default(),
+            extras: Default::default(),
+        });
         let nrm_acc = self.accessors.len() - 1;
-        self.accessors.push(json!({
-            "bufferView": idx_view, "componentType": UNSIGNED_INT, "count": idx_count, "type": "SCALAR"
-        }));
+        self.accessors.push(json::Accessor {
+            buffer_view: Some(json::Index::new(idx_view as u32)),
+            byte_offset: Some(USize64(0)),
+            count: USize64::from(idx_count),
+            component_type: Valid(json::accessor::GenericComponentType(
+                json::accessor::ComponentType::U32,
+            )),
+            type_: Valid(json::accessor::Type::Scalar),
+            min: None,
+            max: None,
+            name: None,
+            normalized: false,
+            sparse: None,
+            extensions: Default::default(),
+            extras: Default::default(),
+        });
         let idx_acc = self.accessors.len() - 1;
 
         let material = self.material(color);
-        self.meshes.push(json!({
-            "name": name,
-            "primitives": [{
-                "attributes": {"POSITION": pos_acc, "NORMAL": nrm_acc},
-                "indices": idx_acc,
-                "material": material
-            }]
-        }));
+        let mut attributes = std::collections::BTreeMap::new();
+        attributes.insert(
+            Valid(json::mesh::Semantic::Positions),
+            json::Index::new(pos_acc as u32),
+        );
+        attributes.insert(
+            Valid(json::mesh::Semantic::Normals),
+            json::Index::new(nrm_acc as u32),
+        );
+        self.meshes.push(json::Mesh {
+            name: Some(name.to_string()),
+            primitives: vec![json::mesh::Primitive {
+                attributes,
+                indices: Some(json::Index::new(idx_acc as u32)),
+                material: Some(json::Index::new(material as u32)),
+                mode: Valid(json::mesh::Mode::Triangles),
+                targets: None,
+                extensions: Default::default(),
+                extras: Default::default(),
+            }],
+            weights: None,
+            extensions: Default::default(),
+            extras: Default::default(),
+        });
         let i = self.meshes.len() - 1;
         self.mesh_by_hash.insert(part.geometry_hash.clone(), i);
         i
     }
 
     fn add_node(&mut self, node: &AssemblyNode) -> usize {
-        let mut gltf_node = json!({"name": node.name, "extras": {"nodeId": node.node_id}});
-        if node.transform != IDENTITY {
-            gltf_node["matrix"] = json!(node.transform.to_vec());
-        }
-        if let Some(mesh) = &node.mesh {
-            if !mesh.positions.is_empty() {
-                let m = self.mesh(mesh, node.color, &node.product_name);
-                gltf_node["mesh"] = json!(m);
+        let matrix = if node.transform != IDENTITY {
+            let mut m = [0.0f32; 16];
+            for k in 0..16 {
+                m[k] = node.transform[k] as f32;
             }
-        }
-        self.nodes.push(gltf_node);
+            Some(m)
+        } else {
+            None
+        };
+        let mesh = node.mesh.as_ref().filter(|m| !m.positions.is_empty()).map(|m| {
+            let i = self.mesh(m, node.color, &node.product_name);
+            json::Index::new(i as u32)
+        });
+        let extras = serde_json::value::to_raw_value(
+            &serde_json::json!({ "nodeId": node.node_id }),
+        )
+        .ok();
+
+        self.nodes.push(json::Node {
+            name: Some(node.name.clone()),
+            matrix,
+            mesh,
+            extras,
+            ..Default::default()
+        });
         let index = self.nodes.len() - 1;
-        let children: Vec<usize> = node.children.iter().map(|c| self.add_node(c)).collect();
+        let children: Vec<json::Index<json::Node>> = node
+            .children
+            .iter()
+            .map(|c| json::Index::new(self.add_node(c) as u32))
+            .collect();
         if !children.is_empty() {
-            self.nodes[index]["children"] = json!(children);
+            self.nodes[index].children = Some(children);
         }
         index
     }
@@ -202,43 +285,55 @@ pub fn write_glb(root: &AssemblyNode) -> Vec<u8> {
     let mut b = Builder::new();
     let root_index = b.add_node(root);
 
-    let mut gltf = json!({
-        "asset": {"version": "2.0", "generator": "carbon-assembler"},
-        "scene": 0,
-        "scenes": [{"nodes": [root_index]}],
-        "nodes": b.nodes,
-        "meshes": b.meshes,
-        "accessors": b.accessors,
-        "bufferViews": b.buffer_views,
-        "materials": b.materials,
-    });
-    if !b.blob.is_empty() {
-        gltf["buffers"] = json!([{"byteLength": b.blob.len()}]);
-    }
+    let buffers = if b.blob.is_empty() {
+        Vec::new()
+    } else {
+        vec![json::Buffer {
+            byte_length: USize64::from(b.blob.len()),
+            name: None,
+            uri: None,
+            extensions: Default::default(),
+            extras: Default::default(),
+        }]
+    };
 
-    let mut json_bytes = serde_json::to_vec(&gltf).unwrap();
-    while json_bytes.len() % 4 != 0 {
-        json_bytes.push(b' ');
-    }
-    let mut bin = b.blob;
-    while bin.len() % 4 != 0 {
-        bin.push(0);
-    }
+    let gltf_root = json::Root {
+        asset: json::Asset {
+            version: "2.0".to_string(),
+            generator: Some("carbon-assembler".to_string()),
+            ..Default::default()
+        },
+        scene: Some(json::Index::new(0)),
+        scenes: vec![json::Scene {
+            nodes: vec![json::Index::new(root_index as u32)],
+            name: None,
+            extensions: Default::default(),
+            extras: Default::default(),
+        }],
+        nodes: b.nodes,
+        meshes: b.meshes,
+        accessors: b.accessors,
+        buffer_views: b.buffer_views,
+        materials: b.materials,
+        buffers,
+        ..Default::default()
+    };
 
-    let total = 12 + 8 + json_bytes.len() + if bin.is_empty() { 0 } else { 8 + bin.len() };
-    let mut out = Vec::with_capacity(total);
-    out.extend_from_slice(b"glTF");
-    out.extend_from_slice(&2u32.to_le_bytes());
-    out.extend_from_slice(&(total as u32).to_le_bytes());
-    // JSON chunk
-    out.extend_from_slice(&(json_bytes.len() as u32).to_le_bytes());
-    out.extend_from_slice(b"JSON");
-    out.extend_from_slice(&json_bytes);
-    // BIN chunk
-    if !bin.is_empty() {
-        out.extend_from_slice(&(bin.len() as u32).to_le_bytes());
-        out.extend_from_slice(&[b'B', b'I', b'N', 0]);
-        out.extend_from_slice(&bin);
-    }
-    out
+    let json_bytes = json::serialize::to_vec(&gltf_root).unwrap();
+    let bin = if b.blob.is_empty() {
+        None
+    } else {
+        Some(Cow::Owned(b.blob))
+    };
+
+    let glb = gltf::binary::Glb {
+        header: gltf::binary::Header {
+            magic: *b"glTF",
+            version: 2,
+            length: 0,
+        },
+        json: Cow::Owned(json_bytes),
+        bin,
+    };
+    glb.to_vec().unwrap()
 }
