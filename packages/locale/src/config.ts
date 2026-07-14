@@ -13,7 +13,8 @@ export const supportedLanguages = [
   "zh",
   "hi",
   "tr",
-  "th"
+  "th",
+  "ko"
 ] as const;
 export type SupportedLanguage = (typeof supportedLanguages)[number];
 
@@ -52,7 +53,8 @@ export const languageNativeLabels: Record<SupportedLanguage, string> = {
   zh: "中文",
   hi: "हिन्दी",
   tr: "Türkçe",
-  th: "ไทย"
+  th: "ไทย",
+  ko: "한국어"
 };
 
 /**

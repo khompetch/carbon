@@ -19,6 +19,7 @@ import { getCurrentAccountingPeriod } from "../shared/get-accounting-period.ts";
 import { getNextSequence } from "../shared/get-next-sequence.ts";
 import { getDefaultPostingGroup } from "../shared/get-posting-group.ts";
 import { calculateCOGS } from "../shared/calculate-cogs.ts";
+import { resolveTrackedEntityBin } from "./resolve-tracked-entity-bin.ts";
 
 type ExpiredEntityPolicy = "Warn" | "Block" | "BlockWithOverride";
 
@@ -198,8 +199,20 @@ async function issueJobOperationMaterials(
     [];
 
   for await (const material of materialsToIssue) {
+    // Cap the backflush at the material's remaining unissued requirement,
+    // mirroring backflush_job_materials. Without this, materials already
+    // issued manually (e.g. from MES after skipping the operation) get
+    // consumed a second time on operation completion — duplicate item/cost
+    // ledger entries and duplicate DR WIP / CR Inventory journal lines.
+    const demandQuantity = Number(material.quantity) * quantity;
+    const remainingQuantity = Math.max(
+      Number(material.estimatedQuantity ?? 0) -
+        Number(material.quantityIssued ?? 0),
+      0
+    );
+    const quantityToIssue = Math.min(demandQuantity, remainingQuantity);
 
-    const quantityToIssue = Number(material.quantity) * quantity;
+    if (quantityToIssue <= 0) continue;
 
     let proposedStorageUnitId = material.storageUnitId;
 
@@ -406,7 +419,7 @@ async function issueJobOperationMaterials(
     }
 
     if (journalLineInserts.length > 0) {
-      const accountingPeriodId = await getCurrentAccountingPeriod(client, companyId, db);
+      const accountingPeriodId = await getCurrentAccountingPeriod(client, companyId, trx);
       const journalEntryId = await getNextSequence(trx, "journalEntry", companyId);
 
       const journalResult = await trx
@@ -649,7 +662,7 @@ async function createMaterialWipEntries(
 
   if (journalLineInserts.length === 0) return;
 
-  const accountingPeriodId = await getCurrentAccountingPeriod(client, companyId, db);
+  const accountingPeriodId = await getCurrentAccountingPeriod(client, companyId, trx);
   const journalEntryId = await getNextSequence(trx, "journalEntry", companyId);
 
   const journalResult = await trx
@@ -1402,9 +1415,14 @@ serve(async (req: Request) => {
             await trx
               .updateTable("jobMaterial")
               .set({
+                // A positive adjustment returns material to inventory, so it
+                // reduces quantityIssued — otherwise the backflush cap sees
+                // returned material as still issued.
                 quantityIssued:
                   (Number(material?.quantityIssued) ?? 0) +
-                  Number(quantityToIssue),
+                  (adjustmentType === "Positive Adjmt."
+                    ? -Number(quantityToIssue)
+                    : Number(quantityToIssue)),
               })
               .where("id", "=", materialId)
               .execute();
@@ -2193,10 +2211,7 @@ serve(async (req: Request) => {
                     itemId: trackedEntity.sourceDocumentId,
                     quantity: -Number(trackedEntity.quantity),
                     locationId: job?.locationId,
-                    storageUnitId: itemLedgers.find(
-                      (itemLedger) =>
-                        itemLedger.trackedEntityId === trackedEntityId
-                    )?.storageUnitId,
+                    storageUnitId: resolveTrackedEntityBin(itemLedgers, trackedEntityId),
                     trackedEntityId: trackedEntity.id!,
                     createdBy: userId,
                   },
@@ -2208,10 +2223,7 @@ serve(async (req: Request) => {
                     itemId: trackedEntity.sourceDocumentId,
                     quantity: quantity,
                     locationId: job?.locationId,
-                    storageUnitId: itemLedgers.find(
-                      (itemLedger) =>
-                        itemLedger.trackedEntityId === trackedEntityId
-                    )?.storageUnitId,
+                    storageUnitId: resolveTrackedEntityBin(itemLedgers, trackedEntityId),
                     trackedEntityId: trackedEntity.id!,
                     createdBy: userId,
                   },
@@ -2223,10 +2235,7 @@ serve(async (req: Request) => {
                     itemId: trackedEntity.sourceDocumentId,
                     quantity: remainingQuantity,
                     locationId: job?.locationId,
-                    storageUnitId: itemLedgers.find(
-                      (itemLedger) =>
-                        itemLedger.trackedEntityId === trackedEntityId
-                    )?.storageUnitId,
+                    storageUnitId: resolveTrackedEntityBin(itemLedgers, trackedEntityId),
                     trackedEntityId: newTrackedEntityId,
                     createdBy: userId,
                   }
@@ -2260,9 +2269,7 @@ serve(async (req: Request) => {
                 itemId: trackedEntity.sourceDocumentId,
                 quantity: -quantity,
                 locationId: job?.locationId,
-                storageUnitId: itemLedgers.find(
-                  (itemLedger) => itemLedger.trackedEntityId === trackedEntityId
-                )?.storageUnitId,
+                storageUnitId: resolveTrackedEntityBin(itemLedgers, trackedEntityId),
                 trackedEntityId,
                 createdBy: userId,
               });
@@ -2551,6 +2558,9 @@ serve(async (req: Request) => {
                 itemId: trackedEntity.sourceDocumentId,
                 quantity: quantity,
                 locationId: job?.locationId,
+                // NOTE: unconsume path left on its original bin-selection until
+                // it can be verified; the resolveTrackedEntityBin fix is scoped
+                // to the consumption path (trackedEntitiesToOperation).
                 storageUnitId: itemLedgers.find(
                   (itemLedger) => itemLedger.trackedEntityId === trackedEntityId
                 )?.storageUnitId,

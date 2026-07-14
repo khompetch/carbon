@@ -227,6 +227,15 @@ export const sequences = [
     step: 1
   },
   {
+    table: "inventoryCount",
+    name: "Inventory Count",
+    prefix: "IC",
+    suffix: null,
+    next: 0,
+    size: 6,
+    step: 1
+  },
+  {
     table: "maintenanceDispatch",
     name: "Maintenance Dispatch",
     prefix: "MAIN",
@@ -733,6 +742,7 @@ export const accountDefaults = {
   inventoryAccount: "1210",
   workInProgressAccount: "1230",
   receivablesAccount: "1110",
+  intercompanyReceivablesAccount: "1130",
   bankCashAccount: "1010",
   bankLocalCurrencyAccount: "1020",
   bankForeignCurrencyAccount: "1030",

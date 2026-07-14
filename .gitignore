@@ -75,8 +75,23 @@ packages/database/supabase/snippets/**
 .claude/notes/
 .codex/
 
+# Editor/IDE settings — local, not source
+.vscode/
+
 # .ai/ scratch — runtime, not source
 .ai/scratch/
+.ai/daily-notes/
+
+# Daily notes — runtime scratch, not source
+memory/daily-notes/
+
+# Loop run artifacts (@carbon/harness RUNS_DIR).
+# Volatile files (screenshots, raw event log) are excluded; durable run records
+# (binding, ledger, outcome) are committed back to main after each build so any
+# agent can inspect history and resume partial work without the worktree.
+.ai/runs/*/screenshots/
+.ai/runs/*/run.log.jsonl
+.ai/runs/*/.tmp/
 
 # Legacy llm/ — consolidated into .ai/ (docs, specs, runs)
 llm/
