@@ -6626,9 +6626,6 @@ msgstr "Parametri Elenco"
 msgid "Live"
 msgstr ""
 
-msgid "Live in weeks, not quarters. Most of the product is already built."
-msgstr "Attivo in settimane, non in trimestri. La maggior parte del prodotto è già costruita."
-
 msgid "Live on Carbon"
 msgstr "Live su Carbon"
 
@@ -8055,11 +8052,11 @@ msgstr "Un passaggio nel routing di un lavoro, che denomina un processo e un cen
 msgid "One system from quote to cash"
 msgstr "Un sistema dalla quotazione al pagamento"
 
-msgid "Only employees who have completed training for this ability can start operations at this work center"
-msgstr ""
-
 msgid "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 msgstr "Solo le procedure in bozza sono modificabili. Crea una nuova versione per modificare una procedura attiva o archiviata."
+
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
 
 msgid "Onshape Status"
 msgstr "Stato Onshape"

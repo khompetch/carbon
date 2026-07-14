@@ -6626,9 +6626,6 @@ msgstr "Liste Parametreleri"
 msgid "Live"
 msgstr ""
 
-msgid "Live in weeks, not quarters. Most of the product is already built."
-msgstr "Haftalar içinde canlı olun, çeyrekler değil. Ürünün çoğu zaten oluşturulmuş."
-
 msgid "Live on Carbon"
 msgstr "Carbon'da Canlı"
 
@@ -8055,11 +8052,11 @@ msgstr "Bir işin yönlendirilmesinde bir adım, bir süreci ve bir iş merkezin
 msgid "One system from quote to cash"
 msgstr "Teklif'ten nakite kadar tek bir sistem"
 
-msgid "Only employees who have completed training for this ability can start operations at this work center"
-msgstr ""
-
 msgid "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 msgstr "Yalnızca Taslak prosedürler düzenlenebilir. Aktif veya Arşivlenmiş bir prosedürü değiştirmek için yeni bir sürüm oluşturun."
+
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
 
 msgid "Onshape Status"
 msgstr "Onshape Durumu"

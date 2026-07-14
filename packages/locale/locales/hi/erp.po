@@ -6626,9 +6626,6 @@ msgstr "सूची पैरामीटर"
 msgid "Live"
 msgstr ""
 
-msgid "Live in weeks, not quarters. Most of the product is already built."
-msgstr "हफ्तों में लाइव हो जाएं, महीनों में नहीं। अधिकांश उत्पाद पहले से ही बनाया जा चुका है।"
-
 msgid "Live on Carbon"
 msgstr "Carbon पर लाइव"
 
@@ -8055,11 +8052,11 @@ msgstr "एक काम के मार्ग में एक कदम, ए�
 msgid "One system from quote to cash"
 msgstr "उद्धरण से नकद तक एक प्रणाली"
 
-msgid "Only employees who have completed training for this ability can start operations at this work center"
-msgstr ""
-
 msgid "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 msgstr "केवल ड्राफ्ट प्रक्रियाएं संपादन योग्य हैं। किसी सक्रिय या संग्रहीत प्रक्रिया को बदलने के लिए नया संस्करण बनाएं।"
+
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
 
 msgid "Onshape Status"
 msgstr "Onshape स्थिति"

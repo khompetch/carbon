@@ -6626,9 +6626,6 @@ msgstr "Параметры списка"
 msgid "Live"
 msgstr ""
 
-msgid "Live in weeks, not quarters. Most of the product is already built."
-msgstr "Начните работу за недели, а не за кварталы. Большая часть продукта уже готова."
-
 msgid "Live on Carbon"
 msgstr "Работает на Carbon"
 
@@ -8055,11 +8052,11 @@ msgstr "Один шаг в маршрутизации задания, опред
 msgid "One system from quote to cash"
 msgstr "Одна система от предложения до оплаты"
 
-msgid "Only employees who have completed training for this ability can start operations at this work center"
-msgstr ""
-
 msgid "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 msgstr "Редактировать можно только процедуры в статусе «Черновик». Создайте новую версию, чтобы изменить активную или архивную процедуру."
+
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
 
 msgid "Onshape Status"
 msgstr "Статус Onshape"

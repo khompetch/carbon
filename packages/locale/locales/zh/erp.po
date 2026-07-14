@@ -6626,9 +6626,6 @@ msgstr "列表参数"
 msgid "Live"
 msgstr ""
 
-msgid "Live in weeks, not quarters. Most of the product is already built."
-msgstr "在几周内上线，而不是几个季度。产品的大部分已经构建完成。"
-
 msgid "Live on Carbon"
 msgstr "在 Carbon 上线"
 
@@ -8055,11 +8052,11 @@ msgstr "工作路线中的一个步骤，命名流程和工作中心，并携带
 msgid "One system from quote to cash"
 msgstr "从报价到收款的一个系统"
 
-msgid "Only employees who have completed training for this ability can start operations at this work center"
-msgstr ""
-
 msgid "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 msgstr "只有草稿程序可以编辑。创建新版本以更改活动或已归档的程序。"
+
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
 
 msgid "Onshape Status"
 msgstr "Onshape 状态"

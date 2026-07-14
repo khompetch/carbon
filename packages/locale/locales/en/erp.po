@@ -6626,9 +6626,6 @@ msgstr "List Parameters"
 msgid "Live"
 msgstr "Live"
 
-msgid "Live in weeks, not quarters. Most of the product is already built."
-msgstr "Live in weeks, not quarters. Most of the product is already built."
-
 msgid "Live on Carbon"
 msgstr "Live on Carbon"
 
@@ -8055,11 +8052,11 @@ msgstr "One step in a job's routing, naming a process and a work center and carr
 msgid "One system from quote to cash"
 msgstr "One system from quote to cash"
 
-msgid "Only employees who have completed training for this ability can start operations at this work center"
-msgstr "Only employees who have completed training for this ability can start operations at this work center"
-
 msgid "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 msgstr "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
+
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr "Only employees who have completed training for this ability can start operations at this work center"
 
 msgid "Onshape Status"
 msgstr "Onshape Status"

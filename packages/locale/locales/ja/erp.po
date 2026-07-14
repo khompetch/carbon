@@ -6626,9 +6626,6 @@ msgstr "リストパラメータ"
 msgid "Live"
 msgstr ""
 
-msgid "Live in weeks, not quarters. Most of the product is already built."
-msgstr "数週間で導入でき、四半期単位ではありません。製品のほとんどはすでに構築されています。"
-
 msgid "Live on Carbon"
 msgstr "Carbonで稼働中"
 
@@ -8055,11 +8052,11 @@ msgstr "ジョブのルーティングの1つのステップであり、プロ�
 msgid "One system from quote to cash"
 msgstr "見積から現金化まで一つのシステム"
 
-msgid "Only employees who have completed training for this ability can start operations at this work center"
-msgstr ""
-
 msgid "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 msgstr "編集可能なのは下書き手順のみです。アクティブまたはアーカイブされた手順を変更するには、新しいバージョンを作成してください。"
+
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
 
 msgid "Onshape Status"
 msgstr "Onshape ステータス"
