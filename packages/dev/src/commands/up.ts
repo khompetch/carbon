@@ -9,7 +9,9 @@ import { onShutdown } from "../helpers.js";
 import { pickApps, pickBorrowSlug } from "../prompts.js";
 import {
   installDeps,
+  installSkills,
   spawnApps,
+  spawnGeometry,
   spawnStripeListener,
   syncEnvSymlinks
 } from "../services/apps.js";
@@ -182,6 +184,7 @@ export async function up(opts: UpOpts = {}) {
 
   await refreshStaleCopyFiles(root);
   await ensureDepsInstalled(root);
+  await ensureSkillsInstalled(root);
 
   const ctx = await provisionSlot(root, slug, portless, borrowedEntry);
   if (borrowedEntry) {
@@ -192,7 +195,9 @@ export async function up(opts: UpOpts = {}) {
     await waitForServices(ctx);
   }
   await runDatabaseMigrations(ctx, { shouldMigrate, shouldRegen });
-  await seedSmokeTestUser(ctx);
+  // Skip when migrations are skipped: the `user` table may not exist yet, and
+  // seeding would fail with `relation "user" does not exist`.
+  if (shouldMigrate) await seedSmokeTestUser(ctx);
   if (portless) {
     await setupPortless(ctx, selectedApps);
     await ensureHostsFile();
@@ -201,6 +206,10 @@ export async function up(opts: UpOpts = {}) {
   if (process.env.CARBON_EDITION === "cloud") {
     stripeChild = spawnStripeListener(root);
     log.info("stripe listener spawned (CARBON_EDITION=cloud)");
+  }
+
+  if (selectedApps.includes("geometry")) {
+    spawnGeometry({ root, ports: ctx.ports });
   }
 
   box(
@@ -285,6 +294,15 @@ async function ensureDepsInstalled(root: string) {
   const ran = await installDeps(root);
   if (ran) log.step("pnpm install");
   else log.info("pnpm install skipped (lockfile in sync)");
+}
+
+// Keep the .claude/.codex skill+rule symlinks in sync on every boot. They're
+// gitignored (absent in fresh worktrees) and `prepare` only runs when pnpm
+// install runs, so this is the reliable place to guarantee they exist.
+async function ensureSkillsInstalled(root: string) {
+  const ok = await installSkills(root);
+  if (ok) log.step("skills + rules linked");
+  else log.info("install-skills skipped");
 }
 
 async function provisionSlot(
@@ -577,7 +595,8 @@ async function runAppsThenTeardown(
   portless: boolean,
   stripeChild?: ExecaChildProcess
 ) {
-  await spawnApps({ root, apps: selectedApps, ports, portless });
+  const reactRouterApps = selectedApps.filter((id) => id !== "geometry");
+  await spawnApps({ root, apps: reactRouterApps, ports, portless });
 
   // Apps exit on Ctrl+C; auto-`down` so compose stack isn't orphaned.
   // Swallow further signals so a second Ctrl+C during teardown doesn't

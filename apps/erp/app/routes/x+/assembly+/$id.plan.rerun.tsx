@@ -1,0 +1,117 @@
+import { assertIsPost, error, success } from "@carbon/auth";
+import { requirePermissions } from "@carbon/auth/auth.server";
+import { flash } from "@carbon/auth/session.server";
+import { trigger } from "@carbon/jobs";
+import type { ActionFunctionArgs } from "react-router";
+import { data } from "react-router";
+import {
+  createAssemblyPlanJob,
+  getLatestAssemblyPlanJob,
+  isAssemblyPlanRunning
+} from "~/modules/production";
+
+/**
+ * Re-runs motion planning over the instruction's converted model. When the
+ * instruction already has steps, it runs in ORDER-PRESERVING mode: the planner
+ * takes the existing step order as fixed and only recomputes each step's motion
+ * to avoid collision with parts from earlier steps, updating the step motions in
+ * place (Done steps kept). With no steps yet, it plans fresh (deriving order).
+ */
+export async function action({ request, params }: ActionFunctionArgs) {
+  assertIsPost(request);
+  const { client, companyId, userId } = await requirePermissions(request, {
+    update: "production"
+  });
+
+  const { id } = params;
+  if (!id) throw new Error("Could not find id");
+
+  const instruction = await client
+    .from("assemblyInstruction")
+    .select("modelUploadId, modelUpload(processingStatus)")
+    .eq("id", id)
+    .eq("companyId", companyId)
+    .single();
+
+  if (instruction.error || !instruction.data.modelUploadId) {
+    return data(
+      { success: false },
+      await flash(
+        request,
+        error(instruction.error, "This instruction has no model")
+      )
+    );
+  }
+
+  if (instruction.data.modelUpload?.processingStatus !== "Success") {
+    return data(
+      { success: false },
+      await flash(
+        request,
+        error(null, "The model must finish converting before planning")
+      )
+    );
+  }
+
+  const planJob = await getLatestAssemblyPlanJob(
+    client,
+    instruction.data.modelUploadId
+  );
+  if (isAssemblyPlanRunning(planJob.data)) {
+    return data(
+      { success: false },
+      await flash(request, error(null, "Motion planning is already running"))
+    );
+  }
+  if (planJob.data?.status === "Queued") {
+    // Stale Queued row: the event was never picked up (worker pickup takes
+    // seconds). Fail it so it can't shadow the run we're about to start.
+    await client
+      .from("assemblyPlanJob")
+      .update({
+        status: "Failed",
+        error: "Planning never started — the job event was lost",
+        updatedAt: new Date().toISOString()
+      })
+      .eq("id", planJob.data.id)
+      .eq("companyId", companyId);
+  }
+
+  // Order-preserving re-motion when steps already exist; fresh (reordering)
+  // plan when there are none yet.
+  const stepCount = await client
+    .from("assemblyInstructionStep")
+    .select("id", { count: "exact", head: true })
+    .eq("assemblyInstructionId", id)
+    .eq("companyId", companyId);
+  const hasSteps = (stepCount.count ?? 0) > 0;
+
+  // Create the job row before sending the event so the UI reflects the run
+  // immediately (the worker adopts it via planJobId). Best-effort: planning
+  // still works if the insert fails — the worker inserts its own row then.
+  const created = await createAssemblyPlanJob(client, {
+    modelUploadId: instruction.data.modelUploadId,
+    companyId,
+    userId
+  });
+
+  await trigger("assembly-plan", {
+    modelUploadId: instruction.data.modelUploadId,
+    companyId,
+    userId,
+    ...(created.data?.id ? { planJobId: created.data.id } : {}),
+    ...(hasSteps ? { reMotionFor: id } : {})
+  });
+
+  return data(
+    { success: true },
+    await flash(
+      request,
+      success(
+        hasSteps
+          ? "Re-planning motions in the current step order — steps update when it finishes"
+          : "Motion planning started — regenerate steps when it finishes"
+      )
+    )
+  );
+}

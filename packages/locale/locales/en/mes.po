@@ -770,6 +770,9 @@ msgstr "Prev"
 msgid "Preventive"
 msgstr "Preventive"
 
+msgid "Previous"
+msgstr "Previous"
+
 msgid "Print"
 msgstr "Print"
 
