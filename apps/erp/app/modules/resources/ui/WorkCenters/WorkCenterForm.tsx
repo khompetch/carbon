@@ -24,6 +24,7 @@ import type { PostgrestResponse } from "@supabase/supabase-js";
 import { useEffect } from "react";
 import { useFetcher } from "react-router";
 import type { z } from "zod";
+import Ability from "~/components/Form/Ability";
 import CustomFormFields from "~/components/Form/CustomFormFields";
 import Department from "~/components/Form/Department";
 import Location from "~/components/Form/Location";
@@ -153,11 +154,11 @@ const WorkCenterForm = ({
                   termId="work-center-default-unit"
                   value={initialValues.defaultStandardFactor}
                 />
-                {/* <Ability
+                <Ability
                   name="requiredAbilityId"
-                  label="Required Ability"
-                  isClearable
-                /> */}
+                  label={t`Required Ability`}
+                  helperText={t`Only employees who have completed training for this ability can start operations at this work center`}
+                />
                 <CustomFormFields table="workCenter" />
               </VStack>
             </ModalDrawerBody>

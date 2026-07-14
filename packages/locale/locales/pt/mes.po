@@ -831,6 +831,9 @@ msgstr "Remover Estoque"
 msgid "Remove part"
 msgstr "Remover peça"
 
+msgid "Requires ability: {missingAbility} — training not completed"
+msgstr ""
+
 msgid "Rework"
 msgstr "Retrabalho"
 

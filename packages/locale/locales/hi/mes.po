@@ -831,6 +831,9 @@ msgstr "इन्वेंटरी हटाएं"
 msgid "Remove part"
 msgstr "भाग हटाएं"
 
+msgid "Requires ability: {missingAbility} — training not completed"
+msgstr ""
+
 msgid "Rework"
 msgstr "रीवर्क"
 

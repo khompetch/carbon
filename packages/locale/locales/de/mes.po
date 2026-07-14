@@ -831,6 +831,9 @@ msgstr "Bestand entfernen"
 msgid "Remove part"
 msgstr "Teil entfernen"
 
+msgid "Requires ability: {missingAbility} — training not completed"
+msgstr ""
+
 msgid "Rework"
 msgstr "Überarbeitung"
 

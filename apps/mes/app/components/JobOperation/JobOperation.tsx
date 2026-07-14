@@ -165,6 +165,7 @@ type JobOperationProps = {
     parameters: JobOperationParameter[];
   }>;
   job: Job;
+  missingAbility: string | null;
   thumbnailPath: string | null;
   trackedEntities: TrackedEntity[];
   workCenter: Promise<
@@ -214,6 +215,7 @@ export const JobOperation = ({
   kanban,
   materials,
   method,
+  missingAbility,
   nonConformanceActions,
   operation: originalOperation,
   procedure,
@@ -2114,6 +2116,18 @@ export const JobOperation = ({
                 )}
               </div>
 
+              {missingAbility && (
+                <div className="flex items-start gap-2 rounded-lg border border-amber-500/50 bg-amber-500/10 p-3 max-w-[200px] text-xs text-amber-600 dark:text-amber-400">
+                  <LuTriangleAlert className="size-4 shrink-0" />
+                  <span>
+                    <Trans>
+                      Requires ability: {missingAbility} — training not
+                      completed
+                    </Trans>
+                  </span>
+                </div>
+              )}
+
               <WorkTypeToggle
                 active={active}
                 operation={operation}
@@ -2132,6 +2146,7 @@ export const JobOperation = ({
                   method?.requiresSerialTracking === true ||
                   method?.requiresBatchTracking === true
                 }
+                startDisabled={!!missingAbility}
                 trackedEntityId={trackedEntityId}
               />
               <div className="flex flex-row md:flex-col items-center gap-2 justify-center">

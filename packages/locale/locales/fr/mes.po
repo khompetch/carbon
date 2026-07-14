@@ -831,6 +831,9 @@ msgstr "Retirer du stock"
 msgid "Remove part"
 msgstr "Retirer la pièce"
 
+msgid "Requires ability: {missingAbility} — training not completed"
+msgstr ""
+
 msgid "Rework"
 msgstr "Retouche"
 

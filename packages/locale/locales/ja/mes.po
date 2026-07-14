@@ -831,6 +831,9 @@ msgstr "在庫削除"
 msgid "Remove part"
 msgstr "パーツを削除"
 
+msgid "Requires ability: {missingAbility} — training not completed"
+msgstr ""
+
 msgid "Rework"
 msgstr "リワーク"
 

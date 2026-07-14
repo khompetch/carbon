@@ -7859,6 +7859,9 @@ msgstr "ジョブのルーティングの1つのステップであり、プロ�
 msgid "One system from quote to cash"
 msgstr "見積から現金化まで一つのシステム"
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
+
 msgid "Onshape Status"
 msgstr "Onshape ステータス"
 
@@ -9473,6 +9476,9 @@ msgstr "ワークフロー内の品質文書の承認が必要です"
 
 msgid "Required"
 msgstr "必須"
+
+msgid "Required Ability"
+msgstr ""
 
 msgid "Required Action"
 msgstr "必須アクション"

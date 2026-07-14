@@ -7859,6 +7859,9 @@ msgstr "Uma etapa na rota de um trabalho, nomeando um processo e um centro de tr
 msgid "One system from quote to cash"
 msgstr "Um sistema do orçamento ao pagamento"
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
+
 msgid "Onshape Status"
 msgstr "Status do Onshape"
 
@@ -9473,6 +9476,9 @@ msgstr "Exigir aprovação para documentos de qualidade no seu fluxo de trabalho
 
 msgid "Required"
 msgstr "Obrigatório"
+
+msgid "Required Ability"
+msgstr ""
 
 msgid "Required Action"
 msgstr "Ação Obrigatória"

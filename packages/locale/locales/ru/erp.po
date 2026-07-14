@@ -7859,6 +7859,9 @@ msgstr "Один шаг в маршрутизации задания, опред
 msgid "One system from quote to cash"
 msgstr "Одна система от предложения до оплаты"
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
+
 msgid "Onshape Status"
 msgstr "Статус Onshape"
 
@@ -9473,6 +9476,9 @@ msgstr "Требуется одобрение для документов кач
 
 msgid "Required"
 msgstr "Обязательно"
+
+msgid "Required Ability"
+msgstr ""
 
 msgid "Required Action"
 msgstr "Требуемое действие"

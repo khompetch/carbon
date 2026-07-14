@@ -7859,6 +7859,9 @@ msgstr "Une étape de l'itinéraire d'une tâche, nommant un processus et un cen
 msgid "One system from quote to cash"
 msgstr "Un système du devis à la facturation"
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
+
 msgid "Onshape Status"
 msgstr "Statut Onshape"
 
@@ -9473,6 +9476,9 @@ msgstr "Exiger une approbation pour les documents de qualité dans votre flux de
 
 msgid "Required"
 msgstr "Requis"
+
+msgid "Required Ability"
+msgstr ""
 
 msgid "Required Action"
 msgstr "Action requise"

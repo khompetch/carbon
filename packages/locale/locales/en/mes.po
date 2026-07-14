@@ -831,6 +831,9 @@ msgstr "Remove Inventory"
 msgid "Remove part"
 msgstr "Remove part"
 
+msgid "Requires ability: {missingAbility} — training not completed"
+msgstr "Requires ability: {missingAbility} — training not completed"
+
 msgid "Rework"
 msgstr "Rework"
 

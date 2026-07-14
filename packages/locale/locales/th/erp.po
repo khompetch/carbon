@@ -7859,6 +7859,9 @@ msgstr ""
 msgid "One system from quote to cash"
 msgstr ""
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
+
 msgid "Onshape Status"
 msgstr ""
 
@@ -9472,6 +9475,9 @@ msgid "Require approval for quality documents in your workflow"
 msgstr ""
 
 msgid "Required"
+msgstr ""
+
+msgid "Required Ability"
 msgstr ""
 
 msgid "Required Action"

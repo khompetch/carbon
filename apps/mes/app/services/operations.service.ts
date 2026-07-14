@@ -836,6 +836,44 @@ export async function getWorkCenter(
     .single();
 }
 
+export async function getMissingRequiredAbility(
+  client: SupabaseClient<Database>,
+  args: {
+    workCenterId: string | null | undefined;
+    employeeId: string;
+    companyId: string;
+  }
+): Promise<{ abilityId: string; abilityName: string } | null> {
+  const { workCenterId, employeeId, companyId } = args;
+  if (!workCenterId) return null;
+
+  const workCenter = await client
+    .from("workCenter")
+    .select("requiredAbilityId, ability(name)")
+    .eq("id", workCenterId)
+    .maybeSingle();
+
+  const requiredAbilityId = workCenter.data?.requiredAbilityId;
+  if (!requiredAbilityId) return null;
+
+  const employeeAbility = await client
+    .from("employeeAbility")
+    .select("id")
+    .eq("employeeId", employeeId)
+    .eq("abilityId", requiredAbilityId)
+    .eq("companyId", companyId)
+    .eq("active", true)
+    .eq("trainingCompleted", true)
+    .maybeSingle();
+
+  if (employeeAbility.data) return null;
+
+  return {
+    abilityId: requiredAbilityId,
+    abilityName: workCenter.data?.ability?.name ?? requiredAbilityId
+  };
+}
+
 export async function getWorkCentersByLocation(
   client: SupabaseClient<Database>,
   locationId: string

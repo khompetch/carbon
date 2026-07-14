@@ -7859,6 +7859,9 @@ msgstr "Jeden krok w trasie pracy, który wymienia proces i centrum pracy i nosi
 msgid "One system from quote to cash"
 msgstr "Jeden system od oferty do gotówki"
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
+
 msgid "Onshape Status"
 msgstr "Status Onshape"
 
@@ -9473,6 +9476,9 @@ msgstr "Wymagaj zatwierdzenia dla dokumentów jakości w przepływie pracy"
 
 msgid "Required"
 msgstr "Wymagane"
+
+msgid "Required Ability"
+msgstr ""
 
 msgid "Required Action"
 msgstr "Wymagane działanie"

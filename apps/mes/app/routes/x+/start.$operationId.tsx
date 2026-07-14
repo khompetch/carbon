@@ -11,6 +11,7 @@ import type { LoaderFunctionArgs } from "react-router";
 import { redirect } from "react-router";
 import { getWorkCenterWithBlockingStatus } from "~/services/maintenance.service";
 import {
+  getMissingRequiredAbility,
   getTrackedEntitiesByMakeMethodId,
   startProductionEvent
 } from "~/services/operations.service";
@@ -84,6 +85,25 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
           error(
             `Work center is blocked for maintenance (${workCenterStatus.data.blockingDispatchReadableId})`,
             "Work Center Blocked"
+          )
+        )
+      );
+    }
+
+    const missingAbility = await getMissingRequiredAbility(serviceRole, {
+      workCenterId: jobOperation.data.workCenterId,
+      employeeId: userId,
+      companyId
+    });
+
+    if (missingAbility) {
+      throw redirect(
+        path.to.operation(operationId),
+        await flash(
+          request,
+          error(
+            `You have not completed training for the required ability (${missingAbility.abilityName})`,
+            "Cannot start operation"
           )
         )
       );

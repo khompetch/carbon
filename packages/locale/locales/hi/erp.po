@@ -7859,6 +7859,9 @@ msgstr "एक काम के मार्ग में एक कदम, ए�
 msgid "One system from quote to cash"
 msgstr "उद्धरण से नकद तक एक प्रणाली"
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
+
 msgid "Onshape Status"
 msgstr "Onshape स्थिति"
 
@@ -9473,6 +9476,9 @@ msgstr "आपके वर्कफ़्लो में गुणवत्त
 
 msgid "Required"
 msgstr "आवश्यक"
+
+msgid "Required Ability"
+msgstr ""
 
 msgid "Required Action"
 msgstr "आवश्यक कार्रवाई"

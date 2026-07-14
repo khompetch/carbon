@@ -7859,6 +7859,9 @@ msgstr "Bir işin yönlendirilmesinde bir adım, bir süreci ve bir iş merkezin
 msgid "One system from quote to cash"
 msgstr "Teklif'ten nakite kadar tek bir sistem"
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
+
 msgid "Onshape Status"
 msgstr "Onshape Durumu"
 
@@ -9473,6 +9476,9 @@ msgstr "İş akışınızdaki kalite belgeleri için onay gerektirir"
 
 msgid "Required"
 msgstr "Gerekli"
+
+msgid "Required Ability"
+msgstr ""
 
 msgid "Required Action"
 msgstr "Gerekli Eylem"

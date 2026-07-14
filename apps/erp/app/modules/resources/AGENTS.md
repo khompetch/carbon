@@ -7,7 +7,7 @@ Locations, work centers, processes, abilities (skills), partners, contractors, e
 - **Location** — physical site/facility. Every inventory record, job, and employee is scoped to a location. Has address, timezone, and GPS coordinates. Company-scoped.
 - **Work Center** — production station within a location. Operations schedule onto work centers. Have capacity, rates, and active/inactive status. MUST soft-delete via `active: false`.
 - **Process** — type of work (e.g., "CNC Milling", "Welding"). Operations reference a process. Linked to work centers via `workCenterProcess`. MUST soft-delete via `active: false`.
-- **Ability** — employee skill/certification with a learning curve. Tracked per employee via `employeeAbility` with training status, shadow weeks, and completion tracking.
+- **Ability** — employee skill/certification with a learning curve. Tracked per employee via `employeeAbility` with training status, shadow weeks, and completion tracking. A work center may set `requiredAbilityId`; MES then hard-blocks operators without an `active + trainingCompleted` `employeeAbility` from starting operations there (guards in `apps/mes` `x+/start.$operationId.tsx` and `x+/event.tsx` via `getMissingRequiredAbility`). Spec: `.ai/specs/2026-07-14-work-center-required-ability.md`.
 - **Partner** — external supplier location with ability mappings for outsourced work.
 - **Contractor** — supplier contact working as contract labor, with hours-per-week and ability assignments via `contractorAbility`.
 - **Maintenance Dispatch** — reactive or scheduled work order for equipment. Statuses: Open → Assigned → In Progress → Completed / Cancelled. Tracks time events, consumed parts, and affected work centers.

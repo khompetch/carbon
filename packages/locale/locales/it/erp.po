@@ -7859,6 +7859,9 @@ msgstr "Un passaggio nel routing di un lavoro, che denomina un processo e un cen
 msgid "One system from quote to cash"
 msgstr "Un sistema dalla quotazione al pagamento"
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
+
 msgid "Onshape Status"
 msgstr "Stato Onshape"
 
@@ -9473,6 +9476,9 @@ msgstr "Richiedi approvazione per i documenti di qualità nel tuo flusso di lavo
 
 msgid "Required"
 msgstr "Obbligatorio"
+
+msgid "Required Ability"
+msgstr ""
 
 msgid "Required Action"
 msgstr "Azione Richiesta"

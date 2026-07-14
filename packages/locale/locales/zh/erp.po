@@ -7859,6 +7859,9 @@ msgstr "工作路线中的一个步骤，命名流程和工作中心，并携带
 msgid "One system from quote to cash"
 msgstr "从报价到收款的一个系统"
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
+
 msgid "Onshape Status"
 msgstr "Onshape 状态"
 
@@ -9473,6 +9476,9 @@ msgstr "在您的工作流程中需要质量文件的批准"
 
 msgid "Required"
 msgstr "必需"
+
+msgid "Required Ability"
+msgstr ""
 
 msgid "Required Action"
 msgstr "必需操作"
