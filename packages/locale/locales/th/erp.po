@@ -51,6 +51,10 @@ msgstr ""
 msgid "{0} deleted successfully"
 msgstr ""
 
+#. placeholder {0}: task.autoCheck.count
+msgid "{0} draft journal entries"
+msgstr ""
+
 #. placeholder {0}: mappings.length
 msgid "{0} lines to map"
 msgstr ""
@@ -69,6 +73,10 @@ msgstr ""
 
 #. placeholder {0}: lotEntities.length - inspected
 msgid "{0} un-sampled entities will be released to Available. Sampled passes stay Available and sampled failures stay Rejected."
+msgstr ""
+
+#. placeholder {0}: task.autoCheck.count
+msgid "{0} unposted documents"
 msgstr ""
 
 #. placeholder {0}: file.name
@@ -141,6 +149,15 @@ msgid "0-4 weeks"
 msgstr ""
 
 msgid "1 day"
+msgstr ""
+
+msgid "1 draft journal entry"
+msgstr ""
+
+msgid "1 unposted document"
+msgstr ""
+
+msgid "12 monthly periods"
 msgstr ""
 
 msgid "13+ weeks"
@@ -353,6 +370,9 @@ msgstr ""
 msgid "About"
 msgstr ""
 
+msgid "Absorption"
+msgstr ""
+
 msgid "Academy"
 msgstr ""
 
@@ -425,10 +445,16 @@ msgstr ""
 msgid "Accounting period"
 msgstr ""
 
+msgid "Accounting Periods"
+msgstr ""
+
 msgid "Accounting: GL, AR, AP, and month-end close"
 msgstr ""
 
 msgid "Accounts"
+msgstr ""
+
+msgid "Accounts for recording differences between actual and standard costs"
 msgstr ""
 
 msgid "Accounts Payable"
@@ -441,12 +467,6 @@ msgid "Accounts Receivable"
 msgstr ""
 
 msgid "Accounts receivable for amounts owed by customers"
-msgstr ""
-
-msgid "Accrual account debited at shipment to recognize the receivable before the sales invoice posts; cleared when the invoice posts."
-msgstr ""
-
-msgid "Accrual for inventory shipped but not yet invoiced to customer"
 msgstr ""
 
 msgid "Accumulated Depreciation"
@@ -839,6 +859,10 @@ msgid "Anchors the Plan timeline to real dates. Leave blank for a relative, week
 msgstr ""
 
 msgid "AND"
+msgstr ""
+
+#. placeholder {0}: count - documents.length
+msgid "And {0} more — resolve these to see the rest."
 msgstr ""
 
 msgid "and {remaining} more"
@@ -1411,6 +1435,9 @@ msgstr ""
 msgid "Asset Account"
 msgstr ""
 
+msgid "Asset account for advance payments made to suppliers before goods or services are received"
+msgstr ""
+
 msgid "Asset Acquisition Cost"
 msgstr ""
 
@@ -1860,6 +1887,9 @@ msgstr ""
 msgid "Called a method in Carbon — the components plus operations that produce a part."
 msgstr ""
 
+msgid "Can't delete this period"
+msgstr ""
+
 msgid "Can't disable the only active break. Add another break or toggle the override's Active instead."
 msgstr ""
 
@@ -1909,6 +1939,9 @@ msgid "Cannot add steps to unsaved operation"
 msgstr ""
 
 msgid "Cannot add tools to unsaved operation"
+msgstr ""
+
+msgid "Cannot close yet"
 msgstr ""
 
 msgid "Cannot convert RFQ to quote"
@@ -2058,6 +2091,9 @@ msgstr ""
 msgid "Chat"
 msgstr ""
 
+msgid "Check the item ledger for any items with a negative on-hand quantity as of period end — usually a missing receipt or an out-of-order posting that distorts inventory value and cost of goods sold. Mark it done once reviewed, or skip with a reason."
+msgstr ""
+
 msgid "Check your email"
 msgstr "ตรวจสอบอีเมลของคุณ"
 
@@ -2137,7 +2173,16 @@ msgstr ""
 msgid "Close"
 msgstr "ปิด"
 
+msgid "Close {periodLabel}"
+msgstr ""
+
 msgid "Close Date"
+msgstr ""
+
+msgid "Close Period"
+msgstr ""
+
+msgid "Close Status"
 msgstr ""
 
 msgid "Closed"
@@ -2305,9 +2350,6 @@ msgstr ""
 msgid "Configure default accounts for inventory management"
 msgstr ""
 
-msgid "Configure default accounts for purchasing and COGS"
-msgstr ""
-
 msgid "Configure default accounts for vendor and supplier transactions"
 msgstr ""
 
@@ -2396,13 +2438,16 @@ msgstr ""
 msgid "Confirm Password"
 msgstr "ยืนยันรหัสผ่าน"
 
+msgid "Confirm Skip"
+msgstr ""
+
 msgid "Confirmed incoming stock — purchase & production orders (bars above zero)."
 msgstr ""
 
 msgid "Confirmed outgoing stock — sales orders & job materials (bars below zero)."
 msgstr ""
 
-msgid "Confirming locks the counted quantities. Review the warnings below, then post the count to apply the adjustments."
+msgid "Confirms every posted journal entry in the period has equal debits and credits. If any entry is out of balance the trial balance won't tie out, so it must be corrected before the period can close."
 msgstr ""
 
 msgid "Connect Carbon to your accounting, project management, and CAD tools and much more."
@@ -2687,6 +2732,12 @@ msgstr ""
 msgid "Correct Answers"
 msgstr ""
 
+msgid "Correction"
+msgstr ""
+
+msgid "Corrections"
+msgstr ""
+
 msgid "Corrective action"
 msgstr ""
 
@@ -2756,6 +2807,9 @@ msgid "Couldn't reschedule the job. Please try again."
 msgstr ""
 
 msgid "Count"
+msgstr ""
+
+msgid "Count History"
 msgstr ""
 
 msgid "Count ID"
@@ -2976,6 +3030,9 @@ msgstr ""
 msgid "Created work center"
 msgstr ""
 
+msgid "Creates the 12 monthly periods for a fiscal year. Periods that already exist are kept."
+msgstr ""
+
 msgid "Creating part..."
 msgstr ""
 
@@ -2989,6 +3046,15 @@ msgid "Credit Account"
 msgstr ""
 
 msgid "Credit account when labor/machine time is absorbed into WIP"
+msgstr ""
+
+msgid "Credit account when overhead is absorbed into WIP"
+msgstr ""
+
+msgid "Credit accounts used when manufacturing costs are absorbed into WIP"
+msgstr ""
+
+msgid "Credit Memo"
 msgstr ""
 
 msgid "Credits & Debits"
@@ -3337,6 +3403,9 @@ msgstr ""
 msgid "Debit Account"
 msgstr ""
 
+msgid "Debit Memo"
+msgstr ""
+
 msgid "Decide what an operator sees if they try to issue a batch or serial that's already expired."
 msgstr ""
 
@@ -3370,6 +3439,9 @@ msgstr ""
 msgid "Default accounts for tax-related transactions"
 msgstr ""
 
+msgid "Default accounts for the cost of goods sold and indirect purchases"
+msgstr ""
+
 msgid "Default Approver"
 msgstr ""
 
@@ -3383,9 +3455,6 @@ msgid "Default cash account for transactions in your base currency."
 msgstr ""
 
 msgid "Default CC Recipients"
-msgstr ""
-
-msgid "Default GL account that holds inventory value; debited on receipt, credited on shipment/issue."
 msgstr ""
 
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
@@ -3464,6 +3533,9 @@ msgid "Delete"
 msgstr "ลบ"
 
 msgid "Delete {name}"
+msgstr ""
+
+msgid "Delete {periodLabel}"
 msgstr ""
 
 msgid "Delete {storageUnitName}"
@@ -3578,6 +3650,9 @@ msgid "Delete Payment"
 msgstr ""
 
 msgid "Delete Payment Term"
+msgstr ""
+
+msgid "Delete Period"
 msgstr ""
 
 msgid "Delete Picking List"
@@ -3785,6 +3860,9 @@ msgstr ""
 msgid "Depreciation reversal when a fixed asset is disposed"
 msgstr ""
 
+msgid "Depreciation runs ending in this period that are still Draft should be posted so the period reflects the correct depreciation expense and accumulated depreciation. Skip with a reason if depreciation doesn't apply this period."
+msgstr ""
+
 msgid "Depreciation Start Date"
 msgstr ""
 
@@ -3977,6 +4055,9 @@ msgid "Draft"
 msgstr ""
 
 msgid "Draft is editable; Active is in use and requires a new version to change; Archived is retired."
+msgstr ""
+
+msgid "Draft Journal Entries"
 msgstr ""
 
 msgid "Drag & drop files, or click to browse"
@@ -4706,6 +4787,9 @@ msgstr ""
 msgid "Every in-scope test passes in your configured system, with your data."
 msgstr ""
 
+msgid "Every required task must be Done or Skipped before the period can be closed."
+msgstr ""
+
 msgid "Every row was imported successfully."
 msgstr ""
 
@@ -5268,6 +5352,12 @@ msgstr ""
 msgid "Finished goods"
 msgstr ""
 
+msgid "Finished Goods"
+msgstr ""
+
+msgid "Finished Goods (default)"
+msgstr ""
+
 msgid "finishes"
 msgstr ""
 
@@ -5281,6 +5371,9 @@ msgid "First Operation"
 msgstr ""
 
 msgid "First-year additional deduction taken before the regular MACRS schedule begins."
+msgstr ""
+
+msgid "Fiscal year"
 msgstr ""
 
 msgid "Fiscal Year"
@@ -5308,6 +5401,9 @@ msgid "Fixed Assets"
 msgstr ""
 
 msgid "Fixed cost amortization variance when batch size differs from standard"
+msgstr ""
+
+msgid "Fixed once accounting periods have been posted to or closed. Delete all open periods to change it."
 msgstr ""
 
 msgid "Fixed Reorder"
@@ -5442,10 +5538,19 @@ msgstr ""
 msgid "General Ledger and month-end close"
 msgstr ""
 
+msgid "Generate"
+msgstr ""
+
 msgid "Generate a new 4-digit PIN. Share it with the operator so they can pin in at MES terminals."
 msgstr ""
 
 msgid "Generate and send customer invoices"
+msgstr ""
+
+msgid "Generate fiscal year"
+msgstr ""
+
+msgid "Generate Fiscal Year"
 msgstr ""
 
 msgid "Generate material IDs and descriptions based on the properties of the material."
@@ -5514,6 +5619,9 @@ msgstr ""
 msgid "GL account credited when labor or machine cost is absorbed into a production job."
 msgstr ""
 
+msgid "GL account credited when manufacturing overhead is absorbed into a production job."
+msgstr ""
+
 msgid "GL account debited to clear accumulated depreciation when an asset is disposed."
 msgstr ""
 
@@ -5563,6 +5671,12 @@ msgid "GL account that captures the difference between standard cost and actual 
 msgstr ""
 
 msgid "GL account that holds the value of jobs in production until they post to finished goods."
+msgstr ""
+
+msgid "GL account that holds the value of manufactured goods (Make items); debited on job completion, credited on shipment."
+msgstr ""
+
+msgid "GL account that holds the value of purchased stock and components (Buy items); debited on receipt, credited on issue/shipment."
 msgstr ""
 
 msgid "GL account used when a customer pays before an invoice is issued; cleared when the invoice posts."
@@ -6121,6 +6235,9 @@ msgstr ""
 msgid "Intercompany"
 msgstr ""
 
+msgid "Intercompany transactions involving this company that are still Unmatched should be matched and eliminated, so consolidated results don't double-count activity between entities."
+msgstr ""
+
 msgid "Interest"
 msgstr ""
 
@@ -6149,9 +6266,6 @@ msgid "inventory"
 msgstr ""
 
 msgid "Inventory"
-msgstr ""
-
-msgid "Inventory (default)"
 msgstr ""
 
 msgid "Inventory accuracy"
@@ -6188,12 +6302,6 @@ msgid "Inventory Job Notifications"
 msgstr ""
 
 msgid "Inventory Qty"
-msgstr ""
-
-msgid "Inventory Shipped Not Invoiced"
-msgstr ""
-
-msgid "Inventory Shipped Not Invoiced (default)"
 msgstr ""
 
 msgid "Inventory Tracking"
@@ -6438,6 +6546,12 @@ msgid "Journal"
 msgstr ""
 
 msgid "Journal Entries"
+msgstr ""
+
+msgid "Journal entries dated in this period that are still Draft must be posted, or re-dated into a later open period. Draft entries aren't part of the ledger, so their debits and credits would be missing from the close."
+msgstr ""
+
+msgid "Journal Entry"
 msgstr ""
 
 msgid "Kanban"
@@ -6723,6 +6837,15 @@ msgstr ""
 msgid "Lock"
 msgstr ""
 
+msgid "Lock Period"
+msgstr ""
+
+msgid "Locked"
+msgstr ""
+
+msgid "Locking makes the period read-only for operational documents (receipts, shipments, invoices) while still allowing accounting adjustments like depreciation and disposals. A period must be locked before it can be closed."
+msgstr ""
+
 msgid "Log In"
 msgstr ""
 
@@ -6951,6 +7074,9 @@ msgid "Mark Dark Mode"
 msgstr ""
 
 msgid "Mark done"
+msgstr ""
+
+msgid "Mark Done"
 msgstr ""
 
 msgid "Mark Light Mode"
@@ -8089,6 +8215,12 @@ msgstr ""
 msgid "On-hand inventory remains"
 msgstr ""
 
+msgid "On-hand value of manufactured goods (Make items)"
+msgstr ""
+
+msgid "On-hand value of purchased stock and components (Buy items)"
+msgstr ""
+
 msgid "On-time delivery"
 msgstr ""
 
@@ -8108,6 +8240,9 @@ msgid "Only Draft procedures are editable. Create a new version to change an Act
 msgstr ""
 
 msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
+
+msgid "Only empty, open periods can be deleted."
 msgstr ""
 
 msgid "Onshape Status"
@@ -8306,6 +8441,12 @@ msgstr ""
 msgid "Origin"
 msgstr ""
 
+msgid "Original"
+msgstr ""
+
+msgid "Original Count"
+msgstr ""
+
 msgid "Other Income account for FX gains when a payment settles a foreign-currency invoice at a more favorable rate"
 msgstr ""
 
@@ -8334,6 +8475,12 @@ msgid "Over-applied by"
 msgstr ""
 
 msgid "Overdue"
+msgstr ""
+
+msgid "Overhead Absorption"
+msgstr ""
+
+msgid "Overhead Absorption (default)"
 msgstr ""
 
 msgid "Overhead Rate"
@@ -8793,6 +8940,15 @@ msgstr ""
 msgid "Posted By"
 msgstr ""
 
+msgid "Posted once, no rectifications."
+msgstr ""
+
+msgid "Posted once, rectified {rectifications} times."
+msgstr ""
+
+msgid "Posted once, rectified 1 time."
+msgstr ""
+
 msgid "Posting"
 msgstr ""
 
@@ -8881,9 +9037,6 @@ msgid "Pricing Rules"
 msgstr ""
 
 msgid "Pricing Trace"
-msgstr ""
-
-msgid "Primary account for on-hand inventory valuation"
 msgstr ""
 
 msgid "Primary cash account for bank transactions"
@@ -9175,9 +9328,6 @@ msgstr ""
 msgid "Purchasing"
 msgstr ""
 
-msgid "Purchasing & Cost of Goods"
-msgstr ""
-
 msgid "Purchasing & Inventory"
 msgstr ""
 
@@ -9363,6 +9513,12 @@ msgstr ""
 msgid "Rate Limit"
 msgstr ""
 
+msgid "Raw Materials"
+msgstr ""
+
+msgid "Raw Materials (default)"
+msgstr ""
+
 msgid "Re-keying between quoting, the floor, and finance"
 msgstr ""
 
@@ -9402,6 +9558,9 @@ msgstr ""
 msgid "Reason for declining (Optional)"
 msgstr ""
 
+msgid "Reason for skipping (required)"
+msgstr ""
+
 msgid "Reasons"
 msgstr ""
 
@@ -9436,6 +9595,9 @@ msgid "Receipt Requested Date"
 msgstr ""
 
 msgid "Receipts"
+msgstr ""
+
+msgid "Receipts, shipments, sales invoices, purchase invoices, payments, and credit/debit memos that are still Draft or Pending must be posted or voided — both documents dated in this period and undated documents that would receive a date in it when posted. Until they post, their amounts aren't in the general ledger, so the period would be understated."
 msgstr ""
 
 msgid "Receivables"
@@ -9527,6 +9689,12 @@ msgid "Records"
 msgstr ""
 
 msgid "Recovery Period"
+msgstr ""
+
+msgid "Rectification {rectifyNumber}"
+msgstr ""
+
+msgid "Rectify"
 msgstr ""
 
 msgid "Redirecting to verification page..."
@@ -9857,6 +10025,12 @@ msgid "Reverse Charge Sales Tax (default)"
 msgstr ""
 
 msgid "Reverse the related journal entries"
+msgstr ""
+
+msgid "Review the period's balance sheet and income statement and confirm the figures look right. This is a manual sign-off — mark it done once you have reviewed them."
+msgstr ""
+
+msgid "Review the warnings below, then post the count to apply the adjustments."
 msgstr ""
 
 msgid "Revision"
@@ -10861,6 +11035,9 @@ msgstr ""
 msgid "Sizes"
 msgstr ""
 
+msgid "Skip"
+msgstr ""
+
 msgid "Skip Existing"
 msgstr ""
 
@@ -10985,6 +11162,9 @@ msgid "Standard"
 msgstr ""
 
 msgid "Standard cloud Carbon fits how your company runs"
+msgstr ""
+
+msgid "Standard Cost Variances"
 msgstr ""
 
 msgid "Standard factor"
@@ -11310,6 +11490,9 @@ msgstr ""
 msgid "Supplier Payment Discounts (default)"
 msgstr ""
 
+msgid "Supplier Prepayments"
+msgstr ""
+
 msgid "supplier process"
 msgstr ""
 
@@ -11473,6 +11656,9 @@ msgstr ""
 msgid "Target Version"
 msgstr ""
 
+msgid "Task"
+msgstr ""
+
 msgid "tasks"
 msgstr ""
 
@@ -11613,6 +11799,9 @@ msgid "The book of all posted journal lines, summed by account — written only 
 msgstr ""
 
 msgid "The buckets you track costs against"
+msgstr ""
+
+msgid "The capital assets you own and depreciate"
 msgstr ""
 
 msgid "The Carbon user responsible for this customer relationship; emails and reminders about this customer route to them."
@@ -11930,6 +12119,9 @@ msgstr ""
 msgid "The month your tax year begins; may differ from the fiscal year in some jurisdictions."
 msgstr ""
 
+msgid "The monthly periods you post into and close"
+msgstr ""
+
 msgid "The most likely failure mode the requester suspects; the technician confirms or replaces this on close-out, and the difference between suspected and actual feeds reliability reports."
 msgstr ""
 
@@ -12227,6 +12419,9 @@ msgstr ""
 msgid "These custom fields will only be available for entities with the same tags"
 msgstr ""
 
+msgid "These documents haven't posted to the general ledger, so their amounts are missing from this period. Post or void each one — an undated document receives the posting day's date when it posts."
+msgstr ""
+
 msgid "These email addresses will be automatically CC'd on all emails sent to suppliers (quotes, purchase orders, etc.)."
 msgstr ""
 
@@ -12234,6 +12429,9 @@ msgid "These email addresses will be automatically CC'd on all quote emails sent
 msgstr ""
 
 msgid "These jobs have operations assigned to this work center:"
+msgstr ""
+
+msgid "These journal entries are still Draft, so their debits and credits aren't in the ledger for this period. Post each one, or re-date it into a later open period."
 msgstr ""
 
 msgid "This completes the Discovery step."
@@ -12306,6 +12504,9 @@ msgid "This part is obsolete (No Stock)."
 msgstr ""
 
 msgid "This part is superseded and set to Stock Only — it's replenished to its spares reserve floor, independent of demand."
+msgstr ""
+
+msgid "This period has no journal entries posted to it and can be permanently deleted. This cannot be undone."
 msgstr ""
 
 msgid "This Quarter"
@@ -12774,6 +12975,9 @@ msgstr ""
 msgid "Unlink job from sales order?"
 msgstr ""
 
+msgid "Unlock"
+msgstr ""
+
 msgid "Unmapped Extracted Lines"
 msgstr ""
 
@@ -12782,6 +12986,9 @@ msgstr ""
 
 #. placeholder {0}: pickedLots[0].trackedEntity.readableId
 msgid "Unpick {0}"
+msgstr ""
+
+msgid "Unposted Documents"
 msgstr ""
 
 msgid "Unreceived POs"
@@ -13189,6 +13396,9 @@ msgstr ""
 msgid "View Payment"
 msgstr ""
 
+msgid "View Period"
+msgstr ""
+
 msgid "View permissions"
 msgstr ""
 
@@ -13458,6 +13668,9 @@ msgstr ""
 msgid "What this shipment is fulfilling — a sales order, an outbound transfer, an RMA return, or a manual shipment."
 msgstr ""
 
+msgid "What this task means"
+msgstr ""
+
 msgid "What this time entry counts as — Labor (operator time), Machine (run time), or Setup (changeover time); each rolls up under a different rate."
 msgstr ""
 
@@ -13570,6 +13783,9 @@ msgid "When this specific lot/serial expires; drives FEFO picking and the shelf-
 msgstr ""
 
 msgid "When you committed to deliver; planning treats this as the demand-due-date for fulfillment."
+msgstr ""
+
+msgid "When your fiscal and tax years start"
 msgstr ""
 
 msgid "Where an operation runs; carries labor and quoting rates, with overhead the difference between them."
@@ -13887,9 +14103,6 @@ msgid "Your data is accessible and reasonably clean"
 msgstr ""
 
 msgid "Your Email"
-msgstr ""
-
-msgid "Your fiscal year and its accounting periods"
 msgstr ""
 
 msgid "Your general-ledger accounts and their structure"

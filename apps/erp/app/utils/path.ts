@@ -118,6 +118,8 @@ export const path = {
         generatePath(
           `${api}/mrp${locationId ? `?location=${locationId}` : ""}`
         ),
+      modelConvertStatus: (modelUploadId: string) =>
+        generatePath(`${api}/model/convert-status/${modelUploadId}`),
       modelUpload: `${api}/model/upload`,
       onShapeBom: (documentId: string, versionId: string, elementId: string) =>
         generatePath(
@@ -472,6 +474,12 @@ export const path = {
     accounting: `${x}/accounting`,
     accountingDefaults: `${x}/accounting/defaults`,
     accountingJournals: `${x}/accounting/journals`,
+    accountingPeriods: `${x}/accounting/periods`,
+    accountingPeriodsGenerate: `${x}/accounting/periods/generate`,
+    accountingPeriodClose: (id: string) =>
+      generatePath(`${x}/accounting/periods/${id}/close`),
+    accountingPeriodDelete: (id: string) =>
+      generatePath(`${x}/accounting/periods/${id}/delete`),
     accountingSettings: `${x}/settings/accounting`,
     journalEntry: (id: string) => generatePath(`${x}/journal-entry/${id}`),
     journalEntryDetails: (id: string) =>
@@ -528,8 +536,12 @@ export const path = {
     assemblyInstructions: `${x}/production/assemblies`,
     assemblyInstructionStatus: (id: string) =>
       generatePath(`${x}/assembly/${id}/status`),
+    assemblyJobsCancel: (id: string) =>
+      generatePath(`${x}/assembly/${id}/jobs/cancel`),
     assemblyModelConvert: (id: string) =>
       generatePath(`${x}/assembly/${id}/model/convert`),
+    assemblyModelInvalidate: (id: string) =>
+      generatePath(`${x}/assembly/${id}/model/invalidate`),
     assemblyPlanRerun: (id: string) =>
       generatePath(`${x}/assembly/${id}/plan/rerun`),
     deleteAssemblyInstruction: (id: string) =>
@@ -543,6 +555,8 @@ export const path = {
       generatePath(`${x}/assembly/${id}/steps/motion/${stepId}`),
     assemblyInstructionStepComponents: (id: string, stepId: string) =>
       generatePath(`${x}/assembly/${id}/steps/components/${stepId}`),
+    assemblyInstructionStepComponentsReassign: (id: string) =>
+      generatePath(`${x}/assembly/${id}/steps/components/reassign`),
     deleteAssemblyInstructionStep: (id: string, stepId: string) =>
       generatePath(`${x}/assembly/${id}/steps/delete/${stepId}`),
     assemblyInstructionStepOrder: (id: string) =>
@@ -1670,6 +1684,8 @@ export const path = {
       generatePath(`${x}/inventory-count/${id}/reopen`),
     inventoryCountPost: (id: string) =>
       generatePath(`${x}/inventory-count/${id}/post`),
+    inventoryCountRectify: (id: string) =>
+      generatePath(`${x}/inventory-count/${id}/rectify`),
     inventoryCountDelete: (id: string) =>
       generatePath(`${x}/inventory-count/${id}/delete`),
     inventoryCountLineUpdate: `${x}/inventory-count/lines/update`,

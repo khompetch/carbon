@@ -51,6 +51,10 @@ msgstr "{0} gün"
 msgid "{0} deleted successfully"
 msgstr "{0} başarıyla silindi"
 
+#. placeholder {0}: task.autoCheck.count
+msgid "{0} draft journal entries"
+msgstr "{0} taslak muhasebe kaydı"
+
 #. placeholder {0}: mappings.length
 msgid "{0} lines to map"
 msgstr "{0} satır eşlenecek"
@@ -70,6 +74,10 @@ msgstr "{0} bakiyesi olan tedarikçi"
 #. placeholder {0}: lotEntities.length - inspected
 msgid "{0} un-sampled entities will be released to Available. Sampled passes stay Available and sampled failures stay Rejected."
 msgstr "{0} örneklenmemiş varlıklar Kullanılabilir'e bırakılacaktır. Örneklenen başarılılar Kullanılabilir ve örneklenen başarısızlar Reddedilmiş olarak kalır."
+
+#. placeholder {0}: task.autoCheck.count
+msgid "{0} unposted documents"
+msgstr "{0} deftere geçmemiş belge"
 
 #. placeholder {0}: file.name
 msgid "{0} uploaded successfully"
@@ -142,6 +150,15 @@ msgstr "0-4 hafta"
 
 msgid "1 day"
 msgstr "1 gün"
+
+msgid "1 draft journal entry"
+msgstr "1 taslak muhasebe kaydı"
+
+msgid "1 unposted document"
+msgstr "1 deftere geçmemiş belge"
+
+msgid "12 monthly periods"
+msgstr "12 aylık dönem"
 
 msgid "13+ weeks"
 msgstr "13+ hafta"
@@ -353,6 +370,9 @@ msgstr ""
 msgid "About"
 msgstr "Hakkında"
 
+msgid "Absorption"
+msgstr "Emilim"
+
 msgid "Academy"
 msgstr "Akademi"
 
@@ -425,11 +445,17 @@ msgstr "Muhasebe etkinleştirilmiş"
 msgid "Accounting period"
 msgstr "Muhasebe dönemi"
 
+msgid "Accounting Periods"
+msgstr "Muhasebe Dönemleri"
+
 msgid "Accounting: GL, AR, AP, and month-end close"
 msgstr "Muhasebe: GL, AR, AP ve ay sonu kapanışı"
 
 msgid "Accounts"
 msgstr "Hesaplar"
+
+msgid "Accounts for recording differences between actual and standard costs"
+msgstr "Fiili ve standart maliyetler arasındaki farklılıkları kaydetmek için kullanılan hesaplar"
 
 msgid "Accounts Payable"
 msgstr "Ödenecek hesaplar"
@@ -442,12 +468,6 @@ msgstr "Alacak hesapları"
 
 msgid "Accounts receivable for amounts owed by customers"
 msgstr "Müşteriler tarafından borçlu olunan tutarlar için alacak hesapları."
-
-msgid "Accrual account debited at shipment to recognize the receivable before the sales invoice posts; cleared when the invoice posts."
-msgstr "Satış faturası deftere geçmeden önce alacağı tanımak için sevkiyat sırasında borçlandırılan bir tahakkuk hesabı; fatura deftere geçildiğinde temizlenir."
-
-msgid "Accrual for inventory shipped but not yet invoiced to customer"
-msgstr "Sevk edilmiş ancak müşteriye faturası kesilmemiş envanter için tahakkuk."
 
 msgid "Accumulated Depreciation"
 msgstr "Birikmiş amortisman"
@@ -840,6 +860,10 @@ msgstr "Plan zaman çizelgesini gerçek tarihlere sabitleyin. Göreceli, hafta n
 
 msgid "AND"
 msgstr "VE"
+
+#. placeholder {0}: count - documents.length
+msgid "And {0} more — resolve these to see the rest."
+msgstr "Ve {0} tane daha — bunları çözmek için geri kalanını görmek için."
 
 msgid "and {remaining} more"
 msgstr "ve daha fazla"
@@ -1334,10 +1358,10 @@ msgstr "Bu işi yayınlamak istediğinizden emin misiniz? Atölye zemininde kull
 
 #. placeholder {0}: supplierName(deleteTarget.supplierId)
 msgid "Are you sure you want to remove {0} as a supplier for this item? This cannot be undone."
-msgstr ""
+msgstr "Bu öğe için {0} tedarikçi olarak kaldırmak istediğinizden emin misiniz? Bu işlem geri alınamaz."
 
 msgid "Are you sure you want to remove {supplierName} as a supplier for this item? This cannot be undone."
-msgstr ""
+msgstr "Bu öğe için {supplierName} tedarikçisini kaldırmak istediğinizden emin misiniz? Bu işlem geri alınamaz."
 
 msgid "Are you sure you want to remove this employee from the ability?"
 msgstr ""
@@ -1410,6 +1434,9 @@ msgstr "Varlık"
 
 msgid "Asset Account"
 msgstr "Varlık hesabı"
+
+msgid "Asset account for advance payments made to suppliers before goods or services are received"
+msgstr "Mallar veya hizmetler alınmadan önce tedarikçilere yapılan ön ödemeler için varlık hesabı"
 
 msgid "Asset Acquisition Cost"
 msgstr "Varlık satın alma maliyeti"
@@ -1860,6 +1887,9 @@ msgstr "Kalibrasyonlar"
 msgid "Called a method in Carbon — the components plus operations that produce a part."
 msgstr "Carbon'da çağrılan bir yöntem — bir parça üreten bileşenler ve işlemler."
 
+msgid "Can't delete this period"
+msgstr "Bu dönem silinemez"
+
 msgid "Can't disable the only active break. Add another break or toggle the override's Active instead."
 msgstr "Yalnızca aktif olan aralığı devre dışı bırakamazsınız. Başka bir aralık ekleyin veya geçersiz kılmanın Aktif özelliğini değiştirin."
 
@@ -1910,6 +1940,9 @@ msgstr "Kaydedilmemiş işleme adım eklenemez"
 
 msgid "Cannot add tools to unsaved operation"
 msgstr "Kaydedilmemiş işleme araç eklenemez"
+
+msgid "Cannot close yet"
+msgstr "Henüz kapatılamaz"
 
 msgid "Cannot convert RFQ to quote"
 msgstr "RFQ teklifine dönüştürülemiyor"
@@ -2058,6 +2091,9 @@ msgstr "Hesap Planı"
 msgid "Chat"
 msgstr "Sohbet"
 
+msgid "Check the item ledger for any items with a negative on-hand quantity as of period end — usually a missing receipt or an out-of-order posting that distorts inventory value and cost of goods sold. Mark it done once reviewed, or skip with a reason."
+msgstr "Dönem sonunda negatif el altında miktarı olan herhangi bir madde için madde defterini kontrol edin — genellikle eksik bir makbuz veya envanter değerini ve satılan mal maliyetini bozacak düzensiz bir posting vardır. Gözden geçirildikten sonra tamamlandı olarak işaretleyin veya nedenli olarak atlayın."
+
 msgid "Check your email"
 msgstr "E-postanızı kontrol edin"
 
@@ -2137,8 +2173,17 @@ msgstr "Saat giriş yapıldı: {0}"
 msgid "Close"
 msgstr "Kapat"
 
+msgid "Close {periodLabel}"
+msgstr "{periodLabel} dönemini kapat"
+
 msgid "Close Date"
 msgstr "Kapatma Tarihi"
+
+msgid "Close Period"
+msgstr "Dönemi Kapat"
+
+msgid "Close Status"
+msgstr "Kapanış Durumu"
 
 msgid "Closed"
 msgstr "Kapalı"
@@ -2305,9 +2350,6 @@ msgstr "Nakit ve banka işlemleri için varsayılan hesapları yapılandırın"
 msgid "Configure default accounts for inventory management"
 msgstr "Envanter yönetimi için varsayılan hesapları yapılandırın"
 
-msgid "Configure default accounts for purchasing and COGS"
-msgstr "Satın alma ve COGS için varsayılan hesapları yapılandırın"
-
 msgid "Configure default accounts for vendor and supplier transactions"
 msgstr "Satıcı ve tedarikçi işlemleri için varsayılan hesapları yapılandırın"
 
@@ -2396,14 +2438,17 @@ msgstr "Eşleştirmeyi Onayla"
 msgid "Confirm Password"
 msgstr "Şifreyi Onayla"
 
+msgid "Confirm Skip"
+msgstr "Atlamayı Onayla"
+
 msgid "Confirmed incoming stock — purchase & production orders (bars above zero)."
 msgstr "Onaylanan gelen stok — satın alma ve üretim siparişleri (sıfırın üzerindeki çubuklar)."
 
 msgid "Confirmed outgoing stock — sales orders & job materials (bars below zero)."
 msgstr "Onaylanan giden stok — satış siparişleri ve iş malzemeleri (sıfırın altındaki çubuklar)."
 
-msgid "Confirming locks the counted quantities. Review the warnings below, then post the count to apply the adjustments."
-msgstr "Sayıyı onaylamak, sayılan miktarları kilitler. Aşağıdaki uyarıları gözden geçirin, ardından ayarlamaları uygulamak için sayıyı gönderin."
+msgid "Confirms every posted journal entry in the period has equal debits and credits. If any entry is out of balance the trial balance won't tie out, so it must be corrected before the period can close."
+msgstr "Dönem içinde deftere geçen her muhasebe kaydının eşit borç ve alacak tutarlarına sahip olduğunu doğrular. Herhangi bir kayıt dengeli değilse, deneme dengesi uyuşmayacak, bu nedenle dönem kapatılmadan önce düzeltilmesi gerekir."
 
 msgid "Connect Carbon to your accounting, project management, and CAD tools and much more."
 msgstr "Carbon'ı muhasebe, proje yönetimi ve CAD araçlarınızla ve çok daha fazlasıyla bağlayın."
@@ -2687,6 +2732,12 @@ msgstr "Doğru Cevap"
 msgid "Correct Answers"
 msgstr "Doğru Cevaplar"
 
+msgid "Correction"
+msgstr "Düzeltme"
+
+msgid "Corrections"
+msgstr "Düzeltmeler"
+
 msgid "Corrective action"
 msgstr "Düzeltici Eylem"
 
@@ -2757,6 +2808,9 @@ msgstr "İş yeniden planlanamadı. Lütfen tekrar deneyin."
 
 msgid "Count"
 msgstr "Adet"
+
+msgid "Count History"
+msgstr "Sayım Geçmişi"
 
 msgid "Count ID"
 msgstr "Sayım Kimliği"
@@ -2976,6 +3030,9 @@ msgstr "Webhook başarıyla oluşturuldu"
 msgid "Created work center"
 msgstr "İş merkezi oluşturuldu"
 
+msgid "Creates the 12 monthly periods for a fiscal year. Periods that already exist are kept."
+msgstr "Mali yıl için 12 aylık dönem oluşturur. Zaten mevcut olan dönemler korunur."
+
 msgid "Creating part..."
 msgstr "Parça oluşturuluyor..."
 
@@ -2990,6 +3047,15 @@ msgstr "Kredi Hesabı"
 
 msgid "Credit account when labor/machine time is absorbed into WIP"
 msgstr "İşçilik/makine zamanı WIP'de emildiğinde kredi hesabı"
+
+msgid "Credit account when overhead is absorbed into WIP"
+msgstr "Genel giderler devam eden işlere emildiğinde kredi hesabı"
+
+msgid "Credit accounts used when manufacturing costs are absorbed into WIP"
+msgstr "Üretim maliyetleri devam eden işlere emildiğinde kullanılan kredi hesapları"
+
+msgid "Credit Memo"
+msgstr "Alacak Notu"
 
 msgid "Credits & Debits"
 msgstr "Krediler ve Borçlar"
@@ -3337,6 +3403,9 @@ msgstr "Borç"
 msgid "Debit Account"
 msgstr "Borç Hesabı"
 
+msgid "Debit Memo"
+msgstr "Borç Notu"
+
 msgid "Decide what an operator sees if they try to issue a batch or serial that's already expired."
 msgstr "Operatörün zaten süresi dolmuş bir parti veya seri çıkarmaya çalışması durumunda ne göreceğini belirleyin."
 
@@ -3370,6 +3439,9 @@ msgstr "Satış ve gelir için varsayılan hesaplar"
 msgid "Default accounts for tax-related transactions"
 msgstr "Vergi ile ilgili işlemler için varsayılan hesaplar"
 
+msgid "Default accounts for the cost of goods sold and indirect purchases"
+msgstr "Satılan malların maliyeti ve dolaylı satın almalar için varsayılan hesaplar"
+
 msgid "Default Approver"
 msgstr "Varsayılan Onaylayıcı"
 
@@ -3384,9 +3456,6 @@ msgstr "Temel para biriminizde işlemler için varsayılan kasa hesabı."
 
 msgid "Default CC Recipients"
 msgstr "Varsayılan Bilgi Ekleyicileri"
-
-msgid "Default GL account that holds inventory value; debited on receipt, credited on shipment/issue."
-msgstr "Envanter değerini tutan varsayılan GL hesabı; alımda borçlandırılır, sevkiyat/çıkışta alacaklandırılır."
 
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "Belirli bir banka hesabı seçilmediğinde nakit işlemler için kullanılan varsayılan GL hesabı."
@@ -3465,6 +3534,9 @@ msgstr "Sil"
 
 msgid "Delete {name}"
 msgstr "{name} sil"
+
+msgid "Delete {periodLabel}"
+msgstr "{periodLabel} öğesini sil"
 
 msgid "Delete {storageUnitName}"
 msgstr "Delete {storageUnitName}"
@@ -3580,6 +3652,9 @@ msgstr "Ödemeyi Sil"
 msgid "Delete Payment Term"
 msgstr "Ödeme Şartını Sil"
 
+msgid "Delete Period"
+msgstr "Dönemi Sil"
+
 msgid "Delete Picking List"
 msgstr "Seçim Listesini Sil"
 
@@ -3680,7 +3755,7 @@ msgid "Delete Suggestion"
 msgstr "Öneriyi Sil"
 
 msgid "Delete supplier"
-msgstr ""
+msgstr "Tedarikçiyi sil"
 
 msgid "Delete Supplier"
 msgstr "Tedarikçiyi Sil"
@@ -3784,6 +3859,9 @@ msgstr "Amortisman Yöntemi (varsayılan)"
 
 msgid "Depreciation reversal when a fixed asset is disposed"
 msgstr "Sabit bir varlık imha edildiğinde amortisman iptali"
+
+msgid "Depreciation runs ending in this period that are still Draft should be posted so the period reflects the correct depreciation expense and accumulated depreciation. Skip with a reason if depreciation doesn't apply this period."
+msgstr "Bu dönemde sona eren ve hâlâ Taslak durumunda olan amortisman kayıtları deftere geçmelidir, böylece dönem doğru amortisman giderini ve birikmiş amortismanı yansıtır. Bu dönemde amortisman uygulanmıyorsa neden belirterek atlayın."
 
 msgid "Depreciation Start Date"
 msgstr "Amortisman Başlangıç Tarihi"
@@ -3978,6 +4056,9 @@ msgstr "Taslak"
 
 msgid "Draft is editable; Active is in use and requires a new version to change; Archived is retired."
 msgstr "Taslak düzenlenebilir; Aktif kullanımda ve değiştirmek için yeni bir sürüm gerektirir; Arşivlendi kullanımdan kaldırılmıştır."
+
+msgid "Draft Journal Entries"
+msgstr "Taslak Muhasebe Kayıtları"
 
 msgid "Drag & drop files, or click to browse"
 msgstr "Dosyaları sürükleyip bırakın veya göz atmak için tıklayın"
@@ -4706,6 +4787,9 @@ msgstr "Her koşul eşleşmelidir"
 msgid "Every in-scope test passes in your configured system, with your data."
 msgstr "Kapsamdaki her test, yapılandırılmış sisteminizde, verilerinizle geçer."
 
+msgid "Every required task must be Done or Skipped before the period can be closed."
+msgstr "Dönem kapatılmadan önce gerekli tüm görevler Tamamlandı veya Atlandı olarak işaretlenmelidir."
+
 msgid "Every row was imported successfully."
 msgstr "Her satır başarıyla içe aktarıldı."
 
@@ -5268,6 +5352,12 @@ msgstr "Bitirmek İçin"
 msgid "Finished goods"
 msgstr "Tamamlamalar"
 
+msgid "Finished Goods"
+msgstr "Bitmiş Ürünler"
+
+msgid "Finished Goods (default)"
+msgstr "Bitmiş Ürünler (varsayılan)"
+
 msgid "finishes"
 msgstr "Normal MACRS programı başlamadan önce alınan ilk yıl ek indirimi."
 
@@ -5282,6 +5372,9 @@ msgstr "İlk İşlem"
 
 msgid "First-year additional deduction taken before the regular MACRS schedule begins."
 msgstr "Sabit Kıymet"
+
+msgid "Fiscal year"
+msgstr "Mali yıl"
 
 msgid "Fiscal Year"
 msgstr "Mali Yılı"
@@ -5309,6 +5402,9 @@ msgstr "Sabit Varlıklar"
 
 msgid "Fixed cost amortization variance when batch size differs from standard"
 msgstr "Kazançlar ve Zararlar"
+
+msgid "Fixed once accounting periods have been posted to or closed. Delete all open periods to change it."
+msgstr "Muhasebe dönemleri bir kez nakliye yapıldığında veya kapatıldığında sabitlenir. Değiştirmek için tüm açık dönemleri silin."
 
 msgid "Fixed Reorder"
 msgstr "Sabit Yeniden Sipariş"
@@ -5442,11 +5538,20 @@ msgstr "Genel Defter"
 msgid "General Ledger and month-end close"
 msgstr "Genel Muhasebe ve ay sonu kapanışı"
 
+msgid "Generate"
+msgstr "Oluştur"
+
 msgid "Generate a new 4-digit PIN. Share it with the operator so they can pin in at MES terminals."
 msgstr "Yeni bir 4 haneli PIN oluşturun. Operatörün MES terminallerinde giriş yapabilmesi için bunu onunla paylaşın."
 
 msgid "Generate and send customer invoices"
 msgstr "Müşteri faturalarını oluştur ve gönder"
+
+msgid "Generate fiscal year"
+msgstr "Mali yıl oluştur"
+
+msgid "Generate Fiscal Year"
+msgstr "Mali Yıl Oluştur"
 
 msgid "Generate material IDs and descriptions based on the properties of the material."
 msgstr "Malzemenin özelliklerine göre malzeme kimlikleri ve açıklamaları oluşturun."
@@ -5514,6 +5619,9 @@ msgstr "İşçilik veya makine maliyeti bir üretim işine emildiğinde kredilen
 msgid "GL account credited when labor or machine cost is absorbed into a production job."
 msgstr "Bir varlık elden çıkarıldığında birikmiş amortisman temizlemek için borçlandırılan GL hesabı."
 
+msgid "GL account credited when manufacturing overhead is absorbed into a production job."
+msgstr "Üretim genel giderleri bir üretim işine emildiğinde alacak kaydedilen muhasebe hesabı."
+
 msgid "GL account debited to clear accumulated depreciation when an asset is disposed."
 msgstr "Müşteri faturası gönderildiğinde borçlandırılan GL hesabı; müşteri ödediğinde temizlenir."
 
@@ -5564,6 +5672,12 @@ msgstr "Standart maliyet ile fiili satın alma maliyeti arasındaki farkı yakal
 
 msgid "GL account that holds the value of jobs in production until they post to finished goods."
 msgstr "İşleri tamamlanmış mal olarak kaydetene kadar üretimde olan işlerin değerini tutan GL hesabı."
+
+msgid "GL account that holds the value of manufactured goods (Make items); debited on job completion, credited on shipment."
+msgstr "Üretilen malların değerini tutan genel muhasebe hesabı (Üretim ürünleri); iş tamamlandığında borçlandırılır, sevkiyatta alacaklandırılır."
+
+msgid "GL account that holds the value of purchased stock and components (Buy items); debited on receipt, credited on issue/shipment."
+msgstr "Satın alınan stok ve bileşenlerin değerini tutan genel muhasebe hesabı (Satın alma ürünleri); alışta borçlandırılır, çıkış/sevkiyatta alacaklandırılır."
 
 msgid "GL account used when a customer pays before an invoice is issued; cleared when the invoice posts."
 msgstr "Bir müşteri fatura çıkarılmadan önce ödeme yaptığında kullanılan GL hesabı; fatura nakledildiğinde temizlenir."
@@ -6121,6 +6235,9 @@ msgstr "Burada adı geçmeyen entegrasyonlar"
 msgid "Intercompany"
 msgstr "Şirketler Arası"
 
+msgid "Intercompany transactions involving this company that are still Unmatched should be matched and eliminated, so consolidated results don't double-count activity between entities."
+msgstr "Bu şirketi ilgilendiren ve hâlâ Eşleştirilmemiş durumunda olan şirketlerarası işlemler eşleştirilmeli ve elimine edilmelidir, böylece konsolide sonuçlar kuruluşlar arasındaki faaliyetleri iki kez saymaz."
+
 msgid "Interest"
 msgstr "Faiz"
 
@@ -6150,9 +6267,6 @@ msgstr "envanter"
 
 msgid "Inventory"
 msgstr "Stok"
-
-msgid "Inventory (default)"
-msgstr "Envanter (varsayılan)"
 
 msgid "Inventory accuracy"
 msgstr "Envanter doğruluğu"
@@ -6189,12 +6303,6 @@ msgstr "Envanter İş Bildirimleri"
 
 msgid "Inventory Qty"
 msgstr "Stok Miktarı"
-
-msgid "Inventory Shipped Not Invoiced"
-msgstr "Envanter Gönderildi Faturasız"
-
-msgid "Inventory Shipped Not Invoiced (default)"
-msgstr "Envanter Gönderildi Faturasız (varsayılan)"
 
 msgid "Inventory Tracking"
 msgstr "Stok Takibi"
@@ -6439,6 +6547,12 @@ msgstr "Dergi"
 
 msgid "Journal Entries"
 msgstr "Yevrak Girişleri"
+
+msgid "Journal entries dated in this period that are still Draft must be posted, or re-dated into a later open period. Draft entries aren't part of the ledger, so their debits and credits would be missing from the close."
+msgstr "Bu dönemde tarihli ve hâlâ Taslak durumunda olan muhasebe kayıtları deftere geçmelidir veya daha sonraki bir açık döneme yeniden tarihlendirilmelidir. Taslak kayıtlar defteri kebir'in parçası olmadığı için, borç ve alacakları kapanışta eksik olacaktır."
+
+msgid "Journal Entry"
+msgstr "Muhasebe Kaydı"
 
 msgid "Kanban"
 msgstr "Kanban"
@@ -6723,6 +6837,15 @@ msgstr "Lokasyonlar"
 msgid "Lock"
 msgstr "Kilitle"
 
+msgid "Lock Period"
+msgstr "Dönemi Kilitle"
+
+msgid "Locked"
+msgstr "Kilitli"
+
+msgid "Locking makes the period read-only for operational documents (receipts, shipments, invoices) while still allowing accounting adjustments like depreciation and disposals. A period must be locked before it can be closed."
+msgstr "Dönemin kilitlenmesi, işletme belgelerine (makbuzlar, sevkiyatlar, faturalar) yönelik olarak salt okunur hale getirirken, amortisman ve elden çıkarma gibi muhasebe düzeltmelerine izin vermeye devam eder. Dönem kapatılmadan önce kilitlenmesi gerekir."
+
 msgid "Log In"
 msgstr "Oturum Aç"
 
@@ -6952,6 +7075,9 @@ msgstr "Koyu Mod Mark"
 
 msgid "Mark done"
 msgstr "Tamamlandı olarak işaretle"
+
+msgid "Mark Done"
+msgstr "Tamamlandı Olarak İşaretle"
 
 msgid "Mark Light Mode"
 msgstr "Aydınlık Mod Markası"
@@ -8089,6 +8215,12 @@ msgstr "Bu konumdaki servis kullanımı için korunacak minimum stok seviyesi"
 msgid "On-hand inventory remains"
 msgstr "Eldeki envanter kaldı"
 
+msgid "On-hand value of manufactured goods (Make items)"
+msgstr "Üretilen malların (Üretim ürünleri) eldeki değeri"
+
+msgid "On-hand value of purchased stock and components (Buy items)"
+msgstr "Satın alınan stok ve bileşenlerin (Satın alma ürünleri) eldeki değeri"
+
 msgid "On-time delivery"
 msgstr "Zamanında teslimat"
 
@@ -8109,6 +8241,9 @@ msgstr "Yalnızca Taslak prosedürler düzenlenebilir. Aktif veya Arşivlenmiş 
 
 msgid "Only employees who have completed training for this ability can start operations at this work center"
 msgstr ""
+
+msgid "Only empty, open periods can be deleted."
+msgstr "Yalnızca boş, açık dönemler silinebilir."
 
 msgid "Onshape Status"
 msgstr "Onshape Durumu"
@@ -8306,6 +8441,12 @@ msgstr "Siparişler gönderildi"
 msgid "Origin"
 msgstr "Kaynak"
 
+msgid "Original"
+msgstr "Orijinal"
+
+msgid "Original Count"
+msgstr "Orijinal Sayım"
+
 msgid "Other Income account for FX gains when a payment settles a foreign-currency invoice at a more favorable rate"
 msgstr "Bir ödeme yabancı para birimindeki bir faturayı daha uygun bir oranda kapatırken FX kazançları için Diğer Gelir hesabı"
 
@@ -8335,6 +8476,12 @@ msgstr "Fazla uygulandı"
 
 msgid "Overdue"
 msgstr "Geçmiş"
+
+msgid "Overhead Absorption"
+msgstr "Genel Giderlerin Emilimi"
+
+msgid "Overhead Absorption (default)"
+msgstr "Genel Giderlerin Emilimi (varsayılan)"
 
 msgid "Overhead Rate"
 msgstr "Genel Gider Oranı"
@@ -8793,6 +8940,15 @@ msgstr "Gönderilen Tarih"
 msgid "Posted By"
 msgstr "Gönderen"
 
+msgid "Posted once, no rectifications."
+msgstr "Bir kez gönderildi, düzeltme yapılmadı."
+
+msgid "Posted once, rectified {rectifications} times."
+msgstr "Bir kez gönderildi, {rectifications} kez düzeltildi."
+
+msgid "Posted once, rectified 1 time."
+msgstr "Bir kez gönderildi, 1 kez düzeltildi."
+
 msgid "Posting"
 msgstr "Ön Ödemeler"
 
@@ -8882,9 +9038,6 @@ msgstr "Fiyatlandırma Kuralları"
 
 msgid "Pricing Trace"
 msgstr "Fiyatlandırma İzleme"
-
-msgid "Primary account for on-hand inventory valuation"
-msgstr "Banka işlemleri için ana nakit hesabı"
 
 msgid "Primary cash account for bank transactions"
 msgstr "prosedür"
@@ -9175,9 +9328,6 @@ msgstr "Satın Alma ve Satılan Malların Maliyeti"
 msgid "Purchasing"
 msgstr "Satın Alma"
 
-msgid "Purchasing & Cost of Goods"
-msgstr "kalite"
-
 msgid "Purchasing & Inventory"
 msgstr "Satın Alma & Envanter"
 
@@ -9363,6 +9513,12 @@ msgstr "bunu erken ve açık bir şekilde dile getir. 2. haftada adı konulan bi
 msgid "Rate Limit"
 msgstr "Hız Sınırı"
 
+msgid "Raw Materials"
+msgstr "Ham Maddeler"
+
+msgid "Raw Materials (default)"
+msgstr "Ham Maddeler (varsayılan)"
+
 msgid "Re-keying between quoting, the floor, and finance"
 msgstr "Tekliflendirme, üretim ve muhasebe arasında veri yeniden girişi"
 
@@ -9402,6 +9558,9 @@ msgstr "Neden Hesabı"
 msgid "Reason for declining (Optional)"
 msgstr "Reddetme nedeni (İsteğe bağlı)"
 
+msgid "Reason for skipping (required)"
+msgstr "Atlamak için neden (gerekli)"
+
 msgid "Reasons"
 msgstr "Nedenler"
 
@@ -9437,6 +9596,9 @@ msgstr "Talep Edilen Teslim Tarihi"
 
 msgid "Receipts"
 msgstr "Makbuzlar"
+
+msgid "Receipts, shipments, sales invoices, purchase invoices, payments, and credit/debit memos that are still Draft or Pending must be posted or voided — both documents dated in this period and undated documents that would receive a date in it when posted. Until they post, their amounts aren't in the general ledger, so the period would be understated."
+msgstr "Hâlâ Taslak veya Bekleme durumunda olan makbuzlar, sevkiyatlar, satış faturaları, satın alma faturaları, ödemeler ve alacak/borç notları deftere geçmelidir veya geçersiz kılınmalıdır — hem bu dönemde tarihli belgeler hem de deftere geçtiğinde bu dönemde tarih alacak tarihsiz belgeler. Deftere geçene kadar, tutarları defteri kebir'de olmadığı için, dönem eksik gösterilecektir."
 
 msgid "Receivables"
 msgstr "Alacak Hesapları (varsayılan)"
@@ -9528,6 +9690,12 @@ msgstr "Kayıtlar"
 
 msgid "Recovery Period"
 msgstr "Kayıt Yap"
+
+msgid "Rectification {rectifyNumber}"
+msgstr "Düzeltme {rectifyNumber}"
+
+msgid "Rectify"
+msgstr "Düzelt"
 
 msgid "Redirecting to verification page..."
 msgstr "Doğrulama sayfasına yönlendiriliyor..."
@@ -9858,6 +10026,12 @@ msgstr "Ters yükleme satış vergisi (varsayılan)"
 
 msgid "Reverse the related journal entries"
 msgstr "İlgili günlük girişlerini tersine çevir"
+
+msgid "Review the period's balance sheet and income statement and confirm the figures look right. This is a manual sign-off — mark it done once you have reviewed them."
+msgstr "Dönemin bilançosunu ve gelir tablosunu gözden geçirin ve rakamların doğru göründüğünü doğrulayın. Bu manuel bir onay — bunları gözden geçirdikten sonra bitti olarak işaretleyin."
+
+msgid "Review the warnings below, then post the count to apply the adjustments."
+msgstr "Aşağıdaki uyarıları gözden geçirin, ardından ayarlamaları uygulamak için sayımı gönderin."
 
 msgid "Revision"
 msgstr "Revizyon"
@@ -10861,6 +11035,9 @@ msgstr "Boyut"
 msgid "Sizes"
 msgstr "Boyutlar"
 
+msgid "Skip"
+msgstr "Atla"
+
 msgid "Skip Existing"
 msgstr "Mevcut Olanı Atla"
 
@@ -10986,6 +11163,9 @@ msgstr "Standart"
 
 msgid "Standard cloud Carbon fits how your company runs"
 msgstr "Standart bulut Carbon, şirketinizin nasıl çalıştığına uygun"
+
+msgid "Standard Cost Variances"
+msgstr "Standart Maliyet Sapmaları"
 
 msgid "Standard factor"
 msgstr "Standart faktör"
@@ -11290,7 +11470,7 @@ msgid "Supplier Overview"
 msgstr "Tedarikçi Genel Bakışı"
 
 msgid "Supplier Part"
-msgstr ""
+msgstr "Tedarikçi Parçası"
 
 msgid "Supplier Part ID"
 msgstr "Tedarikçi Parça Kimliği"
@@ -11309,6 +11489,9 @@ msgstr "Tedarikçi Ödeme İndirimleri"
 
 msgid "Supplier Payment Discounts (default)"
 msgstr "Tedarikçi Ödeme İndirimleri (varsayılan)"
+
+msgid "Supplier Prepayments"
+msgstr "Tedarikçi Ön Ödemeleri"
 
 msgid "supplier process"
 msgstr "Tedarikçi Süreci"
@@ -11473,6 +11656,9 @@ msgstr "Bir veya daha fazla öğeyi hedefleyin."
 msgid "Target Version"
 msgstr "Hedef Sürüm"
 
+msgid "Task"
+msgstr "Görev"
+
 msgid "tasks"
 msgstr "görevler"
 
@@ -11614,6 +11800,9 @@ msgstr "Tüm kaydedilen günlük satırlarının defteri, hesaba göre özetlenm
 
 msgid "The buckets you track costs against"
 msgstr "Maliyetleri takip ettiğiniz gruplar"
+
+msgid "The capital assets you own and depreciate"
+msgstr "Sahip olduğunuz ve amortiye ettiğiniz sabit kıymetler"
 
 msgid "The Carbon user responsible for this customer relationship; emails and reminders about this customer route to them."
 msgstr "Bu müşteri ilişkisinden sorumlu Carbon kullanıcısı; bu müşteri hakkında e-postalar ve hatırlatmalar onlara yönlendirilir."
@@ -11930,6 +12119,9 @@ msgstr "Mali yılınızın başladığı ay; dönemler bu aydan itibaren numaral
 msgid "The month your tax year begins; may differ from the fiscal year in some jurisdictions."
 msgstr "Vergi yılınızın başladığı ay; bazı yetki alanlarında mali yıldan farklı olabilir."
 
+msgid "The monthly periods you post into and close"
+msgstr "Nakliye yaptığınız ve kapattığınız aylık dönemler"
+
 msgid "The most likely failure mode the requester suspects; the technician confirms or replaces this on close-out, and the difference between suspected and actual feeds reliability reports."
 msgstr "İstekçinin şüphelendiği en olası hata modu; teknisyen bunu kapatırken doğrular veya değiştirir ve şüphelenilen ile gerçek arasındaki fark güvenilirlik raporlarını besler."
 
@@ -12227,6 +12419,9 @@ msgstr "Bu kredileri uygulanacak hiçbir ödenmemiş tutar yok."
 msgid "These custom fields will only be available for entities with the same tags"
 msgstr "Bu özel alanlar yalnızca aynı etiketlere sahip varlıklar için kullanılabilir"
 
+msgid "These documents haven't posted to the general ledger, so their amounts are missing from this period. Post or void each one — an undated document receives the posting day's date when it posts."
+msgstr "Bu belgeler defteri kebir'e deftere geçmediği için, tutarları bu dönemde eksiktir. Her birini deftere geçirin veya geçersiz kılın — tarihsiz bir belge deftere geçtiğinde deftere geçiş gününün tarihini alır."
+
 msgid "These email addresses will be automatically CC'd on all emails sent to suppliers (quotes, purchase orders, etc.)."
 msgstr "Bu e-posta adresleri, tedarikçilere gönderilen tüm e-postalara (teklifler, satın alma siparişleri vb.) otomatik olarak CC'lenecektir."
 
@@ -12235,6 +12430,9 @@ msgstr "Bu e-posta adresleri, müşterilere gönderilen tüm teklif e-postaları
 
 msgid "These jobs have operations assigned to this work center:"
 msgstr "Bu işler bu iş merkezine atanmış işlemlere sahiptir:"
+
+msgid "These journal entries are still Draft, so their debits and credits aren't in the ledger for this period. Post each one, or re-date it into a later open period."
+msgstr "Bu muhasebe kayıtları hâlâ Taslak durumundadır, bu nedenle borç ve alacakları bu dönem için defteri kebir'de değildir. Her birini deftere geçirin veya daha sonraki bir açık döneme yeniden tarihlendiriniz."
 
 msgid "This completes the Discovery step."
 msgstr "Bu, Keşif adımını tamamlar."
@@ -12308,6 +12506,9 @@ msgstr "Bu parça kullanımdan kaldırılmıştır (Stok Yok)."
 msgid "This part is superseded and set to Stock Only — it's replenished to its spares reserve floor, independent of demand."
 msgstr "Bu parça kullanımdan kaldırılmış ve Yalnızca Stok olarak ayarlanmıştır — talep bağımsız olarak yedek rezerv tabanına kadar yenilenir."
 
+msgid "This period has no journal entries posted to it and can be permanently deleted. This cannot be undone."
+msgstr "Bu döneme nakledilen günlük girişi yoktur ve kalıcı olarak silinebilir. Bu geri alınamaz."
+
 msgid "This Quarter"
 msgstr "Bu Çeyrek"
 
@@ -12322,7 +12523,7 @@ msgid "This storage type is currently used by {usageCount} storage unit{0}."
 msgstr "Bu depolama türü şu anda {usageCount} depolama birimi{0} tarafından kullanılıyor."
 
 msgid "this supplier"
-msgstr ""
+msgstr "bu tedarikçi"
 
 msgid "This updates the theme for all users of the application"
 msgstr "Bu, uygulamanın tüm kullanıcıları için temayı günceller"
@@ -12774,6 +12975,9 @@ msgstr "Bağlantısını Kes"
 msgid "Unlink job from sales order?"
 msgstr "İş emrini satış siparişinden ayır?"
 
+msgid "Unlock"
+msgstr "Kilidi Aç"
+
 msgid "Unmapped Extracted Lines"
 msgstr "Eşlenmemiş Çıkarılan Satırlar"
 
@@ -12783,6 +12987,9 @@ msgstr "Çıkart"
 #. placeholder {0}: pickedLots[0].trackedEntity.readableId
 msgid "Unpick {0}"
 msgstr "Çıkart {0}"
+
+msgid "Unposted Documents"
+msgstr "Deftere Geçmemiş Belgeler"
 
 msgid "Unreceived POs"
 msgstr "Alınmamış PO'lar"
@@ -13189,6 +13396,9 @@ msgstr "Ödenecek Hesapları Görüntüle"
 msgid "View Payment"
 msgstr "Ödemeyi Görüntüle"
 
+msgid "View Period"
+msgstr "Dönemi Görüntüle"
+
 msgid "View permissions"
 msgstr "Görüntüleme izinleri"
 
@@ -13458,6 +13668,9 @@ msgstr "Bu makbuzun yerine getirdiği — satın alma siparişi, geri dönüş, 
 msgid "What this shipment is fulfilling — a sales order, an outbound transfer, an RMA return, or a manual shipment."
 msgstr "Bu sevkiyatın yerine getirdiği — satış siparişi, giden transfer, RMA iadesi veya manuel sevkiyat."
 
+msgid "What this task means"
+msgstr "Bu görev ne anlama geliyor"
+
 msgid "What this time entry counts as — Labor (operator time), Machine (run time), or Setup (changeover time); each rolls up under a different rate."
 msgstr "Bu zaman girişi neyi sayar — İşçilik (operatör zamanı), Makine (çalışma zamanı) veya Kurulum (değişim zamanı); her biri farklı bir oran altında özetlenir."
 
@@ -13571,6 +13784,9 @@ msgstr "Bu spesifik lot/seri numarası ne zaman sona erdiği; FEFO seçimini ve 
 
 msgid "When you committed to deliver; planning treats this as the demand-due-date for fulfillment."
 msgstr "Teslim etmeyi taahhüt ettiğiniz zaman; planlama bunu karşılama için talep vadesi tarihi olarak değerlendirir."
+
+msgid "When your fiscal and tax years start"
+msgstr "Mali ve vergi yıllarınız ne zaman başlar"
 
 msgid "Where an operation runs; carries labor and quoting rates, with overhead the difference between them."
 msgstr "Bir operasyonun nerede çalıştırıldığı; işçilik ve teklif oranlarını taşır, genel giderler aralarındaki fark."
@@ -13888,9 +14104,6 @@ msgstr "Verileriniz erişilebilir ve makul ölçüde temizdir"
 
 msgid "Your Email"
 msgstr "E-posta Adresiniz"
-
-msgid "Your fiscal year and its accounting periods"
-msgstr "Mali yılınız ve muhasebe dönemleri"
 
 msgid "Your general-ledger accounts and their structure"
 msgstr "Genel muhasebe hesaplarınız ve bunların yapısı"
