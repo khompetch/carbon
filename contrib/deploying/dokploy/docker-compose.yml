@@ -310,10 +310,14 @@ services:
       start_period: 40s
     restart: unless-stopped
 
+  # Functions are baked into the image (see edge-runtime.Dockerfile) rather
+  # than bind-mounted — a container created while the checkout was still
+  # syncing used to keep a stale empty mount forever ("worker boot error:
+  # could not find an appropriate entrypoint").
   edge-runtime:
-    image: supabase/edge-runtime:v1.74.0
-    entrypoint: ["/carbon/bin/run.sh"]
-    command: ["edge-runtime", "start", "--main-service", "/home/deno/main"]
+    build:
+      context: ../../..
+      dockerfile: contrib/deploying/dokploy/edge-runtime.Dockerfile
     environment:
       JWT_SECRET: ${SUPABASE_JWT_SECRET}
       SUPABASE_URL: http://kong:8000
@@ -321,11 +325,7 @@ services:
       SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
       SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
       VERIFY_JWT: ${EDGE_VERIFY_JWT:-false}
-    volumes:
-      - ./bin/run.sh:/carbon/bin/run.sh:ro
-      - ../../../packages/database/supabase/functions:/home/deno/functions:ro
-      - ../../../packages/database/src:/home/src:ro
-      - ../../../packages/dev/docker/edge-main:/home/deno/main:ro
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
     restart: unless-stopped
 
   # Public API gateway — the only Supabase service that needs a Dokploy domain

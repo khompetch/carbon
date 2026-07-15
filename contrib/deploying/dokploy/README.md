@@ -22,6 +22,7 @@ else, drop the `postgres`/`gotrue`/`postgrest`/`realtime`/`storage`/`meta`/
 | File | Purpose |
 |---|---|
 | `docker-compose.yml` | `erp` + `mes` (built from the repo's root `Dockerfile`), a full self-hosted Supabase, `redis`, and `inngest`. |
+| `edge-runtime.Dockerfile` | Bakes the edge functions into the `edge-runtime` image (bind mounts proved fragile — see Troubleshooting). |
 | `.env.example` | Template for every environment variable the compose file needs. |
 | `bin/run.sh` | Neutral `exec "$@"` entrypoint shim — lets several Supabase images' proven CMD arrays be reused unchanged without Swarm secrets. |
 | `postgres/01-roles.sh`, `postgres/02-performance.sh` | Postgres role bootstrap and tuning, run once on first init. |
@@ -173,23 +174,24 @@ other features like user invites also go through Resend).
 
 **An edge function fails with `worker boot error: ... could not find an
 appropriate entrypoint`** (e.g. onboarding's "Fatal: failed to seed company")
-— `edge-runtime` bind-mounts `packages/database/supabase/functions` and
-`packages/dev/docker/edge-main` from the repo checkout. Docker only
-evaluates a bind mount when a container is *created*, not on every start —
-if `edge-runtime` was created before a `git pull` populated those
-directories (e.g. it wasn't recreated on some earlier deploy while other
-services were), it keeps serving an empty, stale view of them indefinitely.
-Fix: force it to recreate —
+— on current versions of this recipe this should no longer happen: the
+functions are baked into the `edge-runtime` image at build time
+(`edge-runtime.Dockerfile`). It used to happen when the functions were
+bind-mounted from the checkout: Docker only evaluates a bind mount when a
+container is *created*, so an `edge-runtime` created before a `git pull`
+populated those directories kept serving an empty, stale view of them
+indefinitely. If you still see it (e.g. running an older revision), force
+the container to recreate —
 
 ```bash
 cd <dokploy-compose-checkout>/contrib/deploying/dokploy
 docker compose up -d --force-recreate edge-runtime
 ```
 
-or trigger a full **Redeploy** from the Dokploy UI, which recreates every
-service. Confirm with `docker exec <edge-runtime-container> ls -la
+then confirm with `docker exec <edge-runtime-container> ls -la
 /home/deno/functions/<function-name>/` — it should show `index.ts`, not an
-empty directory.
+empty directory. On the baked-image version, a Redeploy rebuilds the image
+and function code updates ship atomically with it.
 
 **Deploy hangs during the app build (around `rendering chunks...`)** — the
 VPS ran out of memory. Docker Compose builds `erp` and `mes` in parallel by
