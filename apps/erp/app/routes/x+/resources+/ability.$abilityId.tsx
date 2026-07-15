@@ -12,7 +12,11 @@ import {
 } from "@carbon/react";
 import { msg } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
+import type {
+  ActionFunctionArgs,
+  ClientActionFunctionArgs,
+  LoaderFunctionArgs
+} from "react-router";
 import { Outlet, redirect, useLoaderData } from "react-router";
 import { Hidden, Input, Number, Submit } from "~/components/Form";
 import { usePermissions } from "~/hooks";
@@ -25,6 +29,7 @@ import {
 import AbilityEmployeesTable from "~/modules/resources/ui/Abilities/AbilityEmployeesTable";
 import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
+import { abilitiesQuery, getCompanyId } from "~/utils/react-query";
 
 export const handle: Handle = {
   breadcrumb: msg`Abilities`,
@@ -86,6 +91,14 @@ export async function action({ request, params }: ActionFunctionArgs) {
     path.to.ability(abilityId),
     await flash(request, success("Ability updated"))
   );
+}
+
+export async function clientAction({ serverAction }: ClientActionFunctionArgs) {
+  window.clientCache?.setQueryData(
+    abilitiesQuery(getCompanyId()).queryKey,
+    null
+  );
+  return await serverAction();
 }
 
 export default function AbilityRoute() {
