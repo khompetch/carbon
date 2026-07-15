@@ -1,5 +1,6 @@
 import { useLingui } from "@lingui/react/macro";
 import {
+  LuAward,
   LuCalendarClock,
   LuCircleAlert,
   LuClipboardCheck,
@@ -66,6 +67,12 @@ export default function useResourcesSubmodules() {
     {
       name: t`People`,
       routes: [
+        {
+          name: t`Abilities`,
+          to: path.to.abilities,
+          icon: <LuAward />,
+          table: "ability"
+        },
         {
           name: t`Training`,
           to: path.to.trainings,

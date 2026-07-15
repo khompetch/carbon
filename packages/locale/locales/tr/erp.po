@@ -347,6 +347,9 @@ msgstr "Yetenekler"
 msgid "ability"
 msgstr "yetenek"
 
+msgid "Ability"
+msgstr ""
+
 msgid "About"
 msgstr "Hakkında"
 
@@ -586,6 +589,9 @@ msgstr "Koşul ekle"
 
 msgid "Add Contractor"
 msgstr "Yüklenici Ekle"
+
+msgid "Add Employee"
+msgstr ""
 
 msgid "Add Entry"
 msgstr "Giri Ekle"
@@ -1084,6 +1090,9 @@ msgstr "Bu işlemden {key} parametresini silmek istediğinizden emin misiniz? Bu
 msgid "Are you sure you want to delete the {name} attribute from this operation? This cannot be undone."
 msgstr "Bu işlemden {name} özelliğini silmek istediğinizden emin misiniz? Bu geri alınamaz."
 
+msgid "Are you sure you want to delete the ability: {name}? This cannot be undone."
+msgstr ""
+
 #. placeholder {0}: account.name
 #. placeholder {1}: account.number ? ` (${account.number})` : ""
 msgid "Are you sure you want to delete the account: {0}{1}? This cannot be undone."
@@ -1328,6 +1337,9 @@ msgid "Are you sure you want to remove {0} as a supplier for this item? This can
 msgstr ""
 
 msgid "Are you sure you want to remove {supplierName} as a supplier for this item? This cannot be undone."
+msgstr ""
+
+msgid "Are you sure you want to remove this employee from the ability?"
 msgstr ""
 
 msgid "Are you sure you want to remove this item from the price list? This cannot be undone."
@@ -2848,6 +2860,9 @@ msgstr "İş Merkezi Oluştur"
 msgid "Created"
 msgstr "Oluşturulma"
 
+msgid "Created ability"
+msgstr ""
+
 msgid "Created account"
 msgstr "Oluşturulan hesap"
 
@@ -3273,6 +3288,9 @@ msgstr "Bir parça sipariş etmekten elde edilebilir olana kadar geçen günler;
 msgid "Days in advance to generate dispatches"
 msgstr "Gönderileri oluşturmak için kaç gün önceden"
 
+msgid "Days of Training Completed"
+msgstr ""
+
 msgid "Days Off"
 msgstr "İzin Günleri"
 
@@ -3450,6 +3468,9 @@ msgstr "{name} sil"
 
 msgid "Delete {storageUnitName}"
 msgstr "Delete {storageUnitName}"
+
+msgid "Delete Ability"
+msgstr ""
 
 msgid "Delete API Key"
 msgstr "API Anahtarını Sil"
@@ -4088,6 +4109,9 @@ msgstr "Düzenle"
 msgid "Edit <0>Issue</0> Workflow"
 msgstr "<0>Sorun</0> İş Akışını Düzenle"
 
+msgid "Edit Ability"
+msgstr ""
+
 msgid "Edit Account"
 msgstr "Hesabı Düzenle"
 
@@ -4150,6 +4174,9 @@ msgstr "Görev Düzenle"
 
 msgid "Edit Employee"
 msgstr "Çalışanı Düzenle"
+
+msgid "Edit Employee Ability"
+msgstr ""
 
 msgid "Edit Employee Type"
 msgstr "Çalışan Türünü Düzenle"
@@ -4376,6 +4403,9 @@ msgstr "Geçerlilik Başlangıcı"
 msgid "Effective To"
 msgstr "Geçerli Olacağı Tarih"
 
+msgid "Efficiency of an untrained employee at week 0"
+msgstr ""
+
 msgid "Email"
 msgstr "E-posta"
 
@@ -4397,6 +4427,9 @@ msgstr "çalışan"
 msgid "Employee"
 msgstr "Çalışan"
 
+msgid "employee ability"
+msgstr ""
+
 msgid "Employee Accounts"
 msgstr "Çalışan Hesapları"
 
@@ -4413,6 +4446,9 @@ msgid "Employees"
 msgstr "Çalışanlar"
 
 msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr ""
+
+msgid "Employees with this ability"
 msgstr ""
 
 msgid "Empty = match every item"
@@ -4832,6 +4868,10 @@ msgstr "GL raporlamanızı dilimlemek için ekstra etiketler"
 
 msgid "Fail"
 msgstr "Başarısız"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create ability: {0}"
+msgstr ""
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create asset class: {0}"
@@ -6492,6 +6532,9 @@ msgstr "Son Çeyrek"
 msgid "Last synced: {0}"
 msgstr "Son senkronize edildi: {0}"
 
+msgid "Last Training"
+msgstr ""
+
 msgid "Last updated: {formattedDate}"
 msgstr "Son güncellendi: {formattedDate}"
 
@@ -7320,6 +7363,9 @@ msgstr "Yeni"
 msgid "New <0>Issue</0> Workflow"
 msgstr "Yeni <0>Issue</0> İş Akışı"
 
+msgid "New Ability"
+msgstr ""
+
 msgid "New Account"
 msgstr "Yeni Hesap"
 
@@ -7715,6 +7761,9 @@ msgstr "Henüz çalışan atanmadı. Durumu görmek için gruplar ekleyin."
 
 msgid "No employees found"
 msgstr "Hiç çalışan bulunamadı"
+
+msgid "No employees have this ability"
+msgstr ""
 
 msgid "No extra cutover steps yet. Add anything specific to this customer."
 msgstr "Henüz ek cutover adımı yok. Bu müşteriye özgü herhangi bir şey ekleyin."
@@ -10575,6 +10624,9 @@ msgstr "Şiddetler"
 msgid "Severity"
 msgstr "Şiddet"
 
+msgid "Shadow Weeks"
+msgstr ""
+
 msgid "shape"
 msgstr "şekil"
 
@@ -10983,6 +11035,9 @@ msgstr "Başla"
 
 msgid "Started"
 msgstr "Başlangıç"
+
+msgid "Starting Efficiency (%)"
+msgstr ""
 
 msgid "State / Province"
 msgstr "Eyalet / İl"
@@ -12545,8 +12600,14 @@ msgstr "Eğitim"
 msgid "Training Assignments"
 msgstr "Eğitim Atamaları"
 
+msgid "Training Days"
+msgstr ""
+
 msgid "Training Plan"
 msgstr "Eğitim Planı"
+
+msgid "Training Status"
+msgstr ""
 
 msgid "Training your team via the Academy and in-app guides"
 msgstr "Ekibinizi Academy ve uygulama içi kılavuzlar aracılığıyla eğitin"
@@ -13339,6 +13400,12 @@ msgstr "Haftalar 7 ila 8"
 
 msgid "Weeks Open"
 msgstr "Açık Haftalar"
+
+msgid "Weeks spent shadowing another employee before working independently"
+msgstr ""
+
+msgid "Weeks to Full Efficiency"
+msgstr ""
 
 msgid "Weighted Average"
 msgstr "Ağırlıklı Ortalama"

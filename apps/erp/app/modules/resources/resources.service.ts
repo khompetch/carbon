@@ -301,6 +301,18 @@ export async function getEmployeeAbilities(
     .eq("active", true);
 }
 
+export async function getEmployeeAbility(
+  client: SupabaseClient<Database>,
+  employeeAbilityId: string
+) {
+  return client
+    .from("employeeAbility")
+    .select("*")
+    .eq("id", employeeAbilityId)
+    .eq("active", true)
+    .single();
+}
+
 export async function getFailureMode(
   client: SupabaseClient<Database>,
   failureModeId: string
@@ -1080,11 +1092,7 @@ export async function insertEmployeeAbilities(
     trainingCompleted: true
   }));
 
-  return client
-    .from("employeeAbility")
-    .insert(employeeAbilities)
-    .select("id")
-    .single();
+  return client.from("employeeAbility").insert(employeeAbilities).select("id");
 }
 
 export async function insertTrainingCompletion(

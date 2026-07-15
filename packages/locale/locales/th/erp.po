@@ -347,6 +347,9 @@ msgstr ""
 msgid "ability"
 msgstr ""
 
+msgid "Ability"
+msgstr ""
+
 msgid "About"
 msgstr ""
 
@@ -585,6 +588,9 @@ msgid "Add condition"
 msgstr ""
 
 msgid "Add Contractor"
+msgstr ""
+
+msgid "Add Employee"
 msgstr ""
 
 msgid "Add Entry"
@@ -1084,6 +1090,9 @@ msgstr ""
 msgid "Are you sure you want to delete the {name} attribute from this operation? This cannot be undone."
 msgstr ""
 
+msgid "Are you sure you want to delete the ability: {name}? This cannot be undone."
+msgstr ""
+
 #. placeholder {0}: account.name
 #. placeholder {1}: account.number ? ` (${account.number})` : ""
 msgid "Are you sure you want to delete the account: {0}{1}? This cannot be undone."
@@ -1328,6 +1337,9 @@ msgid "Are you sure you want to remove {0} as a supplier for this item? This can
 msgstr ""
 
 msgid "Are you sure you want to remove {supplierName} as a supplier for this item? This cannot be undone."
+msgstr ""
+
+msgid "Are you sure you want to remove this employee from the ability?"
 msgstr ""
 
 msgid "Are you sure you want to remove this item from the price list? This cannot be undone."
@@ -2848,6 +2860,9 @@ msgstr ""
 msgid "Created"
 msgstr ""
 
+msgid "Created ability"
+msgstr ""
+
 msgid "Created account"
 msgstr ""
 
@@ -3273,6 +3288,9 @@ msgstr ""
 msgid "Days in advance to generate dispatches"
 msgstr ""
 
+msgid "Days of Training Completed"
+msgstr ""
+
 msgid "Days Off"
 msgstr ""
 
@@ -3449,6 +3467,9 @@ msgid "Delete {name}"
 msgstr ""
 
 msgid "Delete {storageUnitName}"
+msgstr ""
+
+msgid "Delete Ability"
 msgstr ""
 
 msgid "Delete API Key"
@@ -4088,6 +4109,9 @@ msgstr "แก้ไข"
 msgid "Edit <0>Issue</0> Workflow"
 msgstr ""
 
+msgid "Edit Ability"
+msgstr ""
+
 msgid "Edit Account"
 msgstr ""
 
@@ -4149,6 +4173,9 @@ msgid "Edit Dispatch"
 msgstr ""
 
 msgid "Edit Employee"
+msgstr ""
+
+msgid "Edit Employee Ability"
 msgstr ""
 
 msgid "Edit Employee Type"
@@ -4376,6 +4403,9 @@ msgstr ""
 msgid "Effective To"
 msgstr ""
 
+msgid "Efficiency of an untrained employee at week 0"
+msgstr ""
+
 msgid "Email"
 msgstr ""
 
@@ -4397,6 +4427,9 @@ msgstr ""
 msgid "Employee"
 msgstr ""
 
+msgid "employee ability"
+msgstr ""
+
 msgid "Employee Accounts"
 msgstr ""
 
@@ -4413,6 +4446,9 @@ msgid "Employees"
 msgstr ""
 
 msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr ""
+
+msgid "Employees with this ability"
 msgstr ""
 
 msgid "Empty = match every item"
@@ -4831,6 +4867,10 @@ msgid "Extra tags for slicing your GL reporting"
 msgstr ""
 
 msgid "Fail"
+msgstr ""
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create ability: {0}"
 msgstr ""
 
 #. placeholder {0}: fetcher.data.error.message
@@ -6492,6 +6532,9 @@ msgstr ""
 msgid "Last synced: {0}"
 msgstr ""
 
+msgid "Last Training"
+msgstr ""
+
 msgid "Last updated: {formattedDate}"
 msgstr ""
 
@@ -7320,6 +7363,9 @@ msgstr ""
 msgid "New <0>Issue</0> Workflow"
 msgstr ""
 
+msgid "New Ability"
+msgstr ""
+
 msgid "New Account"
 msgstr ""
 
@@ -7714,6 +7760,9 @@ msgid "No employees assigned yet. Add groups to see status."
 msgstr ""
 
 msgid "No employees found"
+msgstr ""
+
+msgid "No employees have this ability"
 msgstr ""
 
 msgid "No extra cutover steps yet. Add anything specific to this customer."
@@ -10575,6 +10624,9 @@ msgstr ""
 msgid "Severity"
 msgstr ""
 
+msgid "Shadow Weeks"
+msgstr ""
+
 msgid "shape"
 msgstr ""
 
@@ -10982,6 +11034,9 @@ msgid "Start with"
 msgstr ""
 
 msgid "Started"
+msgstr ""
+
+msgid "Starting Efficiency (%)"
 msgstr ""
 
 msgid "State / Province"
@@ -12545,7 +12600,13 @@ msgstr ""
 msgid "Training Assignments"
 msgstr ""
 
+msgid "Training Days"
+msgstr ""
+
 msgid "Training Plan"
+msgstr ""
+
+msgid "Training Status"
 msgstr ""
 
 msgid "Training your team via the Academy and in-app guides"
@@ -13338,6 +13399,12 @@ msgid "Weeks 7 to 8"
 msgstr ""
 
 msgid "Weeks Open"
+msgstr ""
+
+msgid "Weeks spent shadowing another employee before working independently"
+msgstr ""
+
+msgid "Weeks to Full Efficiency"
 msgstr ""
 
 msgid "Weighted Average"

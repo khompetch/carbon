@@ -347,6 +347,9 @@ msgstr "Habilidades"
 msgid "ability"
 msgstr "capacidade"
 
+msgid "Ability"
+msgstr ""
+
 msgid "About"
 msgstr "Sobre"
 
@@ -586,6 +589,9 @@ msgstr "Adicionar condição"
 
 msgid "Add Contractor"
 msgstr "Adicionar Contratante"
+
+msgid "Add Employee"
+msgstr ""
 
 msgid "Add Entry"
 msgstr "Adicionar Entrada"
@@ -1084,6 +1090,9 @@ msgstr "Tem a certeza de que deseja eliminar o parâmetro {key} desta operação
 msgid "Are you sure you want to delete the {name} attribute from this operation? This cannot be undone."
 msgstr "Tem a certeza de que deseja eliminar o atributo {name} desta operação? Esta ação não pode ser desfeita."
 
+msgid "Are you sure you want to delete the ability: {name}? This cannot be undone."
+msgstr ""
+
 #. placeholder {0}: account.name
 #. placeholder {1}: account.number ? ` (${account.number})` : ""
 msgid "Are you sure you want to delete the account: {0}{1}? This cannot be undone."
@@ -1328,6 +1337,9 @@ msgid "Are you sure you want to remove {0} as a supplier for this item? This can
 msgstr ""
 
 msgid "Are you sure you want to remove {supplierName} as a supplier for this item? This cannot be undone."
+msgstr ""
+
+msgid "Are you sure you want to remove this employee from the ability?"
 msgstr ""
 
 msgid "Are you sure you want to remove this item from the price list? This cannot be undone."
@@ -2848,6 +2860,9 @@ msgstr "Criar Centro de Trabalho"
 msgid "Created"
 msgstr "Criado"
 
+msgid "Created ability"
+msgstr ""
+
 msgid "Created account"
 msgstr "Conta criada"
 
@@ -3273,6 +3288,9 @@ msgstr "Dias desde o pedido de uma peça até ter disponível; o planejamento co
 msgid "Days in advance to generate dispatches"
 msgstr "Dias de antecedência para gerar despachos"
 
+msgid "Days of Training Completed"
+msgstr ""
+
 msgid "Days Off"
 msgstr "Dias de Folga"
 
@@ -3450,6 +3468,9 @@ msgstr "Eliminar {name}"
 
 msgid "Delete {storageUnitName}"
 msgstr "Eliminar {storageUnitName}"
+
+msgid "Delete Ability"
+msgstr ""
 
 msgid "Delete API Key"
 msgstr "Eliminar Chave de API"
@@ -4088,6 +4109,9 @@ msgstr "Editar"
 msgid "Edit <0>Issue</0> Workflow"
 msgstr "Editar Fluxo de Trabalho <0>Problema</0>"
 
+msgid "Edit Ability"
+msgstr ""
+
 msgid "Edit Account"
 msgstr "Editar Conta"
 
@@ -4150,6 +4174,9 @@ msgstr "Editar Despacho"
 
 msgid "Edit Employee"
 msgstr "Editar Funcionário"
+
+msgid "Edit Employee Ability"
+msgstr ""
 
 msgid "Edit Employee Type"
 msgstr "Editar Tipo de Funcionário"
@@ -4376,6 +4403,9 @@ msgstr "Efetivo A Partir De"
 msgid "Effective To"
 msgstr "Efetivo Até"
 
+msgid "Efficiency of an untrained employee at week 0"
+msgstr ""
+
 msgid "Email"
 msgstr "Email"
 
@@ -4397,6 +4427,9 @@ msgstr "funcionário"
 msgid "Employee"
 msgstr "Funcionário"
 
+msgid "employee ability"
+msgstr ""
+
 msgid "Employee Accounts"
 msgstr "Contas de Funcionários"
 
@@ -4413,6 +4446,9 @@ msgid "Employees"
 msgstr "Funcionários"
 
 msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr ""
+
+msgid "Employees with this ability"
 msgstr ""
 
 msgid "Empty = match every item"
@@ -4832,6 +4868,10 @@ msgstr "Tags extras para segmentar seus relatórios GL"
 
 msgid "Fail"
 msgstr "Falhar"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create ability: {0}"
+msgstr ""
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create asset class: {0}"
@@ -6492,6 +6532,9 @@ msgstr "Último Trimestre"
 msgid "Last synced: {0}"
 msgstr "Última sincronização: {0}"
 
+msgid "Last Training"
+msgstr ""
+
 msgid "Last updated: {formattedDate}"
 msgstr "Última atualização: {formattedDate}"
 
@@ -7320,6 +7363,9 @@ msgstr "Novo"
 msgid "New <0>Issue</0> Workflow"
 msgstr "Novo Fluxo de Trabalho <0>Issue</0>"
 
+msgid "New Ability"
+msgstr ""
+
 msgid "New Account"
 msgstr "Nova Conta"
 
@@ -7715,6 +7761,9 @@ msgstr "Nenhum funcionário atribuído ainda. Adicione grupos para ver o status.
 
 msgid "No employees found"
 msgstr "Nenhum funcionário encontrado"
+
+msgid "No employees have this ability"
+msgstr ""
 
 msgid "No extra cutover steps yet. Add anything specific to this customer."
 msgstr "Nenhuma etapa de cutover adicional ainda. Adicione qualquer coisa específica para este cliente."
@@ -10575,6 +10624,9 @@ msgstr "Severidades"
 msgid "Severity"
 msgstr "Gravidade"
 
+msgid "Shadow Weeks"
+msgstr ""
+
 msgid "shape"
 msgstr "forma"
 
@@ -10983,6 +11035,9 @@ msgstr "Comece com"
 
 msgid "Started"
 msgstr "Iniciado"
+
+msgid "Starting Efficiency (%)"
+msgstr ""
 
 msgid "State / Province"
 msgstr "Estado / Província"
@@ -12545,8 +12600,14 @@ msgstr "Treinamento"
 msgid "Training Assignments"
 msgstr "Atribuições de Treinamento"
 
+msgid "Training Days"
+msgstr ""
+
 msgid "Training Plan"
 msgstr "Plano de Treinamento"
+
+msgid "Training Status"
+msgstr ""
 
 msgid "Training your team via the Academy and in-app guides"
 msgstr "Treinar sua equipe através da Academy e guias no aplicativo"
@@ -13339,6 +13400,12 @@ msgstr "Semanas 7 a 8"
 
 msgid "Weeks Open"
 msgstr "Semanas Abertas"
+
+msgid "Weeks spent shadowing another employee before working independently"
+msgstr ""
+
+msgid "Weeks to Full Efficiency"
+msgstr ""
 
 msgid "Weighted Average"
 msgstr "Média Ponderada"

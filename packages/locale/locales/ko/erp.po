@@ -347,6 +347,9 @@ msgstr "역량"
 msgid "ability"
 msgstr "역량"
 
+msgid "Ability"
+msgstr ""
+
 msgid "About"
 msgstr "정보"
 
@@ -586,6 +589,9 @@ msgstr "조건 추가"
 
 msgid "Add Contractor"
 msgstr "계약직 추가"
+
+msgid "Add Employee"
+msgstr ""
 
 msgid "Add Entry"
 msgstr "항목 추가"
@@ -1084,6 +1090,9 @@ msgstr "이 공정작업에서 {key} 파라미터를 삭제하시겠습니까? �
 msgid "Are you sure you want to delete the {name} attribute from this operation? This cannot be undone."
 msgstr "이 공정작업에서 {name} 속성을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다."
 
+msgid "Are you sure you want to delete the ability: {name}? This cannot be undone."
+msgstr ""
+
 #. placeholder {0}: account.name
 #. placeholder {1}: account.number ? ` (${account.number})` : ""
 msgid "Are you sure you want to delete the account: {0}{1}? This cannot be undone."
@@ -1328,6 +1337,9 @@ msgid "Are you sure you want to remove {0} as a supplier for this item? This can
 msgstr ""
 
 msgid "Are you sure you want to remove {supplierName} as a supplier for this item? This cannot be undone."
+msgstr ""
+
+msgid "Are you sure you want to remove this employee from the ability?"
 msgstr ""
 
 msgid "Are you sure you want to remove this item from the price list? This cannot be undone."
@@ -2848,6 +2860,9 @@ msgstr "작업장 생성"
 msgid "Created"
 msgstr "생성됨"
 
+msgid "Created ability"
+msgstr ""
+
 msgid "Created account"
 msgstr "계정 생성됨"
 
@@ -3273,6 +3288,9 @@ msgstr "부품을 주문한 시점부터 사용 가능해지기까지의 일수�
 msgid "Days in advance to generate dispatches"
 msgstr "작업지시를 사전 생성할 일수"
 
+msgid "Days of Training Completed"
+msgstr ""
+
 msgid "Days Off"
 msgstr "휴무일"
 
@@ -3450,6 +3468,9 @@ msgstr "{name} 삭제"
 
 msgid "Delete {storageUnitName}"
 msgstr "{storageUnitName} 삭제"
+
+msgid "Delete Ability"
+msgstr ""
 
 msgid "Delete API Key"
 msgstr "API 키 삭제"
@@ -4088,6 +4109,9 @@ msgstr "수정"
 msgid "Edit <0>Issue</0> Workflow"
 msgstr "<0>이슈</0> 워크플로 수정"
 
+msgid "Edit Ability"
+msgstr ""
+
 msgid "Edit Account"
 msgstr "계정 수정"
 
@@ -4150,6 +4174,9 @@ msgstr "작업지시 수정"
 
 msgid "Edit Employee"
 msgstr "직원 수정"
+
+msgid "Edit Employee Ability"
+msgstr ""
 
 msgid "Edit Employee Type"
 msgstr "직원 유형 수정"
@@ -4376,6 +4403,9 @@ msgstr "적용 시작일"
 msgid "Effective To"
 msgstr "적용 종료일"
 
+msgid "Efficiency of an untrained employee at week 0"
+msgstr ""
+
 msgid "Email"
 msgstr "이메일"
 
@@ -4397,6 +4427,9 @@ msgstr "직원"
 msgid "Employee"
 msgstr "직원"
 
+msgid "employee ability"
+msgstr ""
+
 msgid "Employee Accounts"
 msgstr "직원 계정"
 
@@ -4413,6 +4446,9 @@ msgid "Employees"
 msgstr "직원"
 
 msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr ""
+
+msgid "Employees with this ability"
 msgstr ""
 
 msgid "Empty = match every item"
@@ -4832,6 +4868,10 @@ msgstr "총계정원장 보고를 세분화하기 위한 추가 태그"
 
 msgid "Fail"
 msgstr "실패"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create ability: {0}"
+msgstr ""
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create asset class: {0}"
@@ -6492,6 +6532,9 @@ msgstr "지난 분기"
 msgid "Last synced: {0}"
 msgstr "마지막 동기화: {0}"
 
+msgid "Last Training"
+msgstr ""
+
 msgid "Last updated: {formattedDate}"
 msgstr "마지막 업데이트: {formattedDate}"
 
@@ -7320,6 +7363,9 @@ msgstr "신규"
 msgid "New <0>Issue</0> Workflow"
 msgstr "새 <0>이슈</0> 워크플로"
 
+msgid "New Ability"
+msgstr ""
+
 msgid "New Account"
 msgstr "신규 계정"
 
@@ -7715,6 +7761,9 @@ msgstr "아직 배정된 직원이 없습니다. 그룹을 추가하면 상태�
 
 msgid "No employees found"
 msgstr "직원이 없습니다"
+
+msgid "No employees have this ability"
+msgstr ""
 
 msgid "No extra cutover steps yet. Add anything specific to this customer."
 msgstr "아직 추가된 전환 단계가 없습니다. 이 고객에게 특화된 항목을 추가하세요."
@@ -10575,6 +10624,9 @@ msgstr "심각도"
 msgid "Severity"
 msgstr "심각도"
 
+msgid "Shadow Weeks"
+msgstr ""
+
 msgid "shape"
 msgstr "형상"
 
@@ -10983,6 +11035,9 @@ msgstr "…부터 시작"
 
 msgid "Started"
 msgstr "시작됨"
+
+msgid "Starting Efficiency (%)"
+msgstr ""
 
 msgid "State / Province"
 msgstr "주/도"
@@ -12545,8 +12600,14 @@ msgstr "교육"
 msgid "Training Assignments"
 msgstr "교육 배정"
 
+msgid "Training Days"
+msgstr ""
+
 msgid "Training Plan"
 msgstr "교육 계획"
+
+msgid "Training Status"
+msgstr ""
 
 msgid "Training your team via the Academy and in-app guides"
 msgstr "아카데미와 인앱 가이드를 통한 팀 교육"
@@ -13339,6 +13400,12 @@ msgstr "7~8주"
 
 msgid "Weeks Open"
 msgstr "미결 주수"
+
+msgid "Weeks spent shadowing another employee before working independently"
+msgstr ""
+
+msgid "Weeks to Full Efficiency"
+msgstr ""
 
 msgid "Weighted Average"
 msgstr "가중평균"
