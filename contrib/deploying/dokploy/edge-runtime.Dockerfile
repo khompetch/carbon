@@ -7,11 +7,12 @@
 # fails. Build context is the repo root.
 FROM supabase/edge-runtime:v1.74.0
 
-# --chmod avoids needing a RUN (and therefore a shell) in the base image.
-COPY --chmod=755 contrib/deploying/dokploy/bin/run.sh /carbon/bin/run.sh
+# No run.sh shim here: the root .dockerignore excludes contrib/ from the build
+# context (the shim only existed so bind-mount-era CMD arrays could be reused),
+# and a Dockerfile can set the entrypoint directly.
 COPY packages/database/supabase/functions /home/deno/functions
 COPY packages/database/src /home/src
 COPY packages/dev/docker/edge-main /home/deno/main
 
-ENTRYPOINT ["/carbon/bin/run.sh"]
-CMD ["edge-runtime", "start", "--main-service", "/home/deno/main"]
+ENTRYPOINT ["edge-runtime"]
+CMD ["start", "--main-service", "/home/deno/main"]
