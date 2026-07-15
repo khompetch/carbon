@@ -6,7 +6,7 @@ Locations, work centers, processes, abilities (skills), partners, contractors, e
 
 - **Location** — physical site/facility. Every inventory record, job, and employee is scoped to a location. Has address, timezone, and GPS coordinates. Company-scoped.
 - **Work Center** — production station within a location. Operations schedule onto work centers. Have capacity, rates, and active/inactive status. MUST soft-delete via `active: false`.
-- **Process** — type of work (e.g., "CNC Milling", "Welding"). Operations reference a process. Linked to work centers via `workCenterProcess`. MUST soft-delete via `active: false`.
+- **Process** — type of work (e.g., "CNC Milling", "Welding"). Operations reference a process. Linked to work centers via `workCenterProcess`. MUST soft-delete via `active: false`. May set `requiredAbilityId` and `processTraining` rows — MES blocks operators missing any of them (union with the work center's requirements) from starting operations of this process.
 - **Ability** — employee skill/certification with a learning curve. Tracked per employee via `employeeAbility` with training status, shadow weeks, and completion tracking. Managed at `/x/resources/abilities` (list/new/delete) and `/x/resources/ability/:id` (detail + employee assignment) — routes `abilities*.tsx` / `ability.$abilityId*.tsx`, components in `ui/Abilities/`. A work center may set `requiredAbilityId`; MES then hard-blocks operators without an `active + trainingCompleted` `employeeAbility` from starting operations there (guards in `apps/mes` `x+/start.$operationId.tsx` and `x+/event.tsx` via `getMissingRequiredAbility`). Spec: `.ai/specs/2026-07-14-work-center-required-ability.md`.
 - **Partner** — external supplier location with ability mappings for outsourced work.
 - **Contractor** — supplier contact working as contract labor, with hours-per-week and ability assignments via `contractorAbility`.
@@ -57,7 +57,7 @@ pnpm --filter @carbon/erp test -- --testPathPattern=resources
 | `maintenanceSchedule` / `maintenanceScheduleItem` | Preventive maintenance plans with spare parts |
 | `maintenanceFailureMode` | Failure categories shared with quality module |
 | `training` / `trainingAssignment` / `trainingQuestion` / `trainingCompletion` | Training programs with quizzes and completion tracking |
-| `workCenterTraining` | Trainings a work center requires before operators may start operations (enforced in MES) |
+| `workCenterTraining` / `processTraining` | Trainings a work center / process requires before operators may start operations (union-enforced in MES via RPC `get_missing_required_trainings(workCenterId, processId, employeeId, companyId)`) |
 | `suggestion` / `suggestions` (view) | Employee suggestions |
 
 ## Key Service Functions

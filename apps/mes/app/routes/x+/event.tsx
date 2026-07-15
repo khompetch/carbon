@@ -9,7 +9,7 @@ import { data } from "react-router";
 import { productionEventValidator } from "~/services/models";
 import {
   endProductionEvent,
-  getMissingWorkCenterRequirements,
+  getMissingOperationRequirements,
   startProductionEvent
 } from "~/services/operations.service";
 
@@ -36,24 +36,25 @@ export async function action({ request }: ActionFunctionArgs) {
 
   if (productionAction === "Start") {
     const serviceRole = await getCarbonServiceRole();
-    // Resolve the work center from the operation server-side rather than
-    // trusting the submitted workCenterId.
+    // Resolve the work center and process from the operation server-side
+    // rather than trusting the submitted workCenterId.
     const jobOperation = await serviceRole
       .from("jobOperation")
-      .select("workCenterId")
+      .select("workCenterId, processId")
       .eq("id", d.jobOperationId)
       .eq("companyId", companyId)
       .maybeSingle();
 
-    const missing = await getMissingWorkCenterRequirements(serviceRole, {
+    const missing = await getMissingOperationRequirements(serviceRole, {
       workCenterId: jobOperation.data?.workCenterId,
+      processId: jobOperation.data?.processId,
       employeeId: userId,
       companyId
     });
 
-    if (missing.abilityName || missing.trainingNames.length > 0) {
+    if (missing.abilityNames.length > 0 || missing.trainingNames.length > 0) {
       const requirements = [
-        ...(missing.abilityName ? [`ability: ${missing.abilityName}`] : []),
+        ...missing.abilityNames.map((name) => `ability: ${name}`),
         ...missing.trainingNames.map((name) => `training: ${name}`)
       ].join(", ");
       return data(
@@ -61,7 +62,7 @@ export async function action({ request }: ActionFunctionArgs) {
         await flash(
           request,
           error(
-            `You have not completed the requirements for this work center (${requirements})`,
+            `You have not completed the requirements for this operation (${requirements})`,
             "Cannot start operation"
           )
         )

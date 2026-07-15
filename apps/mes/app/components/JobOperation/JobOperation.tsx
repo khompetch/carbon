@@ -168,7 +168,7 @@ type JobOperationProps = {
     parameters: JobOperationParameter[];
   }>;
   job: Job;
-  missingRequirements: { abilityName: string | null; trainingNames: string[] };
+  missingRequirements: { abilityNames: string[]; trainingNames: string[] };
   thumbnailPath: string | null;
   trackedEntities: TrackedEntity[];
   workCenter: Promise<
@@ -2121,19 +2121,16 @@ export const JobOperation = ({
                 )}
               </div>
 
-              {(missingRequirements.abilityName !== null ||
+              {(missingRequirements.abilityNames.length > 0 ||
                 missingRequirements.trainingNames.length > 0) && (
                 <div className="flex items-start gap-2 rounded-lg border border-amber-500/50 bg-amber-500/10 p-3 max-w-[200px] text-xs text-amber-600 dark:text-amber-400">
                   <LuTriangleAlert className="size-4 shrink-0" />
                   <div className="flex flex-col gap-1">
-                    {missingRequirements.abilityName !== null && (
-                      <span>
-                        <Trans>
-                          Requires ability: {missingRequirements.abilityName} —
-                          training not completed
-                        </Trans>
+                    {missingRequirements.abilityNames.map((name) => (
+                      <span key={name}>
+                        <Trans>Requires ability: {name}</Trans>
                       </span>
-                    )}
+                    ))}
                     {missingRequirements.trainingNames.map((name) => (
                       <span key={name}>
                         <Trans>Requires training: {name}</Trans>
@@ -2162,7 +2159,7 @@ export const JobOperation = ({
                   method?.requiresBatchTracking === true
                 }
                 startDisabled={
-                  missingRequirements.abilityName !== null ||
+                  missingRequirements.abilityNames.length > 0 ||
                   missingRequirements.trainingNames.length > 0
                 }
                 trackedEntityId={trackedEntityId}

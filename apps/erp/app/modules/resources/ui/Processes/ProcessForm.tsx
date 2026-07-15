@@ -33,13 +33,15 @@ import { useFetcher, useNavigate } from "react-router";
 import type { z } from "zod";
 import { SupplierAvatar } from "~/components";
 import {
+  Ability,
   Boolean,
   CustomFormFields,
   Hidden,
   Input,
   Select,
   StandardFactor,
-  Submit
+  Submit,
+  Trainings
 } from "~/components/Form";
 import { useSupplierProcesses } from "~/components/Form/SupplierProcess";
 import WorkCenters from "~/components/Form/WorkCenters";
@@ -152,6 +154,16 @@ const ProcessForm = ({
                 {processType !== "Inside" && (
                   <SupplierProcesses processId={initialValues.id} />
                 )}
+                <Ability
+                  name="requiredAbilityId"
+                  label={t`Required Ability`}
+                  helperText={t`Only employees who have completed training for this ability can start operations for this process`}
+                />
+                <Trainings
+                  name="requiredTrainingIds"
+                  label={t`Required Trainings`}
+                  helperText={t`Employees must hold a valid completion for every selected training to start operations for this process`}
+                />
                 <Boolean
                   name="completeAllOnScan"
                   label={t`Complete all quantities on barcode scan`}

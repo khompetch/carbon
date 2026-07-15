@@ -970,6 +970,37 @@ export async function getWorkCenterRequiredTrainingIds(
     .eq("workCenterId", workCenterId);
 }
 
+export async function getProcessRequirements(
+  client: SupabaseClient<Database>,
+  processId: string
+): Promise<{
+  requiredAbilityId: string | null;
+  requiredTrainingIds: string[];
+}> {
+  // processTraining and process.requiredAbilityId are not yet in the generated
+  // DB types — regenerate after applying migration 20260715084216 and drop
+  // this cast. (The processes view predates the column, so read the table.)
+  const anyClient = client as SupabaseClient<any>;
+  const [processRow, trainings] = await Promise.all([
+    anyClient
+      .from("process")
+      .select("requiredAbilityId")
+      .eq("id", processId)
+      .maybeSingle(),
+    anyClient
+      .from("processTraining")
+      .select("trainingId")
+      .eq("processId", processId)
+  ]);
+
+  return {
+    requiredAbilityId: processRow.data?.requiredAbilityId ?? null,
+    requiredTrainingIds: (trainings.data ?? []).map(
+      (t: { trainingId: string }) => t.trainingId
+    )
+  };
+}
+
 export async function getWorkCenters(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1665,8 +1696,11 @@ export async function upsertProcess(
         customFields?: Json;
       })
 ) {
+  // processTraining is not yet in the generated DB types — regenerate after
+  // applying migration 20260715084216 and drop this cast.
+  const trainingClient = client as SupabaseClient<any>;
   if ("createdBy" in process) {
-    const { workCenters, ...insert } = process;
+    const { workCenters, requiredTrainingIds, ...insert } = process;
     const processInsert = await client
       .from("process")
       .insert([
@@ -1698,9 +1732,26 @@ export async function upsertProcess(
       }
     }
 
+    if (requiredTrainingIds?.length) {
+      const processTrainingInsert = await trainingClient
+        .from("processTraining")
+        .insert(
+          requiredTrainingIds.map((trainingId) => ({
+            processId,
+            trainingId,
+            companyId: insert.companyId,
+            createdBy: insert.createdBy
+          }))
+        );
+
+      if (processTrainingInsert.error) {
+        return processTrainingInsert;
+      }
+    }
+
     return processInsert;
   }
-  const { workCenters, ...update } = process;
+  const { workCenters, requiredTrainingIds, ...update } = process;
   const processUpdate = await client
     .from("process")
     .update(sanitize(update))
@@ -1731,6 +1782,31 @@ export async function upsertProcess(
       .insert(processProcesses);
     if (processProcessUpdate.error) {
       return processProcessUpdate;
+    }
+  }
+
+  const deleteTrainings = await trainingClient
+    .from("processTraining")
+    .delete()
+    .eq("processId", process.id);
+
+  if (deleteTrainings.error) {
+    return deleteTrainings;
+  }
+
+  if (requiredTrainingIds?.length) {
+    const processTrainingUpdate = await trainingClient
+      .from("processTraining")
+      .insert(
+        requiredTrainingIds.map((trainingId) => ({
+          processId: process.id,
+          trainingId,
+          companyId: update.companyId,
+          createdBy: update.updatedBy
+        }))
+      );
+    if (processTrainingUpdate.error) {
+      return processTrainingUpdate;
     }
   }
 

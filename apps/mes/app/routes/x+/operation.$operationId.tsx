@@ -15,7 +15,7 @@ import {
   getJobOperationById,
   getJobOperationProcedure,
   getKanbanByJobId,
-  getMissingWorkCenterRequirements,
+  getMissingOperationRequirements,
   getNonConformanceActions,
   getProductionEventsForJobOperation,
   getProductionQuantitiesForJobOperation,
@@ -90,8 +90,9 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     getKanbanByJobId(serviceRole, job.data.id),
     getJobMethodBomIdMap(serviceRole, job.data.id!),
     getCompanySettings(serviceRole, companyId),
-    getMissingWorkCenterRequirements(serviceRole, {
+    getMissingOperationRequirements(serviceRole, {
       workCenterId: operation.data?.[0].workCenterId,
+      processId: operation.data?.[0].processId,
       employeeId: userId,
       companyId
     })

@@ -4529,6 +4529,9 @@ msgstr "कर्मचारी"
 msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
 msgstr ""
 
+msgid "Employees must hold a valid completion for every selected training to start operations for this process"
+msgstr ""
+
 msgid "Employees with this ability"
 msgstr ""
 
@@ -8240,6 +8243,9 @@ msgid "Only Draft procedures are editable. Create a new version to change an Act
 msgstr "केवल ड्राफ्ट प्रक्रियाएं संपादन योग्य हैं। किसी सक्रिय या संग्रहीत प्रक्रिया को बदलने के लिए नया संस्करण बनाएं।"
 
 msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
+
+msgid "Only employees who have completed training for this ability can start operations for this process"
 msgstr ""
 
 msgid "Only empty, open periods can be deleted."
