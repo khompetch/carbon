@@ -9,6 +9,7 @@ import { data } from "react-router";
 import { productionEventValidator } from "~/services/models";
 import {
   endProductionEvent,
+  getMissingWorkCenterRequirements,
   startProductionEvent
 } from "~/services/operations.service";
 
@@ -34,6 +35,39 @@ export async function action({ request }: ActionFunctionArgs) {
   } = validation.data;
 
   if (productionAction === "Start") {
+    const serviceRole = await getCarbonServiceRole();
+    // Resolve the work center from the operation server-side rather than
+    // trusting the submitted workCenterId.
+    const jobOperation = await serviceRole
+      .from("jobOperation")
+      .select("workCenterId")
+      .eq("id", d.jobOperationId)
+      .eq("companyId", companyId)
+      .maybeSingle();
+
+    const missing = await getMissingWorkCenterRequirements(serviceRole, {
+      workCenterId: jobOperation.data?.workCenterId,
+      employeeId: userId,
+      companyId
+    });
+
+    if (missing.abilityName || missing.trainingNames.length > 0) {
+      const requirements = [
+        ...(missing.abilityName ? [`ability: ${missing.abilityName}`] : []),
+        ...missing.trainingNames.map((name) => `training: ${name}`)
+      ].join(", ");
+      return data(
+        {},
+        await flash(
+          request,
+          error(
+            `You have not completed the requirements for this work center (${requirements})`,
+            "Cannot start operation"
+          )
+        )
+      );
+    }
+
     const startEvent = await startProductionEvent(
       client,
       {

@@ -168,6 +168,7 @@ type JobOperationProps = {
     parameters: JobOperationParameter[];
   }>;
   job: Job;
+  missingRequirements: { abilityName: string | null; trainingNames: string[] };
   thumbnailPath: string | null;
   trackedEntities: TrackedEntity[];
   workCenter: Promise<
@@ -217,6 +218,7 @@ export const JobOperation = ({
   kanban,
   materials,
   method,
+  missingRequirements,
   nonConformanceActions,
   operation: originalOperation,
   procedure,
@@ -2119,6 +2121,28 @@ export const JobOperation = ({
                 )}
               </div>
 
+              {(missingRequirements.abilityName !== null ||
+                missingRequirements.trainingNames.length > 0) && (
+                <div className="flex items-start gap-2 rounded-lg border border-amber-500/50 bg-amber-500/10 p-3 max-w-[200px] text-xs text-amber-600 dark:text-amber-400">
+                  <LuTriangleAlert className="size-4 shrink-0" />
+                  <div className="flex flex-col gap-1">
+                    {missingRequirements.abilityName !== null && (
+                      <span>
+                        <Trans>
+                          Requires ability: {missingRequirements.abilityName} —
+                          training not completed
+                        </Trans>
+                      </span>
+                    )}
+                    {missingRequirements.trainingNames.map((name) => (
+                      <span key={name}>
+                        <Trans>Requires training: {name}</Trans>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <WorkTypeToggle
                 active={active}
                 operation={operation}
@@ -2136,6 +2160,10 @@ export const JobOperation = ({
                 isTrackedActivity={
                   method?.requiresSerialTracking === true ||
                   method?.requiresBatchTracking === true
+                }
+                startDisabled={
+                  missingRequirements.abilityName !== null ||
+                  missingRequirements.trainingNames.length > 0
                 }
                 trackedEntityId={trackedEntityId}
               />

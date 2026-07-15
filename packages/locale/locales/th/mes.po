@@ -770,6 +770,9 @@ msgstr ""
 msgid "Preventive"
 msgstr ""
 
+msgid "Previous"
+msgstr ""
+
 msgid "Print"
 msgstr ""
 
@@ -829,6 +832,13 @@ msgid "Remove Inventory"
 msgstr ""
 
 msgid "Remove part"
+msgstr ""
+
+#. placeholder {0}: missingRequirements.abilityName
+msgid "Requires ability: {0} — training not completed"
+msgstr ""
+
+msgid "Requires training: {name}"
 msgstr ""
 
 msgid "Rework"

@@ -4493,6 +4493,9 @@ msgstr "сотрудники"
 msgid "Employees"
 msgstr "Сотрудники"
 
+msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr ""
+
 msgid "Empty = match every item"
 msgstr "Пусто = соответствует каждому товару"
 
@@ -6740,9 +6743,6 @@ msgstr "Параметры списка"
 msgid "Live"
 msgstr ""
 
-msgid "Live in weeks, not quarters. Most of the product is already built."
-msgstr "Начните работу за недели, а не за кварталы. Большая часть продукта уже готова."
-
 msgid "Live on Carbon"
 msgstr "Работает на Carbon"
 
@@ -8190,6 +8190,8 @@ msgstr "Одна система от предложения до оплаты"
 msgid "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 msgstr "Редактировать можно только процедуры в статусе «Черновик». Создайте новую версию, чтобы изменить активную или архивную процедуру."
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
 msgid "Only empty, open periods can be deleted."
 msgstr "Удалять можно только пустые открытые периоды."
 
@@ -9844,6 +9846,9 @@ msgstr "Требуется одобрение для документов кач
 msgid "Required"
 msgstr "Обязательно"
 
+msgid "Required Ability"
+msgstr ""
+
 msgid "Required Action"
 msgstr "Требуемое действие"
 
@@ -9855,6 +9860,9 @@ msgstr "Требуемые действия (по порядку)"
 
 msgid "Required Date"
 msgstr "Требуемая дата"
+
+msgid "Required Trainings"
+msgstr ""
 
 msgid "Requirement"
 msgstr "Требование"

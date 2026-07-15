@@ -4493,6 +4493,9 @@ msgstr "empleados"
 msgid "Employees"
 msgstr "Empleados"
 
+msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr ""
+
 msgid "Empty = match every item"
 msgstr "Vacío = coincide con todos los elementos"
 
@@ -6740,9 +6743,6 @@ msgstr "Parámetros de Lista"
 msgid "Live"
 msgstr ""
 
-msgid "Live in weeks, not quarters. Most of the product is already built."
-msgstr "Vive en semanas, no en trimestres. La mayoría del producto ya está construido."
-
 msgid "Live on Carbon"
 msgstr "En vivo en Carbon"
 
@@ -8190,6 +8190,8 @@ msgstr "Un sistema de presupuesto a efectivo"
 msgid "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 msgstr "Solo los procedimientos en borrador son editables. Cree una nueva versión para cambiar un procedimiento activo o archivado."
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
 msgid "Only empty, open periods can be deleted."
 msgstr "Solo se pueden eliminar los períodos vacíos y abiertos."
 
@@ -9844,6 +9846,9 @@ msgstr "Requerir aprobación para documentos de calidad en su flujo de trabajo"
 msgid "Required"
 msgstr "Requerido"
 
+msgid "Required Ability"
+msgstr ""
+
 msgid "Required Action"
 msgstr "Acción Requerida"
 
@@ -9855,6 +9860,9 @@ msgstr "Acciones Requeridas (en orden)"
 
 msgid "Required Date"
 msgstr "Fecha Requerida"
+
+msgid "Required Trainings"
+msgstr ""
 
 msgid "Requirement"
 msgstr "Requisito"

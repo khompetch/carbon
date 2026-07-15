@@ -782,6 +782,9 @@ msgstr "모든 품목"
 msgid "All jobs completed"
 msgstr "모든 작업 완료됨"
 
+msgid "All Locations"
+msgstr ""
+
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "선택한 그룹의 모든 구성원과 선택한 개인이 요청을 승인할 수 있습니다"
 
@@ -1572,6 +1575,9 @@ msgstr "칸반이 스캔되면 작업을 자동으로 릴리즈"
 
 msgid "Automatically start the job when the kanban is scanned"
 msgstr "칸반이 스캔되면 작업을 자동으로 시작"
+
+msgid "Availability"
+msgstr ""
 
 msgid "available"
 msgstr "사용 가능"
@@ -4021,6 +4027,9 @@ msgstr "PDF 다운로드"
 msgid "Download template"
 msgstr "템플릿 다운로드"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "초안"
 
@@ -4483,6 +4492,9 @@ msgstr "직원"
 
 msgid "Employees"
 msgstr "직원"
+
+msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr ""
 
 msgid "Empty = match every item"
 msgstr "비어 있으면 모든 품목과 일치"
@@ -5379,6 +5391,9 @@ msgstr "ITAR 데이터를 다루는 미국 기업을 위한"
 msgid "Forecast method: <0>{0}</0>. This row was not derived from active jobs, so no parent sources are available."
 msgstr "예측 방법: <0>{0}</0>. 이 행은 진행 중인 작업에서 파생되지 않았으므로 상위 소스를 사용할 수 없습니다."
 
+msgid "Forgot password? Sign in with email link"
+msgstr ""
+
 msgid "Forgot to Clock Out?"
 msgstr "퇴근 체크를 잊으셨나요?"
 
@@ -5693,6 +5708,9 @@ msgstr "각 게이트가 일정대로 통과되면 도입 일정은 유지됩니
 
 msgid "Going live on Carbon"
 msgstr "Carbon 도입"
+
+msgid "Good"
+msgstr ""
 
 #. placeholder {0}: user.firstName
 msgid "Good afternoon, {0}"
@@ -6721,6 +6739,9 @@ msgstr "목록 옵션"
 
 msgid "List Parameters"
 msgstr "목록 파라미터"
+
+msgid "Live"
+msgstr ""
 
 msgid "Live on Carbon"
 msgstr "Carbon 도입 완료"
@@ -7932,6 +7953,9 @@ msgstr "설정된 프린터가 없습니다"
 msgid "No printers configured. Click \"Add Printer\" to create one."
 msgstr "설정된 프린터가 없습니다. \"프린터 추가\"를 클릭하여 생성하세요."
 
+msgid "No production data within range"
+msgstr ""
+
 msgid "No Quote"
 msgstr "견적 없음"
 
@@ -8076,6 +8100,15 @@ msgstr "번호"
 msgid "Number of inventory units per purchase unit"
 msgstr "구매 단위당 재고 단위 수"
 
+msgid "OEE"
+msgstr ""
+
+msgid "OEE by Process"
+msgstr ""
+
+msgid "OEE by Work Center"
+msgstr ""
+
 msgid "OEE Impact"
 msgstr "OEE 영향"
 
@@ -8157,6 +8190,8 @@ msgstr "견적부터 수금까지 하나의 시스템으로"
 msgid "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 msgstr "초안 상태의 절차만 수정할 수 있습니다. 활성 또는 보관된 절차를 변경하려면 새 버전을 생성하세요."
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
 msgid "Only empty, open periods can be deleted."
 msgstr "비어있는 열린 기간만 삭제할 수 있습니다."
 
@@ -8534,6 +8569,9 @@ msgstr "합격"
 msgid "Passed"
 msgstr "합격됨"
 
+msgid "Password"
+msgstr ""
+
 msgid "Path"
 msgstr "경로"
 
@@ -8626,6 +8664,9 @@ msgstr "로트 비율"
 
 msgid "Perfect for low-cost evaluation"
 msgstr "저비용 평가에 적합"
+
+msgid "Performance"
+msgstr ""
 
 msgid "Period"
 msgstr "기간"
@@ -9805,6 +9846,9 @@ msgstr "워크플로 내 품질 문서에 승인 필요"
 msgid "Required"
 msgstr "필수"
 
+msgid "Required Ability"
+msgstr ""
+
 msgid "Required Action"
 msgstr "필수 조치"
 
@@ -9816,6 +9860,9 @@ msgstr "필수 조치(순서대로)"
 
 msgid "Required Date"
 msgstr "필요일"
+
+msgid "Required Trainings"
+msgstr ""
 
 msgid "Requirement"
 msgstr "요구사항"
@@ -10081,6 +10128,9 @@ msgstr "매주 공급과 수요를 반영해 갱신되는 재고 — 그 라인�
 msgid "Running Total"
 msgstr "누계"
 
+msgid "Runtime"
+msgstr ""
+
 msgid "S-1 (coarsest special)"
 msgstr "S-1(가장 완화된 특별수준)"
 
@@ -10292,6 +10342,9 @@ msgstr "범위"
 
 msgid "Scrap"
 msgstr "스크랩"
+
+msgid "Scrap by Reason"
+msgstr ""
 
 msgid "Scrap Percent"
 msgstr "스크랩 비율"
@@ -10640,6 +10693,9 @@ msgstr "주별 수요 예측치를 설정하세요"
 msgid "Set due date"
 msgstr "기한 설정"
 
+msgid "Set Password"
+msgstr ""
+
 msgid "Set Pricing"
 msgstr "가격 설정"
 
@@ -10884,6 +10940,9 @@ msgstr "생성된 PDF의 모든 페이지 배경에 옅게 표시됩니다"
 msgid "Shown to the user when this rule fails."
 msgstr "이 규칙이 실패할 때 사용자에게 표시됩니다."
 
+msgid "Sign in"
+msgstr ""
+
 msgid "Sign in with Email"
 msgstr "이메일로 로그인"
 
@@ -10895,6 +10954,9 @@ msgstr "Outlook으로 로그인"
 
 msgid "Sign in with Passkey"
 msgstr "패스키로 로그인"
+
+msgid "Sign in with password instead"
+msgstr ""
 
 msgid "Sign Out"
 msgstr "로그아웃"

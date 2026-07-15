@@ -4493,6 +4493,9 @@ msgstr "employees"
 msgid "Employees"
 msgstr "Employees"
 
+msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr "Employees must hold a valid completion for every selected training to start operations at this work center"
+
 msgid "Empty = match every item"
 msgstr "Empty = match every item"
 
@@ -6740,9 +6743,6 @@ msgstr "List Parameters"
 msgid "Live"
 msgstr "Live"
 
-msgid "Live in weeks, not quarters. Most of the product is already built."
-msgstr "Live in weeks, not quarters. Most of the product is already built."
-
 msgid "Live on Carbon"
 msgstr "Live on Carbon"
 
@@ -8190,6 +8190,8 @@ msgstr "One system from quote to cash"
 msgid "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 msgstr "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr "Only employees who have completed training for this ability can start operations at this work center"
 msgid "Only empty, open periods can be deleted."
 msgstr "Only empty, open periods can be deleted."
 
@@ -9844,6 +9846,9 @@ msgstr "Require approval for quality documents in your workflow"
 msgid "Required"
 msgstr "Required"
 
+msgid "Required Ability"
+msgstr "Required Ability"
+
 msgid "Required Action"
 msgstr "Required Action"
 
@@ -9855,6 +9860,9 @@ msgstr "Required Actions (in order)"
 
 msgid "Required Date"
 msgstr "Required Date"
+
+msgid "Required Trainings"
+msgstr "Required Trainings"
 
 msgid "Requirement"
 msgstr "Requirement"

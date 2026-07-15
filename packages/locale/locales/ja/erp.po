@@ -4493,6 +4493,9 @@ msgstr "従業員"
 msgid "Employees"
 msgstr "従業員"
 
+msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr ""
+
 msgid "Empty = match every item"
 msgstr "空 = すべてのアイテムに一致"
 
@@ -6740,9 +6743,6 @@ msgstr "リストパラメータ"
 msgid "Live"
 msgstr ""
 
-msgid "Live in weeks, not quarters. Most of the product is already built."
-msgstr "数週間で導入でき、四半期単位ではありません。製品のほとんどはすでに構築されています。"
-
 msgid "Live on Carbon"
 msgstr "Carbonで稼働中"
 
@@ -8190,6 +8190,8 @@ msgstr "見積から現金化まで一つのシステム"
 msgid "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 msgstr "編集可能なのは下書き手順のみです。アクティブまたはアーカイブされた手順を変更するには、新しいバージョンを作成してください。"
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
 msgid "Only empty, open periods can be deleted."
 msgstr "空のオープン期間のみ削除できます。"
 
@@ -9844,6 +9846,9 @@ msgstr "ワークフロー内の品質文書の承認が必要です"
 msgid "Required"
 msgstr "必須"
 
+msgid "Required Ability"
+msgstr ""
+
 msgid "Required Action"
 msgstr "必須アクション"
 
@@ -9855,6 +9860,9 @@ msgstr "必要なアクション（順番に）"
 
 msgid "Required Date"
 msgstr "必須日付"
+
+msgid "Required Trainings"
+msgstr ""
 
 msgid "Requirement"
 msgstr "要件"

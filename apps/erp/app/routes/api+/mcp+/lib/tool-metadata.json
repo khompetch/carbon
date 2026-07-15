@@ -29635,6 +29635,31 @@
       }
     },
     {
+      "name": "resources_getWorkCenterRequiredTrainingIds",
+      "module": "resources",
+      "classification": "READ",
+      "description": "get work center required training ids",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "workCenterId"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "workCenterId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workCenterId"
+        ]
+      }
+    },
+    {
       "name": "resources_getWorkCenters",
       "module": "resources",
       "classification": "READ",

@@ -4493,6 +4493,9 @@ msgstr "employés"
 msgid "Employees"
 msgstr "Employés"
 
+msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr ""
+
 msgid "Empty = match every item"
 msgstr "Vide = correspond à tous les articles"
 
@@ -6740,9 +6743,6 @@ msgstr "Paramètres de liste"
 msgid "Live"
 msgstr ""
 
-msgid "Live in weeks, not quarters. Most of the product is already built."
-msgstr "Vivez en semaines, pas en trimestres. La plupart du produit est déjà construit."
-
 msgid "Live on Carbon"
 msgstr "En direct sur Carbon"
 
@@ -8190,6 +8190,8 @@ msgstr "Un système du devis à la facturation"
 msgid "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 msgstr "Seules les procédures en brouillon sont modifiables. Créez une nouvelle version pour modifier une procédure active ou archivée."
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
 msgid "Only empty, open periods can be deleted."
 msgstr "Seules les périodes vides et ouvertes peuvent être supprimées."
 
@@ -9844,6 +9846,9 @@ msgstr "Exiger une approbation pour les documents de qualité dans votre flux de
 msgid "Required"
 msgstr "Requis"
 
+msgid "Required Ability"
+msgstr ""
+
 msgid "Required Action"
 msgstr "Action requise"
 
@@ -9855,6 +9860,9 @@ msgstr "Actions Requises (par ordre)"
 
 msgid "Required Date"
 msgstr "Date requise"
+
+msgid "Required Trainings"
+msgstr ""
 
 msgid "Requirement"
 msgstr "Exigence"

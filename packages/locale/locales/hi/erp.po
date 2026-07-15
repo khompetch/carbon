@@ -4493,6 +4493,9 @@ msgstr "कर्मचारियों"
 msgid "Employees"
 msgstr "कर्मचारी"
 
+msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr ""
+
 msgid "Empty = match every item"
 msgstr "खाली = हर आइटम से मेल खाएं"
 
@@ -6740,9 +6743,6 @@ msgstr "सूची पैरामीटर"
 msgid "Live"
 msgstr ""
 
-msgid "Live in weeks, not quarters. Most of the product is already built."
-msgstr "हफ्तों में लाइव हो जाएं, महीनों में नहीं। अधिकांश उत्पाद पहले से ही बनाया जा चुका है।"
-
 msgid "Live on Carbon"
 msgstr "Carbon पर लाइव"
 
@@ -8190,6 +8190,8 @@ msgstr "उद्धरण से नकद तक एक प्रणाली"
 msgid "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 msgstr "केवल ड्राफ्ट प्रक्रियाएं संपादन योग्य हैं। किसी सक्रिय या संग्रहीत प्रक्रिया को बदलने के लिए नया संस्करण बनाएं।"
 
+msgid "Only employees who have completed training for this ability can start operations at this work center"
+msgstr ""
 msgid "Only empty, open periods can be deleted."
 msgstr "केवल खाली, खुली अवधियों को हटाया जा सकता है।"
 
@@ -9844,6 +9846,9 @@ msgstr "आपके वर्कफ़्लो में गुणवत्त
 msgid "Required"
 msgstr "आवश्यक"
 
+msgid "Required Ability"
+msgstr ""
+
 msgid "Required Action"
 msgstr "आवश्यक कार्रवाई"
 
@@ -9855,6 +9860,9 @@ msgstr "आवश्यक क्रियाएं (क्रम में)"
 
 msgid "Required Date"
 msgstr "आवश्यक तारीख"
+
+msgid "Required Trainings"
+msgstr ""
 
 msgid "Requirement"
 msgstr "आवश्यकता"

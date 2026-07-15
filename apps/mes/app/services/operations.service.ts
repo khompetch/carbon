@@ -924,6 +924,88 @@ export async function getWorkCenter(
     .single();
 }
 
+export async function getMissingRequiredAbility(
+  client: SupabaseClient<Database>,
+  args: {
+    workCenterId: string | null | undefined;
+    employeeId: string;
+    companyId: string;
+  }
+): Promise<{ abilityId: string; abilityName: string } | null> {
+  const { workCenterId, employeeId, companyId } = args;
+  if (!workCenterId) return null;
+
+  const workCenter = await client
+    .from("workCenter")
+    .select("requiredAbilityId, ability(name)")
+    .eq("id", workCenterId)
+    .maybeSingle();
+
+  const requiredAbilityId = workCenter.data?.requiredAbilityId;
+  if (!requiredAbilityId) return null;
+
+  const employeeAbility = await client
+    .from("employeeAbility")
+    .select("id")
+    .eq("employeeId", employeeId)
+    .eq("abilityId", requiredAbilityId)
+    .eq("companyId", companyId)
+    .eq("active", true)
+    .eq("trainingCompleted", true)
+    .maybeSingle();
+
+  if (employeeAbility.data) return null;
+
+  return {
+    abilityId: requiredAbilityId,
+    abilityName: workCenter.data?.ability?.name ?? requiredAbilityId
+  };
+}
+
+async function getMissingRequiredTrainings(
+  client: SupabaseClient<Database>,
+  args: {
+    workCenterId: string;
+    employeeId: string;
+    companyId: string;
+  }
+): Promise<{ trainingId: string; name: string }[]> {
+  // get_missing_required_trainings is not yet in the generated DB types —
+  // regenerate after applying migration 20260714171532 and drop this cast.
+  const result = await (client as SupabaseClient<any>).rpc(
+    "get_missing_required_trainings",
+    {
+      p_work_center_id: args.workCenterId,
+      p_employee_id: args.employeeId,
+      p_company_id: args.companyId
+    }
+  );
+
+  return (result.data ?? []) as { trainingId: string; name: string }[];
+}
+
+export async function getMissingWorkCenterRequirements(
+  client: SupabaseClient<Database>,
+  args: {
+    workCenterId: string | null | undefined;
+    employeeId: string;
+    companyId: string;
+  }
+): Promise<{ abilityName: string | null; trainingNames: string[] }> {
+  const { workCenterId, employeeId, companyId } = args;
+  if (!workCenterId) return { abilityName: null, trainingNames: [] };
+
+  const [missingAbility, missingTrainings] = await Promise.all([
+    getMissingRequiredAbility(client, { workCenterId, employeeId, companyId }),
+    getMissingRequiredTrainings(client, { workCenterId, employeeId, companyId })
+  ]);
+
+  return {
+    abilityName: missingAbility?.abilityName ?? null,
+    trainingNames: missingTrainings.map((t) => t.name)
+  };
+}
+
 export async function getWorkCentersByLocation(
   client: SupabaseClient<Database>,
   locationId: string

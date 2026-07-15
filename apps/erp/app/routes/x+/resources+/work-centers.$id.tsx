@@ -10,6 +10,7 @@ import type {
 import { redirect, useLoaderData, useNavigate } from "react-router";
 import {
   getWorkCenter,
+  getWorkCenterRequiredTrainingIds,
   upsertWorkCenter,
   WorkCenterForm,
   workCenterValidator
@@ -27,7 +28,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const { id } = params;
   if (!id) throw notFound("Invalid work center id");
 
-  const workCenter = await getWorkCenter(client, id);
+  const [workCenter, requiredTrainings] = await Promise.all([
+    getWorkCenter(client, id),
+    getWorkCenterRequiredTrainingIds(client, id)
+  ]);
   if (workCenter.error) {
     throw redirect(
       path.to.workCenters,
@@ -38,7 +42,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     );
   }
 
-  return { workCenter: workCenter.data };
+  return {
+    workCenter: workCenter.data,
+    requiredTrainingIds: requiredTrainings.data?.map((t) => t.trainingId) ?? []
+  };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -89,7 +96,7 @@ export async function clientAction({ serverAction }: ClientActionFunctionArgs) {
 }
 
 export default function WorkCenterRoute() {
-  const { workCenter } = useLoaderData<typeof loader>();
+  const { workCenter, requiredTrainingIds } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const onClose = () => navigate(path.to.workCenters);
 
@@ -105,6 +112,7 @@ export default function WorkCenterRoute() {
     overheadRate: workCenter?.overheadRate ?? 0,
     processes: workCenter?.processes ?? [],
     requiredAbilityId: workCenter?.requiredAbilityId ?? undefined,
+    requiredTrainingIds,
     ...getCustomFields(workCenter?.customFields)
   };
 

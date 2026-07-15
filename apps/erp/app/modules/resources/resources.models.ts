@@ -490,6 +490,9 @@ export const workCenterValidator = z.object({
   overheadRate: zfd.numeric(z.number().min(0)),
   processes: z
     .array(z.string().min(1, { message: "Invalid process" }))
+    .optional(),
+  requiredAbilityId: zfd.text(z.string().optional()),
+  requiredTrainingIds: z
+    .array(z.string().min(1, { message: "Invalid training" }))
     .optional()
-  // requiredAbilityId: zfd.text(z.string().optional()),
 });

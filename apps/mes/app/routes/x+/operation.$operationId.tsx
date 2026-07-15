@@ -15,6 +15,7 @@ import {
   getJobOperationById,
   getJobOperationProcedure,
   getKanbanByJobId,
+  getMissingWorkCenterRequirements,
   getNonConformanceActions,
   getProductionEventsForJobOperation,
   getProductionQuantitiesForJobOperation,
@@ -77,7 +78,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     jobMakeMethod,
     kanban,
     bomIdMap,
-    companySettings
+    companySettings,
+    missingRequirements
   ] = await Promise.all([
     getThumbnailPathByItemId(serviceRole, operation.data?.[0].itemId),
     getTrackedEntitiesByMakeMethodId(
@@ -87,7 +89,12 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     getJobMakeMethod(serviceRole, operation.data?.[0].jobMakeMethodId),
     getKanbanByJobId(serviceRole, job.data.id),
     getJobMethodBomIdMap(serviceRole, job.data.id!),
-    getCompanySettings(serviceRole, companyId)
+    getCompanySettings(serviceRole, companyId),
+    getMissingWorkCenterRequirements(serviceRole, {
+      workCenterId: operation.data?.[0].workCenterId,
+      employeeId: userId,
+      companyId
+    })
   ]);
 
   const inventoryShelfLife = (companySettings.data?.inventoryShelfLife ??
@@ -148,6 +155,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     }),
     operation: makeDurations(operation.data?.[0]) as OperationWithDetails,
     expiredEntityPolicy,
+    missingRequirements,
     procedure: getJobOperationProcedure(serviceRole, operation.data?.[0].id),
     workCenter: getWorkCenter(
       serviceRole,
@@ -177,6 +185,7 @@ export default function OperationRoute() {
     jobMakeMethod,
     kanban,
     materials,
+    missingRequirements,
     operation,
     procedure,
     thumbnailPath,
@@ -194,6 +203,7 @@ export default function OperationRoute() {
       kanban={kanban}
       materials={materials}
       method={jobMakeMethod}
+      missingRequirements={missingRequirements}
       trackedEntities={trackedEntities}
       nonConformanceActions={nonConformanceActions}
       operation={operation}

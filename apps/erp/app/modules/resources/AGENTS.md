@@ -7,13 +7,13 @@ Locations, work centers, processes, abilities (skills), partners, contractors, e
 - **Location** — physical site/facility. Every inventory record, job, and employee is scoped to a location. Has address, timezone, and GPS coordinates. Company-scoped.
 - **Work Center** — production station within a location. Operations schedule onto work centers. Have capacity, rates, and active/inactive status. MUST soft-delete via `active: false`.
 - **Process** — type of work (e.g., "CNC Milling", "Welding"). Operations reference a process. Linked to work centers via `workCenterProcess`. MUST soft-delete via `active: false`.
-- **Ability** — employee skill/certification with a learning curve. Tracked per employee via `employeeAbility` with training status, shadow weeks, and completion tracking.
+- **Ability** — employee skill/certification with a learning curve. Tracked per employee via `employeeAbility` with training status, shadow weeks, and completion tracking. A work center may set `requiredAbilityId`; MES then hard-blocks operators without an `active + trainingCompleted` `employeeAbility` from starting operations there (guards in `apps/mes` `x+/start.$operationId.tsx` and `x+/event.tsx` via `getMissingRequiredAbility`). Spec: `.ai/specs/2026-07-14-work-center-required-ability.md`.
 - **Partner** — external supplier location with ability mappings for outsourced work.
 - **Contractor** — supplier contact working as contract labor, with hours-per-week and ability assignments via `contractorAbility`.
 - **Maintenance Dispatch** — reactive or scheduled work order for equipment. Statuses: Open → Assigned → In Progress → Completed / Cancelled. Tracks time events, consumed parts, and affected work centers.
 - **Maintenance Schedule** — preventive maintenance plan with frequency, priority, and required spare parts.
 - **Failure Mode** — categorized failure type used by maintenance dispatches and quality NCRs.
-- **Training** — training programs with assignments, quiz questions, and frequency-based recertification. Completion tracked via `trainingCompletion`.
+- **Training** — training programs with assignments, quiz questions, and frequency-based recertification. Completion tracked via `trainingCompletion`. A work center may require multiple trainings via `workCenterTraining`; MES hard-blocks operators lacking a period-valid completion for any of them (RPC `get_missing_required_trainings`, called from `getMissingWorkCenterRequirements` in `apps/mes/app/services/operations.service.ts`). Spec: `.ai/specs/2026-07-14-work-center-required-ability.md`.
 
 ## Safety
 
@@ -57,6 +57,7 @@ pnpm --filter @carbon/erp test -- --testPathPattern=resources
 | `maintenanceSchedule` / `maintenanceScheduleItem` | Preventive maintenance plans with spare parts |
 | `maintenanceFailureMode` | Failure categories shared with quality module |
 | `training` / `trainingAssignment` / `trainingQuestion` / `trainingCompletion` | Training programs with quizzes and completion tracking |
+| `workCenterTraining` | Trainings a work center requires before operators may start operations (enforced in MES) |
 | `suggestion` / `suggestions` (view) | Employee suggestions |
 
 ## Key Service Functions
