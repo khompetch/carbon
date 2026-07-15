@@ -15,7 +15,7 @@ import {
   getJobOperationById,
   getJobOperationProcedure,
   getKanbanByJobId,
-  getMissingRequiredAbility,
+  getMissingWorkCenterRequirements,
   getNonConformanceActions,
   getProductionEventsForJobOperation,
   getProductionQuantitiesForJobOperation,
@@ -79,7 +79,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     kanban,
     bomIdMap,
     companySettings,
-    missingAbility
+    missingRequirements
   ] = await Promise.all([
     getThumbnailPathByItemId(serviceRole, operation.data?.[0].itemId),
     getTrackedEntitiesByMakeMethodId(
@@ -90,7 +90,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     getKanbanByJobId(serviceRole, job.data.id),
     getJobMethodBomIdMap(serviceRole, job.data.id!),
     getCompanySettings(serviceRole, companyId),
-    getMissingRequiredAbility(serviceRole, {
+    getMissingWorkCenterRequirements(serviceRole, {
       workCenterId: operation.data?.[0].workCenterId,
       employeeId: userId,
       companyId
@@ -155,7 +155,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     }),
     operation: makeDurations(operation.data?.[0]) as OperationWithDetails,
     expiredEntityPolicy,
-    missingAbility: missingAbility?.abilityName ?? null,
+    missingRequirements,
     procedure: getJobOperationProcedure(serviceRole, operation.data?.[0].id),
     workCenter: getWorkCenter(
       serviceRole,
@@ -185,7 +185,7 @@ export default function OperationRoute() {
     jobMakeMethod,
     kanban,
     materials,
-    missingAbility,
+    missingRequirements,
     operation,
     procedure,
     thumbnailPath,
@@ -203,7 +203,7 @@ export default function OperationRoute() {
       kanban={kanban}
       materials={materials}
       method={jobMakeMethod}
-      missingAbility={missingAbility}
+      missingRequirements={missingRequirements}
       trackedEntities={trackedEntities}
       nonConformanceActions={nonConformanceActions}
       operation={operation}

@@ -1,4 +1,4 @@
-# Work Center Required Ability Gate
+# Work Center Required Ability + Trainings Gate
 
 - **Status:** in-progress
 - **Author:** Carbon agent session (requested by Khompetch)
@@ -82,6 +82,39 @@ columns; no type regeneration needed (constraint-only change).
 - The `training`/`trainingCompletion` module (separate system from
   `ability`/`employeeAbility`).
 
+## Extension: Multiple Required Trainings (2026-07-15)
+
+A work center can additionally require **multiple trainings** from the
+Resources → Training module (quiz + recertification). Operators must hold a
+valid `trainingCompletion` for **every** linked Active training — for
+`Once` trainings any completion counts (`period IS NULL`); for
+`Quarterly`/`Annual` the completion's `period` must equal
+`get_current_training_period(frequency)` (a lapsed period blocks until the
+operator re-passes the quiz). Completion may come through any
+`trainingAssignment` of that training; an operator never assigned the
+training is blocked until an admin assigns it and they pass.
+
+| Decision | Choice | Rationale |
+|---|---|---|
+| Data model | `workCenterTraining` join table (composite PK, CASCADE), mirroring `workCenterProcess` | Established many-to-many pattern in the same module |
+| Training reference | Specific `training.id` | Same precedent as `trainingAssignment.trainingId`; versioning is dormant (all rows v0) |
+| Validity check | SQL RPC `get_missing_required_trainings(workCenterId, employeeId, companyId)` SECURITY DEFINER | Period logic stays in SQL beside `get_current_training_period`; MES calls it directly |
+| Not via `get_training_assignment_status` | Direct `trainingCompletion → trainingAssignment` join | The status RPC only sees employees inside assigned groups — can't distinguish "not assigned" from "completed" |
+| Draft/Archived trainings | Ignored by the gate | Only `status = 'Active'` rows are requirements |
+| UI | Multi-select `Trainings` picker in WorkCenterForm; MES banner lists every missing item | Same UX as the ability gate, additive |
+
+Migration: `20260714171532_work-center-required-trainings.sql`. New pieces:
+`apps/erp/app/components/Form/Trainings.tsx`,
+`api+/resources.trainings.list.ts`, `requiredTrainingIds` in
+`workCenterValidator`/`upsertWorkCenter`,
+`getMissingWorkCenterRequirements` in MES `operations.service.ts` (wraps the
+ability check + the RPC), banner + Start-disable in `JobOperation.tsx`.
+
+Note: `workCenterTraining` and the RPC are not yet in the generated DB types
+— two scoped `as SupabaseClient<any>` casts (marked with comments) should be
+removed after `pnpm db:migrate` regenerates types.
+
 ## Changelog
 
-- 2026-07-14: Initial implementation.
+- 2026-07-14: Initial implementation (single required ability).
+- 2026-07-15: Multiple required trainings per work center (Training module gate).

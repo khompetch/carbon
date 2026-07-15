@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-10T13:47:36.608Z",
-  "totalTools": 1304,
+  "generated": "2026-07-15T00:04:46.456Z",
+  "totalTools": 1305,
   "modules": 15,
   "tools": [
     {
@@ -29051,6 +29051,31 @@
         },
         "required": [
           "id"
+        ]
+      }
+    },
+    {
+      "name": "resources_getWorkCenterRequiredTrainingIds",
+      "module": "resources",
+      "classification": "READ",
+      "description": "get work center required training ids",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "workCenterId"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "workCenterId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workCenterId"
         ]
       }
     },

@@ -4412,6 +4412,9 @@ msgstr "сотрудники"
 msgid "Employees"
 msgstr "Сотрудники"
 
+msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr ""
+
 msgid "Empty = match every item"
 msgstr "Пусто = соответствует каждому товару"
 
@@ -9690,6 +9693,9 @@ msgstr "Требуемые действия (по порядку)"
 
 msgid "Required Date"
 msgstr "Требуемая дата"
+
+msgid "Required Trainings"
+msgstr ""
 
 msgid "Requirement"
 msgstr "Требование"

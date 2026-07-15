@@ -834,7 +834,11 @@ msgstr "재고 제거"
 msgid "Remove part"
 msgstr "품목 제거"
 
-msgid "Requires ability: {missingAbility} — training not completed"
+#. placeholder {0}: missingRequirements.abilityName
+msgid "Requires ability: {0} — training not completed"
+msgstr ""
+
+msgid "Requires training: {name}"
 msgstr ""
 
 msgid "Rework"

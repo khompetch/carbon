@@ -4412,6 +4412,9 @@ msgstr "कर्मचारियों"
 msgid "Employees"
 msgstr "कर्मचारी"
 
+msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr ""
+
 msgid "Empty = match every item"
 msgstr "खाली = हर आइटम से मेल खाएं"
 
@@ -9690,6 +9693,9 @@ msgstr "आवश्यक क्रियाएं (क्रम में)"
 
 msgid "Required Date"
 msgstr "आवश्यक तारीख"
+
+msgid "Required Trainings"
+msgstr ""
 
 msgid "Requirement"
 msgstr "आवश्यकता"

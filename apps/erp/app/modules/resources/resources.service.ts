@@ -946,6 +946,18 @@ export async function getWorkCenter(
     .single();
 }
 
+export async function getWorkCenterRequiredTrainingIds(
+  client: SupabaseClient<Database>,
+  workCenterId: string
+): Promise<{ data: { trainingId: string }[] | null; error: unknown }> {
+  // workCenterTraining is not yet in the generated DB types — regenerate after
+  // applying migration 20260714171532 and drop this cast.
+  return (client as SupabaseClient<any>)
+    .from("workCenterTraining")
+    .select("trainingId")
+    .eq("workCenterId", workCenterId);
+}
+
 export async function getWorkCenters(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1817,8 +1829,11 @@ export async function upsertWorkCenter(
         customFields?: Json;
       })
 ) {
+  // workCenterTraining is not yet in the generated DB types — regenerate after
+  // applying migration 20260714171532 and drop this cast.
+  const trainingClient = client as SupabaseClient<any>;
   if ("createdBy" in workCenter) {
-    const { processes, ...insert } = workCenter;
+    const { processes, requiredTrainingIds, ...insert } = workCenter;
     const workCenterInsert = await client
       .from("workCenter")
       .insert([insert])
@@ -1845,9 +1860,26 @@ export async function upsertWorkCenter(
       }
     }
 
+    if (requiredTrainingIds?.length) {
+      const workCenterTrainingInsert = await trainingClient
+        .from("workCenterTraining")
+        .insert(
+          requiredTrainingIds.map((trainingId) => ({
+            workCenterId,
+            trainingId,
+            companyId: insert.companyId,
+            createdBy: insert.createdBy
+          }))
+        );
+
+      if (workCenterTrainingInsert.error) {
+        return workCenterTrainingInsert;
+      }
+    }
+
     return workCenterInsert;
   }
-  const { processes, ...update } = workCenter;
+  const { processes, requiredTrainingIds, ...update } = workCenter;
   const workCenterUpdate = await client
     .from("workCenter")
     .update(sanitize(update))
@@ -1878,6 +1910,31 @@ export async function upsertWorkCenter(
       .insert(workCenterProcesses);
     if (workCenterProcessUpdate.error) {
       return workCenterProcessUpdate;
+    }
+  }
+
+  const deleteTrainings = await trainingClient
+    .from("workCenterTraining")
+    .delete()
+    .eq("workCenterId", workCenter.id);
+
+  if (deleteTrainings.error) {
+    return deleteTrainings;
+  }
+
+  if (requiredTrainingIds?.length) {
+    const workCenterTrainingUpdate = await trainingClient
+      .from("workCenterTraining")
+      .insert(
+        requiredTrainingIds.map((trainingId) => ({
+          workCenterId: workCenter.id,
+          trainingId,
+          companyId: update.companyId,
+          createdBy: update.updatedBy
+        }))
+      );
+    if (workCenterTrainingUpdate.error) {
+      return workCenterTrainingUpdate;
     }
   }
 

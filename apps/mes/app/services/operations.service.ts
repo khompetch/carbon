@@ -962,6 +962,50 @@ export async function getMissingRequiredAbility(
   };
 }
 
+async function getMissingRequiredTrainings(
+  client: SupabaseClient<Database>,
+  args: {
+    workCenterId: string;
+    employeeId: string;
+    companyId: string;
+  }
+): Promise<{ trainingId: string; name: string }[]> {
+  // get_missing_required_trainings is not yet in the generated DB types —
+  // regenerate after applying migration 20260714171532 and drop this cast.
+  const result = await (client as SupabaseClient<any>).rpc(
+    "get_missing_required_trainings",
+    {
+      p_work_center_id: args.workCenterId,
+      p_employee_id: args.employeeId,
+      p_company_id: args.companyId
+    }
+  );
+
+  return (result.data ?? []) as { trainingId: string; name: string }[];
+}
+
+export async function getMissingWorkCenterRequirements(
+  client: SupabaseClient<Database>,
+  args: {
+    workCenterId: string | null | undefined;
+    employeeId: string;
+    companyId: string;
+  }
+): Promise<{ abilityName: string | null; trainingNames: string[] }> {
+  const { workCenterId, employeeId, companyId } = args;
+  if (!workCenterId) return { abilityName: null, trainingNames: [] };
+
+  const [missingAbility, missingTrainings] = await Promise.all([
+    getMissingRequiredAbility(client, { workCenterId, employeeId, companyId }),
+    getMissingRequiredTrainings(client, { workCenterId, employeeId, companyId })
+  ]);
+
+  return {
+    abilityName: missingAbility?.abilityName ?? null,
+    trainingNames: missingTrainings.map((t) => t.name)
+  };
+}
+
 export async function getWorkCentersByLocation(
   client: SupabaseClient<Database>,
   locationId: string

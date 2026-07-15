@@ -491,5 +491,8 @@ export const workCenterValidator = z.object({
   processes: z
     .array(z.string().min(1, { message: "Invalid process" }))
     .optional(),
-  requiredAbilityId: zfd.text(z.string().optional())
+  requiredAbilityId: zfd.text(z.string().optional()),
+  requiredTrainingIds: z
+    .array(z.string().min(1, { message: "Invalid training" }))
+    .optional()
 });

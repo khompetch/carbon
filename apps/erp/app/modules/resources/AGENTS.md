@@ -13,7 +13,7 @@ Locations, work centers, processes, abilities (skills), partners, contractors, e
 - **Maintenance Dispatch** — reactive or scheduled work order for equipment. Statuses: Open → Assigned → In Progress → Completed / Cancelled. Tracks time events, consumed parts, and affected work centers.
 - **Maintenance Schedule** — preventive maintenance plan with frequency, priority, and required spare parts.
 - **Failure Mode** — categorized failure type used by maintenance dispatches and quality NCRs.
-- **Training** — training programs with assignments, quiz questions, and frequency-based recertification. Completion tracked via `trainingCompletion`.
+- **Training** — training programs with assignments, quiz questions, and frequency-based recertification. Completion tracked via `trainingCompletion`. A work center may require multiple trainings via `workCenterTraining`; MES hard-blocks operators lacking a period-valid completion for any of them (RPC `get_missing_required_trainings`, called from `getMissingWorkCenterRequirements` in `apps/mes/app/services/operations.service.ts`). Spec: `.ai/specs/2026-07-14-work-center-required-ability.md`.
 
 ## Safety
 
@@ -57,6 +57,7 @@ pnpm --filter @carbon/erp test -- --testPathPattern=resources
 | `maintenanceSchedule` / `maintenanceScheduleItem` | Preventive maintenance plans with spare parts |
 | `maintenanceFailureMode` | Failure categories shared with quality module |
 | `training` / `trainingAssignment` / `trainingQuestion` / `trainingCompletion` | Training programs with quizzes and completion tracking |
+| `workCenterTraining` | Trainings a work center requires before operators may start operations (enforced in MES) |
 | `suggestion` / `suggestions` (view) | Employee suggestions |
 
 ## Key Service Functions

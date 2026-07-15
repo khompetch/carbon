@@ -30,6 +30,7 @@ import Department from "~/components/Form/Department";
 import Location from "~/components/Form/Location";
 import Processes from "~/components/Form/Processes";
 import StandardFactor from "~/components/Form/StandardFactor";
+import Trainings from "~/components/Form/Trainings";
 import { usePermissions, useUser } from "~/hooks";
 import { workCenterValidator } from "~/modules/resources";
 import { path } from "~/utils/path";
@@ -158,6 +159,11 @@ const WorkCenterForm = ({
                   name="requiredAbilityId"
                   label={t`Required Ability`}
                   helperText={t`Only employees who have completed training for this ability can start operations at this work center`}
+                />
+                <Trainings
+                  name="requiredTrainingIds"
+                  label={t`Required Trainings`}
+                  helperText={t`Employees must hold a valid completion for every selected training to start operations at this work center`}
                 />
                 <CustomFormFields table="workCenter" />
               </VStack>

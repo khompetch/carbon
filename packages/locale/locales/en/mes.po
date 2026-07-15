@@ -834,8 +834,12 @@ msgstr "Remove Inventory"
 msgid "Remove part"
 msgstr "Remove part"
 
-msgid "Requires ability: {missingAbility} — training not completed"
-msgstr "Requires ability: {missingAbility} — training not completed"
+#. placeholder {0}: missingRequirements.abilityName
+msgid "Requires ability: {0} — training not completed"
+msgstr "Requires ability: {0} — training not completed"
+
+msgid "Requires training: {name}"
+msgstr "Requires training: {name}"
 
 msgid "Rework"
 msgstr "Rework"

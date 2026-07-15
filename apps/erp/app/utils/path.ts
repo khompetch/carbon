@@ -43,6 +43,7 @@ export const path = {
       departments: `${api}/people/departments`,
       timecard: `${api}/people/timecard`,
       outstandingTrainings: `${api}/resources/trainings`,
+      trainingsList: `${api}/resources/trainings/list`,
       digitalQuote: (id: string) =>
         generatePath(`${api}/sales/digital-quote/${id}`),
       digitalSupplierQuote: (id: string) =>

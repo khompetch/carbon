@@ -9,7 +9,7 @@ import { data } from "react-router";
 import { productionEventValidator } from "~/services/models";
 import {
   endProductionEvent,
-  getMissingRequiredAbility,
+  getMissingWorkCenterRequirements,
   startProductionEvent
 } from "~/services/operations.service";
 
@@ -45,19 +45,23 @@ export async function action({ request }: ActionFunctionArgs) {
       .eq("companyId", companyId)
       .maybeSingle();
 
-    const missingAbility = await getMissingRequiredAbility(serviceRole, {
+    const missing = await getMissingWorkCenterRequirements(serviceRole, {
       workCenterId: jobOperation.data?.workCenterId,
       employeeId: userId,
       companyId
     });
 
-    if (missingAbility) {
+    if (missing.abilityName || missing.trainingNames.length > 0) {
+      const requirements = [
+        ...(missing.abilityName ? [`ability: ${missing.abilityName}`] : []),
+        ...missing.trainingNames.map((name) => `training: ${name}`)
+      ].join(", ");
       return data(
         {},
         await flash(
           request,
           error(
-            `You have not completed training for the required ability (${missingAbility.abilityName})`,
+            `You have not completed the requirements for this work center (${requirements})`,
             "Cannot start operation"
           )
         )

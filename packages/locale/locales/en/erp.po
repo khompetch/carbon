@@ -4412,6 +4412,9 @@ msgstr "employees"
 msgid "Employees"
 msgstr "Employees"
 
+msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr "Employees must hold a valid completion for every selected training to start operations at this work center"
+
 msgid "Empty = match every item"
 msgstr "Empty = match every item"
 
@@ -9690,6 +9693,9 @@ msgstr "Required Actions (in order)"
 
 msgid "Required Date"
 msgstr "Required Date"
+
+msgid "Required Trainings"
+msgstr "Required Trainings"
 
 msgid "Requirement"
 msgstr "Requirement"
