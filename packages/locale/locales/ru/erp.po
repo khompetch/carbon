@@ -364,6 +364,9 @@ msgstr "Способности"
 msgid "ability"
 msgstr "возможность"
 
+msgid "Ability"
+msgstr ""
+
 msgid "About"
 msgstr "О программе"
 
@@ -606,6 +609,9 @@ msgstr "Добавить условие"
 
 msgid "Add Contractor"
 msgstr "Добавить подрядчика"
+
+msgid "Add Employee"
+msgstr ""
 
 msgid "Add Entry"
 msgstr "Добавить запись"
@@ -1108,6 +1114,9 @@ msgstr "Вы уверены, что хотите удалить параметр
 msgid "Are you sure you want to delete the {name} attribute from this operation? This cannot be undone."
 msgstr "Вы уверены, что хотите удалить атрибут {name} из этой операции? Это действие невозможно отменить."
 
+msgid "Are you sure you want to delete the ability: {name}? This cannot be undone."
+msgstr ""
+
 #. placeholder {0}: account.name
 #. placeholder {1}: account.number ? ` (${account.number})` : ""
 msgid "Are you sure you want to delete the account: {0}{1}? This cannot be undone."
@@ -1353,6 +1362,9 @@ msgstr "Вы уверены, что хотите удалить {0} как по�
 
 msgid "Are you sure you want to remove {supplierName} as a supplier for this item? This cannot be undone."
 msgstr "Вы уверены, что хотите удалить {supplierName} как поставщика для этого товара? Это действие невозможно отменить."
+
+msgid "Are you sure you want to remove this employee from the ability?"
+msgstr ""
 
 msgid "Are you sure you want to remove this item from the price list? This cannot be undone."
 msgstr "Вы уверены, что хотите удалить этот товар из прайс-листа? Это действие невозможно отменить."
@@ -2902,6 +2914,9 @@ msgstr "Создать рабочий центр"
 msgid "Created"
 msgstr "Создано"
 
+msgid "Created ability"
+msgstr ""
+
 msgid "Created account"
 msgstr "Счет создан"
 
@@ -3339,6 +3354,9 @@ msgstr "Дни от заказа детали до её наличия; план
 msgid "Days in advance to generate dispatches"
 msgstr "Дни заранее для создания заявок"
 
+msgid "Days of Training Completed"
+msgstr ""
+
 msgid "Days Off"
 msgstr "Выходные дни"
 
@@ -3522,6 +3540,9 @@ msgstr "Удалить {periodLabel}"
 
 msgid "Delete {storageUnitName}"
 msgstr "Удалить {storageUnitName}"
+
+msgid "Delete Ability"
+msgstr ""
 
 msgid "Delete API Key"
 msgstr "Удалить API ключ"
@@ -4169,6 +4190,9 @@ msgstr "Редактировать"
 msgid "Edit <0>Issue</0> Workflow"
 msgstr "Редактировать Рабочий процесс <0>Проблема</0>"
 
+msgid "Edit Ability"
+msgstr ""
+
 msgid "Edit Account"
 msgstr "Редактировать счет"
 
@@ -4231,6 +4255,9 @@ msgstr "Редактировать диспетчеризацию"
 
 msgid "Edit Employee"
 msgstr "Редактировать сотрудника"
+
+msgid "Edit Employee Ability"
+msgstr ""
 
 msgid "Edit Employee Type"
 msgstr "Редактировать тип сотрудника"
@@ -4457,6 +4484,9 @@ msgstr "Действительно с"
 msgid "Effective To"
 msgstr "Действительно до"
 
+msgid "Efficiency of an untrained employee at week 0"
+msgstr ""
+
 msgid "Email"
 msgstr "Электронная почта"
 
@@ -4478,6 +4508,9 @@ msgstr "сотрудник"
 msgid "Employee"
 msgstr "Сотрудник"
 
+msgid "employee ability"
+msgstr ""
+
 msgid "Employee Accounts"
 msgstr "Учетные записи сотрудников"
 
@@ -4494,6 +4527,9 @@ msgid "Employees"
 msgstr "Сотрудники"
 
 msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr ""
+
+msgid "Employees with this ability"
 msgstr ""
 
 msgid "Empty = match every item"
@@ -4916,6 +4952,10 @@ msgstr "Дополнительные теги для разбора отчетн
 
 msgid "Fail"
 msgstr "Не пройти"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create ability: {0}"
+msgstr ""
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create asset class: {0}"
@@ -6606,6 +6646,9 @@ msgstr "Последний квартал"
 msgid "Last synced: {0}"
 msgstr "Последняя синхронизация: {0}"
 
+msgid "Last Training"
+msgstr ""
+
 msgid "Last updated: {formattedDate}"
 msgstr "Последнее обновление: {formattedDate}"
 
@@ -7446,6 +7489,9 @@ msgstr "Новый"
 msgid "New <0>Issue</0> Workflow"
 msgstr "Новый рабочий процесс <0>Issue</0>"
 
+msgid "New Ability"
+msgstr ""
+
 msgid "New Account"
 msgstr "Новый счет"
 
@@ -7842,6 +7888,9 @@ msgstr "Сотрудники еще не назначены. Добавьте г
 msgid "No employees found"
 msgstr "Сотрудники не найдены"
 
+msgid "No employees have this ability"
+msgstr ""
+
 msgid "No extra cutover steps yet. Add anything specific to this customer."
 msgstr "Нет дополнительных этапов перехода. Добавьте что-нибудь специфичное для этого клиента."
 
@@ -8192,6 +8241,7 @@ msgstr "Редактировать можно только процедуры в
 
 msgid "Only employees who have completed training for this ability can start operations at this work center"
 msgstr ""
+
 msgid "Only empty, open periods can be deleted."
 msgstr "Удалять можно только пустые открытые периоды."
 
@@ -10748,6 +10798,9 @@ msgstr "Серьезности"
 msgid "Severity"
 msgstr "Серьезность"
 
+msgid "Shadow Weeks"
+msgstr ""
+
 msgid "shape"
 msgstr "форма"
 
@@ -11162,6 +11215,9 @@ msgstr "Начните с"
 
 msgid "Started"
 msgstr "Начал"
+
+msgid "Starting Efficiency (%)"
+msgstr ""
 
 msgid "State / Province"
 msgstr "Штат / Провинция"
@@ -12745,8 +12801,14 @@ msgstr "Обучение"
 msgid "Training Assignments"
 msgstr "Назначения обучения"
 
+msgid "Training Days"
+msgstr ""
+
 msgid "Training Plan"
 msgstr "План обучения"
+
+msgid "Training Status"
+msgstr ""
 
 msgid "Training your team via the Academy and in-app guides"
 msgstr "Обучение вашей команды через Academy и встроенные руководства"
@@ -13548,6 +13610,12 @@ msgstr "Недели 7–8"
 
 msgid "Weeks Open"
 msgstr "Недель открыто"
+
+msgid "Weeks spent shadowing another employee before working independently"
+msgstr ""
+
+msgid "Weeks to Full Efficiency"
+msgstr ""
 
 msgid "Weighted Average"
 msgstr "Средневзвешенное значение"

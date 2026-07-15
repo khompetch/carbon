@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-14T01:23:55.918Z",
-  "totalTools": 1327,
+  "generated": "2026-07-15T03:36:49.676Z",
+  "totalTools": 1329,
   "modules": 15,
   "tools": [
     {
@@ -28564,6 +28564,31 @@
         },
         "required": [
           "employeeId"
+        ]
+      }
+    },
+    {
+      "name": "resources_getEmployeeAbility",
+      "module": "resources",
+      "classification": "READ",
+      "description": "get employee ability",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "employeeAbilityId"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "employeeAbilityId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "employeeAbilityId"
         ]
       }
     },

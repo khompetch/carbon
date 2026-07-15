@@ -364,6 +364,9 @@ msgstr "能力"
 msgid "ability"
 msgstr "功能"
 
+msgid "Ability"
+msgstr ""
+
 msgid "About"
 msgstr "关于"
 
@@ -606,6 +609,9 @@ msgstr "添加条件"
 
 msgid "Add Contractor"
 msgstr "添加承包商"
+
+msgid "Add Employee"
+msgstr ""
 
 msgid "Add Entry"
 msgstr "添加条目"
@@ -1108,6 +1114,9 @@ msgstr "你确定要从此操作中删除 {key} 参数吗？此操作无法撤�
 msgid "Are you sure you want to delete the {name} attribute from this operation? This cannot be undone."
 msgstr "你确定要从此操作中删除 {name} 属性吗？此操作无法撤销。"
 
+msgid "Are you sure you want to delete the ability: {name}? This cannot be undone."
+msgstr ""
+
 #. placeholder {0}: account.name
 #. placeholder {1}: account.number ? ` (${account.number})` : ""
 msgid "Are you sure you want to delete the account: {0}{1}? This cannot be undone."
@@ -1353,6 +1362,9 @@ msgstr "您确定要将 {0} 从此项目的供应商中移除吗？此操作无�
 
 msgid "Are you sure you want to remove {supplierName} as a supplier for this item? This cannot be undone."
 msgstr "您确定要将 {supplierName} 从此项目的供应商中移除吗？此操作无法撤销。"
+
+msgid "Are you sure you want to remove this employee from the ability?"
+msgstr ""
 
 msgid "Are you sure you want to remove this item from the price list? This cannot be undone."
 msgstr "你确定要从价格列表中删除此项目吗？此操作无法撤销。"
@@ -2902,6 +2914,9 @@ msgstr "创建工作中心"
 msgid "Created"
 msgstr "已创建"
 
+msgid "Created ability"
+msgstr ""
+
 msgid "Created account"
 msgstr "已创建账户"
 
@@ -3339,6 +3354,9 @@ msgstr "从订购零件到可用之间的天数; 规划将需求向后偏移此�
 msgid "Days in advance to generate dispatches"
 msgstr "提前生成派遣单的天数"
 
+msgid "Days of Training Completed"
+msgstr ""
+
 msgid "Days Off"
 msgstr "休息日"
 
@@ -3522,6 +3540,9 @@ msgstr "删除{periodLabel}"
 
 msgid "Delete {storageUnitName}"
 msgstr "删除 {storageUnitName}"
+
+msgid "Delete Ability"
+msgstr ""
 
 msgid "Delete API Key"
 msgstr "删除 API 密钥"
@@ -4169,6 +4190,9 @@ msgstr "编辑"
 msgid "Edit <0>Issue</0> Workflow"
 msgstr "编辑<0>问题</0>工作流"
 
+msgid "Edit Ability"
+msgstr ""
+
 msgid "Edit Account"
 msgstr "编辑账户"
 
@@ -4231,6 +4255,9 @@ msgstr "编辑派工"
 
 msgid "Edit Employee"
 msgstr "编辑员工"
+
+msgid "Edit Employee Ability"
+msgstr ""
 
 msgid "Edit Employee Type"
 msgstr "编辑员工类型"
@@ -4457,6 +4484,9 @@ msgstr "生效日期"
 msgid "Effective To"
 msgstr "有效期至"
 
+msgid "Efficiency of an untrained employee at week 0"
+msgstr ""
+
 msgid "Email"
 msgstr "电子邮件"
 
@@ -4478,6 +4508,9 @@ msgstr "员工"
 msgid "Employee"
 msgstr "员工"
 
+msgid "employee ability"
+msgstr ""
+
 msgid "Employee Accounts"
 msgstr "员工账户"
 
@@ -4494,6 +4527,9 @@ msgid "Employees"
 msgstr "员工"
 
 msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr ""
+
+msgid "Employees with this ability"
 msgstr ""
 
 msgid "Empty = match every item"
@@ -4916,6 +4952,10 @@ msgstr "用于切分总账报告的额外标签"
 
 msgid "Fail"
 msgstr "失败"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create ability: {0}"
+msgstr ""
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create asset class: {0}"
@@ -6606,6 +6646,9 @@ msgstr "上一季度"
 msgid "Last synced: {0}"
 msgstr "最后同步: {0}"
 
+msgid "Last Training"
+msgstr ""
+
 msgid "Last updated: {formattedDate}"
 msgstr "最后更新: {formattedDate}"
 
@@ -7446,6 +7489,9 @@ msgstr "新建"
 msgid "New <0>Issue</0> Workflow"
 msgstr "新的<0>Issue</0>工作流"
 
+msgid "New Ability"
+msgstr ""
+
 msgid "New Account"
 msgstr "新账户"
 
@@ -7842,6 +7888,9 @@ msgstr "还未分配员工。添加组以查看状态。"
 msgid "No employees found"
 msgstr "未找到员工"
 
+msgid "No employees have this ability"
+msgstr ""
+
 msgid "No extra cutover steps yet. Add anything specific to this customer."
 msgstr "还没有额外的切换步骤。添加特定于此客户的任何内容。"
 
@@ -8192,6 +8241,7 @@ msgstr "只有草稿程序可以编辑。创建新版本以更改活动或已归
 
 msgid "Only employees who have completed training for this ability can start operations at this work center"
 msgstr ""
+
 msgid "Only empty, open periods can be deleted."
 msgstr "仅可删除空白的开放期间。"
 
@@ -10748,6 +10798,9 @@ msgstr "严重程度"
 msgid "Severity"
 msgstr "严重程度"
 
+msgid "Shadow Weeks"
+msgstr ""
+
 msgid "shape"
 msgstr "形状"
 
@@ -11162,6 +11215,9 @@ msgstr "从以下开始"
 
 msgid "Started"
 msgstr "开始于"
+
+msgid "Starting Efficiency (%)"
+msgstr ""
 
 msgid "State / Province"
 msgstr "州/省"
@@ -12745,8 +12801,14 @@ msgstr "培训"
 msgid "Training Assignments"
 msgstr "培训分配"
 
+msgid "Training Days"
+msgstr ""
+
 msgid "Training Plan"
 msgstr "培训计划"
+
+msgid "Training Status"
+msgstr ""
 
 msgid "Training your team via the Academy and in-app guides"
 msgstr "通过Academy和应用内指南培训您的团队"
@@ -13548,6 +13610,12 @@ msgstr "第7至8周"
 
 msgid "Weeks Open"
 msgstr "周数开放"
+
+msgid "Weeks spent shadowing another employee before working independently"
+msgstr ""
+
+msgid "Weeks to Full Efficiency"
+msgstr ""
 
 msgid "Weighted Average"
 msgstr "加权平均"

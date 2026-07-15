@@ -364,6 +364,9 @@ msgstr "能力"
 msgid "ability"
 msgstr "能力"
 
+msgid "Ability"
+msgstr ""
+
 msgid "About"
 msgstr "について"
 
@@ -606,6 +609,9 @@ msgstr "条件を追加"
 
 msgid "Add Contractor"
 msgstr "契約業者を追加"
+
+msgid "Add Employee"
+msgstr ""
 
 msgid "Add Entry"
 msgstr "エントリを追加"
@@ -1108,6 +1114,9 @@ msgstr "この操作から{key}パラメータを削除してもよろしいで�
 msgid "Are you sure you want to delete the {name} attribute from this operation? This cannot be undone."
 msgstr "この操作から{name}属性を削除してもよろしいですか？この操作は取り消せません。"
 
+msgid "Are you sure you want to delete the ability: {name}? This cannot be undone."
+msgstr ""
+
 #. placeholder {0}: account.name
 #. placeholder {1}: account.number ? ` (${account.number})` : ""
 msgid "Are you sure you want to delete the account: {0}{1}? This cannot be undone."
@@ -1353,6 +1362,9 @@ msgstr "本当に{0}をこのアイテムのサプライヤーから削除して
 
 msgid "Are you sure you want to remove {supplierName} as a supplier for this item? This cannot be undone."
 msgstr "このアイテムのサプライヤーとして{supplierName}を削除してもよろしいですか？この操作は取り消せません。"
+
+msgid "Are you sure you want to remove this employee from the ability?"
+msgstr ""
 
 msgid "Are you sure you want to remove this item from the price list? This cannot be undone."
 msgstr "このアイテムを価格リストから削除してもよろしいですか？この操作は取り消せません。"
@@ -2902,6 +2914,9 @@ msgstr "ワークセンターを作成"
 msgid "Created"
 msgstr "作成日時"
 
+msgid "Created ability"
+msgstr ""
+
 msgid "Created account"
 msgstr "アカウントを作成しました"
 
@@ -3339,6 +3354,9 @@ msgstr "部品の注文から利用可能になるまでの日数; 計画はこ�
 msgid "Days in advance to generate dispatches"
 msgstr "事前に生成するディスパッチの日数"
 
+msgid "Days of Training Completed"
+msgstr ""
+
 msgid "Days Off"
 msgstr "休日"
 
@@ -3522,6 +3540,9 @@ msgstr "{periodLabel}を削除"
 
 msgid "Delete {storageUnitName}"
 msgstr "{storageUnitName}を削除"
+
+msgid "Delete Ability"
+msgstr ""
 
 msgid "Delete API Key"
 msgstr "APIキーを削除"
@@ -4169,6 +4190,9 @@ msgstr "編集"
 msgid "Edit <0>Issue</0> Workflow"
 msgstr "<0>問題</0>ワークフローを編集"
 
+msgid "Edit Ability"
+msgstr ""
+
 msgid "Edit Account"
 msgstr "アカウントを編集"
 
@@ -4231,6 +4255,9 @@ msgstr "ディスパッチを編集"
 
 msgid "Edit Employee"
 msgstr "従業員を編集"
+
+msgid "Edit Employee Ability"
+msgstr ""
 
 msgid "Edit Employee Type"
 msgstr "従業員タイプを編集"
@@ -4457,6 +4484,9 @@ msgstr "有効期間開始"
 msgid "Effective To"
 msgstr "有効期限"
 
+msgid "Efficiency of an untrained employee at week 0"
+msgstr ""
+
 msgid "Email"
 msgstr "メール"
 
@@ -4478,6 +4508,9 @@ msgstr "従業員"
 msgid "Employee"
 msgstr "従業員"
 
+msgid "employee ability"
+msgstr ""
+
 msgid "Employee Accounts"
 msgstr "従業員アカウント"
 
@@ -4494,6 +4527,9 @@ msgid "Employees"
 msgstr "従業員"
 
 msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
+msgstr ""
+
+msgid "Employees with this ability"
 msgstr ""
 
 msgid "Empty = match every item"
@@ -4916,6 +4952,10 @@ msgstr "GL レポートをスライスするための追加タグ"
 
 msgid "Fail"
 msgstr "不合格"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create ability: {0}"
+msgstr ""
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create asset class: {0}"
@@ -6606,6 +6646,9 @@ msgstr "前四半期"
 msgid "Last synced: {0}"
 msgstr "最後に同期: {0}"
 
+msgid "Last Training"
+msgstr ""
+
 msgid "Last updated: {formattedDate}"
 msgstr "最終更新: {formattedDate}"
 
@@ -7446,6 +7489,9 @@ msgstr "新規"
 msgid "New <0>Issue</0> Workflow"
 msgstr "新しい<0>Issue</0>ワークフロー"
 
+msgid "New Ability"
+msgstr ""
+
 msgid "New Account"
 msgstr "新規アカウント"
 
@@ -7842,6 +7888,9 @@ msgstr "まだ従業員が割り当てられていません。グループを追
 msgid "No employees found"
 msgstr "従業員が見つかりません"
 
+msgid "No employees have this ability"
+msgstr ""
+
 msgid "No extra cutover steps yet. Add anything specific to this customer."
 msgstr "まだ追加のカットオーバーステップがありません。このお客様に固有のものを追加してください。"
 
@@ -8192,6 +8241,7 @@ msgstr "編集可能なのは下書き手順のみです。アクティブまた
 
 msgid "Only employees who have completed training for this ability can start operations at this work center"
 msgstr ""
+
 msgid "Only empty, open periods can be deleted."
 msgstr "空のオープン期間のみ削除できます。"
 
@@ -10748,6 +10798,9 @@ msgstr "重大度"
 msgid "Severity"
 msgstr "重大度"
 
+msgid "Shadow Weeks"
+msgstr ""
+
 msgid "shape"
 msgstr "形状"
 
@@ -11162,6 +11215,9 @@ msgstr "まず"
 
 msgid "Started"
 msgstr "開始"
+
+msgid "Starting Efficiency (%)"
+msgstr ""
 
 msgid "State / Province"
 msgstr "都道府県"
@@ -12745,8 +12801,14 @@ msgstr "トレーニング"
 msgid "Training Assignments"
 msgstr "研修割り当て"
 
+msgid "Training Days"
+msgstr ""
+
 msgid "Training Plan"
 msgstr "トレーニング計画"
+
+msgid "Training Status"
+msgstr ""
 
 msgid "Training your team via the Academy and in-app guides"
 msgstr "Academy とアプリ内ガイドを通じたチームのトレーニング"
@@ -13548,6 +13610,12 @@ msgstr "7～8週目"
 
 msgid "Weeks Open"
 msgstr "開いている週数"
+
+msgid "Weeks spent shadowing another employee before working independently"
+msgstr ""
+
+msgid "Weeks to Full Efficiency"
+msgstr ""
 
 msgid "Weighted Average"
 msgstr "加重平均"

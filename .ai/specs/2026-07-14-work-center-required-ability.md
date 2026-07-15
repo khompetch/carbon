@@ -118,3 +118,9 @@ removed after `pnpm db:migrate` regenerates types.
 
 - 2026-07-14: Initial implementation (single required ability).
 - 2026-07-15: Multiple required trainings per work center (Training module gate).
+- 2026-07-15: Rebuilt the Abilities management UI (upstream had removed all
+  ability routes, leaving `path.to.newAbility` links 404ing): list at
+  `/x/resources/abilities`, create/delete, detail page at
+  `/x/resources/ability/:id` with employee assignment
+  (status → `trainingCompleted`/`trainingDays`), nav entry under
+  Resources → People.
