@@ -10,7 +10,10 @@ import type { Database } from "../lib/types.ts";
 import { credit, debit, journalReference } from "../lib/utils.ts";
 import { getCurrentAccountingPeriod } from "../shared/get-accounting-period.ts";
 import { getNextSequence } from "../shared/get-next-sequence.ts";
-import { getDefaultPostingGroup } from "../shared/get-posting-group.ts";
+import {
+  getDefaultPostingGroup,
+  resolveInventoryAccount,
+} from "../shared/get-posting-group.ts";
 import { calculateCOGS } from "../shared/calculate-cogs.ts";
 
 const pool = getConnectionPool(1);
@@ -137,7 +140,7 @@ serve(async (req: Request) => {
         const [items, itemCosts, customer] = await Promise.all([
           client
             .from("item")
-            .select("id, itemTrackingType")
+            .select("id, itemTrackingType, replenishmentSystem")
             .in("id", itemIds)
             .eq("companyId", companyId),
           client
@@ -347,9 +350,11 @@ serve(async (req: Request) => {
             case "Material":
             case "Tool":
               {
+                const invoiceLineItem = items.data.find(
+                  (item) => item.id === invoiceLine.itemId
+                );
                 const itemTrackingType =
-                  items.data.find((item) => item.id === invoiceLine.itemId)
-                    ?.itemTrackingType ?? "Inventory";
+                  invoiceLineItem?.itemTrackingType ?? "Inventory";
 
                 // if the sales order line is null, we ship the part, do the normal entries and do not use accrual/reversing
                 if (
@@ -463,9 +468,13 @@ serve(async (req: Request) => {
                         companyId,
                       });
 
+                      const inventoryAccount = resolveInventoryAccount(
+                        invoiceLineItem?.replenishmentSystem ?? null,
+                        accountDefaults.data
+                      );
                       journalLineInserts.push({
-                        accountId: accountDefaults.data.inventoryAccount,
-                        description: "Inventory Account",
+                        accountId: inventoryAccount.account,
+                        description: inventoryAccount.description,
                         amount: 0,
                         quantity: invoiceLineQuantityInInventoryUnit,
                         documentType: "Invoice",

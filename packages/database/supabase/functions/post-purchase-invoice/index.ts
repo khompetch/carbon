@@ -13,7 +13,10 @@ import {
   type VarianceAllocation,
 } from "../shared/purchase-cost-adjustment.ts";
 import { getNextSequence } from "../shared/get-next-sequence.ts";
-import { getDefaultPostingGroup } from "../shared/get-posting-group.ts";
+import {
+  getDefaultPostingGroup,
+  resolveInventoryAccount,
+} from "../shared/get-posting-group.ts";
 
 const pool = getConnectionPool(1);
 const db = getDatabaseClient<DB>(pool);
@@ -584,7 +587,7 @@ serve(async (req: Request) => {
     const [items, itemCosts, purchaseOrderLines, supplier] = await Promise.all([
       client
         .from("item")
-        .select("id, itemTrackingType")
+        .select("id, itemTrackingType, replenishmentSystem")
         .in("id", itemIds)
         .eq("companyId", companyId),
       client
@@ -904,8 +907,12 @@ serve(async (req: Request) => {
                 let debitDescription: string;
 
                 if (itemTrackingType === "Inventory" && !skipReceiptPost) {
-                  debitAccount = accountDefaults.data.inventoryAccount;
-                  debitDescription = "Inventory Account";
+                  const inventoryAccount = resolveInventoryAccount(
+                    item?.replenishmentSystem ?? null,
+                    accountDefaults.data
+                  );
+                  debitAccount = inventoryAccount.account;
+                  debitDescription = inventoryAccount.description;
                 } else if (itemTrackingType === "Non-Inventory") {
                   debitAccount = accountDefaults.data.indirectCostAccount;
                   debitDescription = "Indirect Cost Account";
@@ -1083,10 +1090,11 @@ serve(async (req: Request) => {
                 // PPV. Standard-cost items and outside-processing or
                 // non-inventory lines keep the full variance in PPV — they
                 // have no layers to adjust.
+                const invoiceLineItem = items.data.find(
+                  (item: { id: string }) => item.id === invoiceLine.itemId
+                );
                 const lineItemTrackingType =
-                  items.data.find(
-                    (item: { id: string }) => item.id === invoiceLine.itemId
-                  )?.itemTrackingType ?? "Inventory";
+                  invoiceLineItem?.itemTrackingType ?? "Inventory";
                 const lineCostingMethod =
                   itemCosts.data.find(
                     (cost: { itemId: string }) =>
@@ -1252,9 +1260,13 @@ serve(async (req: Request) => {
 
                 // DR Inventory for the on-hand share of the variance
                 if (Math.abs(allocation.inventoryShare) > 0.005) {
+                  const inventoryAccount = resolveInventoryAccount(
+                    invoiceLineItem?.replenishmentSystem ?? null,
+                    accountDefaults.data
+                  );
                   journalLineInserts.push({
-                    accountId: accountDefaults.data.inventoryAccount,
-                    description: "Inventory Account",
+                    accountId: inventoryAccount.account,
+                    description: inventoryAccount.description,
                     amount: debit("asset", allocation.inventoryShare),
                     quantity: quantityToReverse,
                     documentType: "Invoice",
