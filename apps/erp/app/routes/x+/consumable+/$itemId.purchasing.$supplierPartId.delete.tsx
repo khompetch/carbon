@@ -16,7 +16,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const { supplierPartId } = params;
   if (!supplierPartId) throw notFound("supplierPartId not found");
 
-  // @ts-expect-error TS2589 — Supabase joined-select type instantiation too deep
+  // @ts-ignore TS2589 — Supabase joined-select type instantiation too deep
+  // (flaky: only triggers depending on checker instantiation-cache state)
   const result = await client
     .from("supplierPart")
     .select("id, supplierId, supplier:supplierId(name)")

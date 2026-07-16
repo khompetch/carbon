@@ -1913,17 +1913,18 @@ export async function upsertWorkCenter(
         customFields?: Json;
       })
 ) {
-  // workCenterTraining is not yet in the generated DB types — regenerate after
-  // applying migration 20260714171532 and drop this cast.
+  // workCenterTraining and workCenter.autoDowntimeMultiplier are not yet in
+  // the generated DB types — regenerate after applying the migrations
+  // (20260714171532, 20260716154237) and drop these casts.
   const trainingClient = client as SupabaseClient<any>;
   if ("createdBy" in workCenter) {
     const { processes, requiredTrainingIds, ...insert } = workCenter;
-    const workCenterInsert = await client
+    const workCenterInsert = (await trainingClient
       .from("workCenter")
       .insert([insert])
       .select("id")
-      .single();
-    if (workCenterInsert.error) {
+      .single()) as { data: { id: string } | null; error: any };
+    if (workCenterInsert.error || !workCenterInsert.data) {
       return workCenterInsert;
     }
     const workCenterId = workCenterInsert.data.id;
@@ -1964,7 +1965,7 @@ export async function upsertWorkCenter(
     return workCenterInsert;
   }
   const { processes, requiredTrainingIds, ...update } = workCenter;
-  const workCenterUpdate = await client
+  const workCenterUpdate = await trainingClient
     .from("workCenter")
     .update(sanitize(update))
     .eq("id", workCenter.id);

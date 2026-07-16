@@ -87,6 +87,45 @@ active maintenance) | `unplanned-downtime` (open Unplanned downtime) | `idle`.
   (±1 day padding for overnight) contains "now"; switcher lists all active
   shifts of the work center's location.
 
+## Auto no-output downtime (added 2026-07-16, migration `20260716154237_auto-no-output-downtime.sql`)
+
+When a work center has an open production event but **no output logged within
+X × cycle time**, it is automatically flagged as Unplanned downtime with a
+configurable default reason (e.g. "No output"). Decisions (confirmed with user):
+company-level multiplier + per-work-center override; real `workCenterDowntime`
+records via a background job **and** live board detection; downtime of any kind
+subtracts from runtime (downtime wins over event, so %A drops).
+
+- **Schema:** `companySettings.autoDowntimeMultiplier NUMERIC` (NULL = feature
+  off) + `companySettings.autoDowntimeReasonId` (composite FK →
+  `downtimeReason`, `ON DELETE SET NULL`); `workCenter.autoDowntimeMultiplier`
+  (NULL = inherit, 0 = disabled per WC; `workCenters` +
+  `workCentersWithBlockingStatus` views recreated to expose it);
+  `workCenterDowntime.isAuto BOOLEAN` distinguishes auto rows.
+- **Math (`@carbon/utils` oee.ts):** `subtractIntervals`, `detectNoOutput`
+  (baseline = max(open-event start, last output of the running ops); returns
+  the threshold-crossing instant), `ComputeShiftHourlyOeeInput.unplannedDowntimes`
+  + `noOutput` config. Runtime per bucket = events − (planned + unplanned
+  recorded + virtual no-output window); UPDT stays the residual.
+- **Detector:** Inngest cron `detect-no-output-downtime`
+  (`packages/jobs/src/inngest/functions/scheduled/detect-no-output-downtime.ts`,
+  every minute) — scans companies with both settings set, per work center picks
+  effective multiplier (WC override ?? company, ≤0 skip) and msPerPiece =
+  max(labor, machine) of the ops with open events; over threshold + no open
+  downtime → inserts `{type: Unplanned, isAuto: true, startTime: crossing
+  point, downtimeReasonId: default}`. Also sweep-closes open auto rows when
+  output arrived or no event is open.
+- **Instant close:** the MES insert-quantity functions
+  (`insertProductionQuantity`/`insertScrapQuantity`/`insertReworkQuantity`)
+  look up `jobOperation.workCenterId` and close open **auto** rows immediately
+  (`endOpenDowntime` gained `{ onlyAuto }`); manual downtime still ends via the
+  operator or a production-event start.
+- **Status priority (both boards):** open downtime record > virtual no-output
+  (→ `unplanned-downtime`) > open event (`running`) > `idle`.
+- **UI:** ERP Settings → Production card (multiplier + default-reason combobox,
+  Unplanned reasons only); WorkCenterForm override Number field; MES
+  DowntimeModal shows an "Auto" badge on auto rows.
+
 ## Out of scope (future)
 
 - Downtime reason pareto / downtime report pages
@@ -96,3 +135,6 @@ active maintenance) | `unplanned-downtime` (open Unplanned downtime) | `idle`.
 ## Changelog
 
 - 2026-07-16: Initial spec after user confirmation of the three decisions.
+- 2026-07-16: Auto no-output downtime — settings columns + isAuto flag,
+  detector cron, instant auto-close on output, virtual live detection on the
+  boards, settings/work-center UI.

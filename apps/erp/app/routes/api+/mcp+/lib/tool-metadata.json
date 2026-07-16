@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-16T22:08:23.471Z",
+  "generated": "2026-07-16T23:55:17.247Z",
   "totalTools": 1336,
   "modules": 15,
   "tools": [
@@ -31018,7 +31018,7 @@
       "module": "resources",
       "classification": "WRITE",
       "description": "upsert work center",
-      "paramCount": 4,
+      "paramCount": 5,
       "serviceParams": [
         "client",
         "workCenter"
@@ -31033,6 +31033,9 @@
         "properties": {
           "id": {
             "type": "string"
+          },
+          "autoDowntimeMultiplier": {
+            "type": "number"
           },
           "name": {
             "type": "string"

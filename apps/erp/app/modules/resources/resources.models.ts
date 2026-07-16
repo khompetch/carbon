@@ -507,6 +507,7 @@ export const trainingValidator = z.object({
 
 export const workCenterValidator = z.object({
   id: zfd.text(z.string().optional()),
+  autoDowntimeMultiplier: zfd.numeric(z.number().min(0).optional()),
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string(),
   defaultStandardFactor: z.enum(standardFactorType, {

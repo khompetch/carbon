@@ -102,6 +102,9 @@ export default function WorkCenterRoute() {
 
   const initialValues = {
     id: workCenter?.id ?? undefined,
+    autoDowntimeMultiplier:
+      (workCenter as { autoDowntimeMultiplier?: number | null })
+        ?.autoDowntimeMultiplier ?? undefined,
     defaultStandardFactor: workCenter?.defaultStandardFactor ?? "Minutes/Piece",
     departmentId: workCenter?.departmentId ?? undefined,
     description: workCenter?.description ?? "",

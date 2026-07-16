@@ -1114,7 +1114,7 @@ export async function insertReworkQuantity(
     ...insert
   } = data;
 
-  return client
+  const result = await client
     .from("productionQuantity")
     .insert(
       sanitize({
@@ -1123,6 +1123,16 @@ export async function insertReworkQuantity(
       })
     )
     .select("*");
+
+  if (!result.error) {
+    await endOpenAutoDowntimeForOperation(client, {
+      jobOperationId: data.jobOperationId,
+      companyId: data.companyId,
+      userId: data.createdBy
+    });
+  }
+
+  return result;
 }
 
 export async function insertProductionQuantity(
@@ -1132,7 +1142,7 @@ export async function insertProductionQuantity(
     createdBy: string;
   }
 ) {
-  return client
+  const result = await client
     .from("productionQuantity")
     .insert(
       sanitize({
@@ -1141,6 +1151,16 @@ export async function insertProductionQuantity(
       })
     )
     .select("*");
+
+  if (!result.error) {
+    await endOpenAutoDowntimeForOperation(client, {
+      jobOperationId: data.jobOperationId,
+      companyId: data.companyId,
+      userId: data.createdBy
+    });
+  }
+
+  return result;
 }
 
 export async function insertScrapQuantity(
@@ -1150,7 +1170,7 @@ export async function insertScrapQuantity(
     createdBy: string;
   }
 ) {
-  return client
+  const result = await client
     .from("productionQuantity")
     .insert(
       sanitize({
@@ -1159,6 +1179,16 @@ export async function insertScrapQuantity(
       })
     )
     .select("*");
+
+  if (!result.error) {
+    await endOpenAutoDowntimeForOperation(client, {
+      jobOperationId: data.jobOperationId,
+      companyId: data.companyId,
+      userId: data.createdBy
+    });
+  }
+
+  return result;
 }
 
 export async function endProductionEvent(
@@ -1410,7 +1440,7 @@ export async function getOpenDowntime(
 ) {
   return (client as SupabaseClient<any>)
     .from("workCenterDowntime")
-    .select("id, type, startTime, notes, downtimeReasonId")
+    .select("id, type, startTime, notes, downtimeReasonId, isAuto")
     .eq("companyId", companyId)
     .eq("workCenterId", workCenterId)
     .is("endTime", null)
@@ -1423,6 +1453,7 @@ export async function getOpenDowntime(
       startTime: string;
       notes: string | null;
       downtimeReasonId: string | null;
+      isAuto: boolean;
     } | null;
     error: any;
   }>;
@@ -1461,9 +1492,15 @@ export async function startDowntime(
 
 export async function endOpenDowntime(
   client: SupabaseClient<Database>,
-  args: { workCenterId: string; companyId: string; userId: string }
+  args: {
+    workCenterId: string;
+    companyId: string;
+    userId: string;
+    /** close only auto-detected (no-output) rows, leaving manual downtime open */
+    onlyAuto?: boolean;
+  }
 ) {
-  return (client as SupabaseClient<any>)
+  let query = (client as SupabaseClient<any>)
     .from("workCenterDowntime")
     .update({
       endTime: new Date().toISOString(),
@@ -1472,10 +1509,40 @@ export async function endOpenDowntime(
     })
     .eq("companyId", args.companyId)
     .eq("workCenterId", args.workCenterId)
-    .is("endTime", null) as unknown as Promise<{
+    .is("endTime", null);
+  if (args.onlyAuto) {
+    query = query.eq("isAuto", true);
+  }
+  return query as unknown as Promise<{
     data: null;
     error: any;
   }>;
+}
+
+/**
+ * Logging output proves the machine is producing again — close any open
+ * auto-detected (no-output) downtime on the operation's work center. Manual
+ * downtime stays open (ended by the operator or by starting an event).
+ * Quantity payloads don't carry workCenterId, so look it up first.
+ */
+async function endOpenAutoDowntimeForOperation(
+  client: SupabaseClient<Database>,
+  args: { jobOperationId: string; companyId: string; userId: string }
+) {
+  const operation = await client
+    .from("jobOperation")
+    .select("workCenterId")
+    .eq("id", args.jobOperationId)
+    .eq("companyId", args.companyId)
+    .maybeSingle();
+  if (!operation.data?.workCenterId) return;
+
+  await endOpenDowntime(client, {
+    workCenterId: operation.data.workCenterId,
+    companyId: args.companyId,
+    userId: args.userId,
+    onlyAuto: true
+  });
 }
 
 export async function getWorkCenterDowntimes(

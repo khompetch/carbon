@@ -29,6 +29,7 @@ type OpenDowntime = {
   startTime: string;
   notes: string | null;
   downtimeReasonId: string | null;
+  isAuto?: boolean;
 };
 
 export function DowntimeModal({
@@ -153,6 +154,11 @@ export function DowntimeModal({
                 >
                   {openDowntime.type}
                 </Badge>
+                {openDowntime.isAuto && (
+                  <Badge variant="secondary">
+                    <Trans>Auto</Trans>
+                  </Badge>
+                )}
                 <span className="font-medium">
                   {openReason?.name ?? <Trans>Downtime</Trans>}
                 </span>
