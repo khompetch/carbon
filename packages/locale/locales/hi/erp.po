@@ -1147,6 +1147,10 @@ msgstr "क्या आप सुनिश्चित हैं कि आप 
 msgid "Are you sure you want to delete the department: {name}? This cannot be undone."
 msgstr "क्या आप सुनिश्चित हैं कि आप विभाग को हटाना चाहते हैं: {name}? यह पूर्ववत नहीं किया जा सकता।"
 
+#. placeholder {0}: downtimeReason.name
+msgid "Are you sure you want to delete the downtime reason: {0}? This cannot be undone."
+msgstr ""
+
 #. placeholder {0}: employeeType.name
 msgid "Are you sure you want to delete the employee type: {0}? This cannot be undone."
 msgstr "क्या आप सुनिश्चित हैं कि आप कर्मचारी प्रकार को हटाना चाहते हैं: {0}? यह पूर्ववत नहीं किया जा सकता।"
@@ -2948,6 +2952,9 @@ msgstr "ग्राहक बनाया गया: {0}"
 msgid "Created department"
 msgstr "विभाग बनाया गया"
 
+msgid "Created downtime reason"
+msgstr ""
+
 msgid "Created failure mode"
 msgstr "विफलता मोड बनाया गया"
 
@@ -3592,6 +3599,9 @@ msgstr "डिस्पैच हटाएं"
 msgid "Delete Document"
 msgstr "दस्तावेज़ हटाएं"
 
+msgid "Delete Downtime Reason"
+msgstr ""
+
 msgid "Delete Employee Type"
 msgstr "कर्मचारी प्रकार हटाएं"
 
@@ -4051,6 +4061,12 @@ msgstr "टेम्पलेट डाउनलोड करें"
 msgid "Downtime"
 msgstr ""
 
+msgid "Downtime Reason"
+msgstr ""
+
+msgid "Downtime Reasons"
+msgstr ""
+
 msgid "Draft"
 msgstr "ड्राफ्ट"
 
@@ -4252,6 +4268,9 @@ msgstr "आयाम संपादित करें"
 
 msgid "Edit Dispatch"
 msgstr "डिस्पैच संपादित करें"
+
+msgid "Edit Downtime Reason"
+msgstr ""
 
 msgid "Edit Employee"
 msgstr "कर्मचारी संपादित करें"
@@ -7540,6 +7559,9 @@ msgstr "नया विभाग"
 msgid "New Dimension"
 msgstr "नया आयाम"
 
+msgid "New Downtime Reason"
+msgstr ""
+
 msgid "New Employee Type"
 msgstr "नया कर्मचारी प्रकार"
 
@@ -8825,6 +8847,9 @@ msgstr "योजना प्रकार"
 
 msgid "Planned"
 msgstr "पोस्टिंग"
+
+msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
+msgstr ""
 
 msgid "Planned End"
 msgstr "नियोजित अंत"

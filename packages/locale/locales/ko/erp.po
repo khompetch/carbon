@@ -1147,6 +1147,10 @@ msgstr "고객 유형 {0}을(를) 삭제하시겠습니까? 이 작업은 되돌
 msgid "Are you sure you want to delete the department: {name}? This cannot be undone."
 msgstr "부서 {name}을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다."
 
+#. placeholder {0}: downtimeReason.name
+msgid "Are you sure you want to delete the downtime reason: {0}? This cannot be undone."
+msgstr ""
+
 #. placeholder {0}: employeeType.name
 msgid "Are you sure you want to delete the employee type: {0}? This cannot be undone."
 msgstr "직원 유형 {0}을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다."
@@ -2948,6 +2952,9 @@ msgstr "고객 생성됨: {0}"
 msgid "Created department"
 msgstr "부서 생성됨"
 
+msgid "Created downtime reason"
+msgstr ""
+
 msgid "Created failure mode"
 msgstr "고장 모드 생성됨"
 
@@ -3592,6 +3599,9 @@ msgstr "작업지시 삭제"
 msgid "Delete Document"
 msgstr "문서 삭제"
 
+msgid "Delete Downtime Reason"
+msgstr ""
+
 msgid "Delete Employee Type"
 msgstr "직원 유형 삭제"
 
@@ -4051,6 +4061,12 @@ msgstr "템플릿 다운로드"
 msgid "Downtime"
 msgstr ""
 
+msgid "Downtime Reason"
+msgstr ""
+
+msgid "Downtime Reasons"
+msgstr ""
+
 msgid "Draft"
 msgstr "초안"
 
@@ -4252,6 +4268,9 @@ msgstr "치수 수정"
 
 msgid "Edit Dispatch"
 msgstr "작업지시 수정"
+
+msgid "Edit Downtime Reason"
+msgstr ""
 
 msgid "Edit Employee"
 msgstr "직원 수정"
@@ -7540,6 +7559,9 @@ msgstr "신규 부서"
 msgid "New Dimension"
 msgstr "신규 차원"
 
+msgid "New Downtime Reason"
+msgstr ""
+
 msgid "New Employee Type"
 msgstr "신규 직원 유형"
 
@@ -8825,6 +8847,9 @@ msgstr "계획 유형"
 
 msgid "Planned"
 msgstr "계획됨"
+
+msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
+msgstr ""
 
 msgid "Planned End"
 msgstr "계획 종료"

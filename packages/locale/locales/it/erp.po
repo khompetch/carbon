@@ -1147,6 +1147,10 @@ msgstr "Sei sicuro di voler eliminare il tipo di cliente: {0}? Questa azione non
 msgid "Are you sure you want to delete the department: {name}? This cannot be undone."
 msgstr "Sei sicuro di voler eliminare il dipartimento: {name}? Questa azione non può essere annullata."
 
+#. placeholder {0}: downtimeReason.name
+msgid "Are you sure you want to delete the downtime reason: {0}? This cannot be undone."
+msgstr ""
+
 #. placeholder {0}: employeeType.name
 msgid "Are you sure you want to delete the employee type: {0}? This cannot be undone."
 msgstr "Sei sicuro di voler eliminare il tipo di dipendente: {0}? Questa azione non può essere annullata."
@@ -2948,6 +2952,9 @@ msgstr "Cliente creato: {0}"
 msgid "Created department"
 msgstr "Dipartimento creato"
 
+msgid "Created downtime reason"
+msgstr ""
+
 msgid "Created failure mode"
 msgstr "Modalità di guasto creata"
 
@@ -3592,6 +3599,9 @@ msgstr "Elimina Dispatch"
 msgid "Delete Document"
 msgstr "Elimina Documento"
 
+msgid "Delete Downtime Reason"
+msgstr ""
+
 msgid "Delete Employee Type"
 msgstr "Elimina Tipo di Dipendente"
 
@@ -4051,6 +4061,12 @@ msgstr "Scarica modello"
 msgid "Downtime"
 msgstr ""
 
+msgid "Downtime Reason"
+msgstr ""
+
+msgid "Downtime Reasons"
+msgstr ""
+
 msgid "Draft"
 msgstr "Bozza"
 
@@ -4252,6 +4268,9 @@ msgstr "Modifica Dimensione"
 
 msgid "Edit Dispatch"
 msgstr "Modifica Dispatch"
+
+msgid "Edit Downtime Reason"
+msgstr ""
 
 msgid "Edit Employee"
 msgstr "Modifica Dipendente"
@@ -7540,6 +7559,9 @@ msgstr "Nuovo Dipartimento"
 msgid "New Dimension"
 msgstr "Nuova Dimensione"
 
+msgid "New Downtime Reason"
+msgstr ""
+
 msgid "New Employee Type"
 msgstr "Nuovo Tipo di Dipendente"
 
@@ -8825,6 +8847,9 @@ msgstr "Tipo di Piano"
 
 msgid "Planned"
 msgstr "Registrazione"
+
+msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
+msgstr ""
 
 msgid "Planned End"
 msgstr "Fine pianificata"

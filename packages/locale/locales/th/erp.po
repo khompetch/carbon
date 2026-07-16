@@ -1147,6 +1147,10 @@ msgstr ""
 msgid "Are you sure you want to delete the department: {name}? This cannot be undone."
 msgstr ""
 
+#. placeholder {0}: downtimeReason.name
+msgid "Are you sure you want to delete the downtime reason: {0}? This cannot be undone."
+msgstr ""
+
 #. placeholder {0}: employeeType.name
 msgid "Are you sure you want to delete the employee type: {0}? This cannot be undone."
 msgstr ""
@@ -2948,6 +2952,9 @@ msgstr ""
 msgid "Created department"
 msgstr ""
 
+msgid "Created downtime reason"
+msgstr ""
+
 msgid "Created failure mode"
 msgstr ""
 
@@ -3592,6 +3599,9 @@ msgstr ""
 msgid "Delete Document"
 msgstr ""
 
+msgid "Delete Downtime Reason"
+msgstr ""
+
 msgid "Delete Employee Type"
 msgstr ""
 
@@ -4051,6 +4061,12 @@ msgstr ""
 msgid "Downtime"
 msgstr "เวลาหยุดเครื่อง"
 
+msgid "Downtime Reason"
+msgstr ""
+
+msgid "Downtime Reasons"
+msgstr ""
+
 msgid "Draft"
 msgstr ""
 
@@ -4251,6 +4267,9 @@ msgid "Edit Dimension"
 msgstr ""
 
 msgid "Edit Dispatch"
+msgstr ""
+
+msgid "Edit Downtime Reason"
 msgstr ""
 
 msgid "Edit Employee"
@@ -7540,6 +7559,9 @@ msgstr ""
 msgid "New Dimension"
 msgstr ""
 
+msgid "New Downtime Reason"
+msgstr ""
+
 msgid "New Employee Type"
 msgstr ""
 
@@ -8825,6 +8847,9 @@ msgstr ""
 
 msgid "Planned"
 msgstr "เวลาตามแผน"
+
+msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
+msgstr ""
 
 msgid "Planned End"
 msgstr ""

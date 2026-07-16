@@ -1147,6 +1147,10 @@ msgstr "Müşteri tipini silmek istediğinizden emin misiniz: {0}? Bu geri alın
 msgid "Are you sure you want to delete the department: {name}? This cannot be undone."
 msgstr "Departmanı silmek istediğinizden emin misiniz: {name}? Bu geri alınamaz."
 
+#. placeholder {0}: downtimeReason.name
+msgid "Are you sure you want to delete the downtime reason: {0}? This cannot be undone."
+msgstr ""
+
 #. placeholder {0}: employeeType.name
 msgid "Are you sure you want to delete the employee type: {0}? This cannot be undone."
 msgstr "Çalışan tipi: {0}'ı silmek istediğinizden emin misiniz? Bu geri alınamaz."
@@ -2948,6 +2952,9 @@ msgstr "Oluşturulan müşteri: {0}"
 msgid "Created department"
 msgstr "Departman oluşturuldu"
 
+msgid "Created downtime reason"
+msgstr ""
+
 msgid "Created failure mode"
 msgstr "Başarısız mod oluşturuldu"
 
@@ -3592,6 +3599,9 @@ msgstr "Görevlendirmeyi Sil"
 msgid "Delete Document"
 msgstr "Belgeyi Sil"
 
+msgid "Delete Downtime Reason"
+msgstr ""
+
 msgid "Delete Employee Type"
 msgstr "Çalışan Türünü Sil"
 
@@ -4051,6 +4061,12 @@ msgstr "Şablon indir"
 msgid "Downtime"
 msgstr ""
 
+msgid "Downtime Reason"
+msgstr ""
+
+msgid "Downtime Reasons"
+msgstr ""
+
 msgid "Draft"
 msgstr "Taslak"
 
@@ -4252,6 +4268,9 @@ msgstr "Boyutu Düzenle"
 
 msgid "Edit Dispatch"
 msgstr "Görev Düzenle"
+
+msgid "Edit Downtime Reason"
+msgstr ""
 
 msgid "Edit Employee"
 msgstr "Çalışanı Düzenle"
@@ -7540,6 +7559,9 @@ msgstr "Yeni Departman"
 msgid "New Dimension"
 msgstr "Yeni Boyut"
 
+msgid "New Downtime Reason"
+msgstr ""
+
 msgid "New Employee Type"
 msgstr "Yeni Çalışan Türü"
 
@@ -8825,6 +8847,9 @@ msgstr "Plan Türü"
 
 msgid "Planned"
 msgstr "Deftere Kayıt"
+
+msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
+msgstr ""
 
 msgid "Planned End"
 msgstr "Planlanan Bitiş"

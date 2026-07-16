@@ -1147,6 +1147,10 @@ msgstr "Are you sure you want to delete the customer type: {0}? This cannot be u
 msgid "Are you sure you want to delete the department: {name}? This cannot be undone."
 msgstr "Are you sure you want to delete the department: {name}? This cannot be undone."
 
+#. placeholder {0}: downtimeReason.name
+msgid "Are you sure you want to delete the downtime reason: {0}? This cannot be undone."
+msgstr "Are you sure you want to delete the downtime reason: {0}? This cannot be undone."
+
 #. placeholder {0}: employeeType.name
 msgid "Are you sure you want to delete the employee type: {0}? This cannot be undone."
 msgstr "Are you sure you want to delete the employee type: {0}? This cannot be undone."
@@ -2948,6 +2952,9 @@ msgstr "Created customer: {0}"
 msgid "Created department"
 msgstr "Created department"
 
+msgid "Created downtime reason"
+msgstr "Created downtime reason"
+
 msgid "Created failure mode"
 msgstr "Created failure mode"
 
@@ -3592,6 +3599,9 @@ msgstr "Delete Dispatch"
 msgid "Delete Document"
 msgstr "Delete Document"
 
+msgid "Delete Downtime Reason"
+msgstr "Delete Downtime Reason"
+
 msgid "Delete Employee Type"
 msgstr "Delete Employee Type"
 
@@ -4051,6 +4061,12 @@ msgstr "Download template"
 msgid "Downtime"
 msgstr "Downtime"
 
+msgid "Downtime Reason"
+msgstr "Downtime Reason"
+
+msgid "Downtime Reasons"
+msgstr "Downtime Reasons"
+
 msgid "Draft"
 msgstr "Draft"
 
@@ -4252,6 +4268,9 @@ msgstr "Edit Dimension"
 
 msgid "Edit Dispatch"
 msgstr "Edit Dispatch"
+
+msgid "Edit Downtime Reason"
+msgstr "Edit Downtime Reason"
 
 msgid "Edit Employee"
 msgstr "Edit Employee"
@@ -7540,6 +7559,9 @@ msgstr "New Department"
 msgid "New Dimension"
 msgstr "New Dimension"
 
+msgid "New Downtime Reason"
+msgstr "New Downtime Reason"
+
 msgid "New Employee Type"
 msgstr "New Employee Type"
 
@@ -8825,6 +8847,9 @@ msgstr "Plan Type"
 
 msgid "Planned"
 msgstr "Planned"
+
+msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
+msgstr "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
 
 msgid "Planned End"
 msgstr "Planned End"

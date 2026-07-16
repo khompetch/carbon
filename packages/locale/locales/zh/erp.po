@@ -1147,6 +1147,10 @@ msgstr "您确定要删除客户类型：{0}？此操作无法撤销。"
 msgid "Are you sure you want to delete the department: {name}? This cannot be undone."
 msgstr "您确定要删除部门：{name}？此操作无法撤销。"
 
+#. placeholder {0}: downtimeReason.name
+msgid "Are you sure you want to delete the downtime reason: {0}? This cannot be undone."
+msgstr ""
+
 #. placeholder {0}: employeeType.name
 msgid "Are you sure you want to delete the employee type: {0}? This cannot be undone."
 msgstr "您确定要删除员工类型：{0}？此操作无法撤销。"
@@ -2948,6 +2952,9 @@ msgstr "已创建客户：{0}"
 msgid "Created department"
 msgstr "已创建部门"
 
+msgid "Created downtime reason"
+msgstr ""
+
 msgid "Created failure mode"
 msgstr "已创建故障模式"
 
@@ -3592,6 +3599,9 @@ msgstr "删除派工"
 msgid "Delete Document"
 msgstr "删除文档"
 
+msgid "Delete Downtime Reason"
+msgstr ""
+
 msgid "Delete Employee Type"
 msgstr "删除员工类型"
 
@@ -4051,6 +4061,12 @@ msgstr "下载模板"
 msgid "Downtime"
 msgstr ""
 
+msgid "Downtime Reason"
+msgstr ""
+
+msgid "Downtime Reasons"
+msgstr ""
+
 msgid "Draft"
 msgstr "草稿"
 
@@ -4252,6 +4268,9 @@ msgstr "编辑维度"
 
 msgid "Edit Dispatch"
 msgstr "编辑派工"
+
+msgid "Edit Downtime Reason"
+msgstr ""
 
 msgid "Edit Employee"
 msgstr "编辑员工"
@@ -7540,6 +7559,9 @@ msgstr "新部门"
 msgid "New Dimension"
 msgstr "新维度"
 
+msgid "New Downtime Reason"
+msgstr ""
+
 msgid "New Employee Type"
 msgstr "新员工类型"
 
@@ -8825,6 +8847,9 @@ msgstr "计划类型"
 
 msgid "Planned"
 msgstr "过账"
+
+msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
+msgstr ""
 
 msgid "Planned End"
 msgstr "计划结束"

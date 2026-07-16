@@ -88,3 +88,6 @@ from location shifts (no migration), dedicated page, realtime included.
 ## Changelog
 
 - 2026-07-09 — drafted; decisions resolved via interactive Q&A.
+- 2026-07-16 — extended by `.ai/specs/2026-07-16-oee-work-center-hourly.md`:
+  per-work-center hourly TV board (12-hour shifts) + downtime recording
+  (`downtimeReason`/`workCenterDowntime`).

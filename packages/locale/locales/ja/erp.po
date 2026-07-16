@@ -1147,6 +1147,10 @@ msgstr "顧客タイプ「{0}」を削除してもよろしいですか？この
 msgid "Are you sure you want to delete the department: {name}? This cannot be undone."
 msgstr "本当に部門「{name}」を削除してもよろしいですか？この操作は取り消せません。"
 
+#. placeholder {0}: downtimeReason.name
+msgid "Are you sure you want to delete the downtime reason: {0}? This cannot be undone."
+msgstr ""
+
 #. placeholder {0}: employeeType.name
 msgid "Are you sure you want to delete the employee type: {0}? This cannot be undone."
 msgstr "従業員タイプ「{0}」を削除してもよろしいですか？この操作は取り消せません。"
@@ -2948,6 +2952,9 @@ msgstr "顧客を作成しました: {0}"
 msgid "Created department"
 msgstr "部門を作成しました"
 
+msgid "Created downtime reason"
+msgstr ""
+
 msgid "Created failure mode"
 msgstr "障害モードを作成しました"
 
@@ -3592,6 +3599,9 @@ msgstr "ディスパッチを削除"
 msgid "Delete Document"
 msgstr "ドキュメントを削除"
 
+msgid "Delete Downtime Reason"
+msgstr ""
+
 msgid "Delete Employee Type"
 msgstr "従業員タイプを削除"
 
@@ -4051,6 +4061,12 @@ msgstr "テンプレートをダウンロード"
 msgid "Downtime"
 msgstr ""
 
+msgid "Downtime Reason"
+msgstr ""
+
+msgid "Downtime Reasons"
+msgstr ""
+
 msgid "Draft"
 msgstr "下書き"
 
@@ -4252,6 +4268,9 @@ msgstr "ディメンションを編集"
 
 msgid "Edit Dispatch"
 msgstr "ディスパッチを編集"
+
+msgid "Edit Downtime Reason"
+msgstr ""
 
 msgid "Edit Employee"
 msgstr "従業員を編集"
@@ -7540,6 +7559,9 @@ msgstr "新しい部門"
 msgid "New Dimension"
 msgstr "新しいディメンション"
 
+msgid "New Downtime Reason"
+msgstr ""
+
 msgid "New Employee Type"
 msgstr "新しい従業員タイプ"
 
@@ -8825,6 +8847,9 @@ msgstr "計画タイプ"
 
 msgid "Planned"
 msgstr "転記"
+
+msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
+msgstr ""
 
 msgid "Planned End"
 msgstr "計画終了"

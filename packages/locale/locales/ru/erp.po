@@ -1147,6 +1147,10 @@ msgstr "Вы уверены, что хотите удалить тип клие�
 msgid "Are you sure you want to delete the department: {name}? This cannot be undone."
 msgstr "Вы уверены, что хотите удалить отдел: {name}? Это действие невозможно отменить."
 
+#. placeholder {0}: downtimeReason.name
+msgid "Are you sure you want to delete the downtime reason: {0}? This cannot be undone."
+msgstr ""
+
 #. placeholder {0}: employeeType.name
 msgid "Are you sure you want to delete the employee type: {0}? This cannot be undone."
 msgstr "Вы уверены, что хотите удалить тип сотрудника: {0}? Это действие невозможно отменить."
@@ -2948,6 +2952,9 @@ msgstr "Создан клиент: {0}"
 msgid "Created department"
 msgstr "Отдел создан"
 
+msgid "Created downtime reason"
+msgstr ""
+
 msgid "Created failure mode"
 msgstr "Режим отказа создан"
 
@@ -3592,6 +3599,9 @@ msgstr "Удалить диспетчеризацию"
 msgid "Delete Document"
 msgstr "Удалить документ"
 
+msgid "Delete Downtime Reason"
+msgstr ""
+
 msgid "Delete Employee Type"
 msgstr "Удалить тип сотрудника"
 
@@ -4051,6 +4061,12 @@ msgstr "Скачать шаблон"
 msgid "Downtime"
 msgstr ""
 
+msgid "Downtime Reason"
+msgstr ""
+
+msgid "Downtime Reasons"
+msgstr ""
+
 msgid "Draft"
 msgstr "Черновик"
 
@@ -4252,6 +4268,9 @@ msgstr "Редактировать измерение"
 
 msgid "Edit Dispatch"
 msgstr "Редактировать диспетчеризацию"
+
+msgid "Edit Downtime Reason"
+msgstr ""
 
 msgid "Edit Employee"
 msgstr "Редактировать сотрудника"
@@ -7540,6 +7559,9 @@ msgstr "Новый отдел"
 msgid "New Dimension"
 msgstr "Новое измерение"
 
+msgid "New Downtime Reason"
+msgstr ""
+
 msgid "New Employee Type"
 msgstr "Новый тип сотрудника"
 
@@ -8825,6 +8847,9 @@ msgstr "Тип плана"
 
 msgid "Planned"
 msgstr "Проводка"
+
+msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
+msgstr ""
 
 msgid "Planned End"
 msgstr "Запланированное окончание"
