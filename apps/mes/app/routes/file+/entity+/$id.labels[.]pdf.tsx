@@ -59,7 +59,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     {
       itemId: item.data.readableId,
       revision: item.data.revision ?? "0",
-      number: trackedEntity.data?.readableId ?? "",
+      number: trackedEntity.data?.readableId || id,
       trackedEntityId: id,
       quantity: trackedEntity.data?.quantity ?? 1,
       trackingType: "Batch"

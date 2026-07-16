@@ -43,7 +43,7 @@ export async function getEntityLabelData(
   const labelItem = {
     itemId: item.data.readableId,
     revision: item.data.revision ?? "0",
-    number: trackedEntity.data.readableId ?? "",
+    number: trackedEntity.data.readableId || trackedEntityId,
     trackedEntityId: trackedEntityId,
     quantity: trackedEntity.data.quantity ?? 1,
     trackingType: trackedEntity.data.quantity > 1 ? "Batch" : "Serial"
