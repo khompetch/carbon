@@ -461,6 +461,59 @@ export function IssueMaterialModal({
     [carbon, material]
   );
 
+  // Scanned labels may encode either the internal tracked entity id or the
+  // human-readable serial/batch number (readableId). Resolve whatever was
+  // scanned to an internal id against the item-scoped candidate list —
+  // readableId is not unique, so prefer a selectable (available, not yet
+  // chosen in another row) candidate when numbers collide within the item.
+  const resolveScan = useCallback(
+    (
+      value: string,
+      data: Array<{ id: string; readableId: string | null }> | undefined,
+      optionIds: Set<string>,
+      usedIds: Set<string>
+    ) => {
+      if (!value || !data) return value;
+      if (data.some((e) => e.id === value)) return value;
+      const byNumber = data.filter((e) => e.readableId === value);
+      const preferred =
+        byNumber.find((e) => optionIds.has(e.id) && !usedIds.has(e.id)) ??
+        byNumber[0];
+      return preferred?.id ?? value;
+    },
+    []
+  );
+
+  const resolveSerialScan = useCallback(
+    (value: string, index: number) =>
+      resolveScan(
+        value,
+        serialNumbers?.data ?? undefined,
+        new Set(serialOptions.map((o) => o.value)),
+        new Set(
+          selectedSerialNumbers
+            .filter((sn, i) => sn.id && i !== index)
+            .map((sn) => sn.id)
+        )
+      ),
+    [resolveScan, serialNumbers?.data, serialOptions, selectedSerialNumbers]
+  );
+
+  const resolveBatchScan = useCallback(
+    (value: string, index: number) =>
+      resolveScan(
+        value,
+        batchNumbers?.data ?? undefined,
+        new Set(batchOptions.map((o) => o.value)),
+        new Set(
+          selectedBatchNumbers
+            .filter((bn, i) => bn.id && i !== index)
+            .map((bn) => bn.id)
+        )
+      ),
+    [resolveScan, batchNumbers?.data, batchOptions, selectedBatchNumbers]
+  );
+
   // Validation functions
   const validateSerialNumber = useCallback(
     (value: string, index: number) => {
@@ -1233,7 +1286,10 @@ export function IssueMaterialModal({
                                         );
                                       }}
                                       onBlur={(e) => {
-                                        const newValue = e.target.value;
+                                        const newValue = resolveSerialScan(
+                                          e.target.value,
+                                          index
+                                        );
                                         const error = validateSerialNumber(
                                           newValue,
                                           index
@@ -1466,10 +1522,17 @@ export function IssueMaterialModal({
                                         });
                                       }}
                                       onBlur={(e) => {
-                                        validateBatchInput(
+                                        const resolved = resolveBatchScan(
                                           e.target.value,
                                           index
                                         );
+                                        if (resolved !== batch.id) {
+                                          updateBatchNumber({
+                                            ...batch,
+                                            id: resolved
+                                          });
+                                        }
+                                        validateBatchInput(resolved, index);
                                       }}
                                       placeholder="Scan batch number"
                                     />
