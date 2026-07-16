@@ -1559,6 +1559,12 @@ msgstr "認証エラー"
 msgid "Auto apply"
 msgstr "自動適用"
 
+msgid "Auto downtime after (× cycle time)"
+msgstr ""
+
+msgid "Auto Downtime Multiplier (override)"
+msgstr ""
+
 msgid "Auto Release"
 msgstr "自動リリース"
 
@@ -1585,6 +1591,9 @@ msgstr "自動コスト更新"
 
 msgid "Automatic Lead Time Updates"
 msgstr "自動リードタイム更新"
+
+msgid "Automatic No-Output Downtime"
+msgstr ""
 
 msgid "Automatic Updates"
 msgstr "自動更新"
@@ -3476,6 +3485,9 @@ msgstr "あなたの基本通貨での取引のためのデフォルト現金勘
 msgid "Default CC Recipients"
 msgstr "デフォルトCC受信者"
 
+msgid "Default downtime reason"
+msgstr ""
+
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "特定の銀行口座が選択されていない場合、現金取引に使用されるデフォルトGLアカウント。"
 
@@ -4181,6 +4193,9 @@ msgstr "複製先..."
 
 msgid "Duration"
 msgstr "期間"
+
+msgid "e.g. 2 = flag after 2× the cycle time with no output"
+msgstr ""
 
 msgid "e.g. 2h"
 msgstr "例：2時間"
@@ -5451,6 +5466,9 @@ msgstr "フィクスチャ"
 
 msgid "Fixture ID"
 msgstr "フィクスチャID"
+
+msgid "Flag unplanned downtime after this many times the cycle time with no output. Empty = company default, 0 = disabled for this work center"
+msgstr ""
 
 msgid "for anything. They'll pull in the right person."
 msgstr "何でも構いません。彼らが適切な人を連れてきます。"
@@ -8102,6 +8120,9 @@ msgstr "今週のタイムエントリがありません"
 msgid "No transactions in this period"
 msgstr "この期間に取引がありません"
 
+msgid "No unplanned downtime reasons configured. Add them under Production → Downtime Reasons."
+msgstr ""
+
 msgid "No value needed"
 msgstr "値が不要です"
 
@@ -10604,6 +10625,9 @@ msgstr "設定するアイテムを選択"
 
 msgid "Select an option"
 msgstr "オプションを選択"
+
+msgid "Select an unplanned downtime reason..."
+msgstr ""
 
 msgid "Select at least one line to convert"
 msgstr "変換する行を少なくとも1つ選択してください"
@@ -13782,6 +13806,9 @@ msgstr "完成品の賞味期限が「計算」に設定されている場合、
 
 msgid "When a serial or batch expires, and what happens if used after — a company policy can Warn, Block, or BlockWithOverride."
 msgstr "シリアルまたはバッチが期限切れになるとき、およびその後使用された場合に何が起こるか — 会社のポリシーは警告、ブロック、またはブロック上書きできます。"
+
+msgid "When a work center has a running operation but no output is logged within the multiplier × cycle time, it is automatically flagged as unplanned downtime with the default reason. Leave either field empty to disable. Work centers can override the multiplier individually."
+msgstr ""
 
 msgid "When Carbon committed to having the goods arrive; combined with the shipping method's transit days, this drives Ship Date back-calc."
 msgstr "カーボンが商品の到着を約束したいつ。配送方法の輸送日数と組み合わせると、出荷日の逆算を実行します。"

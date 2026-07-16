@@ -166,9 +166,10 @@ describe("computeShiftHourlyOee", () => {
 
     expect(hours[0]!.runtimeMs).toBe(HOUR);
     // second bucket has elapsed 30 min: runtime clamped to now,
-    // open planned downtime covers minutes 70-90
+    // open planned downtime covers minutes 70-90 and wins over the
+    // still-running event, so runtime = 30 - 20 overlapping minutes
     expect(hours[1]!.elapsedMs).toBe(30 * MINUTE);
-    expect(hours[1]!.runtimeMs).toBe(30 * MINUTE);
+    expect(hours[1]!.runtimeMs).toBe(10 * MINUTE);
     expect(hours[1]!.pdtMs).toBe(20 * MINUTE);
     // future buckets are inert
     expect(hours[2]!.elapsedMs).toBe(0);
@@ -332,5 +333,170 @@ describe("shift windows", () => {
       "Asia/Bangkok" // UTC+7
     );
     expect(window!.start).toBe(Date.parse("2026-07-16T01:00:00Z"));
+  });
+});
+
+describe("subtractIntervals / downtime wins runtime", () => {
+  it("subtracts overlapping intervals", async () => {
+    const { subtractIntervals } = await import("./oee");
+    expect(
+      subtractIntervals(
+        [[0, HOUR]],
+        [
+          [10 * MINUTE, 20 * MINUTE],
+          [50 * MINUTE, 2 * HOUR]
+        ]
+      )
+    ).toEqual([
+      [0, 10 * MINUTE],
+      [20 * MINUTE, 50 * MINUTE]
+    ]);
+    expect(subtractIntervals([[0, HOUR]], [[0, 2 * HOUR]])).toEqual([]);
+  });
+
+  it("recorded unplanned downtime over an open event reduces %A", () => {
+    const { hours } = computeShiftHourlyOee({
+      shiftStart: SHIFT_START,
+      shiftEnd: SHIFT_END,
+      now: SHIFT_START + HOUR,
+      events: [
+        {
+          startTime: iso(0),
+          endTime: null, // operator left it running
+          type: "Machine",
+          jobOperationId: "op1"
+        }
+      ],
+      quantities: [],
+      standards: [
+        {
+          jobOperationId: "op1",
+          setupTime: 0,
+          setupUnit: "Total Hours",
+          laborTime: 0,
+          laborUnit: "Hours/Piece",
+          machineTime: 6,
+          machineUnit: "Minutes/Piece"
+        }
+      ],
+      plannedDowntimes: [],
+      unplannedDowntimes: [
+        { startTime: iso(30 * MINUTE), endTime: null } // machine down
+      ]
+    });
+
+    const first = hours[0]!;
+    expect(first.runtimeMs).toBe(30 * MINUTE);
+    expect(first.updtMs).toBe(30 * MINUTE);
+    expect(first.availability).toBeCloseTo(0.5);
+  });
+});
+
+describe("detectNoOutput", () => {
+  const sixMinutes = 6 * MINUTE;
+
+  const openEvent = {
+    startTime: iso(0),
+    endTime: null,
+    type: "Machine" as const,
+    jobOperationId: "op1"
+  };
+
+  it("triggers after multiplier × cycle time with no output", async () => {
+    const { detectNoOutput } = await import("./oee");
+    // threshold = 2 × 6min = 12min; 20 min elapsed with no output
+    expect(
+      detectNoOutput({
+        events: [openEvent],
+        quantities: [],
+        msPerPiece: sixMinutes,
+        multiplier: 2,
+        now: SHIFT_START + 20 * MINUTE
+      })
+    ).toBe(SHIFT_START + 12 * MINUTE);
+  });
+
+  it("does not trigger before the threshold or without an open event", async () => {
+    const { detectNoOutput } = await import("./oee");
+    expect(
+      detectNoOutput({
+        events: [openEvent],
+        quantities: [],
+        msPerPiece: sixMinutes,
+        multiplier: 2,
+        now: SHIFT_START + 10 * MINUTE
+      })
+    ).toBeNull();
+    expect(
+      detectNoOutput({
+        events: [{ ...openEvent, endTime: iso(30 * MINUTE) }],
+        quantities: [],
+        msPerPiece: sixMinutes,
+        multiplier: 2,
+        now: SHIFT_START + HOUR
+      })
+    ).toBeNull();
+  });
+
+  it("resets the clock when output is logged", async () => {
+    const { detectNoOutput } = await import("./oee");
+    expect(
+      detectNoOutput({
+        events: [openEvent],
+        quantities: [
+          {
+            createdAt: iso(15 * MINUTE),
+            type: "Production",
+            quantity: 1,
+            jobOperationId: "op1"
+          }
+        ],
+        msPerPiece: sixMinutes,
+        multiplier: 2,
+        now: SHIFT_START + 20 * MINUTE
+      })
+    ).toBeNull();
+  });
+
+  it("does not trigger without a cycle time", async () => {
+    const { detectNoOutput } = await import("./oee");
+    expect(
+      detectNoOutput({
+        events: [openEvent],
+        quantities: [],
+        msPerPiece: 0,
+        multiplier: 2,
+        now: SHIFT_START + HOUR
+      })
+    ).toBeNull();
+  });
+
+  it("virtual no-output window flows into the hourly math", () => {
+    const { hours } = computeShiftHourlyOee({
+      shiftStart: SHIFT_START,
+      shiftEnd: SHIFT_END,
+      now: SHIFT_START + 30 * MINUTE,
+      events: [openEvent],
+      quantities: [],
+      standards: [
+        {
+          jobOperationId: "op1",
+          setupTime: 0,
+          setupUnit: "Total Hours",
+          laborTime: 0,
+          laborUnit: "Hours/Piece",
+          machineTime: 6,
+          machineUnit: "Minutes/Piece"
+        }
+      ],
+      plannedDowntimes: [],
+      noOutput: { msPerPiece: sixMinutes, multiplier: 2 }
+    });
+
+    // threshold crossed at minute 12; minutes 12-30 become downtime
+    const first = hours[0]!;
+    expect(first.runtimeMs).toBe(12 * MINUTE);
+    expect(first.updtMs).toBe(18 * MINUTE);
+    expect(first.availability).toBeCloseTo(12 / 30);
   });
 });

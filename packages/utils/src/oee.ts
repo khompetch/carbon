@@ -91,6 +91,15 @@ export type ComputeShiftHourlyOeeInput = {
   standards: OeeStandardInput[];
   /** recorded Planned downtime + planned maintenance windows */
   plannedDowntimes: OeeIntervalInput[];
+  /** recorded Unplanned downtime windows — subtracted from runtime */
+  unplannedDowntimes?: OeeIntervalInput[];
+  /**
+   * Auto no-output detection: when set and an open production event has had
+   * no output for longer than multiplier × msPerPiece, the excess is treated
+   * as a virtual unplanned downtime interval (live board view; the background
+   * detector records the real row within a minute).
+   */
+  noOutput?: { msPerPiece: number; multiplier: number };
 };
 
 type Interval = [number, number];
@@ -129,6 +138,72 @@ export function mergedDuration(intervals: Interval[]): number {
   }
   total += currentEnd - currentStart;
   return total;
+}
+
+/** Subtract `minus` intervals from `base` intervals (both may overlap) */
+export function subtractIntervals(
+  base: Interval[],
+  minus: Interval[]
+): Interval[] {
+  if (base.length === 0 || minus.length === 0) return [...base];
+  const sortedMinus = [...minus].sort((a, b) => a[0] - b[0]);
+  const result: Interval[] = [];
+  for (const interval of base) {
+    let segments: Interval[] = [interval];
+    for (const [minusStart, minusEnd] of sortedMinus) {
+      const next: Interval[] = [];
+      for (const [start, end] of segments) {
+        if (minusEnd <= start || minusStart >= end) {
+          next.push([start, end]);
+          continue;
+        }
+        if (minusStart > start) next.push([start, minusStart]);
+        if (minusEnd < end) next.push([minusEnd, end]);
+      }
+      segments = next;
+      if (segments.length === 0) break;
+    }
+    result.push(...segments);
+  }
+  return result;
+}
+
+/**
+ * Detect a "no output" condition: an open production event whose operation has
+ * logged no quantity for longer than multiplier × msPerPiece. Returns the
+ * epoch ms at which the threshold was crossed, or null.
+ */
+export function detectNoOutput(args: {
+  events: OeeEventInput[];
+  quantities: OeeQuantityInput[];
+  msPerPiece: number;
+  multiplier: number;
+  now: number;
+}): number | null {
+  const { events, quantities, msPerPiece, multiplier, now } = args;
+  if (msPerPiece <= 0 || multiplier <= 0) return null;
+
+  const openEvents = events.filter((event) => event.endTime === null);
+  if (openEvents.length === 0) return null;
+
+  const openStart = Math.min(
+    ...openEvents.map((event) => new Date(event.startTime).getTime())
+  );
+  if (Number.isNaN(openStart)) return null;
+
+  const openOperationIds = new Set(
+    openEvents.map((event) => event.jobOperationId)
+  );
+  let lastOutput = Number.NEGATIVE_INFINITY;
+  for (const quantity of quantities) {
+    if (!openOperationIds.has(quantity.jobOperationId)) continue;
+    const time = new Date(quantity.createdAt).getTime();
+    if (!Number.isNaN(time) && time > lastOutput) lastOutput = time;
+  }
+
+  const baseline = Math.max(openStart, lastOutput);
+  const threshold = multiplier * msPerPiece;
+  return now - baseline > threshold ? baseline + threshold : null;
 }
 
 /**
@@ -203,6 +278,27 @@ export function computeShiftHourlyOee(input: ComputeShiftHourlyOeeInput): {
   for (const downtime of input.plannedDowntimes) {
     const interval = toInterval(downtime, now);
     if (interval) plannedIntervals.push(interval);
+  }
+
+  // All recorded downtime (plus the virtual no-output window) wins over
+  // production events: it is subtracted from runtime so %A reflects reality
+  // even when the operator left the event running.
+  const downtimeIntervals: Interval[] = [...plannedIntervals];
+  for (const downtime of input.unplannedDowntimes ?? []) {
+    const interval = toInterval(downtime, now);
+    if (interval) downtimeIntervals.push(interval);
+  }
+  if (input.noOutput) {
+    const noOutputStart = detectNoOutput({
+      events: input.events,
+      quantities: input.quantities,
+      msPerPiece: input.noOutput.msPerPiece,
+      multiplier: input.noOutput.multiplier,
+      now
+    });
+    if (noOutputStart !== null && noOutputStart < now) {
+      downtimeIntervals.push([noOutputStart, now]);
+    }
   }
 
   const standardsByOperation = new Map<string, OeeStandardInput>();
@@ -292,7 +388,12 @@ export function computeShiftHourlyOee(input: ComputeShiftHourlyOeeInput): {
 
     const runtimeMs = Math.min(
       elapsedMs,
-      mergedDuration(bucketEvents.map((entry) => entry.interval))
+      mergedDuration(
+        subtractIntervals(
+          bucketEvents.map((entry) => entry.interval),
+          downtimeIntervals
+        )
+      )
     );
 
     // Pieces recorded in this bucket

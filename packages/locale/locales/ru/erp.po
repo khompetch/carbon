@@ -1559,6 +1559,12 @@ msgstr "Ошибка аутентификации"
 msgid "Auto apply"
 msgstr "Автоматически применить"
 
+msgid "Auto downtime after (× cycle time)"
+msgstr ""
+
+msgid "Auto Downtime Multiplier (override)"
+msgstr ""
+
 msgid "Auto Release"
 msgstr "Автоматический выпуск"
 
@@ -1585,6 +1591,9 @@ msgstr "Автоматические обновления стоимости"
 
 msgid "Automatic Lead Time Updates"
 msgstr "Автоматические обновления времени поставки"
+
+msgid "Automatic No-Output Downtime"
+msgstr ""
 
 msgid "Automatic Updates"
 msgstr "Автоматические обновления"
@@ -3476,6 +3485,9 @@ msgstr "Счет наличных денежных средств по умол�
 msgid "Default CC Recipients"
 msgstr "Получатели CC по умолчанию"
 
+msgid "Default downtime reason"
+msgstr ""
+
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "Счет GL по умолчанию, используемый для операций с наличными деньгами, когда не выбран конкретный банковский счет."
 
@@ -4181,6 +4193,9 @@ msgstr "Дублировать в..."
 
 msgid "Duration"
 msgstr "Продолжительность"
+
+msgid "e.g. 2 = flag after 2× the cycle time with no output"
+msgstr ""
 
 msgid "e.g. 2h"
 msgstr "например, 2ч"
@@ -5451,6 +5466,9 @@ msgstr "Приспособление"
 
 msgid "Fixture ID"
 msgstr "ID приспособления"
+
+msgid "Flag unplanned downtime after this many times the cycle time with no output. Empty = company default, 0 = disabled for this work center"
+msgstr ""
 
 msgid "for anything. They'll pull in the right person."
 msgstr "для чего угодно. Они привлекут нужного человека."
@@ -8102,6 +8120,9 @@ msgstr "Нет записей о времени на эту неделю"
 msgid "No transactions in this period"
 msgstr "Нет транзакций в этом периоде"
 
+msgid "No unplanned downtime reasons configured. Add them under Production → Downtime Reasons."
+msgstr ""
+
 msgid "No value needed"
 msgstr "Значение не требуется"
 
@@ -10604,6 +10625,9 @@ msgstr "Выберите элемент для настройки"
 
 msgid "Select an option"
 msgstr "Выберите опцию"
+
+msgid "Select an unplanned downtime reason..."
+msgstr ""
 
 msgid "Select at least one line to convert"
 msgstr "Выберите хотя бы одну строку для конвертации"
@@ -13782,6 +13806,9 @@ msgstr "Когда срок хранения готового продукта �
 
 msgid "When a serial or batch expires, and what happens if used after — a company policy can Warn, Block, or BlockWithOverride."
 msgstr "Когда серийный номер или партия истекает и что происходит, если она используется после — политика компании может предупредить, заблокировать или заблокировать с переопределением."
+
+msgid "When a work center has a running operation but no output is logged within the multiplier × cycle time, it is automatically flagged as unplanned downtime with the default reason. Leave either field empty to disable. Work centers can override the multiplier individually."
+msgstr ""
 
 msgid "When Carbon committed to having the goods arrive; combined with the shipping method's transit days, this drives Ship Date back-calc."
 msgstr "Когда Carbon обязалась доставить товары; в сочетании с днями доставки способа доставки, это определяет обратный расчет даты отправки."

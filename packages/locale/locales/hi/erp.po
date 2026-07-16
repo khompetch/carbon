@@ -1559,6 +1559,12 @@ msgstr "प्रमाणीकरण त्रुटि"
 msgid "Auto apply"
 msgstr "स्वचालित रूप से लागू करें"
 
+msgid "Auto downtime after (× cycle time)"
+msgstr ""
+
+msgid "Auto Downtime Multiplier (override)"
+msgstr ""
+
 msgid "Auto Release"
 msgstr "ऑटो रिलीज़"
 
@@ -1585,6 +1591,9 @@ msgstr "स्वचालित लागत अपडेट"
 
 msgid "Automatic Lead Time Updates"
 msgstr "स्वचालित लीड टाइम अपडेट"
+
+msgid "Automatic No-Output Downtime"
+msgstr ""
 
 msgid "Automatic Updates"
 msgstr "स्वचालित अपडेट"
@@ -3476,6 +3485,9 @@ msgstr "आपकी आधार मुद्रा में लेनदे�
 msgid "Default CC Recipients"
 msgstr "डिफ़ॉल्ट CC प्राप्तकर्ता"
 
+msgid "Default downtime reason"
+msgstr ""
+
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "जब कोई विशिष्ट बैंक खाता नहीं चुना जाता है तो नकद लेनदेन के लिए उपयोग किया जाने वाला डिफ़ॉल्ट GL खाता।"
 
@@ -4181,6 +4193,9 @@ msgstr "...को डुप्लिकेट करें"
 
 msgid "Duration"
 msgstr "अवधि"
+
+msgid "e.g. 2 = flag after 2× the cycle time with no output"
+msgstr ""
 
 msgid "e.g. 2h"
 msgstr "उदा. 2h"
@@ -5451,6 +5466,9 @@ msgstr "फिक्सचर"
 
 msgid "Fixture ID"
 msgstr "फिक्सचर आईडी"
+
+msgid "Flag unplanned downtime after this many times the cycle time with no output. Empty = company default, 0 = disabled for this work center"
+msgstr ""
 
 msgid "for anything. They'll pull in the right person."
 msgstr "किसी भी चीज़ के लिए। वे सही व्यक्ति को शामिल करेंगे।"
@@ -8102,6 +8120,9 @@ msgstr "इस सप्ताह के लिए कोई समय प्र
 msgid "No transactions in this period"
 msgstr "इस अवधि में कोई लेनदेन नहीं"
 
+msgid "No unplanned downtime reasons configured. Add them under Production → Downtime Reasons."
+msgstr ""
+
 msgid "No value needed"
 msgstr "कोई मान आवश्यक नहीं"
 
@@ -10604,6 +10625,9 @@ msgstr "कॉन्फ़िगर करने के लिए एक आइ�
 
 msgid "Select an option"
 msgstr "एक विकल्प चुनें"
+
+msgid "Select an unplanned downtime reason..."
+msgstr ""
 
 msgid "Select at least one line to convert"
 msgstr "परिवर्तित करने के लिए कम से कम एक पंक्ति चुनें"
@@ -13782,6 +13806,9 @@ msgstr "जब किसी तैयार उत्पाद का शेल�
 
 msgid "When a serial or batch expires, and what happens if used after — a company policy can Warn, Block, or BlockWithOverride."
 msgstr "जब एक सीरियल या बैच समाप्त हो जाता है, और उपयोग के बाद क्या होता है — एक कंपनी नीति सतर्क, अवरुद्ध, या ब्लॉकविदअधिग्रहण हो सकती है।"
+
+msgid "When a work center has a running operation but no output is logged within the multiplier × cycle time, it is automatically flagged as unplanned downtime with the default reason. Leave either field empty to disable. Work centers can override the multiplier individually."
+msgstr ""
 
 msgid "When Carbon committed to having the goods arrive; combined with the shipping method's transit days, this drives Ship Date back-calc."
 msgstr "जब कार्बन ने माल के आने का वचन दिया; शिपिंग विधि के ट्रांजिट दिनों के साथ संयुक्त, यह जहाज तारीख की पिछली गणना को चलाता है।"

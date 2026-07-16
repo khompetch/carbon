@@ -108,6 +108,9 @@ msgstr "ファイルを添付"
 msgid "Authentication Error"
 msgstr "認証エラー"
 
+msgid "Auto"
+msgstr ""
+
 msgid "Availability (%A)"
 msgstr ""
 

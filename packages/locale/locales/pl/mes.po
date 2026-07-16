@@ -108,6 +108,9 @@ msgstr "Załącz plik"
 msgid "Authentication Error"
 msgstr "Błąd uwierzytelniania"
 
+msgid "Auto"
+msgstr ""
+
 msgid "Availability (%A)"
 msgstr ""
 

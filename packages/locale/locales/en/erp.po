@@ -1559,6 +1559,12 @@ msgstr "Authentication Error"
 msgid "Auto apply"
 msgstr "Auto apply"
 
+msgid "Auto downtime after (× cycle time)"
+msgstr "Auto downtime after (× cycle time)"
+
+msgid "Auto Downtime Multiplier (override)"
+msgstr "Auto Downtime Multiplier (override)"
+
 msgid "Auto Release"
 msgstr "Auto Release"
 
@@ -1585,6 +1591,9 @@ msgstr "Automatic Cost Updates"
 
 msgid "Automatic Lead Time Updates"
 msgstr "Automatic Lead Time Updates"
+
+msgid "Automatic No-Output Downtime"
+msgstr "Automatic No-Output Downtime"
 
 msgid "Automatic Updates"
 msgstr "Automatic Updates"
@@ -3476,6 +3485,9 @@ msgstr "Default cash account for transactions in your base currency."
 msgid "Default CC Recipients"
 msgstr "Default CC Recipients"
 
+msgid "Default downtime reason"
+msgstr "Default downtime reason"
+
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "Default GL account used for cash transactions when no specific bank account is selected."
 
@@ -4181,6 +4193,9 @@ msgstr "Duplicate to..."
 
 msgid "Duration"
 msgstr "Duration"
+
+msgid "e.g. 2 = flag after 2× the cycle time with no output"
+msgstr "e.g. 2 = flag after 2× the cycle time with no output"
 
 msgid "e.g. 2h"
 msgstr "e.g. 2h"
@@ -5451,6 +5466,9 @@ msgstr "Fixture"
 
 msgid "Fixture ID"
 msgstr "Fixture ID"
+
+msgid "Flag unplanned downtime after this many times the cycle time with no output. Empty = company default, 0 = disabled for this work center"
+msgstr "Flag unplanned downtime after this many times the cycle time with no output. Empty = company default, 0 = disabled for this work center"
 
 msgid "for anything. They'll pull in the right person."
 msgstr "for anything. They'll pull in the right person."
@@ -8102,6 +8120,9 @@ msgstr "No time entries for this week"
 msgid "No transactions in this period"
 msgstr "No transactions in this period"
 
+msgid "No unplanned downtime reasons configured. Add them under Production → Downtime Reasons."
+msgstr "No unplanned downtime reasons configured. Add them under Production → Downtime Reasons."
+
 msgid "No value needed"
 msgstr "No value needed"
 
@@ -10604,6 +10625,9 @@ msgstr "Select an item to configure"
 
 msgid "Select an option"
 msgstr "Select an option"
+
+msgid "Select an unplanned downtime reason..."
+msgstr "Select an unplanned downtime reason..."
 
 msgid "Select at least one line to convert"
 msgstr "Select at least one line to convert"
@@ -13782,6 +13806,9 @@ msgstr "When a finished product's shelf life is set to Calculated, pick which co
 
 msgid "When a serial or batch expires, and what happens if used after — a company policy can Warn, Block, or BlockWithOverride."
 msgstr "When a serial or batch expires, and what happens if used after — a company policy can Warn, Block, or BlockWithOverride."
+
+msgid "When a work center has a running operation but no output is logged within the multiplier × cycle time, it is automatically flagged as unplanned downtime with the default reason. Leave either field empty to disable. Work centers can override the multiplier individually."
+msgstr "When a work center has a running operation but no output is logged within the multiplier × cycle time, it is automatically flagged as unplanned downtime with the default reason. Leave either field empty to disable. Work centers can override the multiplier individually."
 
 msgid "When Carbon committed to having the goods arrive; combined with the shipping method's transit days, this drives Ship Date back-calc."
 msgstr "When Carbon committed to having the goods arrive; combined with the shipping method's transit days, this drives Ship Date back-calc."

@@ -108,6 +108,9 @@ msgstr "फ़ाइल संलग्न करें"
 msgid "Authentication Error"
 msgstr "प्रमाणीकरण त्रुटि"
 
+msgid "Auto"
+msgstr ""
+
 msgid "Availability (%A)"
 msgstr ""
 

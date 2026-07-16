@@ -1559,6 +1559,12 @@ msgstr "인증 오류"
 msgid "Auto apply"
 msgstr "자동 적용"
 
+msgid "Auto downtime after (× cycle time)"
+msgstr ""
+
+msgid "Auto Downtime Multiplier (override)"
+msgstr ""
+
 msgid "Auto Release"
 msgstr "자동 릴리즈"
 
@@ -1585,6 +1591,9 @@ msgstr "자동 원가 업데이트"
 
 msgid "Automatic Lead Time Updates"
 msgstr "자동 리드타임 업데이트"
+
+msgid "Automatic No-Output Downtime"
+msgstr ""
 
 msgid "Automatic Updates"
 msgstr "자동 업데이트"
@@ -3476,6 +3485,9 @@ msgstr "기준 통화 거래에 사용할 기본 현금 계정입니다."
 msgid "Default CC Recipients"
 msgstr "기본 참조(CC) 수신자"
 
+msgid "Default downtime reason"
+msgstr ""
+
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "특정 은행 계좌가 선택되지 않았을 때 현금 거래에 사용되는 기본 총계정원장 계정입니다."
 
@@ -4181,6 +4193,9 @@ msgstr "다음으로 복제..."
 
 msgid "Duration"
 msgstr "기간"
+
+msgid "e.g. 2 = flag after 2× the cycle time with no output"
+msgstr ""
 
 msgid "e.g. 2h"
 msgstr "예: 2시간"
@@ -5451,6 +5466,9 @@ msgstr "픽스처"
 
 msgid "Fixture ID"
 msgstr "픽스처 ID"
+
+msgid "Flag unplanned downtime after this many times the cycle time with no output. Empty = company default, 0 = disabled for this work center"
+msgstr ""
 
 msgid "for anything. They'll pull in the right person."
 msgstr "무엇이든지요. 적임자를 연결해 드립니다."
@@ -8102,6 +8120,9 @@ msgstr "이번 주 시간 기록이 없습니다"
 msgid "No transactions in this period"
 msgstr "이 기간에 거래가 없습니다"
 
+msgid "No unplanned downtime reasons configured. Add them under Production → Downtime Reasons."
+msgstr ""
+
 msgid "No value needed"
 msgstr "값이 필요하지 않습니다"
 
@@ -10604,6 +10625,9 @@ msgstr "구성할 품목을 선택하세요"
 
 msgid "Select an option"
 msgstr "옵션 선택"
+
+msgid "Select an unplanned downtime reason..."
+msgstr ""
 
 msgid "Select at least one line to convert"
 msgstr "전환할 라인을 하나 이상 선택하세요"
@@ -13782,6 +13806,9 @@ msgstr "완제품의 유효기간이 계산됨으로 설정된 경우, 계산에
 
 msgid "When a serial or batch expires, and what happens if used after — a company policy can Warn, Block, or BlockWithOverride."
 msgstr "일련번호 또는 배치가 만료되는 시점과 만료 후 사용 시의 처리 방식입니다 — 회사 정책은 경고, 차단, 또는 승인 후 차단 중 하나로 설정할 수 있습니다."
+
+msgid "When a work center has a running operation but no output is logged within the multiplier × cycle time, it is automatically flagged as unplanned downtime with the default reason. Leave either field empty to disable. Work centers can override the multiplier individually."
+msgstr ""
 
 msgid "When Carbon committed to having the goods arrive; combined with the shipping method's transit days, this drives Ship Date back-calc."
 msgstr "Carbon이 재화 도착을 약속한 시점으로, 배송 방법의 운송 일수와 결합되어 출하일 역산에 사용됩니다."

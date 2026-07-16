@@ -16,8 +16,10 @@ import type {
 } from "@carbon/utils";
 import {
   computeShiftHourlyOee,
+  detectNoOutput,
   findActiveShiftWindow,
-  resolveShiftWindow
+  resolveShiftWindow,
+  standardMsPerPiece
 } from "@carbon/utils";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { getWorkCenterDowntimes } from "./operations.service";
@@ -46,18 +48,27 @@ export async function getWorkCenterHourlyOee(
   const { workCenterId, companyId } = args;
   const now = args.now ?? Date.now();
 
-  const workCenter = await client
+  // autoDowntimeMultiplier is newer than the generated types — cast until regen
+  const workCenter = (await (client as SupabaseClient<any>)
     .from("workCenter")
-    .select("id, name, locationId")
+    .select("id, name, locationId, autoDowntimeMultiplier")
     .eq("id", workCenterId)
     .eq("companyId", companyId)
-    .single();
+    .single()) as unknown as {
+    data: {
+      id: string;
+      name: string;
+      locationId: string | null;
+      autoDowntimeMultiplier: number | null;
+    } | null;
+    error: any;
+  };
 
   if (workCenter.error || !workCenter.data) {
     return { error: "Work center not found" as const, data: null };
   }
 
-  const [location, shifts] = await Promise.all([
+  const [location, shifts, companySettings] = await Promise.all([
     client
       .from("location")
       .select("id, timezone")
@@ -71,7 +82,15 @@ export async function getWorkCenterHourlyOee(
       .eq("companyId", companyId)
       .eq("locationId", workCenter.data.locationId ?? "")
       .eq("active", true)
-      .order("startTime")
+      .order("startTime"),
+    (client as SupabaseClient<any>)
+      .from("companySettings")
+      .select("autoDowntimeMultiplier")
+      .eq("id", companyId)
+      .maybeSingle() as unknown as Promise<{
+      data: { autoDowntimeMultiplier: number | null } | null;
+      error: any;
+    }>
   ]);
 
   const timezone = location.data?.timezone ?? "UTC";
@@ -198,30 +217,72 @@ export async function getWorkCenterHourlyOee(
       }))
   ];
 
+  const unplannedDowntimes = downtimeRows
+    .filter((row) => row.type === "Unplanned")
+    .map((row) => ({ startTime: row.startTime, endTime: row.endTime }));
+
+  // Auto no-output detection: per-WC override ?? company default (≤0 = off);
+  // cycle time from the fastest per-piece rate of any operation with an open event
+  const effectiveMultiplier =
+    workCenter.data.autoDowntimeMultiplier ??
+    companySettings.data?.autoDowntimeMultiplier ??
+    null;
+  let noOutputMsPerPiece = 0;
+  for (const row of eventRows) {
+    if (row.endTime !== null) continue;
+    const standard = standardsByOperation.get(row.jobOperationId);
+    if (!standard) continue;
+    noOutputMsPerPiece = Math.max(
+      noOutputMsPerPiece,
+      standardMsPerPiece(standard.laborTime, standard.laborUnit),
+      standardMsPerPiece(standard.machineTime, standard.machineUnit)
+    );
+  }
+  const noOutput =
+    effectiveMultiplier !== null &&
+    effectiveMultiplier > 0 &&
+    noOutputMsPerPiece > 0
+      ? { msPerPiece: noOutputMsPerPiece, multiplier: effectiveMultiplier }
+      : undefined;
+
+  const oeeEvents = eventRows.map((row) => ({
+    startTime: row.startTime,
+    endTime: row.endTime,
+    type: row.type,
+    jobOperationId: row.jobOperationId
+  }));
+
   const { hours, totals } = computeShiftHourlyOee({
     shiftStart: resolved.start,
     shiftEnd: resolved.end,
     now,
-    events: eventRows.map((row) => ({
-      startTime: row.startTime,
-      endTime: row.endTime,
-      type: row.type,
-      jobOperationId: row.jobOperationId
-    })),
+    events: oeeEvents,
     quantities: quantityRows,
     standards: [...standardsByOperation.values()],
-    plannedDowntimes
+    plannedDowntimes,
+    unplannedDowntimes,
+    noOutput
   });
 
   const hasOpenEvent = eventRows.some((row) => row.endTime === null);
   const openDowntime = downtimeRows.find((row) => row.endTime === null);
-  const status: WorkCenterOeeStatus = hasOpenEvent
-    ? "running"
-    : openDowntime
-      ? openDowntime.type === "Planned"
-        ? "planned-downtime"
-        : "unplanned-downtime"
-      : "idle";
+  const noOutputSince = noOutput
+    ? detectNoOutput({
+        events: oeeEvents,
+        quantities: quantityRows,
+        ...noOutput,
+        now
+      })
+    : null;
+  const status: WorkCenterOeeStatus = openDowntime
+    ? openDowntime.type === "Planned"
+      ? "planned-downtime"
+      : "unplanned-downtime"
+    : noOutputSince !== null
+      ? "unplanned-downtime"
+      : hasOpenEvent
+        ? "running"
+        : "idle";
 
   return {
     error: null,

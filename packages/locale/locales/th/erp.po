@@ -1559,6 +1559,12 @@ msgstr "เกิดข้อผิดพลาดในการยืนยั
 msgid "Auto apply"
 msgstr ""
 
+msgid "Auto downtime after (× cycle time)"
+msgstr ""
+
+msgid "Auto Downtime Multiplier (override)"
+msgstr ""
+
 msgid "Auto Release"
 msgstr ""
 
@@ -1584,6 +1590,9 @@ msgid "Automatic Cost Updates"
 msgstr ""
 
 msgid "Automatic Lead Time Updates"
+msgstr ""
+
+msgid "Automatic No-Output Downtime"
 msgstr ""
 
 msgid "Automatic Updates"
@@ -3476,6 +3485,9 @@ msgstr ""
 msgid "Default CC Recipients"
 msgstr ""
 
+msgid "Default downtime reason"
+msgstr ""
+
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr ""
 
@@ -4180,6 +4192,9 @@ msgid "Duplicate to..."
 msgstr ""
 
 msgid "Duration"
+msgstr ""
+
+msgid "e.g. 2 = flag after 2× the cycle time with no output"
 msgstr ""
 
 msgid "e.g. 2h"
@@ -5450,6 +5465,9 @@ msgid "Fixture"
 msgstr ""
 
 msgid "Fixture ID"
+msgstr ""
+
+msgid "Flag unplanned downtime after this many times the cycle time with no output. Empty = company default, 0 = disabled for this work center"
 msgstr ""
 
 msgid "for anything. They'll pull in the right person."
@@ -8102,6 +8120,9 @@ msgstr ""
 msgid "No transactions in this period"
 msgstr ""
 
+msgid "No unplanned downtime reasons configured. Add them under Production → Downtime Reasons."
+msgstr ""
+
 msgid "No value needed"
 msgstr ""
 
@@ -10603,6 +10624,9 @@ msgid "Select an item to configure"
 msgstr ""
 
 msgid "Select an option"
+msgstr ""
+
+msgid "Select an unplanned downtime reason..."
 msgstr ""
 
 msgid "Select at least one line to convert"
@@ -13781,6 +13805,9 @@ msgid "When a finished product's shelf life is set to Calculated, pick which con
 msgstr ""
 
 msgid "When a serial or batch expires, and what happens if used after — a company policy can Warn, Block, or BlockWithOverride."
+msgstr ""
+
+msgid "When a work center has a running operation but no output is logged within the multiplier × cycle time, it is automatically flagged as unplanned downtime with the default reason. Leave either field empty to disable. Work centers can override the multiplier individually."
 msgstr ""
 
 msgid "When Carbon committed to having the goods arrive; combined with the shipping method's transit days, this drives Ship Date back-calc."

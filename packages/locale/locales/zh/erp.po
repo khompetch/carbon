@@ -1559,6 +1559,12 @@ msgstr "身份验证错误"
 msgid "Auto apply"
 msgstr "自动应用"
 
+msgid "Auto downtime after (× cycle time)"
+msgstr ""
+
+msgid "Auto Downtime Multiplier (override)"
+msgstr ""
+
 msgid "Auto Release"
 msgstr "自动发放"
 
@@ -1585,6 +1591,9 @@ msgstr "自动成本更新"
 
 msgid "Automatic Lead Time Updates"
 msgstr "自动提前期更新"
+
+msgid "Automatic No-Output Downtime"
+msgstr ""
 
 msgid "Automatic Updates"
 msgstr "自动更新"
@@ -3476,6 +3485,9 @@ msgstr "您基础货币中交易的默认现金账户。"
 msgid "Default CC Recipients"
 msgstr "默认抄送收件人"
 
+msgid "Default downtime reason"
+msgstr ""
+
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "未选择特定银行账户时用于现金交易的默认GL账户。"
 
@@ -4181,6 +4193,9 @@ msgstr "复制到..."
 
 msgid "Duration"
 msgstr "时长"
+
+msgid "e.g. 2 = flag after 2× the cycle time with no output"
+msgstr ""
 
 msgid "e.g. 2h"
 msgstr "例如 2小时"
@@ -5451,6 +5466,9 @@ msgstr "夹具"
 
 msgid "Fixture ID"
 msgstr "夹具ID"
+
+msgid "Flag unplanned downtime after this many times the cycle time with no output. Empty = company default, 0 = disabled for this work center"
+msgstr ""
 
 msgid "for anything. They'll pull in the right person."
 msgstr "用于任何事情。他们会找到合适的人。"
@@ -8102,6 +8120,9 @@ msgstr "本周没有时间条目"
 msgid "No transactions in this period"
 msgstr "此期间无交易"
 
+msgid "No unplanned downtime reasons configured. Add them under Production → Downtime Reasons."
+msgstr ""
+
 msgid "No value needed"
 msgstr "不需要值"
 
@@ -10604,6 +10625,9 @@ msgstr "选择要配置的项目"
 
 msgid "Select an option"
 msgstr "选择一个选项"
+
+msgid "Select an unplanned downtime reason..."
+msgstr ""
 
 msgid "Select at least one line to convert"
 msgstr "至少选择一行进行转换"
@@ -13782,6 +13806,9 @@ msgstr "当成品的保质期设置为\"计算\"时，选择哪些消耗的投�
 
 msgid "When a serial or batch expires, and what happens if used after — a company policy can Warn, Block, or BlockWithOverride."
 msgstr "当序列号或批次过期时,以及之后使用时会发生什么 — 公司政策可以警告、阻止或使用覆盖阻止。"
+
+msgid "When a work center has a running operation but no output is logged within the multiplier × cycle time, it is automatically flagged as unplanned downtime with the default reason. Leave either field empty to disable. Work centers can override the multiplier individually."
+msgstr ""
 
 msgid "When Carbon committed to having the goods arrive; combined with the shipping method's transit days, this drives Ship Date back-calc."
 msgstr "Carbon何时承诺货物到达;与运输方法的运送天数相结合,这决定了发货日期的向后计算。"

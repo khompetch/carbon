@@ -108,6 +108,9 @@ msgstr "파일 첨부"
 msgid "Authentication Error"
 msgstr "인증 오류"
 
+msgid "Auto"
+msgstr ""
+
 msgid "Availability (%A)"
 msgstr ""
 

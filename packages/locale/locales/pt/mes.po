@@ -108,6 +108,9 @@ msgstr "Anexar Arquivo"
 msgid "Authentication Error"
 msgstr "Erro de Autenticação"
 
+msgid "Auto"
+msgstr ""
+
 msgid "Availability (%A)"
 msgstr ""
 

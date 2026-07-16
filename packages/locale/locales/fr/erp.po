@@ -1559,6 +1559,12 @@ msgstr "Erreur d'authentification"
 msgid "Auto apply"
 msgstr "Appliquer automatiquement"
 
+msgid "Auto downtime after (× cycle time)"
+msgstr ""
+
+msgid "Auto Downtime Multiplier (override)"
+msgstr ""
+
 msgid "Auto Release"
 msgstr "Libération automatique"
 
@@ -1585,6 +1591,9 @@ msgstr "Mises à jour automatiques des coûts"
 
 msgid "Automatic Lead Time Updates"
 msgstr "Mises à jour automatiques des délais d'approvisionnement"
+
+msgid "Automatic No-Output Downtime"
+msgstr ""
 
 msgid "Automatic Updates"
 msgstr "Mises à jour automatiques"
@@ -3476,6 +3485,9 @@ msgstr "Compte de trésorerie par défaut pour les transactions dans votre devis
 msgid "Default CC Recipients"
 msgstr "Destinataires CC par défaut"
 
+msgid "Default downtime reason"
+msgstr ""
+
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "Compte GL par défaut utilisé pour les transactions de trésorerie lorsqu'aucun compte bancaire spécifique n'est sélectionné."
 
@@ -4181,6 +4193,9 @@ msgstr "Dupliquer vers..."
 
 msgid "Duration"
 msgstr "Durée"
+
+msgid "e.g. 2 = flag after 2× the cycle time with no output"
+msgstr ""
 
 msgid "e.g. 2h"
 msgstr "p. ex. 2h"
@@ -5451,6 +5466,9 @@ msgstr "Accessoire"
 
 msgid "Fixture ID"
 msgstr "ID d'Accessoire"
+
+msgid "Flag unplanned downtime after this many times the cycle time with no output. Empty = company default, 0 = disabled for this work center"
+msgstr ""
 
 msgid "for anything. They'll pull in the right person."
 msgstr "pour n'importe quoi. Ils vont faire intervenir la bonne personne."
@@ -8102,6 +8120,9 @@ msgstr "Aucune entrée de temps pour cette semaine"
 msgid "No transactions in this period"
 msgstr "Aucune transaction au cours de cette période"
 
+msgid "No unplanned downtime reasons configured. Add them under Production → Downtime Reasons."
+msgstr ""
+
 msgid "No value needed"
 msgstr "Aucune valeur requise"
 
@@ -10604,6 +10625,9 @@ msgstr "Sélectionnez un élément à configurer"
 
 msgid "Select an option"
 msgstr "Sélectionner une option"
+
+msgid "Select an unplanned downtime reason..."
+msgstr ""
 
 msgid "Select at least one line to convert"
 msgstr "Sélectionnez au moins une ligne à convertir"
@@ -13782,6 +13806,9 @@ msgstr "Lorsque la durée de vie d'un produit fini est définie sur Calculée, c
 
 msgid "When a serial or batch expires, and what happens if used after — a company policy can Warn, Block, or BlockWithOverride."
 msgstr "Quand un numéro de série ou un lot expire, et ce qui se passe s'il est utilisé après — une politique d'entreprise peut Avertir, Bloquer ou BloquerAvecOrsimplification."
+
+msgid "When a work center has a running operation but no output is logged within the multiplier × cycle time, it is automatically flagged as unplanned downtime with the default reason. Leave either field empty to disable. Work centers can override the multiplier individually."
+msgstr ""
 
 msgid "When Carbon committed to having the goods arrive; combined with the shipping method's transit days, this drives Ship Date back-calc."
 msgstr "Quand Carbon s'est engagé à ce que les marchandises arrivent ; combiné avec les jours de transit de la méthode d'expédition, cela détermine le calcul rétroactif de la Date d'expédition."

@@ -108,6 +108,9 @@ msgstr "Joindre un fichier"
 msgid "Authentication Error"
 msgstr "Erreur d'authentification"
 
+msgid "Auto"
+msgstr ""
+
 msgid "Availability (%A)"
 msgstr ""
 
