@@ -281,6 +281,9 @@ msgstr "İndir"
 msgid "Download Labels"
 msgstr "Etiketleri İndir"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "Taslak"
 
@@ -318,8 +321,14 @@ msgstr "E-posta Adresi"
 msgid "Empty work centers"
 msgstr "Boş iş merkezleri"
 
+msgid "End Downtime"
+msgstr ""
+
 msgid "End Operations"
 msgstr "Operasyonları Sonlandır"
+
+msgid "End the downtime when the work center is running again."
+msgstr ""
 
 #. placeholder {0}: selectedPerson.name
 msgid "Enter PIN for {0}"
@@ -610,6 +619,9 @@ msgstr "Kullanılabilir izlenen varlık bulunamadı"
 msgid "No dispatches assigned to you"
 msgstr "Sizeplanlar size atanmadı"
 
+msgid "No downtime reasons configured. Add them in the ERP under Production settings."
+msgstr ""
+
 msgid "No files"
 msgstr "Dosya yok"
 
@@ -681,6 +693,9 @@ msgstr "Çalışma merkezi bulunmamaktadır"
 
 msgid "Notes"
 msgstr "Notlar"
+
+msgid "Notes (optional)"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "OEE Etkisi"
@@ -761,6 +776,9 @@ msgstr "Planlı"
 msgid "Please record all steps for this operation before closing."
 msgstr "Bu işlemi kapatmadan önce tüm adımları kaydetmeniz gerekmektedir."
 
+msgid "Please select a downtime reason"
+msgstr ""
+
 msgid "Please select an item"
 msgstr "Lütfen bir ürün seçin"
 
@@ -809,6 +827,9 @@ msgstr "Miktar"
 msgid "Quantity must be greater than 0"
 msgstr "Miktar 0'dan büyük olmalıdır"
 
+msgid "Reason"
+msgstr ""
+
 msgid "Reason for rework"
 msgstr "Yeniden işleme nedeni"
 
@@ -821,6 +842,9 @@ msgstr "Kaydet"
 #. placeholder {0}: activeStep + 1
 msgid "Record {0}"
 msgstr "Kayıt {0}"
+
+msgid "Record downtime"
+msgstr ""
 
 msgid "Remove"
 msgstr "Kaldır"
@@ -893,6 +917,12 @@ msgstr "Seç"
 
 msgid "Select a completion quantity"
 msgstr "Bir tamamlama miktarı seçin"
+
+msgid "Select a downtime reason..."
+msgstr ""
+
+msgid "Select a reason to mark this work center as down. Downtime counts against OEE until it is ended."
+msgstr ""
 
 msgid "Select a rework quantity"
 msgstr "Bir yeniden işleme miktarı seçin"
@@ -987,6 +1017,10 @@ msgstr "Oturumu Kapat"
 msgid "Signed in as {stationName}"
 msgstr "Oturum açıldı olarak {stationName}"
 
+#. placeholder {0}: new Date(openDowntime.startTime).toLocaleString()
+msgid "Since {0}"
+msgstr ""
+
 msgid "Size"
 msgstr "Boyut"
 
@@ -1004,6 +1038,9 @@ msgstr "Kullanılan Yedek Parçalar"
 
 msgid "Start"
 msgstr "Başlat"
+
+msgid "Start Downtime"
+msgstr ""
 
 msgid "Station User"
 msgstr "İstasyon Kullanıcısı"
@@ -1131,6 +1168,9 @@ msgstr "Yarı Mamul"
 
 msgid "Work Center"
 msgstr "İş Merkezi"
+
+msgid "Work center is down"
+msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)
 msgid "You clocked in at {0}. You can edit your clock-out time below or acknowledge that you're still working."

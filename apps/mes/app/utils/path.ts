@@ -111,6 +111,7 @@ export const path = {
     consolePinOut: `${x}/console/pin-out`,
     consoleToggle: `${x}/console/toggle`,
     convertEntity: (id: string) => generatePath(`${x}/entity/${id}/convert`),
+    downtime: `${x}/downtime`,
     endShift: `${x}/end-shift`,
     endOperation: (id: string) => generatePath(`${x}/end/${id}`),
     feedback: `${x}/feedback`,

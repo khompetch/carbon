@@ -281,6 +281,9 @@ msgstr "डाउनलोड"
 msgid "Download Labels"
 msgstr "लेबल डाउनलोड करें"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "ड्राफ्ट"
 
@@ -318,8 +321,14 @@ msgstr "ईमेल पता"
 msgid "Empty work centers"
 msgstr "खाली कार्य केंद्र"
 
+msgid "End Downtime"
+msgstr ""
+
 msgid "End Operations"
 msgstr "संचालन समाप्त करें"
+
+msgid "End the downtime when the work center is running again."
+msgstr ""
 
 #. placeholder {0}: selectedPerson.name
 msgid "Enter PIN for {0}"
@@ -610,6 +619,9 @@ msgstr "कोई उपलब्ध ट्रैक किए गए इका�
 msgid "No dispatches assigned to you"
 msgstr "आपको कोई डिस्पैच असाइन नहीं किया गया है"
 
+msgid "No downtime reasons configured. Add them in the ERP under Production settings."
+msgstr ""
+
 msgid "No files"
 msgstr "कोई फ़ाइलें नहीं"
 
@@ -681,6 +693,9 @@ msgstr "कोई कार्य केंद्र मौजूद नही�
 
 msgid "Notes"
 msgstr "नोट्स"
+
+msgid "Notes (optional)"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "OEE प्रभाव"
@@ -761,6 +776,9 @@ msgstr "नियोजित"
 msgid "Please record all steps for this operation before closing."
 msgstr "कृपया बंद करने से पहले इस ऑपरेशन के लिए सभी चरणों को रिकॉर्ड करें।"
 
+msgid "Please select a downtime reason"
+msgstr ""
+
 msgid "Please select an item"
 msgstr "कृपया एक आइटम चुनें"
 
@@ -809,6 +827,9 @@ msgstr "मात्रा"
 msgid "Quantity must be greater than 0"
 msgstr "मात्रा 0 से अधिक होनी चाहिए"
 
+msgid "Reason"
+msgstr ""
+
 msgid "Reason for rework"
 msgstr "रीवर्क का कारण"
 
@@ -821,6 +842,9 @@ msgstr "रिकॉर्ड"
 #. placeholder {0}: activeStep + 1
 msgid "Record {0}"
 msgstr "रिकॉर्ड {0}"
+
+msgid "Record downtime"
+msgstr ""
 
 msgid "Remove"
 msgstr "हटाएं"
@@ -893,6 +917,12 @@ msgstr "चुनें"
 
 msgid "Select a completion quantity"
 msgstr "पूर्ण मात्रा का चयन करें"
+
+msgid "Select a downtime reason..."
+msgstr ""
+
+msgid "Select a reason to mark this work center as down. Downtime counts against OEE until it is ended."
+msgstr ""
 
 msgid "Select a rework quantity"
 msgstr "रीवर्क मात्रा चुनें"
@@ -987,6 +1017,10 @@ msgstr "साइन आउट"
 msgid "Signed in as {stationName}"
 msgstr "के रूप में साइन इन किया गया {stationName}"
 
+#. placeholder {0}: new Date(openDowntime.startTime).toLocaleString()
+msgid "Since {0}"
+msgstr ""
+
 msgid "Size"
 msgstr "आकार"
 
@@ -1004,6 +1038,9 @@ msgstr "उपयोग किए गए स्पेयर पार्ट्�
 
 msgid "Start"
 msgstr "शुरू करें"
+
+msgid "Start Downtime"
+msgstr ""
 
 msgid "Station User"
 msgstr "स्टेशन उपयोगकर्ता"
@@ -1131,6 +1168,9 @@ msgstr "WIP"
 
 msgid "Work Center"
 msgstr "कार्य केंद्र"
+
+msgid "Work center is down"
+msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)
 msgid "You clocked in at {0}. You can edit your clock-out time below or acknowledge that you're still working."

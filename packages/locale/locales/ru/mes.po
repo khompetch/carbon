@@ -281,6 +281,9 @@ msgstr "Скачать"
 msgid "Download Labels"
 msgstr "Загрузить этикетки"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "Черновик"
 
@@ -318,8 +321,14 @@ msgstr "Электронная почта"
 msgid "Empty work centers"
 msgstr "Пустые рабочие центры"
 
+msgid "End Downtime"
+msgstr ""
+
 msgid "End Operations"
 msgstr "Завершить операции"
+
+msgid "End the downtime when the work center is running again."
+msgstr ""
 
 #. placeholder {0}: selectedPerson.name
 msgid "Enter PIN for {0}"
@@ -610,6 +619,9 @@ msgstr "Не найдено доступных отслеживаемых объ
 msgid "No dispatches assigned to you"
 msgstr "Нет нарядов, назначенных вам"
 
+msgid "No downtime reasons configured. Add them in the ERP under Production settings."
+msgstr ""
+
 msgid "No files"
 msgstr "Нет файлов"
 
@@ -681,6 +693,9 @@ msgstr "Рабочие центры отсутствуют"
 
 msgid "Notes"
 msgstr "Примечания"
+
+msgid "Notes (optional)"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "Влияние на OEE"
@@ -761,6 +776,9 @@ msgstr "Плановое"
 msgid "Please record all steps for this operation before closing."
 msgstr "Пожалуйста, зафиксируйте все шаги этой операции перед закрытием."
 
+msgid "Please select a downtime reason"
+msgstr ""
+
 msgid "Please select an item"
 msgstr "Пожалуйста, выберите номенклатуру"
 
@@ -809,6 +827,9 @@ msgstr "Количество"
 msgid "Quantity must be greater than 0"
 msgstr "Количество должно быть больше 0"
 
+msgid "Reason"
+msgstr ""
+
 msgid "Reason for rework"
 msgstr "Причина переделки"
 
@@ -821,6 +842,9 @@ msgstr "Записать"
 #. placeholder {0}: activeStep + 1
 msgid "Record {0}"
 msgstr "Запись {0}"
+
+msgid "Record downtime"
+msgstr ""
 
 msgid "Remove"
 msgstr "Удалить"
@@ -893,6 +917,12 @@ msgstr "Выбрать"
 
 msgid "Select a completion quantity"
 msgstr "Выберите количество готовой продукции"
+
+msgid "Select a downtime reason..."
+msgstr ""
+
+msgid "Select a reason to mark this work center as down. Downtime counts against OEE until it is ended."
+msgstr ""
 
 msgid "Select a rework quantity"
 msgstr "Выберите количество для доработки"
@@ -987,6 +1017,10 @@ msgstr "Выйти"
 msgid "Signed in as {stationName}"
 msgstr "Вход выполнен как {stationName}"
 
+#. placeholder {0}: new Date(openDowntime.startTime).toLocaleString()
+msgid "Since {0}"
+msgstr ""
+
 msgid "Size"
 msgstr "Размер"
 
@@ -1004,6 +1038,9 @@ msgstr "Использованные запасные части"
 
 msgid "Start"
 msgstr "Старт"
+
+msgid "Start Downtime"
+msgstr ""
 
 msgid "Station User"
 msgstr "Пользователь станции"
@@ -1131,6 +1168,9 @@ msgstr "НЗП"
 
 msgid "Work Center"
 msgstr "Рабочий центр"
+
+msgid "Work center is down"
+msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)
 msgid "You clocked in at {0}. You can edit your clock-out time below or acknowledge that you're still working."

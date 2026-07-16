@@ -281,6 +281,9 @@ msgstr ""
 msgid "Download Labels"
 msgstr ""
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr ""
 
@@ -318,7 +321,13 @@ msgstr "ที่อยู่อีเมล"
 msgid "Empty work centers"
 msgstr ""
 
+msgid "End Downtime"
+msgstr ""
+
 msgid "End Operations"
+msgstr ""
+
+msgid "End the downtime when the work center is running again."
 msgstr ""
 
 #. placeholder {0}: selectedPerson.name
@@ -610,6 +619,9 @@ msgstr ""
 msgid "No dispatches assigned to you"
 msgstr ""
 
+msgid "No downtime reasons configured. Add them in the ERP under Production settings."
+msgstr ""
+
 msgid "No files"
 msgstr ""
 
@@ -680,6 +692,9 @@ msgid "No work centers exist"
 msgstr ""
 
 msgid "Notes"
+msgstr ""
+
+msgid "Notes (optional)"
 msgstr ""
 
 msgid "OEE Impact"
@@ -761,6 +776,9 @@ msgstr ""
 msgid "Please record all steps for this operation before closing."
 msgstr ""
 
+msgid "Please select a downtime reason"
+msgstr ""
+
 msgid "Please select an item"
 msgstr ""
 
@@ -809,6 +827,9 @@ msgstr ""
 msgid "Quantity must be greater than 0"
 msgstr ""
 
+msgid "Reason"
+msgstr ""
+
 msgid "Reason for rework"
 msgstr ""
 
@@ -820,6 +841,9 @@ msgstr ""
 
 #. placeholder {0}: activeStep + 1
 msgid "Record {0}"
+msgstr ""
+
+msgid "Record downtime"
 msgstr ""
 
 msgid "Remove"
@@ -892,6 +916,12 @@ msgid "Select"
 msgstr ""
 
 msgid "Select a completion quantity"
+msgstr ""
+
+msgid "Select a downtime reason..."
+msgstr ""
+
+msgid "Select a reason to mark this work center as down. Downtime counts against OEE until it is ended."
 msgstr ""
 
 msgid "Select a rework quantity"
@@ -987,6 +1017,10 @@ msgstr ""
 msgid "Signed in as {stationName}"
 msgstr ""
 
+#. placeholder {0}: new Date(openDowntime.startTime).toLocaleString()
+msgid "Since {0}"
+msgstr ""
+
 msgid "Size"
 msgstr ""
 
@@ -1003,6 +1037,9 @@ msgid "Spare Parts Used"
 msgstr ""
 
 msgid "Start"
+msgstr ""
+
+msgid "Start Downtime"
 msgstr ""
 
 msgid "Station User"
@@ -1130,6 +1167,9 @@ msgid "WIP"
 msgstr ""
 
 msgid "Work Center"
+msgstr ""
+
+msgid "Work center is down"
 msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)

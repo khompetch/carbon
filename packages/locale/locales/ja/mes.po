@@ -281,6 +281,9 @@ msgstr "ダウンロード"
 msgid "Download Labels"
 msgstr "ラベルをダウンロード"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "下書き"
 
@@ -318,8 +321,14 @@ msgstr "メールアドレス"
 msgid "Empty work centers"
 msgstr "空の作業センター"
 
+msgid "End Downtime"
+msgstr ""
+
 msgid "End Operations"
 msgstr "工程を終了"
+
+msgid "End the downtime when the work center is running again."
+msgstr ""
 
 #. placeholder {0}: selectedPerson.name
 msgid "Enter PIN for {0}"
@@ -610,6 +619,9 @@ msgstr "利用可能な追跡対象エンティティが見つかりません"
 msgid "No dispatches assigned to you"
 msgstr "あなたに割り当てられたディスパッチはありません"
 
+msgid "No downtime reasons configured. Add them in the ERP under Production settings."
+msgstr ""
+
 msgid "No files"
 msgstr "ファイルなし"
 
@@ -681,6 +693,9 @@ msgstr "ワークセンターがありません"
 
 msgid "Notes"
 msgstr "備考"
+
+msgid "Notes (optional)"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "OEE影響度"
@@ -761,6 +776,9 @@ msgstr "計画済み"
 msgid "Please record all steps for this operation before closing."
 msgstr "クローズする前にこの工程のすべてのステップを記録してください。"
 
+msgid "Please select a downtime reason"
+msgstr ""
+
 msgid "Please select an item"
 msgstr "品目を選択してください"
 
@@ -809,6 +827,9 @@ msgstr "数量"
 msgid "Quantity must be greater than 0"
 msgstr "数量は0より大きい値を入力してください"
 
+msgid "Reason"
+msgstr ""
+
 msgid "Reason for rework"
 msgstr "リワークの理由"
 
@@ -821,6 +842,9 @@ msgstr "記録"
 #. placeholder {0}: activeStep + 1
 msgid "Record {0}"
 msgstr "レコード {0}"
+
+msgid "Record downtime"
+msgstr ""
 
 msgid "Remove"
 msgstr "削除"
@@ -893,6 +917,12 @@ msgstr "選択"
 
 msgid "Select a completion quantity"
 msgstr "完了数量を選択"
+
+msgid "Select a downtime reason..."
+msgstr ""
+
+msgid "Select a reason to mark this work center as down. Downtime counts against OEE until it is ended."
+msgstr ""
 
 msgid "Select a rework quantity"
 msgstr "手直し数量を選択"
@@ -987,6 +1017,10 @@ msgstr "サインアウト"
 msgid "Signed in as {stationName}"
 msgstr "{stationName} としてサインイン中"
 
+#. placeholder {0}: new Date(openDowntime.startTime).toLocaleString()
+msgid "Since {0}"
+msgstr ""
+
 msgid "Size"
 msgstr "サイズ"
 
@@ -1004,6 +1038,9 @@ msgstr "使用済みスペアパーツ"
 
 msgid "Start"
 msgstr "開始"
+
+msgid "Start Downtime"
+msgstr ""
 
 msgid "Station User"
 msgstr "ステーションユーザー"
@@ -1131,6 +1168,9 @@ msgstr "仕掛品"
 
 msgid "Work Center"
 msgstr "ワークセンター"
+
+msgid "Work center is down"
+msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)
 msgid "You clocked in at {0}. You can edit your clock-out time below or acknowledge that you're still working."

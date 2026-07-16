@@ -281,6 +281,9 @@ msgstr "다운로드"
 msgid "Download Labels"
 msgstr "라벨 다운로드"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "초안"
 
@@ -318,8 +321,14 @@ msgstr "이메일 주소"
 msgid "Empty work centers"
 msgstr "빈 작업장"
 
+msgid "End Downtime"
+msgstr ""
+
 msgid "End Operations"
 msgstr "공정작업 종료"
+
+msgid "End the downtime when the work center is running again."
+msgstr ""
 
 #. placeholder {0}: selectedPerson.name
 msgid "Enter PIN for {0}"
@@ -610,6 +619,9 @@ msgstr "사용 가능한 추적 개체가 없습니다"
 msgid "No dispatches assigned to you"
 msgstr "배정된 작업지시가 없습니다"
 
+msgid "No downtime reasons configured. Add them in the ERP under Production settings."
+msgstr ""
+
 msgid "No files"
 msgstr "파일 없음"
 
@@ -681,6 +693,9 @@ msgstr "존재하는 작업장이 없습니다"
 
 msgid "Notes"
 msgstr "메모"
+
+msgid "Notes (optional)"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "OEE 영향"
@@ -761,6 +776,9 @@ msgstr "계획됨"
 msgid "Please record all steps for this operation before closing."
 msgstr "이 공정작업을 마감하기 전에 모든 단계를 기록하세요."
 
+msgid "Please select a downtime reason"
+msgstr ""
+
 msgid "Please select an item"
 msgstr "품목을 선택하세요"
 
@@ -809,6 +827,9 @@ msgstr "수량"
 msgid "Quantity must be greater than 0"
 msgstr "수량은 0보다 커야 합니다"
 
+msgid "Reason"
+msgstr ""
+
 msgid "Reason for rework"
 msgstr "재작업 사유"
 
@@ -821,6 +842,9 @@ msgstr "기록"
 #. placeholder {0}: activeStep + 1
 msgid "Record {0}"
 msgstr "{0} 기록"
+
+msgid "Record downtime"
+msgstr ""
 
 msgid "Remove"
 msgstr "제거"
@@ -893,6 +917,12 @@ msgstr "선택"
 
 msgid "Select a completion quantity"
 msgstr "완료 수량을 선택하세요"
+
+msgid "Select a downtime reason..."
+msgstr ""
+
+msgid "Select a reason to mark this work center as down. Downtime counts against OEE until it is ended."
+msgstr ""
 
 msgid "Select a rework quantity"
 msgstr "재작업 수량을 선택하세요"
@@ -987,6 +1017,10 @@ msgstr "로그아웃"
 msgid "Signed in as {stationName}"
 msgstr "{stationName}(으)로 로그인됨"
 
+#. placeholder {0}: new Date(openDowntime.startTime).toLocaleString()
+msgid "Since {0}"
+msgstr ""
+
 msgid "Size"
 msgstr "사이즈"
 
@@ -1004,6 +1038,9 @@ msgstr "사용된 예비 부품"
 
 msgid "Start"
 msgstr "시작"
+
+msgid "Start Downtime"
+msgstr ""
 
 msgid "Station User"
 msgstr "스테이션 사용자"
@@ -1131,6 +1168,9 @@ msgstr "재공품"
 
 msgid "Work Center"
 msgstr "작업장"
+
+msgid "Work center is down"
+msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)
 msgid "You clocked in at {0}. You can edit your clock-out time below or acknowledge that you're still working."

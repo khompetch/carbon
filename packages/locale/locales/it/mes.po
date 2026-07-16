@@ -281,6 +281,9 @@ msgstr "Scarica"
 msgid "Download Labels"
 msgstr "Scarica Etichette"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "Bozza"
 
@@ -318,8 +321,14 @@ msgstr "Indirizzo Email"
 msgid "Empty work centers"
 msgstr "Centri di lavoro vuoti"
 
+msgid "End Downtime"
+msgstr ""
+
 msgid "End Operations"
 msgstr "Termina Operazioni"
+
+msgid "End the downtime when the work center is running again."
+msgstr ""
 
 #. placeholder {0}: selectedPerson.name
 msgid "Enter PIN for {0}"
@@ -610,6 +619,9 @@ msgstr "Nessuna entità tracciata disponibile trovata"
 msgid "No dispatches assigned to you"
 msgstr "Nessun intervento assegnato a te"
 
+msgid "No downtime reasons configured. Add them in the ERP under Production settings."
+msgstr ""
+
 msgid "No files"
 msgstr "Nessun file"
 
@@ -681,6 +693,9 @@ msgstr "Nessun centro di lavoro esistente"
 
 msgid "Notes"
 msgstr "Note"
+
+msgid "Notes (optional)"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "Impatto OEE"
@@ -761,6 +776,9 @@ msgstr "Pianificato"
 msgid "Please record all steps for this operation before closing."
 msgstr "Registrare tutte le fasi di questa operazione prima di chiuderla."
 
+msgid "Please select a downtime reason"
+msgstr ""
+
 msgid "Please select an item"
 msgstr "Selezionare un articolo"
 
@@ -809,6 +827,9 @@ msgstr "Quantità"
 msgid "Quantity must be greater than 0"
 msgstr "La quantità deve essere maggiore di 0"
 
+msgid "Reason"
+msgstr ""
+
 msgid "Reason for rework"
 msgstr "Motivo della rilavorazione"
 
@@ -821,6 +842,9 @@ msgstr "Registra"
 #. placeholder {0}: activeStep + 1
 msgid "Record {0}"
 msgstr "Registrazione {0}"
+
+msgid "Record downtime"
+msgstr ""
 
 msgid "Remove"
 msgstr "Rimuovi"
@@ -893,6 +917,12 @@ msgstr "Seleziona"
 
 msgid "Select a completion quantity"
 msgstr "Seleziona una quantità completata"
+
+msgid "Select a downtime reason..."
+msgstr ""
+
+msgid "Select a reason to mark this work center as down. Downtime counts against OEE until it is ended."
+msgstr ""
 
 msgid "Select a rework quantity"
 msgstr "Seleziona una quantità da rilavorare"
@@ -987,6 +1017,10 @@ msgstr "Esci"
 msgid "Signed in as {stationName}"
 msgstr "Connesso come {stationName}"
 
+#. placeholder {0}: new Date(openDowntime.startTime).toLocaleString()
+msgid "Since {0}"
+msgstr ""
+
 msgid "Size"
 msgstr "Dimensione"
 
@@ -1004,6 +1038,9 @@ msgstr "Ricambi Utilizzati"
 
 msgid "Start"
 msgstr "Avvia"
+
+msgid "Start Downtime"
+msgstr ""
 
 msgid "Station User"
 msgstr "Utente Stazione"
@@ -1131,6 +1168,9 @@ msgstr "WIP"
 
 msgid "Work Center"
 msgstr "Centro di Lavoro"
+
+msgid "Work center is down"
+msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)
 msgid "You clocked in at {0}. You can edit your clock-out time below or acknowledge that you're still working."

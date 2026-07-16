@@ -69,6 +69,7 @@ import {
   LuCheck,
   LuChevronLeft,
   LuChevronRight,
+  LuCircleGauge,
   LuCirclePlay,
   LuCirclePlus,
   LuClipboardCheck,
@@ -125,6 +126,7 @@ import {
   Times,
   WorkTypeToggle
 } from "./components/Controls";
+import { DowntimeModal } from "./components/DowntimeModal";
 import { IssueMaterialModal } from "./components/IssueMaterialModal";
 import { MaintenanceDispatch } from "./components/MaintenanceDispatch";
 import { ParametersListItem } from "./components/Parameter";
@@ -273,6 +275,7 @@ export const JobOperation = ({
     active,
     activeTab,
     completeModal,
+    downtimeModal,
     eventType,
     finishModal,
     isOverdue,
@@ -2417,6 +2420,21 @@ export const JobOperation = ({
                   <Trans>Quality Issue</Trans>
                 </span>
               </button>
+              {operation.workCenterId && (
+                <button
+                  type="button"
+                  className="flex items-center gap-3 rounded-lg bg-accent px-4 py-4 text-accent-foreground ring-1 ring-black/5 active:scale-[0.98] transition-transform"
+                  onClick={() => {
+                    actionsSheet.onClose();
+                    downtimeModal.onOpen();
+                  }}
+                >
+                  <LuCircleGauge className="size-4 shrink-0 stroke-muted-foreground" />
+                  <span className="text-base/6 font-medium">
+                    <Trans>Downtime</Trans>
+                  </span>
+                </button>
+              )}
             </div>
           </BottomSheetBody>
         </BottomSheetContent>
@@ -2543,6 +2561,13 @@ export const JobOperation = ({
         isOpen={qualityIssueModal.isOpen}
         onClose={qualityIssueModal.onClose}
       />
+
+      {downtimeModal.isOpen && operation.workCenterId && (
+        <DowntimeModal
+          workCenterId={operation.workCenterId}
+          onClose={downtimeModal.onClose}
+        />
+      )}
 
       <Suspense key={`maintenance-modal-${operationId}`}>
         <Await resolve={workCenter}>

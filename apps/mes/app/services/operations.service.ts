@@ -1234,6 +1234,16 @@ export async function startProductionEvent(
   },
   trackedEntityId: string | undefined
 ) {
+  // Starting production means the machine is running again — close any open
+  // downtime on the work center so operators can't forget to end it.
+  if (data.workCenterId) {
+    await endOpenDowntime(client, {
+      workCenterId: data.workCenterId,
+      companyId: data.companyId,
+      userId: data.createdBy
+    });
+  }
+
   if (trackedEntityId) {
     const activityId = nanoid();
 
@@ -1372,4 +1382,98 @@ export async function getJobMethodBomIdMap(
   });
 
   return bomIdMap;
+}
+
+// --- Work center downtime (OEE) -----------------------------------------
+// The downtimeReason/workCenterDowntime tables are newer than the generated
+// DB types — cast until types are regenerated after the migration is applied.
+
+export async function getDowntimeReasonsList(
+  client: SupabaseClient<Database>,
+  companyId: string
+) {
+  return (client as SupabaseClient<any>)
+    .from("downtimeReason")
+    .select("id, name, type")
+    .eq("companyId", companyId)
+    .eq("active", true)
+    .order("name") as unknown as Promise<{
+    data: { id: string; name: string; type: "Planned" | "Unplanned" }[] | null;
+    error: any;
+  }>;
+}
+
+export async function getOpenDowntime(
+  client: SupabaseClient<Database>,
+  workCenterId: string,
+  companyId: string
+) {
+  return (client as SupabaseClient<any>)
+    .from("workCenterDowntime")
+    .select("id, type, startTime, notes, downtimeReasonId")
+    .eq("companyId", companyId)
+    .eq("workCenterId", workCenterId)
+    .is("endTime", null)
+    .order("startTime", { ascending: false })
+    .limit(1)
+    .maybeSingle() as unknown as Promise<{
+    data: {
+      id: string;
+      type: "Planned" | "Unplanned";
+      startTime: string;
+      notes: string | null;
+      downtimeReasonId: string | null;
+    } | null;
+    error: any;
+  }>;
+}
+
+export async function startDowntime(
+  client: SupabaseClient<Database>,
+  args: {
+    workCenterId: string;
+    downtimeReasonId: string;
+    type: "Planned" | "Unplanned";
+    notes?: string;
+    companyId: string;
+    userId: string;
+  }
+) {
+  return (client as SupabaseClient<any>)
+    .from("workCenterDowntime")
+    .insert([
+      {
+        workCenterId: args.workCenterId,
+        downtimeReasonId: args.downtimeReasonId,
+        type: args.type,
+        notes: args.notes || null,
+        startTime: new Date().toISOString(),
+        companyId: args.companyId,
+        createdBy: args.userId
+      }
+    ])
+    .select("id")
+    .single() as unknown as Promise<{
+    data: { id: string } | null;
+    error: any;
+  }>;
+}
+
+export async function endOpenDowntime(
+  client: SupabaseClient<Database>,
+  args: { workCenterId: string; companyId: string; userId: string }
+) {
+  return (client as SupabaseClient<any>)
+    .from("workCenterDowntime")
+    .update({
+      endTime: new Date().toISOString(),
+      updatedBy: args.userId,
+      updatedAt: new Date().toISOString()
+    })
+    .eq("companyId", args.companyId)
+    .eq("workCenterId", args.workCenterId)
+    .is("endTime", null) as unknown as Promise<{
+    data: null;
+    error: any;
+  }>;
 }

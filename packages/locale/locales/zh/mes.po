@@ -281,6 +281,9 @@ msgstr "下载"
 msgid "Download Labels"
 msgstr "下载标签"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "草稿"
 
@@ -318,8 +321,14 @@ msgstr "电子邮箱"
 msgid "Empty work centers"
 msgstr "空的工作中心"
 
+msgid "End Downtime"
+msgstr ""
+
 msgid "End Operations"
 msgstr "结束工序"
+
+msgid "End the downtime when the work center is running again."
+msgstr ""
 
 #. placeholder {0}: selectedPerson.name
 msgid "Enter PIN for {0}"
@@ -610,6 +619,9 @@ msgstr "未找到可用的追踪实体"
 msgid "No dispatches assigned to you"
 msgstr "没有分配给您的工单"
 
+msgid "No downtime reasons configured. Add them in the ERP under Production settings."
+msgstr ""
+
 msgid "No files"
 msgstr "无文件"
 
@@ -681,6 +693,9 @@ msgstr "无工作中心"
 
 msgid "Notes"
 msgstr "备注"
+
+msgid "Notes (optional)"
+msgstr ""
 
 msgid "OEE Impact"
 msgstr "OEE 影响"
@@ -761,6 +776,9 @@ msgstr "已计划"
 msgid "Please record all steps for this operation before closing."
 msgstr "请在关闭前记录此工序的所有步骤。"
 
+msgid "Please select a downtime reason"
+msgstr ""
+
 msgid "Please select an item"
 msgstr "请选择一个物料"
 
@@ -809,6 +827,9 @@ msgstr "数量"
 msgid "Quantity must be greater than 0"
 msgstr "数量必须大于 0"
 
+msgid "Reason"
+msgstr ""
+
 msgid "Reason for rework"
 msgstr "返工原因"
 
@@ -821,6 +842,9 @@ msgstr "记录"
 #. placeholder {0}: activeStep + 1
 msgid "Record {0}"
 msgstr "记录 {0}"
+
+msgid "Record downtime"
+msgstr ""
 
 msgid "Remove"
 msgstr "移除"
@@ -893,6 +917,12 @@ msgstr "选择"
 
 msgid "Select a completion quantity"
 msgstr "选择完成数量"
+
+msgid "Select a downtime reason..."
+msgstr ""
+
+msgid "Select a reason to mark this work center as down. Downtime counts against OEE until it is ended."
+msgstr ""
 
 msgid "Select a rework quantity"
 msgstr "选择返工数量"
@@ -987,6 +1017,10 @@ msgstr "退出登录"
 msgid "Signed in as {stationName}"
 msgstr "已登录为 {stationName}"
 
+#. placeholder {0}: new Date(openDowntime.startTime).toLocaleString()
+msgid "Since {0}"
+msgstr ""
+
 msgid "Size"
 msgstr "大小"
 
@@ -1004,6 +1038,9 @@ msgstr "已使用备件"
 
 msgid "Start"
 msgstr "开始"
+
+msgid "Start Downtime"
+msgstr ""
 
 msgid "Station User"
 msgstr "工位用户"
@@ -1131,6 +1168,9 @@ msgstr "在制品"
 
 msgid "Work Center"
 msgstr "工作中心"
+
+msgid "Work center is down"
+msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)
 msgid "You clocked in at {0}. You can edit your clock-out time below or acknowledge that you're still working."
