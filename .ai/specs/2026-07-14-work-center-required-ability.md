@@ -114,10 +114,34 @@ Note: `workCenterTraining` and the RPC are not yet in the generated DB types
 — two scoped `as SupabaseClient<any>` casts (marked with comments) should be
 removed after `pnpm db:migrate` regenerates types.
 
+## Extension: Process-Level Requirements — Union Gate (2026-07-15)
+
+Requirements can now also live on the **process** (type of work), because most
+skill/training requirements follow the work, not the machine (a welding
+certification applies at every welding station). MES enforces the **union** of
+process-level and work-center-level requirements; existing work-center
+configuration keeps working unchanged.
+
+| Decision | Choice | Rationale |
+|---|---|---|
+| Placement | Both levels, union check | Process covers the common case once (and auto-covers new machines); work center remains for machine-specific requirements |
+| Coverage | Gate runs even when `workCenterId` is null | `jobOperation.processId` is NOT NULL — requirements apply before scheduling assigns a machine |
+| Data model | `process.requiredAbilityId` (SET NULL) + `processTraining` join (mirror of `workCenterTraining`) | Symmetry with the work-center side |
+| RPC | `get_missing_required_trainings(p_work_center_id, p_process_id, p_employee_id, p_company_id)` — old 3-arg signature dropped | One SQL function owns the union + period logic |
+
+Migration: `20260715084216_process-required-abilities-trainings.sql`. New/changed
+pieces: `requiredAbilityId`/`requiredTrainingIds` on `processValidator` +
+`ProcessForm`, `processTraining` sync in `upsertProcess`,
+`getProcessRequirements` (ERP loader), MES `getMissingOperationRequirements`
+(replaces `getMissingWorkCenterRequirements`; returns `abilityNames: string[]`
+since work center + process can each require an ability).
+
 ## Changelog
 
 - 2026-07-14: Initial implementation (single required ability).
 - 2026-07-15: Multiple required trainings per work center (Training module gate).
+- 2026-07-15: Rebuilt the Abilities management UI.
+- 2026-07-15: Process-level requirements with union enforcement.
 - 2026-07-15: Rebuilt the Abilities management UI (upstream had removed all
   ability routes, leaving `path.to.newAbility` links 404ing): list at
   `/x/resources/abilities`, create/delete, detail page at

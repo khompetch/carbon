@@ -4529,6 +4529,9 @@ msgstr "Employees"
 msgid "Employees must hold a valid completion for every selected training to start operations at this work center"
 msgstr "Employees must hold a valid completion for every selected training to start operations at this work center"
 
+msgid "Employees must hold a valid completion for every selected training to start operations for this process"
+msgstr "Employees must hold a valid completion for every selected training to start operations for this process"
+
 msgid "Employees with this ability"
 msgstr "Employees with this ability"
 
@@ -8241,6 +8244,9 @@ msgstr "Only Draft procedures are editable. Create a new version to change an Ac
 
 msgid "Only employees who have completed training for this ability can start operations at this work center"
 msgstr "Only employees who have completed training for this ability can start operations at this work center"
+
+msgid "Only employees who have completed training for this ability can start operations for this process"
+msgstr "Only employees who have completed training for this ability can start operations for this process"
 
 msgid "Only empty, open periods can be deleted."
 msgstr "Only empty, open periods can be deleted."
