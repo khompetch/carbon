@@ -42,6 +42,9 @@ msgstr "{0} di {1} completati"
 msgid "{0} Scrapped"
 msgstr "{0} Scartati"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 msgid "About"
 msgstr "Informazioni"
 
@@ -72,6 +75,9 @@ msgstr "Aggiungi Ricambio"
 msgid "All"
 msgstr "Tutti"
 
+msgid "ALL (pcs)"
+msgstr ""
+
 msgid "Are you sure you want to delete this step?"
 msgstr "Sei sicuro di voler eliminare questa fase?"
 
@@ -101,6 +107,9 @@ msgstr "Allega File"
 
 msgid "Authentication Error"
 msgstr "Errore di Autenticazione"
+
+msgid "Availability (%A)"
+msgstr ""
 
 msgid "available"
 msgstr "disponibile"
@@ -426,6 +435,9 @@ msgstr "Idee, suggerimenti o problemi con questa pagina?"
 msgid "Ideas, suggestions or problems?"
 msgstr "Idee, suggerimenti o problemi?"
 
+msgid "Idle"
+msgstr ""
+
 msgid "Impact"
 msgstr "Impatto"
 
@@ -598,6 +610,9 @@ msgstr "Più recenti prima"
 msgid "Next"
 msgstr "Successivo"
 
+msgid "NG (pcs)"
+msgstr ""
+
 msgid "No active maintenance dispatches"
 msgstr "Nessun intervento di manutenzione attivo"
 
@@ -697,11 +712,18 @@ msgstr "Note"
 msgid "Notes (optional)"
 msgstr ""
 
+#. placeholder {0}: column.title
+msgid "OEE board: {0}"
+msgstr ""
+
 msgid "OEE Impact"
 msgstr "Impatto OEE"
 
 msgid "OEM Required"
 msgstr "Richiesto OEM"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "Più vecchio prima"
@@ -746,6 +768,9 @@ msgstr ""
 msgid "Pause"
 msgstr "Pausa"
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Pick"
 msgstr "Preleva"
 
@@ -770,8 +795,14 @@ msgstr "Prelievo"
 msgid "Pin Out"
 msgstr "Disconnetti"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Planned"
 msgstr "Pianificato"
+
+msgid "Planned Downtime"
+msgstr ""
 
 msgid "Please record all steps for this operation before closing."
 msgstr "Registrare tutte le fasi di questa operazione prima di chiuderla."
@@ -814,6 +845,9 @@ msgstr "Processi"
 
 msgid "Progress"
 msgstr "Avanzamento"
+
+msgid "Quality (%Q)"
+msgstr ""
 
 msgid "Quality Issue"
 msgstr "Problema di qualità"
@@ -869,6 +903,12 @@ msgstr "Rielaborazione"
 
 msgid "Rework created successfully"
 msgstr "Rework creato con successo"
+
+msgid "Running"
+msgstr ""
+
+msgid "Runtime (min)"
+msgstr ""
 
 msgid "Sales Order"
 msgstr "Ordine di Vendita"
@@ -1057,6 +1097,9 @@ msgstr "Stati"
 msgid "Stay on this page"
 msgstr "Rimani su questa pagina"
 
+msgid "STD (pcs)"
+msgstr ""
+
 msgid "Steps"
 msgstr "Fasi"
 
@@ -1080,6 +1123,9 @@ msgstr "Cambia Operatore"
 
 msgid "Tag"
 msgstr "Etichetta"
+
+msgid "TARGET"
+msgstr ""
 
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
@@ -1137,6 +1183,12 @@ msgstr "Annulla prelievo"
 msgid "Unpick {0}"
 msgstr "Annulla prelievo {0}"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unsaved changes"
 msgstr "Modifiche non salvate"
 
@@ -1170,6 +1222,9 @@ msgid "Work Center"
 msgstr "Centro di Lavoro"
 
 msgid "Work center is down"
+msgstr ""
+
+msgid "Working Time (min)"
 msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)

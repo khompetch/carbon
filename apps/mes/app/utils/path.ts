@@ -141,6 +141,7 @@ export const path = {
     onboarding: `${ERP_URL}/onboarding`,
     printingSettings: `${ERP_URL}/x/settings/printing`,
     operation: (id: string) => generatePath(`${x}/operation/${id}`),
+    oeeWorkCenter: (id: string) => generatePath(`${x}/oee/${id}`),
     operations: `${x}/operations?saved=1`,
     productionEvent: `${x}/event`,
     recent: `${x}/recent`,

@@ -137,6 +137,9 @@ msgstr "{variances, plural, one {# riga differisce dalla quantità prevista} oth
 msgid "/month/user"
 msgstr "/mese/utente"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 #. placeholder {0}: numberFormatter.format(redirectedTotal)
 #. placeholder {1}: redirectedParts.join(", ")
 msgid "↩ {0} redirected from superseded {1}"
@@ -760,6 +763,9 @@ msgstr "Allinea l'ambito"
 
 msgid "All"
 msgstr "Tutti"
+
+msgid "ALL (pcs)"
+msgstr ""
 
 msgid "All {total} phases are done. Nice work — your team is up and running."
 msgstr "Tutte le {total} fasi sono completate. Ottimo lavoro — il tuo team è operativo."
@@ -1595,6 +1601,9 @@ msgstr "Avvia automaticamente il lavoro quando il kanban viene scansionato"
 msgid "Availability"
 msgstr ""
 
+msgid "Availability (%A)"
+msgstr ""
+
 msgid "available"
 msgstr "disponibile"
 
@@ -1615,6 +1624,9 @@ msgstr "Indietro"
 
 msgid "Back Home"
 msgstr "Torna a casa"
+
+msgid "Back to OEE"
+msgstr ""
 
 msgid "Back to traceability"
 msgstr "Torna alla tracciabilità"
@@ -5506,6 +5518,9 @@ msgstr "Da Unità di Stoccaggio"
 msgid "Fulfillment Location"
 msgstr "Ubicazione di Adempimento"
 
+msgid "Fullscreen"
+msgstr ""
+
 msgid "Fully trained for"
 msgstr "Completamente formato per"
 
@@ -6028,6 +6043,9 @@ msgstr "Idee, suggerimenti o problemi con questa pagina?"
 
 msgid "Ideas, suggestions or problems?"
 msgstr "Idee, suggerimenti o problemi?"
+
+msgid "Idle"
+msgstr ""
 
 msgid "IDs and descriptions are generated for raw materials."
 msgstr "Gli ID e le descrizioni vengono generati per le materie prime."
@@ -7814,6 +7832,9 @@ msgstr "Passaggio successivo"
 msgid "Next:"
 msgstr "Successivo:"
 
+msgid "NG (pcs)"
+msgstr ""
+
 msgid "No"
 msgstr "No"
 
@@ -8194,6 +8215,9 @@ msgstr "di"
 
 msgid "OK"
 msgstr "OK"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "Più vecchio prima"
@@ -8746,6 +8770,9 @@ msgstr "Perfetto per una valutazione a basso costo"
 msgid "Performance"
 msgstr ""
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Period"
 msgstr "Periodo"
 
@@ -8839,6 +8866,9 @@ msgstr "Fissato"
 msgid "Plan"
 msgstr "Piano"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Plan the work"
 msgstr "Pianifica il lavoro"
 
@@ -8847,6 +8877,9 @@ msgstr "Tipo di Piano"
 
 msgid "Planned"
 msgstr "Registrazione"
+
+msgid "Planned Downtime"
+msgstr ""
 
 msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
 msgstr ""
@@ -9407,6 +9440,9 @@ msgstr "Quotazione a Pagamento"
 
 msgid "Quality"
 msgstr "Qualità"
+
+msgid "Quality (%Q)"
+msgstr ""
 
 msgid "Quality Document approval rule"
 msgstr "Regola di approvazione documento di qualità"
@@ -10203,6 +10239,9 @@ msgstr "Esegui la checklist di accettazione fino al superamento"
 msgid "Run the floor on tablets: clock labor, report progress, see instructions"
 msgstr "Gestisci il reparto su tablet: registra il lavoro, segnala i progressi, visualizza le istruzioni"
 
+msgid "Running"
+msgstr ""
+
 msgid "Running inventory after each week's supply and demand — the line."
 msgstr "Inventario aggiornato dopo la domanda e l'offerta di ogni settimana — la linea."
 
@@ -10210,6 +10249,9 @@ msgid "Running Total"
 msgstr "Totale Progressivo"
 
 msgid "Runtime"
+msgstr ""
+
+msgid "Runtime (min)"
 msgstr ""
 
 msgid "S-1 (coarsest special)"
@@ -11277,6 +11319,9 @@ msgstr "Stati"
 msgid "Stay on this page"
 msgstr "Rimani su questa pagina"
 
+msgid "STD (pcs)"
+msgstr ""
+
 msgid "Step"
 msgstr "Passaggio"
 
@@ -11653,6 +11698,9 @@ msgstr "Parla con le vendite"
 
 msgid "Target"
 msgstr "Destinazione"
+
+msgid "TARGET"
+msgstr ""
 
 msgid "Target an item group."
 msgstr "Seleziona un gruppo di articoli."
@@ -13019,6 +13067,12 @@ msgstr "Annulla prelievo"
 msgid "Unpick {0}"
 msgstr "Annulla prelievo {0}"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unposted Documents"
 msgstr "Documenti Non Registrati"
 
@@ -14018,6 +14072,9 @@ msgstr "Flusso di lavoro"
 
 msgid "Working sessions on configuration and data"
 msgstr "Sessioni di lavoro su configurazione e dati"
+
+msgid "Working Time (min)"
+msgstr ""
 
 msgid "Worst Performing Machines"
 msgstr "Macchine con Prestazioni Peggiori"

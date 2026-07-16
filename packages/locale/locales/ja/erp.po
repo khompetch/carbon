@@ -137,6 +137,9 @@ msgstr "{variances, plural, one {# 行が予想数量と異なります} other {
 msgid "/month/user"
 msgstr "/月/ユーザー"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 #. placeholder {0}: numberFormatter.format(redirectedTotal)
 #. placeholder {1}: redirectedParts.join(", ")
 msgid "↩ {0} redirected from superseded {1}"
@@ -760,6 +763,9 @@ msgstr "スコープを調整"
 
 msgid "All"
 msgstr "すべて"
+
+msgid "ALL (pcs)"
+msgstr ""
 
 msgid "All {total} phases are done. Nice work — your team is up and running."
 msgstr "すべての{total}フェーズが完了しました。素晴らしい仕事です。チームが稼働しています。"
@@ -1595,6 +1601,9 @@ msgstr "カンバンがスキャンされたときに自動的にジョブを開
 msgid "Availability"
 msgstr ""
 
+msgid "Availability (%A)"
+msgstr ""
+
 msgid "available"
 msgstr "利用可能"
 
@@ -1615,6 +1624,9 @@ msgstr "戻る"
 
 msgid "Back Home"
 msgstr "ホームに戻る"
+
+msgid "Back to OEE"
+msgstr ""
 
 msgid "Back to traceability"
 msgstr "トレーサビリティに戻る"
@@ -5506,6 +5518,9 @@ msgstr "保管場所から"
 msgid "Fulfillment Location"
 msgstr "履行場所"
 
+msgid "Fullscreen"
+msgstr ""
+
 msgid "Fully trained for"
 msgstr "完全に訓練済み"
 
@@ -6028,6 +6043,9 @@ msgstr "このページについてのアイデア、提案、または問題は
 
 msgid "Ideas, suggestions or problems?"
 msgstr "アイデア、提案、または問題はありますか？"
+
+msgid "Idle"
+msgstr ""
 
 msgid "IDs and descriptions are generated for raw materials."
 msgstr "IDと説明は原材料に対して生成されます。"
@@ -7814,6 +7832,9 @@ msgstr "次のステップ"
 msgid "Next:"
 msgstr "次:"
 
+msgid "NG (pcs)"
+msgstr ""
+
 msgid "No"
 msgstr "いいえ"
 
@@ -8194,6 +8215,9 @@ msgstr "の"
 
 msgid "OK"
 msgstr "OK"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "最も古いものから"
@@ -8746,6 +8770,9 @@ msgstr "低コスト評価に最適"
 msgid "Performance"
 msgstr ""
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Period"
 msgstr "期間"
 
@@ -8839,6 +8866,9 @@ msgstr "ピン留め"
 msgid "Plan"
 msgstr "計画"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Plan the work"
 msgstr "作業を計画する"
 
@@ -8847,6 +8877,9 @@ msgstr "計画タイプ"
 
 msgid "Planned"
 msgstr "転記"
+
+msgid "Planned Downtime"
+msgstr ""
 
 msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
 msgstr ""
@@ -9407,6 +9440,9 @@ msgstr "見積から現金まで"
 
 msgid "Quality"
 msgstr "品質"
+
+msgid "Quality (%Q)"
+msgstr ""
 
 msgid "Quality Document approval rule"
 msgstr "品質文書承認ルール"
@@ -10203,6 +10239,9 @@ msgstr "受け入れチェックリストを実行してパスする"
 msgid "Run the floor on tablets: clock labor, report progress, see instructions"
 msgstr "タブレットでフロアを運用：労働時間を記録、進捗を報告、指示を確認"
 
+msgid "Running"
+msgstr ""
+
 msgid "Running inventory after each week's supply and demand — the line."
 msgstr "毎週の需給の後に実行されるインベントリ — ラインです。"
 
@@ -10210,6 +10249,9 @@ msgid "Running Total"
 msgstr "実行中の合計"
 
 msgid "Runtime"
+msgstr ""
+
+msgid "Runtime (min)"
 msgstr ""
 
 msgid "S-1 (coarsest special)"
@@ -11277,6 +11319,9 @@ msgstr "ステータス"
 msgid "Stay on this page"
 msgstr "このページに留まる"
 
+msgid "STD (pcs)"
+msgstr ""
+
 msgid "Step"
 msgstr "ステップ"
 
@@ -11653,6 +11698,9 @@ msgstr "営業に相談"
 
 msgid "Target"
 msgstr "対象"
+
+msgid "TARGET"
+msgstr ""
 
 msgid "Target an item group."
 msgstr "アイテムグループをターゲットにします。"
@@ -13019,6 +13067,12 @@ msgstr "ピック解除"
 msgid "Unpick {0}"
 msgstr "ピック解除 {0}"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unposted Documents"
 msgstr "未転記書類"
 
@@ -14018,6 +14072,9 @@ msgstr "ワークフロー"
 
 msgid "Working sessions on configuration and data"
 msgstr "設定とデータに関するワーキングセッション"
+
+msgid "Working Time (min)"
+msgstr ""
 
 msgid "Worst Performing Machines"
 msgstr "最も性能が低い機械"

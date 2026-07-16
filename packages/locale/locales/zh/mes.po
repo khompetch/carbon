@@ -42,6 +42,9 @@ msgstr "{0} / {1} 已完成"
 msgid "{0} Scrapped"
 msgstr "{0} 已报废"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 msgid "About"
 msgstr "关于"
 
@@ -72,6 +75,9 @@ msgstr "添加备件"
 msgid "All"
 msgstr "全部"
 
+msgid "ALL (pcs)"
+msgstr ""
+
 msgid "Are you sure you want to delete this step?"
 msgstr "确定要删除此步骤吗？"
 
@@ -101,6 +107,9 @@ msgstr "附加文件"
 
 msgid "Authentication Error"
 msgstr "认证错误"
+
+msgid "Availability (%A)"
+msgstr ""
 
 msgid "available"
 msgstr "可用"
@@ -426,6 +435,9 @@ msgstr "对此页面有想法、建议或问题？"
 msgid "Ideas, suggestions or problems?"
 msgstr "有想法、建议或问题？"
 
+msgid "Idle"
+msgstr ""
+
 msgid "Impact"
 msgstr "影响"
 
@@ -598,6 +610,9 @@ msgstr "最新优先"
 msgid "Next"
 msgstr "下一个"
 
+msgid "NG (pcs)"
+msgstr ""
+
 msgid "No active maintenance dispatches"
 msgstr "无活跃的维护工单"
 
@@ -697,11 +712,18 @@ msgstr "备注"
 msgid "Notes (optional)"
 msgstr ""
 
+#. placeholder {0}: column.title
+msgid "OEE board: {0}"
+msgstr ""
+
 msgid "OEE Impact"
 msgstr "OEE 影响"
 
 msgid "OEM Required"
 msgstr "需要 OEM"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "最早优先"
@@ -746,6 +768,9 @@ msgstr ""
 msgid "Pause"
 msgstr "暂停"
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Pick"
 msgstr "拣选"
 
@@ -770,8 +795,14 @@ msgstr "拣选"
 msgid "Pin Out"
 msgstr "退出登录"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Planned"
 msgstr "已计划"
+
+msgid "Planned Downtime"
+msgstr ""
 
 msgid "Please record all steps for this operation before closing."
 msgstr "请在关闭前记录此工序的所有步骤。"
@@ -814,6 +845,9 @@ msgstr "工艺"
 
 msgid "Progress"
 msgstr "进度"
+
+msgid "Quality (%Q)"
+msgstr ""
 
 msgid "Quality Issue"
 msgstr "质量问题"
@@ -869,6 +903,12 @@ msgstr "返工"
 
 msgid "Rework created successfully"
 msgstr "返工创建成功"
+
+msgid "Running"
+msgstr ""
+
+msgid "Runtime (min)"
+msgstr ""
 
 msgid "Sales Order"
 msgstr "销售订单"
@@ -1057,6 +1097,9 @@ msgstr "状态"
 msgid "Stay on this page"
 msgstr "留在此页面"
 
+msgid "STD (pcs)"
+msgstr ""
+
 msgid "Steps"
 msgstr "步骤"
 
@@ -1080,6 +1123,9 @@ msgstr "切换操作员"
 
 msgid "Tag"
 msgstr "标签"
+
+msgid "TARGET"
+msgstr ""
 
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
@@ -1137,6 +1183,12 @@ msgstr "取消拣选"
 msgid "Unpick {0}"
 msgstr "取消拣选 {0}"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unsaved changes"
 msgstr "未保存的更改"
 
@@ -1170,6 +1222,9 @@ msgid "Work Center"
 msgstr "工作中心"
 
 msgid "Work center is down"
+msgstr ""
+
+msgid "Working Time (min)"
 msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)

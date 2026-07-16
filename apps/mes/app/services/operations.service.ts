@@ -1477,3 +1477,35 @@ export async function endOpenDowntime(
     error: any;
   }>;
 }
+
+export async function getWorkCenterDowntimes(
+  client: SupabaseClient<Database>,
+  args: {
+    workCenterId: string;
+    companyId: string;
+    startTime: string;
+    endTime: string;
+  }
+) {
+  // Overlap query: startTime < windowEnd AND (endTime IS NULL OR endTime > windowStart)
+  return (client as SupabaseClient<any>)
+    .from("workCenterDowntime")
+    .select("id, type, startTime, endTime, downtimeReasonId, notes")
+    .eq("companyId", args.companyId)
+    .eq("workCenterId", args.workCenterId)
+    .lt("startTime", args.endTime)
+    .or(`endTime.is.null,endTime.gt.${args.startTime}`)
+    .order("startTime") as unknown as Promise<{
+    data:
+      | {
+          id: string;
+          type: "Planned" | "Unplanned";
+          startTime: string;
+          endTime: string | null;
+          downtimeReasonId: string | null;
+          notes: string | null;
+        }[]
+      | null;
+    error: any;
+  }>;
+}

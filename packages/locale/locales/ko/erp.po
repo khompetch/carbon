@@ -137,6 +137,9 @@ msgstr "예상 수량과 다른 라인 {variances}개"
 msgid "/month/user"
 msgstr "/월/사용자"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 #. placeholder {0}: numberFormatter.format(redirectedTotal)
 #. placeholder {1}: redirectedParts.join(", ")
 msgid "↩ {0} redirected from superseded {1}"
@@ -760,6 +763,9 @@ msgstr "범위 정렬"
 
 msgid "All"
 msgstr "전체"
+
+msgid "ALL (pcs)"
+msgstr ""
 
 msgid "All {total} phases are done. Nice work — your team is up and running."
 msgstr "{total}단계가 모두 완료되었습니다. 수고하셨습니다 — 팀이 이제 정상 가동 중입니다."
@@ -1595,6 +1601,9 @@ msgstr "칸반이 스캔되면 작업을 자동으로 시작"
 msgid "Availability"
 msgstr ""
 
+msgid "Availability (%A)"
+msgstr ""
+
 msgid "available"
 msgstr "사용 가능"
 
@@ -1615,6 +1624,9 @@ msgstr "뒤로"
 
 msgid "Back Home"
 msgstr "홈으로"
+
+msgid "Back to OEE"
+msgstr ""
 
 msgid "Back to traceability"
 msgstr "이력추적으로 돌아가기"
@@ -5506,6 +5518,9 @@ msgstr "출발 저장 단위"
 msgid "Fulfillment Location"
 msgstr "이행 위치"
 
+msgid "Fullscreen"
+msgstr ""
+
 msgid "Fully trained for"
 msgstr "다음에 대해 완전히 교육됨"
 
@@ -6028,6 +6043,9 @@ msgstr "이 페이지에 대한 아이디어, 제안, 또는 문제가 있으신
 
 msgid "Ideas, suggestions or problems?"
 msgstr "아이디어, 제안, 또는 문제가 있으신가요?"
+
+msgid "Idle"
+msgstr ""
 
 msgid "IDs and descriptions are generated for raw materials."
 msgstr "원자재에 대한 ID와 설명이 자동으로 생성됩니다."
@@ -7814,6 +7832,9 @@ msgstr "다음 단계"
 msgid "Next:"
 msgstr "다음:"
 
+msgid "NG (pcs)"
+msgstr ""
+
 msgid "No"
 msgstr "아니요"
 
@@ -8194,6 +8215,9 @@ msgstr "중"
 
 msgid "OK"
 msgstr "확인"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "오래된순"
@@ -8746,6 +8770,9 @@ msgstr "저비용 평가에 적합"
 msgid "Performance"
 msgstr ""
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Period"
 msgstr "기간"
 
@@ -8839,6 +8866,9 @@ msgstr "고정됨"
 msgid "Plan"
 msgstr "계획"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Plan the work"
 msgstr "작업 계획 수립"
 
@@ -8847,6 +8877,9 @@ msgstr "계획 유형"
 
 msgid "Planned"
 msgstr "계획됨"
+
+msgid "Planned Downtime"
+msgstr ""
 
 msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
 msgstr ""
@@ -9407,6 +9440,9 @@ msgstr "품질"
 
 msgid "Quality"
 msgstr "품질"
+
+msgid "Quality (%Q)"
+msgstr ""
 
 msgid "Quality Document approval rule"
 msgstr "품질 문서 승인 규칙"
@@ -10203,6 +10239,9 @@ msgstr "인수 체크리스트를 통과할 때까지 진행하세요"
 msgid "Run the floor on tablets: clock labor, report progress, see instructions"
 msgstr "태블릿으로 현장을 운영하세요: 근무 시간 기록, 진행 상황 보고, 작업 지시 확인"
 
+msgid "Running"
+msgstr ""
+
 msgid "Running inventory after each week's supply and demand — the line."
 msgstr "매주 공급과 수요를 반영해 갱신되는 재고 — 그 라인입니다."
 
@@ -10210,6 +10249,9 @@ msgid "Running Total"
 msgstr "누계"
 
 msgid "Runtime"
+msgstr ""
+
+msgid "Runtime (min)"
 msgstr ""
 
 msgid "S-1 (coarsest special)"
@@ -11277,6 +11319,9 @@ msgstr "상태"
 msgid "Stay on this page"
 msgstr "이 페이지에 머무르기"
 
+msgid "STD (pcs)"
+msgstr ""
+
 msgid "Step"
 msgstr "단계"
 
@@ -11653,6 +11698,9 @@ msgstr "영업팀에 문의"
 
 msgid "Target"
 msgstr "대상"
+
+msgid "TARGET"
+msgstr ""
 
 msgid "Target an item group."
 msgstr "품목 그룹을 대상으로 지정합니다."
@@ -13019,6 +13067,12 @@ msgstr "피킹 취소"
 msgid "Unpick {0}"
 msgstr "{0} 피킹 취소"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unposted Documents"
 msgstr "미전기 문서"
 
@@ -14018,6 +14072,9 @@ msgstr "워크플로"
 
 msgid "Working sessions on configuration and data"
 msgstr "설정 및 데이터에 대한 작업 세션"
+
+msgid "Working Time (min)"
+msgstr ""
 
 msgid "Worst Performing Machines"
 msgstr "성과가 가장 저조한 설비"

@@ -42,6 +42,9 @@ msgstr "{1} 중 {0} 완료됨"
 msgid "{0} Scrapped"
 msgstr "{0} 스크랩됨"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 msgid "About"
 msgstr "정보"
 
@@ -72,6 +75,9 @@ msgstr "예비 부품 추가"
 msgid "All"
 msgstr "전체"
 
+msgid "ALL (pcs)"
+msgstr ""
+
 msgid "Are you sure you want to delete this step?"
 msgstr "이 단계를 삭제하시겠습니까?"
 
@@ -101,6 +107,9 @@ msgstr "파일 첨부"
 
 msgid "Authentication Error"
 msgstr "인증 오류"
+
+msgid "Availability (%A)"
+msgstr ""
 
 msgid "available"
 msgstr "사용 가능"
@@ -426,6 +435,9 @@ msgstr "이 페이지에 대한 아이디어, 제안, 또는 문제가 있으신
 msgid "Ideas, suggestions or problems?"
 msgstr "아이디어, 제안, 또는 문제가 있으신가요?"
 
+msgid "Idle"
+msgstr ""
+
 msgid "Impact"
 msgstr "영향"
 
@@ -598,6 +610,9 @@ msgstr "최신순"
 msgid "Next"
 msgstr "다음"
 
+msgid "NG (pcs)"
+msgstr ""
+
 msgid "No active maintenance dispatches"
 msgstr "진행 중인 유지보수 작업지시가 없습니다"
 
@@ -697,11 +712,18 @@ msgstr "메모"
 msgid "Notes (optional)"
 msgstr ""
 
+#. placeholder {0}: column.title
+msgid "OEE board: {0}"
+msgstr ""
+
 msgid "OEE Impact"
 msgstr "OEE 영향"
 
 msgid "OEM Required"
 msgstr "OEM 필요"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "오래된순"
@@ -746,6 +768,9 @@ msgstr ""
 msgid "Pause"
 msgstr "일시정지"
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Pick"
 msgstr "피킹"
 
@@ -770,8 +795,14 @@ msgstr "피킹"
 msgid "Pin Out"
 msgstr "PIN 로그아웃"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Planned"
 msgstr "계획됨"
+
+msgid "Planned Downtime"
+msgstr ""
 
 msgid "Please record all steps for this operation before closing."
 msgstr "이 공정작업을 마감하기 전에 모든 단계를 기록하세요."
@@ -814,6 +845,9 @@ msgstr "공정"
 
 msgid "Progress"
 msgstr "진행 상황"
+
+msgid "Quality (%Q)"
+msgstr ""
 
 msgid "Quality Issue"
 msgstr "품질 이슈"
@@ -869,6 +903,12 @@ msgstr "재작업"
 
 msgid "Rework created successfully"
 msgstr "재작업이 생성되었습니다"
+
+msgid "Running"
+msgstr ""
+
+msgid "Runtime (min)"
+msgstr ""
 
 msgid "Sales Order"
 msgstr "판매주문"
@@ -1057,6 +1097,9 @@ msgstr "상태"
 msgid "Stay on this page"
 msgstr "이 페이지에 머무르기"
 
+msgid "STD (pcs)"
+msgstr ""
+
 msgid "Steps"
 msgstr "단계"
 
@@ -1080,6 +1123,9 @@ msgstr "작업자 전환"
 
 msgid "Tag"
 msgstr "태그"
+
+msgid "TARGET"
+msgstr ""
 
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
@@ -1137,6 +1183,12 @@ msgstr "피킹 취소"
 msgid "Unpick {0}"
 msgstr "{0} 피킹 취소"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unsaved changes"
 msgstr "저장되지 않은 변경 사항"
 
@@ -1170,6 +1222,9 @@ msgid "Work Center"
 msgstr "작업장"
 
 msgid "Work center is down"
+msgstr ""
+
+msgid "Working Time (min)"
 msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)

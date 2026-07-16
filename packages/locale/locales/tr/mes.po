@@ -42,6 +42,9 @@ msgstr "{0} adet tamamlandı"
 msgid "{0} Scrapped"
 msgstr "{0} Hurdaya Çıkarılmış"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 msgid "About"
 msgstr "Hakkında"
 
@@ -72,6 +75,9 @@ msgstr "Yedek Parça Ekle"
 msgid "All"
 msgstr "Tümü"
 
+msgid "ALL (pcs)"
+msgstr ""
+
 msgid "Are you sure you want to delete this step?"
 msgstr "Bu adımı silmek istediğinizden emin misiniz?"
 
@@ -101,6 +107,9 @@ msgstr "Dosya Ekle"
 
 msgid "Authentication Error"
 msgstr "Kimlik Doğrulama Hatası"
+
+msgid "Availability (%A)"
+msgstr ""
 
 msgid "available"
 msgstr "mevcut"
@@ -426,6 +435,9 @@ msgstr "Bu sayfa hakkında fikirleriniz, önerileriniz veya sorunlarınız mı v
 msgid "Ideas, suggestions or problems?"
 msgstr "Fikirler, öneriler veya sorunlar?"
 
+msgid "Idle"
+msgstr ""
+
 msgid "Impact"
 msgstr "Etki"
 
@@ -598,6 +610,9 @@ msgstr "En yeniden önce"
 msgid "Next"
 msgstr "Sonraki"
 
+msgid "NG (pcs)"
+msgstr ""
+
 msgid "No active maintenance dispatches"
 msgstr "Aktif bakım sevkıyatı bulunmamaktadır"
 
@@ -697,11 +712,18 @@ msgstr "Notlar"
 msgid "Notes (optional)"
 msgstr ""
 
+#. placeholder {0}: column.title
+msgid "OEE board: {0}"
+msgstr ""
+
 msgid "OEE Impact"
 msgstr "OEE Etkisi"
 
 msgid "OEM Required"
 msgstr "Üretici Tarafından Gerekiyor"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "En eski önce"
@@ -746,6 +768,9 @@ msgstr ""
 msgid "Pause"
 msgstr "Duraklat"
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Pick"
 msgstr "Topla"
 
@@ -770,8 +795,14 @@ msgstr "Seçim"
 msgid "Pin Out"
 msgstr "Çıkış Yap"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Planned"
 msgstr "Planlı"
+
+msgid "Planned Downtime"
+msgstr ""
 
 msgid "Please record all steps for this operation before closing."
 msgstr "Bu işlemi kapatmadan önce tüm adımları kaydetmeniz gerekmektedir."
@@ -814,6 +845,9 @@ msgstr "Süreçler"
 
 msgid "Progress"
 msgstr "İlerleme"
+
+msgid "Quality (%Q)"
+msgstr ""
 
 msgid "Quality Issue"
 msgstr "Kalite Sorunu"
@@ -869,6 +903,12 @@ msgstr "Revizyon"
 
 msgid "Rework created successfully"
 msgstr "Yeniden işleme başarıyla oluşturuldu"
+
+msgid "Running"
+msgstr ""
+
+msgid "Runtime (min)"
+msgstr ""
 
 msgid "Sales Order"
 msgstr "Satış Siparişi"
@@ -1057,6 +1097,9 @@ msgstr "Durumlar"
 msgid "Stay on this page"
 msgstr "Bu sayfada kal"
 
+msgid "STD (pcs)"
+msgstr ""
+
 msgid "Steps"
 msgstr "Adımlar"
 
@@ -1080,6 +1123,9 @@ msgstr "Operatörü Değiştir"
 
 msgid "Tag"
 msgstr "Etiket"
+
+msgid "TARGET"
+msgstr ""
 
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
@@ -1137,6 +1183,12 @@ msgstr "Çıkart"
 msgid "Unpick {0}"
 msgstr "Çıkart {0}"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unsaved changes"
 msgstr "Kaydedilmemiş değişiklikler"
 
@@ -1170,6 +1222,9 @@ msgid "Work Center"
 msgstr "İş Merkezi"
 
 msgid "Work center is down"
+msgstr ""
+
+msgid "Working Time (min)"
 msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)

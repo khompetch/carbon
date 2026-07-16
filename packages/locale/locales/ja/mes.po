@@ -42,6 +42,9 @@ msgstr "{0} / {1} 完了済み"
 msgid "{0} Scrapped"
 msgstr "{0} スクラップ"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 msgid "About"
 msgstr "バージョン情報"
 
@@ -72,6 +75,9 @@ msgstr "スペアパーツを追加"
 msgid "All"
 msgstr "すべて"
 
+msgid "ALL (pcs)"
+msgstr ""
+
 msgid "Are you sure you want to delete this step?"
 msgstr "このステップを削除してもよろしいですか？"
 
@@ -101,6 +107,9 @@ msgstr "ファイルを添付"
 
 msgid "Authentication Error"
 msgstr "認証エラー"
+
+msgid "Availability (%A)"
+msgstr ""
 
 msgid "available"
 msgstr "利用可能"
@@ -426,6 +435,9 @@ msgstr "このページについてのアイデア、提案、または問題は
 msgid "Ideas, suggestions or problems?"
 msgstr "アイデア、提案、または問題はありますか？"
 
+msgid "Idle"
+msgstr ""
+
 msgid "Impact"
 msgstr "影響"
 
@@ -598,6 +610,9 @@ msgstr "最新順"
 msgid "Next"
 msgstr "次へ"
 
+msgid "NG (pcs)"
+msgstr ""
+
 msgid "No active maintenance dispatches"
 msgstr "アクティブなメンテナンスディスパッチはありません"
 
@@ -697,11 +712,18 @@ msgstr "備考"
 msgid "Notes (optional)"
 msgstr ""
 
+#. placeholder {0}: column.title
+msgid "OEE board: {0}"
+msgstr ""
+
 msgid "OEE Impact"
 msgstr "OEE影響度"
 
 msgid "OEM Required"
 msgstr "OEM対応必要"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "最も古い順"
@@ -746,6 +768,9 @@ msgstr ""
 msgid "Pause"
 msgstr "一時停止"
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Pick"
 msgstr "ピック"
 
@@ -770,8 +795,14 @@ msgstr "ピッキング"
 msgid "Pin Out"
 msgstr "ピンアウト"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Planned"
 msgstr "計画済み"
+
+msgid "Planned Downtime"
+msgstr ""
 
 msgid "Please record all steps for this operation before closing."
 msgstr "クローズする前にこの工程のすべてのステップを記録してください。"
@@ -814,6 +845,9 @@ msgstr "プロセス一覧"
 
 msgid "Progress"
 msgstr "進捗"
+
+msgid "Quality (%Q)"
+msgstr ""
 
 msgid "Quality Issue"
 msgstr "品質問題"
@@ -869,6 +903,12 @@ msgstr "リワーク"
 
 msgid "Rework created successfully"
 msgstr "リワーク作成に成功しました"
+
+msgid "Running"
+msgstr ""
+
+msgid "Runtime (min)"
+msgstr ""
 
 msgid "Sales Order"
 msgstr "受注"
@@ -1057,6 +1097,9 @@ msgstr "ステータス一覧"
 msgid "Stay on this page"
 msgstr "このページに留まる"
 
+msgid "STD (pcs)"
+msgstr ""
+
 msgid "Steps"
 msgstr "ステップ"
 
@@ -1080,6 +1123,9 @@ msgstr "オペレーターを切替"
 
 msgid "Tag"
 msgstr "タグ"
+
+msgid "TARGET"
+msgstr ""
 
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
@@ -1137,6 +1183,12 @@ msgstr "ピッキング解除"
 msgid "Unpick {0}"
 msgstr "ピック解除 {0}"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unsaved changes"
 msgstr "未保存の変更"
 
@@ -1170,6 +1222,9 @@ msgid "Work Center"
 msgstr "ワークセンター"
 
 msgid "Work center is down"
+msgstr ""
+
+msgid "Working Time (min)"
 msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)

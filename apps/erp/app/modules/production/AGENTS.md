@@ -15,6 +15,8 @@ Work orders (jobs), scheduling, routings (operations), bill of materials, proced
 - **Maintenance Dispatch** — reactive/scheduled repair for work centers with comments, events, items, and linked work centers.
 - **Scheduling** — infinite-capacity backward scheduling via `schedule` edge function. MUST use `triggerJobSchedule` to reschedule, never direct date writes.
 - **OEE Dashboard** — `/x/production/oee` (route `x+/production+/oee.tsx` + resource route `api+/production.oee.ts`, components in `ui/Oee/`). Availability from productionEvent runtime vs location-shift planned time minus maintenance downtime (`oeeImpact` Down/Planned); Performance from `makeDurations` standards vs runtime; Quality from productionQuantity. Spec: `.ai/specs/2026-07-09-oee-dashboard.md`.
+- **OEE Work Center Board (hourly, 12h shifts)** — `/x/production/oee/work-center/:workCenterId` (route `oee_.work-center.$workCenterId.tsx`, api `api+/production.oee.work-center.ts`, fetch helper `getWorkCenterHourlyOee` in `production.server.ts`). Math is shared with MES via `computeShiftHourlyOee`/`resolveShiftWindow`/`findActiveShiftWindow` in `@carbon/utils` (packages/utils/src/oee.ts, unit-tested); the TV board component is `OeeShiftBoard` in `@carbon/react`. MES twin: route `x+/oee.$workCenterId.tsx` + fetch copy `apps/mes/app/services/oee.server.ts` (keep in sync). Spec: `.ai/specs/2026-07-16-oee-work-center-hourly.md`.
+- **Downtime recording** — `downtimeReason` (name + `downtimeType` Planned/Unplanned) configured at `/x/production/downtime-reasons` (`ui/DowntimeReasons/`); `workCenterDowntime` intervals recorded from the MES operation screen (open interval = `endTime` NULL; auto-closed when a production event starts). Planned downtime + planned maintenance reduce OEE availability denominators; residual in-shift idle counts as unplanned.
 
 ## Safety
 
@@ -62,6 +64,7 @@ pnpm --filter @carbon/erp test
 | `maintenanceDispatch` / `maintenanceSchedule` | Equipment maintenance tracking |
 | `demandForecast` / `demandProjection` | Demand planning data |
 | `scrapReason` / `maintenanceFailureMode` | Reference data for production and maintenance |
+| `downtimeReason` / `workCenterDowntime` | Downtime reasons (Planned/Unplanned) and per-work-center downtime intervals for OEE |
 
 ## Key Service Functions
 
@@ -77,6 +80,8 @@ pnpm --filter @carbon/erp test
 - `getActiveJobOperationsByLocation` — schedule board data (RPC `get_active_job_operations_by_location`)
 - `getProductionPlanning` — MRP-driven production planning (RPC `get_production_planning`)
 - `upsertMaintenanceDispatch` / `upsertMaintenanceSchedule` — maintenance management
+- `getDowntimeReasons(List)` / `upsertDowntimeReason` / `deleteDowntimeReason` / `getWorkCenterDowntimes` — downtime reference data + interval reads (tables newer than generated types; functions cast via `SupabaseClient<any>` until types regenerate)
+- `getWorkCenterHourlyOee` (`production.server.ts`) — fetch + compute for the hourly OEE board
 - `getAssemblyInstruction(s)` / `upsertAssemblyInstructionStep` / `getAssemblyInstructionStepMaterials` — assembly instruction authoring; the step upsert derives `instructionText` from the tiptap `description` (viewer/MES consume the plain text)
 - `updateAssemblyStepMotion` — partial `motion`/`camera` patch for one step, used by the 3D path/camera editor's autosave (never touches `title`/typed fields); `camera: null` clears the pose (return to auto-framing). Deleting an instruction also drops the model's cached plan via `deleteAssemblyInstruction` → `invalidateAssemblyPlanCache`
 - `generateAssemblyStepsFromPlan` — plan.json → draft steps via `buildAssemblyStepGroups` (`@carbon/viewer`): sequence order, consecutive identical components merged, subassembly `groups` one step (titled by the unit `name`), `mergedInto` components riding their host's step; planner-flagged components (blockedBy / failed verification) store motion "none" + `warnings: { flagged, blockedBy }` (the viewer fades them in — no fabricated paths); a **floater fold** using the plan's `contacts` graph merges a placed-but-detached part with the immediately-following step that attaches to it (collision precedence forces the part in first, so it would otherwise render as a lone floating island for one step) — the pair installs as one rigid step along the detached part's motion; skipped on older plans lacking `contacts`; `mode: "regenerate"` replaces existing steps, refused while any step is `planConfidence: "manual"` or status `Done`. Persists a human `title` on every step via `describeStep` (`@carbon/viewer`) — real editable data, not just a render-time fallback. Seeds each step's materials from the component→BOM mappings (best-effort): auto-runs `autoMatchAssemblyComponents` once when the model has no mappings yet, and returns `unmappedComponentCount` (distinct geometry groups with no BOM item) which the generate route surfaces as a "use Match BOM" nudge

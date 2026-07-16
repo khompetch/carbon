@@ -15,7 +15,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { cva } from "class-variance-authority";
 import { useMemo } from "react";
-import { LuGripVertical } from "react-icons/lu";
+import { LuCircleGauge, LuGripVertical } from "react-icons/lu";
 import { Link } from "react-router";
 import { useUrlParams } from "~/hooks";
 import { path } from "~/utils/path";
@@ -149,6 +149,13 @@ export function ColumnCard({
             )}
           </div>
         </div>
+        <Link
+          to={path.to.oeeWorkCenter(column.id)}
+          aria-label={t`OEE board: ${column.title}`}
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md hover:bg-accent"
+        >
+          <LuCircleGauge className="size-4" />
+        </Link>
         <IconButton
           aria-label={t`Move column: ${column.title}`}
           icon={<LuGripVertical />}

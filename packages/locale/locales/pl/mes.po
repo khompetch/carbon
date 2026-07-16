@@ -42,6 +42,9 @@ msgstr "{0} z {1} ukończonych"
 msgid "{0} Scrapped"
 msgstr "{0} Odrzuconych"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 msgid "About"
 msgstr "O programie"
 
@@ -72,6 +75,9 @@ msgstr "Dodaj część zamienną"
 msgid "All"
 msgstr "Wszystkie"
 
+msgid "ALL (pcs)"
+msgstr ""
+
 msgid "Are you sure you want to delete this step?"
 msgstr "Czy na pewno chcesz usunąć ten krok?"
 
@@ -101,6 +107,9 @@ msgstr "Załącz plik"
 
 msgid "Authentication Error"
 msgstr "Błąd uwierzytelniania"
+
+msgid "Availability (%A)"
+msgstr ""
 
 msgid "available"
 msgstr "dostępne"
@@ -426,6 +435,9 @@ msgstr "Pomysły, sugestie lub problemy z tą stroną?"
 msgid "Ideas, suggestions or problems?"
 msgstr "Pomysły, sugestie lub problemy?"
 
+msgid "Idle"
+msgstr ""
+
 msgid "Impact"
 msgstr "Wpływ"
 
@@ -598,6 +610,9 @@ msgstr "Najnowsze pierwsze"
 msgid "Next"
 msgstr "Następny"
 
+msgid "NG (pcs)"
+msgstr ""
+
 msgid "No active maintenance dispatches"
 msgstr "Brak aktywnych zleceń utrzymania ruchu"
 
@@ -697,11 +712,18 @@ msgstr "Notatki"
 msgid "Notes (optional)"
 msgstr ""
 
+#. placeholder {0}: column.title
+msgid "OEE board: {0}"
+msgstr ""
+
 msgid "OEE Impact"
 msgstr "Wpływ na OEE"
 
 msgid "OEM Required"
 msgstr "Wymagany OEM"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "Najstarsze pierwsze"
@@ -746,6 +768,9 @@ msgstr ""
 msgid "Pause"
 msgstr "Pauza"
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Pick"
 msgstr "Pobierz"
 
@@ -770,8 +795,14 @@ msgstr "Kompletowanie"
 msgid "Pin Out"
 msgstr "Wyloguj PIN"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Planned"
 msgstr "Planowane"
+
+msgid "Planned Downtime"
+msgstr ""
 
 msgid "Please record all steps for this operation before closing."
 msgstr "Zarejestruj wszystkie kroki dla tej operacji przed zamknięciem."
@@ -814,6 +845,9 @@ msgstr "Procesy"
 
 msgid "Progress"
 msgstr "Postęp"
+
+msgid "Quality (%Q)"
+msgstr ""
 
 msgid "Quality Issue"
 msgstr "Problem z jakością"
@@ -869,6 +903,12 @@ msgstr "Przeróbka"
 
 msgid "Rework created successfully"
 msgstr "Przeróbka utworzona pomyślnie"
+
+msgid "Running"
+msgstr ""
+
+msgid "Runtime (min)"
+msgstr ""
 
 msgid "Sales Order"
 msgstr "Zamówienie sprzedaży"
@@ -1057,6 +1097,9 @@ msgstr "Statusy"
 msgid "Stay on this page"
 msgstr "Zostań na tej stronie"
 
+msgid "STD (pcs)"
+msgstr ""
+
 msgid "Steps"
 msgstr "Kroki"
 
@@ -1080,6 +1123,9 @@ msgstr "Zmień operatora"
 
 msgid "Tag"
 msgstr "Tag"
+
+msgid "TARGET"
+msgstr ""
 
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
@@ -1137,6 +1183,12 @@ msgstr "Cofnij pobranie"
 msgid "Unpick {0}"
 msgstr "Cofnij {0}"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unsaved changes"
 msgstr "Niezapisane zmiany"
 
@@ -1170,6 +1222,9 @@ msgid "Work Center"
 msgstr "Gniazdo produkcyjne"
 
 msgid "Work center is down"
+msgstr ""
+
+msgid "Working Time (min)"
 msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)

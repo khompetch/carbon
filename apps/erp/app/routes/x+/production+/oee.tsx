@@ -267,7 +267,7 @@ export default function OeeDashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <OeeTable groups={groups} />
+            <OeeTable groups={groups} groupBy={groupBy} />
           </CardContent>
         </Card>
       )}
