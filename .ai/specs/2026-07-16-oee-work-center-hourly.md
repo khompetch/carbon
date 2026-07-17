@@ -174,3 +174,8 @@ subtracts from runtime (downtime wins over event, so %A drops).
   `getOrCreateWorkCenterShareLink` (ERP production.server.ts + MES
   oee.server.ts copies) reuses the existing externalLink row so the URL never
   changes. ERP path helper `path.to.externalOee`.
+- 2026-07-17: job progress on the board — the current-jobs table shows
+  `quantityComplete / operationQuantity` with a mini progress bar (emerald
+  when complete, blue while in progress; no target → count only). Fields were
+  already selected by the currentJobs query, now passed through both fetch
+  helpers.

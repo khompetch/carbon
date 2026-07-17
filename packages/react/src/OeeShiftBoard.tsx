@@ -52,6 +52,8 @@ export type OeeShiftBoardProps = {
     itemName: string | null;
     description: string | null;
     cycleTimeMs?: number | null;
+    quantityComplete?: number;
+    operationQuantity?: number | null;
   }[];
   /** standard cycle time of the running operation(s), ms per piece */
   cycleTimeMs?: number | null;
@@ -248,6 +250,45 @@ export function OeeShiftBoard({
                   </td>
                   <td className="px-3 py-2 truncate">
                     {job.itemName ?? job.description ?? ""}
+                  </td>
+                  <td className="px-3 py-2 whitespace-nowrap">
+                    {job.quantityComplete !== undefined ? (
+                      <div className="flex flex-col items-end gap-1 min-w-[7rem]">
+                        <span className="tabular-nums font-semibold">
+                          {job.quantityComplete}
+                          {job.operationQuantity != null &&
+                            job.operationQuantity > 0 && (
+                              <span className="text-muted-foreground font-normal">
+                                {" / "}
+                                {job.operationQuantity}
+                              </span>
+                            )}
+                        </span>
+                        {job.operationQuantity != null &&
+                          job.operationQuantity > 0 && (
+                            <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
+                              <div
+                                className={cn(
+                                  "h-full rounded-full",
+                                  job.quantityComplete >= job.operationQuantity
+                                    ? "bg-emerald-500"
+                                    : "bg-blue-500"
+                                )}
+                                style={{
+                                  width: `${Math.min(
+                                    100,
+                                    (job.quantityComplete /
+                                      job.operationQuantity) *
+                                      100
+                                  )}%`
+                                }}
+                              />
+                            </div>
+                          )}
+                      </div>
+                    ) : (
+                      "–"
+                    )}
                   </td>
                   <td className="px-3 py-2 text-right tabular-nums whitespace-nowrap text-muted-foreground">
                     {job.cycleTimeMs != null ? (

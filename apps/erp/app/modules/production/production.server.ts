@@ -409,6 +409,8 @@ export async function getWorkCenterHourlyOee(
       id: string;
       description: string | null;
       status: string;
+      operationQuantity: number | null;
+      quantityComplete: number | null;
       laborTime: number | null;
       laborUnit: string | null;
       machineTime: number | null;
@@ -430,6 +432,8 @@ export async function getWorkCenterHourlyOee(
       itemName: row.job?.item?.name ?? null,
       description: row.description,
       status: row.status,
+      quantityComplete: row.quantityComplete ?? 0,
+      operationQuantity: row.operationQuantity ?? null,
       cycleTimeMs: jobCycleTimeMs > 0 ? jobCycleTimeMs : null
     };
   });
