@@ -1518,8 +1518,14 @@ export async function endOpenDowntime(
  * downtime on the operation's work center (auto AND manual Planned/Unplanned),
  * same as starting a production event, so the board returns to Running.
  * Quantity payloads don't carry workCenterId, so look it up first.
+ *
+ * Called from the insert-quantity functions below, AND directly from the
+ * complete/end routes' Serial/Batch branches — those record output via the
+ * `issue` edge function (jobOperationSerialComplete/jobOperationBatchComplete),
+ * which inserts productionQuantity on the edge side and never passes through
+ * insertProductionQuantity.
  */
-async function endOpenDowntimeForOperation(
+export async function endOpenDowntimeForOperation(
   client: SupabaseClient<Database>,
   args: { jobOperationId: string; companyId: string; userId: string }
 ) {

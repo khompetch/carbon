@@ -157,3 +157,9 @@ subtracts from runtime (downtime wins over event, so %A drops).
   (manual Planned/Unplanned included, not just auto rows) — user-confirmed;
   `endOpenDowntime`'s `onlyAuto` option removed,
   `endOpenAutoDowntimeForOperation` renamed `endOpenDowntimeForOperation`.
+- 2026-07-17: fix — Serial/Batch Log Completed didn't close downtime: those
+  paths record output via the `issue` edge function
+  (jobOperationSerialComplete/jobOperationBatchComplete), bypassing
+  insertProductionQuantity. `endOpenDowntimeForOperation` is now exported and
+  called from the Serial/Batch branches of `complete.tsx` and
+  `end.$operationId.tsx` after a successful invoke.
