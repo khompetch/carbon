@@ -3100,6 +3100,9 @@ msgstr "Столбец CSV"
 msgid "CSV file must have at least 2 rows."
 msgstr "CSV файл должен содержать минимум 2 строки."
 
+msgid "CT"
+msgstr ""
+
 msgid "Cumulative"
 msgstr "Нарастающий итог"
 
@@ -3303,6 +3306,9 @@ msgstr "Поддержка при переходе"
 
 msgid "Cycle count and adjust with an audit trail"
 msgstr "Инвентаризация и корректировка с журналом аудита"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Daily check-ins while your team finds its feet on the live system"
 msgstr "Ежедневные встречи, пока ваша команда осваивается в живой системе"

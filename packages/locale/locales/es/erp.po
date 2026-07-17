@@ -3100,6 +3100,9 @@ msgstr "Columna CSV"
 msgid "CSV file must have at least 2 rows."
 msgstr "El archivo CSV debe tener al menos 2 filas."
 
+msgid "CT"
+msgstr ""
+
 msgid "Cumulative"
 msgstr "Acumulativo"
 
@@ -3303,6 +3306,9 @@ msgstr "Soporte de transición"
 
 msgid "Cycle count and adjust with an audit trail"
 msgstr "Recuento cíclico y ajuste con registro de auditoría"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Daily check-ins while your team finds its feet on the live system"
 msgstr "Controles diarios mientras tu equipo se adapta al sistema en vivo"

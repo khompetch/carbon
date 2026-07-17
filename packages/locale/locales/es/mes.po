@@ -238,8 +238,14 @@ msgstr "Crear Problema de Calidad"
 msgid "Create Rework"
 msgstr "Crear Reelaboración"
 
+msgid "CT"
+msgstr ""
+
 msgid "Customer"
 msgstr "Cliente"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Dark Mode"
 msgstr "Modo oscuro"

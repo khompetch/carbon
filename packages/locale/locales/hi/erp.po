@@ -3100,6 +3100,9 @@ msgstr "CSV कॉलम"
 msgid "CSV file must have at least 2 rows."
 msgstr "CSV फ़ाइल में कम से कम 2 पंक्तियाँ होनी चाहिए।"
 
+msgid "CT"
+msgstr ""
+
 msgid "Cumulative"
 msgstr "संचयी"
 
@@ -3303,6 +3306,9 @@ msgstr "कटओवर सहायता"
 
 msgid "Cycle count and adjust with an audit trail"
 msgstr "चक्र गणना करें और ऑडिट ट्रेल के साथ समायोजित करें"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Daily check-ins while your team finds its feet on the live system"
 msgstr "दैनिक चेक-इन जबकि आपकी टीम लाइव सिस्टम पर अपने पैर जमाती है"

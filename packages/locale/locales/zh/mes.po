@@ -238,8 +238,14 @@ msgstr "创建质量问题"
 msgid "Create Rework"
 msgstr "创建返工"
 
+msgid "CT"
+msgstr ""
+
 msgid "Customer"
 msgstr "客户"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Dark Mode"
 msgstr "深色模式"

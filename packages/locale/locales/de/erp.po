@@ -3100,6 +3100,9 @@ msgstr "CSV-Spalte"
 msgid "CSV file must have at least 2 rows."
 msgstr "CSV-Datei muss mindestens 2 Zeilen enthalten."
 
+msgid "CT"
+msgstr ""
+
 msgid "Cumulative"
 msgstr "Kumulativ"
 
@@ -3303,6 +3306,9 @@ msgstr "Cutover-Unterstützung"
 
 msgid "Cycle count and adjust with an audit trail"
 msgstr "Bestandszählung durchführen und mit Audit-Trail anpassen"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Daily check-ins while your team finds its feet on the live system"
 msgstr "Tägliche Check-ins, während sich Ihr Team im Live-System einarbeitet"

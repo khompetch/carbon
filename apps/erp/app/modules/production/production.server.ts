@@ -249,7 +249,7 @@ export async function getWorkCenterHourlyOee(
       client
         .from("jobOperation")
         .select(
-          "id, description, status, operationQuantity, quantityComplete, job(jobId, item(readableId, name))"
+          "id, description, status, operationQuantity, quantityComplete, laborTime, laborUnit, machineTime, machineUnit, job(jobId, item(readableId, name))"
         )
         .eq("companyId", companyId)
         .eq("workCenterId", workCenterId)
@@ -367,6 +367,50 @@ export async function getWorkCenterHourlyOee(
         ? "running"
         : "idle";
 
+  const currentJobs = (
+    (activeOperations.data ?? []) as unknown as {
+      id: string;
+      description: string | null;
+      status: string;
+      laborTime: number | null;
+      laborUnit: string | null;
+      machineTime: number | null;
+      machineUnit: string | null;
+      job: {
+        jobId: string | null;
+        item: { readableId: string | null; name: string | null } | null;
+      } | null;
+    }[]
+  ).map((row) => {
+    const jobCycleTimeMs = Math.max(
+      standardMsPerPiece(row.laborTime, row.laborUnit),
+      standardMsPerPiece(row.machineTime, row.machineUnit)
+    );
+    return {
+      id: row.id,
+      jobReadableId: row.job?.jobId ?? null,
+      itemReadableId: row.job?.item?.readableId ?? null,
+      itemName: row.job?.item?.name ?? null,
+      description: row.description,
+      status: row.status,
+      cycleTimeMs: jobCycleTimeMs > 0 ? jobCycleTimeMs : null
+    };
+  });
+
+  // Board-level cycle time for visual check: the value the auto-downtime
+  // detector actually compares against (running ops), or the fastest active
+  // operation's standard when nothing is running
+  const cycleTimeMs =
+    noOutputMsPerPiece > 0
+      ? noOutputMsPerPiece
+      : currentJobs.reduce<number | null>(
+          (max, job) =>
+            job.cycleTimeMs !== null && (max === null || job.cycleTimeMs > max)
+              ? job.cycleTimeMs
+              : max,
+          null
+        );
+
   return {
     error: null,
     data: {
@@ -378,24 +422,8 @@ export async function getWorkCenterHourlyOee(
       },
       shiftOptions: shiftRows.map((row) => ({ id: row.id, name: row.name })),
       window: { start: resolved.start, end: resolved.end },
-      currentJobs: (
-        (activeOperations.data ?? []) as unknown as {
-          id: string;
-          description: string | null;
-          status: string;
-          job: {
-            jobId: string | null;
-            item: { readableId: string | null; name: string | null } | null;
-          } | null;
-        }[]
-      ).map((row) => ({
-        id: row.id,
-        jobReadableId: row.job?.jobId ?? null,
-        itemReadableId: row.job?.item?.readableId ?? null,
-        itemName: row.job?.item?.name ?? null,
-        description: row.description,
-        status: row.status
-      })),
+      currentJobs,
+      cycleTimeMs,
       hours,
       totals,
       status

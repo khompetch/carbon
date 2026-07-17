@@ -3100,6 +3100,9 @@ msgstr ""
 msgid "CSV file must have at least 2 rows."
 msgstr ""
 
+msgid "CT"
+msgstr ""
+
 msgid "Cumulative"
 msgstr ""
 
@@ -3302,6 +3305,9 @@ msgid "Cutover support"
 msgstr ""
 
 msgid "Cycle count and adjust with an audit trail"
+msgstr ""
+
+msgid "Cycle Time"
 msgstr ""
 
 msgid "Daily check-ins while your team finds its feet on the live system"

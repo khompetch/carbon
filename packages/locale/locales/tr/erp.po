@@ -3100,6 +3100,9 @@ msgstr "CSV sütunu"
 msgid "CSV file must have at least 2 rows."
 msgstr "CSV dosyası en az 2 satır içermelidir."
 
+msgid "CT"
+msgstr ""
+
 msgid "Cumulative"
 msgstr "Kümülatif"
 
@@ -3303,6 +3306,9 @@ msgstr "Geçiş desteği"
 
 msgid "Cycle count and adjust with an audit trail"
 msgstr "Dönem sayımı yapın ve denetim izlemesiyle ayarlayın"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Daily check-ins while your team finds its feet on the live system"
 msgstr "Canlı sistemde ekibiniz ayağa kalkarken günlük kontrol toplantıları"

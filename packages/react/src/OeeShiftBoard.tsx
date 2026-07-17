@@ -51,7 +51,10 @@ export type OeeShiftBoardProps = {
     itemReadableId: string | null;
     itemName: string | null;
     description: string | null;
+    cycleTimeMs?: number | null;
   }[];
+  /** standard cycle time of the running operation(s), ms per piece */
+  cycleTimeMs?: number | null;
   hours: HourBucket[];
   totals: ShiftTotals;
   className?: string;
@@ -93,6 +96,12 @@ function percent(value: number | null): string {
 
 function minutes(ms: number): string {
   return (ms / 60000).toFixed(ms > 0 && ms < 60000 ? 1 : 0);
+}
+
+/** Cycle time as "36.0 s/pc" below a minute, "2.5 min/pc" above */
+function cycleTime(ms: number): string {
+  if (ms < 60000) return `${(ms / 1000).toFixed(1)} s/pc`;
+  return `${(ms / 60000).toFixed(1)} min/pc`;
 }
 
 function PercentCell({
@@ -158,6 +167,7 @@ export function OeeShiftBoard({
   window: shiftWindow,
   timezone,
   currentJobs,
+  cycleTimeMs,
   hours,
   totals,
   className
@@ -198,6 +208,18 @@ export function OeeShiftBoard({
                   </td>
                   <td className="px-3 py-2 truncate">
                     {job.itemName ?? job.description ?? ""}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums whitespace-nowrap text-muted-foreground">
+                    {job.cycleTimeMs != null ? (
+                      <>
+                        <span className="text-xs uppercase mr-1">
+                          <Trans>CT</Trans>
+                        </span>
+                        {cycleTime(job.cycleTimeMs)}
+                      </>
+                    ) : (
+                      "–"
+                    )}
                   </td>
                 </tr>
               ))}
@@ -241,6 +263,14 @@ export function OeeShiftBoard({
                 </th>
                 <td className="text-right tabular-nums">
                   {minutes(totals.runtimeMs)}
+                </td>
+              </tr>
+              <tr>
+                <th className="text-left font-medium py-1">
+                  <Trans>Cycle Time</Trans>
+                </th>
+                <td className="text-right tabular-nums">
+                  {cycleTimeMs != null ? cycleTime(cycleTimeMs) : "–"}
                 </td>
               </tr>
             </tbody>

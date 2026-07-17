@@ -3100,6 +3100,9 @@ msgstr "CSVカラム"
 msgid "CSV file must have at least 2 rows."
 msgstr "CSVファイルは最低2行必要です。"
 
+msgid "CT"
+msgstr ""
+
 msgid "Cumulative"
 msgstr "累積"
 
@@ -3303,6 +3306,9 @@ msgstr "カットオーバーサポート"
 
 msgid "Cycle count and adjust with an audit trail"
 msgstr "サイクルカウントを実施し、監査証跡で調整"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Daily check-ins while your team finds its feet on the live system"
 msgstr "ライブシステムでチームが軌道に乗るまでの毎日のチェックイン"

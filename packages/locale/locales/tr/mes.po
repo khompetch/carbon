@@ -238,8 +238,14 @@ msgstr "Kalite Sorunu Oluştur"
 msgid "Create Rework"
 msgstr "İşlemi Yeniden Oluştur"
 
+msgid "CT"
+msgstr ""
+
 msgid "Customer"
 msgstr "Müşteri"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Dark Mode"
 msgstr "Karanlık Mod"

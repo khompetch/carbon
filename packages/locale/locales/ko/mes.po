@@ -238,8 +238,14 @@ msgstr "품질 이슈 생성"
 msgid "Create Rework"
 msgstr "재작업 생성"
 
+msgid "CT"
+msgstr ""
+
 msgid "Customer"
 msgstr "고객"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Dark Mode"
 msgstr "다크 모드"

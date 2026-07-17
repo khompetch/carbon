@@ -138,3 +138,9 @@ subtracts from runtime (downtime wins over event, so %A drops).
 - 2026-07-16: Auto no-output downtime — settings columns + isAuto flag,
   detector cron, instant auto-close on output, virtual live detection on the
   boards, settings/work-center UI.
+- 2026-07-17: Cycle time shown on the board for visual check — per-job CT
+  column in the current-jobs table (max of labor/machine per-piece standard)
+  and a board-level "Cycle Time" row in the times card (the exact msPerPiece
+  the auto-downtime detector compares against when running; fastest active
+  op's standard when idle). New data: `currentJobs[].cycleTimeMs` +
+  `cycleTimeMs` from both fetch helpers.

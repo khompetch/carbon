@@ -3100,6 +3100,9 @@ msgstr "CSV 열"
 msgid "CSV file must have at least 2 rows."
 msgstr "CSV 파일에는 최소 2개 행이 있어야 합니다."
 
+msgid "CT"
+msgstr ""
+
 msgid "Cumulative"
 msgstr "누적"
 
@@ -3303,6 +3306,9 @@ msgstr "전환 지원"
 
 msgid "Cycle count and adjust with an audit trail"
 msgstr "감사 추적과 함께 순환 재고조사 및 조정"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Daily check-ins while your team finds its feet on the live system"
 msgstr "팀이 실제 운영 시스템에 적응하는 동안 매일 체크인"

@@ -238,8 +238,14 @@ msgstr "品質問題を作成"
 msgid "Create Rework"
 msgstr "リワーク作成"
 
+msgid "CT"
+msgstr ""
+
 msgid "Customer"
 msgstr "顧客"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Dark Mode"
 msgstr "ダークモード"

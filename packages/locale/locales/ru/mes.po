@@ -238,8 +238,14 @@ msgstr "Создать проблему качества"
 msgid "Create Rework"
 msgstr "Создать переделку"
 
+msgid "CT"
+msgstr ""
+
 msgid "Customer"
 msgstr "Заказчик"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Dark Mode"
 msgstr "Тёмная тема"

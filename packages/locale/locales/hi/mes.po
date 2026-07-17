@@ -238,8 +238,14 @@ msgstr "गुणवत्ता समस्या बनाएं"
 msgid "Create Rework"
 msgstr "रीवर्क बनाएं"
 
+msgid "CT"
+msgstr ""
+
 msgid "Customer"
 msgstr "ग्राहक"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Dark Mode"
 msgstr "डार्क मोड"

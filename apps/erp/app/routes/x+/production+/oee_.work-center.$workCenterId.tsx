@@ -179,6 +179,7 @@ export default function WorkCenterOeeRoute() {
         window={board.window}
         timezone={board.timezone}
         currentJobs={board.currentJobs}
+        cycleTimeMs={board.cycleTimeMs}
         hours={board.hours}
         totals={board.totals}
       />

@@ -238,7 +238,13 @@ msgstr ""
 msgid "Create Rework"
 msgstr ""
 
+msgid "CT"
+msgstr ""
+
 msgid "Customer"
+msgstr ""
+
+msgid "Cycle Time"
 msgstr ""
 
 msgid "Dark Mode"

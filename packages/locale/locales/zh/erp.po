@@ -3100,6 +3100,9 @@ msgstr "CSV 列"
 msgid "CSV file must have at least 2 rows."
 msgstr "CSV 文件必须至少有 2 行。"
 
+msgid "CT"
+msgstr ""
+
 msgid "Cumulative"
 msgstr "累计"
 
@@ -3303,6 +3306,9 @@ msgstr "转换支持"
 
 msgid "Cycle count and adjust with an audit trail"
 msgstr "循环盘点并通过审计跟踪进行调整"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Daily check-ins while your team finds its feet on the live system"
 msgstr "每日检查，帮助您的团队在实时系统上站稳脚跟"
