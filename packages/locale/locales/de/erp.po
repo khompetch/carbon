@@ -137,6 +137,9 @@ msgstr "{variances, plural, one {# Zeile weicht von der erwarteten Menge ab} oth
 msgid "/month/user"
 msgstr "/Monat/Benutzer"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 #. placeholder {0}: numberFormatter.format(redirectedTotal)
 #. placeholder {1}: redirectedParts.join(", ")
 msgid "↩ {0} redirected from superseded {1}"
@@ -761,6 +764,9 @@ msgstr "Umfang abstimmen"
 msgid "All"
 msgstr "Alle"
 
+msgid "ALL (pcs)"
+msgstr ""
+
 msgid "All {total} phases are done. Nice work — your team is up and running."
 msgstr "Alle {total} Phasen sind abgeschlossen. Großartig — Ihr Team ist einsatzbereit."
 
@@ -1146,6 +1152,10 @@ msgstr "Sind Sie sicher, dass Sie den Kundentyp: {0} löschen möchten? Dies kan
 
 msgid "Are you sure you want to delete the department: {name}? This cannot be undone."
 msgstr "Sind Sie sicher, dass Sie die Abteilung {name} löschen möchten? Dies kann nicht rückgängig gemacht werden."
+
+#. placeholder {0}: downtimeReason.name
+msgid "Are you sure you want to delete the downtime reason: {0}? This cannot be undone."
+msgstr ""
 
 #. placeholder {0}: employeeType.name
 msgid "Are you sure you want to delete the employee type: {0}? This cannot be undone."
@@ -1549,6 +1559,12 @@ msgstr "Authentifizierungsfehler"
 msgid "Auto apply"
 msgstr "Automatisch anwenden"
 
+msgid "Auto downtime after (× cycle time)"
+msgstr ""
+
+msgid "Auto Downtime Multiplier (override)"
+msgstr ""
+
 msgid "Auto Release"
 msgstr "Automatische Freigabe"
 
@@ -1576,6 +1592,9 @@ msgstr "Automatische Kostenaktualisierungen"
 msgid "Automatic Lead Time Updates"
 msgstr "Automatische Aktualisierung der Lieferzeiten"
 
+msgid "Automatic No-Output Downtime"
+msgstr ""
+
 msgid "Automatic Updates"
 msgstr "Automatische Aktualisierungen"
 
@@ -1589,6 +1608,9 @@ msgid "Automatically start the job when the kanban is scanned"
 msgstr "Starten Sie den Job automatisch, wenn der Kanban gescannt wird"
 
 msgid "Availability"
+msgstr ""
+
+msgid "Availability (%A)"
 msgstr ""
 
 msgid "available"
@@ -1611,6 +1633,9 @@ msgstr "Zurück"
 
 msgid "Back Home"
 msgstr "Zurück Nach Hause"
+
+msgid "Back to OEE"
+msgstr ""
 
 msgid "Back to traceability"
 msgstr "Zurück zur Rückverfolgbarkeit"
@@ -2696,6 +2721,9 @@ msgstr "Verfahrensnamen kopieren"
 msgid "Copy procedure unique identifier"
 msgstr "Eindeutige Kennung des Verfahrens kopieren"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 msgid "Copy Quality Document"
 msgstr "Qualitätsdokument kopieren"
 
@@ -2948,6 +2976,9 @@ msgstr "Kunde erstellt: {0}"
 msgid "Created department"
 msgstr "Abteilung erstellt"
 
+msgid "Created downtime reason"
+msgstr ""
+
 msgid "Created failure mode"
 msgstr "Fehlermodus erstellt"
 
@@ -3071,6 +3102,9 @@ msgstr "CSV-Spalte"
 
 msgid "CSV file must have at least 2 rows."
 msgstr "CSV-Datei muss mindestens 2 Zeilen enthalten."
+
+msgid "CT"
+msgstr ""
 
 msgid "Cumulative"
 msgstr "Kumulativ"
@@ -3276,6 +3310,9 @@ msgstr "Cutover-Unterstützung"
 msgid "Cycle count and adjust with an audit trail"
 msgstr "Bestandszählung durchführen und mit Audit-Trail anpassen"
 
+msgid "Cycle Time"
+msgstr ""
+
 msgid "Daily check-ins while your team finds its feet on the live system"
 msgstr "Tägliche Check-ins, während sich Ihr Team im Live-System einarbeitet"
 
@@ -3457,6 +3494,9 @@ msgstr "Standard-Bargeldkonto für Transaktionen in Ihrer Basiswährung."
 msgid "Default CC Recipients"
 msgstr "Standard-CC-Empfänger"
 
+msgid "Default downtime reason"
+msgstr ""
+
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "Standard-GL-Konto für Bargeldtransaktionen, wenn kein spezifisches Bankkonto ausgewählt ist."
 
@@ -3591,6 +3631,9 @@ msgstr "Dispatch löschen"
 
 msgid "Delete Document"
 msgstr "Dokument löschen"
+
+msgid "Delete Downtime Reason"
+msgstr ""
 
 msgid "Delete Employee Type"
 msgstr "Mitarbeitertyp löschen"
@@ -4051,6 +4094,12 @@ msgstr "Vorlage herunterladen"
 msgid "Downtime"
 msgstr ""
 
+msgid "Downtime Reason"
+msgstr ""
+
+msgid "Downtime Reasons"
+msgstr ""
+
 msgid "Draft"
 msgstr "Entwurf"
 
@@ -4154,6 +4203,9 @@ msgstr "Duplizieren zu..."
 msgid "Duration"
 msgstr "Dauer"
 
+msgid "e.g. 2 = flag after 2× the cycle time with no output"
+msgstr ""
+
 msgid "e.g. 2h"
 msgstr "z.B. 2h"
 
@@ -4252,6 +4304,9 @@ msgstr "Dimension bearbeiten"
 
 msgid "Edit Dispatch"
 msgstr "Versand bearbeiten"
+
+msgid "Edit Downtime Reason"
+msgstr ""
 
 msgid "Edit Employee"
 msgstr "Mitarbeiter bearbeiten"
@@ -5052,6 +5107,9 @@ msgstr "Zahlungsbedingung konnte nicht erstellt werden: {0}"
 msgid "Failed to create process: {0}"
 msgstr "Fehler beim Erstellen des Prozesses: {0}"
 
+msgid "Failed to create public link"
+msgstr ""
+
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create shipping method: {0}"
 msgstr "Fehler beim Erstellen der Versandmethode: {0}"
@@ -5421,6 +5479,9 @@ msgstr "Vorrichtung"
 msgid "Fixture ID"
 msgstr "Vorrichtungs-ID"
 
+msgid "Flag unplanned downtime after this many times the cycle time with no output. Empty = company default, 0 = disabled for this work center"
+msgstr ""
+
 msgid "for anything. They'll pull in the right person."
 msgstr "für alles. Sie werden die richtige Person hinzuziehen."
 
@@ -5486,6 +5547,9 @@ msgstr "Von Lagereinheit"
 
 msgid "Fulfillment Location"
 msgstr "Erfüllungsort"
+
+msgid "Fullscreen"
+msgstr ""
 
 msgid "Fully trained for"
 msgstr "Vollständig geschult für"
@@ -6009,6 +6073,9 @@ msgstr "Ideen, Vorschläge oder Probleme mit dieser Seite?"
 
 msgid "Ideas, suggestions or problems?"
 msgstr "Ideen, Vorschläge oder Probleme?"
+
+msgid "Idle"
+msgstr ""
 
 msgid "IDs and descriptions are generated for raw materials."
 msgstr "IDs und Beschreibungen werden für Rohstoffe generiert."
@@ -7540,6 +7607,9 @@ msgstr "Neue Abteilung"
 msgid "New Dimension"
 msgstr "Neue Dimension"
 
+msgid "New Downtime Reason"
+msgstr ""
+
 msgid "New Employee Type"
 msgstr "Neuer Mitarbeitertyp"
 
@@ -7791,6 +7861,9 @@ msgstr "Nächster Schritt"
 
 msgid "Next:"
 msgstr "Nächstes:"
+
+msgid "NG (pcs)"
+msgstr ""
 
 msgid "No"
 msgstr "Nein"
@@ -8059,6 +8132,9 @@ msgstr "Keine Zeiteinträge für diese Woche"
 msgid "No transactions in this period"
 msgstr "Keine Transaktionen in diesem Zeitraum"
 
+msgid "No unplanned downtime reasons configured. Add them under Production → Downtime Reasons."
+msgstr ""
+
 msgid "No value needed"
 msgstr "Kein Wert erforderlich"
 
@@ -8172,6 +8248,9 @@ msgstr "von"
 
 msgid "OK"
 msgstr "OK"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "Älteste zuerst"
@@ -8724,6 +8803,9 @@ msgstr "Perfekt für kostengünstige Evaluierung"
 msgid "Performance"
 msgstr ""
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Period"
 msgstr "Zeitraum"
 
@@ -8817,6 +8899,9 @@ msgstr "Angeheftet"
 msgid "Plan"
 msgstr "Plan"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Plan the work"
 msgstr "Planen Sie die Arbeit"
 
@@ -8825,6 +8910,12 @@ msgstr "Plantyp"
 
 msgid "Planned"
 msgstr "Buchung"
+
+msgid "Planned Downtime"
+msgstr ""
+
+msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
+msgstr ""
 
 msgid "Planned End"
 msgstr "Geplantes Ende"
@@ -9226,6 +9317,9 @@ msgstr "Prozesswissen und Eingaben bereitstellen"
 msgid "Public"
 msgstr "Öffentlich"
 
+msgid "Public TV link copied to clipboard"
+msgstr ""
+
 msgid "Publish"
 msgstr "Veröffentlichen"
 
@@ -9382,6 +9476,9 @@ msgstr "Angebot bis Zahlungseingang"
 
 msgid "Quality"
 msgstr "Qualität"
+
+msgid "Quality (%Q)"
+msgstr ""
 
 msgid "Quality Document approval rule"
 msgstr "Genehmigungsregel für Qualitätsdokument"
@@ -9717,6 +9814,9 @@ msgstr "Aktualisieren"
 
 msgid "Refresh exchange rate"
 msgstr "Wechselkurs aktualisieren"
+
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
 
 msgid "Register"
 msgstr "Vorhandenes Vermögen registrieren"
@@ -10178,6 +10278,9 @@ msgstr "Führen Sie die Akzeptanzprüfliste bis zum Bestehen durch"
 msgid "Run the floor on tablets: clock labor, report progress, see instructions"
 msgstr "Betrieb auf Tablets: Arbeitszeit erfassen, Fortschritt melden, Anweisungen anzeigen"
 
+msgid "Running"
+msgstr ""
+
 msgid "Running inventory after each week's supply and demand — the line."
 msgstr "Bestände nach jeder Woche laufen nach Angebot und Nachfrage — die Linie."
 
@@ -10185,6 +10288,9 @@ msgid "Running Total"
 msgstr "Laufender Gesamtbetrag"
 
 msgid "Runtime"
+msgstr ""
+
+msgid "Runtime (min)"
 msgstr ""
 
 msgid "S-1 (coarsest special)"
@@ -10537,6 +10643,9 @@ msgstr "Wählen Sie einen Artikel zum Konfigurieren aus"
 
 msgid "Select an option"
 msgstr "Wählen Sie eine Option"
+
+msgid "Select an unplanned downtime reason..."
+msgstr ""
 
 msgid "Select at least one line to convert"
 msgstr "Wählen Sie mindestens eine Zeile zum Konvertieren aus"
@@ -11252,6 +11361,9 @@ msgstr "Status"
 msgid "Stay on this page"
 msgstr "Auf dieser Seite bleiben"
 
+msgid "STD (pcs)"
+msgstr ""
+
 msgid "Step"
 msgstr "Schritt"
 
@@ -11628,6 +11740,9 @@ msgstr "Mit dem Vertrieb sprechen"
 
 msgid "Target"
 msgstr "Ziel"
+
+msgid "TARGET"
+msgstr ""
 
 msgid "Target an item group."
 msgstr "Zielgruppe für eine Artikelgruppe."
@@ -12994,6 +13109,12 @@ msgstr "Entfernen"
 msgid "Unpick {0}"
 msgstr "Entnahme rückgängig machen {0}"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unposted Documents"
 msgstr "Unveröffentlichte Dokumente"
 
@@ -13704,6 +13825,9 @@ msgstr "Wenn die Haltbarkeit eines Fertigprodukts auf „Berechnet\" eingestellt
 msgid "When a serial or batch expires, and what happens if used after — a company policy can Warn, Block, or BlockWithOverride."
 msgstr "Wenn ein Serial oder Batch abläuft, und was passiert, wenn er danach verwendet wird — eine Unternehmensrichtlinie kann Warnung, Blockierung oder BlockMitÜberschreitung sein."
 
+msgid "When a work center has a running operation but no output is logged within the multiplier × cycle time, it is automatically flagged as unplanned downtime with the default reason. Leave either field empty to disable. Work centers can override the multiplier individually."
+msgstr ""
+
 msgid "When Carbon committed to having the goods arrive; combined with the shipping method's transit days, this drives Ship Date back-calc."
 msgstr "Wann Carbon sich verpflichtet hatte, die Waren ankommen zu lassen; kombiniert mit den Transitagen der Versandmethode, das treibt die Rückwärtsberechnung des Versanddatums."
 
@@ -13993,6 +14117,9 @@ msgstr "Workflow"
 
 msgid "Working sessions on configuration and data"
 msgstr "Arbeitssitzungen zu Konfiguration und Daten"
+
+msgid "Working Time (min)"
+msgstr ""
 
 msgid "Worst Performing Machines"
 msgstr "Schlechteste Maschinen"

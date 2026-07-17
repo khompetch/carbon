@@ -1114,7 +1114,7 @@ export async function insertReworkQuantity(
     ...insert
   } = data;
 
-  return client
+  const result = await client
     .from("productionQuantity")
     .insert(
       sanitize({
@@ -1123,6 +1123,16 @@ export async function insertReworkQuantity(
       })
     )
     .select("*");
+
+  if (!result.error) {
+    await endOpenDowntimeForOperation(client, {
+      jobOperationId: data.jobOperationId,
+      companyId: data.companyId,
+      userId: data.createdBy
+    });
+  }
+
+  return result;
 }
 
 export async function insertProductionQuantity(
@@ -1132,7 +1142,7 @@ export async function insertProductionQuantity(
     createdBy: string;
   }
 ) {
-  return client
+  const result = await client
     .from("productionQuantity")
     .insert(
       sanitize({
@@ -1141,6 +1151,16 @@ export async function insertProductionQuantity(
       })
     )
     .select("*");
+
+  if (!result.error) {
+    await endOpenDowntimeForOperation(client, {
+      jobOperationId: data.jobOperationId,
+      companyId: data.companyId,
+      userId: data.createdBy
+    });
+  }
+
+  return result;
 }
 
 export async function insertScrapQuantity(
@@ -1150,7 +1170,7 @@ export async function insertScrapQuantity(
     createdBy: string;
   }
 ) {
-  return client
+  const result = await client
     .from("productionQuantity")
     .insert(
       sanitize({
@@ -1159,6 +1179,16 @@ export async function insertScrapQuantity(
       })
     )
     .select("*");
+
+  if (!result.error) {
+    await endOpenDowntimeForOperation(client, {
+      jobOperationId: data.jobOperationId,
+      companyId: data.companyId,
+      userId: data.createdBy
+    });
+  }
+
+  return result;
 }
 
 export async function endProductionEvent(
@@ -1234,6 +1264,16 @@ export async function startProductionEvent(
   },
   trackedEntityId: string | undefined
 ) {
+  // Starting production means the machine is running again — close any open
+  // downtime on the work center so operators can't forget to end it.
+  if (data.workCenterId) {
+    await endOpenDowntime(client, {
+      workCenterId: data.workCenterId,
+      companyId: data.companyId,
+      userId: data.createdBy
+    });
+  }
+
   if (trackedEntityId) {
     const activityId = nanoid();
 
@@ -1372,4 +1412,166 @@ export async function getJobMethodBomIdMap(
   });
 
   return bomIdMap;
+}
+
+// --- Work center downtime (OEE) -----------------------------------------
+// The downtimeReason/workCenterDowntime tables are newer than the generated
+// DB types — cast until types are regenerated after the migration is applied.
+
+export async function getDowntimeReasonsList(
+  client: SupabaseClient<Database>,
+  companyId: string
+) {
+  return (client as SupabaseClient<any>)
+    .from("downtimeReason")
+    .select("id, name, type")
+    .eq("companyId", companyId)
+    .eq("active", true)
+    .order("name") as unknown as Promise<{
+    data: { id: string; name: string; type: "Planned" | "Unplanned" }[] | null;
+    error: any;
+  }>;
+}
+
+export async function getOpenDowntime(
+  client: SupabaseClient<Database>,
+  workCenterId: string,
+  companyId: string
+) {
+  return (client as SupabaseClient<any>)
+    .from("workCenterDowntime")
+    .select("id, type, startTime, notes, downtimeReasonId, isAuto")
+    .eq("companyId", companyId)
+    .eq("workCenterId", workCenterId)
+    .is("endTime", null)
+    .order("startTime", { ascending: false })
+    .limit(1)
+    .maybeSingle() as unknown as Promise<{
+    data: {
+      id: string;
+      type: "Planned" | "Unplanned";
+      startTime: string;
+      notes: string | null;
+      downtimeReasonId: string | null;
+      isAuto: boolean;
+    } | null;
+    error: any;
+  }>;
+}
+
+export async function startDowntime(
+  client: SupabaseClient<Database>,
+  args: {
+    workCenterId: string;
+    downtimeReasonId: string;
+    type: "Planned" | "Unplanned";
+    notes?: string;
+    companyId: string;
+    userId: string;
+  }
+) {
+  return (client as SupabaseClient<any>)
+    .from("workCenterDowntime")
+    .insert([
+      {
+        workCenterId: args.workCenterId,
+        downtimeReasonId: args.downtimeReasonId,
+        type: args.type,
+        notes: args.notes || null,
+        startTime: new Date().toISOString(),
+        companyId: args.companyId,
+        createdBy: args.userId
+      }
+    ])
+    .select("id")
+    .single() as unknown as Promise<{
+    data: { id: string } | null;
+    error: any;
+  }>;
+}
+
+export async function endOpenDowntime(
+  client: SupabaseClient<Database>,
+  args: {
+    workCenterId: string;
+    companyId: string;
+    userId: string;
+  }
+) {
+  return (client as SupabaseClient<any>)
+    .from("workCenterDowntime")
+    .update({
+      endTime: new Date().toISOString(),
+      updatedBy: args.userId,
+      updatedAt: new Date().toISOString()
+    })
+    .eq("companyId", args.companyId)
+    .eq("workCenterId", args.workCenterId)
+    .is("endTime", null) as unknown as Promise<{
+    data: null;
+    error: any;
+  }>;
+}
+
+/**
+ * Logging output proves the machine is producing again — close every open
+ * downtime on the operation's work center (auto AND manual Planned/Unplanned),
+ * same as starting a production event, so the board returns to Running.
+ * Quantity payloads don't carry workCenterId, so look it up first.
+ *
+ * Called from the insert-quantity functions below, AND directly from the
+ * complete/end routes' Serial/Batch branches — those record output via the
+ * `issue` edge function (jobOperationSerialComplete/jobOperationBatchComplete),
+ * which inserts productionQuantity on the edge side and never passes through
+ * insertProductionQuantity.
+ */
+export async function endOpenDowntimeForOperation(
+  client: SupabaseClient<Database>,
+  args: { jobOperationId: string; companyId: string; userId: string }
+) {
+  const operation = await client
+    .from("jobOperation")
+    .select("workCenterId")
+    .eq("id", args.jobOperationId)
+    .eq("companyId", args.companyId)
+    .maybeSingle();
+  if (!operation.data?.workCenterId) return;
+
+  await endOpenDowntime(client, {
+    workCenterId: operation.data.workCenterId,
+    companyId: args.companyId,
+    userId: args.userId
+  });
+}
+
+export async function getWorkCenterDowntimes(
+  client: SupabaseClient<Database>,
+  args: {
+    workCenterId: string;
+    companyId: string;
+    startTime: string;
+    endTime: string;
+  }
+) {
+  // Overlap query: startTime < windowEnd AND (endTime IS NULL OR endTime > windowStart)
+  return (client as SupabaseClient<any>)
+    .from("workCenterDowntime")
+    .select("id, type, startTime, endTime, downtimeReasonId, notes")
+    .eq("companyId", args.companyId)
+    .eq("workCenterId", args.workCenterId)
+    .lt("startTime", args.endTime)
+    .or(`endTime.is.null,endTime.gt.${args.startTime}`)
+    .order("startTime") as unknown as Promise<{
+    data:
+      | {
+          id: string;
+          type: "Planned" | "Unplanned";
+          startTime: string;
+          endTime: string | null;
+          downtimeReasonId: string | null;
+          notes: string | null;
+        }[]
+      | null;
+    error: any;
+  }>;
 }

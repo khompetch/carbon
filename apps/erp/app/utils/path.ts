@@ -150,7 +150,9 @@ export const path = {
         generatePath(`${api}/items/${itemId}/recipe-processes`),
       productionKpi: (key: string) =>
         generatePath(`${api}/production/kpi/${key}`),
+      productionDowntimeReasons: `${api}/production/downtime-reasons`,
       productionOee: `${api}/production/oee`,
+      productionOeeWorkCenter: `${api}/production/oee/work-center`,
       quoteBillOfMaterials: (
         methodId: string,
         withOperations: boolean = false
@@ -959,6 +961,8 @@ export const path = {
       generatePath(`${x}/sales-rfq/${id}/${lineId}/delete`),
     deleteSavedView: (id: string) =>
       generatePath(`${x}/shared/views/delete/${id}`),
+    deleteDowntimeReason: (id: string) =>
+      generatePath(`${x}/production/downtime-reasons/delete/${id}`),
     deleteScrapReason: (id: string) =>
       generatePath(`${x}/production/scrap-reasons/delete/${id}`),
     deleteShift: (id: string) =>
@@ -1028,6 +1032,7 @@ export const path = {
     externalCustomer: (id: string) => generatePath(`/share/customer/${id}`),
     externalCustomerFile: (id: string, path: string) =>
       generatePath(`/share/customer/${id}/${path}`),
+    externalOee: (id: string) => generatePath(`/share/oee/${id}`),
     externalQuote: (id: string) => generatePath(`/share/quote/${id}`),
     externalSupplierQuote: (id: string) =>
       generatePath(`/share/supplier-quote/${id}`),
@@ -1392,6 +1397,7 @@ export const path = {
       generatePath(`${x}/sales-order/${id}/${lineId}/shipment`),
     newSalesRFQ: `${x}/sales-rfq/new`,
     newSalesRFQLine: (id: string) => generatePath(`${x}/sales-rfq/${id}/new`),
+    newDowntimeReason: `${x}/production/downtime-reasons/new`,
     newScrapReason: `${x}/production/scrap-reasons/new`,
     newStorageUnit: `${x}/inventory/storage-units/new`,
     newStorageType: `${x}/inventory/storage-types/new`,
@@ -1539,6 +1545,8 @@ export const path = {
       generatePath(`${x}/settings/printing/${id}/delete`),
     production: `${x}/production`,
     productionOee: `${x}/production/oee`,
+    productionOeeWorkCenter: (workCenterId: string) =>
+      generatePath(`${x}/production/oee/work-center/${workCenterId}`),
     productionPlanning: `${x}/production/planning`,
     productionPlanningItem: (itemId: string) =>
       generatePath(`${x}/production/planning/${itemId}`),
@@ -1826,6 +1834,9 @@ export const path = {
     scheduleOperationUpdate: `${x}/schedule/operations/update`,
     scheduleDates: `${x}/schedule/dates`,
     scheduleDatesUpdate: `${x}/schedule/dates/update`,
+    downtimeReason: (id: string) =>
+      generatePath(`${x}/production/downtime-reasons/${id}`),
+    downtimeReasons: `${x}/production/downtime-reasons`,
     scrapReason: (id: string) =>
       generatePath(`${x}/production/scrap-reasons/${id}`),
     scrapReasons: `${x}/production/scrap-reasons`,

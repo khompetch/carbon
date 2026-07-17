@@ -165,6 +165,12 @@ const WorkCenterForm = ({
                   label={t`Required Trainings`}
                   helperText={t`Employees must hold a valid completion for every selected training to start operations at this work center`}
                 />
+                <Number
+                  name="autoDowntimeMultiplier"
+                  label={t`Auto Downtime Multiplier (override)`}
+                  minValue={0}
+                  helperText={t`Flag unplanned downtime after this many times the cycle time with no output. Empty = company default, 0 = disabled for this work center`}
+                />
                 <CustomFormFields table="workCenter" />
               </VStack>
             </ModalDrawerBody>

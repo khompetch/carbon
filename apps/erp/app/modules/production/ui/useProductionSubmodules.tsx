@@ -1,6 +1,7 @@
 import { useLingui } from "@lingui/react/macro";
 import {
   LuChartLine,
+  LuCircleGauge,
   LuCirclePlay,
   LuGauge,
   LuListChecks,
@@ -90,6 +91,12 @@ export default function useProductionSubmodules() {
     {
       name: t`Configure`,
       routes: [
+        {
+          name: t`Downtime Reasons`,
+          to: path.to.downtimeReasons,
+          role: "employee",
+          icon: <LuCircleGauge />
+        },
         {
           name: t`Scrap Reasons`,
           to: path.to.scrapReasons,

@@ -137,6 +137,9 @@ msgstr "{variances, plural, one {# 行与预期数量不同} other {# 行与预�
 msgid "/month/user"
 msgstr "/月/用户"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 #. placeholder {0}: numberFormatter.format(redirectedTotal)
 #. placeholder {1}: redirectedParts.join(", ")
 msgid "↩ {0} redirected from superseded {1}"
@@ -761,6 +764,9 @@ msgstr "对齐范围"
 msgid "All"
 msgstr "全部"
 
+msgid "ALL (pcs)"
+msgstr ""
+
 msgid "All {total} phases are done. Nice work — your team is up and running."
 msgstr "所有 {total} 个阶段已完成。做得很好——你的团队已启动并运行。"
 
@@ -1146,6 +1152,10 @@ msgstr "您确定要删除客户类型：{0}？此操作无法撤销。"
 
 msgid "Are you sure you want to delete the department: {name}? This cannot be undone."
 msgstr "您确定要删除部门：{name}？此操作无法撤销。"
+
+#. placeholder {0}: downtimeReason.name
+msgid "Are you sure you want to delete the downtime reason: {0}? This cannot be undone."
+msgstr ""
 
 #. placeholder {0}: employeeType.name
 msgid "Are you sure you want to delete the employee type: {0}? This cannot be undone."
@@ -1549,6 +1559,12 @@ msgstr "身份验证错误"
 msgid "Auto apply"
 msgstr "自动应用"
 
+msgid "Auto downtime after (× cycle time)"
+msgstr ""
+
+msgid "Auto Downtime Multiplier (override)"
+msgstr ""
+
 msgid "Auto Release"
 msgstr "自动发放"
 
@@ -1576,6 +1592,9 @@ msgstr "自动成本更新"
 msgid "Automatic Lead Time Updates"
 msgstr "自动提前期更新"
 
+msgid "Automatic No-Output Downtime"
+msgstr ""
+
 msgid "Automatic Updates"
 msgstr "自动更新"
 
@@ -1589,6 +1608,9 @@ msgid "Automatically start the job when the kanban is scanned"
 msgstr "当扫描看板时自动启动作业"
 
 msgid "Availability"
+msgstr ""
+
+msgid "Availability (%A)"
 msgstr ""
 
 msgid "available"
@@ -1611,6 +1633,9 @@ msgstr "返回"
 
 msgid "Back Home"
 msgstr "返回主页"
+
+msgid "Back to OEE"
+msgstr ""
 
 msgid "Back to traceability"
 msgstr "返回可追溯性"
@@ -2696,6 +2721,9 @@ msgstr "复制程序名称"
 msgid "Copy procedure unique identifier"
 msgstr "复制程序唯一标识符"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 msgid "Copy Quality Document"
 msgstr "复制质量文件"
 
@@ -2948,6 +2976,9 @@ msgstr "已创建客户：{0}"
 msgid "Created department"
 msgstr "已创建部门"
 
+msgid "Created downtime reason"
+msgstr ""
+
 msgid "Created failure mode"
 msgstr "已创建故障模式"
 
@@ -3071,6 +3102,9 @@ msgstr "CSV 列"
 
 msgid "CSV file must have at least 2 rows."
 msgstr "CSV 文件必须至少有 2 行。"
+
+msgid "CT"
+msgstr ""
 
 msgid "Cumulative"
 msgstr "累计"
@@ -3276,6 +3310,9 @@ msgstr "转换支持"
 msgid "Cycle count and adjust with an audit trail"
 msgstr "循环盘点并通过审计跟踪进行调整"
 
+msgid "Cycle Time"
+msgstr ""
+
 msgid "Daily check-ins while your team finds its feet on the live system"
 msgstr "每日检查，帮助您的团队在实时系统上站稳脚跟"
 
@@ -3457,6 +3494,9 @@ msgstr "您基础货币中交易的默认现金账户。"
 msgid "Default CC Recipients"
 msgstr "默认抄送收件人"
 
+msgid "Default downtime reason"
+msgstr ""
+
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "未选择特定银行账户时用于现金交易的默认GL账户。"
 
@@ -3591,6 +3631,9 @@ msgstr "删除派工"
 
 msgid "Delete Document"
 msgstr "删除文档"
+
+msgid "Delete Downtime Reason"
+msgstr ""
 
 msgid "Delete Employee Type"
 msgstr "删除员工类型"
@@ -4051,6 +4094,12 @@ msgstr "下载模板"
 msgid "Downtime"
 msgstr ""
 
+msgid "Downtime Reason"
+msgstr ""
+
+msgid "Downtime Reasons"
+msgstr ""
+
 msgid "Draft"
 msgstr "草稿"
 
@@ -4154,6 +4203,9 @@ msgstr "复制到..."
 msgid "Duration"
 msgstr "时长"
 
+msgid "e.g. 2 = flag after 2× the cycle time with no output"
+msgstr ""
+
 msgid "e.g. 2h"
 msgstr "例如 2小时"
 
@@ -4252,6 +4304,9 @@ msgstr "编辑维度"
 
 msgid "Edit Dispatch"
 msgstr "编辑派工"
+
+msgid "Edit Downtime Reason"
+msgstr ""
 
 msgid "Edit Employee"
 msgstr "编辑员工"
@@ -5052,6 +5107,9 @@ msgstr "创建付款条款失败：{0}"
 msgid "Failed to create process: {0}"
 msgstr "创建流程失败：{0}"
 
+msgid "Failed to create public link"
+msgstr ""
+
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create shipping method: {0}"
 msgstr "创建配送方式失败：{0}"
@@ -5421,6 +5479,9 @@ msgstr "夹具"
 msgid "Fixture ID"
 msgstr "夹具ID"
 
+msgid "Flag unplanned downtime after this many times the cycle time with no output. Empty = company default, 0 = disabled for this work center"
+msgstr ""
+
 msgid "for anything. They'll pull in the right person."
 msgstr "用于任何事情。他们会找到合适的人。"
 
@@ -5486,6 +5547,9 @@ msgstr "从存储单位"
 
 msgid "Fulfillment Location"
 msgstr "履行地点"
+
+msgid "Fullscreen"
+msgstr ""
 
 msgid "Fully trained for"
 msgstr "完全培训"
@@ -6009,6 +6073,9 @@ msgstr "有什么想法、建议或问题吗？"
 
 msgid "Ideas, suggestions or problems?"
 msgstr "想法、建议或问题？"
+
+msgid "Idle"
+msgstr ""
 
 msgid "IDs and descriptions are generated for raw materials."
 msgstr "ID 和描述是为原材料生成的。"
@@ -7540,6 +7607,9 @@ msgstr "新部门"
 msgid "New Dimension"
 msgstr "新维度"
 
+msgid "New Downtime Reason"
+msgstr ""
+
 msgid "New Employee Type"
 msgstr "新员工类型"
 
@@ -7791,6 +7861,9 @@ msgstr "下一步"
 
 msgid "Next:"
 msgstr "下一步："
+
+msgid "NG (pcs)"
+msgstr ""
 
 msgid "No"
 msgstr "否"
@@ -8059,6 +8132,9 @@ msgstr "本周没有时间条目"
 msgid "No transactions in this period"
 msgstr "此期间无交易"
 
+msgid "No unplanned downtime reasons configured. Add them under Production → Downtime Reasons."
+msgstr ""
+
 msgid "No value needed"
 msgstr "不需要值"
 
@@ -8172,6 +8248,9 @@ msgstr "的"
 
 msgid "OK"
 msgstr "确定"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "最早优先"
@@ -8724,6 +8803,9 @@ msgstr "非常适合低成本评估"
 msgid "Performance"
 msgstr ""
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Period"
 msgstr "期间"
 
@@ -8817,6 +8899,9 @@ msgstr "已固定"
 msgid "Plan"
 msgstr "计划"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Plan the work"
 msgstr "规划工作"
 
@@ -8825,6 +8910,12 @@ msgstr "计划类型"
 
 msgid "Planned"
 msgstr "过账"
+
+msgid "Planned Downtime"
+msgstr ""
+
+msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
+msgstr ""
 
 msgid "Planned End"
 msgstr "计划结束"
@@ -9226,6 +9317,9 @@ msgstr "提供流程知识和输入"
 msgid "Public"
 msgstr "公开"
 
+msgid "Public TV link copied to clipboard"
+msgstr ""
+
 msgid "Publish"
 msgstr "发布"
 
@@ -9382,6 +9476,9 @@ msgstr "报价到现金"
 
 msgid "Quality"
 msgstr "质量"
+
+msgid "Quality (%Q)"
+msgstr ""
 
 msgid "Quality Document approval rule"
 msgstr "质量文件审批规则"
@@ -9717,6 +9814,9 @@ msgstr "刷新"
 
 msgid "Refresh exchange rate"
 msgstr "刷新汇率"
+
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
 
 msgid "Register"
 msgstr "注册现有资产"
@@ -10178,6 +10278,9 @@ msgstr "运行验收清单直到通过"
 msgid "Run the floor on tablets: clock labor, report progress, see instructions"
 msgstr "在平板电脑上运行车间：记录劳动力、报告进度、查看说明"
 
+msgid "Running"
+msgstr ""
+
 msgid "Running inventory after each week's supply and demand — the line."
 msgstr "每周供应和需求后运行的库存 — 该行。"
 
@@ -10185,6 +10288,9 @@ msgid "Running Total"
 msgstr "运行总计"
 
 msgid "Runtime"
+msgstr ""
+
+msgid "Runtime (min)"
 msgstr ""
 
 msgid "S-1 (coarsest special)"
@@ -10537,6 +10643,9 @@ msgstr "选择要配置的项目"
 
 msgid "Select an option"
 msgstr "选择一个选项"
+
+msgid "Select an unplanned downtime reason..."
+msgstr ""
 
 msgid "Select at least one line to convert"
 msgstr "至少选择一行进行转换"
@@ -11252,6 +11361,9 @@ msgstr "状态"
 msgid "Stay on this page"
 msgstr "留在此页面"
 
+msgid "STD (pcs)"
+msgstr ""
+
 msgid "Step"
 msgstr "步骤"
 
@@ -11628,6 +11740,9 @@ msgstr "与销售团队联系"
 
 msgid "Target"
 msgstr "目标"
+
+msgid "TARGET"
+msgstr ""
 
 msgid "Target an item group."
 msgstr "针对一个项目组。"
@@ -12994,6 +13109,12 @@ msgstr "取消拣选"
 msgid "Unpick {0}"
 msgstr "取消拣选 {0}"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unposted Documents"
 msgstr "未过账单据"
 
@@ -13704,6 +13825,9 @@ msgstr "当成品的保质期设置为\"计算\"时，选择哪些消耗的投�
 msgid "When a serial or batch expires, and what happens if used after — a company policy can Warn, Block, or BlockWithOverride."
 msgstr "当序列号或批次过期时,以及之后使用时会发生什么 — 公司政策可以警告、阻止或使用覆盖阻止。"
 
+msgid "When a work center has a running operation but no output is logged within the multiplier × cycle time, it is automatically flagged as unplanned downtime with the default reason. Leave either field empty to disable. Work centers can override the multiplier individually."
+msgstr ""
+
 msgid "When Carbon committed to having the goods arrive; combined with the shipping method's transit days, this drives Ship Date back-calc."
 msgstr "Carbon何时承诺货物到达;与运输方法的运送天数相结合,这决定了发货日期的向后计算。"
 
@@ -13993,6 +14117,9 @@ msgstr "工作流"
 
 msgid "Working sessions on configuration and data"
 msgstr "配置和数据工作会议"
+
+msgid "Working Time (min)"
+msgstr ""
 
 msgid "Worst Performing Machines"
 msgstr "性能最差的机器"

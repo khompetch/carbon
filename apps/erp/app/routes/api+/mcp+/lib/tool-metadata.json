@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-15T05:16:34.280Z",
-  "totalTools": 1330,
+  "generated": "2026-07-17T07:17:08.080Z",
+  "totalTools": 1336,
   "modules": 15,
   "tools": [
     {
@@ -18161,6 +18161,121 @@
       }
     },
     {
+      "name": "production_getDowntimeReasonsList",
+      "module": "production",
+      "classification": "READ",
+      "description": "get downtime reasons list",
+      "paramCount": 0,
+      "serviceParams": [
+        "client",
+        "companyId"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "production_getDowntimeReason",
+      "module": "production",
+      "classification": "READ",
+      "description": "get downtime reason",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "downtimeReasonId"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "downtimeReasonId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "downtimeReasonId"
+        ]
+      }
+    },
+    {
+      "name": "production_getDowntimeReasons",
+      "module": "production",
+      "classification": "READ",
+      "description": "get downtime reasons",
+      "paramCount": 3,
+      "serviceParams": [
+        "client",
+        "companyId",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "args": {
+            "type": "object",
+            "properties": {
+              "limit": {
+                "type": "integer",
+                "default": 100
+              },
+              "offset": {
+                "type": "integer",
+                "default": 0
+              },
+              "search": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "production_getWorkCenterDowntimes",
+      "module": "production",
+      "classification": "READ",
+      "description": "get work center downtimes",
+      "paramCount": 3,
+      "serviceParams": [
+        "client",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "workCenterId": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string"
+          },
+          "endTime": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workCenterId",
+          "startTime",
+          "endTime"
+        ]
+      }
+    },
+    {
       "name": "production_getFailureMode",
       "module": "production",
       "classification": "READ",
@@ -19867,6 +19982,65 @@
         },
         "required": [
           "name"
+        ]
+      }
+    },
+    {
+      "name": "production_upsertDowntimeReason",
+      "module": "production",
+      "classification": "WRITE",
+      "description": "upsert downtime reason",
+      "paramCount": 3,
+      "serviceParams": [
+        "client",
+        "downtimeReason"
+      ],
+      "injectAuth": [
+        "companyId",
+        "createdBy",
+        "updatedBy"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "type"
+        ]
+      }
+    },
+    {
+      "name": "production_deleteDowntimeReason",
+      "module": "production",
+      "classification": "DESTRUCTIVE",
+      "description": "delete downtime reason",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "downtimeReasonId"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "downtimeReasonId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "downtimeReasonId"
         ]
       }
     },
@@ -30844,7 +31018,7 @@
       "module": "resources",
       "classification": "WRITE",
       "description": "upsert work center",
-      "paramCount": 4,
+      "paramCount": 5,
       "serviceParams": [
         "client",
         "workCenter"
@@ -30859,6 +31033,9 @@
         "properties": {
           "id": {
             "type": "string"
+          },
+          "autoDowntimeMultiplier": {
+            "type": "number"
           },
           "name": {
             "type": "string"

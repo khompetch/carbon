@@ -42,6 +42,9 @@ msgstr "{0} de {1} completados"
 msgid "{0} Scrapped"
 msgstr "{0} Descartados"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 msgid "About"
 msgstr "Acerca de"
 
@@ -72,6 +75,9 @@ msgstr "Agregar repuesto"
 msgid "All"
 msgstr "Todos"
 
+msgid "ALL (pcs)"
+msgstr ""
+
 msgid "Are you sure you want to delete this step?"
 msgstr "¿Está seguro de que desea eliminar este paso?"
 
@@ -101,6 +107,12 @@ msgstr "Adjuntar archivo"
 
 msgid "Authentication Error"
 msgstr "Error de autenticación"
+
+msgid "Auto"
+msgstr ""
+
+msgid "Availability (%A)"
+msgstr ""
 
 msgid "available"
 msgstr "disponible"
@@ -212,6 +224,9 @@ msgstr "Modo consola"
 msgid "Consumed expired"
 msgstr "Consumido vencido"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -226,8 +241,14 @@ msgstr "Crear Problema de Calidad"
 msgid "Create Rework"
 msgstr "Crear Reelaboración"
 
+msgid "CT"
+msgstr ""
+
 msgid "Customer"
 msgstr "Cliente"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Dark Mode"
 msgstr "Modo oscuro"
@@ -281,6 +302,9 @@ msgstr "Descargar"
 msgid "Download Labels"
 msgstr "Descargar Etiquetas"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "Borrador"
 
@@ -318,8 +342,14 @@ msgstr "Correo electrónico"
 msgid "Empty work centers"
 msgstr "Centros de trabajo vacíos"
 
+msgid "End Downtime"
+msgstr ""
+
 msgid "End Operations"
 msgstr "Finalizar operaciones"
+
+msgid "End the downtime when the work center is running again."
+msgstr ""
 
 #. placeholder {0}: selectedPerson.name
 msgid "Enter PIN for {0}"
@@ -348,6 +378,9 @@ msgstr "Vencimiento próximo"
 
 msgid "Failed to complete inventory adjustment"
 msgstr "Error al completar el ajuste de inventario"
+
+msgid "Failed to create public link"
+msgstr ""
 
 msgid "Failed to end operations"
 msgstr "Error al finalizar las operaciones"
@@ -416,6 +449,9 @@ msgstr "¿Ideas, sugerencias o problemas con esta página?"
 
 msgid "Ideas, suggestions or problems?"
 msgstr "¿Ideas, sugerencias o problemas?"
+
+msgid "Idle"
+msgstr ""
 
 msgid "Impact"
 msgstr "Impacto"
@@ -589,6 +625,9 @@ msgstr "Más reciente primero"
 msgid "Next"
 msgstr "Siguiente"
 
+msgid "NG (pcs)"
+msgstr ""
+
 msgid "No active maintenance dispatches"
 msgstr "No hay despachos de mantenimiento activos"
 
@@ -609,6 +648,9 @@ msgstr "No se encontraron entidades rastreadas disponibles"
 
 msgid "No dispatches assigned to you"
 msgstr "No hay despachos asignados a usted"
+
+msgid "No downtime reasons configured. Add them in the ERP under Production settings."
+msgstr ""
 
 msgid "No files"
 msgstr "Sin archivos"
@@ -682,11 +724,21 @@ msgstr "No existen centros de trabajo"
 msgid "Notes"
 msgstr "Notas"
 
+msgid "Notes (optional)"
+msgstr ""
+
+#. placeholder {0}: column.title
+msgid "OEE board: {0}"
+msgstr ""
+
 msgid "OEE Impact"
 msgstr "Impacto OEE"
 
 msgid "OEM Required"
 msgstr "Requiere OEM"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "Más antiguo primero"
@@ -731,6 +783,9 @@ msgstr ""
 msgid "Pause"
 msgstr "Pausar"
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Pick"
 msgstr "Recoger"
 
@@ -755,11 +810,20 @@ msgstr "Picking"
 msgid "Pin Out"
 msgstr "Cerrar sesión con PIN"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Planned"
 msgstr "Planificado"
 
+msgid "Planned Downtime"
+msgstr ""
+
 msgid "Please record all steps for this operation before closing."
 msgstr "Por favor registre todos los pasos de esta operación antes de cerrar."
+
+msgid "Please select a downtime reason"
+msgstr ""
 
 msgid "Please select an item"
 msgstr "Por favor seleccione un artículo"
@@ -797,6 +861,12 @@ msgstr "Procesos"
 msgid "Progress"
 msgstr "Progreso"
 
+msgid "Public TV link copied to clipboard"
+msgstr ""
+
+msgid "Quality (%Q)"
+msgstr ""
+
 msgid "Quality Issue"
 msgstr "Problema de Calidad"
 
@@ -808,6 +878,9 @@ msgstr "Cantidad"
 
 msgid "Quantity must be greater than 0"
 msgstr "La cantidad debe ser mayor que 0"
+
+msgid "Reason"
+msgstr ""
 
 msgid "Reason for rework"
 msgstr "Motivo del reproceso"
@@ -821,6 +894,12 @@ msgstr "Registrar"
 #. placeholder {0}: activeStep + 1
 msgid "Record {0}"
 msgstr "Registro {0}"
+
+msgid "Record downtime"
+msgstr ""
+
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
 
 msgid "Remove"
 msgstr "Eliminar"
@@ -845,6 +924,12 @@ msgstr "Reelaboración"
 
 msgid "Rework created successfully"
 msgstr "Rework creado exitosamente"
+
+msgid "Running"
+msgstr ""
+
+msgid "Runtime (min)"
+msgstr ""
 
 msgid "Sales Order"
 msgstr "Orden de venta"
@@ -893,6 +978,12 @@ msgstr "Seleccionar"
 
 msgid "Select a completion quantity"
 msgstr "Seleccione una cantidad de completado"
+
+msgid "Select a downtime reason..."
+msgstr ""
+
+msgid "Select a reason to mark this work center as down. Downtime counts against OEE until it is ended."
+msgstr ""
 
 msgid "Select a rework quantity"
 msgstr "Seleccione una cantidad de retrabajo"
@@ -987,6 +1078,10 @@ msgstr "Cerrar sesión"
 msgid "Signed in as {stationName}"
 msgstr "Conectado como {stationName}"
 
+#. placeholder {0}: new Date(openDowntime.startTime).toLocaleString()
+msgid "Since {0}"
+msgstr ""
+
 msgid "Size"
 msgstr "Tamaño"
 
@@ -1005,6 +1100,9 @@ msgstr "Repuestos utilizados"
 msgid "Start"
 msgstr "Iniciar"
 
+msgid "Start Downtime"
+msgstr ""
+
 msgid "Station User"
 msgstr "Usuario de estación"
 
@@ -1019,6 +1117,9 @@ msgstr "Estados"
 
 msgid "Stay on this page"
 msgstr "Quedarse en esta página"
+
+msgid "STD (pcs)"
+msgstr ""
 
 msgid "Steps"
 msgstr "Pasos"
@@ -1043,6 +1144,9 @@ msgstr "Cambiar operador"
 
 msgid "Tag"
 msgstr "Etiqueta"
+
+msgid "TARGET"
+msgstr ""
 
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
@@ -1100,6 +1204,12 @@ msgstr "Descoger"
 msgid "Unpick {0}"
 msgstr "Descartar {0}"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unsaved changes"
 msgstr "Cambios no guardados"
 
@@ -1131,6 +1241,12 @@ msgstr "WIP"
 
 msgid "Work Center"
 msgstr "Centro de trabajo"
+
+msgid "Work center is down"
+msgstr ""
+
+msgid "Working Time (min)"
+msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)
 msgid "You clocked in at {0}. You can edit your clock-out time below or acknowledge that you're still working."

@@ -959,6 +959,16 @@ export const failureModeValidator = z.object({
   name: z.string().min(1, { message: "Name is required" })
 });
 
+export const downtimeTypes = ["Planned", "Unplanned"] as const;
+
+export const downtimeReasonValidator = z.object({
+  id: zfd.text(z.string().optional()),
+  name: z.string().min(1, { message: "Name is required" }),
+  type: z.enum(downtimeTypes, {
+    errorMap: () => ({ message: "Type is required" })
+  })
+});
+
 export const maintenanceDispatchValidator = z.object({
   id: zfd.text(z.string().optional()),
   status: z.enum(maintenanceDispatchStatus),

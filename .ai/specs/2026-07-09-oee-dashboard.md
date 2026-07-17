@@ -88,3 +88,13 @@ from location shifts (no migration), dedicated page, realtime included.
 ## Changelog
 
 - 2026-07-09 — drafted; decisions resolved via interactive Q&A.
+- 2026-07-16 — extended by `.ai/specs/2026-07-16-oee-work-center-hourly.md`:
+  per-work-center hourly TV board (12-hour shifts) + downtime recording
+  (`downtimeReason`/`workCenterDowntime`).
+- 2026-07-17 — dashboard math realigned with the hourly board's semantics:
+  `workCenterDowntime` records now feed the calc (Planned records + maintenance
+  reduce planned time; ALL downtime — planned, unplanned, auto no-output —
+  is carved out of runtime via `subtractIntervals`, downtime wins over a
+  still-running event), and the setup credit was removed from earned (%P =
+  pieces × per-piece standard / runtime only). Per-group `downtimeMs` is now
+  total downtime (maintenance + recorded), not maintenance alone.

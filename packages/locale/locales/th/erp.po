@@ -137,6 +137,9 @@ msgstr ""
 msgid "/month/user"
 msgstr ""
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 #. placeholder {0}: numberFormatter.format(redirectedTotal)
 #. placeholder {1}: redirectedParts.join(", ")
 msgid "↩ {0} redirected from superseded {1}"
@@ -761,6 +764,9 @@ msgstr ""
 msgid "All"
 msgstr ""
 
+msgid "ALL (pcs)"
+msgstr ""
+
 msgid "All {total} phases are done. Nice work — your team is up and running."
 msgstr ""
 
@@ -1145,6 +1151,10 @@ msgid "Are you sure you want to delete the customer type: {0}? This cannot be un
 msgstr ""
 
 msgid "Are you sure you want to delete the department: {name}? This cannot be undone."
+msgstr ""
+
+#. placeholder {0}: downtimeReason.name
+msgid "Are you sure you want to delete the downtime reason: {0}? This cannot be undone."
 msgstr ""
 
 #. placeholder {0}: employeeType.name
@@ -1549,6 +1559,12 @@ msgstr "เกิดข้อผิดพลาดในการยืนยั
 msgid "Auto apply"
 msgstr ""
 
+msgid "Auto downtime after (× cycle time)"
+msgstr ""
+
+msgid "Auto Downtime Multiplier (override)"
+msgstr ""
+
 msgid "Auto Release"
 msgstr ""
 
@@ -1576,6 +1592,9 @@ msgstr ""
 msgid "Automatic Lead Time Updates"
 msgstr ""
 
+msgid "Automatic No-Output Downtime"
+msgstr ""
+
 msgid "Automatic Updates"
 msgstr ""
 
@@ -1590,6 +1609,9 @@ msgstr ""
 
 msgid "Availability"
 msgstr "อัตราความพร้อมเดินเครื่อง"
+
+msgid "Availability (%A)"
+msgstr ""
 
 msgid "available"
 msgstr ""
@@ -1610,6 +1632,9 @@ msgid "Back"
 msgstr "ย้อนกลับ"
 
 msgid "Back Home"
+msgstr ""
+
+msgid "Back to OEE"
 msgstr ""
 
 msgid "Back to traceability"
@@ -2696,6 +2721,9 @@ msgstr ""
 msgid "Copy procedure unique identifier"
 msgstr ""
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 msgid "Copy Quality Document"
 msgstr ""
 
@@ -2948,6 +2976,9 @@ msgstr ""
 msgid "Created department"
 msgstr ""
 
+msgid "Created downtime reason"
+msgstr ""
+
 msgid "Created failure mode"
 msgstr ""
 
@@ -3070,6 +3101,9 @@ msgid "CSV column"
 msgstr ""
 
 msgid "CSV file must have at least 2 rows."
+msgstr ""
+
+msgid "CT"
 msgstr ""
 
 msgid "Cumulative"
@@ -3276,6 +3310,9 @@ msgstr ""
 msgid "Cycle count and adjust with an audit trail"
 msgstr ""
 
+msgid "Cycle Time"
+msgstr ""
+
 msgid "Daily check-ins while your team finds its feet on the live system"
 msgstr ""
 
@@ -3457,6 +3494,9 @@ msgstr ""
 msgid "Default CC Recipients"
 msgstr ""
 
+msgid "Default downtime reason"
+msgstr ""
+
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr ""
 
@@ -3590,6 +3630,9 @@ msgid "Delete Dispatch"
 msgstr ""
 
 msgid "Delete Document"
+msgstr ""
+
+msgid "Delete Downtime Reason"
 msgstr ""
 
 msgid "Delete Employee Type"
@@ -4051,6 +4094,12 @@ msgstr ""
 msgid "Downtime"
 msgstr "เวลาหยุดเครื่อง"
 
+msgid "Downtime Reason"
+msgstr ""
+
+msgid "Downtime Reasons"
+msgstr ""
+
 msgid "Draft"
 msgstr ""
 
@@ -4154,6 +4203,9 @@ msgstr ""
 msgid "Duration"
 msgstr ""
 
+msgid "e.g. 2 = flag after 2× the cycle time with no output"
+msgstr ""
+
 msgid "e.g. 2h"
 msgstr ""
 
@@ -4251,6 +4303,9 @@ msgid "Edit Dimension"
 msgstr ""
 
 msgid "Edit Dispatch"
+msgstr ""
+
+msgid "Edit Downtime Reason"
 msgstr ""
 
 msgid "Edit Employee"
@@ -5052,6 +5107,9 @@ msgstr ""
 msgid "Failed to create process: {0}"
 msgstr ""
 
+msgid "Failed to create public link"
+msgstr ""
+
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create shipping method: {0}"
 msgstr ""
@@ -5421,6 +5479,9 @@ msgstr ""
 msgid "Fixture ID"
 msgstr ""
 
+msgid "Flag unplanned downtime after this many times the cycle time with no output. Empty = company default, 0 = disabled for this work center"
+msgstr ""
+
 msgid "for anything. They'll pull in the right person."
 msgstr ""
 
@@ -5485,6 +5546,9 @@ msgid "From Storage Unit"
 msgstr ""
 
 msgid "Fulfillment Location"
+msgstr ""
+
+msgid "Fullscreen"
 msgstr ""
 
 msgid "Fully trained for"
@@ -6008,6 +6072,9 @@ msgid "Ideas, suggestions or problems with this page?"
 msgstr ""
 
 msgid "Ideas, suggestions or problems?"
+msgstr ""
+
+msgid "Idle"
 msgstr ""
 
 msgid "IDs and descriptions are generated for raw materials."
@@ -7540,6 +7607,9 @@ msgstr ""
 msgid "New Dimension"
 msgstr ""
 
+msgid "New Downtime Reason"
+msgstr ""
+
 msgid "New Employee Type"
 msgstr ""
 
@@ -7790,6 +7860,9 @@ msgid "Next step"
 msgstr ""
 
 msgid "Next:"
+msgstr ""
+
+msgid "NG (pcs)"
 msgstr ""
 
 msgid "No"
@@ -8059,6 +8132,9 @@ msgstr ""
 msgid "No transactions in this period"
 msgstr ""
 
+msgid "No unplanned downtime reasons configured. Add them under Production → Downtime Reasons."
+msgstr ""
+
 msgid "No value needed"
 msgstr ""
 
@@ -8171,6 +8247,9 @@ msgid "of"
 msgstr ""
 
 msgid "OK"
+msgstr ""
+
+msgid "OK (pcs)"
 msgstr ""
 
 msgid "Oldest first"
@@ -8724,6 +8803,9 @@ msgstr ""
 msgid "Performance"
 msgstr "ประสิทธิภาพการเดินเครื่อง"
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Period"
 msgstr ""
 
@@ -8817,6 +8899,9 @@ msgstr ""
 msgid "Plan"
 msgstr ""
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Plan the work"
 msgstr ""
 
@@ -8825,6 +8910,12 @@ msgstr ""
 
 msgid "Planned"
 msgstr "เวลาตามแผน"
+
+msgid "Planned Downtime"
+msgstr ""
+
+msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
+msgstr ""
 
 msgid "Planned End"
 msgstr ""
@@ -9226,6 +9317,9 @@ msgstr ""
 msgid "Public"
 msgstr ""
 
+msgid "Public TV link copied to clipboard"
+msgstr ""
+
 msgid "Publish"
 msgstr ""
 
@@ -9382,6 +9476,9 @@ msgstr ""
 
 msgid "Quality"
 msgstr "อัตราคุณภาพ"
+
+msgid "Quality (%Q)"
+msgstr ""
 
 msgid "Quality Document approval rule"
 msgstr ""
@@ -9716,6 +9813,9 @@ msgid "Refresh"
 msgstr ""
 
 msgid "Refresh exchange rate"
+msgstr ""
+
+msgid "Refresh in {secondsLeft}s"
 msgstr ""
 
 msgid "Register"
@@ -10178,6 +10278,9 @@ msgstr ""
 msgid "Run the floor on tablets: clock labor, report progress, see instructions"
 msgstr ""
 
+msgid "Running"
+msgstr ""
+
 msgid "Running inventory after each week's supply and demand — the line."
 msgstr ""
 
@@ -10186,6 +10289,9 @@ msgstr ""
 
 msgid "Runtime"
 msgstr "เวลาเดินเครื่อง"
+
+msgid "Runtime (min)"
+msgstr ""
 
 msgid "S-1 (coarsest special)"
 msgstr ""
@@ -10536,6 +10642,9 @@ msgid "Select an item to configure"
 msgstr ""
 
 msgid "Select an option"
+msgstr ""
+
+msgid "Select an unplanned downtime reason..."
 msgstr ""
 
 msgid "Select at least one line to convert"
@@ -11252,6 +11361,9 @@ msgstr ""
 msgid "Stay on this page"
 msgstr ""
 
+msgid "STD (pcs)"
+msgstr ""
+
 msgid "Step"
 msgstr ""
 
@@ -11627,6 +11739,9 @@ msgid "Talk to Sales"
 msgstr ""
 
 msgid "Target"
+msgstr ""
+
+msgid "TARGET"
 msgstr ""
 
 msgid "Target an item group."
@@ -12994,6 +13109,12 @@ msgstr ""
 msgid "Unpick {0}"
 msgstr ""
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unposted Documents"
 msgstr ""
 
@@ -13704,6 +13825,9 @@ msgstr ""
 msgid "When a serial or batch expires, and what happens if used after — a company policy can Warn, Block, or BlockWithOverride."
 msgstr ""
 
+msgid "When a work center has a running operation but no output is logged within the multiplier × cycle time, it is automatically flagged as unplanned downtime with the default reason. Leave either field empty to disable. Work centers can override the multiplier individually."
+msgstr ""
+
 msgid "When Carbon committed to having the goods arrive; combined with the shipping method's transit days, this drives Ship Date back-calc."
 msgstr ""
 
@@ -13992,6 +14116,9 @@ msgid "Workflow"
 msgstr ""
 
 msgid "Working sessions on configuration and data"
+msgstr ""
+
+msgid "Working Time (min)"
 msgstr ""
 
 msgid "Worst Performing Machines"

@@ -1,9 +1,17 @@
 import { Table, Tbody, Td, Th, Thead, Tr } from "@carbon/react";
 import { formatDurationMilliseconds } from "@carbon/utils";
 import { Trans } from "@lingui/react/macro";
+import { Link } from "react-router";
+import { path } from "~/utils/path";
 import { formatPercent, type OeeGroup } from "./types";
 
-const OeeTable = ({ groups }: { groups: OeeGroup[] }) => {
+const OeeTable = ({
+  groups,
+  groupBy = "workCenter"
+}: {
+  groups: OeeGroup[];
+  groupBy?: "workCenter" | "process";
+}) => {
   return (
     <div className="w-full overflow-x-auto">
       <Table>
@@ -47,7 +55,18 @@ const OeeTable = ({ groups }: { groups: OeeGroup[] }) => {
         <Tbody>
           {groups.map((group) => (
             <Tr key={group.id}>
-              <Td className="font-medium">{group.name}</Td>
+              <Td className="font-medium">
+                {groupBy === "workCenter" ? (
+                  <Link
+                    to={path.to.productionOeeWorkCenter(group.id)}
+                    className="hover:underline"
+                  >
+                    {group.name}
+                  </Link>
+                ) : (
+                  group.name
+                )}
+              </Td>
               <Td className="text-right font-mono font-semibold">
                 {formatPercent(group.oee)}
               </Td>

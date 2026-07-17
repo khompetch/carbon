@@ -42,6 +42,9 @@ msgstr "{0} adet tamamlandı"
 msgid "{0} Scrapped"
 msgstr "{0} Hurdaya Çıkarılmış"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 msgid "About"
 msgstr "Hakkında"
 
@@ -72,6 +75,9 @@ msgstr "Yedek Parça Ekle"
 msgid "All"
 msgstr "Tümü"
 
+msgid "ALL (pcs)"
+msgstr ""
+
 msgid "Are you sure you want to delete this step?"
 msgstr "Bu adımı silmek istediğinizden emin misiniz?"
 
@@ -101,6 +107,12 @@ msgstr "Dosya Ekle"
 
 msgid "Authentication Error"
 msgstr "Kimlik Doğrulama Hatası"
+
+msgid "Auto"
+msgstr ""
+
+msgid "Availability (%A)"
+msgstr ""
 
 msgid "available"
 msgstr "mevcut"
@@ -212,6 +224,9 @@ msgstr "Konsol Modu"
 msgid "Consumed expired"
 msgstr "Tüketilmiş süre dolmuş"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -226,8 +241,14 @@ msgstr "Kalite Sorunu Oluştur"
 msgid "Create Rework"
 msgstr "İşlemi Yeniden Oluştur"
 
+msgid "CT"
+msgstr ""
+
 msgid "Customer"
 msgstr "Müşteri"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Dark Mode"
 msgstr "Karanlık Mod"
@@ -281,6 +302,9 @@ msgstr "İndir"
 msgid "Download Labels"
 msgstr "Etiketleri İndir"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "Taslak"
 
@@ -318,8 +342,14 @@ msgstr "E-posta Adresi"
 msgid "Empty work centers"
 msgstr "Boş iş merkezleri"
 
+msgid "End Downtime"
+msgstr ""
+
 msgid "End Operations"
 msgstr "Operasyonları Sonlandır"
+
+msgid "End the downtime when the work center is running again."
+msgstr ""
 
 #. placeholder {0}: selectedPerson.name
 msgid "Enter PIN for {0}"
@@ -348,6 +378,9 @@ msgstr "İlk süresi dolacak"
 
 msgid "Failed to complete inventory adjustment"
 msgstr "Envanter ayarlaması tamamlanamadı"
+
+msgid "Failed to create public link"
+msgstr ""
 
 msgid "Failed to end operations"
 msgstr "İşlemler sonlandırılamadı"
@@ -416,6 +449,9 @@ msgstr "Bu sayfa hakkında fikirleriniz, önerileriniz veya sorunlarınız mı v
 
 msgid "Ideas, suggestions or problems?"
 msgstr "Fikirler, öneriler veya sorunlar?"
+
+msgid "Idle"
+msgstr ""
 
 msgid "Impact"
 msgstr "Etki"
@@ -589,6 +625,9 @@ msgstr "En yeniden önce"
 msgid "Next"
 msgstr "Sonraki"
 
+msgid "NG (pcs)"
+msgstr ""
+
 msgid "No active maintenance dispatches"
 msgstr "Aktif bakım sevkıyatı bulunmamaktadır"
 
@@ -609,6 +648,9 @@ msgstr "Kullanılabilir izlenen varlık bulunamadı"
 
 msgid "No dispatches assigned to you"
 msgstr "Sizeplanlar size atanmadı"
+
+msgid "No downtime reasons configured. Add them in the ERP under Production settings."
+msgstr ""
 
 msgid "No files"
 msgstr "Dosya yok"
@@ -682,11 +724,21 @@ msgstr "Çalışma merkezi bulunmamaktadır"
 msgid "Notes"
 msgstr "Notlar"
 
+msgid "Notes (optional)"
+msgstr ""
+
+#. placeholder {0}: column.title
+msgid "OEE board: {0}"
+msgstr ""
+
 msgid "OEE Impact"
 msgstr "OEE Etkisi"
 
 msgid "OEM Required"
 msgstr "Üretici Tarafından Gerekiyor"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "En eski önce"
@@ -731,6 +783,9 @@ msgstr ""
 msgid "Pause"
 msgstr "Duraklat"
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Pick"
 msgstr "Topla"
 
@@ -755,11 +810,20 @@ msgstr "Seçim"
 msgid "Pin Out"
 msgstr "Çıkış Yap"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Planned"
 msgstr "Planlı"
 
+msgid "Planned Downtime"
+msgstr ""
+
 msgid "Please record all steps for this operation before closing."
 msgstr "Bu işlemi kapatmadan önce tüm adımları kaydetmeniz gerekmektedir."
+
+msgid "Please select a downtime reason"
+msgstr ""
 
 msgid "Please select an item"
 msgstr "Lütfen bir ürün seçin"
@@ -797,6 +861,12 @@ msgstr "Süreçler"
 msgid "Progress"
 msgstr "İlerleme"
 
+msgid "Public TV link copied to clipboard"
+msgstr ""
+
+msgid "Quality (%Q)"
+msgstr ""
+
 msgid "Quality Issue"
 msgstr "Kalite Sorunu"
 
@@ -808,6 +878,9 @@ msgstr "Miktar"
 
 msgid "Quantity must be greater than 0"
 msgstr "Miktar 0'dan büyük olmalıdır"
+
+msgid "Reason"
+msgstr ""
 
 msgid "Reason for rework"
 msgstr "Yeniden işleme nedeni"
@@ -821,6 +894,12 @@ msgstr "Kaydet"
 #. placeholder {0}: activeStep + 1
 msgid "Record {0}"
 msgstr "Kayıt {0}"
+
+msgid "Record downtime"
+msgstr ""
+
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
 
 msgid "Remove"
 msgstr "Kaldır"
@@ -845,6 +924,12 @@ msgstr "Revizyon"
 
 msgid "Rework created successfully"
 msgstr "Yeniden işleme başarıyla oluşturuldu"
+
+msgid "Running"
+msgstr ""
+
+msgid "Runtime (min)"
+msgstr ""
 
 msgid "Sales Order"
 msgstr "Satış Siparişi"
@@ -893,6 +978,12 @@ msgstr "Seç"
 
 msgid "Select a completion quantity"
 msgstr "Bir tamamlama miktarı seçin"
+
+msgid "Select a downtime reason..."
+msgstr ""
+
+msgid "Select a reason to mark this work center as down. Downtime counts against OEE until it is ended."
+msgstr ""
 
 msgid "Select a rework quantity"
 msgstr "Bir yeniden işleme miktarı seçin"
@@ -987,6 +1078,10 @@ msgstr "Oturumu Kapat"
 msgid "Signed in as {stationName}"
 msgstr "Oturum açıldı olarak {stationName}"
 
+#. placeholder {0}: new Date(openDowntime.startTime).toLocaleString()
+msgid "Since {0}"
+msgstr ""
+
 msgid "Size"
 msgstr "Boyut"
 
@@ -1005,6 +1100,9 @@ msgstr "Kullanılan Yedek Parçalar"
 msgid "Start"
 msgstr "Başlat"
 
+msgid "Start Downtime"
+msgstr ""
+
 msgid "Station User"
 msgstr "İstasyon Kullanıcısı"
 
@@ -1019,6 +1117,9 @@ msgstr "Durumlar"
 
 msgid "Stay on this page"
 msgstr "Bu sayfada kal"
+
+msgid "STD (pcs)"
+msgstr ""
 
 msgid "Steps"
 msgstr "Adımlar"
@@ -1043,6 +1144,9 @@ msgstr "Operatörü Değiştir"
 
 msgid "Tag"
 msgstr "Etiket"
+
+msgid "TARGET"
+msgstr ""
 
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
@@ -1100,6 +1204,12 @@ msgstr "Çıkart"
 msgid "Unpick {0}"
 msgstr "Çıkart {0}"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unsaved changes"
 msgstr "Kaydedilmemiş değişiklikler"
 
@@ -1131,6 +1241,12 @@ msgstr "Yarı Mamul"
 
 msgid "Work Center"
 msgstr "İş Merkezi"
+
+msgid "Work center is down"
+msgstr ""
+
+msgid "Working Time (min)"
+msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)
 msgid "You clocked in at {0}. You can edit your clock-out time below or acknowledge that you're still working."

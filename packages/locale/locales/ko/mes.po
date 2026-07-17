@@ -42,6 +42,9 @@ msgstr "{1} 중 {0} 완료됨"
 msgid "{0} Scrapped"
 msgstr "{0} 스크랩됨"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 msgid "About"
 msgstr "정보"
 
@@ -72,6 +75,9 @@ msgstr "예비 부품 추가"
 msgid "All"
 msgstr "전체"
 
+msgid "ALL (pcs)"
+msgstr ""
+
 msgid "Are you sure you want to delete this step?"
 msgstr "이 단계를 삭제하시겠습니까?"
 
@@ -101,6 +107,12 @@ msgstr "파일 첨부"
 
 msgid "Authentication Error"
 msgstr "인증 오류"
+
+msgid "Auto"
+msgstr ""
+
+msgid "Availability (%A)"
+msgstr ""
 
 msgid "available"
 msgstr "사용 가능"
@@ -212,6 +224,9 @@ msgstr "콘솔 모드"
 msgid "Consumed expired"
 msgstr "만료 후 소모됨"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -226,8 +241,14 @@ msgstr "품질 이슈 생성"
 msgid "Create Rework"
 msgstr "재작업 생성"
 
+msgid "CT"
+msgstr ""
+
 msgid "Customer"
 msgstr "고객"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Dark Mode"
 msgstr "다크 모드"
@@ -281,6 +302,9 @@ msgstr "다운로드"
 msgid "Download Labels"
 msgstr "라벨 다운로드"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "초안"
 
@@ -318,8 +342,14 @@ msgstr "이메일 주소"
 msgid "Empty work centers"
 msgstr "빈 작업장"
 
+msgid "End Downtime"
+msgstr ""
+
 msgid "End Operations"
 msgstr "공정작업 종료"
+
+msgid "End the downtime when the work center is running again."
+msgstr ""
 
 #. placeholder {0}: selectedPerson.name
 msgid "Enter PIN for {0}"
@@ -348,6 +378,9 @@ msgstr "먼저 만료되는 순"
 
 msgid "Failed to complete inventory adjustment"
 msgstr "재고 조정을 완료하지 못했습니다"
+
+msgid "Failed to create public link"
+msgstr ""
 
 msgid "Failed to end operations"
 msgstr "공정작업을 종료하지 못했습니다"
@@ -416,6 +449,9 @@ msgstr "이 페이지에 대한 아이디어, 제안, 또는 문제가 있으신
 
 msgid "Ideas, suggestions or problems?"
 msgstr "아이디어, 제안, 또는 문제가 있으신가요?"
+
+msgid "Idle"
+msgstr ""
 
 msgid "Impact"
 msgstr "영향"
@@ -589,6 +625,9 @@ msgstr "최신순"
 msgid "Next"
 msgstr "다음"
 
+msgid "NG (pcs)"
+msgstr ""
+
 msgid "No active maintenance dispatches"
 msgstr "진행 중인 유지보수 작업지시가 없습니다"
 
@@ -609,6 +648,9 @@ msgstr "사용 가능한 추적 개체가 없습니다"
 
 msgid "No dispatches assigned to you"
 msgstr "배정된 작업지시가 없습니다"
+
+msgid "No downtime reasons configured. Add them in the ERP under Production settings."
+msgstr ""
 
 msgid "No files"
 msgstr "파일 없음"
@@ -682,11 +724,21 @@ msgstr "존재하는 작업장이 없습니다"
 msgid "Notes"
 msgstr "메모"
 
+msgid "Notes (optional)"
+msgstr ""
+
+#. placeholder {0}: column.title
+msgid "OEE board: {0}"
+msgstr ""
+
 msgid "OEE Impact"
 msgstr "OEE 영향"
 
 msgid "OEM Required"
 msgstr "OEM 필요"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "오래된순"
@@ -731,6 +783,9 @@ msgstr ""
 msgid "Pause"
 msgstr "일시정지"
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Pick"
 msgstr "피킹"
 
@@ -755,11 +810,20 @@ msgstr "피킹"
 msgid "Pin Out"
 msgstr "PIN 로그아웃"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Planned"
 msgstr "계획됨"
 
+msgid "Planned Downtime"
+msgstr ""
+
 msgid "Please record all steps for this operation before closing."
 msgstr "이 공정작업을 마감하기 전에 모든 단계를 기록하세요."
+
+msgid "Please select a downtime reason"
+msgstr ""
 
 msgid "Please select an item"
 msgstr "품목을 선택하세요"
@@ -797,6 +861,12 @@ msgstr "공정"
 msgid "Progress"
 msgstr "진행 상황"
 
+msgid "Public TV link copied to clipboard"
+msgstr ""
+
+msgid "Quality (%Q)"
+msgstr ""
+
 msgid "Quality Issue"
 msgstr "품질 이슈"
 
@@ -808,6 +878,9 @@ msgstr "수량"
 
 msgid "Quantity must be greater than 0"
 msgstr "수량은 0보다 커야 합니다"
+
+msgid "Reason"
+msgstr ""
 
 msgid "Reason for rework"
 msgstr "재작업 사유"
@@ -821,6 +894,12 @@ msgstr "기록"
 #. placeholder {0}: activeStep + 1
 msgid "Record {0}"
 msgstr "{0} 기록"
+
+msgid "Record downtime"
+msgstr ""
+
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
 
 msgid "Remove"
 msgstr "제거"
@@ -845,6 +924,12 @@ msgstr "재작업"
 
 msgid "Rework created successfully"
 msgstr "재작업이 생성되었습니다"
+
+msgid "Running"
+msgstr ""
+
+msgid "Runtime (min)"
+msgstr ""
 
 msgid "Sales Order"
 msgstr "판매주문"
@@ -893,6 +978,12 @@ msgstr "선택"
 
 msgid "Select a completion quantity"
 msgstr "완료 수량을 선택하세요"
+
+msgid "Select a downtime reason..."
+msgstr ""
+
+msgid "Select a reason to mark this work center as down. Downtime counts against OEE until it is ended."
+msgstr ""
 
 msgid "Select a rework quantity"
 msgstr "재작업 수량을 선택하세요"
@@ -987,6 +1078,10 @@ msgstr "로그아웃"
 msgid "Signed in as {stationName}"
 msgstr "{stationName}(으)로 로그인됨"
 
+#. placeholder {0}: new Date(openDowntime.startTime).toLocaleString()
+msgid "Since {0}"
+msgstr ""
+
 msgid "Size"
 msgstr "사이즈"
 
@@ -1005,6 +1100,9 @@ msgstr "사용된 예비 부품"
 msgid "Start"
 msgstr "시작"
 
+msgid "Start Downtime"
+msgstr ""
+
 msgid "Station User"
 msgstr "스테이션 사용자"
 
@@ -1019,6 +1117,9 @@ msgstr "상태"
 
 msgid "Stay on this page"
 msgstr "이 페이지에 머무르기"
+
+msgid "STD (pcs)"
+msgstr ""
 
 msgid "Steps"
 msgstr "단계"
@@ -1043,6 +1144,9 @@ msgstr "작업자 전환"
 
 msgid "Tag"
 msgstr "태그"
+
+msgid "TARGET"
+msgstr ""
 
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
@@ -1100,6 +1204,12 @@ msgstr "피킹 취소"
 msgid "Unpick {0}"
 msgstr "{0} 피킹 취소"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unsaved changes"
 msgstr "저장되지 않은 변경 사항"
 
@@ -1131,6 +1241,12 @@ msgstr "재공품"
 
 msgid "Work Center"
 msgstr "작업장"
+
+msgid "Work center is down"
+msgstr ""
+
+msgid "Working Time (min)"
+msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)
 msgid "You clocked in at {0}. You can edit your clock-out time below or acknowledge that you're still working."

@@ -42,6 +42,9 @@ msgstr "{0} / {1} 完了済み"
 msgid "{0} Scrapped"
 msgstr "{0} スクラップ"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 msgid "About"
 msgstr "バージョン情報"
 
@@ -72,6 +75,9 @@ msgstr "スペアパーツを追加"
 msgid "All"
 msgstr "すべて"
 
+msgid "ALL (pcs)"
+msgstr ""
+
 msgid "Are you sure you want to delete this step?"
 msgstr "このステップを削除してもよろしいですか？"
 
@@ -101,6 +107,12 @@ msgstr "ファイルを添付"
 
 msgid "Authentication Error"
 msgstr "認証エラー"
+
+msgid "Auto"
+msgstr ""
+
+msgid "Availability (%A)"
+msgstr ""
 
 msgid "available"
 msgstr "利用可能"
@@ -212,6 +224,9 @@ msgstr "コンソールモード"
 msgid "Consumed expired"
 msgstr "消費期限切れ"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -226,8 +241,14 @@ msgstr "品質問題を作成"
 msgid "Create Rework"
 msgstr "リワーク作成"
 
+msgid "CT"
+msgstr ""
+
 msgid "Customer"
 msgstr "顧客"
+
+msgid "Cycle Time"
+msgstr ""
 
 msgid "Dark Mode"
 msgstr "ダークモード"
@@ -281,6 +302,9 @@ msgstr "ダウンロード"
 msgid "Download Labels"
 msgstr "ラベルをダウンロード"
 
+msgid "Downtime"
+msgstr ""
+
 msgid "Draft"
 msgstr "下書き"
 
@@ -318,8 +342,14 @@ msgstr "メールアドレス"
 msgid "Empty work centers"
 msgstr "空の作業センター"
 
+msgid "End Downtime"
+msgstr ""
+
 msgid "End Operations"
 msgstr "工程を終了"
+
+msgid "End the downtime when the work center is running again."
+msgstr ""
 
 #. placeholder {0}: selectedPerson.name
 msgid "Enter PIN for {0}"
@@ -348,6 +378,9 @@ msgstr "最初に期限切れ"
 
 msgid "Failed to complete inventory adjustment"
 msgstr "在庫調整の完了に失敗しました"
+
+msgid "Failed to create public link"
+msgstr ""
 
 msgid "Failed to end operations"
 msgstr "工程の終了に失敗しました"
@@ -416,6 +449,9 @@ msgstr "このページについてのアイデア、提案、または問題は
 
 msgid "Ideas, suggestions or problems?"
 msgstr "アイデア、提案、または問題はありますか？"
+
+msgid "Idle"
+msgstr ""
 
 msgid "Impact"
 msgstr "影響"
@@ -589,6 +625,9 @@ msgstr "最新順"
 msgid "Next"
 msgstr "次へ"
 
+msgid "NG (pcs)"
+msgstr ""
+
 msgid "No active maintenance dispatches"
 msgstr "アクティブなメンテナンスディスパッチはありません"
 
@@ -609,6 +648,9 @@ msgstr "利用可能な追跡対象エンティティが見つかりません"
 
 msgid "No dispatches assigned to you"
 msgstr "あなたに割り当てられたディスパッチはありません"
+
+msgid "No downtime reasons configured. Add them in the ERP under Production settings."
+msgstr ""
 
 msgid "No files"
 msgstr "ファイルなし"
@@ -682,11 +724,21 @@ msgstr "ワークセンターがありません"
 msgid "Notes"
 msgstr "備考"
 
+msgid "Notes (optional)"
+msgstr ""
+
+#. placeholder {0}: column.title
+msgid "OEE board: {0}"
+msgstr ""
+
 msgid "OEE Impact"
 msgstr "OEE影響度"
 
 msgid "OEM Required"
 msgstr "OEM対応必要"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "最も古い順"
@@ -731,6 +783,9 @@ msgstr ""
 msgid "Pause"
 msgstr "一時停止"
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Pick"
 msgstr "ピック"
 
@@ -755,11 +810,20 @@ msgstr "ピッキング"
 msgid "Pin Out"
 msgstr "ピンアウト"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Planned"
 msgstr "計画済み"
 
+msgid "Planned Downtime"
+msgstr ""
+
 msgid "Please record all steps for this operation before closing."
 msgstr "クローズする前にこの工程のすべてのステップを記録してください。"
+
+msgid "Please select a downtime reason"
+msgstr ""
 
 msgid "Please select an item"
 msgstr "品目を選択してください"
@@ -797,6 +861,12 @@ msgstr "プロセス一覧"
 msgid "Progress"
 msgstr "進捗"
 
+msgid "Public TV link copied to clipboard"
+msgstr ""
+
+msgid "Quality (%Q)"
+msgstr ""
+
 msgid "Quality Issue"
 msgstr "品質問題"
 
@@ -808,6 +878,9 @@ msgstr "数量"
 
 msgid "Quantity must be greater than 0"
 msgstr "数量は0より大きい値を入力してください"
+
+msgid "Reason"
+msgstr ""
 
 msgid "Reason for rework"
 msgstr "リワークの理由"
@@ -821,6 +894,12 @@ msgstr "記録"
 #. placeholder {0}: activeStep + 1
 msgid "Record {0}"
 msgstr "レコード {0}"
+
+msgid "Record downtime"
+msgstr ""
+
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
 
 msgid "Remove"
 msgstr "削除"
@@ -845,6 +924,12 @@ msgstr "リワーク"
 
 msgid "Rework created successfully"
 msgstr "リワーク作成に成功しました"
+
+msgid "Running"
+msgstr ""
+
+msgid "Runtime (min)"
+msgstr ""
 
 msgid "Sales Order"
 msgstr "受注"
@@ -893,6 +978,12 @@ msgstr "選択"
 
 msgid "Select a completion quantity"
 msgstr "完了数量を選択"
+
+msgid "Select a downtime reason..."
+msgstr ""
+
+msgid "Select a reason to mark this work center as down. Downtime counts against OEE until it is ended."
+msgstr ""
 
 msgid "Select a rework quantity"
 msgstr "手直し数量を選択"
@@ -987,6 +1078,10 @@ msgstr "サインアウト"
 msgid "Signed in as {stationName}"
 msgstr "{stationName} としてサインイン中"
 
+#. placeholder {0}: new Date(openDowntime.startTime).toLocaleString()
+msgid "Since {0}"
+msgstr ""
+
 msgid "Size"
 msgstr "サイズ"
 
@@ -1005,6 +1100,9 @@ msgstr "使用済みスペアパーツ"
 msgid "Start"
 msgstr "開始"
 
+msgid "Start Downtime"
+msgstr ""
+
 msgid "Station User"
 msgstr "ステーションユーザー"
 
@@ -1019,6 +1117,9 @@ msgstr "ステータス一覧"
 
 msgid "Stay on this page"
 msgstr "このページに留まる"
+
+msgid "STD (pcs)"
+msgstr ""
 
 msgid "Steps"
 msgstr "ステップ"
@@ -1043,6 +1144,9 @@ msgstr "オペレーターを切替"
 
 msgid "Tag"
 msgstr "タグ"
+
+msgid "TARGET"
+msgstr ""
 
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
@@ -1100,6 +1204,12 @@ msgstr "ピッキング解除"
 msgid "Unpick {0}"
 msgstr "ピック解除 {0}"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unsaved changes"
 msgstr "未保存の変更"
 
@@ -1131,6 +1241,12 @@ msgstr "仕掛品"
 
 msgid "Work Center"
 msgstr "ワークセンター"
+
+msgid "Work center is down"
+msgstr ""
+
+msgid "Working Time (min)"
+msgstr ""
 
 #. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)
 msgid "You clocked in at {0}. You can edit your clock-out time below or acknowledge that you're still working."

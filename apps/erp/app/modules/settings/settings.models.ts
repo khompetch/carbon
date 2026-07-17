@@ -143,6 +143,11 @@ export const jobCompletedValidator = z.object({
   salesJobCompletedNotificationGroup: z.array(z.string()).optional()
 });
 
+export const autoDowntimeValidator = z.object({
+  autoDowntimeMultiplier: zfd.numeric(z.number().min(0).optional()),
+  autoDowntimeReasonId: zfd.text(z.string().optional())
+});
+
 export const kanbanOutputValidator = z.object({
   kanbanOutput: z.enum(kanbanOutputTypes)
 });

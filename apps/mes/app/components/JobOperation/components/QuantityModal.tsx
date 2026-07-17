@@ -180,36 +180,45 @@ export function QuantityModal({
             <Hidden name="laborProductionEventId" />
             <Hidden name="machineProductionEventId" />
             <VStack spacing={2}>
-              {hasUnissuedTrackedMaterials && type === "complete" && (
-                <Alert variant="destructive">
-                  <LuTriangleAlert className="h-4 w-4" />
-                  <AlertTitle>
-                    <Trans>Unissued serial/batch materials</Trans>
-                  </AlertTitle>
-                  <AlertDescription>
-                    <Trans>
-                      There are serial or batch tracked materials on the bill of
-                      material that have not been fully issued. Completing
-                      without issuing may result in incorrect traceability
-                      records.
-                    </Trans>
-                  </AlertDescription>
-                  <label className="flex items-center gap-2 mt-2 cursor-pointer">
-                    <Checkbox
-                      isChecked={confirmedUnissued}
-                      onCheckedChange={(checked) =>
-                        setConfirmedUnissued(checked === true)
-                      }
-                      className="bg-primary"
-                    />
-                    <span className="text-sm">
+              {/*
+                Hide the warning once the form has been submitted: while the
+                fetcher is in flight the realtime revalidation already folds
+                the just-logged quantity into operation.quantityComplete, so
+                the requirement math double-counts and the alert flashes for
+                a moment before the modal closes.
+              */}
+              {hasUnissuedTrackedMaterials &&
+                type === "complete" &&
+                !submitted.current && (
+                  <Alert variant="destructive">
+                    <LuTriangleAlert className="h-4 w-4" />
+                    <AlertTitle>
+                      <Trans>Unissued serial/batch materials</Trans>
+                    </AlertTitle>
+                    <AlertDescription>
                       <Trans>
-                        I understand and want to complete without issuing
+                        There are serial or batch tracked materials on the bill
+                        of material that have not been fully issued. Completing
+                        without issuing may result in incorrect traceability
+                        records.
                       </Trans>
-                    </span>
-                  </label>
-                </Alert>
-              )}
+                    </AlertDescription>
+                    <label className="flex items-center gap-2 mt-2 cursor-pointer">
+                      <Checkbox
+                        isChecked={confirmedUnissued}
+                        onCheckedChange={(checked) =>
+                          setConfirmedUnissued(checked === true)
+                        }
+                        className="bg-primary"
+                      />
+                      <span className="text-sm">
+                        <Trans>
+                          I understand and want to complete without issuing
+                        </Trans>
+                      </span>
+                    </label>
+                  </Alert>
+                )}
 
               {type === "finish" && !isOperationComplete && (
                 <Alert variant="destructive">

@@ -137,6 +137,9 @@ msgstr "예상 수량과 다른 라인 {variances}개"
 msgid "/month/user"
 msgstr "/월/사용자"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 #. placeholder {0}: numberFormatter.format(redirectedTotal)
 #. placeholder {1}: redirectedParts.join(", ")
 msgid "↩ {0} redirected from superseded {1}"
@@ -761,6 +764,9 @@ msgstr "범위 정렬"
 msgid "All"
 msgstr "전체"
 
+msgid "ALL (pcs)"
+msgstr ""
+
 msgid "All {total} phases are done. Nice work — your team is up and running."
 msgstr "{total}단계가 모두 완료되었습니다. 수고하셨습니다 — 팀이 이제 정상 가동 중입니다."
 
@@ -1146,6 +1152,10 @@ msgstr "고객 유형 {0}을(를) 삭제하시겠습니까? 이 작업은 되돌
 
 msgid "Are you sure you want to delete the department: {name}? This cannot be undone."
 msgstr "부서 {name}을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다."
+
+#. placeholder {0}: downtimeReason.name
+msgid "Are you sure you want to delete the downtime reason: {0}? This cannot be undone."
+msgstr ""
 
 #. placeholder {0}: employeeType.name
 msgid "Are you sure you want to delete the employee type: {0}? This cannot be undone."
@@ -1549,6 +1559,12 @@ msgstr "인증 오류"
 msgid "Auto apply"
 msgstr "자동 적용"
 
+msgid "Auto downtime after (× cycle time)"
+msgstr ""
+
+msgid "Auto Downtime Multiplier (override)"
+msgstr ""
+
 msgid "Auto Release"
 msgstr "자동 릴리즈"
 
@@ -1576,6 +1592,9 @@ msgstr "자동 원가 업데이트"
 msgid "Automatic Lead Time Updates"
 msgstr "자동 리드타임 업데이트"
 
+msgid "Automatic No-Output Downtime"
+msgstr ""
+
 msgid "Automatic Updates"
 msgstr "자동 업데이트"
 
@@ -1589,6 +1608,9 @@ msgid "Automatically start the job when the kanban is scanned"
 msgstr "칸반이 스캔되면 작업을 자동으로 시작"
 
 msgid "Availability"
+msgstr ""
+
+msgid "Availability (%A)"
 msgstr ""
 
 msgid "available"
@@ -1611,6 +1633,9 @@ msgstr "뒤로"
 
 msgid "Back Home"
 msgstr "홈으로"
+
+msgid "Back to OEE"
+msgstr ""
 
 msgid "Back to traceability"
 msgstr "이력추적으로 돌아가기"
@@ -2696,6 +2721,9 @@ msgstr "절차 이름 복사"
 msgid "Copy procedure unique identifier"
 msgstr "절차 고유 식별자 복사"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 msgid "Copy Quality Document"
 msgstr "품질 문서 복사"
 
@@ -2948,6 +2976,9 @@ msgstr "고객 생성됨: {0}"
 msgid "Created department"
 msgstr "부서 생성됨"
 
+msgid "Created downtime reason"
+msgstr ""
+
 msgid "Created failure mode"
 msgstr "고장 모드 생성됨"
 
@@ -3071,6 +3102,9 @@ msgstr "CSV 열"
 
 msgid "CSV file must have at least 2 rows."
 msgstr "CSV 파일에는 최소 2개 행이 있어야 합니다."
+
+msgid "CT"
+msgstr ""
 
 msgid "Cumulative"
 msgstr "누적"
@@ -3276,6 +3310,9 @@ msgstr "전환 지원"
 msgid "Cycle count and adjust with an audit trail"
 msgstr "감사 추적과 함께 순환 재고조사 및 조정"
 
+msgid "Cycle Time"
+msgstr ""
+
 msgid "Daily check-ins while your team finds its feet on the live system"
 msgstr "팀이 실제 운영 시스템에 적응하는 동안 매일 체크인"
 
@@ -3457,6 +3494,9 @@ msgstr "기준 통화 거래에 사용할 기본 현금 계정입니다."
 msgid "Default CC Recipients"
 msgstr "기본 참조(CC) 수신자"
 
+msgid "Default downtime reason"
+msgstr ""
+
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "특정 은행 계좌가 선택되지 않았을 때 현금 거래에 사용되는 기본 총계정원장 계정입니다."
 
@@ -3591,6 +3631,9 @@ msgstr "작업지시 삭제"
 
 msgid "Delete Document"
 msgstr "문서 삭제"
+
+msgid "Delete Downtime Reason"
+msgstr ""
 
 msgid "Delete Employee Type"
 msgstr "직원 유형 삭제"
@@ -4051,6 +4094,12 @@ msgstr "템플릿 다운로드"
 msgid "Downtime"
 msgstr ""
 
+msgid "Downtime Reason"
+msgstr ""
+
+msgid "Downtime Reasons"
+msgstr ""
+
 msgid "Draft"
 msgstr "초안"
 
@@ -4154,6 +4203,9 @@ msgstr "다음으로 복제..."
 msgid "Duration"
 msgstr "기간"
 
+msgid "e.g. 2 = flag after 2× the cycle time with no output"
+msgstr ""
+
 msgid "e.g. 2h"
 msgstr "예: 2시간"
 
@@ -4252,6 +4304,9 @@ msgstr "치수 수정"
 
 msgid "Edit Dispatch"
 msgstr "작업지시 수정"
+
+msgid "Edit Downtime Reason"
+msgstr ""
 
 msgid "Edit Employee"
 msgstr "직원 수정"
@@ -5052,6 +5107,9 @@ msgstr "결제조건 생성 실패: {0}"
 msgid "Failed to create process: {0}"
 msgstr "공정 생성 실패: {0}"
 
+msgid "Failed to create public link"
+msgstr ""
+
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create shipping method: {0}"
 msgstr "배송 방법 생성 실패: {0}"
@@ -5421,6 +5479,9 @@ msgstr "픽스처"
 msgid "Fixture ID"
 msgstr "픽스처 ID"
 
+msgid "Flag unplanned downtime after this many times the cycle time with no output. Empty = company default, 0 = disabled for this work center"
+msgstr ""
+
 msgid "for anything. They'll pull in the right person."
 msgstr "무엇이든지요. 적임자를 연결해 드립니다."
 
@@ -5486,6 +5547,9 @@ msgstr "출발 저장 단위"
 
 msgid "Fulfillment Location"
 msgstr "이행 위치"
+
+msgid "Fullscreen"
+msgstr ""
 
 msgid "Fully trained for"
 msgstr "다음에 대해 완전히 교육됨"
@@ -6009,6 +6073,9 @@ msgstr "이 페이지에 대한 아이디어, 제안, 또는 문제가 있으신
 
 msgid "Ideas, suggestions or problems?"
 msgstr "아이디어, 제안, 또는 문제가 있으신가요?"
+
+msgid "Idle"
+msgstr ""
 
 msgid "IDs and descriptions are generated for raw materials."
 msgstr "원자재에 대한 ID와 설명이 자동으로 생성됩니다."
@@ -7540,6 +7607,9 @@ msgstr "신규 부서"
 msgid "New Dimension"
 msgstr "신규 차원"
 
+msgid "New Downtime Reason"
+msgstr ""
+
 msgid "New Employee Type"
 msgstr "신규 직원 유형"
 
@@ -7791,6 +7861,9 @@ msgstr "다음 단계"
 
 msgid "Next:"
 msgstr "다음:"
+
+msgid "NG (pcs)"
+msgstr ""
 
 msgid "No"
 msgstr "아니요"
@@ -8059,6 +8132,9 @@ msgstr "이번 주 시간 기록이 없습니다"
 msgid "No transactions in this period"
 msgstr "이 기간에 거래가 없습니다"
 
+msgid "No unplanned downtime reasons configured. Add them under Production → Downtime Reasons."
+msgstr ""
+
 msgid "No value needed"
 msgstr "값이 필요하지 않습니다"
 
@@ -8172,6 +8248,9 @@ msgstr "중"
 
 msgid "OK"
 msgstr "확인"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "오래된순"
@@ -8724,6 +8803,9 @@ msgstr "저비용 평가에 적합"
 msgid "Performance"
 msgstr ""
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Period"
 msgstr "기간"
 
@@ -8817,6 +8899,9 @@ msgstr "고정됨"
 msgid "Plan"
 msgstr "계획"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Plan the work"
 msgstr "작업 계획 수립"
 
@@ -8825,6 +8910,12 @@ msgstr "계획 유형"
 
 msgid "Planned"
 msgstr "계획됨"
+
+msgid "Planned Downtime"
+msgstr ""
+
+msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
+msgstr ""
 
 msgid "Planned End"
 msgstr "계획 종료"
@@ -9226,6 +9317,9 @@ msgstr "공정 지식과 의견을 제공하세요"
 msgid "Public"
 msgstr "공개"
 
+msgid "Public TV link copied to clipboard"
+msgstr ""
+
 msgid "Publish"
 msgstr "게시"
 
@@ -9382,6 +9476,9 @@ msgstr "품질"
 
 msgid "Quality"
 msgstr "품질"
+
+msgid "Quality (%Q)"
+msgstr ""
 
 msgid "Quality Document approval rule"
 msgstr "품질 문서 승인 규칙"
@@ -9717,6 +9814,9 @@ msgstr "새로고침"
 
 msgid "Refresh exchange rate"
 msgstr "환율 새로고침"
+
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
 
 msgid "Register"
 msgstr "등록"
@@ -10178,6 +10278,9 @@ msgstr "인수 체크리스트를 통과할 때까지 진행하세요"
 msgid "Run the floor on tablets: clock labor, report progress, see instructions"
 msgstr "태블릿으로 현장을 운영하세요: 근무 시간 기록, 진행 상황 보고, 작업 지시 확인"
 
+msgid "Running"
+msgstr ""
+
 msgid "Running inventory after each week's supply and demand — the line."
 msgstr "매주 공급과 수요를 반영해 갱신되는 재고 — 그 라인입니다."
 
@@ -10185,6 +10288,9 @@ msgid "Running Total"
 msgstr "누계"
 
 msgid "Runtime"
+msgstr ""
+
+msgid "Runtime (min)"
 msgstr ""
 
 msgid "S-1 (coarsest special)"
@@ -10537,6 +10643,9 @@ msgstr "구성할 품목을 선택하세요"
 
 msgid "Select an option"
 msgstr "옵션 선택"
+
+msgid "Select an unplanned downtime reason..."
+msgstr ""
 
 msgid "Select at least one line to convert"
 msgstr "전환할 라인을 하나 이상 선택하세요"
@@ -11252,6 +11361,9 @@ msgstr "상태"
 msgid "Stay on this page"
 msgstr "이 페이지에 머무르기"
 
+msgid "STD (pcs)"
+msgstr ""
+
 msgid "Step"
 msgstr "단계"
 
@@ -11628,6 +11740,9 @@ msgstr "영업팀에 문의"
 
 msgid "Target"
 msgstr "대상"
+
+msgid "TARGET"
+msgstr ""
 
 msgid "Target an item group."
 msgstr "품목 그룹을 대상으로 지정합니다."
@@ -12994,6 +13109,12 @@ msgstr "피킹 취소"
 msgid "Unpick {0}"
 msgstr "{0} 피킹 취소"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unposted Documents"
 msgstr "미전기 문서"
 
@@ -13704,6 +13825,9 @@ msgstr "완제품의 유효기간이 계산됨으로 설정된 경우, 계산에
 msgid "When a serial or batch expires, and what happens if used after — a company policy can Warn, Block, or BlockWithOverride."
 msgstr "일련번호 또는 배치가 만료되는 시점과 만료 후 사용 시의 처리 방식입니다 — 회사 정책은 경고, 차단, 또는 승인 후 차단 중 하나로 설정할 수 있습니다."
 
+msgid "When a work center has a running operation but no output is logged within the multiplier × cycle time, it is automatically flagged as unplanned downtime with the default reason. Leave either field empty to disable. Work centers can override the multiplier individually."
+msgstr ""
+
 msgid "When Carbon committed to having the goods arrive; combined with the shipping method's transit days, this drives Ship Date back-calc."
 msgstr "Carbon이 재화 도착을 약속한 시점으로, 배송 방법의 운송 일수와 결합되어 출하일 역산에 사용됩니다."
 
@@ -13993,6 +14117,9 @@ msgstr "워크플로"
 
 msgid "Working sessions on configuration and data"
 msgstr "설정 및 데이터에 대한 작업 세션"
+
+msgid "Working Time (min)"
+msgstr ""
 
 msgid "Worst Performing Machines"
 msgstr "성과가 가장 저조한 설비"

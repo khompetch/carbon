@@ -137,6 +137,9 @@ msgstr "{variances, plural, one {# लाइन अपेक्षित मा�
 msgid "/month/user"
 msgstr "/माह/उपयोगकर्ता"
 
+msgid "%OEE ({shiftName})"
+msgstr ""
+
 #. placeholder {0}: numberFormatter.format(redirectedTotal)
 #. placeholder {1}: redirectedParts.join(", ")
 msgid "↩ {0} redirected from superseded {1}"
@@ -761,6 +764,9 @@ msgstr "दायरे पर संरेखित करें"
 msgid "All"
 msgstr "सभी"
 
+msgid "ALL (pcs)"
+msgstr ""
+
 msgid "All {total} phases are done. Nice work — your team is up and running."
 msgstr "सभी {total} चरण पूरे हो गए। शानदार काम — आपकी टीम चल रही है।"
 
@@ -1146,6 +1152,10 @@ msgstr "क्या आप सुनिश्चित हैं कि आप 
 
 msgid "Are you sure you want to delete the department: {name}? This cannot be undone."
 msgstr "क्या आप सुनिश्चित हैं कि आप विभाग को हटाना चाहते हैं: {name}? यह पूर्ववत नहीं किया जा सकता।"
+
+#. placeholder {0}: downtimeReason.name
+msgid "Are you sure you want to delete the downtime reason: {0}? This cannot be undone."
+msgstr ""
 
 #. placeholder {0}: employeeType.name
 msgid "Are you sure you want to delete the employee type: {0}? This cannot be undone."
@@ -1549,6 +1559,12 @@ msgstr "प्रमाणीकरण त्रुटि"
 msgid "Auto apply"
 msgstr "स्वचालित रूप से लागू करें"
 
+msgid "Auto downtime after (× cycle time)"
+msgstr ""
+
+msgid "Auto Downtime Multiplier (override)"
+msgstr ""
+
 msgid "Auto Release"
 msgstr "ऑटो रिलीज़"
 
@@ -1576,6 +1592,9 @@ msgstr "स्वचालित लागत अपडेट"
 msgid "Automatic Lead Time Updates"
 msgstr "स्वचालित लीड टाइम अपडेट"
 
+msgid "Automatic No-Output Downtime"
+msgstr ""
+
 msgid "Automatic Updates"
 msgstr "स्वचालित अपडेट"
 
@@ -1589,6 +1608,9 @@ msgid "Automatically start the job when the kanban is scanned"
 msgstr "कनबन स्कैन किए जाने पर जॉब को स्वचालित रूप से शुरू करें"
 
 msgid "Availability"
+msgstr ""
+
+msgid "Availability (%A)"
 msgstr ""
 
 msgid "available"
@@ -1611,6 +1633,9 @@ msgstr "वापस"
 
 msgid "Back Home"
 msgstr "घर वापस"
+
+msgid "Back to OEE"
+msgstr ""
 
 msgid "Back to traceability"
 msgstr "ट्रेसेबिलिटी पर वापस जाएं"
@@ -2696,6 +2721,9 @@ msgstr "प्रक्रिया का नाम कॉपी करें"
 msgid "Copy procedure unique identifier"
 msgstr "प्रक्रिया अद्वितीय पहचानकर्ता की प्रतिलिपि बनाएं"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 msgid "Copy Quality Document"
 msgstr "गुणवत्ता दस्तावेज़ कॉपी करें"
 
@@ -2948,6 +2976,9 @@ msgstr "ग्राहक बनाया गया: {0}"
 msgid "Created department"
 msgstr "विभाग बनाया गया"
 
+msgid "Created downtime reason"
+msgstr ""
+
 msgid "Created failure mode"
 msgstr "विफलता मोड बनाया गया"
 
@@ -3071,6 +3102,9 @@ msgstr "CSV कॉलम"
 
 msgid "CSV file must have at least 2 rows."
 msgstr "CSV फ़ाइल में कम से कम 2 पंक्तियाँ होनी चाहिए।"
+
+msgid "CT"
+msgstr ""
 
 msgid "Cumulative"
 msgstr "संचयी"
@@ -3276,6 +3310,9 @@ msgstr "कटओवर सहायता"
 msgid "Cycle count and adjust with an audit trail"
 msgstr "चक्र गणना करें और ऑडिट ट्रेल के साथ समायोजित करें"
 
+msgid "Cycle Time"
+msgstr ""
+
 msgid "Daily check-ins while your team finds its feet on the live system"
 msgstr "दैनिक चेक-इन जबकि आपकी टीम लाइव सिस्टम पर अपने पैर जमाती है"
 
@@ -3457,6 +3494,9 @@ msgstr "आपकी आधार मुद्रा में लेनदे�
 msgid "Default CC Recipients"
 msgstr "डिफ़ॉल्ट CC प्राप्तकर्ता"
 
+msgid "Default downtime reason"
+msgstr ""
+
 msgid "Default GL account used for cash transactions when no specific bank account is selected."
 msgstr "जब कोई विशिष्ट बैंक खाता नहीं चुना जाता है तो नकद लेनदेन के लिए उपयोग किया जाने वाला डिफ़ॉल्ट GL खाता।"
 
@@ -3591,6 +3631,9 @@ msgstr "डिस्पैच हटाएं"
 
 msgid "Delete Document"
 msgstr "दस्तावेज़ हटाएं"
+
+msgid "Delete Downtime Reason"
+msgstr ""
 
 msgid "Delete Employee Type"
 msgstr "कर्मचारी प्रकार हटाएं"
@@ -4051,6 +4094,12 @@ msgstr "टेम्पलेट डाउनलोड करें"
 msgid "Downtime"
 msgstr ""
 
+msgid "Downtime Reason"
+msgstr ""
+
+msgid "Downtime Reasons"
+msgstr ""
+
 msgid "Draft"
 msgstr "ड्राफ्ट"
 
@@ -4154,6 +4203,9 @@ msgstr "...को डुप्लिकेट करें"
 msgid "Duration"
 msgstr "अवधि"
 
+msgid "e.g. 2 = flag after 2× the cycle time with no output"
+msgstr ""
+
 msgid "e.g. 2h"
 msgstr "उदा. 2h"
 
@@ -4252,6 +4304,9 @@ msgstr "आयाम संपादित करें"
 
 msgid "Edit Dispatch"
 msgstr "डिस्पैच संपादित करें"
+
+msgid "Edit Downtime Reason"
+msgstr ""
 
 msgid "Edit Employee"
 msgstr "कर्मचारी संपादित करें"
@@ -5052,6 +5107,9 @@ msgstr "भुगतान शर्त बनाने में विफल: 
 msgid "Failed to create process: {0}"
 msgstr "प्रक्रिया बनाने में विफल: {0}"
 
+msgid "Failed to create public link"
+msgstr ""
+
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create shipping method: {0}"
 msgstr "शिपिंग विधि बनाने में विफल: {0}"
@@ -5421,6 +5479,9 @@ msgstr "फिक्सचर"
 msgid "Fixture ID"
 msgstr "फिक्सचर आईडी"
 
+msgid "Flag unplanned downtime after this many times the cycle time with no output. Empty = company default, 0 = disabled for this work center"
+msgstr ""
+
 msgid "for anything. They'll pull in the right person."
 msgstr "किसी भी चीज़ के लिए। वे सही व्यक्ति को शामिल करेंगे।"
 
@@ -5486,6 +5547,9 @@ msgstr "स्टोरेज यूनिट से"
 
 msgid "Fulfillment Location"
 msgstr "पूरा करने का स्थान"
+
+msgid "Fullscreen"
+msgstr ""
 
 msgid "Fully trained for"
 msgstr "पूरी तरह प्रशिक्षित"
@@ -6009,6 +6073,9 @@ msgstr "इस पृष्ठ के बारे में विचार, �
 
 msgid "Ideas, suggestions or problems?"
 msgstr "विचार, सुझाव या समस्याएं?"
+
+msgid "Idle"
+msgstr ""
 
 msgid "IDs and descriptions are generated for raw materials."
 msgstr "कच्चे माल के लिए आईडी और विवरण उत्पन्न किए जाते हैं।"
@@ -7540,6 +7607,9 @@ msgstr "नया विभाग"
 msgid "New Dimension"
 msgstr "नया आयाम"
 
+msgid "New Downtime Reason"
+msgstr ""
+
 msgid "New Employee Type"
 msgstr "नया कर्मचारी प्रकार"
 
@@ -7791,6 +7861,9 @@ msgstr "अगला कदम"
 
 msgid "Next:"
 msgstr "अगला:"
+
+msgid "NG (pcs)"
+msgstr ""
 
 msgid "No"
 msgstr "नहीं"
@@ -8059,6 +8132,9 @@ msgstr "इस सप्ताह के लिए कोई समय प्र
 msgid "No transactions in this period"
 msgstr "इस अवधि में कोई लेनदेन नहीं"
 
+msgid "No unplanned downtime reasons configured. Add them under Production → Downtime Reasons."
+msgstr ""
+
 msgid "No value needed"
 msgstr "कोई मान आवश्यक नहीं"
 
@@ -8172,6 +8248,9 @@ msgstr "का"
 
 msgid "OK"
 msgstr "ठीक है"
+
+msgid "OK (pcs)"
+msgstr ""
 
 msgid "Oldest first"
 msgstr "सबसे पुराना पहले"
@@ -8724,6 +8803,9 @@ msgstr "कम लागत मूल्यांकन के लिए बि�
 msgid "Performance"
 msgstr ""
 
+msgid "Performance (%P)"
+msgstr ""
+
 msgid "Period"
 msgstr "अवधि"
 
@@ -8817,6 +8899,9 @@ msgstr "पिन किया गया"
 msgid "Plan"
 msgstr "योजना"
 
+msgid "Plan Downtime (min)"
+msgstr ""
+
 msgid "Plan the work"
 msgstr "काम की योजना बनाएं"
 
@@ -8825,6 +8910,12 @@ msgstr "योजना प्रकार"
 
 msgid "Planned"
 msgstr "पोस्टिंग"
+
+msgid "Planned Downtime"
+msgstr ""
+
+msgid "Planned downtime (breaks, changeover) is excluded from availability; unplanned downtime counts against it"
+msgstr ""
 
 msgid "Planned End"
 msgstr "नियोजित अंत"
@@ -9226,6 +9317,9 @@ msgstr "प्रक्रिया ज्ञान और इनपुट प�
 msgid "Public"
 msgstr "सार्वजनिक"
 
+msgid "Public TV link copied to clipboard"
+msgstr ""
+
 msgid "Publish"
 msgstr "प्रकाशित करें"
 
@@ -9382,6 +9476,9 @@ msgstr "उद्धरण से नकद तक"
 
 msgid "Quality"
 msgstr "गुणवत्ता"
+
+msgid "Quality (%Q)"
+msgstr ""
 
 msgid "Quality Document approval rule"
 msgstr "गुणवत्ता दस्तावेज़ अनुमोदन नियम"
@@ -9717,6 +9814,9 @@ msgstr "ताज़ा करें"
 
 msgid "Refresh exchange rate"
 msgstr "विनिमय दर को ताज़ा करें"
+
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
 
 msgid "Register"
 msgstr "मौजूदा संपत्ति पंजीकृत करें"
@@ -10178,6 +10278,9 @@ msgstr "स्वीकृति चेकलिस्ट को पास क�
 msgid "Run the floor on tablets: clock labor, report progress, see instructions"
 msgstr "टैबलेट पर फ़्लोर चलाएं: श्रम घड़ी, प्रगति रिपोर्ट करें, निर्देश देखें"
 
+msgid "Running"
+msgstr ""
+
 msgid "Running inventory after each week's supply and demand — the line."
 msgstr "प्रत्येक सप्ताह की आपूर्ति और मांग के बाद चलाई जाने वाली इन्वेंटरी — पंक्ति।"
 
@@ -10185,6 +10288,9 @@ msgid "Running Total"
 msgstr "कुल चल रहा है"
 
 msgid "Runtime"
+msgstr ""
+
+msgid "Runtime (min)"
 msgstr ""
 
 msgid "S-1 (coarsest special)"
@@ -10537,6 +10643,9 @@ msgstr "कॉन्फ़िगर करने के लिए एक आइ�
 
 msgid "Select an option"
 msgstr "एक विकल्प चुनें"
+
+msgid "Select an unplanned downtime reason..."
+msgstr ""
 
 msgid "Select at least one line to convert"
 msgstr "परिवर्तित करने के लिए कम से कम एक पंक्ति चुनें"
@@ -11252,6 +11361,9 @@ msgstr "स्थितियाँ"
 msgid "Stay on this page"
 msgstr "इस पृष्ठ पर रहें"
 
+msgid "STD (pcs)"
+msgstr ""
+
 msgid "Step"
 msgstr "चरण"
 
@@ -11628,6 +11740,9 @@ msgstr "बिक्रय टीम से बात करें"
 
 msgid "Target"
 msgstr "लक्ष्य"
+
+msgid "TARGET"
+msgstr ""
 
 msgid "Target an item group."
 msgstr "एक आइटम समूह को लक्षित करें।"
@@ -12994,6 +13109,12 @@ msgstr "अनपिक करें"
 msgid "Unpick {0}"
 msgstr "अनपिक {0}"
 
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
 msgid "Unposted Documents"
 msgstr "अपोस्ट किए गए दस्तावेज़"
 
@@ -13704,6 +13825,9 @@ msgstr "जब किसी तैयार उत्पाद का शेल�
 msgid "When a serial or batch expires, and what happens if used after — a company policy can Warn, Block, or BlockWithOverride."
 msgstr "जब एक सीरियल या बैच समाप्त हो जाता है, और उपयोग के बाद क्या होता है — एक कंपनी नीति सतर्क, अवरुद्ध, या ब्लॉकविदअधिग्रहण हो सकती है।"
 
+msgid "When a work center has a running operation but no output is logged within the multiplier × cycle time, it is automatically flagged as unplanned downtime with the default reason. Leave either field empty to disable. Work centers can override the multiplier individually."
+msgstr ""
+
 msgid "When Carbon committed to having the goods arrive; combined with the shipping method's transit days, this drives Ship Date back-calc."
 msgstr "जब कार्बन ने माल के आने का वचन दिया; शिपिंग विधि के ट्रांजिट दिनों के साथ संयुक्त, यह जहाज तारीख की पिछली गणना को चलाता है।"
 
@@ -13993,6 +14117,9 @@ msgstr "वर्कफ़्लो"
 
 msgid "Working sessions on configuration and data"
 msgstr "कॉन्फ़िगरेशन और डेटा पर कार्य सत्र"
+
+msgid "Working Time (min)"
+msgstr ""
 
 msgid "Worst Performing Machines"
 msgstr "सबसे खराब प्रदर्शन करने वाली मशीनें"

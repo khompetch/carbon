@@ -1,26 +1,34 @@
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { fetchAllFromTable } from "@carbon/database";
+import { subtractIntervals } from "@carbon/utils";
 import {
   now,
   parseDateTime,
   toCalendarDateTime
 } from "@internationalized/date";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import type { LoaderFunctionArgs } from "react-router";
 import { makeDurations } from "~/utils/duration";
 
 // OEE = Availability × Performance × Quality, aggregated in TypeScript like
 // the other production KPIs (see production.kpi.$key.ts). Tracking spec:
-// .ai/specs/2026-07-09-oee-dashboard.md
+// .ai/specs/2026-07-09-oee-dashboard.md — semantics kept in sync with the
+// hourly work-center board (.ai/specs/2026-07-16-oee-work-center-hourly.md).
 //
 //   Runtime      merged non-overlapping productionEvent intervals, clamped
-//                to the requested range (open events clamped to now)
+//                to the requested range (open events clamped to now), MINUS
+//                every recorded downtime interval on the event's work center
+//                (downtime wins over a still-running event)
 //   Planned      active location `shift` windows across the range (day-of-week
 //                flags, weekday resolved in the location timezone) minus
-//                maintenance downtime (oeeImpact Down/Planned)
-//   Availability Runtime / Planned
-//   Performance  earned standard time / Runtime, where earned = setup standard
-//                (only when a Setup event ran in range) + max(labor, machine)
-//                standard for the pieces recorded in range (makeDurations)
+//                PLANNED downtime: maintenance (oeeImpact Down/Planned) +
+//                workCenterDowntime rows of type 'Planned'
+//   Availability Runtime / Planned — recorded Unplanned downtime (incl. auto
+//                no-output rows) lowers the numerator, not the denominator
+//   Performance  earned standard time / Runtime, where earned = max(labor,
+//                machine) standard for the pieces recorded in range
+//                (makeDurations). No setup credit — setup counts as runtime
+//                with zero earned, i.e. a Performance loss
 //   Quality      Production / (Production + Scrap + Rework)
 //
 // Process view reuses the planned time of the distinct work centers where the
@@ -221,7 +229,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     // The event/quantity tables grow one row per MES action — paginate past
     // PostgREST's 1000-row cap or a busy month silently truncates.
-    const [events, quantities, dispatches] = await Promise.all([
+    const [events, quantities, dispatches, downtimes] = await Promise.all([
       fetchAllFromTable<{
         startTime: string;
         endTime: string | null;
@@ -272,7 +280,24 @@ export async function loader({ request }: LoaderFunctionArgs) {
         .in("oeeImpact", ["Down", "Planned"])
         .not("actualStartTime", "is", null)
         .lte("actualStartTime", periodEnd)
-        .or(`actualEndTime.gte.${periodStart},actualEndTime.is.null`)
+        .or(`actualEndTime.gte.${periodStart},actualEndTime.is.null`),
+      // workCenterDowntime is newer than the generated DB types — cast until regen
+      (client as SupabaseClient<any>)
+        .from("workCenterDowntime")
+        .select("workCenterId, type, startTime, endTime")
+        .eq("companyId", companyId)
+        .lt("startTime", periodEnd)
+        .or(`endTime.is.null,endTime.gt.${periodStart}`) as unknown as Promise<{
+        data:
+          | {
+              workCenterId: string;
+              type: "Planned" | "Unplanned";
+              startTime: string;
+              endTime: string | null;
+            }[]
+          | null;
+        error: any;
+      }>
     ]);
 
     // ── Planned time per location (shift windows clamped to the window) ─────
@@ -318,8 +343,23 @@ export async function loader({ request }: LoaderFunctionArgs) {
       plannedByLocation.set(locId, mergedDuration(intervals));
     }
 
-    // ── Downtime per work center (merged maintenance intervals) ─────────────
-    const downtimeIntervals = new Map<string, Interval[]>();
+    // ── Downtime per work center ─────────────────────────────────────────────
+    // Planned downtime (maintenance + recorded Planned intervals) reduces the
+    // availability denominator; Unplanned records (incl. auto no-output rows)
+    // reduce runtime instead. ALL downtime is subtracted from runtime —
+    // downtime wins over a still-running production event.
+    const plannedDowntimeIntervals = new Map<string, Interval[]>();
+    const unplannedDowntimeIntervals = new Map<string, Interval[]>();
+    const pushDowntime = (
+      map: Map<string, Interval[]>,
+      workCenterId: string,
+      interval: Interval
+    ) => {
+      const list = map.get(workCenterId) ?? [];
+      list.push(interval);
+      map.set(workCenterId, list);
+    };
+
     for (const d of dispatches.data ?? []) {
       if (!d.workCenterId || !d.actualStartTime) continue;
       const interval = clamp(
@@ -329,20 +369,57 @@ export async function loader({ request }: LoaderFunctionArgs) {
         windowEnd
       );
       if (!interval) continue;
-      const list = downtimeIntervals.get(d.workCenterId) ?? [];
-      list.push(interval);
-      downtimeIntervals.set(d.workCenterId, list);
+      pushDowntime(plannedDowntimeIntervals, d.workCenterId, interval);
     }
+    for (const d of downtimes.data ?? []) {
+      if (!d.workCenterId) continue;
+      const interval = clamp(
+        new Date(d.startTime).getTime(),
+        d.endTime ? new Date(d.endTime).getTime() : nowMs,
+        windowStart,
+        windowEnd
+      );
+      if (!interval) continue;
+      pushDowntime(
+        d.type === "Planned"
+          ? plannedDowntimeIntervals
+          : unplannedDowntimeIntervals,
+        d.workCenterId,
+        interval
+      );
+    }
+
+    const plannedDowntimeByWorkCenter = new Map<string, number>();
+    for (const [wcId, intervals] of plannedDowntimeIntervals) {
+      plannedDowntimeByWorkCenter.set(wcId, mergedDuration(intervals));
+    }
+    // All downtime (planned + unplanned) as tuples, for runtime subtraction
+    // and the per-group downtime display
+    const downtimeTuplesByWorkCenter = new Map<string, [number, number][]>();
     const downtimeByWorkCenter = new Map<string, number>();
-    for (const [wcId, intervals] of downtimeIntervals) {
-      downtimeByWorkCenter.set(wcId, mergedDuration(intervals));
+    for (const wcId of new Set([
+      ...plannedDowntimeIntervals.keys(),
+      ...unplannedDowntimeIntervals.keys()
+    ])) {
+      const all = [
+        ...(plannedDowntimeIntervals.get(wcId) ?? []),
+        ...(unplannedDowntimeIntervals.get(wcId) ?? [])
+      ];
+      downtimeTuplesByWorkCenter.set(
+        wcId,
+        all.map(({ start, end }) => [start, end] as [number, number])
+      );
+      downtimeByWorkCenter.set(wcId, mergedDuration(all));
     }
 
     const plannedForWorkCenter = (wcId: string) => {
       const wc = workCenterById.get(wcId);
       if (!wc?.locationId) return 0;
       const planned = plannedByLocation.get(wc.locationId) ?? 0;
-      return Math.max(0, planned - (downtimeByWorkCenter.get(wcId) ?? 0));
+      return Math.max(
+        0,
+        planned - (plannedDowntimeByWorkCenter.get(wcId) ?? 0)
+      );
     };
 
     // ── Runtime intervals + earned standard time ────────────────────────────
@@ -350,12 +427,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const runtimeIntervals = new Map<string, Interval[]>(); // by group id
     const workCentersByGroup = new Map<string, Set<string>>();
     // Earned standard is per operation: pieces recorded in range × per-piece
-    // standard (+ setup standard when a Setup event ran in range).
+    // standard. No setup credit — see the header comment.
     const operations = new Map<
       string,
       {
         event: EventRow;
-        hadSetup: boolean;
         groupId: string | null;
         workCenterId: string;
       }
@@ -379,9 +455,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
         windowEnd
       );
       if (interval) {
-        const list = runtimeIntervals.get(groupId) ?? [];
-        list.push(interval);
-        runtimeIntervals.set(groupId, list);
+        // Downtime wins: recorded downtime on this event's work center is
+        // carved out of the event's runtime
+        const minus = downtimeTuplesByWorkCenter.get(event.workCenterId);
+        const segments = minus?.length
+          ? subtractIntervals([[interval.start, interval.end]], minus).map(
+              ([start, end]) => ({ start, end })
+            )
+          : [interval];
+        if (segments.length > 0) {
+          const list = runtimeIntervals.get(groupId) ?? [];
+          list.push(...segments);
+          runtimeIntervals.set(groupId, list);
+        }
       }
 
       const wcs = workCentersByGroup.get(groupId) ?? new Set<string>();
@@ -391,11 +477,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
       if (event.jobOperationId) {
         const op = operations.get(event.jobOperationId) ?? {
           event,
-          hadSetup: false,
           groupId,
           workCenterId: event.workCenterId
         };
-        if (event.type === "Setup") op.hadSetup = true;
         operations.set(event.jobOperationId, op);
       }
     }
@@ -450,7 +534,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
 
     const earnedByGroup = new Map<string, number>();
-    for (const [operationId, { event, hadSetup, groupId }] of operations) {
+    for (const [operationId, { event, groupId }] of operations) {
       if (!groupId) continue;
       const pieces = piecesByOperation.get(operationId) ?? 0;
       const durations = makeDurations({
@@ -474,9 +558,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         TOTAL_UNITS.has(event.machineUnit ?? "") && pieces === 0
           ? 0
           : finite(durations.machineDuration);
-      const earned =
-        (hadSetup ? finite(durations.setupDuration) : 0) +
-        Math.max(laborEarned, machineEarned);
+      const earned = Math.max(laborEarned, machineEarned);
       earnedByGroup.set(groupId, (earnedByGroup.get(groupId) ?? 0) + earned);
     }
 
