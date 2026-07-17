@@ -224,6 +224,9 @@ msgstr "Modalità Console"
 msgid "Consumed expired"
 msgstr "Consumato scaduto"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -375,6 +378,9 @@ msgstr "Scadenza prima"
 
 msgid "Failed to complete inventory adjustment"
 msgstr "Impossibile completare la rettifica dell'inventario"
+
+msgid "Failed to create public link"
+msgstr ""
 
 msgid "Failed to end operations"
 msgstr "Impossibile terminare le operazioni"
@@ -854,6 +860,9 @@ msgstr "Processi"
 
 msgid "Progress"
 msgstr "Avanzamento"
+
+msgid "Public TV link copied to clipboard"
+msgstr ""
 
 msgid "Quality (%Q)"
 msgstr ""

@@ -1,26 +1,32 @@
-import { error, notFound } from "@carbon/auth";
+import { error, getAppUrl, notFound } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
+import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { flash } from "@carbon/auth/session.server";
 import {
   Button,
   OeeShiftBoard,
+  toast,
   useInterval,
   useRealtimeChannel
 } from "@carbon/react";
 import { msg } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useCallback, useEffect, useRef } from "react";
-import { LuExpand } from "react-icons/lu";
-import type { LoaderFunctionArgs } from "react-router";
+import { LuExpand, LuLink } from "react-icons/lu";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import {
   Link,
   redirect,
+  useFetcher,
   useLoaderData,
   useRevalidator,
   useSearchParams
 } from "react-router";
 import { useUser } from "~/hooks";
-import { getWorkCenterHourlyOee } from "~/modules/production/production.server";
+import {
+  getOrCreateWorkCenterShareLink,
+  getWorkCenterHourlyOee
+} from "~/modules/production/production.server";
 import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
 
@@ -55,16 +61,49 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   return result.data;
 }
 
+export async function action({ request, params }: ActionFunctionArgs) {
+  const { companyId } = await requirePermissions(request, {
+    view: "production"
+  });
+
+  const { workCenterId } = params;
+  if (!workCenterId) throw notFound("workCenterId not found");
+
+  const link = await getOrCreateWorkCenterShareLink(getCarbonServiceRole(), {
+    workCenterId,
+    companyId
+  });
+
+  if (link.error || !link.data) {
+    return { shareUrl: null };
+  }
+
+  return { shareUrl: `${getAppUrl()}${path.to.externalOee(link.data.id)}` };
+}
+
 const REALTIME_REFRESH_DEBOUNCE_MS = 10_000;
 const REFRESH_INTERVAL_MS = 60_000;
 
 export default function WorkCenterOeeRoute() {
+  const { t } = useLingui();
   const board = useLoaderData<typeof loader>();
   const revalidator = useRevalidator();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     company: { id: companyId }
   } = useUser();
+
+  const shareFetcher = useFetcher<typeof action>();
+  useEffect(() => {
+    if (shareFetcher.state === "idle" && shareFetcher.data) {
+      if (shareFetcher.data.shareUrl) {
+        navigator.clipboard.writeText(shareFetcher.data.shareUrl);
+        toast.success(t`Public TV link copied to clipboard`);
+      } else {
+        toast.error(t`Failed to create public link`);
+      }
+    }
+  }, [shareFetcher.state, shareFetcher.data, t]);
 
   // Debounced realtime refresh + a slow safety-net poll for the TV use case
   const refreshTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -164,13 +203,26 @@ export default function WorkCenterOeeRoute() {
             </div>
           )}
         </div>
-        <Button
-          variant="secondary"
-          leftIcon={<LuExpand />}
-          onClick={toggleFullscreen}
-        >
-          <Trans>Fullscreen</Trans>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="secondary"
+            leftIcon={<LuLink />}
+            isLoading={shareFetcher.state !== "idle"}
+            isDisabled={shareFetcher.state !== "idle"}
+            onClick={() => {
+              shareFetcher.submit(null, { method: "post" });
+            }}
+          >
+            <Trans>Copy Public TV Link</Trans>
+          </Button>
+          <Button
+            variant="secondary"
+            leftIcon={<LuExpand />}
+            onClick={toggleFullscreen}
+          >
+            <Trans>Fullscreen</Trans>
+          </Button>
+        </div>
       </div>
 
       <OeeShiftBoard

@@ -2721,6 +2721,9 @@ msgstr "复制程序名称"
 msgid "Copy procedure unique identifier"
 msgstr "复制程序唯一标识符"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 msgid "Copy Quality Document"
 msgstr "复制质量文件"
 
@@ -5103,6 +5106,9 @@ msgstr "创建付款条款失败：{0}"
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create process: {0}"
 msgstr "创建流程失败：{0}"
+
+msgid "Failed to create public link"
+msgstr ""
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create shipping method: {0}"
@@ -9310,6 +9316,9 @@ msgstr "提供流程知识和输入"
 
 msgid "Public"
 msgstr "公开"
+
+msgid "Public TV link copied to clipboard"
+msgstr ""
 
 msgid "Publish"
 msgstr "发布"

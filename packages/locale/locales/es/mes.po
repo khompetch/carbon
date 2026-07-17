@@ -224,6 +224,9 @@ msgstr "Modo consola"
 msgid "Consumed expired"
 msgstr "Consumido vencido"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -375,6 +378,9 @@ msgstr "Vencimiento próximo"
 
 msgid "Failed to complete inventory adjustment"
 msgstr "Error al completar el ajuste de inventario"
+
+msgid "Failed to create public link"
+msgstr ""
 
 msgid "Failed to end operations"
 msgstr "Error al finalizar las operaciones"
@@ -854,6 +860,9 @@ msgstr "Procesos"
 
 msgid "Progress"
 msgstr "Progreso"
+
+msgid "Public TV link copied to clipboard"
+msgstr ""
 
 msgid "Quality (%Q)"
 msgstr ""

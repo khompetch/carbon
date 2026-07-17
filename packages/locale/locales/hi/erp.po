@@ -2721,6 +2721,9 @@ msgstr "प्रक्रिया का नाम कॉपी करें"
 msgid "Copy procedure unique identifier"
 msgstr "प्रक्रिया अद्वितीय पहचानकर्ता की प्रतिलिपि बनाएं"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 msgid "Copy Quality Document"
 msgstr "गुणवत्ता दस्तावेज़ कॉपी करें"
 
@@ -5103,6 +5106,9 @@ msgstr "भुगतान शर्त बनाने में विफल: 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create process: {0}"
 msgstr "प्रक्रिया बनाने में विफल: {0}"
+
+msgid "Failed to create public link"
+msgstr ""
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create shipping method: {0}"
@@ -9310,6 +9316,9 @@ msgstr "प्रक्रिया ज्ञान और इनपुट प�
 
 msgid "Public"
 msgstr "सार्वजनिक"
+
+msgid "Public TV link copied to clipboard"
+msgstr ""
 
 msgid "Publish"
 msgstr "प्रकाशित करें"

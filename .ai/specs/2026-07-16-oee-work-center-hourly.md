@@ -166,3 +166,11 @@ subtracts from runtime (downtime wins over event, so %A drops).
 - 2026-07-17: refresh countdown — "Refresh in Ns" under the header clock
   (`OeeShiftBoard.refreshIntervalMs` prop, both pages pass 60s); resets when
   new loader data arrives (periodic or realtime refresh).
+- 2026-07-17: public TV link — stable unauthenticated share URL per work
+  center for TVs. Migration `20260717093245`: `externalLinkDocumentType +=
+  'WorkCenter'`. Public page `share+/oee.$id.tsx` in ERP (externalLink token
+  → service-role fetch, no menu via the share layout, 60s poll + countdown).
+  "Copy Public TV Link" button on both board pages; action
+  `getOrCreateWorkCenterShareLink` (ERP production.server.ts + MES
+  oee.server.ts copies) reuses the existing externalLink row so the URL never
+  changes. ERP path helper `path.to.externalOee`.

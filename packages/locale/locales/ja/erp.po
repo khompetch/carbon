@@ -2721,6 +2721,9 @@ msgstr "プロシージャ名をコピー"
 msgid "Copy procedure unique identifier"
 msgstr "プロシージャの一意の識別子をコピー"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 msgid "Copy Quality Document"
 msgstr "品質文書をコピー"
 
@@ -5103,6 +5106,9 @@ msgstr "支払い条件の作成に失敗しました: {0}"
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create process: {0}"
 msgstr "プロセスの作成に失敗しました: {0}"
+
+msgid "Failed to create public link"
+msgstr ""
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create shipping method: {0}"
@@ -9310,6 +9316,9 @@ msgstr "プロセスの知識と入力を提供する"
 
 msgid "Public"
 msgstr "公開"
+
+msgid "Public TV link copied to clipboard"
+msgstr ""
 
 msgid "Publish"
 msgstr "公開"

@@ -31,6 +31,42 @@ export type WorkCenterOeeStatus =
   | "idle";
 
 /**
+ * Stable public share link for a work center's OEE TV board: one externalLink
+ * row per work center (documentType 'WorkCenter'), created on first request
+ * and reused forever after — the URL never changes. The public page lives in
+ * the ERP app at /share/oee/:id.
+ * Call with the service role ('WorkCenter' is newer than the generated enum
+ * types, hence the casts).
+ */
+export async function getOrCreateWorkCenterShareLink(
+  serviceRole: SupabaseClient<Database>,
+  args: { workCenterId: string; companyId: string }
+) {
+  const client = serviceRole as SupabaseClient<any>;
+  const existing = (await client
+    .from("externalLink")
+    .select("id")
+    .eq("documentType", "WorkCenter")
+    .eq("documentId", args.workCenterId)
+    .eq("companyId", args.companyId)
+    .maybeSingle()) as { data: { id: string } | null; error: any };
+
+  if (existing.data) {
+    return { data: existing.data, error: null };
+  }
+
+  return (await client
+    .from("externalLink")
+    .insert({
+      documentType: "WorkCenter",
+      documentId: args.workCenterId,
+      companyId: args.companyId
+    })
+    .select("id")
+    .single()) as { data: { id: string } | null; error: any };
+}
+
+/**
  * Fetch + compute everything the work-center hourly OEE board needs. Shared
  * by the api resource route and the page loader.
  */

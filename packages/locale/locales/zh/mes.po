@@ -224,6 +224,9 @@ msgstr "控制台模式"
 msgid "Consumed expired"
 msgstr "已消耗过期"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -375,6 +378,9 @@ msgstr "即将过期优先"
 
 msgid "Failed to complete inventory adjustment"
 msgstr "库存调整失败"
+
+msgid "Failed to create public link"
+msgstr ""
 
 msgid "Failed to end operations"
 msgstr "结束工序失败"
@@ -854,6 +860,9 @@ msgstr "工艺"
 
 msgid "Progress"
 msgstr "进度"
+
+msgid "Public TV link copied to clipboard"
+msgstr ""
 
 msgid "Quality (%Q)"
 msgstr ""

@@ -224,6 +224,9 @@ msgstr "कंसोल मोड"
 msgid "Consumed expired"
 msgstr "खपत की गई समाप्त"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -375,6 +378,9 @@ msgstr "पहले समाप्त होने वाले"
 
 msgid "Failed to complete inventory adjustment"
 msgstr "इन्वेंटरी समायोजन पूरा करने में विफल"
+
+msgid "Failed to create public link"
+msgstr ""
 
 msgid "Failed to end operations"
 msgstr "संचालन समाप्त करने में विफल"
@@ -854,6 +860,9 @@ msgstr "प्रक्रियाएं"
 
 msgid "Progress"
 msgstr "प्रगति"
+
+msgid "Public TV link copied to clipboard"
+msgstr ""
 
 msgid "Quality (%Q)"
 msgstr ""

@@ -2721,6 +2721,9 @@ msgstr "Copiar nombre del procedimiento"
 msgid "Copy procedure unique identifier"
 msgstr "Copiar identificador único del procedimiento"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 msgid "Copy Quality Document"
 msgstr "Copiar Documento de Calidad"
 
@@ -5103,6 +5106,9 @@ msgstr "Error al crear el término de pago: {0}"
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create process: {0}"
 msgstr "Error al crear proceso: {0}"
+
+msgid "Failed to create public link"
+msgstr ""
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create shipping method: {0}"
@@ -9310,6 +9316,9 @@ msgstr "Proporcionar conocimiento del proceso e información"
 
 msgid "Public"
 msgstr "Público"
+
+msgid "Public TV link copied to clipboard"
+msgstr ""
 
 msgid "Publish"
 msgstr "Publicar"

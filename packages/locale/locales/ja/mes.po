@@ -224,6 +224,9 @@ msgstr "コンソールモード"
 msgid "Consumed expired"
 msgstr "消費期限切れ"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -375,6 +378,9 @@ msgstr "最初に期限切れ"
 
 msgid "Failed to complete inventory adjustment"
 msgstr "在庫調整の完了に失敗しました"
+
+msgid "Failed to create public link"
+msgstr ""
 
 msgid "Failed to end operations"
 msgstr "工程の終了に失敗しました"
@@ -854,6 +860,9 @@ msgstr "プロセス一覧"
 
 msgid "Progress"
 msgstr "進捗"
+
+msgid "Public TV link copied to clipboard"
+msgstr ""
 
 msgid "Quality (%Q)"
 msgstr ""

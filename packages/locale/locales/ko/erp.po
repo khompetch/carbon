@@ -2721,6 +2721,9 @@ msgstr "절차 이름 복사"
 msgid "Copy procedure unique identifier"
 msgstr "절차 고유 식별자 복사"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 msgid "Copy Quality Document"
 msgstr "품질 문서 복사"
 
@@ -5103,6 +5106,9 @@ msgstr "결제조건 생성 실패: {0}"
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create process: {0}"
 msgstr "공정 생성 실패: {0}"
+
+msgid "Failed to create public link"
+msgstr ""
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create shipping method: {0}"
@@ -9310,6 +9316,9 @@ msgstr "공정 지식과 의견을 제공하세요"
 
 msgid "Public"
 msgstr "공개"
+
+msgid "Public TV link copied to clipboard"
+msgstr ""
 
 msgid "Publish"
 msgstr "게시"

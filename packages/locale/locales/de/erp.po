@@ -2721,6 +2721,9 @@ msgstr "Verfahrensnamen kopieren"
 msgid "Copy procedure unique identifier"
 msgstr "Eindeutige Kennung des Verfahrens kopieren"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 msgid "Copy Quality Document"
 msgstr "Qualitätsdokument kopieren"
 
@@ -5103,6 +5106,9 @@ msgstr "Zahlungsbedingung konnte nicht erstellt werden: {0}"
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create process: {0}"
 msgstr "Fehler beim Erstellen des Prozesses: {0}"
+
+msgid "Failed to create public link"
+msgstr ""
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create shipping method: {0}"
@@ -9310,6 +9316,9 @@ msgstr "Prozesswissen und Eingaben bereitstellen"
 
 msgid "Public"
 msgstr "Öffentlich"
+
+msgid "Public TV link copied to clipboard"
+msgstr ""
 
 msgid "Publish"
 msgstr "Veröffentlichen"

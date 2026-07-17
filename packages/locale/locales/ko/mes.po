@@ -224,6 +224,9 @@ msgstr "콘솔 모드"
 msgid "Consumed expired"
 msgstr "만료 후 소모됨"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -375,6 +378,9 @@ msgstr "먼저 만료되는 순"
 
 msgid "Failed to complete inventory adjustment"
 msgstr "재고 조정을 완료하지 못했습니다"
+
+msgid "Failed to create public link"
+msgstr ""
 
 msgid "Failed to end operations"
 msgstr "공정작업을 종료하지 못했습니다"
@@ -854,6 +860,9 @@ msgstr "공정"
 
 msgid "Progress"
 msgstr "진행 상황"
+
+msgid "Public TV link copied to clipboard"
+msgstr ""
 
 msgid "Quality (%Q)"
 msgstr ""

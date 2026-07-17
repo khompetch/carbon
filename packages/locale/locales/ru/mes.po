@@ -224,6 +224,9 @@ msgstr "Режим консоли"
 msgid "Consumed expired"
 msgstr "Потреблено истекшее"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -375,6 +378,9 @@ msgstr "Истекает первым"
 
 msgid "Failed to complete inventory adjustment"
 msgstr "Не удалось выполнить корректировку запасов"
+
+msgid "Failed to create public link"
+msgstr ""
 
 msgid "Failed to end operations"
 msgstr "Не удалось завершить операции"
@@ -854,6 +860,9 @@ msgstr "Процессы"
 
 msgid "Progress"
 msgstr "Прогресс"
+
+msgid "Public TV link copied to clipboard"
+msgstr ""
 
 msgid "Quality (%Q)"
 msgstr ""

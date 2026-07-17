@@ -2721,6 +2721,9 @@ msgstr ""
 msgid "Copy procedure unique identifier"
 msgstr ""
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 msgid "Copy Quality Document"
 msgstr ""
 
@@ -5102,6 +5105,9 @@ msgstr ""
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create process: {0}"
+msgstr ""
+
+msgid "Failed to create public link"
 msgstr ""
 
 #. placeholder {0}: fetcher.data.error.message
@@ -9309,6 +9315,9 @@ msgid "Provide process knowledge and inputs"
 msgstr ""
 
 msgid "Public"
+msgstr ""
+
+msgid "Public TV link copied to clipboard"
 msgstr ""
 
 msgid "Publish"

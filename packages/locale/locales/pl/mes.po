@@ -224,6 +224,9 @@ msgstr "Tryb konsoli"
 msgid "Consumed expired"
 msgstr "Zużyte wygasłe"
 
+msgid "Copy Public TV Link"
+msgstr ""
+
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -375,6 +378,9 @@ msgstr "Wygasające pierwsze"
 
 msgid "Failed to complete inventory adjustment"
 msgstr "Nie udało się zakończyć korekty zapasów"
+
+msgid "Failed to create public link"
+msgstr ""
 
 msgid "Failed to end operations"
 msgstr "Nie udało się zakończyć operacji"
@@ -854,6 +860,9 @@ msgstr "Procesy"
 
 msgid "Progress"
 msgstr "Postęp"
+
+msgid "Public TV link copied to clipboard"
+msgstr ""
 
 msgid "Quality (%Q)"
 msgstr ""
