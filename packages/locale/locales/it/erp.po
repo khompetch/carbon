@@ -9806,6 +9806,9 @@ msgstr "Aggiorna"
 msgid "Refresh exchange rate"
 msgstr "Aggiorna tasso di cambio"
 
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
+
 msgid "Register"
 msgstr "Registrare Attivo Esistente"
 

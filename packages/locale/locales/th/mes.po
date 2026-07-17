@@ -889,6 +889,9 @@ msgstr ""
 msgid "Record downtime"
 msgstr ""
 
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
+
 msgid "Remove"
 msgstr "นำออก"
 

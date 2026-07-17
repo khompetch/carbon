@@ -9806,6 +9806,9 @@ msgstr "刷新"
 msgid "Refresh exchange rate"
 msgstr "刷新汇率"
 
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
+
 msgid "Register"
 msgstr "注册现有资产"
 

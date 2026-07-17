@@ -9806,6 +9806,9 @@ msgstr "更新"
 msgid "Refresh exchange rate"
 msgstr "為替レートを更新"
 
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
+
 msgid "Register"
 msgstr "既存資産を登録"
 

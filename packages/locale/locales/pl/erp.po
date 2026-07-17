@@ -9806,6 +9806,9 @@ msgstr "Odśwież"
 msgid "Refresh exchange rate"
 msgstr "Odśwież kurs wymiany"
 
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
+
 msgid "Register"
 msgstr "Zarejestruj Istniejący Majątek"
 

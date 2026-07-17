@@ -889,6 +889,9 @@ msgstr "Record {0}"
 msgid "Record downtime"
 msgstr "Record downtime"
 
+msgid "Refresh in {secondsLeft}s"
+msgstr "Refresh in {secondsLeft}s"
+
 msgid "Remove"
 msgstr "Remove"
 

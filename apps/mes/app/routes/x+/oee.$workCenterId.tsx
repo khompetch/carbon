@@ -30,6 +30,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 }
 
 const REALTIME_REFRESH_DEBOUNCE_MS = 10_000;
+const REFRESH_INTERVAL_MS = 60_000;
 
 export default function WorkCenterOeeRoute() {
   const { board, error, companyId } = useLoaderData<typeof loader>();
@@ -52,7 +53,7 @@ export default function WorkCenterOeeRoute() {
 
   useInterval(() => {
     revalidator.revalidate();
-  }, 60_000);
+  }, REFRESH_INTERVAL_MS);
 
   useRealtimeChannel({
     topic: `mes-oee-wc:${companyId}`,
@@ -111,6 +112,7 @@ export default function WorkCenterOeeRoute() {
         timezone={board.timezone}
         currentJobs={board.currentJobs}
         cycleTimeMs={board.cycleTimeMs}
+        refreshIntervalMs={REFRESH_INTERVAL_MS}
         hours={board.hours}
         totals={board.totals}
       />

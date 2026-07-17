@@ -9806,6 +9806,9 @@ msgstr ""
 msgid "Refresh exchange rate"
 msgstr ""
 
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
+
 msgid "Register"
 msgstr ""
 

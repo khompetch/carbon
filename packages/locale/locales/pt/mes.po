@@ -889,6 +889,9 @@ msgstr "Registro {0}"
 msgid "Record downtime"
 msgstr ""
 
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
+
 msgid "Remove"
 msgstr "Remover"
 

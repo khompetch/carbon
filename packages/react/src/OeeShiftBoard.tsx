@@ -55,6 +55,8 @@ export type OeeShiftBoardProps = {
   }[];
   /** standard cycle time of the running operation(s), ms per piece */
   cycleTimeMs?: number | null;
+  /** when set, shows a countdown to the next periodic data refresh */
+  refreshIntervalMs?: number;
   hours: HourBucket[];
   totals: ShiftTotals;
   className?: string;
@@ -151,6 +153,35 @@ function Clock({ timezone }: { timezone: string }) {
   );
 }
 
+function RefreshCountdown({
+  intervalMs,
+  resetKey
+}: {
+  intervalMs: number;
+  resetKey: unknown;
+}) {
+  const totalSeconds = Math.max(1, Math.round(intervalMs / 1000));
+  const [secondsLeft, setSecondsLeft] = useState(totalSeconds);
+
+  // New data arrived (periodic or realtime refresh) — restart the countdown
+  useEffect(() => {
+    setSecondsLeft(totalSeconds);
+  }, [resetKey, totalSeconds]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSecondsLeft((seconds) => Math.max(0, seconds - 1));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <span className="text-xs md:text-sm font-medium opacity-80 tabular-nums whitespace-nowrap">
+      <Trans>Refresh in {secondsLeft}s</Trans>
+    </span>
+  );
+}
+
 function hourLabel(startMs: number, timezone: string): string {
   return new Intl.DateTimeFormat("en-GB", {
     timeZone: timezone,
@@ -168,6 +199,7 @@ export function OeeShiftBoard({
   timezone,
   currentJobs,
   cycleTimeMs,
+  refreshIntervalMs,
   hours,
   totals,
   className
@@ -188,8 +220,16 @@ export function OeeShiftBoard({
           {workCenterName}{" "}
           <span className="font-medium opacity-90">({statusStyle.label})</span>
         </h1>
-        <div className="text-xl md:text-3xl font-bold shrink-0">
-          <Clock timezone={timezone} />
+        <div className="flex flex-col items-end shrink-0">
+          <div className="text-xl md:text-3xl font-bold">
+            <Clock timezone={timezone} />
+          </div>
+          {refreshIntervalMs !== undefined && (
+            <RefreshCountdown
+              intervalMs={refreshIntervalMs}
+              resetKey={totals}
+            />
+          )}
         </div>
       </div>
 

@@ -163,3 +163,6 @@ subtracts from runtime (downtime wins over event, so %A drops).
   insertProductionQuantity. `endOpenDowntimeForOperation` is now exported and
   called from the Serial/Batch branches of `complete.tsx` and
   `end.$operationId.tsx` after a successful invoke.
+- 2026-07-17: refresh countdown — "Refresh in Ns" under the header clock
+  (`OeeShiftBoard.refreshIntervalMs` prop, both pages pass 60s); resets when
+  new loader data arrives (periodic or realtime refresh).

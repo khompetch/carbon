@@ -889,6 +889,9 @@ msgstr "{0} 기록"
 msgid "Record downtime"
 msgstr ""
 
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
+
 msgid "Remove"
 msgstr "제거"
 
