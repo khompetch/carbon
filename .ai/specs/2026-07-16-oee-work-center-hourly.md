@@ -51,8 +51,10 @@ Per hour bucket (clamped to `now` for the current hour; future hours null):
 - `UPDT` = elapsed bucket − PDT − runtime (recorded Unplanned rows attribute
   reasons; unrecorded gaps still count)
 - `%A` = runtime / (elapsed bucket − PDT)
-- `earned` = setup standard (if a Setup event ran) + max(labor, machine)
-  standard for pieces recorded in the bucket (`makeDurations` convention)
+- `earned` = pieces recorded in the bucket × max(labor, machine) per-piece
+  standard — textbook OEE performance. NO setup credit (removed 2026-07-17:
+  combined with downtime-subtracted runtime it pushed %P far above 100%);
+  setup time counts as runtime with zero earned, i.e. a %P loss
 - `%P` = earned / runtime
 - `OK` = Production quantity, `NG` = Scrap + Rework (bucketed by
   `productionQuantity.createdAt`); `%Q` = OK / (OK + NG)
@@ -143,4 +145,10 @@ subtracts from runtime (downtime wins over event, so %A drops).
   and a board-level "Cycle Time" row in the times card (the exact msPerPiece
   the auto-downtime detector compares against when running; fastest active
   op's standard when idle). New data: `currentJobs[].cycleTimeMs` +
-  `cycleTimeMs` from both fetch helpers.
+  `cycleTimeMs` from both fetch helpers. Hourly RT (runtime minutes) row
+  added above PDT.
+- 2026-07-17: %P inflation fix (user-confirmed): setup allowance removed from
+  `earned` (%P = pieces × CT / runtime only), and Setup events are exempt
+  from no-output detection everywhere (`detectNoOutput`, the cron detector,
+  and the boards' msPerPiece/cycleTimeMs) — no output during setup is normal,
+  so setup no longer gets auto-flagged as unplanned downtime.

@@ -313,6 +313,8 @@ export async function getWorkCenterHourlyOee(
   let noOutputMsPerPiece = 0;
   for (const row of eventRows) {
     if (row.endTime !== null) continue;
+    // Setup events legitimately produce no output — they never start the clock
+    if (row.type === "Setup") continue;
     const standard = standardsByOperation.get(row.jobOperationId);
     if (!standard) continue;
     noOutputMsPerPiece = Math.max(

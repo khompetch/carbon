@@ -183,7 +183,10 @@ export function detectNoOutput(args: {
   const { events, quantities, msPerPiece, multiplier, now } = args;
   if (msPerPiece <= 0 || multiplier <= 0) return null;
 
-  const openEvents = events.filter((event) => event.endTime === null);
+  // Setup events legitimately produce no output — they never start the clock
+  const openEvents = events.filter(
+    (event) => event.endTime === null && event.type !== "Setup"
+  );
   if (openEvents.length === 0) return null;
 
   const openStart = Math.min(
@@ -240,16 +243,6 @@ export function standardMsPerPiece(
   }
 }
 
-/** Fixed setup allowance in ms (Total Hours/Total Minutes or per-piece × 0 → 0) */
-function setupAllowanceMs(standard: OeeStandardInput): number {
-  const t = Number(standard.setupTime ?? 0);
-  if (!t || t <= 0) return 0;
-  if (standard.setupUnit === "Total Hours") return t * HOUR_MS;
-  if (standard.setupUnit === "Total Minutes") return t * MINUTE_MS;
-  // Per-piece setup units are unusual; treat like a rate applied once
-  return standardMsPerPiece(t, standard.setupUnit);
-}
-
 function ratio(numerator: number, denominator: number): number | null {
   if (denominator <= 0) return null;
   return numerator / denominator;
@@ -301,11 +294,6 @@ export function computeShiftHourlyOee(input: ComputeShiftHourlyOeeInput): {
     }
   }
 
-  const standardsByOperation = new Map<string, OeeStandardInput>();
-  for (const standard of input.standards) {
-    standardsByOperation.set(standard.jobOperationId, standard);
-  }
-
   // Per-operation ms/piece: scheduling convention duration = max(labor, machine)
   const msPerPieceByOperation = new Map<string, number>();
   for (const standard of input.standards) {
@@ -315,20 +303,6 @@ export function computeShiftHourlyOee(input: ComputeShiftHourlyOeeInput): {
         standardMsPerPiece(standard.laborTime, standard.laborUnit),
         standardMsPerPiece(standard.machineTime, standard.machineUnit)
       )
-    );
-  }
-
-  // Total setup-event ms per operation across the shift (for apportioning the
-  // fixed setup allowance over the buckets in which setup actually ran)
-  const setupMsByOperation = new Map<string, number>();
-  for (const { interval, event } of eventIntervals) {
-    if (event.type !== "Setup") continue;
-    const clamped = clampInterval(interval, shiftStart, shiftEnd);
-    if (!clamped) continue;
-    setupMsByOperation.set(
-      event.jobOperationId,
-      (setupMsByOperation.get(event.jobOperationId) ?? 0) +
-        (clamped[1] - clamped[0])
     );
   }
 
@@ -414,20 +388,12 @@ export function computeShiftHourlyOee(input: ComputeShiftHourlyOeeInput): {
       }
     }
 
-    // Earned standard time: pieces × ms/piece, plus the setup allowance
-    // apportioned over the setup events' actual run time
+    // Earned standard time: pieces × ms/piece only (textbook OEE performance).
+    // No setup credit — combined with downtime-subtracted runtime it inflated
+    // %P far above 100%; setup shows up as availability loss instead.
     let earnedMs = 0;
     for (const [operationId, pieces] of piecesByOperation) {
       earnedMs += pieces * (msPerPieceByOperation.get(operationId) ?? 0);
-    }
-    for (const { interval, event } of bucketEvents) {
-      if (event.type !== "Setup") continue;
-      const totalSetupMs = setupMsByOperation.get(event.jobOperationId) ?? 0;
-      const standard = standardsByOperation.get(event.jobOperationId);
-      if (!standard || totalSetupMs <= 0) continue;
-      earnedMs +=
-        setupAllowanceMs(standard) *
-        ((interval[1] - interval[0]) / totalSetupMs);
     }
 
     // Target: pieces expected from the bucket's available time at the active

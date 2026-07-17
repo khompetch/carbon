@@ -241,7 +241,7 @@ describe("computeShiftHourlyOee", () => {
     expect(hours[6]!.elapsedMs).toBe(0); // future
   });
 
-  it("apportions the setup allowance over setup-event runtime", () => {
+  it("earns no credit for setup events — %P counts pieces only", () => {
     const setupStandard = {
       ...standard,
       setupTime: 1,
@@ -265,9 +265,12 @@ describe("computeShiftHourlyOee", () => {
       plannedDowntimes: []
     });
 
-    // 1h allowance split evenly across the two half-hour setup slices
-    expect(hours[0]!.earnedMs).toBeCloseTo(30 * MINUTE);
-    expect(hours[1]!.earnedMs).toBeCloseTo(30 * MINUTE);
+    // setup counts as runtime but earns nothing — it shows as %P loss,
+    // never as earned credit that could push %P past 100
+    expect(hours[0]!.runtimeMs).toBe(30 * MINUTE);
+    expect(hours[0]!.earnedMs).toBe(0);
+    expect(hours[0]!.performance).toBe(0);
+    expect(hours[1]!.earnedMs).toBe(0);
   });
 });
 
@@ -436,6 +439,33 @@ describe("detectNoOutput", () => {
         now: SHIFT_START + HOUR
       })
     ).toBeNull();
+  });
+
+  it("ignores open Setup events — setup legitimately has no output", async () => {
+    const { detectNoOutput } = await import("./oee");
+    // only a Setup event open → no detection at all
+    expect(
+      detectNoOutput({
+        events: [{ ...openEvent, type: "Setup" as const }],
+        quantities: [],
+        msPerPiece: sixMinutes,
+        multiplier: 2,
+        now: SHIFT_START + HOUR
+      })
+    ).toBeNull();
+    // Setup + Machine open: the clock runs from the Machine event only
+    expect(
+      detectNoOutput({
+        events: [
+          { ...openEvent, type: "Setup" as const },
+          { ...openEvent, startTime: iso(5 * MINUTE) }
+        ],
+        quantities: [],
+        msPerPiece: sixMinutes,
+        multiplier: 2,
+        now: SHIFT_START + 20 * MINUTE
+      })
+    ).toBe(SHIFT_START + 17 * MINUTE);
   });
 
   it("resets the clock when output is logged", async () => {

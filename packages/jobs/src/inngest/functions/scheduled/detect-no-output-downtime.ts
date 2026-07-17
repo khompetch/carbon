@@ -6,6 +6,7 @@ import { inngest } from "../../client";
 type OpenEventRow = {
   id: string;
   startTime: string;
+  type: "Setup" | "Labor" | "Machine" | null;
   workCenterId: string;
   jobOperationId: string;
   employeeId: string | null;
@@ -80,7 +81,7 @@ export const detectNoOutputDowntimeFunction = inngest.createFunction(
             serviceRole
               .from("productionEvent")
               .select(
-                "id, startTime, workCenterId, jobOperationId, employeeId, createdBy, ...jobOperation(laborTime, laborUnit, machineTime, machineUnit)"
+                "id, startTime, type, workCenterId, jobOperationId, employeeId, createdBy, ...jobOperation(laborTime, laborUnit, machineTime, machineUnit)"
               )
               .eq("companyId", companyId)
               .is("endTime", null)
@@ -194,8 +195,15 @@ export const detectNoOutputDowntimeFunction = inngest.createFunction(
               settings.autoDowntimeMultiplier;
             if (!multiplier || multiplier <= 0) continue;
 
+            // Setup events legitimately produce no output — only Labor/Machine
+            // events start the no-output clock
+            const productionEvents = events.filter(
+              (event) => event.type !== "Setup"
+            );
+            if (productionEvents.length === 0) continue;
+
             let msPerPiece = 0;
-            for (const event of events) {
+            for (const event of productionEvents) {
               msPerPiece = Math.max(
                 msPerPiece,
                 standardMsPerPiece(event.laborTime, event.laborUnit),
@@ -204,13 +212,15 @@ export const detectNoOutputDowntimeFunction = inngest.createFunction(
             }
             if (msPerPiece <= 0) continue;
 
-            const oeeEvents: OeeEventInput[] = events.map((event) => ({
-              startTime: event.startTime,
-              endTime: null,
-              type: null,
-              jobOperationId: event.jobOperationId
-            }));
-            const quantities = events.flatMap(
+            const oeeEvents: OeeEventInput[] = productionEvents.map(
+              (event) => ({
+                startTime: event.startTime,
+                endTime: null,
+                type: event.type,
+                jobOperationId: event.jobOperationId
+              })
+            );
+            const quantities = productionEvents.flatMap(
               (event) => quantitiesByOperation.get(event.jobOperationId) ?? []
             );
 
@@ -228,8 +238,8 @@ export const detectNoOutputDowntimeFunction = inngest.createFunction(
               continue;
 
             const reporter =
-              events.find((event) => event.employeeId)?.employeeId ??
-              events[0]!.createdBy;
+              productionEvents.find((event) => event.employeeId)?.employeeId ??
+              productionEvents[0]!.createdBy;
 
             const { error: insertError } = await serviceRole
               .from("workCenterDowntime")
