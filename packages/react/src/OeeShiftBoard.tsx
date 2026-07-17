@@ -419,6 +419,17 @@ export function OeeShiftBoard({
               ))}
             </tr>
             <tr className="border-b">
+              <th className="px-2 py-1 text-left whitespace-nowrap">RT</th>
+              {hours.map((hour) => (
+                <td
+                  key={hour.start}
+                  className="px-2 py-1 text-center tabular-nums"
+                >
+                  {minutes(hour.runtimeMs)}
+                </td>
+              ))}
+            </tr>
+            <tr className="border-b">
               <th className="px-2 py-1 text-left whitespace-nowrap">PDT</th>
               {hours.map((hour) => (
                 <td
