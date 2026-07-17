@@ -119,9 +119,10 @@ subtracts from runtime (downtime wins over event, so %A drops).
   output arrived or no event is open.
 - **Instant close:** the MES insert-quantity functions
   (`insertProductionQuantity`/`insertScrapQuantity`/`insertReworkQuantity`)
-  look up `jobOperation.workCenterId` and close open **auto** rows immediately
-  (`endOpenDowntime` gained `{ onlyAuto }`); manual downtime still ends via the
-  operator or a production-event start.
+  look up `jobOperation.workCenterId` and close **every** open downtime row —
+  auto AND manual Planned/Unplanned (user-confirmed 2026-07-17: output proves
+  the machine is running, same semantics as starting a production event). The
+  board returns to Running without pressing End Downtime.
 - **Status priority (both boards):** open downtime record > virtual no-output
   (→ `unplanned-downtime`) > open event (`running`) > `idle`.
 - **UI:** ERP Settings → Production card (multiplier + default-reason combobox,
@@ -152,3 +153,7 @@ subtracts from runtime (downtime wins over event, so %A drops).
   from no-output detection everywhere (`detectNoOutput`, the cron detector,
   and the boards' msPerPiece/cycleTimeMs) — no output during setup is normal,
   so setup no longer gets auto-flagged as unplanned downtime.
+- 2026-07-17: logging output now closes ALL open downtime on the work center
+  (manual Planned/Unplanned included, not just auto rows) — user-confirmed;
+  `endOpenDowntime`'s `onlyAuto` option removed,
+  `endOpenAutoDowntimeForOperation` renamed `endOpenDowntimeForOperation`.

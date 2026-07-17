@@ -1125,7 +1125,7 @@ export async function insertReworkQuantity(
     .select("*");
 
   if (!result.error) {
-    await endOpenAutoDowntimeForOperation(client, {
+    await endOpenDowntimeForOperation(client, {
       jobOperationId: data.jobOperationId,
       companyId: data.companyId,
       userId: data.createdBy
@@ -1153,7 +1153,7 @@ export async function insertProductionQuantity(
     .select("*");
 
   if (!result.error) {
-    await endOpenAutoDowntimeForOperation(client, {
+    await endOpenDowntimeForOperation(client, {
       jobOperationId: data.jobOperationId,
       companyId: data.companyId,
       userId: data.createdBy
@@ -1181,7 +1181,7 @@ export async function insertScrapQuantity(
     .select("*");
 
   if (!result.error) {
-    await endOpenAutoDowntimeForOperation(client, {
+    await endOpenDowntimeForOperation(client, {
       jobOperationId: data.jobOperationId,
       companyId: data.companyId,
       userId: data.createdBy
@@ -1496,11 +1496,9 @@ export async function endOpenDowntime(
     workCenterId: string;
     companyId: string;
     userId: string;
-    /** close only auto-detected (no-output) rows, leaving manual downtime open */
-    onlyAuto?: boolean;
   }
 ) {
-  let query = (client as SupabaseClient<any>)
+  return (client as SupabaseClient<any>)
     .from("workCenterDowntime")
     .update({
       endTime: new Date().toISOString(),
@@ -1509,23 +1507,19 @@ export async function endOpenDowntime(
     })
     .eq("companyId", args.companyId)
     .eq("workCenterId", args.workCenterId)
-    .is("endTime", null);
-  if (args.onlyAuto) {
-    query = query.eq("isAuto", true);
-  }
-  return query as unknown as Promise<{
+    .is("endTime", null) as unknown as Promise<{
     data: null;
     error: any;
   }>;
 }
 
 /**
- * Logging output proves the machine is producing again — close any open
- * auto-detected (no-output) downtime on the operation's work center. Manual
- * downtime stays open (ended by the operator or by starting an event).
+ * Logging output proves the machine is producing again — close every open
+ * downtime on the operation's work center (auto AND manual Planned/Unplanned),
+ * same as starting a production event, so the board returns to Running.
  * Quantity payloads don't carry workCenterId, so look it up first.
  */
-async function endOpenAutoDowntimeForOperation(
+async function endOpenDowntimeForOperation(
   client: SupabaseClient<Database>,
   args: { jobOperationId: string; companyId: string; userId: string }
 ) {
@@ -1540,8 +1534,7 @@ async function endOpenAutoDowntimeForOperation(
   await endOpenDowntime(client, {
     workCenterId: operation.data.workCenterId,
     companyId: args.companyId,
-    userId: args.userId,
-    onlyAuto: true
+    userId: args.userId
   });
 }
 
