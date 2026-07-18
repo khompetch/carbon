@@ -935,9 +935,6 @@ async function getMissingRequiredAbilities(
 ): Promise<string[]> {
   const { workCenterId, processId, employeeId, companyId } = args;
 
-  // process.requiredAbilityId is not yet in the generated DB types —
-  // regenerate after applying migration 20260715084216 and drop this cast.
-  const anyClient = client as SupabaseClient<any>;
   const [workCenter, process] = await Promise.all([
     workCenterId
       ? client
@@ -947,7 +944,7 @@ async function getMissingRequiredAbilities(
           .maybeSingle()
       : Promise.resolve({ data: null }),
     processId
-      ? anyClient
+      ? client
           .from("process")
           .select("requiredAbilityId")
           .eq("id", processId)
@@ -995,19 +992,16 @@ async function getMissingRequiredTrainings(
     companyId: string;
   }
 ): Promise<{ trainingId: string; name: string }[]> {
-  // get_missing_required_trainings is not yet in the generated DB types —
-  // regenerate after applying migration 20260715084216 and drop this cast.
-  const result = await (client as SupabaseClient<any>).rpc(
-    "get_missing_required_trainings",
-    {
-      p_work_center_id: args.workCenterId ?? null,
-      p_process_id: args.processId ?? null,
-      p_employee_id: args.employeeId,
-      p_company_id: args.companyId
-    }
-  );
+  // p_work_center_id / p_process_id are nullable in the SQL function, but the
+  // generated Args type them as non-null — pass null with a local assertion.
+  const result = await client.rpc("get_missing_required_trainings", {
+    p_work_center_id: (args.workCenterId ?? null) as string,
+    p_process_id: (args.processId ?? null) as string,
+    p_employee_id: args.employeeId,
+    p_company_id: args.companyId
+  });
 
-  return (result.data ?? []) as { trainingId: string; name: string }[];
+  return result.data ?? [];
 }
 
 export async function getMissingOperationRequirements(
