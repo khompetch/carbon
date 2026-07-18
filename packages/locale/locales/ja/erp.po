@@ -10970,6 +10970,9 @@ msgstr "シフト"
 msgid "Shift"
 msgstr "シフト"
 
+msgid "Shift date"
+msgstr ""
+
 msgid "Shift Name"
 msgstr "シフト名"
 

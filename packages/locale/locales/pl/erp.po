@@ -10970,6 +10970,9 @@ msgstr "zmiana"
 msgid "Shift"
 msgstr "Zmiana"
 
+msgid "Shift date"
+msgstr ""
+
 msgid "Shift Name"
 msgstr "Nazwa zmiany"
 

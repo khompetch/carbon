@@ -10970,6 +10970,9 @@ msgstr "교대"
 msgid "Shift"
 msgstr "교대"
 
+msgid "Shift date"
+msgstr ""
+
 msgid "Shift Name"
 msgstr "교대명"
 

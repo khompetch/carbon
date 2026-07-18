@@ -10970,6 +10970,9 @@ msgstr "turno"
 msgid "Shift"
 msgstr "Turno"
 
+msgid "Shift date"
+msgstr ""
+
 msgid "Shift Name"
 msgstr "Nombre del Turno"
 

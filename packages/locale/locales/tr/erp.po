@@ -10970,6 +10970,9 @@ msgstr "vardiya"
 msgid "Shift"
 msgstr "Vardiya"
 
+msgid "Shift date"
+msgstr ""
+
 msgid "Shift Name"
 msgstr "Vardiya Adı"
 

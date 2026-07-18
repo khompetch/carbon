@@ -10970,6 +10970,9 @@ msgstr "पाली"
 msgid "Shift"
 msgstr "शिफ्ट"
 
+msgid "Shift date"
+msgstr ""
+
 msgid "Shift Name"
 msgstr "शिफ्ट का नाम"
 
