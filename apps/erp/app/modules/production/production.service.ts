@@ -1983,41 +1983,27 @@ export async function getScrapReasons(
   return query;
 }
 
-// The downtimeReason/workCenterDowntime tables are newer than the generated
-// DB types — cast until types are regenerated after the migration is applied.
 export async function getDowntimeReasonsList(
   client: SupabaseClient<Database>,
   companyId: string
 ) {
-  return (client as SupabaseClient<any>)
+  return client
     .from("downtimeReason")
     .select("id, name, type")
     .eq("companyId", companyId)
     .eq("active", true)
-    .order("name") as unknown as Promise<{
-    data: { id: string; name: string; type: "Planned" | "Unplanned" }[] | null;
-    error: any;
-  }>;
+    .order("name");
 }
 
 export async function getDowntimeReason(
   client: SupabaseClient<Database>,
   downtimeReasonId: string
 ) {
-  return (client as SupabaseClient<any>)
+  return client
     .from("downtimeReason")
     .select("*")
     .eq("id", downtimeReasonId)
-    .single() as unknown as Promise<{
-    data: {
-      id: string;
-      name: string;
-      type: "Planned" | "Unplanned";
-      active: boolean;
-      customFields: Json | null;
-    } | null;
-    error: any;
-  }>;
+    .single();
 }
 
 export async function getDowntimeReasons(
@@ -2025,7 +2011,7 @@ export async function getDowntimeReasons(
   companyId: string,
   args?: GenericQueryFilters & { search: string | null }
 ) {
-  let query = (client as SupabaseClient<any>)
+  let query = client
     .from("downtimeReason")
     .select("id, name, type, active, customFields", { count: "exact" })
     .eq("companyId", companyId);
@@ -2040,19 +2026,7 @@ export async function getDowntimeReasons(
     ]);
   }
 
-  return query as unknown as Promise<{
-    data:
-      | {
-          id: string;
-          name: string;
-          type: "Planned" | "Unplanned";
-          active: boolean;
-          customFields: Json | null;
-        }[]
-      | null;
-    count: number | null;
-    error: any;
-  }>;
+  return query;
 }
 
 export async function getWorkCenterDowntimes(
@@ -2065,26 +2039,14 @@ export async function getWorkCenterDowntimes(
   }
 ) {
   // Overlap query: startTime < windowEnd AND (endTime IS NULL OR endTime > windowStart)
-  return (client as SupabaseClient<any>)
+  return client
     .from("workCenterDowntime")
     .select("id, type, startTime, endTime, downtimeReasonId, notes")
     .eq("companyId", args.companyId)
     .eq("workCenterId", args.workCenterId)
     .lt("startTime", args.endTime)
     .or(`endTime.is.null,endTime.gt.${args.startTime}`)
-    .order("startTime") as unknown as Promise<{
-    data:
-      | {
-          id: string;
-          type: "Planned" | "Unplanned";
-          startTime: string;
-          endTime: string | null;
-          downtimeReasonId: string | null;
-          notes: string | null;
-        }[]
-      | null;
-    error: any;
-  }>;
+    .order("startTime");
 }
 
 export async function getFailureMode(
@@ -3573,12 +3535,9 @@ export async function upsertDowntimeReason(
       })
 ) {
   if ("createdBy" in downtimeReason) {
-    return (client as SupabaseClient<any>)
-      .from("downtimeReason")
-      .insert([downtimeReason])
-      .select("id");
+    return client.from("downtimeReason").insert([downtimeReason]).select("id");
   } else {
-    return (client as SupabaseClient<any>)
+    return client
       .from("downtimeReason")
       .update(sanitize(downtimeReason))
       .eq("id", downtimeReason.id);
@@ -3589,10 +3548,7 @@ export async function deleteDowntimeReason(
   client: SupabaseClient<Database>,
   downtimeReasonId: string
 ) {
-  return (client as SupabaseClient<any>)
-    .from("downtimeReason")
-    .delete()
-    .eq("id", downtimeReasonId);
+  return client.from("downtimeReason").delete().eq("id", downtimeReasonId);
 }
 
 export async function upsertFailureMode(

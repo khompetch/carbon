@@ -1415,22 +1415,17 @@ export async function getJobMethodBomIdMap(
 }
 
 // --- Work center downtime (OEE) -----------------------------------------
-// The downtimeReason/workCenterDowntime tables are newer than the generated
-// DB types — cast until types are regenerated after the migration is applied.
 
 export async function getDowntimeReasonsList(
   client: SupabaseClient<Database>,
   companyId: string
 ) {
-  return (client as SupabaseClient<any>)
+  return client
     .from("downtimeReason")
     .select("id, name, type")
     .eq("companyId", companyId)
     .eq("active", true)
-    .order("name") as unknown as Promise<{
-    data: { id: string; name: string; type: "Planned" | "Unplanned" }[] | null;
-    error: any;
-  }>;
+    .order("name");
 }
 
 export async function getOpenDowntime(
@@ -1438,7 +1433,7 @@ export async function getOpenDowntime(
   workCenterId: string,
   companyId: string
 ) {
-  return (client as SupabaseClient<any>)
+  return client
     .from("workCenterDowntime")
     .select("id, type, startTime, notes, downtimeReasonId, isAuto")
     .eq("companyId", companyId)
@@ -1446,17 +1441,7 @@ export async function getOpenDowntime(
     .is("endTime", null)
     .order("startTime", { ascending: false })
     .limit(1)
-    .maybeSingle() as unknown as Promise<{
-    data: {
-      id: string;
-      type: "Planned" | "Unplanned";
-      startTime: string;
-      notes: string | null;
-      downtimeReasonId: string | null;
-      isAuto: boolean;
-    } | null;
-    error: any;
-  }>;
+    .maybeSingle();
 }
 
 export async function startDowntime(
@@ -1470,7 +1455,7 @@ export async function startDowntime(
     userId: string;
   }
 ) {
-  return (client as SupabaseClient<any>)
+  return client
     .from("workCenterDowntime")
     .insert([
       {
@@ -1484,10 +1469,7 @@ export async function startDowntime(
       }
     ])
     .select("id")
-    .single() as unknown as Promise<{
-    data: { id: string } | null;
-    error: any;
-  }>;
+    .single();
 }
 
 export async function endOpenDowntime(
@@ -1498,7 +1480,7 @@ export async function endOpenDowntime(
     userId: string;
   }
 ) {
-  return (client as SupabaseClient<any>)
+  return client
     .from("workCenterDowntime")
     .update({
       endTime: new Date().toISOString(),
@@ -1507,10 +1489,7 @@ export async function endOpenDowntime(
     })
     .eq("companyId", args.companyId)
     .eq("workCenterId", args.workCenterId)
-    .is("endTime", null) as unknown as Promise<{
-    data: null;
-    error: any;
-  }>;
+    .is("endTime", null);
 }
 
 /**
@@ -1554,24 +1533,12 @@ export async function getWorkCenterDowntimes(
   }
 ) {
   // Overlap query: startTime < windowEnd AND (endTime IS NULL OR endTime > windowStart)
-  return (client as SupabaseClient<any>)
+  return client
     .from("workCenterDowntime")
     .select("id, type, startTime, endTime, downtimeReasonId, notes")
     .eq("companyId", args.companyId)
     .eq("workCenterId", args.workCenterId)
     .lt("startTime", args.endTime)
     .or(`endTime.is.null,endTime.gt.${args.startTime}`)
-    .order("startTime") as unknown as Promise<{
-    data:
-      | {
-          id: string;
-          type: "Planned" | "Unplanned";
-          startTime: string;
-          endTime: string | null;
-          downtimeReasonId: string | null;
-          notes: string | null;
-        }[]
-      | null;
-    error: any;
-  }>;
+    .order("startTime");
 }

@@ -6,7 +6,6 @@ import {
   parseDateTime,
   toCalendarDateTime
 } from "@internationalized/date";
-import type { SupabaseClient } from "@supabase/supabase-js";
 import type { LoaderFunctionArgs } from "react-router";
 import { makeDurations } from "~/utils/duration";
 
@@ -281,23 +280,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
         .not("actualStartTime", "is", null)
         .lte("actualStartTime", periodEnd)
         .or(`actualEndTime.gte.${periodStart},actualEndTime.is.null`),
-      // workCenterDowntime is newer than the generated DB types — cast until regen
-      (client as SupabaseClient<any>)
+      client
         .from("workCenterDowntime")
         .select("workCenterId, type, startTime, endTime")
         .eq("companyId", companyId)
         .lt("startTime", periodEnd)
-        .or(`endTime.is.null,endTime.gt.${periodStart}`) as unknown as Promise<{
-        data:
-          | {
-              workCenterId: string;
-              type: "Planned" | "Unplanned";
-              startTime: string;
-              endTime: string | null;
-            }[]
-          | null;
-        error: any;
-      }>
+        .or(`endTime.is.null,endTime.gt.${periodStart}`)
     ]);
 
     // ── Planned time per location (shift windows clamped to the window) ─────

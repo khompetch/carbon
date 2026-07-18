@@ -81,7 +81,7 @@ pnpm --filter @carbon/erp test
 - `getActiveJobOperationsByLocation` — schedule board data (RPC `get_active_job_operations_by_location`)
 - `getProductionPlanning` — MRP-driven production planning (RPC `get_production_planning`)
 - `upsertMaintenanceDispatch` / `upsertMaintenanceSchedule` — maintenance management
-- `getDowntimeReasons(List)` / `upsertDowntimeReason` / `deleteDowntimeReason` / `getWorkCenterDowntimes` — downtime reference data + interval reads (tables newer than generated types; functions cast via `SupabaseClient<any>` until types regenerate)
+- `getDowntimeReasons(List)` / `upsertDowntimeReason` / `deleteDowntimeReason` / `getWorkCenterDowntimes` — downtime reference data + interval reads
 - `getWorkCenterHourlyOee` (`production.server.ts`) — fetch + compute for the hourly OEE board
 - `getAssemblyInstruction(s)` / `upsertAssemblyInstructionStep` / `getAssemblyInstructionStepMaterials` — assembly instruction authoring; the step upsert derives `instructionText` from the tiptap `description` (viewer/MES consume the plain text)
 - `updateAssemblyStepMotion` — partial `motion`/`camera` patch for one step, used by the 3D path/camera editor's autosave (never touches `title`/typed fields); `camera: null` clears the pose (return to auto-framing). Deleting an instruction also drops the model's cached plan via `deleteAssemblyInstruction` → `invalidateAssemblyPlanCache`

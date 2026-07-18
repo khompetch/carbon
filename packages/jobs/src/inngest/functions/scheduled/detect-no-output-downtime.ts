@@ -43,26 +43,16 @@ export const detectNoOutputDowntimeFunction = inngest.createFunction(
   { id: "detect-no-output-downtime", retries: 1 },
   { cron: "* * * * *" },
   async ({ step, logger }) => {
-    // The auto-downtime columns are newer than the generated DB types
-    const serviceRole = getCarbonServiceRole() as any;
+    const serviceRole = getCarbonServiceRole();
 
     return await step.run("detect-no-output-downtime", async () => {
       const now = Date.now();
 
-      const { data: companies, error: companiesError } = (await serviceRole
+      const { data: companies, error: companiesError } = await serviceRole
         .from("companySettings")
         .select("id, autoDowntimeMultiplier, autoDowntimeReasonId")
         .not("autoDowntimeMultiplier", "is", null)
-        .not("autoDowntimeReasonId", "is", null)) as {
-        data:
-          | {
-              id: string;
-              autoDowntimeMultiplier: number;
-              autoDowntimeReasonId: string;
-            }[]
-          | null;
-        error: any;
-      };
+        .not("autoDowntimeReasonId", "is", null);
 
       if (companiesError) {
         logger.error("Failed to fetch company settings", {
@@ -93,10 +83,7 @@ export const detectNoOutputDowntimeFunction = inngest.createFunction(
               .from("workCenterDowntime")
               .select("id, workCenterId, startTime, isAuto")
               .eq("companyId", companyId)
-              .is("endTime", null) as unknown as Promise<{
-              data: OpenDowntimeRow[] | null;
-              error: any;
-            }>
+              .is("endTime", null)
           ]);
 
           if (openEvents.error || openDowntimes.error) {
@@ -135,15 +122,10 @@ export const detectNoOutputDowntimeFunction = inngest.createFunction(
           ];
           if (workCenterIds.length === 0) continue;
 
-          const { data: workCenters } = (await serviceRole
+          const { data: workCenters } = await serviceRole
             .from("workCenter")
             .select("id, autoDowntimeMultiplier")
-            .in("id", workCenterIds)) as {
-            data:
-              | { id: string; autoDowntimeMultiplier: number | null }[]
-              | null;
-            error: any;
-          };
+            .in("id", workCenterIds);
           const overrideByWorkCenter = new Map(
             (workCenters ?? []).map((row) => [
               row.id,
@@ -166,15 +148,12 @@ export const detectNoOutputDowntimeFunction = inngest.createFunction(
             const earliestStart = (openEvents.data ?? [])
               .map((event) => event.startTime)
               .sort()[0]!;
-            const { data } = (await serviceRole
+            const { data } = await serviceRole
               .from("productionQuantity")
               .select("jobOperationId, createdAt")
               .eq("companyId", companyId)
               .in("jobOperationId", openOperationIds)
-              .gte("createdAt", earliestStart)) as {
-              data: { jobOperationId: string; createdAt: string }[] | null;
-              error: any;
-            };
+              .gte("createdAt", earliestStart);
             quantityRows = data ?? [];
           }
           const quantitiesByOperation = new Map<string, OeeQuantityInput[]>();
