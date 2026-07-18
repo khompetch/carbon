@@ -5912,6 +5912,9 @@ msgstr "Tarihi Oran (Öz Sermaye)"
 msgid "Historical Rate (Equity)"
 msgstr "Tarihi Oran (Öz Sermaye)"
 
+msgid "Historical shift"
+msgstr ""
+
 msgid "History"
 msgstr "Geçmiş"
 
@@ -10970,6 +10973,9 @@ msgstr "vardiya"
 msgid "Shift"
 msgstr "Vardiya"
 
+msgid "Shift date"
+msgstr ""
+
 msgid "Shift Name"
 msgstr "Vardiya Adı"
 
@@ -11740,9 +11746,6 @@ msgstr "Satın Alma Ekibi ile Görüşün"
 
 msgid "Target"
 msgstr "Hedef"
-
-msgid "TARGET"
-msgstr ""
 
 msgid "Target an item group."
 msgstr "Bir ürün grubunu hedefleyin."

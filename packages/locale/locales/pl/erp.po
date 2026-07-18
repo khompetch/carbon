@@ -5912,6 +5912,9 @@ msgstr "Kurs Historyczny (Kapitał Własny)"
 msgid "Historical Rate (Equity)"
 msgstr "Kurs Historyczny (Kapitał Własny)"
 
+msgid "Historical shift"
+msgstr ""
+
 msgid "History"
 msgstr "Historia"
 
@@ -10970,6 +10973,9 @@ msgstr "zmiana"
 msgid "Shift"
 msgstr "Zmiana"
 
+msgid "Shift date"
+msgstr ""
+
 msgid "Shift Name"
 msgstr "Nazwa zmiany"
 
@@ -11740,9 +11746,6 @@ msgstr "Porozmawiaj ze sprzedażą"
 
 msgid "Target"
 msgstr "Cel"
-
-msgid "TARGET"
-msgstr ""
 
 msgid "Target an item group."
 msgstr "Kieruj na grupę artykułów."

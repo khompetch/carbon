@@ -4,11 +4,13 @@ import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { flash } from "@carbon/auth/session.server";
 import {
   Button,
+  DatePicker,
   OeeShiftBoard,
   toast,
   useInterval,
   useRealtimeChannel
 } from "@carbon/react";
+import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
 import { msg } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useCallback, useEffect, useRef } from "react";
@@ -202,6 +204,25 @@ export default function WorkCenterOeeRoute() {
               ))}
             </div>
           )}
+          {/* Pick a past date to review that shift's board */}
+          <div className="w-[168px]">
+            <DatePicker
+              aria-label={t`Shift date`}
+              size="sm"
+              closeOnSelect
+              maxValue={today(getLocalTimeZone())}
+              value={parseDate(
+                new Date(board.window.start).toISOString().slice(0, 10)
+              )}
+              onChange={(date) => {
+                if (!date) return;
+                const next = new URLSearchParams(searchParams);
+                next.set("date", date.toString());
+                next.set("shiftId", board.shift.id);
+                setSearchParams(next);
+              }}
+            />
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <Button

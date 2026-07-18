@@ -224,9 +224,6 @@ msgstr "Mode console"
 msgid "Consumed expired"
 msgstr "Consommé expiré"
 
-msgid "Copy Public TV Link"
-msgstr ""
-
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -379,9 +376,6 @@ msgstr "Expiration en premier"
 msgid "Failed to complete inventory adjustment"
 msgstr "Échec de l'ajustement de stock"
 
-msgid "Failed to create public link"
-msgstr ""
-
 msgid "Failed to end operations"
 msgstr "Échec de l'arrêt des opérations"
 
@@ -434,6 +428,12 @@ msgstr "Revenir à l'opération"
 
 msgid "Have a technical issue? Contact <0>Carbon Support.</0>"
 msgstr "Vous avez un problème technique ? Contactez le <0>Support Carbon.</0>"
+
+msgid "Historical shift"
+msgstr ""
+
+msgid "History"
+msgstr ""
 
 msgid "How many were actually picked?"
 msgstr "Combien ont réellement été prélevés ?"
@@ -521,6 +521,9 @@ msgstr "Construisons quelque chose"
 
 msgid "lines"
 msgstr "lignes"
+
+msgid "Live"
+msgstr ""
 
 msgid "Loading item details..."
 msgstr "Chargement des détails de l'article..."
@@ -727,6 +730,9 @@ msgstr "Notes"
 msgid "Notes (optional)"
 msgstr ""
 
+msgid "OEE board"
+msgstr ""
+
 #. placeholder {0}: column.title
 msgid "OEE board: {0}"
 msgstr ""
@@ -860,9 +866,6 @@ msgstr "Processus"
 
 msgid "Progress"
 msgstr "Progression"
-
-msgid "Public TV link copied to clipboard"
-msgstr ""
 
 msgid "Quality (%Q)"
 msgstr ""
@@ -1144,9 +1147,6 @@ msgstr "Changer d'opérateur"
 
 msgid "Tag"
 msgstr "Étiquette"
-
-msgid "TARGET"
-msgstr ""
 
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."

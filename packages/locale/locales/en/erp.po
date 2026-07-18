@@ -5912,6 +5912,9 @@ msgstr "Historical Rate (equity)"
 msgid "Historical Rate (Equity)"
 msgstr "Historical Rate (Equity)"
 
+msgid "Historical shift"
+msgstr "Historical shift"
+
 msgid "History"
 msgstr "History"
 
@@ -10970,6 +10973,9 @@ msgstr "shift"
 msgid "Shift"
 msgstr "Shift"
 
+msgid "Shift date"
+msgstr "Shift date"
+
 msgid "Shift Name"
 msgstr "Shift Name"
 
@@ -11740,9 +11746,6 @@ msgstr "Talk to Sales"
 
 msgid "Target"
 msgstr "Target"
-
-msgid "TARGET"
-msgstr "TARGET"
 
 msgid "Target an item group."
 msgstr "Target an item group."

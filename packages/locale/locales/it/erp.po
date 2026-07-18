@@ -5912,6 +5912,9 @@ msgstr "Tasso Storico (Patrimonio)"
 msgid "Historical Rate (Equity)"
 msgstr "Tasso Storico (Patrimonio)"
 
+msgid "Historical shift"
+msgstr ""
+
 msgid "History"
 msgstr "Cronologia"
 
@@ -10970,6 +10973,9 @@ msgstr "turno"
 msgid "Shift"
 msgstr "Turno"
 
+msgid "Shift date"
+msgstr ""
+
 msgid "Shift Name"
 msgstr "Nome Turno"
 
@@ -11740,9 +11746,6 @@ msgstr "Parla con le vendite"
 
 msgid "Target"
 msgstr "Destinazione"
-
-msgid "TARGET"
-msgstr ""
 
 msgid "Target an item group."
 msgstr "Seleziona un gruppo di articoli."

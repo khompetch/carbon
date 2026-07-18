@@ -5912,6 +5912,9 @@ msgstr "历史汇率（权益）"
 msgid "Historical Rate (Equity)"
 msgstr "历史汇率（权益）"
 
+msgid "Historical shift"
+msgstr ""
+
 msgid "History"
 msgstr "历史"
 
@@ -10970,6 +10973,9 @@ msgstr "班次"
 msgid "Shift"
 msgstr "班次"
 
+msgid "Shift date"
+msgstr ""
+
 msgid "Shift Name"
 msgstr "班次名称"
 
@@ -11740,9 +11746,6 @@ msgstr "与销售团队联系"
 
 msgid "Target"
 msgstr "目标"
-
-msgid "TARGET"
-msgstr ""
 
 msgid "Target an item group."
 msgstr "针对一个项目组。"

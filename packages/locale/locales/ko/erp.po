@@ -5912,6 +5912,9 @@ msgstr "역사적 환율(자본)"
 msgid "Historical Rate (Equity)"
 msgstr "역사적 환율(자본)"
 
+msgid "Historical shift"
+msgstr ""
+
 msgid "History"
 msgstr "이력"
 
@@ -10970,6 +10973,9 @@ msgstr "교대"
 msgid "Shift"
 msgstr "교대"
 
+msgid "Shift date"
+msgstr ""
+
 msgid "Shift Name"
 msgstr "교대명"
 
@@ -11740,9 +11746,6 @@ msgstr "영업팀에 문의"
 
 msgid "Target"
 msgstr "대상"
-
-msgid "TARGET"
-msgstr ""
 
 msgid "Target an item group."
 msgstr "품목 그룹을 대상으로 지정합니다."

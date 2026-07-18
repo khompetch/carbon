@@ -5912,6 +5912,9 @@ msgstr "ऐतिहासिक दर (इक्विटी)"
 msgid "Historical Rate (Equity)"
 msgstr "ऐतिहासिक दर (इक्विटी)"
 
+msgid "Historical shift"
+msgstr ""
+
 msgid "History"
 msgstr "इतिहास"
 
@@ -10970,6 +10973,9 @@ msgstr "पाली"
 msgid "Shift"
 msgstr "शिफ्ट"
 
+msgid "Shift date"
+msgstr ""
+
 msgid "Shift Name"
 msgstr "शिफ्ट का नाम"
 
@@ -11740,9 +11746,6 @@ msgstr "बिक्रय टीम से बात करें"
 
 msgid "Target"
 msgstr "लक्ष्य"
-
-msgid "TARGET"
-msgstr ""
 
 msgid "Target an item group."
 msgstr "एक आइटम समूह को लक्षित करें।"

@@ -224,9 +224,6 @@ msgstr "Режим консоли"
 msgid "Consumed expired"
 msgstr "Потреблено истекшее"
 
-msgid "Copy Public TV Link"
-msgstr ""
-
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -379,9 +376,6 @@ msgstr "Истекает первым"
 msgid "Failed to complete inventory adjustment"
 msgstr "Не удалось выполнить корректировку запасов"
 
-msgid "Failed to create public link"
-msgstr ""
-
 msgid "Failed to end operations"
 msgstr "Не удалось завершить операции"
 
@@ -434,6 +428,12 @@ msgstr "Вернуться к операции"
 
 msgid "Have a technical issue? Contact <0>Carbon Support.</0>"
 msgstr "Возникла техническая проблема? Обратитесь в <0>службу поддержки Carbon.</0>"
+
+msgid "Historical shift"
+msgstr ""
+
+msgid "History"
+msgstr ""
 
 msgid "How many were actually picked?"
 msgstr "Сколько было фактически собрано?"
@@ -521,6 +521,9 @@ msgstr "Давайте создадим что-то"
 
 msgid "lines"
 msgstr "строки"
+
+msgid "Live"
+msgstr ""
 
 msgid "Loading item details..."
 msgstr "Загрузка данных номенклатуры..."
@@ -727,6 +730,9 @@ msgstr "Примечания"
 msgid "Notes (optional)"
 msgstr ""
 
+msgid "OEE board"
+msgstr ""
+
 #. placeholder {0}: column.title
 msgid "OEE board: {0}"
 msgstr ""
@@ -860,9 +866,6 @@ msgstr "Процессы"
 
 msgid "Progress"
 msgstr "Прогресс"
-
-msgid "Public TV link copied to clipboard"
-msgstr ""
 
 msgid "Quality (%Q)"
 msgstr ""
@@ -1144,9 +1147,6 @@ msgstr "Сменить оператора"
 
 msgid "Tag"
 msgstr "Тег"
-
-msgid "TARGET"
-msgstr ""
 
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."

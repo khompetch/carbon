@@ -224,9 +224,6 @@ msgstr "コンソールモード"
 msgid "Consumed expired"
 msgstr "消費期限切れ"
 
-msgid "Copy Public TV Link"
-msgstr ""
-
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -379,9 +376,6 @@ msgstr "最初に期限切れ"
 msgid "Failed to complete inventory adjustment"
 msgstr "在庫調整の完了に失敗しました"
 
-msgid "Failed to create public link"
-msgstr ""
-
 msgid "Failed to end operations"
 msgstr "工程の終了に失敗しました"
 
@@ -434,6 +428,12 @@ msgstr "操作に戻る"
 
 msgid "Have a technical issue? Contact <0>Carbon Support.</0>"
 msgstr "技術的な問題がありますか？<0>Carbonサポート</0>にお問い合わせください。"
+
+msgid "Historical shift"
+msgstr ""
+
+msgid "History"
+msgstr ""
 
 msgid "How many were actually picked?"
 msgstr "実際にはいくつ選ばれましたか？"
@@ -521,6 +521,9 @@ msgstr "さあ、何かを作りましょう"
 
 msgid "lines"
 msgstr "行"
+
+msgid "Live"
+msgstr ""
 
 msgid "Loading item details..."
 msgstr "品目詳細を読み込み中..."
@@ -727,6 +730,9 @@ msgstr "備考"
 msgid "Notes (optional)"
 msgstr ""
 
+msgid "OEE board"
+msgstr ""
+
 #. placeholder {0}: column.title
 msgid "OEE board: {0}"
 msgstr ""
@@ -860,9 +866,6 @@ msgstr "プロセス一覧"
 
 msgid "Progress"
 msgstr "進捗"
-
-msgid "Public TV link copied to clipboard"
-msgstr ""
 
 msgid "Quality (%Q)"
 msgstr ""
@@ -1144,9 +1147,6 @@ msgstr "オペレーターを切替"
 
 msgid "Tag"
 msgstr "タグ"
-
-msgid "TARGET"
-msgstr ""
 
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."

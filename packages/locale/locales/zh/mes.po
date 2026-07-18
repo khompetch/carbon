@@ -224,9 +224,6 @@ msgstr "控制台模式"
 msgid "Consumed expired"
 msgstr "已消耗过期"
 
-msgid "Copy Public TV Link"
-msgstr ""
-
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -379,9 +376,6 @@ msgstr "即将过期优先"
 msgid "Failed to complete inventory adjustment"
 msgstr "库存调整失败"
 
-msgid "Failed to create public link"
-msgstr ""
-
 msgid "Failed to end operations"
 msgstr "结束工序失败"
 
@@ -434,6 +428,12 @@ msgstr "返回操作"
 
 msgid "Have a technical issue? Contact <0>Carbon Support.</0>"
 msgstr "遇到技术问题？联系<0>Carbon 支持。</0>"
+
+msgid "Historical shift"
+msgstr ""
+
+msgid "History"
+msgstr ""
 
 msgid "How many were actually picked?"
 msgstr "实际上捡了多少个？"
@@ -521,6 +521,9 @@ msgstr "让我们开始构建"
 
 msgid "lines"
 msgstr "行"
+
+msgid "Live"
+msgstr ""
 
 msgid "Loading item details..."
 msgstr "正在加载物料详情..."
@@ -727,6 +730,9 @@ msgstr "备注"
 msgid "Notes (optional)"
 msgstr ""
 
+msgid "OEE board"
+msgstr ""
+
 #. placeholder {0}: column.title
 msgid "OEE board: {0}"
 msgstr ""
@@ -860,9 +866,6 @@ msgstr "工艺"
 
 msgid "Progress"
 msgstr "进度"
-
-msgid "Public TV link copied to clipboard"
-msgstr ""
 
 msgid "Quality (%Q)"
 msgstr ""
@@ -1144,9 +1147,6 @@ msgstr "切换操作员"
 
 msgid "Tag"
 msgstr "标签"
-
-msgid "TARGET"
-msgstr ""
 
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."

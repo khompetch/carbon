@@ -224,9 +224,6 @@ msgstr "Konsol Modu"
 msgid "Consumed expired"
 msgstr "Tüketilmiş süre dolmuş"
 
-msgid "Copy Public TV Link"
-msgstr ""
-
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -379,9 +376,6 @@ msgstr "İlk süresi dolacak"
 msgid "Failed to complete inventory adjustment"
 msgstr "Envanter ayarlaması tamamlanamadı"
 
-msgid "Failed to create public link"
-msgstr ""
-
 msgid "Failed to end operations"
 msgstr "İşlemler sonlandırılamadı"
 
@@ -434,6 +428,12 @@ msgstr "İşleme geri dön"
 
 msgid "Have a technical issue? Contact <0>Carbon Support.</0>"
 msgstr "Teknik bir sorun mu var? <0>Carbon Desteği</0> ile iletişime geçin."
+
+msgid "Historical shift"
+msgstr ""
+
+msgid "History"
+msgstr ""
 
 msgid "How many were actually picked?"
 msgstr "Gerçekte kaç tane alındı?"
@@ -521,6 +521,9 @@ msgstr "Bir şeyler inşa edelim"
 
 msgid "lines"
 msgstr "satırlar"
+
+msgid "Live"
+msgstr ""
 
 msgid "Loading item details..."
 msgstr "Ürün detayları yükleniyor..."
@@ -727,6 +730,9 @@ msgstr "Notlar"
 msgid "Notes (optional)"
 msgstr ""
 
+msgid "OEE board"
+msgstr ""
+
 #. placeholder {0}: column.title
 msgid "OEE board: {0}"
 msgstr ""
@@ -860,9 +866,6 @@ msgstr "Süreçler"
 
 msgid "Progress"
 msgstr "İlerleme"
-
-msgid "Public TV link copied to clipboard"
-msgstr ""
 
 msgid "Quality (%Q)"
 msgstr ""
@@ -1144,9 +1147,6 @@ msgstr "Operatörü Değiştir"
 
 msgid "Tag"
 msgstr "Etiket"
-
-msgid "TARGET"
-msgstr ""
 
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
