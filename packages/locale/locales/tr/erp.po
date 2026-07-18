@@ -5912,6 +5912,9 @@ msgstr "Tarihi Oran (Öz Sermaye)"
 msgid "Historical Rate (Equity)"
 msgstr "Tarihi Oran (Öz Sermaye)"
 
+msgid "Historical shift"
+msgstr ""
+
 msgid "History"
 msgstr "Geçmiş"
 

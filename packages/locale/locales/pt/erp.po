@@ -5912,6 +5912,9 @@ msgstr "Taxa Histórica (Patrimônio)"
 msgid "Historical Rate (Equity)"
 msgstr "Taxa Histórica (Patrimônio)"
 
+msgid "Historical shift"
+msgstr ""
+
 msgid "History"
 msgstr "Histórico"
 

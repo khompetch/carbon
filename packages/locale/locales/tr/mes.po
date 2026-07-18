@@ -429,6 +429,12 @@ msgstr "İşleme geri dön"
 msgid "Have a technical issue? Contact <0>Carbon Support.</0>"
 msgstr "Teknik bir sorun mu var? <0>Carbon Desteği</0> ile iletişime geçin."
 
+msgid "Historical shift"
+msgstr ""
+
+msgid "History"
+msgstr ""
+
 msgid "How many were actually picked?"
 msgstr "Gerçekte kaç tane alındı?"
 
@@ -515,6 +521,9 @@ msgstr "Bir şeyler inşa edelim"
 
 msgid "lines"
 msgstr "satırlar"
+
+msgid "Live"
+msgstr ""
 
 msgid "Loading item details..."
 msgstr "Ürün detayları yükleniyor..."

@@ -5912,6 +5912,9 @@ msgstr "Historical Rate (equity)"
 msgid "Historical Rate (Equity)"
 msgstr "Historical Rate (Equity)"
 
+msgid "Historical shift"
+msgstr "Historical shift"
+
 msgid "History"
 msgstr "History"
 

@@ -429,6 +429,12 @@ msgstr "操作に戻る"
 msgid "Have a technical issue? Contact <0>Carbon Support.</0>"
 msgstr "技術的な問題がありますか？<0>Carbonサポート</0>にお問い合わせください。"
 
+msgid "Historical shift"
+msgstr ""
+
+msgid "History"
+msgstr ""
+
 msgid "How many were actually picked?"
 msgstr "実際にはいくつ選ばれましたか？"
 
@@ -515,6 +521,9 @@ msgstr "さあ、何かを作りましょう"
 
 msgid "lines"
 msgstr "行"
+
+msgid "Live"
+msgstr ""
 
 msgid "Loading item details..."
 msgstr "品目詳細を読み込み中..."

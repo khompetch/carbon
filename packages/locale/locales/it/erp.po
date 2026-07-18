@@ -5912,6 +5912,9 @@ msgstr "Tasso Storico (Patrimonio)"
 msgid "Historical Rate (Equity)"
 msgstr "Tasso Storico (Patrimonio)"
 
+msgid "Historical shift"
+msgstr ""
+
 msgid "History"
 msgstr "Cronologia"
 

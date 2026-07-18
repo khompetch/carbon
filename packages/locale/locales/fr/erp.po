@@ -5912,6 +5912,9 @@ msgstr "Taux Historique (Capitaux Propres)"
 msgid "Historical Rate (Equity)"
 msgstr "Taux Historique (Capitaux Propres)"
 
+msgid "Historical shift"
+msgstr ""
+
 msgid "History"
 msgstr "Historique"
 

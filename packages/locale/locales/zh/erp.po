@@ -5912,6 +5912,9 @@ msgstr "历史汇率（权益）"
 msgid "Historical Rate (Equity)"
 msgstr "历史汇率（权益）"
 
+msgid "Historical shift"
+msgstr ""
+
 msgid "History"
 msgstr "历史"
 

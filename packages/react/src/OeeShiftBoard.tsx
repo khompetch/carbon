@@ -200,19 +200,30 @@ function hourLabel(startMs: number, timezone: string): string {
 }
 
 /**
- * Index of the hour bucket that contains "now", or -1. SSR-safe: returns -1 on
- * the server and the first client render (no `Date.now()` during render, so no
- * hydration mismatch), then resolves after mount and re-checks every 30s.
+ * Index of the hour bucket that contains "now", or -1 when none does (i.e. a
+ * historical or future shift is being viewed). Seeds `now` in the initializer
+ * like `Clock` does — server and client both land in the same bucket, so the
+ * live board doesn't flash "historical" on first paint — then re-checks every
+ * 30s so the highlight advances with the clock.
  */
 function useCurrentHourIndex(hours: HourBucket[]): number {
-  const [now, setNow] = useState<number | null>(null);
+  const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
-    setNow(Date.now());
     const interval = setInterval(() => setNow(Date.now()), 30000);
     return () => clearInterval(interval);
   }, []);
-  if (now === null) return -1;
   return hours.findIndex((hour) => now >= hour.start && now < hour.end);
+}
+
+/** "Fri, 17 Jul 2026" in the work center's timezone — for historical shifts. */
+function shiftDateLabel(startMs: number, timezone: string): string {
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: timezone,
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  }).format(new Date(startMs));
 }
 
 export function OeeShiftBoard({
@@ -231,35 +242,62 @@ export function OeeShiftBoard({
   const statusStyle = STATUS_STYLES[status];
   const all = totals.good + totals.defect;
   const currentHourIndex = useCurrentHourIndex(hours);
+  // The shift being viewed contains "now" → the board is live. A past/future
+  // shift (ERP history navigation) is not, so the status/clock don't apply.
+  const isLive = currentHourIndex >= 0;
 
   return (
     <div className={cn("flex flex-col gap-3 w-full", className)}>
-      {/* Header: work center + status + live clock */}
+      {/* Header: work center + live status/clock, or the shift date when
+          viewing history */}
       <div
         className={cn(
           "flex items-center justify-between rounded-lg px-4 py-3",
-          statusStyle.bar
+          isLive ? statusStyle.bar : "bg-muted text-muted-foreground"
         )}
       >
         <h1 className="text-2xl md:text-4xl font-bold truncate">
           {workCenterName}{" "}
-          <span className="font-medium opacity-90">({statusStyle.label})</span>
+          <span className="font-medium opacity-90">
+            ({isLive ? statusStyle.label : <Trans>History</Trans>})
+          </span>
         </h1>
         <div className="flex flex-col items-end shrink-0">
-          <div className="text-xl md:text-3xl font-bold">
-            <Clock timezone={timezone} />
-          </div>
-          {refreshIntervalMs !== undefined && (
-            <RefreshCountdown
-              intervalMs={refreshIntervalMs}
-              resetKey={totals}
-            />
+          {isLive ? (
+            <>
+              <div className="flex items-center gap-2 text-xl md:text-3xl font-bold">
+                <span className="inline-flex items-center gap-1.5 text-sm md:text-base font-semibold uppercase tracking-wide">
+                  <span className="relative flex size-2.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-current opacity-75" />
+                    <span className="relative inline-flex size-2.5 rounded-full bg-current" />
+                  </span>
+                  <Trans>Live</Trans>
+                </span>
+                <Clock timezone={timezone} />
+              </div>
+              {refreshIntervalMs !== undefined && (
+                <RefreshCountdown
+                  intervalMs={refreshIntervalMs}
+                  resetKey={totals}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              <div className="text-xl md:text-3xl font-bold tabular-nums">
+                {shiftDateLabel(shiftWindow.start, timezone)}
+              </div>
+              <span className="text-xs md:text-sm font-medium opacity-80">
+                <Trans>Historical shift</Trans>
+              </span>
+            </>
           )}
         </div>
       </div>
 
-      {/* Current job orders */}
-      {currentJobs.length > 0 && (
+      {/* Current job orders — live only; these are the operations active now,
+          not the viewed historical shift */}
+      {isLive && currentJobs.length > 0 && (
         <div className="rounded-lg border overflow-x-auto">
           <table className="w-full text-lg md:text-xl">
             <tbody>

@@ -5912,6 +5912,9 @@ msgstr "Исторический курс (Капитал)"
 msgid "Historical Rate (Equity)"
 msgstr "Исторический курс (Капитал)"
 
+msgid "Historical shift"
+msgstr ""
+
 msgid "History"
 msgstr "История"
 

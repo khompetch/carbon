@@ -5912,6 +5912,9 @@ msgstr "역사적 환율(자본)"
 msgid "Historical Rate (Equity)"
 msgstr "역사적 환율(자본)"
 
+msgid "Historical shift"
+msgstr ""
+
 msgid "History"
 msgstr "이력"
 

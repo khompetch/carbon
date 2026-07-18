@@ -429,6 +429,12 @@ msgstr "공정작업으로 돌아가기"
 msgid "Have a technical issue? Contact <0>Carbon Support.</0>"
 msgstr "기술적인 문제가 있으신가요? <0>Carbon 지원팀</0>에 문의하세요."
 
+msgid "Historical shift"
+msgstr ""
+
+msgid "History"
+msgstr ""
+
 msgid "How many were actually picked?"
 msgstr "실제로 몇 개를 피킹했습니까?"
 
@@ -515,6 +521,9 @@ msgstr "무언가를 만들어봅시다"
 
 msgid "lines"
 msgstr "라인"
+
+msgid "Live"
+msgstr ""
 
 msgid "Loading item details..."
 msgstr "품목 세부정보를 불러오는 중..."

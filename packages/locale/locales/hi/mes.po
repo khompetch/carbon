@@ -429,6 +429,12 @@ msgstr "ऑपरेशन पर वापस जाएं"
 msgid "Have a technical issue? Contact <0>Carbon Support.</0>"
 msgstr "क्या आपको कोई तकनीकी समस्या है? <0>Carbon Support</0> से संपर्क करें।"
 
+msgid "Historical shift"
+msgstr ""
+
+msgid "History"
+msgstr ""
+
 msgid "How many were actually picked?"
 msgstr "वास्तव में कितने चुने गए?"
 
@@ -515,6 +521,9 @@ msgstr "चलिए कुछ बनाते हैं"
 
 msgid "lines"
 msgstr "लाइनें"
+
+msgid "Live"
+msgstr ""
 
 msgid "Loading item details..."
 msgstr "आइटम विवरण लोड हो रहे हैं..."

@@ -5912,6 +5912,9 @@ msgstr "歴史レート（エクイティ）"
 msgid "Historical Rate (Equity)"
 msgstr "歴史レート（エクイティ）"
 
+msgid "Historical shift"
+msgstr ""
+
 msgid "History"
 msgstr "履歴"
 

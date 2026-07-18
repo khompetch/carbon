@@ -5912,6 +5912,9 @@ msgstr "Kurs Historyczny (Kapitał Własny)"
 msgid "Historical Rate (Equity)"
 msgstr "Kurs Historyczny (Kapitał Własny)"
 
+msgid "Historical shift"
+msgstr ""
+
 msgid "History"
 msgstr "Historia"
 

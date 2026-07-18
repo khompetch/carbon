@@ -429,6 +429,12 @@ msgstr "Wróć do operacji"
 msgid "Have a technical issue? Contact <0>Carbon Support.</0>"
 msgstr "Masz problem techniczny? Skontaktuj się z <0>Wsparciem Carbon.</0>"
 
+msgid "Historical shift"
+msgstr ""
+
+msgid "History"
+msgstr ""
+
 msgid "How many were actually picked?"
 msgstr "Ile faktycznie zostało zebrane?"
 
@@ -515,6 +521,9 @@ msgstr "Zbudujmy coś"
 
 msgid "lines"
 msgstr "linie"
+
+msgid "Live"
+msgstr ""
 
 msgid "Loading item details..."
 msgstr "Ładowanie szczegółów pozycji..."
