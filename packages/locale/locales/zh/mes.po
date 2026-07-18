@@ -1139,9 +1139,6 @@ msgstr "切换操作员"
 msgid "Tag"
 msgstr "标签"
 
-msgid "TARGET"
-msgstr ""
-
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
 msgstr "此工序的完成数量小于所需数量 {0}。"

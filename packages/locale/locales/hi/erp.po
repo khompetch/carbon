@@ -11741,9 +11741,6 @@ msgstr "बिक्रय टीम से बात करें"
 msgid "Target"
 msgstr "लक्ष्य"
 
-msgid "TARGET"
-msgstr ""
-
 msgid "Target an item group."
 msgstr "एक आइटम समूह को लक्षित करें।"
 

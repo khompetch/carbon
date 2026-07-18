@@ -1139,9 +1139,6 @@ msgstr "オペレーターを切替"
 msgid "Tag"
 msgstr "タグ"
 
-msgid "TARGET"
-msgstr ""
-
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
 msgstr "この工程の完了数量が必要数量 {0} を下回っています。"

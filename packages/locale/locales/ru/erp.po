@@ -11741,9 +11741,6 @@ msgstr "Поговорить с отделом продаж"
 msgid "Target"
 msgstr "Цель"
 
-msgid "TARGET"
-msgstr ""
-
 msgid "Target an item group."
 msgstr "Выберите группу товаров."
 

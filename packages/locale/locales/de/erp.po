@@ -11741,9 +11741,6 @@ msgstr "Mit dem Vertrieb sprechen"
 msgid "Target"
 msgstr "Ziel"
 
-msgid "TARGET"
-msgstr ""
-
 msgid "Target an item group."
 msgstr "Zielgruppe für eine Artikelgruppe."
 

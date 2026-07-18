@@ -1139,9 +1139,6 @@ msgstr "Cambia Operatore"
 msgid "Tag"
 msgstr "Etichetta"
 
-msgid "TARGET"
-msgstr ""
-
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
 msgstr "La quantità completata per questa operazione è inferiore alla quantità richiesta di {0}."

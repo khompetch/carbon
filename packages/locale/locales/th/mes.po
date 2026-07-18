@@ -1139,9 +1139,6 @@ msgstr ""
 msgid "Tag"
 msgstr ""
 
-msgid "TARGET"
-msgstr ""
-
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
 msgstr ""

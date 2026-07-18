@@ -1139,9 +1139,6 @@ msgstr "작업자 전환"
 msgid "Tag"
 msgstr "태그"
 
-msgid "TARGET"
-msgstr ""
-
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
 msgstr "이 공정작업의 완료 수량이 필요 수량 {0}보다 적습니다."

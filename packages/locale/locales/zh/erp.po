@@ -11741,9 +11741,6 @@ msgstr "与销售团队联系"
 msgid "Target"
 msgstr "目标"
 
-msgid "TARGET"
-msgstr ""
-
 msgid "Target an item group."
 msgstr "针对一个项目组。"
 

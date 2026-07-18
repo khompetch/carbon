@@ -110,20 +110,26 @@ function cycleTime(ms: number): string {
 
 function PercentCell({
   value,
-  threshold
+  threshold,
+  highlight,
+  className
 }: {
   value: number | null;
   threshold: number;
+  highlight?: boolean;
+  className?: string;
 }) {
   return (
     <td
       className={cn(
         "px-2 py-1 text-center tabular-nums font-semibold",
+        highlight && "bg-accent/40",
         value === null
           ? "text-muted-foreground"
           : value >= threshold
             ? "text-emerald-500"
-            : "text-red-500"
+            : "text-red-500",
+        className
       )}
     >
       {percent(value)}
@@ -193,6 +199,22 @@ function hourLabel(startMs: number, timezone: string): string {
   }).format(new Date(startMs));
 }
 
+/**
+ * Index of the hour bucket that contains "now", or -1. SSR-safe: returns -1 on
+ * the server and the first client render (no `Date.now()` during render, so no
+ * hydration mismatch), then resolves after mount and re-checks every 30s.
+ */
+function useCurrentHourIndex(hours: HourBucket[]): number {
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => {
+    setNow(Date.now());
+    const interval = setInterval(() => setNow(Date.now()), 30000);
+    return () => clearInterval(interval);
+  }, []);
+  if (now === null) return -1;
+  return hours.findIndex((hour) => now >= hour.start && now < hour.end);
+}
+
 export function OeeShiftBoard({
   workCenterName,
   status,
@@ -208,6 +230,7 @@ export function OeeShiftBoard({
 }: OeeShiftBoardProps) {
   const statusStyle = STATUS_STYLES[status];
   const all = totals.good + totals.defect;
+  const currentHourIndex = useCurrentHourIndex(hours);
 
   return (
     <div className={cn("flex flex-col gap-3 w-full", className)}>
@@ -442,16 +465,21 @@ export function OeeShiftBoard({
         </div>
       </div>
 
-      {/* Hourly table */}
+      {/* Hourly table — grouped by cause→effect: %OEE headline, then A/P/Q,
+          then the time rows that drive %A, then the count rows that drive
+          %P/%Q. The current hour's column is highlighted. */}
       <div className="rounded-lg border overflow-x-auto">
         <table className="w-full text-base md:text-lg">
           <thead>
             <tr className="border-b bg-muted/50">
               <th className="px-2 py-1 text-left">#</th>
-              {hours.map((hour) => (
+              {hours.map((hour, i) => (
                 <th
                   key={hour.start}
-                  className="px-2 py-1 text-center tabular-nums whitespace-nowrap"
+                  className={cn(
+                    "px-2 py-1 text-center tabular-nums whitespace-nowrap",
+                    i === currentHourIndex && "bg-accent/40"
+                  )}
                 >
                   {hourLabel(hour.start, timezone)}
                 </th>
@@ -459,114 +487,114 @@ export function OeeShiftBoard({
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b">
-              <th className="px-2 py-1 text-left whitespace-nowrap">%A</th>
-              {hours.map((hour) => (
-                <PercentCell
-                  key={hour.start}
-                  value={hour.availability}
-                  threshold={THRESHOLDS.availability}
-                />
-              ))}
-            </tr>
-            <tr className="border-b">
-              <th className="px-2 py-1 text-left whitespace-nowrap">%P</th>
-              {hours.map((hour) => (
-                <PercentCell
-                  key={hour.start}
-                  value={hour.performance}
-                  threshold={THRESHOLDS.performance}
-                />
-              ))}
-            </tr>
-            <tr className="border-b">
-              <th className="px-2 py-1 text-left whitespace-nowrap">%Q</th>
-              {hours.map((hour) => (
-                <PercentCell
-                  key={hour.start}
-                  value={hour.quality}
-                  threshold={THRESHOLDS.quality}
-                />
-              ))}
-            </tr>
-            <tr className="border-b">
-              <th className="px-2 py-1 text-left whitespace-nowrap">%OEE</th>
-              {hours.map((hour) => (
+            {/* %OEE — headline */}
+            <tr className="border-b-2 border-border bg-muted/30">
+              <th className="px-2 py-1 text-left whitespace-nowrap font-bold">
+                %OEE
+              </th>
+              {hours.map((hour, i) => (
                 <PercentCell
                   key={hour.start}
                   value={hour.oee}
                   threshold={THRESHOLDS.oee}
+                  highlight={i === currentHourIndex}
+                  className="text-lg md:text-xl font-bold"
                 />
               ))}
             </tr>
-            <tr className="border-b">
-              <th className="px-2 py-1 text-left whitespace-nowrap">RT</th>
-              {hours.map((hour) => (
-                <td
-                  key={hour.start}
-                  className="px-2 py-1 text-center tabular-nums"
-                >
-                  {minutes(hour.runtimeMs)}
-                </td>
-              ))}
-            </tr>
-            <tr className="border-b">
-              <th className="px-2 py-1 text-left whitespace-nowrap">PDT</th>
-              {hours.map((hour) => (
-                <td
-                  key={hour.start}
-                  className="px-2 py-1 text-center tabular-nums"
-                >
-                  {minutes(hour.pdtMs)}
-                </td>
-              ))}
-            </tr>
-            <tr className="border-b">
-              <th className="px-2 py-1 text-left whitespace-nowrap">UPDT</th>
-              {hours.map((hour) => (
-                <td
-                  key={hour.start}
-                  className="px-2 py-1 text-center tabular-nums"
-                >
-                  {minutes(hour.updtMs)}
-                </td>
-              ))}
-            </tr>
-            <tr className="border-b">
-              <th className="px-2 py-1 text-left whitespace-nowrap">
-                <Trans>TARGET</Trans>
-              </th>
-              {hours.map((hour) => (
-                <td
-                  key={hour.start}
-                  className="px-2 py-1 text-center tabular-nums"
-                >
-                  {hour.target}
-                </td>
-              ))}
-            </tr>
-            <tr className="border-b">
-              <th className="px-2 py-1 text-left whitespace-nowrap">NG</th>
-              {hours.map((hour) => (
-                <td
-                  key={hour.start}
-                  className="px-2 py-1 text-center tabular-nums"
-                >
-                  {hour.defect}
-                </td>
-              ))}
-            </tr>
-            <tr>
-              <th className="px-2 py-1 text-left whitespace-nowrap">OK</th>
-              {hours.map((hour) => (
-                <td
-                  key={hour.start}
-                  className="px-2 py-1 text-center tabular-nums font-semibold"
-                >
-                  {hour.good}
-                </td>
-              ))}
-            </tr>
+
+            {/* Availability / Performance / Quality */}
+            {(
+              [
+                ["%A", "availability", THRESHOLDS.availability],
+                ["%P", "performance", THRESHOLDS.performance],
+                ["%Q", "quality", THRESHOLDS.quality]
+              ] as const
+            ).map(([label, key, threshold], idx, arr) => (
+              <tr
+                key={key}
+                className={
+                  idx === arr.length - 1
+                    ? "border-b-2 border-border"
+                    : "border-b"
+                }
+              >
+                <th className="px-2 py-1 text-left whitespace-nowrap">
+                  {label}
+                </th>
+                {hours.map((hour, i) => (
+                  <PercentCell
+                    key={hour.start}
+                    value={hour[key]}
+                    threshold={threshold}
+                    highlight={i === currentHourIndex}
+                  />
+                ))}
+              </tr>
+            ))}
+
+            {/* Time block — drives %A */}
+            {(
+              [
+                ["RT (min)", "runtimeMs"],
+                ["PDT (min)", "pdtMs"],
+                ["UPDT (min)", "updtMs"]
+              ] as const
+            ).map(([label, key], idx, arr) => (
+              <tr
+                key={key}
+                className={
+                  idx === arr.length - 1
+                    ? "border-b-2 border-border"
+                    : "border-b"
+                }
+              >
+                <th className="px-2 py-1 text-left whitespace-nowrap">
+                  {label}
+                </th>
+                {hours.map((hour, i) => (
+                  <td
+                    key={hour.start}
+                    className={cn(
+                      "px-2 py-1 text-center tabular-nums",
+                      i === currentHourIndex && "bg-accent/40"
+                    )}
+                  >
+                    {minutes(hour[key])}
+                  </td>
+                ))}
+              </tr>
+            ))}
+
+            {/* Count block — drives %P / %Q (goal → good → bad) */}
+            {(
+              [
+                ["TARGET (pcs)", "target", false],
+                ["OK (pcs)", "good", true],
+                ["NG (pcs)", "defect", false]
+              ] as const
+            ).map(([label, key, bold], idx, arr) => (
+              <tr
+                key={key}
+                className={idx === arr.length - 1 ? "" : "border-b"}
+              >
+                <th className="px-2 py-1 text-left whitespace-nowrap">
+                  {label}
+                </th>
+                {hours.map((hour, i) => (
+                  <td
+                    key={hour.start}
+                    className={cn(
+                      "px-2 py-1 text-center tabular-nums",
+                      bold && "font-semibold",
+                      i === currentHourIndex && "bg-accent/40"
+                    )}
+                  >
+                    {hour[key]}
+                  </td>
+                ))}
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

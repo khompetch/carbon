@@ -1139,9 +1139,6 @@ msgstr "ऑपरेटर स्विच करें"
 msgid "Tag"
 msgstr "टैग"
 
-msgid "TARGET"
-msgstr ""
-
 #. placeholder {0}: operation.operationQuantity
 msgid "The completed quantity for this operation is less than the required quantity of {0}."
 msgstr "इस ऑपरेशन के लिए पूर्ण मात्रा आवश्यक मात्रा {0} से कम है।"

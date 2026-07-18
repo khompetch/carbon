@@ -11741,9 +11741,6 @@ msgstr "営業に相談"
 msgid "Target"
 msgstr "対象"
 
-msgid "TARGET"
-msgstr ""
-
 msgid "Target an item group."
 msgstr "アイテムグループをターゲットにします。"
 

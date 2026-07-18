@@ -11741,9 +11741,6 @@ msgstr "Satın Alma Ekibi ile Görüşün"
 msgid "Target"
 msgstr "Hedef"
 
-msgid "TARGET"
-msgstr ""
-
 msgid "Target an item group."
 msgstr "Bir ürün grubunu hedefleyin."
 
