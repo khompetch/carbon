@@ -17,7 +17,6 @@ import {
 } from "@carbon/react";
 import { msg } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
-import type { SupabaseClient } from "@supabase/supabase-js";
 import { useEffect } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { redirect, useFetcher, useLoaderData } from "react-router";
@@ -101,9 +100,8 @@ export async function action({ request }: ActionFunctionArgs) {
       return { success: false, message: "Invalid form data" };
     }
 
-    // Columns are newer than the generated DB types — cast until regen.
     // Empty multiplier/reason = feature off (NULL).
-    const update = await (client as SupabaseClient<any>)
+    const update = await client
       .from("companySettings")
       .update({
         autoDowntimeMultiplier: validation.data.autoDowntimeMultiplier ?? null,
@@ -125,10 +123,6 @@ export default function ProductionSettingsRoute() {
   const fetcher = useFetcher<typeof action>();
   const autoDowntimeFetcher = useFetcher<typeof action>();
 
-  const settingsWithAutoDowntime = companySettings as typeof companySettings & {
-    autoDowntimeMultiplier: number | null;
-    autoDowntimeReasonId: string | null;
-  };
   const unplannedReasonOptions = downtimeReasons
     .filter((reason) => reason.type === "Unplanned")
     .map((reason) => ({ value: reason.id, label: reason.name }));
@@ -233,9 +227,8 @@ export default function ProductionSettingsRoute() {
             validator={autoDowntimeValidator}
             defaultValues={{
               autoDowntimeMultiplier:
-                settingsWithAutoDowntime.autoDowntimeMultiplier ?? undefined,
-              autoDowntimeReasonId:
-                settingsWithAutoDowntime.autoDowntimeReasonId ?? ""
+                companySettings.autoDowntimeMultiplier ?? undefined,
+              autoDowntimeReasonId: companySettings.autoDowntimeReasonId ?? ""
             }}
             fetcher={autoDowntimeFetcher}
           >

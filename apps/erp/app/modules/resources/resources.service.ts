@@ -962,9 +962,7 @@ export async function getWorkCenterRequiredTrainingIds(
   client: SupabaseClient<Database>,
   workCenterId: string
 ): Promise<{ data: { trainingId: string }[] | null; error: unknown }> {
-  // workCenterTraining is not yet in the generated DB types — regenerate after
-  // applying migration 20260714171532 and drop this cast.
-  return (client as SupabaseClient<any>)
+  return client
     .from("workCenterTraining")
     .select("trainingId")
     .eq("workCenterId", workCenterId);
@@ -977,17 +975,14 @@ export async function getProcessRequirements(
   requiredAbilityId: string | null;
   requiredTrainingIds: string[];
 }> {
-  // processTraining and process.requiredAbilityId are not yet in the generated
-  // DB types — regenerate after applying migration 20260715084216 and drop
-  // this cast. (The processes view predates the column, so read the table.)
-  const anyClient = client as SupabaseClient<any>;
+  // The processes view predates requiredAbilityId, so read the process table.
   const [processRow, trainings] = await Promise.all([
-    anyClient
+    client
       .from("process")
       .select("requiredAbilityId")
       .eq("id", processId)
       .maybeSingle(),
-    anyClient
+    client
       .from("processTraining")
       .select("trainingId")
       .eq("processId", processId)
@@ -1696,9 +1691,6 @@ export async function upsertProcess(
         customFields?: Json;
       })
 ) {
-  // processTraining is not yet in the generated DB types — regenerate after
-  // applying migration 20260715084216 and drop this cast.
-  const trainingClient = client as SupabaseClient<any>;
   if ("createdBy" in process) {
     const { workCenters, requiredTrainingIds, ...insert } = process;
     const processInsert = await client
@@ -1733,16 +1725,14 @@ export async function upsertProcess(
     }
 
     if (requiredTrainingIds?.length) {
-      const processTrainingInsert = await trainingClient
-        .from("processTraining")
-        .insert(
-          requiredTrainingIds.map((trainingId) => ({
-            processId,
-            trainingId,
-            companyId: insert.companyId,
-            createdBy: insert.createdBy
-          }))
-        );
+      const processTrainingInsert = await client.from("processTraining").insert(
+        requiredTrainingIds.map((trainingId) => ({
+          processId,
+          trainingId,
+          companyId: insert.companyId,
+          createdBy: insert.createdBy
+        }))
+      );
 
       if (processTrainingInsert.error) {
         return processTrainingInsert;
@@ -1785,7 +1775,7 @@ export async function upsertProcess(
     }
   }
 
-  const deleteTrainings = await trainingClient
+  const deleteTrainings = await client
     .from("processTraining")
     .delete()
     .eq("processId", process.id);
@@ -1795,16 +1785,14 @@ export async function upsertProcess(
   }
 
   if (requiredTrainingIds?.length) {
-    const processTrainingUpdate = await trainingClient
-      .from("processTraining")
-      .insert(
-        requiredTrainingIds.map((trainingId) => ({
-          processId: process.id,
-          trainingId,
-          companyId: update.companyId,
-          createdBy: update.updatedBy
-        }))
-      );
+    const processTrainingUpdate = await client.from("processTraining").insert(
+      requiredTrainingIds.map((trainingId) => ({
+        processId: process.id,
+        trainingId,
+        companyId: update.companyId,
+        createdBy: update.updatedBy
+      }))
+    );
     if (processTrainingUpdate.error) {
       return processTrainingUpdate;
     }
@@ -1913,17 +1901,13 @@ export async function upsertWorkCenter(
         customFields?: Json;
       })
 ) {
-  // workCenterTraining and workCenter.autoDowntimeMultiplier are not yet in
-  // the generated DB types — regenerate after applying the migrations
-  // (20260714171532, 20260716154237) and drop these casts.
-  const trainingClient = client as SupabaseClient<any>;
   if ("createdBy" in workCenter) {
     const { processes, requiredTrainingIds, ...insert } = workCenter;
-    const workCenterInsert = (await trainingClient
+    const workCenterInsert = await client
       .from("workCenter")
       .insert([insert])
       .select("id")
-      .single()) as { data: { id: string } | null; error: any };
+      .single();
     if (workCenterInsert.error || !workCenterInsert.data) {
       return workCenterInsert;
     }
@@ -1946,7 +1930,7 @@ export async function upsertWorkCenter(
     }
 
     if (requiredTrainingIds?.length) {
-      const workCenterTrainingInsert = await trainingClient
+      const workCenterTrainingInsert = await client
         .from("workCenterTraining")
         .insert(
           requiredTrainingIds.map((trainingId) => ({
@@ -1965,7 +1949,7 @@ export async function upsertWorkCenter(
     return workCenterInsert;
   }
   const { processes, requiredTrainingIds, ...update } = workCenter;
-  const workCenterUpdate = await trainingClient
+  const workCenterUpdate = await client
     .from("workCenter")
     .update(sanitize(update))
     .eq("id", workCenter.id);
@@ -1998,7 +1982,7 @@ export async function upsertWorkCenter(
     }
   }
 
-  const deleteTrainings = await trainingClient
+  const deleteTrainings = await client
     .from("workCenterTraining")
     .delete()
     .eq("workCenterId", workCenter.id);
@@ -2008,7 +1992,7 @@ export async function upsertWorkCenter(
   }
 
   if (requiredTrainingIds?.length) {
-    const workCenterTrainingUpdate = await trainingClient
+    const workCenterTrainingUpdate = await client
       .from("workCenterTraining")
       .insert(
         requiredTrainingIds.map((trainingId) => ({

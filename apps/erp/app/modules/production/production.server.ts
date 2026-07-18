@@ -116,28 +116,25 @@ export type WorkCenterOeeStatus =
 /**
  * Stable public share link for a work center's OEE TV board: one externalLink
  * row per work center (documentType 'WorkCenter'), created on first request
- * and reused forever after — the URL never changes.
- * Call with the service role ('WorkCenter' is newer than the generated enum
- * types, hence the casts).
+ * and reused forever after — the URL never changes. Call with the service role.
  */
 export async function getOrCreateWorkCenterShareLink(
   serviceRole: SupabaseClient<Database>,
   args: { workCenterId: string; companyId: string }
 ) {
-  const client = serviceRole as SupabaseClient<any>;
-  const existing = (await client
+  const existing = await serviceRole
     .from("externalLink")
     .select("id")
     .eq("documentType", "WorkCenter")
     .eq("documentId", args.workCenterId)
     .eq("companyId", args.companyId)
-    .maybeSingle()) as { data: { id: string } | null; error: any };
+    .maybeSingle();
 
   if (existing.data) {
     return { data: existing.data, error: null };
   }
 
-  return (await client
+  return serviceRole
     .from("externalLink")
     .insert({
       documentType: "WorkCenter",
@@ -145,7 +142,7 @@ export async function getOrCreateWorkCenterShareLink(
       companyId: args.companyId
     })
     .select("id")
-    .single()) as { data: { id: string } | null; error: any };
+    .single();
 }
 
 /**
@@ -166,21 +163,12 @@ export async function getWorkCenterHourlyOee(
   const { workCenterId, companyId } = args;
   const now = args.now ?? Date.now();
 
-  // autoDowntimeMultiplier is newer than the generated types — cast until regen
-  const workCenter = (await (client as SupabaseClient<any>)
+  const workCenter = await client
     .from("workCenter")
     .select("id, name, locationId, autoDowntimeMultiplier")
     .eq("id", workCenterId)
     .eq("companyId", companyId)
-    .single()) as unknown as {
-    data: {
-      id: string;
-      name: string;
-      locationId: string | null;
-      autoDowntimeMultiplier: number | null;
-    } | null;
-    error: any;
-  };
+    .single();
 
   if (workCenter.error || !workCenter.data) {
     return { error: "Work center not found" as const, data: null };
@@ -201,14 +189,11 @@ export async function getWorkCenterHourlyOee(
       .eq("locationId", workCenter.data.locationId ?? "")
       .eq("active", true)
       .order("startTime"),
-    (client as SupabaseClient<any>)
+    client
       .from("companySettings")
       .select("autoDowntimeMultiplier")
       .eq("id", companyId)
-      .maybeSingle() as unknown as Promise<{
-      data: { autoDowntimeMultiplier: number | null } | null;
-      error: any;
-    }>
+      .maybeSingle()
   ]);
 
   const timezone = location.data?.timezone ?? "UTC";

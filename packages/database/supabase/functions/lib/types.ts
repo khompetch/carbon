@@ -4928,6 +4928,8 @@ export type Database = {
           accountsReceivableEmail: string | null
           assetTaxDepreciationEnabled: boolean
           assetTaxRate: number | null
+          autoDowntimeMultiplier: number | null
+          autoDowntimeReasonId: string | null
           consoleEnabled: boolean
           defaultCustomerCc: string[] | null
           defaultSupplierCc: string[] | null
@@ -4971,6 +4973,8 @@ export type Database = {
           accountsReceivableEmail?: string | null
           assetTaxDepreciationEnabled?: boolean
           assetTaxRate?: number | null
+          autoDowntimeMultiplier?: number | null
+          autoDowntimeReasonId?: string | null
           consoleEnabled?: boolean
           defaultCustomerCc?: string[] | null
           defaultSupplierCc?: string[] | null
@@ -5014,6 +5018,8 @@ export type Database = {
           accountsReceivableEmail?: string | null
           assetTaxDepreciationEnabled?: boolean
           assetTaxRate?: number | null
+          autoDowntimeMultiplier?: number | null
+          autoDowntimeReasonId?: string | null
           consoleEnabled?: boolean
           defaultCustomerCc?: string[] | null
           defaultSupplierCc?: string[] | null
@@ -5050,6 +5056,13 @@ export type Database = {
           useMetric?: boolean
         }
         Relationships: [
+          {
+            foreignKeyName: "companySettings_autoDowntimeReasonId_fkey"
+            columns: ["autoDowntimeReasonId", "id"]
+            isOneToOne: false
+            referencedRelation: "downtimeReason"
+            referencedColumns: ["id", "companyId"]
+          },
           {
             foreignKeyName: "companySettings_companyId_fkey"
             columns: ["id"]
@@ -10753,6 +10766,144 @@ export type Database = {
           {
             foreignKeyName: "documentTransaction_userId_fkey"
             columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
+          },
+        ]
+      }
+      downtimeReason: {
+        Row: {
+          active: boolean
+          companyId: string
+          createdAt: string
+          createdBy: string
+          customFields: Json | null
+          id: string
+          name: string
+          type: Database["public"]["Enums"]["downtimeType"]
+          updatedAt: string | null
+          updatedBy: string | null
+        }
+        Insert: {
+          active?: boolean
+          companyId: string
+          createdAt?: string
+          createdBy: string
+          customFields?: Json | null
+          id?: string
+          name: string
+          type?: Database["public"]["Enums"]["downtimeType"]
+          updatedAt?: string | null
+          updatedBy?: string | null
+        }
+        Update: {
+          active?: boolean
+          companyId?: string
+          createdAt?: string
+          createdBy?: string
+          customFields?: Json | null
+          id?: string
+          name?: string
+          type?: Database["public"]["Enums"]["downtimeType"]
+          updatedAt?: string | null
+          updatedBy?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "downtimeReason_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "downtimeReason_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "company"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "downtimeReason_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "customFieldTables"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "downtimeReason_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "integrations"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "downtimeReason_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "downtimeReason_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "downtimeReason_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "downtimeReason_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "downtimeReason_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "downtimeReason_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "downtimeReason_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "downtimeReason_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "downtimeReason_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "downtimeReason_updatedBy_fkey"
+            columns: ["updatedBy"]
             isOneToOne: false
             referencedRelation: "userDefaults"
             referencedColumns: ["userId"]
@@ -33635,6 +33786,7 @@ export type Database = {
           id: string
           name: string
           processType: Database["public"]["Enums"]["processType"]
+          requiredAbilityId: string | null
           tags: string[] | null
           updatedAt: string | null
           updatedBy: string | null
@@ -33650,6 +33802,7 @@ export type Database = {
           id?: string
           name: string
           processType?: Database["public"]["Enums"]["processType"]
+          requiredAbilityId?: string | null
           tags?: string[] | null
           updatedAt?: string | null
           updatedBy?: string | null
@@ -33665,6 +33818,7 @@ export type Database = {
           id?: string
           name?: string
           processType?: Database["public"]["Enums"]["processType"]
+          requiredAbilityId?: string | null
           tags?: string[] | null
           updatedAt?: string | null
           updatedBy?: string | null
@@ -33734,6 +33888,13 @@ export type Database = {
             referencedColumns: ["userId"]
           },
           {
+            foreignKeyName: "process_requiredAbilityId_fkey"
+            columns: ["requiredAbilityId"]
+            isOneToOne: false
+            referencedRelation: "ability"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "process_updatedBy_fkey"
             columns: ["updatedBy"]
             isOneToOne: false
@@ -33767,6 +33928,122 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "userDefaults"
             referencedColumns: ["userId"]
+          },
+        ]
+      }
+      processTraining: {
+        Row: {
+          companyId: string
+          createdAt: string
+          createdBy: string
+          processId: string
+          trainingId: string
+        }
+        Insert: {
+          companyId: string
+          createdAt?: string
+          createdBy: string
+          processId: string
+          trainingId: string
+        }
+        Update: {
+          companyId?: string
+          createdAt?: string
+          createdBy?: string
+          processId?: string
+          trainingId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "processTraining_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "processTraining_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "company"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "processTraining_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "customFieldTables"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "processTraining_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "integrations"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "processTraining_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "processTraining_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "processTraining_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "processTraining_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "processTraining_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "processTraining_processId_fkey"
+            columns: ["processId"]
+            isOneToOne: false
+            referencedRelation: "process"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "processTraining_processId_fkey"
+            columns: ["processId"]
+            isOneToOne: false
+            referencedRelation: "processes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "processTraining_trainingId_fkey"
+            columns: ["trainingId"]
+            isOneToOne: false
+            referencedRelation: "training"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "processTraining_trainingId_fkey"
+            columns: ["trainingId"]
+            isOneToOne: false
+            referencedRelation: "trainings"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -54089,6 +54366,7 @@ export type Database = {
       workCenter: {
         Row: {
           active: boolean
+          autoDowntimeMultiplier: number | null
           companyId: string
           createdAt: string
           createdBy: string
@@ -54109,6 +54387,7 @@ export type Database = {
         }
         Insert: {
           active?: boolean
+          autoDowntimeMultiplier?: number | null
           companyId: string
           createdAt?: string
           createdBy: string
@@ -54129,6 +54408,7 @@ export type Database = {
         }
         Update: {
           active?: boolean
+          autoDowntimeMultiplier?: number | null
           companyId?: string
           createdAt?: string
           createdBy?: string
@@ -54266,6 +54546,191 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "userDefaults"
             referencedColumns: ["userId"]
+          },
+        ]
+      }
+      workCenterDowntime: {
+        Row: {
+          companyId: string
+          createdAt: string
+          createdBy: string
+          customFields: Json | null
+          downtimeReasonId: string | null
+          endTime: string | null
+          id: string
+          isAuto: boolean
+          notes: string | null
+          startTime: string
+          type: Database["public"]["Enums"]["downtimeType"]
+          updatedAt: string | null
+          updatedBy: string | null
+          workCenterId: string
+        }
+        Insert: {
+          companyId: string
+          createdAt?: string
+          createdBy: string
+          customFields?: Json | null
+          downtimeReasonId?: string | null
+          endTime?: string | null
+          id?: string
+          isAuto?: boolean
+          notes?: string | null
+          startTime?: string
+          type?: Database["public"]["Enums"]["downtimeType"]
+          updatedAt?: string | null
+          updatedBy?: string | null
+          workCenterId: string
+        }
+        Update: {
+          companyId?: string
+          createdAt?: string
+          createdBy?: string
+          customFields?: Json | null
+          downtimeReasonId?: string | null
+          endTime?: string | null
+          id?: string
+          isAuto?: boolean
+          notes?: string | null
+          startTime?: string
+          type?: Database["public"]["Enums"]["downtimeType"]
+          updatedAt?: string | null
+          updatedBy?: string | null
+          workCenterId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workCenterDowntime_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "company"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "customFieldTables"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "integrations"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_downtimeReasonId_companyId_fkey"
+            columns: ["downtimeReasonId", "companyId"]
+            isOneToOne: false
+            referencedRelation: "downtimeReason"
+            referencedColumns: ["id", "companyId"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_workCenterId_fkey"
+            columns: ["workCenterId"]
+            isOneToOne: false
+            referencedRelation: "riskRegisters"
+            referencedColumns: ["workCenterId"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_workCenterId_fkey"
+            columns: ["workCenterId"]
+            isOneToOne: false
+            referencedRelation: "workCenter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_workCenterId_fkey"
+            columns: ["workCenterId"]
+            isOneToOne: false
+            referencedRelation: "workCenters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterDowntime_workCenterId_fkey"
+            columns: ["workCenterId"]
+            isOneToOne: false
+            referencedRelation: "workCentersWithBlockingStatus"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -54641,6 +55106,136 @@ export type Database = {
           },
           {
             foreignKeyName: "workCenterReplacementPart_workCenterId_fkey"
+            columns: ["workCenterId"]
+            isOneToOne: false
+            referencedRelation: "workCentersWithBlockingStatus"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workCenterTraining: {
+        Row: {
+          companyId: string
+          createdAt: string
+          createdBy: string
+          trainingId: string
+          workCenterId: string
+        }
+        Insert: {
+          companyId: string
+          createdAt?: string
+          createdBy: string
+          trainingId: string
+          workCenterId: string
+        }
+        Update: {
+          companyId?: string
+          createdAt?: string
+          createdBy?: string
+          trainingId?: string
+          workCenterId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workCenterTraining_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterTraining_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "company"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterTraining_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "customFieldTables"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "workCenterTraining_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "integrations"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "workCenterTraining_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterTraining_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterTraining_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterTraining_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterTraining_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "workCenterTraining_trainingId_fkey"
+            columns: ["trainingId"]
+            isOneToOne: false
+            referencedRelation: "training"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterTraining_trainingId_fkey"
+            columns: ["trainingId"]
+            isOneToOne: false
+            referencedRelation: "trainings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterTraining_workCenterId_fkey"
+            columns: ["workCenterId"]
+            isOneToOne: false
+            referencedRelation: "riskRegisters"
+            referencedColumns: ["workCenterId"]
+          },
+          {
+            foreignKeyName: "workCenterTraining_workCenterId_fkey"
+            columns: ["workCenterId"]
+            isOneToOne: false
+            referencedRelation: "workCenter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterTraining_workCenterId_fkey"
+            columns: ["workCenterId"]
+            isOneToOne: false
+            referencedRelation: "workCenters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterTraining_workCenterId_fkey"
             columns: ["workCenterId"]
             isOneToOne: false
             referencedRelation: "workCentersWithBlockingStatus"
@@ -60847,14 +61442,14 @@ export type Database = {
           },
           {
             foreignKeyName: "partner_id_fkey"
-            columns: ["id"]
+            columns: ["supplierLocationId"]
             isOneToOne: false
             referencedRelation: "supplierLocation"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "partner_id_fkey"
-            columns: ["supplierLocationId"]
+            columns: ["id"]
             isOneToOne: false
             referencedRelation: "supplierLocation"
             referencedColumns: ["id"]
@@ -69423,6 +70018,7 @@ export type Database = {
       workCenters: {
         Row: {
           active: boolean | null
+          autoDowntimeMultiplier: number | null
           companyId: string | null
           createdAt: string | null
           createdBy: string | null
@@ -69569,6 +70165,7 @@ export type Database = {
       workCentersWithBlockingStatus: {
         Row: {
           active: boolean | null
+          autoDowntimeMultiplier: number | null
           blockingDispatchId: string | null
           blockingDispatchReadableId: string | null
           companyId: string | null
@@ -70866,6 +71463,18 @@ export type Database = {
           unitCost: number
           unitOfMeasureCode: string
           version: number
+        }[]
+      }
+      get_missing_required_trainings: {
+        Args: {
+          p_company_id: string
+          p_employee_id: string
+          p_process_id: string
+          p_work_center_id: string
+        }
+        Returns: {
+          name: string
+          trainingId: string
         }[]
       }
       get_my_claim: { Args: { claim: string }; Returns: Json }
@@ -72251,12 +72860,14 @@ export type Database = {
         | "Audio"
         | "Other"
         | "Model"
+      downtimeType: "Planned" | "Unplanned"
       employeeTypeSystemType: "Admin" | "Console Operator"
       externalLinkDocumentType:
         | "Quote"
         | "SupplierQuote"
         | "Customer"
         | "Non-Conformance Supplier"
+        | "WorkCenter"
       factor:
         | "Hours/Piece"
         | "Hours/100 Pieces"
@@ -73593,12 +74204,14 @@ export const Constants = {
         "Other",
         "Model",
       ],
+      downtimeType: ["Planned", "Unplanned"],
       employeeTypeSystemType: ["Admin", "Console Operator"],
       externalLinkDocumentType: [
         "Quote",
         "SupplierQuote",
         "Customer",
         "Non-Conformance Supplier",
+        "WorkCenter",
       ],
       factor: [
         "Hours/Piece",
