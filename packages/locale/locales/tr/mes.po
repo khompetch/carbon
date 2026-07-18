@@ -224,9 +224,6 @@ msgstr "Konsol Modu"
 msgid "Consumed expired"
 msgstr "Tüketilmiş süre dolmuş"
 
-msgid "Copy Public TV Link"
-msgstr ""
-
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
 msgid "Create {0}"
@@ -378,9 +375,6 @@ msgstr "İlk süresi dolacak"
 
 msgid "Failed to complete inventory adjustment"
 msgstr "Envanter ayarlaması tamamlanamadı"
-
-msgid "Failed to create public link"
-msgstr ""
 
 msgid "Failed to end operations"
 msgstr "İşlemler sonlandırılamadı"
@@ -727,6 +721,9 @@ msgstr "Notlar"
 msgid "Notes (optional)"
 msgstr ""
 
+msgid "OEE board"
+msgstr ""
+
 #. placeholder {0}: column.title
 msgid "OEE board: {0}"
 msgstr ""
@@ -860,9 +857,6 @@ msgstr "Süreçler"
 
 msgid "Progress"
 msgstr "İlerleme"
-
-msgid "Public TV link copied to clipboard"
-msgstr ""
 
 msgid "Quality (%Q)"
 msgstr ""

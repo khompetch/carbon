@@ -2032,9 +2032,22 @@ export const JobOperation = ({
                     <Await resolve={workCenter}>
                       {(resolvedWorkCenter) =>
                         resolvedWorkCenter.data && (
-                          <Heading size="h4" className="line-clamp-1">
-                            {resolvedWorkCenter.data?.name}
-                          </Heading>
+                          <HStack spacing={1} className="justify-center">
+                            <Heading size="h4" className="line-clamp-1">
+                              {resolvedWorkCenter.data?.name}
+                            </Heading>
+                            {operation.workCenterId && (
+                              <Link
+                                to={path.to.oeeWorkCenter(
+                                  operation.workCenterId
+                                )}
+                                aria-label={t`OEE board`}
+                                className="inline-flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground"
+                              >
+                                <LuCircleGauge className="size-4" />
+                              </Link>
+                            )}
+                          </HStack>
                         )
                       }
                     </Await>
