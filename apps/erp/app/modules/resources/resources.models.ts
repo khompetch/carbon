@@ -326,6 +326,7 @@ export const processValidator = z
       .array(z.string().min(1, { message: "Invalid work center" }))
       .optional(),
     completeAllOnScan: zfd.checkbox(),
+    requireAllStepsToComplete: zfd.checkbox(),
     requiredAbilityId: zfd.text(z.string().optional()),
     requiredTrainingIds: z
       .array(z.string().min(1, { message: "Invalid training" }))

@@ -1,6 +1,7 @@
 import { useCarbon } from "@carbon/auth";
 import {
   Array as ArrayInput,
+  Boolean,
   Hidden,
   Input,
   Number,
@@ -128,7 +129,8 @@ export default function ProcedureExplorer() {
     maxValue: selectedAttribute
       ? (selectedAttribute?.maxValue ?? undefined)
       : 0,
-    listValues: selectedAttribute?.listValues ?? []
+    listValues: selectedAttribute?.listValues ?? [],
+    required: selectedAttribute?.required ?? false
   };
 
   const procedureParameterInitialValues = {
@@ -822,6 +824,10 @@ function ProcedureStepForm({
                 }}
               />
               <Input name="name" label={t`Name`} />
+              <Boolean
+                name="required"
+                label={t`Required to complete operation`}
+              />
               <VStack spacing={2} className="w-full">
                 <Label>
                   <Trans>Description</Trans>

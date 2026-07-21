@@ -6,7 +6,10 @@ import { validationError, validator } from "@carbon/form";
 import type { ActionFunctionArgs } from "react-router";
 import { data, redirect } from "react-router";
 import { finishValidator } from "~/services/models";
-import { finishJobOperation } from "~/services/operations.service";
+import {
+  finishJobOperation,
+  getRequiredStepsGate
+} from "~/services/operations.service";
 import { path } from "~/utils/path";
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -19,6 +22,23 @@ export async function action({ request }: ActionFunctionArgs) {
 
   if (validation.error) {
     return validationError(validation.error);
+  }
+
+  const gate = await getRequiredStepsGate(
+    serviceRole,
+    validation.data.jobOperationId
+  );
+  if (gate.gated && gate.incompleteRequiredSteps.length > 0) {
+    return data(
+      {},
+      await flash(
+        request,
+        error(
+          `Missing required steps: ${gate.incompleteRequiredSteps.join(", ")}`,
+          "Complete required steps before finishing"
+        )
+      )
+    );
   }
 
   const finishOperation = await finishJobOperation(serviceRole, {

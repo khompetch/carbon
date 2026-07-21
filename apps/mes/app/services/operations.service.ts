@@ -419,6 +419,51 @@ export async function getJobAttributesByOperationId(
     .eq("operationId", operationId);
 }
 
+/**
+ * Process-level completion gate. When the operation's process has
+ * `requireAllStepsToComplete` enabled, every `jobOperationStep` marked
+ * `required` must have at least one `jobOperationStepRecord` before the
+ * operation can be completed or finished. Returns `gated: false` when the
+ * flag is off (or the operation has no process) so callers can short-circuit.
+ */
+export async function getRequiredStepsGate(
+  client: SupabaseClient<Database>,
+  operationId: string
+): Promise<{ gated: boolean; incompleteRequiredSteps: string[] }> {
+  const operation = await client
+    .from("jobOperation")
+    .select("processId")
+    .eq("id", operationId)
+    .maybeSingle();
+
+  const processId = operation.data?.processId;
+  if (!processId) {
+    return { gated: false, incompleteRequiredSteps: [] };
+  }
+
+  const process = await client
+    .from("process")
+    .select("requireAllStepsToComplete")
+    .eq("id", processId)
+    .maybeSingle();
+
+  if (!process.data?.requireAllStepsToComplete) {
+    return { gated: false, incompleteRequiredSteps: [] };
+  }
+
+  const steps = await client
+    .from("jobOperationStep")
+    .select("name, jobOperationStepRecord(id)")
+    .eq("operationId", operationId)
+    .eq("required", true);
+
+  const incompleteRequiredSteps = (steps.data ?? [])
+    .filter((step) => (step.jobOperationStepRecord?.length ?? 0) === 0)
+    .map((step) => step.name);
+
+  return { gated: true, incompleteRequiredSteps };
+}
+
 export async function getJobByOperationId(
   client: SupabaseClient<Database>,
   operationId: string

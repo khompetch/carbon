@@ -11,6 +11,7 @@ import { redirect } from "react-router";
 import {
   endOpenDowntimeForOperation,
   finishJobOperation,
+  getRequiredStepsGate,
   getTrackedEntitiesByMakeMethodId,
   insertProductionQuantity
 } from "~/services/operations.service";
@@ -66,6 +67,21 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     );
   }
   const completeAll = jobOperation.data?.completeAllOnScan ?? false;
+
+  // Process-level gate: block scan-to-complete until required steps are recorded.
+  const gate = await getRequiredStepsGate(serviceRole, operationId);
+  if (gate.gated && gate.incompleteRequiredSteps.length > 0) {
+    return redirect(
+      path.to.operation(operationId),
+      await flash(
+        request,
+        error(
+          `Missing required steps: ${gate.incompleteRequiredSteps.join(", ")}`,
+          "Complete required steps before completing"
+        )
+      )
+    );
+  }
 
   const [jobMakeMethod] = await Promise.all([
     serviceRole

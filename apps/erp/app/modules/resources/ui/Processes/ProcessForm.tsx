@@ -169,6 +169,11 @@ const ProcessForm = ({
                   label={t`Complete all quantities on barcode scan`}
                   termId="process-complete-all-on-scan"
                 />
+                <Boolean
+                  name="requireAllStepsToComplete"
+                  label={t`Require all required steps before completing`}
+                  helperText={t`Operators cannot Log Completed or Finish an operation of this process until every required step has been recorded`}
+                />
                 <CustomFormFields table="process" />
               </VStack>
             </ModalDrawerBody>

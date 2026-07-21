@@ -19,6 +19,7 @@ import {
   getNonConformanceActions,
   getProductionEventsForJobOperation,
   getProductionQuantitiesForJobOperation,
+  getRequiredStepsGate,
   getThumbnailPathByItemId,
   getTrackedEntitiesByMakeMethodId,
   getWorkCenter
@@ -79,7 +80,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     kanban,
     bomIdMap,
     companySettings,
-    missingRequirements
+    missingRequirements,
+    stepGate
   ] = await Promise.all([
     getThumbnailPathByItemId(serviceRole, operation.data?.[0].itemId),
     getTrackedEntitiesByMakeMethodId(
@@ -95,7 +97,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
       processId: operation.data?.[0].processId,
       employeeId: userId,
       companyId
-    })
+    }),
+    getRequiredStepsGate(serviceRole, operationId)
   ]);
 
   const inventoryShelfLife = (companySettings.data?.inventoryShelfLife ??
@@ -157,6 +160,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     operation: makeDurations(operation.data?.[0]) as OperationWithDetails,
     expiredEntityPolicy,
     missingRequirements,
+    stepGate,
     procedure: getJobOperationProcedure(serviceRole, operation.data?.[0].id),
     workCenter: getWorkCenter(
       serviceRole,
@@ -189,6 +193,7 @@ export default function OperationRoute() {
     missingRequirements,
     operation,
     procedure,
+    stepGate,
     thumbnailPath,
     trackedEntities,
     workCenter,
@@ -210,6 +215,7 @@ export default function OperationRoute() {
       operation={operation}
       procedure={procedure}
       job={job}
+      stepGate={stepGate}
       thumbnailPath={thumbnailPath}
       workCenter={workCenter}
     />

@@ -825,7 +825,8 @@ export const procedureStepValidator = z
     minValue: zfd.numeric(z.number().min(0).optional()),
     maxValue: zfd.numeric(z.number().min(0).optional()),
     listValues: z.array(z.string()).optional(),
-    sortOrder: zfd.numeric(z.number().min(0).optional())
+    sortOrder: zfd.numeric(z.number().min(0).optional()),
+    required: zfd.checkbox()
   })
   .refine(
     (data) => {

@@ -182,6 +182,7 @@ type JobOperationProps = {
       blockingDispatchReadableId: string | null;
     }>
   >;
+  stepGate?: { gated: boolean; incompleteRequiredSteps: string[] };
 };
 
 /**
@@ -224,6 +225,7 @@ export const JobOperation = ({
   nonConformanceActions,
   operation: originalOperation,
   procedure,
+  stepGate,
   thumbnailPath,
   trackedEntities,
   workCenter
@@ -237,6 +239,12 @@ export const JobOperation = ({
 
   const parentIsSerial = method?.requiresSerialTracking;
   const parentIsBatch = method?.requiresBatchTracking;
+
+  // Process-level completion gate (see `getRequiredStepsGate`). Recomputed by the
+  // loader on every revalidation, so recording a step re-enables the buttons.
+  const incompleteRequiredSteps = stepGate?.incompleteRequiredSteps ?? [];
+  const isStepGated =
+    Boolean(stepGate?.gated) && incompleteRequiredSteps.length > 0;
 
   const serialIndex =
     trackedEntities.findIndex((entity) => entity.id === trackedEntityId) ?? 0;
@@ -2183,18 +2191,23 @@ export const JobOperation = ({
               <div className="flex flex-row md:flex-col items-center gap-2 justify-center">
                 <IconButtonWithTooltip
                   disabled={
-                    parentIsSerial &&
-                    trackedEntities.some(
-                      (entity) =>
-                        entity.id === trackedEntityId &&
-                        `Operation ${operationId}` in
-                          (entity.attributes as TrackedEntityAttributes)
-                    )
+                    (parentIsSerial &&
+                      trackedEntities.some(
+                        (entity) =>
+                          entity.id === trackedEntityId &&
+                          `Operation ${operationId}` in
+                            (entity.attributes as TrackedEntityAttributes)
+                      )) ||
+                    isStepGated
                   }
                   icon={
                     <FaPlus className="text-accent-foreground group-hover:text-accent-foreground/80" />
                   }
-                  tooltip={t`Log Completed`}
+                  tooltip={
+                    isStepGated
+                      ? t`Complete required steps first`
+                      : t`Log Completed`
+                  }
                   onClick={completeModal.onOpen}
                 />
                 <IconButtonWithTooltip
@@ -2387,7 +2400,8 @@ export const JobOperation = ({
               </button>
               <button
                 type="button"
-                className="flex items-center gap-3 rounded-lg bg-accent px-4 py-4 text-accent-foreground ring-1 ring-black/5 active:scale-[0.98] transition-transform"
+                disabled={isStepGated}
+                className="flex items-center gap-3 rounded-lg bg-accent px-4 py-4 text-accent-foreground ring-1 ring-black/5 active:scale-[0.98] transition-transform disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
                 onClick={() => {
                   actionsSheet.onClose();
                   finishModal.onOpen();
@@ -2395,7 +2409,11 @@ export const JobOperation = ({
               >
                 <LuCheck className="size-4 shrink-0 stroke-muted-foreground" />
                 <span className="text-base/6 font-medium">
-                  <Trans>Finish</Trans>
+                  {isStepGated ? (
+                    <Trans>Finish (complete required steps first)</Trans>
+                  ) : (
+                    <Trans>Finish</Trans>
+                  )}
                 </span>
               </button>
               <Suspense>

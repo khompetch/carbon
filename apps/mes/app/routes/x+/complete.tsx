@@ -12,6 +12,7 @@ import { nonScrapQuantityValidator } from "~/services/models";
 import {
   endOpenDowntimeForOperation,
   finishJobOperation,
+  getRequiredStepsGate,
   insertProductionQuantity
 } from "~/services/operations.service";
 import { path } from "~/utils/path";
@@ -94,6 +95,23 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   const serviceRole = await getCarbonServiceRole();
+
+  const gate = await getRequiredStepsGate(
+    serviceRole,
+    validation.data.jobOperationId
+  );
+  if (gate.gated && gate.incompleteRequiredSteps.length > 0) {
+    return data(
+      {},
+      await flash(request, {
+        ...error(
+          `Missing required steps: ${gate.incompleteRequiredSteps.join(", ")}`,
+          "Complete required steps before logging completion"
+        ),
+        flash: "error"
+      })
+    );
+  }
 
   // Get current job operation and production quantities to check if operation will be finished
   const jobOperation = await serviceRole

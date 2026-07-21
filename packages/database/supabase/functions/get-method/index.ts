@@ -3529,6 +3529,7 @@ serve(async (req: Request) => {
                   description: matchingProcedureStep.description,
                   minValue: matchingProcedureStep.minValue,
                   maxValue: matchingProcedureStep.maxValue,
+                  required: matchingProcedureStep.required,
                   updatedAt: new Date().toISOString(),
                   updatedBy: userId,
                 })
@@ -3568,6 +3569,7 @@ serve(async (req: Request) => {
                   description: toTiptapDoc(attr.description),
                   minValue: attr.minValue,
                   maxValue: attr.maxValue,
+                  required: attr.required,
                   companyId,
                   createdBy: userId,
                   updatedBy: userId,

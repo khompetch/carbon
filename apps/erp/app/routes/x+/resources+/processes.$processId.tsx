@@ -107,7 +107,8 @@ export default function ProcessRoute() {
     requiredAbilityId: requirements.requiredAbilityId ?? undefined,
     requiredTrainingIds: requirements.requiredTrainingIds,
     ...getCustomFields(process.customFields),
-    completeAllOnScan: process.completeAllOnScan ?? false
+    completeAllOnScan: process.completeAllOnScan ?? false,
+    requireAllStepsToComplete: process.requireAllStepsToComplete ?? false
   };
 
   return <ProcessForm initialValues={initialValues} onClose={onClose} />;
