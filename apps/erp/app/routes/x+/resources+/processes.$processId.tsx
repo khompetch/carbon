@@ -10,6 +10,7 @@ import type {
 import { redirect, useLoaderData, useNavigate } from "react-router";
 import {
   getProcess,
+  getProcessRequirements,
   ProcessForm,
   processValidator,
   upsertProcess
@@ -26,7 +27,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const { processId } = params;
   if (!processId) throw notFound("processId was not found");
 
-  const process = await getProcess(client, processId);
+  const [process, requirements] = await Promise.all([
+    getProcess(client, processId),
+    getProcessRequirements(client, processId)
+  ]);
 
   if (process.error) {
     throw redirect(
@@ -36,7 +40,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   }
 
   return {
-    process: process.data
+    process: process.data,
+    requirements
   };
 }
 
@@ -87,7 +92,7 @@ export async function clientAction({ serverAction }: ClientActionFunctionArgs) {
 }
 
 export default function ProcessRoute() {
-  const { process } = useLoaderData<typeof loader>();
+  const { process, requirements } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const onClose = () => navigate(-1);
 
@@ -99,6 +104,8 @@ export default function ProcessRoute() {
     workCenters: process.workCenters ?? [],
     // @ts-ignore
     suppliers: (process.suppliers ?? []).map((s) => s.id) ?? [],
+    requiredAbilityId: requirements.requiredAbilityId ?? undefined,
+    requiredTrainingIds: requirements.requiredTrainingIds,
     ...getCustomFields(process.customFields),
     completeAllOnScan: process.completeAllOnScan ?? false
   };

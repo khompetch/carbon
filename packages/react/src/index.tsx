@@ -241,6 +241,8 @@ import {
   NumberInputGroup,
   NumberInputStepper
 } from "./Number";
+import type { OeeShiftBoardProps } from "./OeeShiftBoard";
+import { OeeShiftBoard } from "./OeeShiftBoard";
 import type { OperatingSystemPlatform } from "./OperatingSystem";
 import {
   OperatingSystemContextProvider,
@@ -493,6 +495,7 @@ export {
   MenuSubTrigger,
   Menubar,
   MenubarItem,
+  OeeShiftBoard,
   Modal,
   ModalBody,
   ModalCard,
@@ -653,5 +656,6 @@ export type {
   TrackedEntityOption,
   TrackedEntityPickOrder,
   TrackedEntityPickerProps,
-  TrackedEntitySelection
+  TrackedEntitySelection,
+  OeeShiftBoardProps
 };

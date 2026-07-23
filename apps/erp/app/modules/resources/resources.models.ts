@@ -18,6 +18,7 @@ export const abilityNameValidator = z.object({
 
 export const abilityValidator = z
   .object({
+    id: zfd.text(z.string().optional()),
     name: z.string().min(1, { message: "Name is required" }),
     startingPoint: zfd.numeric(
       z.number().min(0, { message: "Learning curve is required" })
@@ -32,8 +33,32 @@ export const abilityValidator = z
       .optional()
   })
   .refine((schema) => schema.shadowWeeks <= schema.weeks, {
-    message: "name is required when you send color on request"
+    message: "Shadow weeks must be less than or equal to weeks",
+    path: ["shadowWeeks"]
   });
+
+/**
+ * Builds the ability learning-curve JSON from the two form inputs: a linear
+ * ramp from `startingPoint` % efficiency at week 0 up to 100 % at `weeks`.
+ */
+export function makeAbilityCurve(
+  startingPoint: number,
+  weeks: number
+): { data: { week: number; value: number }[] } {
+  const start = Math.min(Math.max(startingPoint, 0), 100);
+  const totalWeeks = Math.max(Math.round(weeks), 0);
+  if (totalWeeks === 0) {
+    return { data: [{ week: 0, value: 100 }] };
+  }
+  const data = [];
+  for (let week = 0; week <= totalWeeks; week++) {
+    data.push({
+      week,
+      value: Math.round(start + ((100 - start) * week) / totalWeeks)
+    });
+  }
+  return { data };
+}
 
 export const contractorValidator = z.object({
   id: z.string().min(1, { message: "Supplier Contact is required" }),
@@ -300,7 +325,11 @@ export const processValidator = z
     workCenters: z
       .array(z.string().min(1, { message: "Invalid work center" }))
       .optional(),
-    completeAllOnScan: zfd.checkbox()
+    completeAllOnScan: zfd.checkbox(),
+    requiredAbilityId: zfd.text(z.string().optional()),
+    requiredTrainingIds: z
+      .array(z.string().min(1, { message: "Invalid training" }))
+      .optional()
   })
   .refine((data) => {
     if (data.processType !== "Outside" && !data.workCenters) {
@@ -478,6 +507,7 @@ export const trainingValidator = z.object({
 
 export const workCenterValidator = z.object({
   id: zfd.text(z.string().optional()),
+  autoDowntimeMultiplier: zfd.numeric(z.number().min(0).optional()),
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string(),
   defaultStandardFactor: z.enum(standardFactorType, {
@@ -490,6 +520,9 @@ export const workCenterValidator = z.object({
   overheadRate: zfd.numeric(z.number().min(0)),
   processes: z
     .array(z.string().min(1, { message: "Invalid process" }))
+    .optional(),
+  requiredAbilityId: zfd.text(z.string().optional()),
+  requiredTrainingIds: z
+    .array(z.string().min(1, { message: "Invalid training" }))
     .optional()
-  // requiredAbilityId: zfd.text(z.string().optional()),
 });

@@ -9,6 +9,7 @@ import type {
   getAssemblyInstructions,
   getAssemblyStandardNotes,
   getAssemblyUnits,
+  getDowntimeReasons,
   getFailureMode,
   getFailureModes,
   getJob,
@@ -188,6 +189,10 @@ export type ProductionPlanningItem = NonNullable<
 
 export type ScrapReason = NonNullable<
   Awaited<ReturnType<typeof getScrapReasons>>["data"]
+>[number];
+
+export type DowntimeReason = NonNullable<
+  Awaited<ReturnType<typeof getDowntimeReasons>>["data"]
 >[number];
 
 // --- Assembly Instructions ---------------------------------------------

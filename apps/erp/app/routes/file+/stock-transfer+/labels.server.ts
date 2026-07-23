@@ -57,7 +57,7 @@ export async function getStockTransferLabelItems(
     .map((entity) => ({
       itemId: entity.sourceDocumentReadableId ?? "",
       revision: "0",
-      number: entity.readableId ?? "",
+      number: entity.readableId || entity.id,
       trackedEntityId: entity.id,
       quantity: entity.quantity,
       trackingType:

@@ -1,7 +1,9 @@
 import { useLingui } from "@lingui/react/macro";
 import {
   LuChartLine,
+  LuCircleGauge,
   LuCirclePlay,
+  LuGauge,
   LuListChecks,
   LuSquareChartGantt,
   LuSquareKanban,
@@ -30,6 +32,19 @@ export default function useProductionSubmodules() {
           to: path.to.jobs,
           icon: <LuCirclePlay />,
           table: "job"
+        },
+        {
+          name: t`OEE`,
+          to: path.to.productionOee,
+          icon: <LuGauge />,
+          role: "employee"
+        },
+        {
+          name: t`Procedures`,
+          to: path.to.procedures,
+          icon: <LuListChecks />,
+          table: "procedure",
+          role: "employee"
         }
       ]
     },
@@ -76,6 +91,12 @@ export default function useProductionSubmodules() {
     {
       name: t`Configure`,
       routes: [
+        {
+          name: t`Downtime Reasons`,
+          to: path.to.downtimeReasons,
+          role: "employee",
+          icon: <LuCircleGauge />
+        },
         {
           name: t`Scrap Reasons`,
           to: path.to.scrapReasons,

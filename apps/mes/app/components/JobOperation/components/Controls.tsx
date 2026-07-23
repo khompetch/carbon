@@ -223,6 +223,7 @@ export function StartStopButton({
   laborProductionEvent,
   machineProductionEvent,
   isTrackedActivity,
+  startDisabled = false,
   trackedEntityId,
   ...props
 }: ComponentProps<"button"> & {
@@ -233,6 +234,7 @@ export function StartStopButton({
   laborProductionEvent: ProductionEvent | undefined;
   machineProductionEvent: ProductionEvent | undefined;
   isTrackedActivity: boolean;
+  startDisabled?: boolean;
   trackedEntityId: string | undefined;
 }) {
   const fetcher = useFetcher<ProductionEvent>();
@@ -312,7 +314,10 @@ export function StartStopButton({
       {isActive ? (
         <PauseButton disabled={fetcher.state !== "idle"} type="submit" />
       ) : (
-        <PlayButton disabled={fetcher.state !== "idle"} type="submit" />
+        <PlayButton
+          disabled={fetcher.state !== "idle" || startDisabled}
+          type="submit"
+        />
       )}
     </ValidatedForm>
   );

@@ -14,6 +14,16 @@ export const path = {
   to: {
     abilities: `${x}/resources/abilities`,
     ability: (id: string) => generatePath(`${x}/resources/ability/${id}`),
+    deleteDowntimeReason: (id: string) =>
+      generatePath(`${x}/production/downtime-reasons/delete/${id}`),
+    downtimeReason: (id: string) =>
+      generatePath(`${x}/production/downtime-reasons/${id}`),
+    downtimeReasons: `${x}/production/downtime-reasons`,
+    externalOee: (id: string) => generatePath(`/share/oee/${id}`),
+    newDowntimeReason: `${x}/production/downtime-reasons/new`,
+    productionOee: `${x}/production/oee`,
+    productionOeeWorkCenter: (workCenterId: string) =>
+      generatePath(`${x}/production/oee/work-center/${workCenterId}`),
     account: `${x}/account`,
     accounting: `${x}/accounting`,
     accountingDefaults: `${x}/accounting/defaults`,
@@ -43,6 +53,10 @@ export const path = {
       generatePath(`${x}/maintenance/${dispatchId}/add-and-issue`),
     api: {
       abilities: `${api}/resources/abilities`,
+      productionDowntimeReasons: `${api}/production/downtime-reasons`,
+      productionOee: `${api}/production/oee`,
+      productionOeeWorkCenter: `${api}/production/oee/work-center`,
+      trainingsList: `${api}/resources/trainings/list`,
       accounts: `${api}/accounting/accounts`,
       assetClasses: `${api}/accounting/asset-classes`,
       assign: `${api}/assign`,

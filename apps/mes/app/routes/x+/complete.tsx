@@ -10,6 +10,7 @@ import type { ActionFunctionArgs } from "react-router";
 import { data, redirect } from "react-router";
 import { nonScrapQuantityValidator } from "~/services/models";
 import {
+  endOpenDowntimeForOperation,
   finishJobOperation,
   insertProductionQuantity
 } from "~/services/operations.service";
@@ -160,6 +161,14 @@ export async function action({ request }: ActionFunctionArgs) {
       );
     }
 
+    // Serial output is recorded by the edge function, not
+    // insertProductionQuantity — close open downtime here instead
+    await endOpenDowntimeForOperation(serviceRole, {
+      jobOperationId: validation.data.jobOperationId,
+      companyId,
+      userId
+    });
+
     if (willBeFinished) {
       const finishOperation = await finishJobOperation(serviceRole, {
         jobOperationId: jobOperation.data.id,
@@ -214,6 +223,14 @@ export async function action({ request }: ActionFunctionArgs) {
         })
       );
     }
+
+    // Batch output is recorded by the edge function, not
+    // insertProductionQuantity — close open downtime here instead
+    await endOpenDowntimeForOperation(serviceRole, {
+      jobOperationId: validation.data.jobOperationId,
+      companyId,
+      userId
+    });
 
     // Auto-print label on first operation only (batch entity was just minted)
     if (validation.data.trackedEntityId) {

@@ -81,6 +81,7 @@ import Suppliers from "./Suppliers";
 import SupplierType from "./SupplierType";
 import Tags from "./Tags";
 import Tool from "./Tool";
+import Trainings from "./Trainings";
 import UnitHint from "./UnitHint";
 import UnitOfMeasure from "./UnitOfMeasure";
 import User from "./User";
@@ -170,6 +171,7 @@ export {
   TimePicker,
   Timezone,
   Tool,
+  Trainings,
   UnitHint,
   UnitOfMeasure,
   User,

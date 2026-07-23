@@ -99,7 +99,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     .map((tracking) => ({
       itemId: tracking.sourceDocumentReadableId ?? "",
       revision: "0",
-      number: tracking.readableId ?? "",
+      number: tracking.readableId || tracking.id,
       trackedEntityId: tracking.id,
       quantity: tracking.quantity,
       trackingType: tracking.quantity > 1 ? "Batch" : "Serial"

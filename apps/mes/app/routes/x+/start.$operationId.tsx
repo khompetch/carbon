@@ -11,6 +11,7 @@ import type { LoaderFunctionArgs } from "react-router";
 import { redirect } from "react-router";
 import { getWorkCenterWithBlockingStatus } from "~/services/maintenance.service";
 import {
+  getMissingOperationRequirements,
   getTrackedEntitiesByMakeMethodId,
   startProductionEvent
 } from "~/services/operations.service";
@@ -88,6 +89,32 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
         )
       );
     }
+  }
+
+  // Ability/training requirements come from both the work center and the
+  // process, so this gate applies even before a work center is assigned.
+  const missing = await getMissingOperationRequirements(serviceRole, {
+    workCenterId: jobOperation.data.workCenterId,
+    processId: jobOperation.data.processId,
+    employeeId: userId,
+    companyId
+  });
+
+  if (missing.abilityNames.length > 0 || missing.trainingNames.length > 0) {
+    const requirements = [
+      ...missing.abilityNames.map((name) => `ability: ${name}`),
+      ...missing.trainingNames.map((name) => `training: ${name}`)
+    ].join(", ");
+    throw redirect(
+      path.to.operation(operationId),
+      await flash(
+        request,
+        error(
+          `You have not completed the requirements for this operation (${requirements})`,
+          "Cannot start operation"
+        )
+      )
+    );
   }
 
   // Get tracked entities if jobMakeMethodId exists

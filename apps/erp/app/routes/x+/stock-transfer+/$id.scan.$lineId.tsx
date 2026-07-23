@@ -238,20 +238,11 @@ export default function StockTransferScan() {
     );
   };
 
-  const validateTrackedEntity = async (trackedEntityId: string) => {
-    if (!trackedEntityId.trim()) {
+  const validateTrackedEntity = async (scannedValue: string) => {
+    const value = scannedValue.trim();
+    if (!value) {
       setValidationError(null);
       setIsValid(null);
-      return;
-    }
-
-    if (
-      routeData?.stockTransferLines.some(
-        (line) => line.trackedEntityId === trackedEntityId
-      )
-    ) {
-      setValidationError(t`Tracked entity already picked`);
-      setIsValid(false);
       return;
     }
 
@@ -260,31 +251,73 @@ export default function StockTransferScan() {
     setIsValid(null);
 
     try {
-      const result = await carbon
+      // Labels may encode the internal tracked entity id or the human-readable
+      // serial/batch number (readableId). Try the id first, then fall back to
+      // readableId. readableId is not unique — the same number can exist on a
+      // different item — so the fallback only ever resolves to an entity whose
+      // item matches this line, preferring the oldest Available one (FIFO).
+      const byId = await carbon
         ?.from("trackedEntity")
         .select("*")
-        .eq("id", trackedEntityId)
+        .eq("id", value)
         .eq("companyId", stockTransferLine.companyId!)
-        .single();
+        .maybeSingle();
 
-      if (result?.error || !result?.data) {
+      let entity = byId?.data ?? null;
+
+      if (!entity) {
+        const byNumber = await carbon
+          ?.from("trackedEntity")
+          .select("*")
+          .eq("readableId", value)
+          .eq("companyId", stockTransferLine.companyId!)
+          .order("createdAt", { ascending: true });
+
+        const candidates = byNumber?.data ?? [];
+        const sameItem = candidates.filter(
+          (c) => c.sourceDocumentId === stockTransferLine.itemId!
+        );
+        if (candidates.length > 0 && sameItem.length === 0) {
+          const scannedItem = candidates[0].sourceDocumentReadableId;
+          const expectedItem = stockTransferLine.itemReadableId;
+          setValidationError(
+            t`Item ${scannedItem} is not the same as the item ${expectedItem}`
+          );
+          setIsValid(false);
+          return;
+        }
+        entity =
+          sameItem.find((c) => c.status === "Available") ?? sameItem[0] ?? null;
+      }
+
+      if (!entity) {
         setValidationError(t`Serial number not found`);
         setIsValid(false);
-      } else if (result.data.status !== "Available") {
-        const status = result.data.status;
-        setValidationError(t`Entity is ${status}`);
-        setIsValid(false);
-      } else if (result.data.sourceDocumentId !== stockTransferLine.itemId!) {
-        const scannedItem = result.data.sourceDocumentReadableId;
-        const expectedItem = stockTransferLine.itemReadableId;
-        setValidationError(
-          t`Item ${scannedItem} is not the same as the item ${expectedItem}`
-        );
-        setIsValid(false);
       } else {
-        setValidationError(null);
-        setIsValid(true);
-        onPick(trackedEntityId);
+        const resolved = entity;
+        if (
+          routeData?.stockTransferLines.some(
+            (line) => line.trackedEntityId === resolved.id
+          )
+        ) {
+          setValidationError(t`Tracked entity already picked`);
+          setIsValid(false);
+        } else if (resolved.status !== "Available") {
+          const status = resolved.status;
+          setValidationError(t`Entity is ${status}`);
+          setIsValid(false);
+        } else if (resolved.sourceDocumentId !== stockTransferLine.itemId!) {
+          const scannedItem = resolved.sourceDocumentReadableId;
+          const expectedItem = stockTransferLine.itemReadableId;
+          setValidationError(
+            t`Item ${scannedItem} is not the same as the item ${expectedItem}`
+          );
+          setIsValid(false);
+        } else {
+          setValidationError(null);
+          setIsValid(true);
+          onPick(resolved.id);
+        }
       }
       // biome-ignore lint/correctness/noUnusedVariables: suppressed due to migration
     } catch (error) {

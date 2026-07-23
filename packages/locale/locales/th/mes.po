@@ -1,0 +1,1256 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: th\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#. placeholder {0}: attribute.name
+#. placeholder {1}: activeStep + 1
+msgid "{0} - Set {1}"
+msgstr ""
+
+#. placeholder {0}: employeeIds.length
+msgid "{0} Active"
+msgstr ""
+
+#. placeholder {0}: operation.quantityComplete
+#. placeholder {0}: serialIndex + 1
+#. placeholder {1}: operation.operationQuantity
+#. placeholder {1}: operation.targetQuantity
+msgid "{0} of {1}"
+msgstr ""
+
+#. placeholder {0}: attributes.filter((a) => a.jobOperationStepRecord.some( (r) => r.index === activeStep ) ).length
+#. placeholder {1}: attributes.length
+msgid "{0} of {1} complete"
+msgstr ""
+
+#. placeholder {0}: attributes.filter((a) => a.jobOperationStepRecord.some( (r) => r.index === activeStep ) ).length
+#. placeholder {1}: attributes.length
+msgid "{0} of {1} completed"
+msgstr ""
+
+#. placeholder {0}: item.quantityScrapped
+msgid "{0} Scrapped"
+msgstr ""
+
+msgid "%OEE ({shiftName})"
+msgstr ""
+
+msgid "About"
+msgstr ""
+
+msgid "Account Settings"
+msgstr "ตั้งค่าบัญชี"
+
+msgid "Active"
+msgstr ""
+
+msgid "Actual"
+msgstr ""
+
+msgid "Add"
+msgstr "เพิ่ม"
+
+msgid "Add & Issue"
+msgstr ""
+
+msgid "Add a printer in the printing settings to print labels directly."
+msgstr ""
+
+msgid "Add Inventory"
+msgstr ""
+
+msgid "Add Spare Part"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "ALL (pcs)"
+msgstr ""
+
+msgid "Are you sure you want to delete this step?"
+msgstr ""
+
+msgid "Are you sure you want to delete this timecard? This cannot be undone."
+msgstr ""
+
+msgid "Are you sure you want to end all production events? This will end all active operations without completing or finishing them."
+msgstr ""
+
+msgid "Are you sure you want to finish this operation? This will end all active production events for this operation."
+msgstr ""
+
+msgid "Are you sure you want to leave this page?"
+msgstr ""
+
+msgid "Assigned"
+msgstr ""
+
+msgid "Assigned to Me"
+msgstr ""
+
+msgid "Assignee"
+msgstr ""
+
+msgid "Attach File"
+msgstr ""
+
+msgid "Authentication Error"
+msgstr "เกิดข้อผิดพลาดในการยืนยันตัวตน"
+
+msgid "Auto"
+msgstr ""
+
+msgid "Availability (%A)"
+msgstr ""
+
+msgid "available"
+msgstr ""
+
+msgid "Back Home"
+msgstr ""
+
+msgid "Batch"
+msgstr ""
+
+msgid "Batch is not available"
+msgstr ""
+
+#. placeholder {0}: index + 1
+msgid "Batch Number {0}"
+msgstr ""
+
+msgid "Batch number is required"
+msgstr ""
+
+#. placeholder {0}: column.blockingDispatchReadableId
+msgid "Blocked by {0}"
+msgstr ""
+
+msgid "Blocking"
+msgstr ""
+
+msgid "But don't worry. You can use the forgot password flow to request a new magic link."
+msgstr ""
+
+msgid "By signing in, you agree to the <0>Terms of Service</0> and <1>Privacy Policy.</1>"
+msgstr ""
+
+msgid "Cancel"
+msgstr "ยกเลิก"
+
+msgid "Cancelled"
+msgstr ""
+
+msgid "Carbon Logo"
+msgstr ""
+
+msgid "Cards"
+msgstr ""
+
+msgid "Chat"
+msgstr ""
+
+msgid "Check your email"
+msgstr "ตรวจสอบอีเมลของคุณ"
+
+msgid "Clear"
+msgstr ""
+
+msgid "Clear Filters"
+msgstr ""
+
+msgid "Clear Search"
+msgstr ""
+
+msgid "Clock In"
+msgstr ""
+
+msgid "Clock Out"
+msgstr ""
+
+#. placeholder {0}: formatTime(openEntry.clockIn, locale)
+msgid "Clocked in since {0}"
+msgstr ""
+
+#. placeholder {0}: active.data.current.column.title
+#. placeholder {1}: overColumnPosition + 1
+#. placeholder {2}: columnOrder.length
+msgid "Column {0} was dropped into position {1} of {2}"
+msgstr ""
+
+#. placeholder {0}: active.data.current.column.title
+#. placeholder {1}: over.data.current.column.title
+#. placeholder {2}: overIndex + 1
+#. placeholder {3}: columnOrder.length
+msgid "Column {0} was moved over {1} at position {2} of {3}"
+msgstr ""
+
+#. placeholder {0}: column.title
+msgid "Column: {0}"
+msgstr ""
+
+msgid "Columns"
+msgstr ""
+
+msgid "Company"
+msgstr ""
+
+msgid "Complete"
+msgstr ""
+
+msgid "Complete All"
+msgstr ""
+
+msgid "Completed"
+msgstr ""
+
+msgid "Console"
+msgstr ""
+
+msgid "Console Mode"
+msgstr ""
+
+msgid "Consumed expired"
+msgstr ""
+
+#. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
+#. placeholder {0}: search.trim() === "" ? label : search
+msgid "Create {0}"
+msgstr ""
+
+msgid "Create Issue"
+msgstr ""
+
+msgid "Create Quality Issue"
+msgstr ""
+
+msgid "Create Rework"
+msgstr ""
+
+msgid "CT"
+msgstr ""
+
+msgid "Customer"
+msgstr ""
+
+msgid "Cycle Time"
+msgstr ""
+
+msgid "Dark Mode"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Deadline"
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+msgid "Default Storage Unit"
+msgstr ""
+
+msgid "Delete"
+msgstr "ลบ"
+
+msgid "Delete Step"
+msgstr ""
+
+#. placeholder {0}: new Date(deletingEntry.clockIn).toLocaleString(locale)
+msgid "Delete Timecard ({0})"
+msgstr ""
+
+msgid "Describe the problem..."
+msgstr ""
+
+msgid "Describe what needs to be reworked..."
+msgstr ""
+
+msgid "Description"
+msgstr "คำอธิบาย"
+
+msgid "Details"
+msgstr ""
+
+msgid "Dispatch not found"
+msgstr ""
+
+msgid "Display"
+msgstr ""
+
+msgid "Down"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Download Labels"
+msgstr ""
+
+msgid "Downtime"
+msgstr ""
+
+msgid "Draft"
+msgstr ""
+
+msgid "Drag and drop a file here, or click to select a file"
+msgstr ""
+
+#. placeholder {0}: active.data.current?.type
+msgid "Dragging {0} cancelled."
+msgstr ""
+
+#. placeholder {0}: formatRelativeTime( convertDateStringToIsoString( operation.operationDueDate ) )
+#. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(operation.jobDueDate) )
+#. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(item.dueDate) )
+msgid "Due {0}"
+msgstr ""
+
+msgid "Due Date"
+msgstr ""
+
+msgid "Duplicate batch number"
+msgstr ""
+
+msgid "Duplicate serial number"
+msgstr ""
+
+msgid "Duration"
+msgstr ""
+
+msgid "Edit"
+msgstr "แก้ไข"
+
+msgid "Email Address"
+msgstr "ที่อยู่อีเมล"
+
+msgid "Empty work centers"
+msgstr ""
+
+msgid "End Downtime"
+msgstr ""
+
+msgid "End Operations"
+msgstr ""
+
+msgid "End the downtime when the work center is running again."
+msgstr ""
+
+#. placeholder {0}: selectedPerson.name
+msgid "Enter PIN for {0}"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Error!"
+msgstr ""
+
+msgid "Estimated"
+msgstr ""
+
+msgid "Expired"
+msgstr ""
+
+msgid "Expired {date}"
+msgstr ""
+
+msgid "Expires {date}"
+msgstr ""
+
+msgid "Expiring first"
+msgstr ""
+
+msgid "Failed to complete inventory adjustment"
+msgstr ""
+
+msgid "Failed to end operations"
+msgstr ""
+
+msgid "Failed to fetch active operations"
+msgstr ""
+
+msgid "Failed to fetch storageUnits"
+msgstr ""
+
+#. placeholder {0}: fileUpload.name
+msgid "Failed to upload file: {0}"
+msgstr ""
+
+msgid "Failed to upload image"
+msgstr ""
+
+msgid "Feedback"
+msgstr ""
+
+msgid "File size exceeds 10MB limit"
+msgstr ""
+
+msgid "Files"
+msgstr ""
+
+msgid "Files related to the job and the opportunity line."
+msgstr ""
+
+msgid "Filter"
+msgstr ""
+
+msgid "Finish"
+msgstr ""
+
+#. placeholder {0}: operation.itemReadableId
+msgid "Finish {0}"
+msgstr ""
+
+msgid "Finish Anyways"
+msgstr ""
+
+msgid "Forgot password? Sign in with email link"
+msgstr "ลืมรหัสผ่าน? เข้าสู่ระบบด้วยลิงก์ทางอีเมล"
+
+msgid "Forgot to Clock Out?"
+msgstr ""
+
+msgid "Go back to operation"
+msgstr ""
+
+msgid "Have a technical issue? Contact <0>Carbon Support.</0>"
+msgstr ""
+
+msgid "Historical shift"
+msgstr ""
+
+msgid "History"
+msgstr ""
+
+msgid "How many were actually picked?"
+msgstr ""
+
+msgid "I understand and want to complete without issuing"
+msgstr ""
+
+msgid "I'm Still Working"
+msgstr ""
+
+msgid "Ideas, suggestions or problems with this page?"
+msgstr ""
+
+msgid "Ideas, suggestions or problems?"
+msgstr ""
+
+msgid "Idle"
+msgstr ""
+
+msgid "Impact"
+msgstr ""
+
+msgid "Imperial"
+msgstr ""
+
+msgid "In Progress"
+msgstr ""
+
+msgid "Insufficient quantity"
+msgstr ""
+
+msgid "Inventory adjustment completed"
+msgstr ""
+
+msgid "Inventory Adjustments"
+msgstr ""
+
+msgid "is"
+msgstr ""
+
+msgid "is any of"
+msgstr ""
+
+msgid "Issue"
+msgstr ""
+
+msgid "Issue Material"
+msgstr ""
+
+msgid "Issue Type"
+msgstr ""
+
+msgid "Item"
+msgstr ""
+
+msgid "Item Master"
+msgstr ""
+
+msgid "Job"
+msgstr ""
+
+msgid "Job Details"
+msgstr ""
+
+msgid "Job Traveler"
+msgstr ""
+
+msgid "Jobs"
+msgstr ""
+
+msgid "Kit"
+msgstr ""
+
+msgid "Labor"
+msgstr ""
+
+msgid "Learn more"
+msgstr ""
+
+msgid "Leave this page"
+msgstr ""
+
+msgid "Let's build something"
+msgstr ""
+
+msgid "lines"
+msgstr ""
+
+msgid "Live"
+msgstr ""
+
+msgid "Loading item details..."
+msgstr ""
+
+msgid "Loading..."
+msgstr "กำลังโหลด..."
+
+msgid "Location"
+msgstr ""
+
+msgid "Log Completed"
+msgstr ""
+
+#. placeholder {0}: operation.itemReadableId
+msgid "Log completed for {0}"
+msgstr ""
+
+msgid "Log Rework"
+msgstr ""
+
+#. placeholder {0}: operation.itemReadableId
+msgid "Log rework for {0}"
+msgstr ""
+
+msgid "Log Scrap"
+msgstr ""
+
+#. placeholder {0}: operation.itemReadableId
+msgid "Log scrap for {0}"
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
+msgid "Machine"
+msgstr ""
+
+msgid "Maintenance"
+msgstr ""
+
+msgid "Maintenance Completed"
+msgstr ""
+
+msgid "Manually add items to inventory"
+msgstr ""
+
+msgid "Manually remove items from inventory"
+msgstr ""
+
+msgid "Mark Short"
+msgstr ""
+
+msgid "matches"
+msgstr ""
+
+msgid "Materials"
+msgstr ""
+
+msgid "Maximum number of records reached"
+msgstr ""
+
+msgid "Metric"
+msgstr ""
+
+msgid "Model"
+msgstr ""
+
+msgid "More Actions"
+msgstr ""
+
+msgid "More options"
+msgstr ""
+
+#. placeholder {0}: column.title
+msgid "Move column: {0}"
+msgstr ""
+
+msgid "Must be < {maxValue} {unitOfMeasureCode}"
+msgstr ""
+
+msgid "Must be > {minValue} {unitOfMeasureCode}"
+msgstr ""
+
+msgid "Must be between {minValue} and {maxValue} {unitOfMeasureCode}"
+msgstr ""
+
+msgid "My Hours"
+msgstr ""
+
+msgid "Name"
+msgstr "ชื่อ"
+
+msgid "New"
+msgstr ""
+
+msgid "New Record"
+msgstr ""
+
+msgid "Newest first"
+msgstr ""
+
+msgid "Next"
+msgstr "ถัดไป"
+
+msgid "NG (pcs)"
+msgstr ""
+
+msgid "No active maintenance dispatches"
+msgstr ""
+
+msgid "No active operations"
+msgstr ""
+
+msgid "No assigned operations"
+msgstr ""
+
+msgid "No available filters"
+msgstr ""
+
+msgid "No available serial numbers found"
+msgstr ""
+
+msgid "No available tracked entities found"
+msgstr ""
+
+msgid "No dispatches assigned to you"
+msgstr ""
+
+msgid "No downtime reasons configured. Add them in the ERP under Production settings."
+msgstr ""
+
+msgid "No files"
+msgstr ""
+
+msgid "No Impact"
+msgstr ""
+
+msgid "No maintenance scheduled for today"
+msgstr ""
+
+msgid "No materials"
+msgstr ""
+
+msgid "No open jobs"
+msgstr ""
+
+msgid "No operators"
+msgstr ""
+
+msgid "No option found."
+msgstr ""
+
+msgid "No options found."
+msgstr ""
+
+msgid "No picking lists assigned"
+msgstr ""
+
+msgid "No printer configured"
+msgstr ""
+
+msgid "No recent operations"
+msgstr ""
+
+msgid "No results"
+msgstr ""
+
+msgid "No results exist"
+msgstr ""
+
+msgid "No results found"
+msgstr ""
+
+msgid "No scheduled time"
+msgstr ""
+
+msgid "No serial numbers"
+msgstr ""
+
+msgid "No serial numbers found"
+msgstr ""
+
+msgid "No spare parts added yet"
+msgstr ""
+
+msgid "No stock"
+msgstr ""
+
+msgid "No time entries for this week"
+msgstr ""
+
+msgid "No warehouse stock is on record for this item. You can still pick it — on-hand will go negative until the count is reconciled."
+msgstr ""
+
+msgid "No work centers are blocked"
+msgstr ""
+
+msgid "No work centers exist"
+msgstr ""
+
+msgid "Notes"
+msgstr ""
+
+msgid "Notes (optional)"
+msgstr ""
+
+msgid "OEE board"
+msgstr ""
+
+#. placeholder {0}: column.title
+msgid "OEE board: {0}"
+msgstr ""
+
+msgid "OEE Impact"
+msgstr ""
+
+msgid "OEM Required"
+msgstr ""
+
+msgid "OK (pcs)"
+msgstr ""
+
+msgid "Oldest first"
+msgstr ""
+
+#. placeholder {0}: batch.quantity
+msgid "Only {0} available"
+msgstr ""
+
+msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Open Jobs"
+msgstr ""
+
+msgid "Operations"
+msgstr ""
+
+msgid "Operations ended"
+msgstr ""
+
+msgid "Operator Performed"
+msgstr ""
+
+msgid "Optional"
+msgstr ""
+
+msgid "Parameters"
+msgstr ""
+
+msgid "Part"
+msgstr ""
+
+msgid "Passed Inspection"
+msgstr ""
+
+msgid "Password"
+msgstr "รหัสผ่าน"
+
+msgid "Pause"
+msgstr ""
+
+msgid "Performance (%P)"
+msgstr ""
+
+msgid "Pick"
+msgstr ""
+
+msgid "Pick tracked item"
+msgstr ""
+
+msgid "Picked"
+msgstr ""
+
+msgid "Picked quantity"
+msgstr ""
+
+#. placeholder {0}: startColumn?.title
+#. placeholder {1}: startIndex + 1
+#. placeholder {2}: columnOrder.length
+msgid "Picked up Column {0} at position: {1} of {2}"
+msgstr ""
+
+msgid "Picking"
+msgstr ""
+
+msgid "Pin Out"
+msgstr ""
+
+msgid "Plan Downtime (min)"
+msgstr ""
+
+msgid "Planned"
+msgstr ""
+
+msgid "Planned Downtime"
+msgstr ""
+
+msgid "Please record all steps for this operation before closing."
+msgstr ""
+
+msgid "Please select a downtime reason"
+msgstr ""
+
+msgid "Please select an item"
+msgstr ""
+
+msgid "Prev"
+msgstr ""
+
+msgid "Preventive"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Print"
+msgstr ""
+
+msgid "Printer Settings"
+msgstr ""
+
+msgid "Priority"
+msgstr ""
+
+msgid "Procedure"
+msgstr ""
+
+msgid "Process"
+msgstr ""
+
+msgid "Process Parameters"
+msgstr ""
+
+msgid "Processes"
+msgstr ""
+
+msgid "Progress"
+msgstr ""
+
+msgid "Quality (%Q)"
+msgstr ""
+
+msgid "Quality Issue"
+msgstr ""
+
+msgid "Quality issue created"
+msgstr ""
+
+msgid "Quantity"
+msgstr ""
+
+msgid "Quantity must be greater than 0"
+msgstr ""
+
+msgid "Reason"
+msgstr ""
+
+msgid "Reason for rework"
+msgstr ""
+
+msgid "Recent"
+msgstr ""
+
+msgid "Record"
+msgstr ""
+
+#. placeholder {0}: activeStep + 1
+msgid "Record {0}"
+msgstr ""
+
+msgid "Record downtime"
+msgstr ""
+
+msgid "Refresh in {secondsLeft}s"
+msgstr ""
+
+msgid "Remove"
+msgstr "นำออก"
+
+msgid "Remove filter"
+msgstr ""
+
+msgid "Remove Inventory"
+msgstr ""
+
+msgid "Remove part"
+msgstr ""
+
+msgid "Requires ability: {name}"
+msgstr ""
+
+msgid "Requires training: {name}"
+msgstr ""
+
+msgid "Rework"
+msgstr ""
+
+msgid "Rework created successfully"
+msgstr ""
+
+msgid "Running"
+msgstr ""
+
+msgid "Runtime (min)"
+msgstr ""
+
+msgid "Sales Order"
+msgstr ""
+
+msgid "Save"
+msgstr "บันทึก"
+
+msgid "Scan"
+msgstr ""
+
+msgid "Scan or enter serial number"
+msgstr ""
+
+msgid "Scan or enter tracking number"
+msgstr ""
+
+msgid "Scan or search serial number..."
+msgstr ""
+
+msgid "Schedule"
+msgstr ""
+
+msgid "Scrap"
+msgstr ""
+
+msgid "Scrap Reason"
+msgstr ""
+
+msgid "Scrapped"
+msgstr ""
+
+msgid "Search"
+msgstr "ค้นหา"
+
+msgid "Search by job or item ID"
+msgstr ""
+
+msgid "Search operators..."
+msgstr ""
+
+msgid "Search..."
+msgstr ""
+
+msgid "Select"
+msgstr ""
+
+msgid "Select a completion quantity"
+msgstr ""
+
+msgid "Select a downtime reason..."
+msgstr ""
+
+msgid "Select a reason to mark this work center as down. Downtime counts against OEE until it is ended."
+msgstr ""
+
+msgid "Select a rework quantity"
+msgstr ""
+
+msgid "Select a scrap quantity and reason"
+msgstr ""
+
+msgid "Select a serial number to continue with this operation"
+msgstr ""
+
+msgid "Select an item and specify the quantity to issue"
+msgstr ""
+
+msgid "Select an item..."
+msgstr ""
+
+#. placeholder {0}: index + 1
+msgid "Select Batch {0}"
+msgstr ""
+
+msgid "Select Printer"
+msgstr ""
+
+#. placeholder {0}: index + 1
+msgid "Select Serial {0}"
+msgstr ""
+
+msgid "Select Serial Number"
+msgstr ""
+
+msgid "Select the operation to go back to. All operations from that point to the current operation will be redone."
+msgstr ""
+
+msgid "Send"
+msgstr ""
+
+msgid "Serial"
+msgstr ""
+
+#. placeholder {0}: index + 1
+msgid "Serial Number {0}"
+msgstr ""
+
+msgid "Serial number is not available"
+msgstr ""
+
+msgid "Serial number is required"
+msgstr ""
+
+msgid "Serial numbers"
+msgstr ""
+
+msgid "Serial Numbers"
+msgstr ""
+
+msgid "Set Clock Out"
+msgstr ""
+
+msgid "Set clock-out time"
+msgstr ""
+
+msgid "Setup"
+msgstr ""
+
+msgid "Short"
+msgstr ""
+
+msgid "Short pick {itemName}"
+msgstr ""
+
+msgid "Sign in"
+msgstr "เข้าสู่ระบบ"
+
+msgid "Sign in with Email"
+msgstr "เข้าสู่ระบบด้วยอีเมล"
+
+msgid "Sign in with Google"
+msgstr "เข้าสู่ระบบด้วย Google"
+
+msgid "Sign in with Outlook"
+msgstr "เข้าสู่ระบบด้วย Outlook"
+
+msgid "Sign in with Passkey"
+msgstr "เข้าสู่ระบบด้วย Passkey"
+
+msgid "Sign in with password instead"
+msgstr "เข้าสู่ระบบด้วยรหัสผ่านแทน"
+
+msgid "Sign Out"
+msgstr ""
+
+msgid "Signed in as {stationName}"
+msgstr ""
+
+#. placeholder {0}: new Date(openDowntime.startTime).toLocaleString()
+msgid "Since {0}"
+msgstr ""
+
+msgid "Size"
+msgstr ""
+
+msgid "Something went wrong"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "Spare Parts"
+msgstr ""
+
+msgid "Spare Parts Used"
+msgstr ""
+
+msgid "Start"
+msgstr ""
+
+msgid "Start Downtime"
+msgstr ""
+
+msgid "Station User"
+msgstr ""
+
+msgid "Station: {stationName}"
+msgstr ""
+
+msgid "Status"
+msgstr "สถานะ"
+
+msgid "Statuses"
+msgstr ""
+
+msgid "Stay on this page"
+msgstr ""
+
+msgid "STD (pcs)"
+msgstr ""
+
+msgid "Steps"
+msgstr ""
+
+msgid "Steps are missing"
+msgstr ""
+
+msgid "Storage Unit"
+msgstr ""
+
+msgid "Submit anonymously"
+msgstr ""
+
+msgid "Suggestion"
+msgstr ""
+
+msgid "Support Required"
+msgstr ""
+
+msgid "Switch Operator"
+msgstr ""
+
+msgid "Tag"
+msgstr ""
+
+#. placeholder {0}: operation.operationQuantity
+msgid "The completed quantity for this operation is less than the required quantity of {0}."
+msgstr ""
+
+msgid "There are serial or batch tracked materials on the bill of material that have not been fully issued. Completing without issuing may result in incorrect traceability records."
+msgstr ""
+
+msgid "This lot is expired and can't be picked."
+msgstr ""
+
+msgid "Thumbnail"
+msgstr ""
+
+msgid "Time Entries"
+msgstr ""
+
+#. placeholder {0}: formatDuration(totalDuration)
+msgid "Time Worked: {0}"
+msgstr ""
+
+msgid "Today"
+msgstr ""
+
+msgid "Tools"
+msgstr ""
+
+msgid "Total Quantity"
+msgstr ""
+
+#. placeholder {0}: formatDuration(totalDuration)
+msgid "Total time: {0}"
+msgstr ""
+
+#. placeholder {0}: formatTotalHours(entries)
+msgid "Total: {0}"
+msgstr ""
+
+msgid "Tracking"
+msgstr ""
+
+msgid "Type a message..."
+msgstr ""
+
+msgid "Unissued serial/batch materials"
+msgstr ""
+
+msgid "Unknown"
+msgstr ""
+
+msgid "Unpick"
+msgstr ""
+
+#. placeholder {0}: pickedLots[0].trackedEntity.readableId
+msgid "Unpick {0}"
+msgstr ""
+
+msgid "Unplan Downtime (min)"
+msgstr ""
+
+msgid "Unplanned Downtime"
+msgstr ""
+
+msgid "Unsaved changes"
+msgstr ""
+
+msgid "Update"
+msgstr "อัปเดต"
+
+msgid "Updated successfully"
+msgstr ""
+
+#. placeholder {0}: fileUpload.name
+msgid "Uploaded: {0}"
+msgstr ""
+
+#. placeholder {0}: fileUpload.name
+msgid "Uploading {0}"
+msgstr ""
+
+msgid "View maintenance dispatch"
+msgstr ""
+
+msgid "We've sent you a magic link to sign in to your account."
+msgstr "เราได้ส่งลิงก์เข้าสู่ระบบไปยังอีเมลของคุณแล้ว"
+
+msgid "What is {translatedTerm}?"
+msgstr ""
+
+msgid "WIP"
+msgstr ""
+
+msgid "Work Center"
+msgstr ""
+
+msgid "Work center is down"
+msgstr ""
+
+msgid "Working Time (min)"
+msgstr ""
+
+#. placeholder {0}: new Date(openClockEntry.clockIn).toLocaleString(locale)
+msgid "You clocked in at {0}. You can edit your clock-out time below or acknowledge that you're still working."
+msgstr ""
+
+msgid "You've been clocked in for {hoursElapsed} hours. Did you forget to clock out?"
+msgstr ""

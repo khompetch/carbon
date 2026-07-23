@@ -301,6 +301,18 @@ export async function getEmployeeAbilities(
     .eq("active", true);
 }
 
+export async function getEmployeeAbility(
+  client: SupabaseClient<Database>,
+  employeeAbilityId: string
+) {
+  return client
+    .from("employeeAbility")
+    .select("*")
+    .eq("id", employeeAbilityId)
+    .eq("active", true)
+    .single();
+}
+
 export async function getFailureMode(
   client: SupabaseClient<Database>,
   failureModeId: string
@@ -946,6 +958,44 @@ export async function getWorkCenter(
     .single();
 }
 
+export async function getWorkCenterRequiredTrainingIds(
+  client: SupabaseClient<Database>,
+  workCenterId: string
+): Promise<{ data: { trainingId: string }[] | null; error: unknown }> {
+  return client
+    .from("workCenterTraining")
+    .select("trainingId")
+    .eq("workCenterId", workCenterId);
+}
+
+export async function getProcessRequirements(
+  client: SupabaseClient<Database>,
+  processId: string
+): Promise<{
+  requiredAbilityId: string | null;
+  requiredTrainingIds: string[];
+}> {
+  // The processes view predates requiredAbilityId, so read the process table.
+  const [processRow, trainings] = await Promise.all([
+    client
+      .from("process")
+      .select("requiredAbilityId")
+      .eq("id", processId)
+      .maybeSingle(),
+    client
+      .from("processTraining")
+      .select("trainingId")
+      .eq("processId", processId)
+  ]);
+
+  return {
+    requiredAbilityId: processRow.data?.requiredAbilityId ?? null,
+    requiredTrainingIds: (trainings.data ?? []).map(
+      (t: { trainingId: string }) => t.trainingId
+    )
+  };
+}
+
 export async function getWorkCenters(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1068,11 +1118,7 @@ export async function insertEmployeeAbilities(
     trainingCompleted: true
   }));
 
-  return client
-    .from("employeeAbility")
-    .insert(employeeAbilities)
-    .select("id")
-    .single();
+  return client.from("employeeAbility").insert(employeeAbilities).select("id");
 }
 
 export async function insertTrainingCompletion(
@@ -1646,7 +1692,7 @@ export async function upsertProcess(
       })
 ) {
   if ("createdBy" in process) {
-    const { workCenters, ...insert } = process;
+    const { workCenters, requiredTrainingIds, ...insert } = process;
     const processInsert = await client
       .from("process")
       .insert([
@@ -1678,9 +1724,24 @@ export async function upsertProcess(
       }
     }
 
+    if (requiredTrainingIds?.length) {
+      const processTrainingInsert = await client.from("processTraining").insert(
+        requiredTrainingIds.map((trainingId) => ({
+          processId,
+          trainingId,
+          companyId: insert.companyId,
+          createdBy: insert.createdBy
+        }))
+      );
+
+      if (processTrainingInsert.error) {
+        return processTrainingInsert;
+      }
+    }
+
     return processInsert;
   }
-  const { workCenters, ...update } = process;
+  const { workCenters, requiredTrainingIds, ...update } = process;
   const processUpdate = await client
     .from("process")
     .update(sanitize(update))
@@ -1711,6 +1772,29 @@ export async function upsertProcess(
       .insert(processProcesses);
     if (processProcessUpdate.error) {
       return processProcessUpdate;
+    }
+  }
+
+  const deleteTrainings = await client
+    .from("processTraining")
+    .delete()
+    .eq("processId", process.id);
+
+  if (deleteTrainings.error) {
+    return deleteTrainings;
+  }
+
+  if (requiredTrainingIds?.length) {
+    const processTrainingUpdate = await client.from("processTraining").insert(
+      requiredTrainingIds.map((trainingId) => ({
+        processId: process.id,
+        trainingId,
+        companyId: update.companyId,
+        createdBy: update.updatedBy
+      }))
+    );
+    if (processTrainingUpdate.error) {
+      return processTrainingUpdate;
     }
   }
 
@@ -1818,13 +1902,13 @@ export async function upsertWorkCenter(
       })
 ) {
   if ("createdBy" in workCenter) {
-    const { processes, ...insert } = workCenter;
+    const { processes, requiredTrainingIds, ...insert } = workCenter;
     const workCenterInsert = await client
       .from("workCenter")
       .insert([insert])
       .select("id")
       .single();
-    if (workCenterInsert.error) {
+    if (workCenterInsert.error || !workCenterInsert.data) {
       return workCenterInsert;
     }
     const workCenterId = workCenterInsert.data.id;
@@ -1845,9 +1929,26 @@ export async function upsertWorkCenter(
       }
     }
 
+    if (requiredTrainingIds?.length) {
+      const workCenterTrainingInsert = await client
+        .from("workCenterTraining")
+        .insert(
+          requiredTrainingIds.map((trainingId) => ({
+            workCenterId,
+            trainingId,
+            companyId: insert.companyId,
+            createdBy: insert.createdBy
+          }))
+        );
+
+      if (workCenterTrainingInsert.error) {
+        return workCenterTrainingInsert;
+      }
+    }
+
     return workCenterInsert;
   }
-  const { processes, ...update } = workCenter;
+  const { processes, requiredTrainingIds, ...update } = workCenter;
   const workCenterUpdate = await client
     .from("workCenter")
     .update(sanitize(update))
@@ -1878,6 +1979,31 @@ export async function upsertWorkCenter(
       .insert(workCenterProcesses);
     if (workCenterProcessUpdate.error) {
       return workCenterProcessUpdate;
+    }
+  }
+
+  const deleteTrainings = await client
+    .from("workCenterTraining")
+    .delete()
+    .eq("workCenterId", workCenter.id);
+
+  if (deleteTrainings.error) {
+    return deleteTrainings;
+  }
+
+  if (requiredTrainingIds?.length) {
+    const workCenterTrainingUpdate = await client
+      .from("workCenterTraining")
+      .insert(
+        requiredTrainingIds.map((trainingId) => ({
+          workCenterId: workCenter.id,
+          trainingId,
+          companyId: update.companyId,
+          createdBy: update.updatedBy
+        }))
+      );
+    if (workCenterTrainingUpdate.error) {
+      return workCenterTrainingUpdate;
     }
   }
 
