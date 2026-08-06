@@ -1,0 +1,35 @@
+# Carbon print agent — runs on a machine inside the factory network (a
+# Raspberry Pi or any always-on box on the same LAN as the label printers).
+#
+#   docker compose up -d                      # agent only (expose port yourself)
+#   docker compose --profile tunnel up -d     # agent + Cloudflare Tunnel
+#
+# See README.md for the full walkthrough.
+
+services:
+  print-agent:
+    build: .
+    env_file: .env
+    restart: unless-stopped
+    # Only needed when NOT using the Cloudflare Tunnel (e.g. VPN or port
+    # forwarding instead) — with the tunnel, cloudflared reaches the agent
+    # over the compose network and nothing has to be published.
+    ports:
+      - "8631:8631"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8631/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  # Optional: outbound-only Cloudflare Tunnel so the Carbon VPS can reach this
+  # agent over HTTPS without opening any inbound port on the factory router.
+  # Requires TUNNEL_TOKEN in .env (see README.md step 3).
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
+    restart: unless-stopped
+    depends_on:
+      - print-agent
+    profiles: [tunnel]
