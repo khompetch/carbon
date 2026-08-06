@@ -66,6 +66,7 @@ export function useOperation({
   const channelRef = useRef<RealtimeChannel | null>(null);
 
   const actionsSheet = useDisclosure();
+  const downtimeModal = useDisclosure();
   const scrapModal = useDisclosure();
   const reworkModal = useDisclosure();
   const completeModal = useDisclosure();
@@ -77,6 +78,7 @@ export function useOperation({
   const isAnyModalOpen =
     pauseInterval ||
     actionsSheet.isOpen ||
+    downtimeModal.isOpen ||
     scrapModal.isOpen ||
     reworkModal.isOpen ||
     completeModal.isOpen ||
@@ -350,6 +352,7 @@ export function useOperation({
 
     actionsSheet,
     activeTab,
+    downtimeModal,
     eventType,
     scrapModal,
     reworkModal,

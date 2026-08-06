@@ -19,12 +19,15 @@ import {
 } from "@carbon/react";
 import { msg } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { useCallback, useEffect, useState } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { redirect, useFetcher, useLoaderData } from "react-router";
-import { Boolean, Users } from "~/components/Form";
+import { Boolean, Combobox, Number as NumberField, Users } from "~/components/Form";
 import SettingsSectionHeader from "~/components/SettingsSectionHeader";
+import { getDowntimeReasonsList } from "~/modules/production";
 import {
+  autoDowntimeValidator,
   getCompanySettings,
   jobCompletedValidator,
   jobTravelerMaterialsValidator,
@@ -45,7 +48,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
     view: "settings"
   });
 
-  const companySettings = await getCompanySettings(client, companyId);
+  const [companySettings, downtimeReasons] = await Promise.all([
+    getCompanySettings(client, companyId),
+    getDowntimeReasonsList(client, companyId)
+  ]);
 
   if (!companySettings.data)
     throw redirect(
@@ -55,7 +61,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
         error(companySettings.error, "Failed to get company settings")
       )
     );
-  return { companySettings: companySettings.data };
+  return {
+    companySettings: companySettings.data,
+    downtimeReasons: downtimeReasons.data ?? []
+  };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -150,16 +159,49 @@ export async function action({ request }: ActionFunctionArgs) {
     };
   }
 
+  if (intent === "autoDowntime") {
+    const validation = await validator(autoDowntimeValidator).validate(
+      formData
+    );
+
+    if (validation.error) {
+      return { success: false, message: "Invalid form data" };
+    }
+
+    // Columns are newer than the generated DB types — cast until regen.
+    // Empty multiplier/reason = feature off (NULL).
+    const update = await (client as SupabaseClient<any>)
+      .from("companySettings")
+      .update({
+        autoDowntimeMultiplier: validation.data.autoDowntimeMultiplier ?? null,
+        autoDowntimeReasonId: validation.data.autoDowntimeReasonId || null
+      })
+      .eq("id", companyId);
+
+    if (update.error) return { success: false, message: update.error.message };
+
+    return { success: true, message: "Auto downtime settings updated" };
+  }
+
   return { success: false, message: "Unknown intent" };
 }
 
 export default function ProductionSettingsRoute() {
   const { t } = useLingui();
-  const { companySettings } = useLoaderData<typeof loader>();
+  const { companySettings, downtimeReasons } = useLoaderData<typeof loader>();
   const fetcher = useFetcher<typeof action>();
   const timerFetcher = useFetcher<typeof action>();
   const travelerFetcher = useFetcher<typeof action>();
   const toggleFetcher = useFetcher<typeof action>();
+  const autoDowntimeFetcher = useFetcher<typeof action>();
+
+  const settingsWithAutoDowntime = companySettings as typeof companySettings & {
+    autoDowntimeMultiplier: number | null;
+    autoDowntimeReasonId: string | null;
+  };
+  const unplannedReasonOptions = downtimeReasons
+    .filter((reason) => reason.type === "Unplanned")
+    .map((reason) => ({ value: reason.id, label: reason.name }));
 
   const [
     autoSelectMaterialWithoutPickingList,
@@ -222,6 +264,22 @@ export default function ProductionSettingsRoute() {
       toast.error(toggleFetcher.data.message);
     }
   }, [toggleFetcher.data?.message, toggleFetcher.data?.success]);
+
+  useEffect(() => {
+    if (
+      autoDowntimeFetcher.data?.success === true &&
+      autoDowntimeFetcher.data.message
+    ) {
+      toast.success(autoDowntimeFetcher.data.message);
+    }
+
+    if (
+      autoDowntimeFetcher.data?.success === false &&
+      autoDowntimeFetcher.data.message
+    ) {
+      toast.error(autoDowntimeFetcher.data.message);
+    }
+  }, [autoDowntimeFetcher.data?.message, autoDowntimeFetcher.data?.success]);
 
   return (
     <ScrollArea className="w-full h-[calc(100dvh-49px)]">
@@ -353,6 +411,65 @@ export default function ProductionSettingsRoute() {
               />
             </HStack>
           </CardHeader>
+        </Card>
+
+        <Card>
+          <ValidatedForm
+            method="post"
+            validator={autoDowntimeValidator}
+            defaultValues={{
+              autoDowntimeMultiplier:
+                settingsWithAutoDowntime.autoDowntimeMultiplier ?? undefined,
+              autoDowntimeReasonId:
+                settingsWithAutoDowntime.autoDowntimeReasonId ?? ""
+            }}
+            fetcher={autoDowntimeFetcher}
+          >
+            <input type="hidden" name="intent" value="autoDowntime" />
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Trans>Automatic No-Output Downtime</Trans>
+              </CardTitle>
+              <CardDescription>
+                <Trans>
+                  When a work center has a running operation but no output is
+                  logged within the multiplier × cycle time, it is automatically
+                  flagged as unplanned downtime with the default reason. Leave
+                  either field empty to disable. Work centers can override the
+                  multiplier individually.
+                </Trans>
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col gap-8 max-w-[400px]">
+                <NumberField
+                  name="autoDowntimeMultiplier"
+                  label={t`Auto downtime after (× cycle time)`}
+                  minValue={0}
+                  helperText={t`e.g. 2 = flag after 2× the cycle time with no output`}
+                />
+                <Combobox
+                  name="autoDowntimeReasonId"
+                  label={t`Default downtime reason`}
+                  options={unplannedReasonOptions}
+                  placeholder={t`Select an unplanned downtime reason...`}
+                  helperText={
+                    unplannedReasonOptions.length === 0
+                      ? t`No unplanned downtime reasons configured. Add them under Production → Downtime Reasons.`
+                      : undefined
+                  }
+                />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Submit
+                isDisabled={autoDowntimeFetcher.state !== "idle"}
+                isLoading={autoDowntimeFetcher.state !== "idle"}
+              >
+                <Trans>Save</Trans>
+              </Submit>
+            </CardFooter>
+          </ValidatedForm>
         </Card>
 
         <SettingsSectionHeader>

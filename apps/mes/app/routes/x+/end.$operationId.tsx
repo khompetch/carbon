@@ -9,6 +9,7 @@ import {
 import type { LoaderFunctionArgs } from "react-router";
 import { redirect } from "react-router";
 import {
+  endOpenDowntimeForOperation,
   finishJobOperation,
   getNextIncompleteSerialEntity,
   getTrackedEntitiesByMakeMethodId,
@@ -187,6 +188,16 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
           }
         });
 
+        // Serial output is recorded by the edge function, not
+        // insertProductionQuantity — close open downtime here instead
+        if (!response.error) {
+          await endOpenDowntimeForOperation(serviceRole, {
+            jobOperationId: jobOperation.data.id,
+            companyId,
+            userId
+          });
+        }
+
         const newTrackedEntityId = response.data?.newTrackedEntityId;
 
         if (newTrackedEntityId) {
@@ -264,6 +275,14 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
             })
           );
         }
+
+        // Batch output is recorded by the edge function, not
+        // insertProductionQuantity — close open downtime here instead
+        await endOpenDowntimeForOperation(serviceRole, {
+          jobOperationId: jobOperation.data.id,
+          companyId,
+          userId
+        });
       }
     } else {
       const insertProduction = await insertProductionQuantity(serviceRole, {

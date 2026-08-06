@@ -15,6 +15,8 @@ export const path = {
   to: {
     accountSettings: `${ERP_URL}/x/account`,
     acknowledge: `${x}/acknowledge`,
+    downtime: `${x}/downtime`,
+    oeeWorkCenter: (id: string) => generatePath(`${x}/oee/${id}`),
     active: `${x}/active`,
     addAndIssueMaintenanceDispatchItem: (dispatchId: string) =>
       generatePath(`${x}/dispatch/${dispatchId}/add-and-issue`),

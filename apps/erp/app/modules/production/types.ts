@@ -11,6 +11,7 @@ import type {
   getAssemblyInstructionVersions,
   getAssemblyUnits,
   getBalloons,
+  getDowntimeReasons,
   getFailureMode,
   getFailureModes,
   getInspectionDocument,
@@ -193,6 +194,10 @@ export type ProductionPlanningItem = NonNullable<
 
 export type ScrapReason = NonNullable<
   Awaited<ReturnType<typeof getScrapReasons>>["data"]
+>[number];
+
+export type DowntimeReason = NonNullable<
+  Awaited<ReturnType<typeof getDowntimeReasons>>["data"]
 >[number];
 
 // --- Assembly Instructions ---------------------------------------------

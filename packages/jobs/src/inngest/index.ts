@@ -38,6 +38,7 @@ import {
 import {
   auditArchiveFunction,
   cleanupFunction,
+  detectNoOutputDowntimeFunction,
   dispatchFunction,
   generateMaintenanceForScheduleFunction,
   mrpFunction,
@@ -102,6 +103,7 @@ export const functions = [
   printJobDeliverFunction,
   // Scheduled
   cleanupFunction,
+  detectNoOutputDowntimeFunction,
   dispatchFunction,
   generateMaintenanceForScheduleFunction,
   auditArchiveFunction,

@@ -12,6 +12,16 @@ export const ERP_URL = getAppUrl();
 
 export const path = {
   to: {
+    deleteDowntimeReason: (id: string) =>
+      generatePath(`${x}/production/downtime-reasons/delete/${id}`),
+    downtimeReason: (id: string) =>
+      generatePath(`${x}/production/downtime-reasons/${id}`),
+    downtimeReasons: `${x}/production/downtime-reasons`,
+    externalOee: (id: string) => generatePath(`/share/oee/${id}`),
+    newDowntimeReason: `${x}/production/downtime-reasons/new`,
+    productionOee: `${x}/production/oee`,
+    productionOeeWorkCenter: (workCenterId: string) =>
+      generatePath(`${x}/production/oee/work-center/${workCenterId}`),
     abilities: `${x}/resources/abilities`,
     ability: (id: string) => generatePath(`${x}/resources/ability/${id}`),
     account: `${x}/account`,
@@ -42,6 +52,9 @@ export const path = {
     addAndIssueMaintenanceDispatchItem: (dispatchId: string) =>
       generatePath(`${x}/maintenance/${dispatchId}/add-and-issue`),
     api: {
+      productionDowntimeReasons: `${api}/production/downtime-reasons`,
+      productionOee: `${api}/production/oee`,
+      productionOeeWorkCenter: `${api}/production/oee/work-center`,
       abilities: `${api}/resources/abilities`,
       accounts: `${api}/accounting/accounts`,
       agentChat: `${api}/agent/chat`,

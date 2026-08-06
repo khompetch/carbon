@@ -1,5 +1,6 @@
 export { auditArchiveFunction } from "./audit-archive";
 export { cleanupFunction } from "./cleanup";
+export { detectNoOutputDowntimeFunction } from "./detect-no-output-downtime";
 export {
   dispatchFunction,
   generateMaintenanceForScheduleFunction

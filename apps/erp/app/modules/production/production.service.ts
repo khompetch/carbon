@@ -46,6 +46,7 @@ import type {
   assemblyInstructionStatuses,
   assemblyStepStatuses,
   deadlineTypes,
+  downtimeReasonValidator,
   failureModeValidator,
   inspectionDocumentSamplingValidator,
   inspectionDocumentValidator,
@@ -2030,6 +2031,72 @@ export async function getScrapReasons(
   return query;
 }
 
+export async function getDowntimeReasonsList(
+  client: SupabaseClient<Database>,
+  companyId: string
+) {
+  return client
+    .from("downtimeReason")
+    .select("id, name, type")
+    .eq("companyId", companyId)
+    .eq("active", true)
+    .order("name");
+}
+
+export async function getDowntimeReason(
+  client: SupabaseClient<Database>,
+  downtimeReasonId: string
+) {
+  return client
+    .from("downtimeReason")
+    .select("*")
+    .eq("id", downtimeReasonId)
+    .single();
+}
+
+export async function getDowntimeReasons(
+  client: SupabaseClient<Database>,
+  companyId: string,
+  args?: GenericQueryFilters & { search: string | null }
+) {
+  let query = client
+    .from("downtimeReason")
+    .select("id, name, type, active, customFields", { count: "exact" })
+    .eq("companyId", companyId);
+
+  if (args?.search) {
+    query = query.ilike("name", `%${args.search}%`);
+  }
+
+  if (args) {
+    query = setGenericQueryFilters(query, args, [
+      { column: "name", ascending: true }
+    ]);
+  }
+
+  return query;
+}
+
+export async function getWorkCenterDowntimes(
+  client: SupabaseClient<Database>,
+  args: {
+    workCenterId: string;
+    companyId: string;
+    startTime: string;
+    endTime: string;
+  }
+) {
+  // Overlap query: startTime < windowEnd AND (endTime IS NULL OR endTime > windowStart)
+  return client
+    .from("workCenterDowntime")
+    .select("id, type, startTime, endTime, downtimeReasonId, notes")
+    .eq("companyId", args.companyId)
+    .eq("workCenterId", args.workCenterId)
+    .lt("startTime", args.endTime)
+    .or(`endTime.is.null,endTime.gt.${args.startTime}`)
+    .order("startTime");
+}
+
 export async function getFailureMode(
   client: SupabaseClient<Database>,
   failureModeId: string
@@ -3905,6 +3972,37 @@ export async function upsertScrapReason(
       .update(sanitize(scrapReason))
       .eq("id", scrapReason.id);
   }
+}
+
+export async function upsertDowntimeReason(
+  client: SupabaseClient<Database>,
+  downtimeReason:
+    | (Omit<z.infer<typeof downtimeReasonValidator>, "id"> & {
+        companyId: string;
+        createdBy: string;
+        customFields?: Json;
+      })
+    | (Omit<z.infer<typeof downtimeReasonValidator>, "id"> & {
+        id: string;
+        updatedBy: string;
+        customFields?: Json;
+      })
+) {
+  if ("createdBy" in downtimeReason) {
+    return client.from("downtimeReason").insert([downtimeReason]).select("id");
+  } else {
+    return client
+      .from("downtimeReason")
+      .update(sanitize(downtimeReason))
+      .eq("id", downtimeReason.id);
+  }
+}
+
+export async function deleteDowntimeReason(
+  client: SupabaseClient<Database>,
+  downtimeReasonId: string
+) {
+  return client.from("downtimeReason").delete().eq("id", downtimeReasonId);
 }
 
 export async function upsertFailureMode(
