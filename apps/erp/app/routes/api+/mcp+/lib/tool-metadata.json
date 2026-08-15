@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-13T15:12:30.047Z",
-  "totalTools": 1436,
+  "generated": "2026-08-14T17:02:35.388Z",
+  "totalTools": 1440,
   "modules": 15,
   "tools": [
     {
@@ -1688,6 +1688,37 @@
         },
         "required": [
           "fiscalYear"
+        ]
+      }
+    },
+    {
+      "name": "accounting_getPeriodExternalGlSyncReadiness",
+      "module": "accounting",
+      "classification": "READ",
+      "description": "get period external gl sync readiness",
+      "paramCount": 2,
+      "serviceParams": [
+        "client",
+        "companyId",
+        "startDate",
+        "endDate"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string"
+          },
+          "endDate": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "startDate",
+          "endDate"
         ]
       }
     },
@@ -4141,6 +4172,104 @@
         },
         "required": [
           "data"
+        ]
+      }
+    },
+    {
+      "name": "accounting_getJournalSyncCompleteness",
+      "module": "accounting",
+      "classification": "READ",
+      "description": "get journal sync completeness",
+      "paramCount": 3,
+      "serviceParams": [
+        "client",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "/** companyIntegration id, e.g. \"xero\" | \"quickbooks\" | \"rillet\". */\n    integrationId": {
+            "type": "string"
+          },
+          "journals dated before this are out of scope. */\n    syncFromDate": {
+            "type": "string"
+          },
+          "/** Restrict to one accounting period (the close auto-check). */\n    accountingPeriodId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "/** companyIntegration id, e.g. \"xero\" | \"quickbooks\" | \"rillet\". */\n    integrationId",
+          "journals dated before this are out of scope. */\n    syncFromDate"
+        ]
+      }
+    },
+    {
+      "name": "accounting_getAccountingSyncTieOut",
+      "module": "accounting",
+      "classification": "READ",
+      "description": "get accounting sync tie out",
+      "paramCount": 3,
+      "serviceParams": [
+        "client",
+        "companyId",
+        "args"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "integration": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {}
+          },
+          "accountingPeriodId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "accountId": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {}
+          }
+        }
+      }
+    },
+    {
+      "name": "accounting_getAccountingSyncTieOutCell",
+      "module": "accounting",
+      "classification": "READ",
+      "description": "get accounting sync tie out cell",
+      "paramCount": 1,
+      "serviceParams": [
+        "client",
+        "companyId",
+        "cellId"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cellId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "cellId"
         ]
       }
     },

@@ -45,9 +45,16 @@
     {
       "slug": "docs/integrations/accounting",
       "title": "Accounting",
-      "description": "Post invoices to Xero and keep currency exchange rates current automatically.",
+      "description": "Mirror invoices, bills, and GL journals to Xero, QuickBooks, or Rillet, and keep exchange rates current.",
       "keywords": ["accounting", "docs", "integrations"],
-      "headings": ["Xero", "Exchange rates", "Related"]
+      "headings": [
+        "How the sync works",
+        "Connect a ledger",
+        "Configure the sync",
+        "Watch it run",
+        "Exchange rates",
+        "Related"
+      ]
     },
     {
       "slug": "docs/integrations/assistant",
@@ -147,9 +154,12 @@
       "keywords": ["licensing", "docs", "platform"],
       "headings": [
         "Editions",
-        "Open core vs. Enterprise",
+        "How to buy",
+        "Carbon Cloud — we run it",
+        "Self-hosted — you run it",
         "The AGPL obligation",
         "You can't resell Carbon as a service",
+        "How the agreements fit together",
         "When you need a commercial license"
       ]
     },
