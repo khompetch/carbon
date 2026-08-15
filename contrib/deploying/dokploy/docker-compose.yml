@@ -18,19 +18,76 @@
 # how to generate the secrets in .env.example.
 ###############################################################################
 
+# The erp build definition, shared by the `erp` server and the one-shot
+# `migrate` job. Declared once so the migration runner can never drift to a
+# different revision than the code whose schema it is preparing, and so both
+# services resolve to the same tag — no `docker compose pull` can go looking
+# for a local-only image on a registry. (../simple-docker-caddy uses YAML
+# anchors the same way.) The second build is a full layer-cache hit.
+x-erp-build: &erp-build
+  context: ../../..
+  dockerfile: Dockerfile
+  args:
+    APP: erp
+    # The Dockerfile defaults the build heap to ~8 GB, sized for CI. On a
+    # shared VPS that also runs the whole stack this OOMs — cap it. Pair
+    # with COMPOSE_PARALLEL_LIMIT=1 (see .env.example) so erp and mes
+    # don't build simultaneously.
+    NODE_OPTIONS: "--max-old-space-size=4096"
+
 services:
+  # ─────────────────────────── Schema migration ──────────────────────────────
+  # One-shot job: applies pending migrations, exits, stays exited. Compose's
+  # equivalent of the Swarm `--mode replicated-job` in
+  # ../simple-docker-caddy/deploy.sh (cmd_migrate), which likewise waits for
+  # postgres + storage to be healthy before it runs.
+  #
+  # erp/mes gate on this completing successfully, so the schema always lands
+  # BEFORE any app code that assumes it, and a failed migration aborts the
+  # deploy loudly instead of leaving the apps to run against a stale schema.
+  # Re-running is cheap and safe: `migration up` only applies what is missing,
+  # so a deploy with no new migrations finishes in about a second.
+  migrate:
+    # The app image, not a separate one — the schema and the code that assumes
+    # it can never come from different revisions.
+    image: ${CARBON_IMAGE_ERP:-carbon-erp:local}
+    build: *erp-build
+    working_dir: /repo/packages/database
+    environment:
+      # The bundled Postgres has no TLS configured. Without BOTH of these the
+      # CLI fails with "tls error (server refused TLS connection)".
+      PGSSLMODE: disable
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    # `$$` survives compose interpolation as a literal `$`, so sh expands the
+    # password inside the container instead of it being baked into argv where
+    # `docker inspect` would print it — the same reason the Swarm recipe reads
+    # `$(cat /run/secrets/postgres_password)` at runtime.
+    #
+    # supabase_admin, not postgres: the migrations create Supabase-owned
+    # schemas and extensions. --include-all is required, or the CLI silently
+    # skips every migration whose timestamp predates the newest applied one.
+    command:
+      - sh
+      - -c
+      - >-
+        pnpm exec supabase migration up --include-all
+        --db-url "postgresql://supabase_admin:$$POSTGRES_PASSWORD@postgres:5432/postgres?sslmode=disable"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      storage:
+        condition: service_healthy
+    # NOT `unless-stopped` — a finished one-shot job must stay finished, or
+    # Docker restarts it forever.
+    restart: "no"
+
   # ─────────────────────────────── Apps ──────────────────────────────────────
   erp:
-    build:
-      context: ../../..
-      dockerfile: Dockerfile
-      args:
-        APP: erp
-        # The Dockerfile defaults the build heap to ~8 GB, sized for CI. On a
-        # shared VPS that also runs the whole stack this OOMs — cap it. Pair
-        # with COMPOSE_PARALLEL_LIMIT=1 (see .env.example) so erp and mes
-        # don't build simultaneously.
-        NODE_OPTIONS: "--max-old-space-size=4096"
+    # Tagged explicitly so `migrate` above can reuse this exact image. Override
+    # CARBON_IMAGE_ERP to point at a registry image, or to keep two Carbon
+    # stacks on one host from claiming the same local tag.
+    image: ${CARBON_IMAGE_ERP:-carbon-erp:local}
+    build: *erp-build
     env_file: .env
     environment:
       NODE_ENV: production
@@ -48,9 +105,15 @@ services:
       start_period: 40s
     restart: unless-stopped
     depends_on:
-      - kong
-      - redis
-      - inngest
+      # Never boot app code against a schema that has not caught up to it.
+      migrate:
+        condition: service_completed_successfully
+      kong:
+        condition: service_started
+      redis:
+        condition: service_started
+      inngest:
+        condition: service_started
 
   mes:
     build:
@@ -74,9 +137,14 @@ services:
       start_period: 40s
     restart: unless-stopped
     depends_on:
-      - kong
-      - redis
-      - inngest
+      migrate:
+        condition: service_completed_successfully
+      kong:
+        condition: service_started
+      redis:
+        condition: service_started
+      inngest:
+        condition: service_started
 
   redis:
     image: redis:7-alpine

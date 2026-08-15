@@ -21,7 +21,7 @@ else, drop the `postgres`/`gotrue`/`postgrest`/`realtime`/`storage`/`meta`/
 
 | File | Purpose |
 |---|---|
-| `docker-compose.yml` | `erp` + `mes` (built from the repo's root `Dockerfile`), a full self-hosted Supabase, `redis`, and `inngest`. |
+| `docker-compose.yml` | `erp` + `mes` (built from the repo's root `Dockerfile`), a one-shot `migrate` job that gates them, a full self-hosted Supabase, `redis`, and `inngest`. |
 | `edge-runtime.Dockerfile` | Bakes the edge functions into the `edge-runtime` image (bind mounts proved fragile — see Troubleshooting). |
 | `.env.example` | Template for every environment variable the compose file needs. |
 | `bin/run.sh` | Neutral `exec "$@"` entrypoint shim — lets several Supabase images' proven CMD arrays be reused unchanged without Swarm secrets. |
@@ -80,30 +80,75 @@ access-control feature first.
 
 ## 5. Deploy
 
-Trigger a deploy in Dokploy. It builds the `erp` and `mes` images from the
-repo's root `Dockerfile` and pulls the pinned Supabase/Redis/Inngest images.
+Trigger a deploy in Dokploy. It builds the `erp` image from the repo's root
+`Dockerfile` (shared with the `migrate` job below), builds `mes`, and pulls the
+pinned Supabase/Redis/Inngest images.
 
-## 6. Apply database migrations (once, after first deploy)
+## 6. Database migrations (automatic)
 
-The `postgres` service isn't published outside the Docker network, and Kong
-only proxies HTTP (auth/rest/storage/realtime) — it can't carry a raw Postgres
-connection. Run the migration from *inside* the compose network instead:
+**You don't run these by hand.** The compose file has a one-shot `migrate`
+service that applies pending migrations on every deploy, and `erp`/`mes` gate
+on it via `depends_on: condition: service_completed_successfully`. The order
+is always:
 
-1. Open a terminal into the running `erp` container via Dokploy's
-   terminal/exec feature (the image ships the full repo checkout at `/repo`,
-   including `pnpm`).
-2. `cd /repo/packages/database`
-3. Run, substituting the `POSTGRES_PASSWORD` you generated in step 1 (the
-   hostname stays exactly `postgres` — that's the compose service name,
-   resolvable because this shell is on the same network). The bundled
-   Postgres doesn't have TLS configured, so the connection must explicitly
-   disable it — otherwise the CLI fails with `tls error (server refused TLS
-   connection)`:
+```
+postgres + storage healthy  →  migrate runs to completion  →  erp + mes start
+```
 
-   ```bash
-   PGSSLMODE=disable pnpm exec supabase migration up --include-all \
-     --db-url "postgresql://supabase_admin:<POSTGRES_PASSWORD>@postgres:5432/postgres?sslmode=disable"
-   ```
+That ordering is the point: app code never boots against a schema that hasn't
+caught up to it, and a failed migration aborts the deploy loudly instead of
+leaving the apps serving against a stale schema. It mirrors what
+[`../simple-docker-caddy`](../simple-docker-caddy) does with a Swarm
+`--mode replicated-job` (`deploy.sh` → `cmd_migrate` → "Rolling apps now that
+the schema exists").
+
+The job runs the *same image* as `erp`, so the schema and the code that assumes
+it can never come from different revisions. `supabase migration up` only applies
+what's missing, so a deploy with no new migrations finishes in about a second.
+
+**The first deploy is the slow one** — there are ~930 migrations to apply and
+it takes several minutes. Watch the `migrate` service's logs in Dokploy. If
+your deploy times out before it finishes, apply them once manually (below),
+then redeploy — subsequent runs only have to apply what's new.
+
+### Running migrations by hand
+
+Still useful for bootstrapping a slow first run, or for debugging. `postgres`
+isn't published outside the Docker network and Kong only proxies HTTP
+(auth/rest/storage/realtime) — it can't carry a raw Postgres connection — so
+this has to run from *inside* the compose network:
+
+```bash
+docker exec -it <project>-erp-1 sh -c '
+  cd /repo/packages/database &&
+  PGSSLMODE=disable pnpm exec supabase migration up --include-all \
+    --db-url "postgresql://supabase_admin:<POSTGRES_PASSWORD>@postgres:5432/postgres?sslmode=disable"
+'
+```
+
+Or open a terminal into the `erp` container via Dokploy's terminal/exec feature
+and run the inner command (the image ships the full repo checkout at `/repo`,
+including `pnpm` and the Supabase CLI).
+
+Four things that are easy to get wrong:
+
+- **`supabase_admin`, not `postgres`** — the migrations create Supabase-owned
+  schemas and extensions.
+- **The host is literally `postgres`** — the compose service name, resolvable
+  because this shell is on the same network.
+- **Both `PGSSLMODE=disable` and `?sslmode=disable`** — the bundled Postgres has
+  no TLS configured, so without them the CLI fails with `tls error (server
+  refused TLS connection)`.
+- **`--include-all`** — without it the CLI silently skips every migration whose
+  timestamp predates the newest one already applied.
+
+### Before a deploy that carries migrations
+
+There are no down migrations; the only way back is a restore. Run
+`./scripts/backup.sh` (step 8) *before* deploying schema changes, not just
+nightly. Write migrations expand-then-contract — add the new column, ship code
+that writes both, backfill, and only drop the old one in a later deploy — so
+the old containers keep working during the window where both are alive.
 
 ## 7. Verify
 
@@ -163,6 +208,37 @@ block this — Carbon's signup goes through the Supabase admin API
 (service-role key), a separate path from GoTrue's public self-service signup.
 
 ## Troubleshooting
+
+**`erp`/`mes` never start, and `migrate` is the last thing in the logs** — this
+is the gate working as designed, not a hang. Something upstream of the apps
+failed; read `migrate`'s logs to find out which:
+
+```bash
+docker compose logs migrate       # or open the service's logs in Dokploy
+```
+
+- A SQL error means a migration genuinely failed — fix it, don't bypass the
+  gate. The apps are being kept off a half-migrated schema on purpose.
+- `password authentication failed for user "supabase_admin"` means
+  `postgres/01-roles.sh` never ran. It only runs on the **first** init of an
+  empty `pgdata` volume, so a volume that was created before the roles script
+  landed still has the image's default passwords. Confirm with
+  `docker compose logs postgres | grep zz-carbon-01-roles`.
+- No `migrate` logs at all means it never started: its own gate
+  (`postgres` + `storage` healthy) hasn't been satisfied. Check those two
+  services first.
+
+**`exec: "/carbon/bin/run.sh": permission denied`** on `postgres`, `gotrue`,
+`realtime`, `storage`, `meta`, or `studio` — `bin/run.sh` lost its executable
+bit somewhere between git and the container. All the `.sh` files here are
+committed mode `755`; a clone made on a filesystem that drops the bit (or a
+`core.fileMode=false` checkout that re-committed them) breaks every service
+that uses the shim as its `entrypoint`. Fix it in git rather than on the
+server, or the next clone reintroduces it:
+
+```bash
+git update-index --chmod=+x contrib/deploying/dokploy/bin/run.sh
+```
 
 **"Failed to send verification code" on first login** — `RESEND_API_KEY` is
 missing/invalid, or `RESEND_DOMAIN` isn't a verified sending domain in your
