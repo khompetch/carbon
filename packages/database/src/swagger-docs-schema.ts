@@ -37477,6 +37477,9 @@ export default {
             $ref: "#/parameters/rowFilter.accountDefault.scrapAccount"
           },
           {
+            $ref: "#/parameters/rowFilter.accountDefault.intercompanyPayablesAccount"
+          },
+          {
             $ref: "#/parameters/select"
           },
           {
@@ -37692,6 +37695,9 @@ export default {
             $ref: "#/parameters/rowFilter.accountDefault.scrapAccount"
           },
           {
+            $ref: "#/parameters/rowFilter.accountDefault.intercompanyPayablesAccount"
+          },
+          {
             $ref: "#/parameters/preferReturn"
           }
         ],
@@ -37859,6 +37865,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.accountDefault.scrapAccount"
+          },
+          {
+            $ref: "#/parameters/rowFilter.accountDefault.intercompanyPayablesAccount"
           },
           {
             $ref: "#/parameters/body.accountDefault"
@@ -85363,6 +85372,9 @@ export default {
             $ref: "#/parameters/rowFilter.companySettings.showCurrencyTrailingZeros"
           },
           {
+            $ref: "#/parameters/rowFilter.companySettings.requireMfa"
+          },
+          {
             $ref: "#/parameters/select"
           },
           {
@@ -85560,6 +85572,9 @@ export default {
             $ref: "#/parameters/rowFilter.companySettings.showCurrencyTrailingZeros"
           },
           {
+            $ref: "#/parameters/rowFilter.companySettings.requireMfa"
+          },
+          {
             $ref: "#/parameters/preferReturn"
           }
         ],
@@ -85709,6 +85724,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.companySettings.showCurrencyTrailingZeros"
+          },
+          {
+            $ref: "#/parameters/rowFilter.companySettings.requireMfa"
           },
           {
             $ref: "#/parameters/body.companySettings"
@@ -88948,6 +88966,63 @@ export default {
           }
         },
         tags: ["(rpc) get_inventory_tie_out"]
+      }
+    },
+    "/rpc/users_with_verified_mfa": {
+      get: {
+        parameters: [
+          {
+            format: "text",
+            in: "query",
+            name: "company_id",
+            required: true,
+            type: "string"
+          }
+        ],
+        produces: [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        responses: {
+          "200": {
+            description: "OK"
+          }
+        },
+        tags: ["(rpc) users_with_verified_mfa"]
+      },
+      post: {
+        parameters: [
+          {
+            in: "body",
+            name: "args",
+            required: true,
+            schema: {
+              properties: {
+                company_id: {
+                  format: "text",
+                  type: "string"
+                }
+              },
+              required: ["company_id"],
+              type: "object"
+            }
+          },
+          {
+            $ref: "#/parameters/preferParams"
+          }
+        ],
+        produces: [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        responses: {
+          "200": {
+            description: "OK"
+          }
+        },
+        tags: ["(rpc) users_with_verified_mfa"]
       }
     },
     "/rpc/get_companies_with_employee_role": {
@@ -116279,6 +116354,12 @@ export default {
             "Note:\nThis is a Foreign Key to `account.id`.<fk table='account' column='id'/>",
           format: "text",
           type: "string"
+        },
+        intercompanyPayablesAccount: {
+          description:
+            "Note:\nThis is a Foreign Key to `account.id`.<fk table='account' column='id'/>",
+          format: "text",
+          type: "string"
         }
       },
       type: "object"
@@ -138871,7 +138952,8 @@ export default {
         "incompletePickingListPolicy",
         "includeMaterialsOnTraveler",
         "returnPickedMaterialTiming",
-        "showCurrencyTrailingZeros"
+        "showCurrencyTrailingZeros",
+        "requireMfa"
       ],
       properties: {
         id: {
@@ -139120,6 +139202,11 @@ export default {
         },
         showCurrencyTrailingZeros: {
           default: true,
+          format: "boolean",
+          type: "boolean"
+        },
+        requireMfa: {
+          default: false,
           format: "boolean",
           type: "boolean"
         }
@@ -159779,6 +159866,12 @@ export default {
     },
     "rowFilter.accountDefault.scrapAccount": {
       name: "scrapAccount",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.accountDefault.intercompanyPayablesAccount": {
+      name: "intercompanyPayablesAccount",
       required: false,
       in: "query",
       type: "string"
@@ -185193,6 +185286,12 @@ export default {
     },
     "rowFilter.companySettings.showCurrencyTrailingZeros": {
       name: "showCurrencyTrailingZeros",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.companySettings.requireMfa": {
+      name: "requireMfa",
       required: false,
       in: "query",
       type: "string"
