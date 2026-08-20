@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-18T07:59:22.902Z",
-  "totalTools": 1443,
+  "generated": "2026-08-18T19:07:39.197Z",
+  "totalTools": 1444,
   "modules": 15,
   "tools": [
     {
@@ -26934,6 +26934,31 @@
           "id",
           "status",
           "assignee"
+        ]
+      }
+    },
+    {
+      "name": "purchasing_reopenPurchaseOrderAsRevision",
+      "module": "purchasing",
+      "classification": "WRITE",
+      "description": "reopen purchase order as revision",
+      "paramCount": 1,
+      "serviceParams": [
+        "db",
+        "{\n    id,\n    companyId,\n    updatedBy\n  }"
+      ],
+      "injectAuth": [
+        "companyId"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
         ]
       }
     },
