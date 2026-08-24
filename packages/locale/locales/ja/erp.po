@@ -456,7 +456,7 @@ msgstr "ジョブのステータスが変更されました"
 msgid "A list is wired into {0}, so this step runs once for each item and returns a list of results."
 msgstr "リストが{0}に接続されているため、このステップは各項目ごとに1回実行され、結果のリストを返します。"
 
-#. placeholder {0}: label( actionInputLabelKey(actionId, batch.input), batch.input )
+#. placeholder {0}: inputLabel(batch.input)
 msgid "A list is wired into {0}, so this step runs once for each item in it — up to {MAX_LIST_ITEMS}."
 msgstr "リストが{0}に接続されているため、このステップはその中の各項目ごとに1回実行されます。最大{MAX_LIST_ITEMS}個です。"
 
@@ -486,6 +486,9 @@ msgstr "現在のリビジョンのコピーを使用して、新しいリビジ
 
 msgid "A new size will be created using a copy of the current size"
 msgstr "新しいサイズが現在のサイズのコピーを使用して作成されます"
+
+msgid "A new Stripe customer will be created"
+msgstr ""
 
 msgid "A non-cash document that settles an invoice against a reason account: a credit lowers what's owed, a debit raises it."
 msgstr "請求書を理由勘定に対して決済する非現金ドキュメント。クレジットは債務額を低下させ、デビットは債務額を増加させます。"
@@ -1124,6 +1127,9 @@ msgstr "ラインアイテムを追加"
 msgid "Add match"
 msgstr "マッチを追加"
 
+msgid "Add New"
+msgstr "新規追加"
+
 msgid "Add Note"
 msgstr "ノートを追加"
 
@@ -1238,6 +1244,9 @@ msgstr "追加済み"
 
 msgid "Added for this customer"
 msgstr "このカスタマー向けに追加"
+
+msgid "Adding demo records"
+msgstr "デモレコードを追加中"
 
 msgid "Adding..."
 msgstr "追加中..."
@@ -1354,6 +1363,9 @@ msgstr "すべてのサプライヤー"
 msgid "All Time"
 msgstr "すべての期間"
 
+msgid "All tools"
+msgstr "すべてのツール"
+
 msgid "All Types"
 msgstr "すべてのタイプ"
 
@@ -1371,6 +1383,9 @@ msgstr "アルファ"
 
 msgid "Always"
 msgstr "常に"
+
+msgid "Always sent — every notification shows in the bell menu."
+msgstr "常に送信 — すべての通知がベルメニューに表示されます。"
 
 msgid "Always taken"
 msgstr "常に取得"
@@ -1609,6 +1624,9 @@ msgstr "独自のルールがない機能に適用され、このプランが検
 msgid "Apply"
 msgstr "適用"
 
+msgid "Apply a demo template"
+msgstr "デモテンプレートを適用"
+
 msgid "Apply available credits"
 msgstr "利用可能なクレジットを適用"
 
@@ -1635,6 +1653,12 @@ msgstr "請求書に適用"
 
 msgid "Apply to invoices"
 msgstr "請求書に適用"
+
+msgid "Applying"
+msgstr "適用中"
+
+msgid "Applying demo data"
+msgstr "デモデータを適用中"
 
 msgid "Approaching {PO_EMAIL_ATTACHMENT_LIMIT_MB} MB cap."
 msgstr "{PO_EMAIL_ATTACHMENT_LIMIT_MB} MBの上限に近づいています。"
@@ -2553,6 +2577,9 @@ msgstr "帳簿ロック日 (手動)"
 msgid "Both"
 msgstr "両方"
 
+msgid "Branch an editable copy of this version that you can change and publish."
+msgstr "このバージョンの編集可能なコピーをブランチして、変更して公開できます。"
+
 msgid "Breadcrumb"
 msgstr "パンくずリスト"
 
@@ -2561,6 +2588,9 @@ msgstr "パーツ、BOM、Bill of Process、原価計算をインポートして
 
 msgid "Browse library"
 msgstr "ライブラリを参照"
+
+msgid "Browse the live version read-only. You can still rearrange steps to tidy the layout."
+msgstr "ライブバージョンを読み取り専用で参照できます。ステップを並べ替えてレイアウトを整理することもできます。"
 
 msgid "Bucket"
 msgstr "バケット"
@@ -2765,6 +2795,9 @@ msgstr "投稿できません — 出荷に期限切れの追跡対象エンテ�
 
 msgid "Cannot send RFQ"
 msgstr "RFQを送信できません"
+
+msgid "Cannot send through Stripe"
+msgstr ""
 
 msgid "Cannot upload — supplier interaction not yet created"
 msgstr "アップロードできません — サプライヤーインタラクションがまだ作成されていません"
@@ -2971,6 +3004,9 @@ msgstr "期末時点で保有数量がマイナスの品目がないか品目台
 msgid "Check your email"
 msgstr "メールを確認してください"
 
+msgid "Checking Stripe for this customer…"
+msgstr ""
+
 msgid "Checkpoint ·"
 msgstr "チェックポイント ·"
 
@@ -3045,6 +3081,9 @@ msgstr "商品受領と仕入先請求書間の相殺勘定; 両方が転記さ�
 
 msgid "Clearing account for goods received / invoice received matching"
 msgstr "商品受領/請求書受領照合用相殺勘定"
+
+msgid "Clearing demo data"
+msgstr "デモデータをクリア中"
 
 msgid "Click again to disconnect"
 msgstr "再度クリックして切断"
@@ -3398,6 +3437,9 @@ msgstr "Jira課題に接続"
 
 msgid "Connect Linear issue"
 msgstr "Linear イシューを接続"
+
+msgid "Connect Slack under Settings → Integrations first."
+msgstr "最初に設定 → 統合でSlackを接続してください。"
 
 msgid "Connect the Otherwise handle to a node to run when no condition matches."
 msgstr "条件に一致しないときに実行するノードにOtherwiseハンドルを接続します。"
@@ -3863,6 +3905,12 @@ msgstr "新しい保守ディスパッチを作成して、機器の修理と保
 msgid "Create a new production job to fulfill the sales order"
 msgstr "販売注文を履行するための新しい生産ジョブを作成します"
 
+msgid "Create a new Stripe customer instead"
+msgstr ""
+
+msgid "Create a new version"
+msgstr "新しいバージョンを作成"
+
 msgid "Create a purchase order"
 msgstr "購買注文を作成"
 
@@ -4189,6 +4237,9 @@ msgstr "カスタムフィールド"
 
 msgid "Custom Fields"
 msgstr "カスタムフィールド"
+
+msgid "Custom fields are not available for items yet."
+msgstr "カスタムフィールドはまだアイテムで利用できません。"
 
 msgid "Custom SOW · we manage"
 msgstr "カスタムSOW · 当社が管理"
@@ -4987,6 +5038,18 @@ msgstr "需要予測"
 msgid "Demand-Based"
 msgstr "需要ベース"
 
+msgid "Demo data"
+msgstr "デモデータ"
+
+msgid "Demo Data"
+msgstr "デモデータ"
+
+msgid "Demo data applied"
+msgstr "デモデータが適用されました"
+
+msgid "Demo data was applied to this company. Keep it, or revert to put back exactly what was here before."
+msgstr "このコンパニーにデモデータが適用されました。保持するか、以前の状態に戻してください。"
+
 msgid "department"
 msgstr "部門"
 
@@ -5094,6 +5157,9 @@ msgstr "寸法"
 
 msgid "Direct"
 msgstr "直接"
+
+msgid "Direct message to each recipient in your Slack workspace."
+msgstr "Slackワークスペース内の各受信者への直接メッセージ。"
 
 msgid "Direction"
 msgstr "方向"
@@ -5215,6 +5281,9 @@ msgstr "ドキュメント"
 
 msgid "Documents pushes invoices, bills and payments as native provider documents; their journals are recorded as covered by the document. It also pulls payments recorded in the provider back into Carbon, closing the matching invoice or bill and posting a Carbon GL journal. Off records them as deliberately excluded."
 msgstr "ドキュメントは、請求書、帳票、支払いをネイティブプロバイダードキュメントとしてプッシュします。それらの仕訳はドキュメントでカバーされているものとして記録されます。また、プロバイダーで記録された支払いをCarbonに引き戻し、一致する請求書または帳票を閉じて、CarbonのGL仕訳を投稿します。Offはそれらを意図的に除外されたものとして記録します。"
+
+msgid "Documents you open will show up here for quick access."
+msgstr "開いたドキュメントはここに表示され、すぐにアクセスできます。"
 
 msgid "Don't Cancel"
 msgstr "キャンセルしない"
@@ -5912,9 +5981,6 @@ msgstr "エンジニアリング担当者"
 msgid "Enroll"
 msgstr "登録"
 
-msgid "Enroll this company in the Implementation Hub"
-msgstr "この会社を実装ハブに登録する"
-
 msgid "Enter a batch number before setting the expiration date"
 msgstr "有効期限を設定する前にバッチ番号を入力してください"
 
@@ -6155,6 +6221,9 @@ msgstr "既存のマッピング。再マップするには別のプロバイダ
 
 msgid "Existing mappings. Pick a different provider option to re-map."
 msgstr "既存のマッピング。異なるプロバイダーオプションを選択して再マップしてください。"
+
+msgid "Existing Stripe customer"
+msgstr ""
 
 msgid "Expand"
 msgstr "展開"
@@ -6743,6 +6812,9 @@ msgstr "ここに添付されたファイルは、デフォルトではすべて
 
 msgid "Files attached here ride along on every purchase order email sent to this supplier (in addition to company-wide defaults)."
 msgstr "ここに添付されたファイルは、このサプライヤーに送信されるすべての発注メールに含まれます（会社全体のデフォルトに加えて）。"
+
+msgid "Fill this company with a realistic industry story so every screen has something in it. You can put back what was here before."
+msgstr "現実的なインダストリストーリーでこのコンパニーを埋めて、すべての画面に何か表示されるようにしてください。以前の状態に戻すことができます。"
 
 msgid "Filter"
 msgstr "フィルター"
@@ -7525,6 +7597,9 @@ msgstr "インペリアル"
 msgid "Implementation"
 msgstr "実装"
 
+msgid "Implementation Hub"
+msgstr "実装ハブ"
+
 msgid "Implementation Lead"
 msgstr "実装リード"
 
@@ -7585,6 +7660,9 @@ msgstr "在庫のみ"
 
 msgid "In the loop together"
 msgstr "一緒にループの中にいる"
+
+msgid "In-app"
+msgstr "アプリ内"
 
 msgid "In-app notifications are always delivered. Choose which topics also reach you by email or Slack."
 msgstr "アプリ内通知は常に配信されます。どのトピックがメールまたはSlackでも届くかを選択してください。"
@@ -8187,6 +8265,9 @@ msgstr "カンバン出力"
 msgid "Kanbans"
 msgstr "カンバン"
 
+msgid "Keep"
+msgstr "保持"
+
 msgid "Keep Current"
 msgstr "現在の設定を保持"
 
@@ -8455,6 +8536,9 @@ msgstr "Jira イシューをリンク"
 msgid "Link Linear Issue"
 msgstr "Linear イシューをリンク"
 
+msgid "Link this Carbon customer to one of them, or create a separate Stripe customer."
+msgstr ""
+
 msgid "Link to sales order line"
 msgstr "販売注文行へのリンク"
 
@@ -8475,8 +8559,8 @@ msgstr "リストオプション"
 msgid "List Parameters"
 msgstr "リストパラメータ"
 
-#. placeholder {0}: label( actionInputLabelKey(actionId, batch.first), batch.first )
-#. placeholder {1}: label( actionInputLabelKey(actionId, batch.second), batch.second )
+#. placeholder {0}: inputLabel(batch.first)
+#. placeholder {1}: inputLabel(batch.second)
 msgid "Lists are wired into both {0} and {1}, so this step cannot tell which one to repeat over. Leave a list on only one of them."
 msgstr "リストが{0}と{1}の両方に接続されています。そのため、このステップはどちらを繰り返すべきかを判断できません。リストはそのうちの1つにのみ残してください。"
 
@@ -9266,6 +9350,9 @@ msgstr "必要日"
 
 msgid "Need the right columns?"
 msgstr "正しい列が必要ですか？"
+
+msgid "Needs a Business or Partner plan."
+msgstr "ビジネスプランまたはパートナープランが必要です。"
 
 msgid "Needs fixing"
 msgstr "修理が必要です"
@@ -10142,6 +10229,12 @@ msgstr "まだ何もありません。ステップは構成されると値を提
 msgid "Notification"
 msgstr "通知"
 
+msgid "Notification type"
+msgstr "通知タイプ"
+
+msgid "Notification Type"
+msgstr "通知タイプ"
+
 msgid "Notifications"
 msgstr "通知"
 
@@ -10231,6 +10324,9 @@ msgstr "販売注文中"
 
 msgid "On Storage Unit"
 msgstr "保管ユニット上"
+
+msgid "On this operation"
+msgstr "この操作で"
 
 msgid "On-account credit available"
 msgstr "掛け売掛金利用可能"
@@ -11490,8 +11586,14 @@ msgstr "公開"
 msgid "Publish Version {0}?"
 msgstr "バージョン{0}を公開しますか?"
 
+msgid "Published"
+msgstr "公開済み"
+
 msgid "Published by Carbon"
 msgstr "Carbonによって公開"
+
+msgid "Published versions can't be edited. Look around read-only, or branch a new version to make changes."
+msgstr "公開済みバージョンは編集できません。読み取り専用で参照するか、新しいバージョンをブランチして変更してください。"
 
 msgid "Pull"
 msgstr "プル"
@@ -11639,6 +11741,9 @@ msgstr "ディメンションなしでジャーナルをプッシュ"
 
 msgid "Push to accounting"
 msgstr "会計にプッシュ"
+
+msgid "Putting your data back"
+msgstr "データを復元中"
 
 #. placeholder {0}: row.original.replenishmentSystem === "Make" ? "Job" : "Order"
 msgid "QR Code to create a {0} for this kanban"
@@ -11881,6 +11986,9 @@ msgstr "準備完了"
 
 msgid "Ready for Quote"
 msgstr "見積もり準備完了"
+
+msgid "ready to keep or revert"
+msgstr "保持またはリバート可能"
 
 msgid "Real-time inventory and shop-floor visibility"
 msgstr "リアルタイム在庫と工場フロアの可視性"
@@ -12281,6 +12389,9 @@ msgstr "既存の価格を元の値に置き換える"
 msgid "Replace PDF"
 msgstr "PDFを置き換える"
 
+msgid "Replace this company's data with a demo dataset — snapshotted first, so you can revert."
+msgstr "このコンパニーのデータをデモデータセットで置き換えます。最初にスナップショットを取得するため、リバートできます。"
+
 msgid "Replacing the PDF removes all balloon placements on this document. Feature rows and their values stay; you can place balloons again on the new drawing."
 msgstr "PDFを置き換えると、このドキュメント上のすべてのバルーン配置が削除されます。機能行とその値は保持されます。新しい図面上に再度バルーンを配置できます。"
 
@@ -12435,6 +12546,9 @@ msgstr "このエンティティを、スクラップされた元のビンと原
 msgid "Restore tracked entities to available"
 msgstr "追跡対象エンティティを利用可能に復元"
 
+msgid "Restoring files"
+msgstr "ファイルを復元中"
+
 msgid "Result"
 msgstr "結果"
 
@@ -12461,6 +12575,9 @@ msgstr "再試行"
 
 msgid "Retry all"
 msgstr "すべてを再試行"
+
+msgid "Retry revert"
+msgstr "リバートを再試行"
 
 msgid "Return Home"
 msgstr "ホームに戻る"
@@ -12492,6 +12609,9 @@ msgstr "すべての仕訳帳とコスト台帳エントリを取り消す"
 msgid "Reverse any item ledger entries from this invoice"
 msgstr "このインボイスからのアイテム台帳エントリをすべて取り消す"
 
+msgid "Reverse charge"
+msgstr ""
+
 msgid "Reverse Charge Sales Tax"
 msgstr "逆請求売上税"
 
@@ -12503,6 +12623,12 @@ msgstr "関連する仕訳エントリを取り消す"
 
 msgid "Reversed"
 msgstr "反転"
+
+msgid "Revert"
+msgstr "リバート"
+
+msgid "Reverting"
+msgstr "リバート中"
 
 msgid "Review"
 msgstr "確認"
@@ -12881,6 +13007,9 @@ msgstr "保存済み"
 
 msgid "Saved Views"
 msgstr "保存済みビュー"
+
+msgid "Saving a copy of your current data"
+msgstr "現在のデータのコピーを保存中"
 
 msgid "Saving..."
 msgstr "保存中..."
@@ -13333,6 +13462,9 @@ msgstr "このドキュメントを承認のために送信してから、アク
 
 msgid "Sent complete date"
 msgstr "送信完了日"
+
+msgid "Sent to each recipient who has email notifications turned on."
+msgstr "メール通知がオンになっている各受信者に送信されます。"
 
 msgid "Sequences"
 msgstr "シーケンス"
@@ -13985,6 +14117,9 @@ msgstr "まず"
 msgid "Started"
 msgstr "開始"
 
+msgid "Starting…"
+msgstr "開始中…"
+
 msgid "State / Province"
 msgstr "都道府県"
 
@@ -14123,6 +14258,21 @@ msgstr "このアイテムの固定日数を保存します。有効期限の開
 
 msgid "Straight line"
 msgstr "定額法"
+
+msgid "Stripe"
+msgstr ""
+
+msgid "Stripe already has a customer with this email"
+msgstr ""
+
+msgid "Stripe Due Date"
+msgstr ""
+
+msgid "Stripe emails the invoice to the customer, so an address is required. This will also be saved to the contact in Carbon."
+msgstr ""
+
+msgid "Stripe has no customer for this Carbon customer yet. Posting will create one on your connected account."
+msgstr ""
 
 msgid "Style of kanban output to show in the Kanban table"
 msgstr "Kanbanテーブルに表示するカンバン出力のスタイル"
@@ -14535,6 +14685,9 @@ msgstr "税務償却"
 
 msgid "Tax Depreciation Method"
 msgstr "税務償却方法"
+
+msgid "Tax exempt"
+msgstr ""
 
 msgid "Tax Exempt"
 msgstr "税務上免除"
@@ -15393,6 +15546,9 @@ msgstr "この変更通知は閉じられているため、変更は読み取り
 msgid "This completes the Discovery step."
 msgstr "これはDiscoveryステップを完了します。"
 
+msgid "This contact has no email address"
+msgstr ""
+
 msgid "This counterparty has nothing outstanding — the payment will be recorded on-account."
 msgstr "この取引先には未払い金がありません。支払いは掛け金として記録されます。"
 
@@ -15418,6 +15574,12 @@ msgstr "この検査計画"
 msgid "This invitation to join {0} has expired. You can request a new invite to be sent to your email."
 msgstr "この{0}への参加への招待は期限切れです。新しい招待をメールで送信されるようにリクエストできます。"
 
+msgid "This invoice has no usable due date — choose one for Stripe."
+msgstr ""
+
+msgid "This invoice will be billed to the Stripe customer already linked to this Carbon customer. To change its details, edit it in the Stripe dashboard."
+msgstr ""
+
 msgid "This is a controlled environment, so an authenticator app is required."
 msgstr "これは管理環境のため、認証アプリが必須です。"
 
@@ -15432,6 +15594,9 @@ msgstr "これはウェブフックの一意の識別子です"
 
 msgid "This is an ITAR-controlled environment. Access is restricted to U.S. Persons."
 msgstr "これはITAR管理環境です。アクセスは米国人に限定されています。"
+
+msgid "This is taking longer than expected. It may still finish — if it doesn't, retry the revert to put your data back."
+msgstr "予想より時間がかかっています。終了する可能性があります。終了しない場合は、リバートを再試行してデータを復元してください。"
 
 msgid "This is the month your fiscal year starts."
 msgstr "これはあなたの会計年度が始まる月です。"
@@ -15536,6 +15701,9 @@ msgstr "これはアプリケーションのすべてのユーザーのテーマ
 msgid "This user does not have two-factor authentication enabled."
 msgstr "このユーザーは2要素認証が有効になっていません。"
 
+msgid "This usually takes a few seconds. You can leave the page — it keeps running."
+msgstr "これは通常数秒かかります。ページを離れることができます。実行され続けます。"
+
 msgid "This version belongs to an open <0>change notice</0>. Edit it there."
 msgstr "このバージョンはオープンな<0>変更通知</0>に属しています。そこで編集してください。"
 
@@ -15545,6 +15713,9 @@ msgstr "このバージョンは変更通知<0>{0}</0>に属しています。�
 
 msgid "This version cannot be opened"
 msgstr "このバージョンは開くことができません"
+
+msgid "This version is live"
+msgstr "このバージョンはライブです"
 
 msgid "This version is live. Create a new version to edit."
 msgstr "このバージョンはライブです。編集するには新しいバージョンを作成してください。"
@@ -16082,6 +16253,9 @@ msgstr "操作で回復不可能として報告される単位(理由付き) —
 
 msgid "Unknown"
 msgstr "不明"
+
+msgid "unknown error"
+msgstr "不明なエラー"
 
 msgid "unknown location"
 msgstr "不明な場所"
@@ -16666,6 +16840,9 @@ msgstr "提案を表示"
 msgid "View Suppliers"
 msgstr "サプライヤーを表示"
 
+msgid "View the workflow"
+msgstr "ワークフローを表示"
+
 msgid "View tie-out"
 msgstr "一致を表示"
 
@@ -16935,6 +17112,9 @@ msgstr "スコープ外の内容"
 msgid "When"
 msgstr "いつ"
 
+msgid "When {name} changes"
+msgstr "{name}が変更されるとき"
+
 msgid "When a finished product's shelf life is set to Calculated, pick which consumed inputs feed the calculation."
 msgstr "完成品の賞味期限が「計算」に設定されている場合、計算に使用される消費入力を選択します。"
 
@@ -17030,6 +17210,9 @@ msgstr "あなたが配送を約束したいつ。計画はこれをフルフィ
 
 msgid "When your fiscal and tax years start"
 msgstr "会計年度および税務年度の開始時期"
+
+msgid "Where a workflow notification is delivered — in-app is always sent, while email needs a Business or Partner plan and Slack needs your Slack workspace connected."
+msgstr "ワークフロー通知が配信される場所 — アプリ内は常に送信されますが、メールはビジネスプランまたはパートナープランが必要で、Slackはワークスペースが接続されている必要があります。"
 
 msgid "Where an operation runs; carries labor and quoting rates, with overhead the difference between them."
 msgstr "操作が実行される場所。労働と見積もりレート、オーバーヘッドはそれらの違いです。"

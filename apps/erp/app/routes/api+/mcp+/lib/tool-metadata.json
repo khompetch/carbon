@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-18T19:07:39.197Z",
-  "totalTools": 1444,
+  "generated": "2026-08-22T01:32:58.017Z",
+  "totalTools": 1443,
   "modules": 15,
   "tools": [
     {
@@ -15467,7 +15467,7 @@
       "module": "items",
       "classification": "WRITE",
       "description": "set method material step link",
-      "paramCount": 3,
+      "paramCount": 4,
       "serviceParams": [
         "client",
         "args"
@@ -15487,6 +15487,12 @@
           },
           "linked": {
             "type": "boolean"
+          },
+          "quantity": {
+            "type": [
+              "number",
+              "null"
+            ]
           }
         },
         "required": [
@@ -15501,7 +15507,7 @@
       "module": "items",
       "classification": "WRITE",
       "description": "set method operation tool step link",
-      "paramCount": 3,
+      "paramCount": 4,
       "serviceParams": [
         "client",
         "args"
@@ -15513,7 +15519,10 @@
       "schema": {
         "type": "object",
         "properties": {
-          "methodOperationToolId": {
+          "operationId": {
+            "type": "string"
+          },
+          "toolId": {
             "type": "string"
           },
           "methodOperationStepId": {
@@ -15524,7 +15533,8 @@
           }
         },
         "required": [
-          "methodOperationToolId",
+          "operationId",
+          "toolId",
           "methodOperationStepId",
           "linked"
         ]
@@ -22353,7 +22363,7 @@
       "module": "production",
       "classification": "WRITE",
       "description": "set job material step link",
-      "paramCount": 3,
+      "paramCount": 4,
       "serviceParams": [
         "client",
         "args"
@@ -22373,6 +22383,12 @@
           },
           "linked": {
             "type": "boolean"
+          },
+          "quantity": {
+            "type": [
+              "number",
+              "null"
+            ]
           }
         },
         "required": [
@@ -22387,7 +22403,7 @@
       "module": "production",
       "classification": "WRITE",
       "description": "set job operation tool step link",
-      "paramCount": 3,
+      "paramCount": 4,
       "serviceParams": [
         "client",
         "args"
@@ -22399,7 +22415,10 @@
       "schema": {
         "type": "object",
         "properties": {
-          "jobOperationToolId": {
+          "operationId": {
+            "type": "string"
+          },
+          "toolId": {
             "type": "string"
           },
           "jobOperationStepId": {
@@ -22410,7 +22429,8 @@
           }
         },
         "required": [
-          "jobOperationToolId",
+          "operationId",
+          "toolId",
           "jobOperationStepId",
           "linked"
         ]
@@ -35282,7 +35302,8 @@
       "paramCount": 1,
       "serviceParams": [
         "client",
-        "customerId"
+        "customerId",
+        "companyId"
       ],
       "injectAuth": [
         "companyId"
@@ -35307,7 +35328,8 @@
       "paramCount": 1,
       "serviceParams": [
         "client",
-        "customerContactId"
+        "customerContactId",
+        "companyId"
       ],
       "injectAuth": [
         "companyId"
@@ -35332,7 +35354,8 @@
       "paramCount": 1,
       "serviceParams": [
         "client",
-        "customerId"
+        "customerId",
+        "companyId"
       ],
       "injectAuth": [
         "companyId"
@@ -35395,7 +35418,8 @@
       "paramCount": 1,
       "serviceParams": [
         "client",
-        "customerLocationId"
+        "customerLocationId",
+        "companyId"
       ],
       "injectAuth": [
         "companyId"
@@ -35420,7 +35444,8 @@
       "paramCount": 1,
       "serviceParams": [
         "client",
-        "customerId"
+        "customerId",
+        "companyId"
       ],
       "injectAuth": [
         "companyId"
@@ -35445,7 +35470,8 @@
       "paramCount": 1,
       "serviceParams": [
         "client",
-        "customerId"
+        "customerId",
+        "companyId"
       ],
       "injectAuth": [
         "companyId"
@@ -35470,7 +35496,8 @@
       "paramCount": 1,
       "serviceParams": [
         "client",
-        "customerId"
+        "customerId",
+        "companyId"
       ],
       "injectAuth": [
         "companyId"
@@ -35495,7 +35522,8 @@
       "paramCount": 1,
       "serviceParams": [
         "client",
-        "customerId"
+        "customerId",
+        "companyId"
       ],
       "injectAuth": [
         "companyId"
@@ -42128,37 +42156,6 @@
           "digitalQuoteEnabled",
           "digitalQuoteNotificationGroup",
           "digitalQuoteIncludesPurchaseOrders"
-        ]
-      }
-    },
-    {
-      "name": "settings_updateIntegrationMetadata",
-      "module": "settings",
-      "classification": "WRITE",
-      "description": "update integration metadata",
-      "paramCount": 2,
-      "serviceParams": [
-        "client",
-        "companyId",
-        "integrationId",
-        "metadata",
-        "updatedBy"
-      ],
-      "injectAuth": [
-        "companyId",
-        "updatedBy"
-      ],
-      "schema": {
-        "type": "object",
-        "properties": {
-          "integrationId": {
-            "type": "string"
-          },
-          "metadata": {}
-        },
-        "required": [
-          "integrationId",
-          "metadata"
         ]
       }
     },
