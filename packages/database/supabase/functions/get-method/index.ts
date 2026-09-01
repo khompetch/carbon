@@ -5519,6 +5519,7 @@ serve(async (req: Request) => {
                   quoteOperationStep,
                   procedureId,
                 } = operation;
+                // abilities are not copied on this path (no quoteOperationAbility table)
 
                 if (
                   parts.tools &&
@@ -5765,6 +5766,7 @@ serve(async (req: Request) => {
                   storageUnitId: child.data.storageUnitId,
                   unitOfMeasureCode: child.data.unitOfMeasureCode,
                   unitCost: child.data.unitCost ?? 0, // TODO: get real unit cost
+                  unitCostSource: child.data.unitCostSource ?? "system",
                   companyId,
                   createdBy: userId,
                   customFields: {},
@@ -6282,6 +6284,7 @@ serve(async (req: Request) => {
                     quantity: child.data.quantity,
                     storageUnitId: child.data.storageUnitId,
                     unitCost: child.data.unitCost ?? 0, // TODO: get real unit cost
+                    unitCostSource: child.data.unitCostSource ?? "system",
                     unitOfMeasureCode: child.data.unitOfMeasureCode,
                     companyId,
                     createdBy: userId,
