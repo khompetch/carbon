@@ -21,7 +21,7 @@ else, drop the `postgres`/`gotrue`/`postgrest`/`realtime`/`storage`/`meta`/
 
 | File | Purpose |
 |---|---|
-| `docker-compose.yml` | `erp` + `mes` (built from the repo's root `Dockerfile`), a one-shot `migrate` job that gates them, a full self-hosted Supabase, `redis`, and `inngest`. |
+| `docker-compose.yml` | `erp` + `mes` (built from the repo's root `Dockerfile`), a one-shot `migrate` job that gates them (built from the same Dockerfile's `ops` stage), a full self-hosted Supabase, `redis`, and `inngest`. |
 | `edge-runtime.Dockerfile` | Bakes the edge functions into the `edge-runtime` image (bind mounts proved fragile — see Troubleshooting). |
 | `.env.example` | Template for every environment variable the compose file needs. |
 | `bin/run.sh` | Neutral `exec "$@"` entrypoint shim — lets several Supabase images' proven CMD arrays be reused unchanged without Swarm secrets. |
@@ -81,8 +81,9 @@ access-control feature first.
 ## 5. Deploy
 
 Trigger a deploy in Dokploy. It builds the `erp` image from the repo's root
-`Dockerfile` (shared with the `migrate` job below), builds `mes`, and pulls the
-pinned Supabase/Redis/Inngest images.
+`Dockerfile`, builds `mes`, builds the small `ops` image the `migrate` job
+below runs (a cache hit off the erp build — it stops before the app bundle),
+and pulls the pinned Supabase/Redis/Inngest images.
 
 ## 6. Database migrations (automatic)
 
@@ -102,9 +103,14 @@ leaving the apps serving against a stale schema. It mirrors what
 `--mode replicated-job` (`deploy.sh` → `cmd_migrate` → "Rolling apps now that
 the schema exists").
 
-The job runs the *same image* as `erp`, so the schema and the code that assumes
-it can never come from different revisions. `supabase migration up` only applies
-what's missing, so a deploy with no new migrations finishes in about a second.
+The job runs the root `Dockerfile`'s `ops` stage, built from the same context
+and revision as `erp`, so the schema and the code that assumes it can never
+come from different revisions. It is a separate image from the one `erp`
+serves because the served `runner` stage deliberately strips the supabase CLI
+(along with esbuild, tar and npm) to keep build-tool CVEs out of the image
+that faces the internet; `ops` is the un-hardened stage kept for exactly these
+short-lived one-off jobs. `supabase migration up` only applies what's missing,
+so a deploy with no new migrations finishes in about a second.
 
 **The first deploy is the slow one** — there are ~930 migrations to apply and
 it takes several minutes. Watch the `migrate` service's logs in Dokploy. If
@@ -118,17 +124,35 @@ isn't published outside the Docker network and Kong only proxies HTTP
 (auth/rest/storage/realtime) — it can't carry a raw Postgres connection — so
 this has to run from *inside* the compose network:
 
+SSH to the VPS, go to the directory Dokploy checked the compose file out into
+(`/etc/dokploy/compose/<app-name>/code/contrib/deploying/dokploy` — it holds
+the generated `.env` too), and re-run the one-shot job:
+
 ```bash
-docker exec -it <project>-erp-1 sh -c '
-  cd /repo/packages/database &&
+docker compose -p <project> run --rm migrate
+```
+
+`-p <project>` matters: without it Compose derives the project name from the
+directory and you get a **second, empty stack** — new volumes, no data. Read
+the right value off a running container
+(`docker inspect -f '{{index .Config.Labels "com.docker.compose.project"}}' <container>`).
+
+That runs the migration in a fresh container on the stack's own network with
+the same env the deploy uses — no password to paste — and is safe to repeat:
+`migration up` only applies what is missing.
+
+To drive the CLI yourself, run it in the **ops** image, not `erp` — the served
+app image strips the Supabase CLI:
+
+```bash
+docker compose -p <project> run --rm --entrypoint sh migrate -c '
   PGSSLMODE=disable pnpm exec supabase migration up --include-all \
     --db-url "postgresql://supabase_admin:<POSTGRES_PASSWORD>@postgres:5432/postgres?sslmode=disable"
 '
 ```
 
-Or open a terminal into the `erp` container via Dokploy's terminal/exec feature
-and run the inner command (the image ships the full repo checkout at `/repo`,
-including `pnpm` and the Supabase CLI).
+Dokploy's terminal/exec feature only attaches to a *running* container and
+`migrate` is exited by design, so these have to come from an SSH session.
 
 Four things that are easy to get wrong:
 
@@ -227,6 +251,12 @@ docker compose logs migrate       # or open the service's logs in Dokploy
 - No `migrate` logs at all means it never started: its own gate
   (`postgres` + `storage` healthy) hasn't been satisfied. Check those two
   services first.
+- `Command "supabase" not found` (or `supabase: not found`) means `migrate` is
+  running the served app image instead of the `ops` one. The app image strips
+  the supabase CLI; `migrate` must carry `build: *ops-build` (i.e.
+  `target: ops`) and its own `CARBON_IMAGE_OPS` tag. If you pinned
+  `CARBON_IMAGE_ERP`/`CARBON_IMAGE_OPS` to registry images, check they aren't
+  both pointing at the app image.
 
 **`exec: "/carbon/bin/run.sh": permission denied`** on `postgres`, `gotrue`,
 `realtime`, `storage`, `meta`, or `studio` — `bin/run.sh` lost its executable

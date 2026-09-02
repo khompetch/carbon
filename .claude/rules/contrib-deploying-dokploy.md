@@ -26,8 +26,9 @@ Two deliberate differences from the Swarm recipe:
 - `docker-compose.yml` — 14 services: `migrate`, `erp`, `mes`, `redis`,
   `inngest`, `postgres`, `gotrue`, `postgrest`, `realtime`, `storage`, `meta`,
   `studio`, `edge-runtime`, `kong`. Unlike the Swarm file this IS
-  `docker compose up`-able: it uses `build:`, `depends_on`, `restart:`, a
-  top-level `x-erp-build` anchor, and no `deploy:`/`secrets:` blocks.
+  `docker compose up`-able: it uses `build:`, `depends_on`, `restart:`, the
+  top-level `x-erp-build` / `x-ops-build` anchors, and no
+  `deploy:`/`secrets:` blocks.
 - `edge-runtime.Dockerfile` — bakes `packages/database/supabase/functions`,
   `packages/database/src`, and `packages/dev/docker/edge-main` INTO the image.
   Build context is the repo root. No `run.sh` shim (the root `.dockerignore`
@@ -53,10 +54,26 @@ Two deliberate differences from the Swarm recipe:
 postgres + storage healthy → migrate runs to completion → erp + mes start
 ```
 
-- `image: ${CARBON_IMAGE_ERP:-carbon-erp:local}` + `build: *erp-build` — the
-  SAME image `erp` runs, so schema and code cannot come from different
-  revisions. It carries `build:` as well as `image:` so a `docker compose pull`
-  can't go hunting for a local-only tag on a registry.
+- `image: ${CARBON_IMAGE_OPS:-carbon-ops:local}` + `build: *ops-build` — the
+  root `Dockerfile`'s **`ops`** stage, same context and revision as `erp`, so
+  schema and code still cannot come from different revisions. It carries
+  `build:` as well as `image:` so a `docker compose pull` can't go hunting for
+  a local-only tag on a registry.
+
+  It is NOT the served app image any more, and that is not a style choice.
+  Since #1535/#1537 the `runner` stage deletes the supabase CLI (plus esbuild,
+  the typescript-go preview, `tar` and `npm`) out of the runtime
+  `node_modules` for its Trivy posture, so `pnpm exec supabase migration up`
+  no longer exists in it: a `migrate` pointed at `carbon-erp:local` dies with
+  `Command "supabase" not found`, and because `erp`/`mes` gate on
+  `service_completed_successfully`, that aborts the ENTIRE deploy — the apps
+  never start and Dokploy reports a failed deployment. #1539 added `ops`
+  (`FROM deps`, un-hardened, never exposed, scanned report-only) for exactly
+  these one-off Jobs; upstream's Helm migrate Job and seed hook use it the
+  same way. `target: ops` also skips the `build` stage, so the ops image is a
+  straight cache hit off the erp build. Anything else that needs the CLI or
+  `tsx` at runtime (a manual migration, a seed) must run from `ops` too —
+  `docker compose run --rm migrate`, never `docker exec` into `erp`.
 - `restart: "no"` (quoted — bare `no` is YAML false). A finished job must stay
   finished; `unless-stopped` would loop it forever. `Exited (0)` is the healthy
   steady state and Dokploy's UI shows it greyed/red — that is not a failure.
@@ -134,9 +151,11 @@ OAuth blocks — irrelevant to `migration up`), the real result
 - **Build OOM on small VPSes**: `COMPOSE_PARALLEL_LIMIT=1` in `.env` plus the
   `NODE_OPTIONS: --max-old-space-size=4096` build arg in `x-erp-build`. Symptom
   is a hang around `rendering chunks`.
-- **`CARBON_IMAGE_ERP`** tags the erp image; `erp` and `migrate` must resolve to
-  the same value. Override it to run two Carbon stacks on one host or to pull a
-  prebuilt registry image.
+- **`CARBON_IMAGE_ERP`** tags the erp image, **`CARBON_IMAGE_OPS`** the
+  migration one. They are deliberately DIFFERENT images (see the gate above);
+  pointing both at the app image is the `Command "supabase" not found` failure.
+  Override them to run two Carbon stacks on one host or to pull prebuilt
+  registry images.
 - **Volumes**: `pgdata`, `storage`, `redis-data`, `inngest-data`. A backup is
   the PAIRED `db.sql.gz` + `storage.tar.gz` (`STORAGE_BACKEND: file` puts
   uploads on the volume, metadata in Postgres) — restore both or neither.
@@ -156,4 +175,10 @@ docker compose config | grep '\${'     # must be empty — no unresolved vars
 
 `docker compose config` re-escapes a literal `$` as `$$` on output, so seeing
 `$$POSTGRES_PASSWORD` in `migrate`'s command is correct, not a double-escape.
-Also confirm `migrate` and `erp` print the same `image:` value.
+Also confirm `migrate` still resolves `target: ops` and that its `image:`
+differs from `erp`'s.
+
+The sibling Swarm recipe (`../simple-docker-caddy/deploy.sh` → `cmd_migrate`)
+still runs `pnpm exec supabase migration up` in `$CARBON_IMAGE_ERP` and so
+carries the same break; it needs its own `ops` image before it will migrate
+again.
