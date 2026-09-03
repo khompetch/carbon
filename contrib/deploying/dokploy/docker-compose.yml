@@ -18,12 +18,10 @@
 # how to generate the secrets in .env.example.
 ###############################################################################
 
-# The erp build definition, shared by the `erp` server and the one-shot
-# `migrate` job. Declared once so the migration runner can never drift to a
-# different revision than the code whose schema it is preparing, and so both
-# services resolve to the same tag — no `docker compose pull` can go looking
-# for a local-only image on a registry. (../simple-docker-caddy uses YAML
-# anchors the same way.) The second build is a full layer-cache hit.
+# The erp build definition. Declared as an anchor so the `erp` service and any
+# future consumer of the served image resolve to the same build, and so no
+# `docker compose pull` can go looking for a local-only image on a registry.
+# (../simple-docker-caddy uses YAML anchors the same way.)
 x-erp-build: &erp-build
   context: ../../..
   dockerfile: Dockerfile
@@ -34,6 +32,28 @@ x-erp-build: &erp-build
     # with COMPOSE_PARALLEL_LIMIT=1 (see .env.example) so erp and mes
     # don't build simultaneously.
     NODE_OPTIONS: "--max-old-space-size=4096"
+
+# The migration runner's build. Same context and same Dockerfile as `erp` —
+# so the schema and the code that assumes it still come from one revision —
+# but it stops at the Dockerfile's `ops` stage instead of the default
+# `runner`.
+#
+# `runner` is deliberately hardened: it deletes the supabase CLI (plus
+# esbuild, tsx's compiler, tar and npm) from the runtime node_modules so the
+# served image carries no build-tool CVEs. `pnpm exec supabase migration up`
+# therefore does not exist in it any more, and a `migrate` service pointed at
+# the app image fails with `Command "supabase" not found` — which, because
+# erp/mes gate on `service_completed_successfully`, aborts the whole deploy.
+# `ops` is the un-hardened stage the Dockerfile publishes for exactly these
+# short-lived one-off Jobs (it is never exposed and never serves traffic).
+#
+# It stops at `deps`, so it never runs the app bundle build: the deps layer is
+# a straight cache hit off the erp build, and this image costs nothing extra
+# to produce beyond the tag.
+x-ops-build: &ops-build
+  context: ../../..
+  dockerfile: Dockerfile
+  target: ops
 
 services:
   # ─────────────────────────── Schema migration ──────────────────────────────
@@ -48,10 +68,12 @@ services:
   # Re-running is cheap and safe: `migration up` only applies what is missing,
   # so a deploy with no new migrations finishes in about a second.
   migrate:
-    # The app image, not a separate one — the schema and the code that assumes
-    # it can never come from different revisions.
-    image: ${CARBON_IMAGE_ERP:-carbon-erp:local}
-    build: *erp-build
+    # The ops image (see x-ops-build above), not the served app image: the app
+    # image no longer ships the supabase CLI. Built from the same context and
+    # revision as `erp`, so the schema and the code that assumes it still
+    # cannot come from different revisions.
+    image: ${CARBON_IMAGE_OPS:-carbon-ops:local}
+    build: *ops-build
     working_dir: /repo/packages/database
     environment:
       # The bundled Postgres has no TLS configured. Without BOTH of these the
@@ -83,9 +105,10 @@ services:
 
   # ─────────────────────────────── Apps ──────────────────────────────────────
   erp:
-    # Tagged explicitly so `migrate` above can reuse this exact image. Override
-    # CARBON_IMAGE_ERP to point at a registry image, or to keep two Carbon
-    # stacks on one host from claiming the same local tag.
+    # Tagged explicitly so a `docker compose pull` can't go hunting for a
+    # local-only tag on a registry. Override CARBON_IMAGE_ERP to point at a
+    # registry image, or to keep two Carbon stacks on one host from claiming
+    # the same local tag.
     image: ${CARBON_IMAGE_ERP:-carbon-erp:local}
     build: *erp-build
     env_file: .env
