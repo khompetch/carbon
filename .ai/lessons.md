@@ -1542,6 +1542,15 @@ full-screen ERP route.
 
 **Applies to:** PaymentForm, PaymentApplyTable, and other forms using derived presentation choices.
 
+## A RAISE in a completion RPC aborts the UPDATE that triggered it
+
+**Context:** `complete_job_to_inventory` gained guards refusing a completion it could not satisfy (zero quantity, a fractional serial quantity, fewer receivable units than completed).
+
+**Problem:** That function is not only called from the ERP complete route — `sync_finish_job_operation` calls it from a BEFORE trigger interceptor, and `dispatch_event_interceptors` has no `EXCEPTION` block. So a serial item with no serial sequence (whose job keeps one whole-quantity seed entity, because `assign-serial-numbers` returns early with no sequence) made the raise propagate out and abort the `jobOperation` UPDATE itself: the operator could not mark the operation Done at all.
+
+**Rule:** Before adding a `RAISE` to a SQL function, grep for trigger interceptors that call it. A refusal that is a useful error on a request path is a hard block on a trigger path. Either handle the case rather than refusing it, or make the trigger caller skip the call.
+
+**Applies to:** `complete_job_to_inventory`, `sync_finish_job_operation`, and any function registered through `attach_event_trigger`.
 ## A nullable column added by migration needs a reader that tolerates NULL
 
 **Context:** The accounting corrections release added `invoiceSettlement.sourceAmount` (document-currency principal) without backfilling rows written before it, and the migration comment explicitly declared legacy NULLs valid.
@@ -1551,3 +1560,23 @@ full-screen ERP route.
 **Rule:** When a migration adds a nullable column and leaves existing rows NULL, every reader added in the same change must define what NULL means and handle it, or the migration must backfill. Keep the throw only where a DB constraint already guarantees the value (source-linked rows). Derive legacy values from the columns that did exist (`appliedAmount` at the applicable exchange rate) and cover the NULL case in the pure-function tests.
 
 **Applies to:** `payment-funding.ts` reducers, any future column added to `invoiceSettlement`, `journalLine`, or other high-volume tables where a backfill is skipped.
+
+## A JSON column copied through Kysely on deno-postgres only survives as an object
+
+**Context:** Quote → sales order conversion (`convert` edge function) reads the quote with supabase-js and re-inserts its `internalNotes` / `externalNotes` into `salesOrder` through Kysely inside the transaction. One quote had `internalNotes` stored as a JSON string scalar rather than a tiptap document, written through an API path whose validator typed `notes` as `z.any()`.
+
+**Problem:** deno-postgres encodes query parameters by JS type, not by column type: an object is `JSON.stringify`ed, but a string is sent as raw text and an array as a Postgres array literal. A JSON string scalar therefore round-trips as unquoted text and Postgres rejects the insert with `invalid input syntax for type json`. The route sanitised the body, so Vercel only showed "Edge Function returned a non-2xx status code"; the real line was only in the Supabase function log. Every retry failed identically, and the same latent fault sat in RFQ → quote, supplier quote → PO, and quote revision copies.
+
+**Rule:** Two layers, both required. (1) Any `json`/`jsonb` value written through Kysely in an edge function goes through `lib/json.ts` `toJson()`, which pre-serialises every non-null shape so the wire value is valid JSON text. (2) A validator for a rich-text column is never `z.any()`; use the shared `optionalTiptapDoc` / `toTiptapDoc` in `shared.models.ts`, which turns text, a JSON-encoded doc, or a doc object into a tiptap document and rejects the rest. Put `.optional()` AFTER the transform or zod infers a required key. When an edge function fails opaquely, read the function's own log (Supabase management API `function_logs`), not the caller's.
+
+**Applies to:** `packages/database/supabase/functions/**` Kysely inserts of `internalNotes`, `externalNotes`, `customFields`, `priceTrace`, `configuration`, `additionalCharges`; every `*.models.ts` field that feeds a rich-text column (the purchasing `notes: z.any()` fields still need this).
+
+## An unchecked supabase-js insert turns a NOT NULL violation into silence
+
+**Context:** Inspection rejects were supposed to seed `nonConformanceItemTrackedEntity` links on the NCR's default Scrap row so the MRB could split or reassign specific entities. Nothing ever appeared. Both writers — `x+/inspection+/$id.reject.tsx` and `x+/issue+/new.tsx`'s job-operation auto-link — built their rows without `nonConformanceId`, which is `NOT NULL` on that table (`20260421130000_nc-item-tracked-entity.sql`).
+
+**Problem:** Every such insert returned a 23502, and nobody read it. The reject route did `await (serviceRole as any).from(...).insert(rows)` and discarded the result entirely, so the feature had never worked in production and no error surfaced anywhere. supabase-js does not throw — it resolves to `{ data, error }` — so an unchecked insert is indistinguishable from a successful one, and the `as any` cast additionally hid that the row type was missing a required column. A Kysely insert in the same place would have thrown.
+
+**Rule:** Never discard a supabase-js write result — bind it and check `.error`, even for a fire-and-forget link write. Treat `as any` on a `.from(...).insert(...)` as a defect in review: the cast exists precisely because the row object does not satisfy the generated type, which is the compiler telling you a required column is missing. When a "seeded" side table is mysteriously empty, check the writer's error handling before suspecting the read.
+
+**Applies to:** every `.from(...).insert(...)` / `.update(...)` whose result is not bound, especially in post-commit "also link X" tails; fixed for both writers in PR #1612 by moving them into a Kysely transaction under `lockIssueDispositions`.

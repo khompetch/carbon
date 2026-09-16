@@ -1,5 +1,5 @@
 {
-  "totalTools": 1553,
+  "totalTools": 1554,
   "modules": 15,
   "tools": [
     {"name":"account_deleteUserAttributeValue","classification":"DESTRUCTIVE","paramCount":2,"schema":"0d38e12233b4","response":"bcde375ebd4c","injectAuth":"companyId","permission":"none","paginates":false},
@@ -717,6 +717,7 @@
     {"name":"production_getJobOrderStatusMap","classification":"READ","paramCount":4,"schema":"ff6a888f05b8","response":"3f77244fd820","injectAuth":"companyId","permission":"production:view","paginates":false},
     {"name":"production_getJobPromiseDate","classification":"READ","paramCount":1,"schema":"4999bd4be598","response":"f6521bc077a4","injectAuth":"companyId","permission":"production:view","paginates":false},
     {"name":"production_getJobPurchaseOrderLines","classification":"READ","paramCount":1,"schema":"4999bd4be598","response":"309dea2a265c","injectAuth":"companyId","permission":"production:view","paginates":false},
+    {"name":"production_getJobReceiptSnapshot","classification":"READ","paramCount":1,"schema":"4999bd4be598","response":"af63ddd51939","injectAuth":"companyId","permission":"production:view","paginates":false},
     {"name":"production_getJobs","classification":"READ","paramCount":1,"schema":"75e0e9e0be40","response":"630059095fdc","injectAuth":"companyId","permission":"production:view","paginates":true},
     {"name":"production_getJobsByDateRange","classification":"READ","paramCount":3,"schema":"00794c516592","response":"737259a0d747","injectAuth":"companyId","permission":"production:view","paginates":false},
     {"name":"production_getJobsBySalesOrderLine","classification":"READ","paramCount":1,"schema":"58e3c9762923","response":"630059095fdc","injectAuth":"companyId","permission":"production:view","paginates":false},
@@ -1355,7 +1356,7 @@
     {"name":"sales_upsertMakeMethodFromQuoteLine","classification":"WRITE","paramCount":4,"schema":"ca78a9869ff2","response":"none","injectAuth":"companyId+createdBy+updatedBy","permission":"sales:create+update","paginates":false},
     {"name":"sales_upsertMakeMethodFromQuoteMethod","classification":"WRITE","paramCount":3,"schema":"32b3a0f5efa0","response":"bcde375ebd4c","injectAuth":"companyId+createdBy+updatedBy","permission":"sales:create+update","paginates":false},
     {"name":"sales_upsertNoQuoteReason","classification":"WRITE","paramCount":3,"schema":"f47f137a8607","response":"8394fbabd845","injectAuth":"companyId+createdBy+updatedBy","permission":"sales:create+update","paginates":false},
-    {"name":"sales_upsertQuote","classification":"WRITE","paramCount":21,"schema":"3ae0de5535e8","response":"3acbb53b8c04","injectAuth":"companyId+createdBy+updatedBy","permission":"sales:create+update","paginates":false},
+    {"name":"sales_upsertQuote","classification":"WRITE","paramCount":21,"schema":"c8e476a66d0a","response":"3acbb53b8c04","injectAuth":"companyId+createdBy+updatedBy","permission":"sales:create+update","paginates":false},
     {"name":"sales_upsertQuoteLine","classification":"WRITE","paramCount":17,"schema":"5fd3eea3d988","response":"3797626bd17e","injectAuth":"companyId+createdBy+updatedBy","permission":"sales:create+update","paginates":false},
     {"name":"sales_upsertQuoteLineAdditionalCharges","classification":"WRITE","paramCount":2,"schema":"483aa73b0c32","response":"bcde375ebd4c","injectAuth":"companyId+createdBy+updatedBy","permission":"sales:create+update","paginates":false},
     {"name":"sales_upsertQuoteLineMethod","classification":"WRITE","paramCount":5,"schema":"5f94e8a4cbf6","response":"none","injectAuth":"companyId+createdBy+updatedBy","permission":"sales:create+update","paginates":false},
