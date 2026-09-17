@@ -849,7 +849,8 @@ export async function getJobMaterialsByOperationId(
   const pickedFor = (materialId: string | null) =>
     (materialId ? pickedByMaterial[materialId] : undefined) ?? {
       quantityPicked: 0,
-      quantityToPick: 0
+      quantityToPick: 0,
+      pickedByItem: []
     };
 
   if (requiresSerialTracking) {
@@ -1231,10 +1232,6 @@ export async function getOperationEligibility(
     .maybeSingle();
 
   if (operation.error) {
-    console.error(
-      "getOperationEligibility: failed to fetch jobOperation",
-      operation.error
-    );
     return { eligible: true, reason: null };
   }
 
@@ -1250,10 +1247,6 @@ export async function getOperationEligibility(
     .maybeSingle();
 
   if (process.error) {
-    console.error(
-      "getOperationEligibility: failed to fetch process",
-      process.error
-    );
     return { eligible: true, reason: null };
   }
 
@@ -1270,10 +1263,6 @@ export async function getOperationEligibility(
     .maybeSingle();
 
   if (ability.error) {
-    console.error(
-      "getOperationEligibility: failed to fetch ability",
-      ability.error
-    );
     return { eligible: true, reason: null };
   }
 
@@ -1294,10 +1283,6 @@ export async function getOperationEligibility(
     .maybeSingle();
 
   if (employeeAbility.error) {
-    console.error(
-      "getOperationEligibility: failed to fetch employeeAbility",
-      employeeAbility.error
-    );
     return { eligible: true, reason: null };
   }
 
