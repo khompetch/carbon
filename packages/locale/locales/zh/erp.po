@@ -1725,6 +1725,9 @@ msgstr "应用于 {0} 的金额"
 msgid "Amount Type"
 msgstr "金额类型"
 
+msgid "An ability is a process's qualification. Only processes without one are listed."
+msgstr "技能是工艺的资格要求。仅列出没有该资格的工艺。"
+
 msgid "An accounting bucket that groups expenses by department or function so the GL can report spend by group, not just by account."
 msgstr "一个会计分类，按部门或职能对费用进行分组，以便总账可以按组而不仅按账户报告支出"
 
@@ -15911,6 +15914,10 @@ msgstr "按地点、成本中心或任何维度分割费用"
 msgid "Slice revenue by customer, customer type, or any dimension"
 msgstr "按客户、客户类型或任何维度划分收入"
 
+#. placeholder {0}: i + 1
+msgid "Slide {0}"
+msgstr "幻灯片 {0}"
+
 msgid "Smallest run worth batching. Leave empty for none."
 msgstr "最小分批数量。留空表示无。"
 
@@ -17690,6 +17697,9 @@ msgstr "这些工单在此工作中心分配了工序:"
 
 msgid "These journal entries are still Draft, so their debits and credits aren't in the ledger for this period. Post each one, or re-date it into a later open period."
 msgstr "这些凭证仍是草稿，所以其借方和贷方不在此期间的账簿中。过账每一个，或将其重新标注日期到更后的未结期间。"
+
+msgid "These operations use a process with multiple suppliers. Choose a supplier for each."
+msgstr "这些工序使用的工艺支持多个供应商。请为每个工序选择一个供应商。"
 
 msgid "These parts are being replaced by this one. Each rule is set on the old part; open it to change the rule."
 msgstr "这些零件被此零件替代。每个规则都在旧零件上设置；打开它来更改规则。"
