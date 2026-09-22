@@ -1,4 +1,5 @@
 import { CarbonEdition, error, STRIPE_BYPASS_COMPANY_IDS } from "@carbon/auth";
+import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { isCarbonOwnedCompany } from "@carbon/auth/company.server";
 import { flash } from "@carbon/auth/session.server";
 import type { Database } from "@carbon/database";
@@ -22,26 +23,41 @@ function isBypassCompany(companyId: string): boolean {
     .includes(companyId);
 }
 
-async function getCompanyPlan(
-  client: SupabaseClient<Database>,
-  companyId: string
-): Promise<Plan> {
-  const { data, error: planError } = await client
+// The plan read MUST bypass RLS. `companyPlan`'s SELECT policy requires
+// `auth.role() = 'authenticated'` AND an `auth.uid()` membership row — true for a
+// web session's user client, but NOT for the anon `carbon-key` API-key client the
+// MCP/API paths carry (`auth.uid()` is NULL there). Reading through such a client
+// returns zero rows, normalizes to `Plan.Unknown`, and wrongly gates a paying
+// Partner out of MCP. So read via service role, matching the pre-existing
+// API-access plan gate in `@carbon/auth`'s `requirePermissions`.
+//
+// `maybeSingle()` (not `single()`) so the legitimate "never subscribed" zero-row
+// case is `data: null` with no error — only a real read failure logs. A failure
+// normalizes to the lowest plan, which turns plan-gated ENFORCEMENT (storage/sales
+// rules) off — fail-open. Callers are UI gates and evaluators that should not 500
+// on a transient blip, so log rather than throw; the signal is what was missing
+// when this silently disabled rules.
+async function readCompanyPlan(companyId: string): Promise<string | null> {
+  const { data, error: planError } = await getCarbonServiceRole()
     .from("companyPlan")
     .select("planId")
     .eq("id", companyId)
-    .single();
+    .maybeSingle();
 
-  // A read error normalizes to the lowest plan, which turns plan-gated
-  // ENFORCEMENT (storage/sales rules) off — fail-open. Callers are UI gates
-  // and evaluators that should not 500 on a transient blip, so log rather
-  // than throw; the signal is what was missing when this silently disabled
-  // rules.
   if (planError) {
     logger.error("getCompanyPlan failed", { companyId, error: planError });
   }
 
-  return normalizePlanId(data?.planId);
+  return data?.planId ?? null;
+}
+
+// The `_client` param is kept for call-site compatibility; the read goes through
+// the service role regardless (see `readCompanyPlan`).
+async function getCompanyPlan(
+  _client: SupabaseClient<Database>,
+  companyId: string
+): Promise<Plan> {
+  return normalizePlanId(await readCompanyPlan(companyId));
 }
 
 /**
@@ -59,19 +75,16 @@ async function getCompanyPlan(
  * Returns `null` off Cloud (the client neutralizes gating there anyway).
  */
 export async function getPlan(
-  client: SupabaseClient<Database>,
+  _client: SupabaseClient<Database>,
   companyId: string
 ): Promise<string | null> {
   if (CarbonEdition !== Edition.Cloud) return null;
   if (isBypassCompany(companyId)) return Plan.Partner;
 
-  const { data } = await client
-    .from("companyPlan")
-    .select("planId")
-    .eq("id", companyId)
-    .single();
-
-  if (data?.planId) return data.planId;
+  // Reads via service role for the same reason as `getCompanyPlan` — the read
+  // must not depend on the caller's RLS scope.
+  const planId = await readCompanyPlan(companyId);
+  if (planId) return planId;
 
   // No durable plan row (never subscribed). Carbon-owned companies still get
   // Business-tier access; everyone else resolves to Unknown → gated.

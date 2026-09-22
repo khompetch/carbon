@@ -113,7 +113,7 @@ msgstr "{0}개의 초안 전표"
 
 #. placeholder {0}: op.description
 msgid "{0} has no supplier"
-msgstr ""
+msgstr "{0}에는 공급업체가 없습니다"
 
 #. placeholder {0}: formatter.format(onHand)
 #. placeholder {1}: formatter.format(assembliesInStock)
@@ -1112,6 +1112,9 @@ msgstr "계정 관리자"
 msgid "Account Mapping"
 msgstr "계정 매핑"
 
+msgid "Account Name"
+msgstr "계정명"
+
 msgid "Account Number"
 msgstr "계좌번호"
 
@@ -1334,6 +1337,9 @@ msgstr "영향받는 항목 추가"
 
 msgid "Add an extra layer of security by requiring a code from an authenticator app when signing in."
 msgstr "로그인할 때 인증 앱의 코드를 입력하도록 요구하여 추가 보안 계층을 추가합니다."
+
+msgid "Add an operations section that lists each routing operation with its expected times and scan barcodes."
+msgstr "각 라우팅 공정의 예상 시간과 스캔 바코드를 나열하는 공정 섹션을 추가합니다."
 
 msgid "Add any notes about your decision..."
 msgstr "결정에 대한 메모를 추가하세요..."
@@ -3591,7 +3597,7 @@ msgstr "시리얼 번호를 선택하십시오"
 
 #. placeholder {0}: op.description
 msgid "choose a supplier for {0} on the job"
-msgstr ""
+msgstr "작업 지시의 {0}에 대한 공급업체를 선택하세요"
 
 msgid "Choose another file"
 msgstr "다른 파일을 선택하세요"
@@ -5291,6 +5297,9 @@ msgstr "{name}님, 한밤중이군요."
 
 msgid "Default"
 msgstr "기본값"
+
+msgid "Default Account"
+msgstr "기본 계정"
 
 msgid "Default account for posting sales revenue from invoices"
 msgstr "송장에서 매출을 전기하기 위한 기본 계정"
@@ -10326,7 +10335,7 @@ msgstr "가맹점"
 
 #. placeholder {0}: getItemReadableId(items, itemId) ?? itemId
 msgid "Merge {0} lots"
-msgstr ""
+msgstr "{0} 로트 병합"
 
 msgid "Merge output lots"
 msgstr "생산 로트 병합"
@@ -12072,6 +12081,12 @@ msgstr "공정작업"
 
 msgid "Operations / steps"
 msgstr "공정작업/단계"
+
+msgid "Operations are included"
+msgstr "공정이 포함됨"
+
+msgid "Operations are not included"
+msgstr "공정이 포함되지 않음"
 
 msgid "Operations Type"
 msgstr "공정작업 유형"
@@ -15898,7 +15913,7 @@ msgstr "표시"
 
 #. placeholder {0}: overflow.length
 msgid "Show {0} more"
-msgstr ""
+msgstr "{0}개 더 표시"
 
 msgid "Show a readable Customer ID column on the customer list, customer forms, and dropdowns. Customers are still identified internally either way."
 msgstr "고객 목록, 고객 양식, 드롭다운에 읽기 쉬운 고객 ID 열을 표시합니다. 어느 쪽이든 고객은 내부적으로 동일하게 식별됩니다."
@@ -17766,6 +17781,9 @@ msgstr "교정 값이 비교된 추적 가능한 기준 (예: NIST 표준, 표�
 
 msgid "The traveler lists each item on the bill of materials with its quantity."
 msgstr "작업 이동표는 자재 명세서의 각 품목을 수량과 함께 나열합니다."
+
+msgid "The traveler lists each routing operation with its expected times and scan barcodes."
+msgstr "작업 이동표는 각 라우팅 공정의 예상 시간과 스캔 바코드를 나열합니다."
 
 msgid "The type controls which default permissions the new employee receives; selecting it here pre-fills the permission matrix from the type's template."
 msgstr "이 유형은 신규 직원이 받는 기본 권한을 결정합니다. 여기서 선택하면 해당 유형의 템플릿으로 권한 매트릭스가 미리 채워집니다."

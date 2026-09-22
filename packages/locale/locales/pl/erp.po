@@ -113,7 +113,7 @@ msgstr "{0} wpisów z wersji roboczej dowodu księgowego"
 
 #. placeholder {0}: op.description
 msgid "{0} has no supplier"
-msgstr ""
+msgstr "{0} nie ma dostawcy"
 
 #. placeholder {0}: formatter.format(onHand)
 #. placeholder {1}: formatter.format(assembliesInStock)
@@ -1112,6 +1112,9 @@ msgstr "Kierownik Konta"
 msgid "Account Mapping"
 msgstr "Mapowanie Kont"
 
+msgid "Account Name"
+msgstr "Nazwa konta"
+
 msgid "Account Number"
 msgstr "Numer konta"
 
@@ -1334,6 +1337,9 @@ msgstr "Dodaj element dotknięty zmianą"
 
 msgid "Add an extra layer of security by requiring a code from an authenticator app when signing in."
 msgstr "Dodaj dodatkową warstwę bezpieczeństwa, wymagając kodu z aplikacji uwierzytelniającej podczas logowania."
+
+msgid "Add an operations section that lists each routing operation with its expected times and scan barcodes."
+msgstr "Dodaj sekcję operacji zawierającą każdą operację marszruty z jej czasami oczekiwanymi i kodami kreszkowymi do skanowania."
 
 msgid "Add any notes about your decision..."
 msgstr "Dodaj dowolne notatki dotyczące Twojej decyzji..."
@@ -3591,7 +3597,7 @@ msgstr "Wybierz numer seryjny"
 
 #. placeholder {0}: op.description
 msgid "choose a supplier for {0} on the job"
-msgstr ""
+msgstr "wybierz dostawcę dla {0} na zleceniu produkcyjnym"
 
 msgid "Choose another file"
 msgstr "Wybierz inny plik"
@@ -5291,6 +5297,9 @@ msgstr "Głębokie noce, {name}."
 
 msgid "Default"
 msgstr "Domyślnie"
+
+msgid "Default Account"
+msgstr "Konto domyślne"
 
 msgid "Default account for posting sales revenue from invoices"
 msgstr "Domyślne konto do księgowania przychodów ze sprzedaży z faktur"
@@ -10326,7 +10335,7 @@ msgstr "Handlowiec"
 
 #. placeholder {0}: getItemReadableId(items, itemId) ?? itemId
 msgid "Merge {0} lots"
-msgstr ""
+msgstr "Połącz {0} partie"
 
 msgid "Merge output lots"
 msgstr "Połącz partie wyjściowe"
@@ -12072,6 +12081,12 @@ msgstr "Operacje"
 
 msgid "Operations / steps"
 msgstr "Operacje / kroki"
+
+msgid "Operations are included"
+msgstr "Operacje są uwzględnione"
+
+msgid "Operations are not included"
+msgstr "Operacje nie są uwzględnione"
 
 msgid "Operations Type"
 msgstr "Typ operacyjny"
@@ -15898,7 +15913,7 @@ msgstr "Pokaż"
 
 #. placeholder {0}: overflow.length
 msgid "Show {0} more"
-msgstr ""
+msgstr "Pokaż {0} więcej"
 
 msgid "Show a readable Customer ID column on the customer list, customer forms, and dropdowns. Customers are still identified internally either way."
 msgstr "Pokaż kolumnę czytelnego identyfikatora klienta na liście klientów, formularzach klientów i listach rozwijanych. Klienci są nadal identyfikowani wewnętrznie w każdym przypadku."
@@ -17766,6 +17781,9 @@ msgstr "Identyfikowalne odniesienie (np. standard NIST, numer seryjny przyrządu
 
 msgid "The traveler lists each item on the bill of materials with its quantity."
 msgstr "Przewodnik zawiera listę każdego artykułu z listy materiałowej wraz z jego ilością."
+
+msgid "The traveler lists each routing operation with its expected times and scan barcodes."
+msgstr "Przewodnik zawiera każdą operację marszruty z jej czasami oczekiwanymi i kodami kreszkowymi do skanowania."
 
 msgid "The type controls which default permissions the new employee receives; selecting it here pre-fills the permission matrix from the type's template."
 msgstr "Typ kontroluje jakie domyślne uprawnienia otrzymuje nowy pracownik; wybranie go tutaj wstępnie wypełnia macierz uprawnień z szablonu typu."
