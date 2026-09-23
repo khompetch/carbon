@@ -1162,7 +1162,7 @@ msgstr "रोकें"
 msgid "Pick"
 msgstr "चुनें"
 
-#. placeholder {0}: m.required - m.issued
+#. placeholder {0}: round(m.required - m.issued)
 msgid "Pick {0}"
 msgstr "पिकिंग {0}"
 

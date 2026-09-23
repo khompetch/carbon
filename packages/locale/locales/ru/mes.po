@@ -1162,7 +1162,7 @@ msgstr "Приостановить"
 msgid "Pick"
 msgstr "Выбрать"
 
-#. placeholder {0}: m.required - m.issued
+#. placeholder {0}: round(m.required - m.issued)
 msgid "Pick {0}"
 msgstr "Отобрать {0}"
 

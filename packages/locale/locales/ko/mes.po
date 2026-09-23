@@ -1162,7 +1162,7 @@ msgstr "일시 중지"
 msgid "Pick"
 msgstr "피킹"
 
-#. placeholder {0}: m.required - m.issued
+#. placeholder {0}: round(m.required - m.issued)
 msgid "Pick {0}"
 msgstr "피킹 {0}"
 

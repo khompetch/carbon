@@ -1162,7 +1162,7 @@ msgstr "Wstrzymaj"
 msgid "Pick"
 msgstr "Pobierz"
 
-#. placeholder {0}: m.required - m.issued
+#. placeholder {0}: round(m.required - m.issued)
 msgid "Pick {0}"
 msgstr "Pobierz {0}"
 
