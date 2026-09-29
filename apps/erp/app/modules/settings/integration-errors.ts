@@ -39,9 +39,20 @@ export const integrationErrors = {
       title: msg`Couldn't save the Ramp connection`,
       description: msg`Ramp authorized the connection but saving it failed. Try connecting again.`
     },
+    "role-conflict": {
+      title: msg`Another spend integration is already active`,
+      description: msg`Only one spend integration can be active at a time. Uninstall the current one first, then connect Ramp.`
+    },
     "install-failed": {
       title: msg`Ramp connected but setup didn't finish`,
       description: msg`Open the Ramp integration and try connecting again to finish setup.`
+    },
+    // Ramp allows exactly ONE connected accounting system, and another one holds
+    // it. This is the conflict push-only mode exists for, so the copy names the
+    // two real ways out instead of the generic "try again", which cannot work.
+    "seat-conflict": {
+      title: msg`Another system is connected to Ramp as its accounting system`,
+      description: msg`Ramp allows only one. Disconnect the other system in Ramp, or connect Carbon again choosing "Another system posts my ledger".`
     }
   },
   onshape: {
@@ -57,6 +68,10 @@ export const integrationErrors = {
     denied: {
       title: msg`Onshape denied the connection`,
       description: msg`The authorization was refused in Onshape. Try connecting again.`
+    },
+    "invalid-state": {
+      title: msg`The Onshape connection expired`,
+      description: msg`Return to Integrations and connect Onshape again.`
     },
     "invalid-response": {
       title: msg`Onshape didn't return an authorization code`,

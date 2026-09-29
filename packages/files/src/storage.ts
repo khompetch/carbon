@@ -55,6 +55,68 @@ export const hasCompanyPrivateObjectPathPrefix = (
   return bucket ? objectPath.startsWith(`${bucket}/`) : false;
 };
 
+// A well-formed key stops changing after one decode (a key cannot hold a
+// literal `%`), so anything still decoding after this many passes is refused.
+const MAX_STORAGE_PATH_DECODES = 4;
+
+const isDotSegment = (segment: string) => segment === "." || segment === "..";
+
+const hasUnsafeStorageSyntax = (path: string) => {
+  if (/[\\?#]/.test(path)) return true;
+  for (const char of path) {
+    const code = char.charCodeAt(0);
+    if (code < 0x20 || code === 0x7f) return true;
+  }
+  return path.split("/").some(isDotSegment);
+};
+
+/**
+ * True when an object key could resolve somewhere other than where its text
+ * says. storage-js puts the key into the request URL UNENCODED, and the WHATWG
+ * URL parser resolves `.` / `..` segments (percent-encoded `%2e` too), reads
+ * `\` as `/`, strips tabs and newlines, and ends the path at `?` / `#`. Any of
+ * those lets a key pass a `${companyId}/` prefix check and then read or write
+ * another company's object — or another bucket.
+ *
+ * The key is checked as given and after every decode until it stops changing,
+ * so single- and double-encoded traversal (`%2e%2e`, `%252e%252e`) is caught
+ * wherever a caller sits in the decode chain. A malformed escape is refused:
+ * storage never accepts a key containing a literal `%`.
+ */
+export function isUnsafeStoragePath(path: string): boolean {
+  let current = path;
+  for (let pass = 0; pass <= MAX_STORAGE_PATH_DECODES; pass++) {
+    if (hasUnsafeStorageSyntax(current)) return true;
+    let decoded: string;
+    try {
+      decoded = decodeURIComponent(current);
+    } catch {
+      return true;
+    }
+    if (decoded === current) return false;
+    current = decoded;
+  }
+  return true;
+}
+
+/**
+ * A caller-supplied file name made safe to use as the LAST segment of an
+ * object key: the basename only (anything before a `/` or `\` is dropped),
+ * trimmed, with `?`, `#` and `%` removed ("Drawing #3.pdf" → "Drawing 3.pdf",
+ * the same result `stripSpecialCharacters` gives). Null when nothing usable is
+ * left or the name fails `isUnsafeStoragePath`.
+ */
+export function safeStorageFileName(name: string): string | null {
+  // `?` / `#` would end the key at that character and `%` would be decoded
+  // into a different key, so they are dropped rather than refusing the upload.
+  const base = (name.split(/[/\\]/).pop() ?? "")
+    .replace(/[?#%]/g, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+  if (!base || isUnsafeStoragePath(base)) return null;
+  return base;
+}
+
 type Bucket = ReturnType<StorageClient["from"]>;
 
 /**
@@ -93,6 +155,47 @@ export type CarbonStorage = {
   company(companyId: string): CompanyBucket;
 };
 
+/**
+ * The HTTP status behind a storage error. `download()` skips reading the
+ * error body, so a 400/404 arrives as `StorageUnknownError("{}")` with the
+ * status only on the raw response in `originalError`.
+ */
+export function storageErrorStatus(error: unknown): number | undefined {
+  if (!error || typeof error !== "object") return undefined;
+  const { status, originalError } = error as {
+    status?: unknown;
+    originalError?: { status?: unknown };
+  };
+  if (typeof status === "number") return status;
+  return typeof originalError?.status === "number"
+    ? originalError.status
+    : undefined;
+}
+
+/**
+ * Whether a storage error means the object (or bucket) is not there. Storage
+ * answers a miss with HTTP 400 and `"statusCode":"404"` in the body, the same
+ * status it uses for an invalid key or request — so a 400 counts only when
+ * its body says 404. `download()` never reads that body, so it is still
+ * unread on `originalError`.
+ */
+export async function isStorageNotFound(error: unknown): Promise<boolean> {
+  if (!error || typeof error !== "object") return false;
+  const { statusCode, originalError } = error as {
+    statusCode?: unknown;
+    originalError?: unknown;
+  };
+  if (statusCode === "404" || storageErrorStatus(error) === 404) return true;
+  if (!(originalError instanceof Response) || originalError.status !== 400) {
+    return false;
+  }
+  const body = await originalError
+    .clone()
+    .json()
+    .catch(() => null);
+  return body?.statusCode === "404";
+}
+
 export function storage(client: { storage: StorageClient }): CarbonStorage {
   return {
     from: (bucket) => client.storage.from(bucket),
@@ -108,8 +211,18 @@ function companyBucket(
   const own = storage.from(id);
   const legacy = storage.from(LEGACY_PRIVATE_BUCKET);
 
-  const owned = (path: string) =>
-    hasCompanyPrivateObjectPathPrefix(companyId, path);
+  // The prefix is only a boundary if the key cannot climb out of it. Storage
+  // uses the key only up to the first `?` / `#` (the URL parser ends the path
+  // there), so that is the key checked: cutting a suffix off a key that starts
+  // with `${companyId}/` cannot leave the company, and a name like
+  // "Drawing #3.pdf" keeps uploading exactly as it always has.
+  const owned = (path: string) => {
+    const key = path.split(/[?#]/, 1)[0] ?? "";
+    return (
+      hasCompanyPrivateObjectPathPrefix(companyId, key) &&
+      !isUnsafeStoragePath(key)
+    );
+  };
   const owns = (...paths: string[]) => paths.every(owned);
   const refuse = (...paths: string[]) =>
     Promise.resolve({

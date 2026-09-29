@@ -28,7 +28,9 @@ import {
 } from "~/modules/sales";
 import { recordSalesRuleOutcome } from "~/modules/sales/sales.server";
 import { getCompany, getCompanySettings } from "~/modules/settings";
+import { checkPartyContactRequirement } from "~/modules/settings/party-contact.server";
 import { upsertExternalLink } from "~/modules/shared";
+import { requireCompanyRecord } from "~/modules/shared/shared.server";
 import { getUser } from "~/modules/users/users.server";
 import { loader as pdfLoader } from "~/routes/file+/quote+/$id[.]pdf";
 import { path } from "~/utils/path";
@@ -53,11 +55,31 @@ export async function action(args: ActionFunctionArgs) {
   let fileName: string;
   let documentFilePath: string;
 
+  // `client` is the service role (bypassRls): the URL quote must belong to
+  // this company before it is evaluated, linked, rendered or sent.
+  await requireCompanyRecord(client, "quote", companyId, { id: quoteId });
+
   const quote = await getQuote(client, quoteId);
   if (quote.error) {
     throw redirect(
       path.to.quote(quoteId),
       await flash(request, error(quote.error, "Failed to get quote"))
+    );
+  }
+
+  // A customer with no reachable contact cannot be created as a vendor/customer at
+  // a connected platform, so its documents are rejected there long after anyone
+  // is watching. Gate at issue time, where the record can still be fixed. No-op
+  // unless the company has turned the setting on.
+  const customerContactError = await checkPartyContactRequirement(
+    client,
+    companyId,
+    { kind: "customer", id: quote.data.customerId }
+  );
+  if (customerContactError) {
+    throw redirect(
+      path.to.quote(quoteId),
+      await flash(request, error(null, customerContactError))
     );
   }
 
@@ -236,7 +258,7 @@ export async function action(args: ActionFunctionArgs) {
             getCompany(client, companyId),
             getCompanySettings(client, companyId),
             getCustomer(client, quote.data.customerId!),
-            getCustomerContact(client, customerContactId),
+            getCustomerContact(client, customerContactId, companyId),
             getUser(client, userId)
           ]);
 

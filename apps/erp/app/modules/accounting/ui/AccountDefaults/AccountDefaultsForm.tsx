@@ -4,6 +4,7 @@ import type { TermId } from "@carbon/glossary";
 import {
   Badge,
   Button,
+  Heading,
   HStack,
   IconButton,
   LabelWithHelp
@@ -196,7 +197,7 @@ const AccountDefaultsForm = ({
       {
         id: "payables",
         title: t`Accounts Payable`,
-        description: t`Configure default accounts for vendor and supplier transactions`,
+        description: t`Configure default accounts for supplier transactions`,
         fields: [
           {
             name: "payablesAccount",
@@ -220,9 +221,15 @@ const AccountDefaultsForm = ({
           },
           {
             name: "supplierWriteOffAccount",
-            label: t`Vendor Write-Off Income`,
-            description: t`Other Income account for vendor balances cleared without full payment on AP settlement`,
+            label: t`Supplier Write-Off Income`,
+            description: t`Other Income account for supplier balances cleared without full payment on AP settlement`,
             badgeType: "Revenue"
+          },
+          {
+            name: "employeeReimbursementsPayableAccount",
+            label: t`Employee Reimbursements Payable`,
+            description: t`Liability account for amounts owed to employees for expense reimbursements. Falls back to Payables when unset`,
+            badgeType: "Liability"
           }
         ]
       },
@@ -583,9 +590,9 @@ const AccountDefaultsForm = ({
       <div className="rounded-lg border border-border bg-card">
         <div className="flex items-center justify-between border-b border-border p-6">
           <div>
-            <h1 className="text-xl font-semibold text-foreground">
+            <Heading as="h1" size="h3">
               <Trans>Default Accounts</Trans>
-            </h1>
+            </Heading>
             <p className="text-sm text-muted-foreground">
               <Trans>
                 Configure the default accounts used for various transaction

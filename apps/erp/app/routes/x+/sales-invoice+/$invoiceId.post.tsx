@@ -44,6 +44,8 @@ import {
 import { getCustomerContact, updateCustomerContact } from "~/modules/sales";
 import { recordSalesRuleOutcome } from "~/modules/sales/sales.server";
 import { getCompany } from "~/modules/settings";
+import { checkPartyContactRequirement } from "~/modules/settings/party-contact.server";
+import { requireCompanyRecord } from "~/modules/shared/shared.server";
 import { getCompanyTimeZone } from "~/modules/shared/timezone.server";
 import { getUser } from "~/modules/users/users.server";
 import { loader as pdfLoader } from "~/routes/file+/sales-invoice+/$id[.]pdf";
@@ -317,7 +319,13 @@ async function preflightStripeSend({
   }
 
   if (stripeContactEmail) {
-    const contact = await getCustomerContact(serviceRole, customerContact);
+    // customerContact comes from the form and the service role bypasses RLS:
+    // scope it so another company's contact is never read or rewritten.
+    const contact = await getCustomerContact(
+      serviceRole,
+      customerContact,
+      companyId
+    );
     if (contact.data && !contact.data.contact?.email) {
       const update = await updateCustomerContact(serviceRole, {
         contactId: contact.data.contactId,
@@ -504,11 +512,50 @@ export async function action(args: ActionFunctionArgs) {
     };
   }
 
+  // Mirror of the supplier gate on the purchasing side. Off by default and
+  // nothing downstream forces it today — Rillet, Xero and QuickBooks all treat a
+  // customer email as optional — so this only fires for a company that has asked
+  // for the policy. It exists so the two sides behave the same when they do.
+  const invoiceCustomer = await client
+    .from("salesInvoice")
+    .select("customerId")
+    .eq("id", invoiceId)
+    .eq("companyId", companyId)
+    .maybeSingle();
+
+  // Fail CLOSED — see the supplier gate on the purchasing side. An unchecked
+  // error left `customerId` undefined, and a party with no id is not checked at
+  // all, so the read failing silently disabled the gate.
+  if (invoiceCustomer.error || !invoiceCustomer.data) {
+    logger.error("Could not read the invoice customer before posting", {
+      companyId,
+      invoiceId,
+      error: invoiceCustomer.error
+    });
+    return { success: false, message: "Failed to post sales invoice" };
+  }
+
+  const customerContactError = await checkPartyContactRequirement(
+    client,
+    companyId,
+    { kind: "customer", id: invoiceCustomer.data.customerId }
+  );
+  if (customerContactError) {
+    return { success: false, message: customerContactError };
+  }
+
   let file: ArrayBuffer;
   let fileName: string;
   let documentFilePath: string;
 
   const serviceRole = getCarbonServiceRole();
+
+  // Everything below reads and writes through the service role (and the
+  // Stripe preflight runs before the edge function re-checks the invoice), so
+  // the URL's invoiceId must belong to this company before anything happens.
+  await requireCompanyRecord(serviceRole, "salesInvoice", companyId, {
+    id: invoiceId
+  });
 
   const formData = await request.formData();
   const validation = await validator(salesInvoicePostValidator).validate(
@@ -812,7 +859,7 @@ export async function action(args: ActionFunctionArgs) {
           paymentTerms
         ] = await Promise.all([
           getCompany(serviceRole, companyId),
-          getCustomerContact(serviceRole, customerContact),
+          getCustomerContact(serviceRole, customerContact, companyId),
           getSalesInvoice(serviceRole, invoiceId),
           getSalesInvoiceLines(serviceRole, invoiceId),
           getSalesInvoiceCustomerDetails(serviceRole, invoiceId),
