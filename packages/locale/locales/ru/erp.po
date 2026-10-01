@@ -48,6 +48,9 @@ msgstr "«{taskName}» готово — все {0} позиций графика
 msgid "(excluded for this customer)"
 msgstr "(исключено для этого покупателя)"
 
+msgid "(Inactive)"
+msgstr "(Неактивный)"
+
 #. placeholder {0}: target.slackDays
 msgid "{0, plural, one {# day of slack} other {# days of slack}}"
 msgstr "{0, plural, one {# день страхового запаса} few {# дня страхового запаса} many {# дней страхового запаса} other {# дней страхового запаса}}"
@@ -569,6 +572,12 @@ msgstr "Извещение об изменении отслеживает кон
 
 msgid "A clearing account holding the value of goods received but not yet billed; the supplier invoice clears it."
 msgstr "Счет, содержащий стоимость полученных товаров, еще не выставленных счетом; счет-фактура поставщика его очищает."
+
+msgid "A company connects to one Onshape at a time. Uninstall Onshape Government, then connect Onshape."
+msgstr "Организация может подключаться к одному Onshape одновременно. Удалите Onshape Government, затем подключите Onshape."
+
+msgid "A company connects to one Onshape at a time. Uninstall Onshape, then connect Onshape Government."
+msgstr "Организация может подключаться к одному Onshape одновременно. Удалите Onshape, затем подключите Onshape Government."
 
 msgid "A company that designs and builds its own finished products end to end (here, the shop building humanoid robots) rather than making parts to another company's specification."
 msgstr "Организация, которая проектирует и производит свои готовые продукты полностью (здесь — цех, производящий гуманоидных роботов), а не производит детали по спецификации другой организации."
@@ -1424,6 +1433,9 @@ msgstr "Добавить приложение-аутентификатор"
 msgid "Add Calibration Record"
 msgstr "Добавить запись калибровки"
 
+msgid "Add Characteristic"
+msgstr "Добавить характеристику"
+
 msgid "Add Child Storage Unit"
 msgstr "Добавить дочернюю единицу хранения"
 
@@ -1453,9 +1465,6 @@ msgstr "Добавить сотрудника"
 
 msgid "Add Entry"
 msgstr "Добавить запись"
-
-msgid "Add Feature"
-msgstr "Добавить функцию"
 
 msgid "Add from library…"
 msgstr "Добавить из библиотеки…"
@@ -1640,6 +1649,9 @@ msgstr "Добавлено строк: {0}"
 msgid "Added for this customer"
 msgstr "Добавлено для этого покупателя"
 
+msgid "Added to the unit price for the chosen values, before discounts and markups. Use a negative amount for a credit."
+msgstr "Добавляется к цене за единицу для выбранных значений, до скидок и надбавок. Используйте отрицательную сумму для кредита."
+
 msgid "Adding demo records"
 msgstr "Добавление демо-записей"
 
@@ -1740,6 +1752,9 @@ msgstr "Все отделы"
 msgid "All Documents"
 msgstr "Все документы"
 
+msgid "All gauges"
+msgstr "Все средства измерения"
+
 msgid "All item types"
 msgstr "Все типы номенклатуры"
 
@@ -1758,6 +1773,9 @@ msgstr "все производят {0}"
 
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "Все члены выбранных групп и выбранные лица смогут утвердить запросы"
+
+msgid "All open jobs"
+msgstr "Все открытые производственные заказы"
 
 msgid "All returnable lines"
 msgstr "Все возвратные строки"
@@ -1949,6 +1967,9 @@ msgstr "Операция этого задания входит в эту пар
 msgid "An operation's position in its work center's queue — the order the floor picks work up. The engine numbers it from placement order (earliest projected start first); reordering cards on the Work Centers board overrides it without changing dates."
 msgstr "Позиция операции в очереди ее рабочего центра — порядок, в котором цех берет работу. Двигатель нумерует ее по порядку размещения (самое раннее предполагаемое начало в первую очередь); переупорядочение карт на доске Рабочих центров переопределяет его без изменения дат."
 
+msgid "An unexpected error occurred while connecting to Onshape. Save the integration settings to try again."
+msgstr "Во время подключения к Onshape произошла неожиданная ошибка. Сохраните настройки интеграции и попробуйте еще раз."
+
 msgid "An unexpected error occurred while connecting to Onshape. Try connecting again."
 msgstr "При подключении к Onshape произошла непредвиденная ошибка. Повторите попытку подключения."
 
@@ -1997,6 +2018,9 @@ msgstr "Другая единица хранения, в которую влож
 
 msgid "Another system is connected to Ramp as its accounting system"
 msgstr "Другая система подключена к Ramp как система учета"
+
+msgid "Any"
+msgstr "Любой"
 
 msgid "Any item group"
 msgstr "Любая группа товаров"
@@ -2077,8 +2101,8 @@ msgstr "Применяется ко всем"
 msgid "Applies to all work centers"
 msgstr "Применяется ко всем рабочим центрам"
 
-msgid "Applies to features without their own rule, and to the lot when this plan drives an inspection."
-msgstr "Применяется к функциям без собственного правила и к партии, когда этот план инициирует контроль."
+msgid "Applies to characteristics without their own rule, and to the lot when this plan drives an inspection."
+msgstr "Применяется к характеристикам без собственного правила и к партии, когда этот план контроля проводит контроль."
 
 msgid "Apply"
 msgstr "Применить"
@@ -3194,6 +3218,9 @@ msgstr "BOM"
 msgid "BoM + BoP"
 msgstr "BoM + BoP"
 
+msgid "BoM Explorer"
+msgstr "Обозреватель спецификации"
+
 msgid "BOM synced successfully"
 msgstr "BOM успешно синхронизирован"
 
@@ -3684,6 +3711,12 @@ msgstr "Изменить тип"
 msgid "Changed By"
 msgstr "Изменено"
 
+msgid "Changelog"
+msgstr "Журнал изменений"
+
+msgid "Changelog newsletter"
+msgstr "Рассылка журнала изменений"
+
 msgid "Changes"
 msgstr "Изменения"
 
@@ -3695,6 +3728,15 @@ msgstr "Изменение этого обновит ID детали"
 
 msgid "Changing type resets this item's draft edits."
 msgstr "Изменение типа сбрасывает черновые редактирования этого элемента."
+
+msgid "Characteristic"
+msgstr "Характеристика"
+
+msgid "Characteristic values suggested from drawing"
+msgstr "Значения характеристик, предложенные из чертежа"
+
+msgid "Characteristics"
+msgstr "Характеристики"
 
 msgid "Charges"
 msgstr "Списания"
@@ -3763,6 +3805,9 @@ msgstr "Выберите, как добавить строки в этот во�
 msgid "Choose what appears on the printed job traveler."
 msgstr "Выбрать, что отображается на распечатанном маршрутном листе работы."
 
+msgid "Choose whether the bill of material explorer on items, quotes, and jobs labels each line with its description or its item ID."
+msgstr "Выберите, будут ли подписаны каждая строка спецификации на номенклатуре, коммерческих предложениях и производственных заказах с описанием или кодом номенклатуры."
+
 msgid "Choose your style"
 msgstr "Выберите свой стиль"
 
@@ -3792,6 +3837,9 @@ msgstr "Очистить срок выполнения"
 
 msgid "Clear Filters"
 msgstr "Очистить фильтры"
+
+msgid "Clear gauge"
+msgstr "Очистить средство измерения"
 
 msgid "Clear search"
 msgstr "Очистить поиск"
@@ -3894,11 +3942,11 @@ msgstr "Свернуть {0}"
 msgid "Collapse all"
 msgstr "Свернуть все"
 
+msgid "Collapse characteristics table"
+msgstr "Свернуть таблицу характеристик"
+
 msgid "Collapse Costs"
 msgstr "Свернуть себестоимость"
-
-msgid "Collapse features table"
-msgstr "Свернуть таблицу функций"
 
 msgid "Collapse Labor"
 msgstr "Свернуть Труд"
@@ -4035,6 +4083,9 @@ msgstr "Завершение этого обучения предоставля�
 msgid "Completion Barcode"
 msgstr "Штрихкод завершения"
 
+msgid "Completion Date"
+msgstr "Дата завершения"
+
 msgid "Completion in progress — retry in Shop Floor"
 msgstr "Завершение выполняется — повторите попытку в Цехе"
 
@@ -4069,6 +4120,9 @@ msgstr "Конфигурация"
 
 msgid "Configuration Parameters"
 msgstr "Параметры конфигурации"
+
+msgid "Configuration Prices"
+msgstr "Цены конфигурации"
 
 msgid "Configuration, data migration, and any integrations"
 msgstr "Конфигурация, миграция данных и любые интеграции"
@@ -4144,6 +4198,9 @@ msgstr "настроено"
 
 msgid "Configured"
 msgstr "Настроено"
+
+msgid "Configured Part"
+msgstr "Сконфигурированная деталь"
 
 msgid "Confirm"
 msgstr "Подтвердить"
@@ -4394,6 +4451,9 @@ msgstr "Ссылка скопирована в буфер обмена"
 msgid "Copied setup prompt to your clipboard"
 msgstr "Приглашение наладки скопировано в буфер обмена"
 
+msgid "Copied!"
+msgstr "Скопировано!"
+
 msgid "Copies a setup prompt for your AI coding tool"
 msgstr "Копирует подсказку наладки для вашего инструмента кодирования AI"
 
@@ -4409,11 +4469,20 @@ msgstr "Скопировать API-ключ"
 msgid "Copy batch number"
 msgstr "Копировать номер серии"
 
+msgid "Copy change notice unique identifier"
+msgstr "Скопировать уникальный идентификатор извещения об изменении"
+
 msgid "Copy company unique identifier"
 msgstr "Скопировать уникальный идентификатор организации"
 
 msgid "Copy consumable number"
 msgstr "Скопировать номер расходного материала"
+
+msgid "Copy consumable unique identifier"
+msgstr "Скопировать уникальный идентификатор расходного материала"
+
+msgid "Copy customer unique identifier"
+msgstr "Скопировать уникальный идентификатор покупателя"
 
 msgid "Copy dispatch ID"
 msgstr "Скопировать ID заявки на техобслуживание"
@@ -4438,6 +4507,9 @@ msgstr "Скопировать уникальный идентификатор �
 
 msgid "Copy Job number"
 msgstr "Скопировать номер задания"
+
+msgid "Copy job unique identifier"
+msgstr "Скопировать уникальный идентификатор производственного заказа"
 
 msgid "Copy link"
 msgstr "Копировать ссылку"
@@ -4517,6 +4589,15 @@ msgstr "Копировать имя процедуры"
 msgid "Copy procedure unique identifier"
 msgstr "Скопировать уникальный идентификатор процедуры"
 
+msgid "Copy purchase invoice unique identifier"
+msgstr "Скопировать уникальный идентификатор счета-фактуры полученного"
+
+msgid "Copy purchase order unique identifier"
+msgstr "Скопировать уникальный идентификатор заказа поставщику"
+
+msgid "Copy purchase return order unique identifier"
+msgstr "Скопировать уникальный идентификатор возврата по заказу поставщику"
+
 msgid "Copy Quality Document"
 msgstr "Копировать документ качества"
 
@@ -4526,17 +4607,38 @@ msgstr "Копировать предложение"
 msgid "Copy Quote number"
 msgstr "Копировать номер предложения"
 
+msgid "Copy quote unique identifier"
+msgstr "Скопировать уникальный идентификатор коммерческого предложения"
+
 msgid "Copy return number"
 msgstr "Скопировать номер возврата"
 
+msgid "Copy RFQ unique identifier"
+msgstr "Скопировать уникальный идентификатор запроса цен"
+
 msgid "Copy RMA number"
 msgstr "Скопировать номер RMA"
+
+msgid "Copy sales invoice unique identifier"
+msgstr "Скопировать уникальный идентификатор счета-фактуры выданного"
+
+msgid "Copy sales order unique identifier"
+msgstr "Скопировать уникальный идентификатор заказа покупателя"
+
+msgid "Copy sales return order unique identifier"
+msgstr "Скопировать уникальный идентификатор возврата по заказу покупателя"
 
 msgid "Copy service number"
 msgstr "Копировать номер услуги"
 
 msgid "Copy service unique identifier"
 msgstr "Копировать уникальный идентификатор услуги"
+
+msgid "Copy supplier quote unique identifier"
+msgstr "Скопировать уникальный идентификатор предложения поставщика"
+
+msgid "Copy supplier unique identifier"
+msgstr "Скопировать уникальный идентификатор поставщика"
 
 msgid "Copy this item's pricing to another scope."
 msgstr "Скопировать ценообразование этой номенклатуры в другую область."
@@ -4546,6 +4648,9 @@ msgstr "Скопировать эту ссылку, чтобы поделить�
 
 msgid "Copy this link to share the quote with a supplier"
 msgstr "Скопируйте эту ссылку, чтобы поделиться предложением с поставщиком"
+
+msgid "Copy to clipboard"
+msgstr "Копировать в буфер обмена"
 
 msgid "Copy tool number"
 msgstr "Скопировать номер инструмента"
@@ -4676,6 +4781,9 @@ msgstr "Не удалось сохранить"
 msgid "Couldn't complete the Onshape connection"
 msgstr "Не удалось завершить подключение к Onshape"
 
+msgid "Couldn't complete the Onshape Government connection"
+msgstr "Не удалось завершить подключение Onshape Government"
+
 msgid "Couldn't load documents"
 msgstr "Не удалось загрузить документы"
 
@@ -4690,6 +4798,9 @@ msgstr "Не удалось перепланировать задание. По�
 
 msgid "Couldn't save the Onshape connection"
 msgstr "Не удалось сохранить подключение к Onshape"
+
+msgid "Couldn't save the Onshape Government connection"
+msgstr "Не удалось сохранить подключение Onshape Government"
 
 msgid "Couldn't save the Ramp connection"
 msgstr "Не удалось сохранить подключение к Ramp"
@@ -6077,9 +6188,6 @@ msgstr "Обнаружено планировщиком движения"
 msgid "Developer"
 msgstr "Разработчик"
 
-msgid "Diagram saved"
-msgstr "Диаграмма сохранена"
-
 msgid "Differs from the selection — allowed, but confirm they nest together"
 msgstr "Отличается от выбора — допустимо, но убедитесь в их совместимости"
 
@@ -6358,11 +6466,11 @@ msgstr "Перетащите, чтобы разместить на чертеж�
 msgid "Drag to reorder"
 msgstr "Перетащите для переупорядочивания"
 
-msgid "Drag to resize diagram and features"
-msgstr "Перетащите, чтобы изменить размер диаграммы и функций"
+msgid "Drag to resize diagram and characteristics"
+msgstr "Перетащить для изменения размера диаграммы и характеристик"
 
-msgid "Drag to resize drawing and features"
-msgstr "Перетащите, чтобы изменить размер рисунка и функций"
+msgid "Drag to resize drawing and characteristics"
+msgstr "Перетащить для изменения размера чертежа и характеристик"
 
 msgid "Drag to zoom"
 msgstr "Перетащите для масштабирования"
@@ -6373,8 +6481,11 @@ msgstr "Снятие"
 msgid "Drawing Number"
 msgstr "Номер чертежа"
 
-msgid "Drawing replaced. Balloon placements were removed; feature rows are unchanged."
-msgstr "Рисунок заменён. Размещение выносок удалено; строки функций не изменены."
+msgid "Drawing replaced. Balloon placements were removed; characteristic rows are unchanged."
+msgstr "Чертеж заменен. Размещения выносок были удалены; строки характеристик остались без изменений."
+
+msgid "Drop Ship"
+msgstr "Дропшиппинг"
 
 msgid "Drop shipment"
 msgstr "Прямая отправка"
@@ -6446,9 +6557,6 @@ msgstr "срок в 1 день"
 
 msgid "due now"
 msgstr "срочно"
-
-msgid "Due within"
-msgstr "Срок в пределах"
 
 msgid "Duplicate"
 msgstr "Дублировать"
@@ -6545,6 +6653,9 @@ msgstr "Каждая Строка — это ссылка из данных эт
 
 msgid "Each line is a link from this company's data to a row it doesn't own. Removing those rows lets the restore run."
 msgstr "Каждая строка — это связь данных этой организации со строкой, которой она не владеет. Удаление этих строк позволяет выполнить восстановление."
+
+msgid "Each line shows its item ID and revision."
+msgstr "Каждая строка показывает код номенклатуры и ревизию."
 
 msgid "Each operation's unused material returns as soon as the operation is done."
 msgstr "Неиспользованный материал каждой операции возвращается, как только операция завершена."
@@ -7042,6 +7153,9 @@ msgstr "Включите, чтобы отображать читаемый ид�
 msgid "Enable to show a readable Supplier ID on lists, forms and dropdowns."
 msgstr "Включите, чтобы отображать читаемый идентификатор поставщика в списках, формах и раскрывающихся списках."
 
+msgid "Enable to show the item ID and revision instead of the description."
+msgstr "Включите эту опцию, чтобы показывать код номенклатуры и ревизию вместо описания."
+
 msgid "Enable to start tracking changes to your data."
 msgstr "Включите, чтобы начать отслеживание изменений ваших данных."
 
@@ -7145,6 +7259,9 @@ msgstr "Введите 6-значный код из приложения аут�
 
 msgid "Enter the 6-digit code from your authenticator app to resume."
 msgstr "Введите 6-значный код из приложения-аутентификатора, чтобы продолжить."
+
+msgid "Enter the Onshape URL, client ID and client secret of your private OAuth application, then save."
+msgstr "Введите URL Onshape, ID клиента и клиентский секрет вашего приватного OAuth приложения, затем сохраните."
 
 msgid "Enter the quantity this movement should have been. An opposite movement for the difference is posted next to the original, in the original's time period."
 msgstr "Введите количество, которое должно было быть в этом движении. Противоположное движение для разницы размещается рядом с оригинальным в его временном периоде."
@@ -7362,6 +7479,9 @@ msgstr "Валютный курс обновлен в"
 msgid "Exchange Rates"
 msgstr "Валютные курсы"
 
+msgid "Exchanging the authorization code failed. Check the Onshape URL and the client secret, then save the integration settings again."
+msgstr "Обмен кодом авторизации не удался. Проверьте URL Onshape и клиентский секрет, затем сохраните настройки интеграции снова."
+
 msgid "Exchanging the authorization code for access failed. Try connecting again."
 msgstr "Не удалось обменять код авторизации на токен доступа. Попробуйте подключиться снова."
 
@@ -7398,11 +7518,11 @@ msgstr "Развернуть {0}"
 msgid "Expand all"
 msgstr "Развернуть все"
 
+msgid "Expand characteristics table"
+msgstr "Развернуть таблицу характеристик"
+
 msgid "Expand Costs"
 msgstr "Развернуть Себестоимость"
-
-msgid "Expand features table"
-msgstr "Развернуть таблицу функций"
 
 msgid "Expand Labor"
 msgstr "Развернуть Труд"
@@ -7587,8 +7707,8 @@ msgstr "Не годен"
 msgid "Failed"
 msgstr "Неудачно"
 
-msgid "Failed features"
-msgstr "Отказавшие элементы"
+msgid "Failed characteristics"
+msgstr "Неудачные характеристики"
 
 #. placeholder {0}: rows.length
 msgid "Failed to add line — {addedCount} of {0} lines were added"
@@ -7596,6 +7716,9 @@ msgstr "Не удалось добавить строку — добавлено
 
 msgid "Failed to add lines"
 msgstr "Ошибка при добавлении строк"
+
+msgid "Failed to apply pricing rules"
+msgstr "Не удалось применить правила ценообразования"
 
 msgid "Failed to convert image"
 msgstr "Ошибка преобразования изображения"
@@ -7839,6 +7962,9 @@ msgstr "Не удалось загрузить отслеживаемые сущ
 msgid "Failed to move account: {0}"
 msgstr "Не удалось переместить счет: {0}"
 
+msgid "Failed to record gauge"
+msgstr "Не удалось записать средство измерения"
+
 msgid "Failed to regenerate schedule"
 msgstr "Ошибка при пересчете графика"
 
@@ -7872,8 +7998,8 @@ msgstr "Не удалось получить данные столбцов CSV."
 msgid "Failed to save configuration rule"
 msgstr "Ошибка при сохранении правила конфигурации"
 
-msgid "Failed to save diagram"
-msgstr "Не удалось сохранить диаграмму"
+msgid "Failed to save inspection plan"
+msgstr "Не удалось сохранить план контроля"
 
 msgid "Failed to save measurement"
 msgstr "Не удалось сохранить измерение"
@@ -7973,15 +8099,6 @@ msgstr "Факс"
 
 msgid "Fax Number"
 msgstr "Номер факса"
-
-msgid "Feature"
-msgstr "Функция"
-
-msgid "Feature values suggested from drawing"
-msgstr "Значения функции предложены на основе чертежа"
-
-msgid "Features"
-msgstr "Функции"
 
 msgid "Fees"
 msgstr "Сборы"
@@ -8287,6 +8404,9 @@ msgstr "Средство измерения"
 
 msgid "Gauge Calibration Notifications"
 msgstr "Уведомления о калибровке средств измерения"
+
+msgid "Gauge for characteristic {characteristicLabel}: {currentGauge}"
+msgstr "Средство измерения для характеристики {characteristicLabel}: {currentGauge}"
 
 msgid "Gauge ID"
 msgstr "ID средства измерения"
@@ -9028,6 +9148,9 @@ msgstr "На этом шаге"
 msgid "In use"
 msgstr "В использовании"
 
+msgid "In your Enterprise settings under Developer, edit the private OAuth application's permissions to include \"Application can write to your documents\", then save the integration settings again."
+msgstr "В настройках Enterprise под разделом Developer отредактируйте разрешения приватного OAuth приложения, чтобы включить «Приложение может записывать в ваши документы», затем сохраните настройки интеграции снова."
+
 msgid "In-app"
 msgstr "В приложении"
 
@@ -9210,6 +9333,9 @@ msgstr "Инструкции наследуются из процедуры."
 
 msgid "Integration"
 msgstr "Интеграция"
+
+msgid "Integration credentials"
+msgstr "Учетные данные интеграции"
 
 msgid "Integration not found"
 msgstr "Интеграция не найдена"
@@ -10024,6 +10150,12 @@ msgstr "Строки требуют внутренние номера детал
 
 msgid "Lines need prices or lead times"
 msgstr "Строки требуют цены или сроки поставки"
+
+msgid "Lines show descriptions"
+msgstr "Строки показывают описания"
+
+msgid "Lines show item IDs"
+msgstr "Строки показывают коды номенклатуры"
 
 msgid "Lineside"
 msgstr "Прилинейный запас"
@@ -11353,6 +11485,15 @@ msgstr "Сначала новые"
 msgid "Next"
 msgstr "Далее"
 
+msgid "Next 14 days"
+msgstr "Следующие 14 дней"
+
+msgid "Next 30 days"
+msgstr "Следующие 30 дней"
+
+msgid "Next 7 days"
+msgstr "Следующие 7 дней"
+
 msgid "Next Calibration"
 msgstr "Следующая калибровка"
 
@@ -11504,6 +11645,9 @@ msgstr "Нет комментариев. Будьте первым, кто до�
 msgid "No completed jobs within range"
 msgstr "Нет завершенных производственных заказов в диапазоне"
 
+msgid "No completion date"
+msgstr "Нет даты завершения"
+
 msgid "No components yet"
 msgstr "Компонентов еще нет"
 
@@ -11600,6 +11744,9 @@ msgstr "Прогноз недоступен для этой работы."
 msgid "No Gauge Selected"
 msgstr "Средство измерения не выбрано"
 
+msgid "No gauges found."
+msgstr "Средства измерения не найдены."
+
 msgid "No grouped notifications"
 msgstr "Нет сгруппированных уведомлений"
 
@@ -11626,6 +11773,9 @@ msgstr "Здесь еще нет активности с товарами."
 
 msgid "No jobs are scheduled at this location yet — release a job to see work-center load."
 msgstr "На этой площадке еще не запланированы производственные заказы — запустите производственный заказ в работу, чтобы увидеть нагрузку на рабочий центр."
+
+msgid "No jobs match your search."
+msgstr "По вашему поиску производственные заказы не найдены."
 
 msgid "No jobs were created"
 msgstr "Производственные заказы не были созданы"
@@ -11683,6 +11833,12 @@ msgstr "Некого назначать"
 
 msgid "No open invoices"
 msgstr "Нет открытых счетов-фактур"
+
+msgid "No open jobs for sales orders are projected to complete at this location in the next {horizon} days."
+msgstr "На этой площадке не прогнозируется завершение открытых производственных заказов по заказам покупателей в течение следующих {horizon} дней."
+
+msgid "No open jobs for sales orders at this location."
+msgstr "На этой площадке нет открытых производственных заказов по заказам покупателей."
 
 msgid "No open memos"
 msgstr "Нет открытых служебных записок"
@@ -12268,6 +12424,9 @@ msgstr "Одновременно может быть активна только
 msgid "Only qualified employees can be scheduled for and run this process"
 msgstr "Только квалифицированные сотрудники могут быть запланированы и выполнить этот процесс"
 
+msgid "Onshape authorized the connection but saving it failed. Save the integration settings to try again."
+msgstr "Onshape авторизовал подключение, но его сохранение не удалось. Сохраните настройки интеграции и попробуйте еще раз."
+
 msgid "Onshape authorized the connection but saving it failed. Try connecting again."
 msgstr "Onshape авторизовал подключение, но сохранить его не удалось. Повторите попытку подключения."
 
@@ -12276,6 +12435,24 @@ msgstr "Onshape отклонил подключение"
 
 msgid "Onshape didn't return an authorization code"
 msgstr "Onshape не вернул код авторизации"
+
+msgid "Onshape Government denied the connection"
+msgstr "Onshape Government отклонил подключение"
+
+msgid "Onshape Government didn't return an authorization code"
+msgstr "Onshape Government не вернул код авторизации"
+
+msgid "Onshape Government is already connected"
+msgstr "Onshape Government уже подключен"
+
+msgid "Onshape Government isn't configured"
+msgstr "Onshape Government не настроен"
+
+msgid "Onshape Government rejected the authorization"
+msgstr "Onshape Government отклонил авторизацию"
+
+msgid "Onshape is already connected"
+msgstr "Onshape уже подключен"
 
 msgid "Onshape isn't configured"
 msgstr "Onshape не настроен"
@@ -12340,9 +12517,6 @@ msgstr "Открыть в MES"
 msgid "Open Issues"
 msgstr "Открытые проблемы"
 
-msgid "Open job"
-msgstr "Открытая работа"
-
 msgid "Open job demand plus outstanding transfers out of this bin"
 msgstr "Открытая потребность производственного заказа плюс неурегулированные перемещения из этой ячейки"
 
@@ -12390,6 +12564,9 @@ msgstr "Открытые запланированные"
 
 msgid "Open task details"
 msgstr "Открыть детали задачи"
+
+msgid "Open the Onshape Government integration and save its settings to connect again."
+msgstr "Откройте интеграцию Onshape Government и сохраните ее настройки для повторного подключения."
 
 msgid "Open the Ramp integration and try connecting again to finish setup."
 msgstr "Откройте интеграцию Ramp и попробуйте подключиться снова, чтобы завершить настройку."
@@ -12639,6 +12816,12 @@ msgstr "В противном случае"
 
 msgid "Out"
 msgstr "Вне"
+
+msgid "Out of calibration"
+msgstr "Вне калибровки"
+
+msgid "Outbound"
+msgstr "Исходящие"
 
 msgid "Outgoing"
 msgstr "Исходящие"
@@ -12952,6 +13135,9 @@ msgstr "сотрудники"
 
 msgid "People"
 msgstr "Сотрудники"
+
+msgid "Per unit"
+msgstr "За единицу"
 
 msgid "Per Unit"
 msgstr "За единицу"
@@ -13634,6 +13820,9 @@ msgstr "Прогнозы"
 msgid "Projects"
 msgstr "Проекты"
 
+msgid "Promised"
+msgstr "Обещанная дата"
+
 msgid "Promised Date"
 msgstr "Подтвержденная дата"
 
@@ -14307,6 +14496,9 @@ msgstr "Недавние платежи"
 msgid "Recently Created"
 msgstr "Недавно созданные"
 
+msgid "Recently used"
+msgstr "Недавно используемые"
+
 msgid "Recertify Every (Days)"
 msgstr "Пересертификация каждые (дни)"
 
@@ -14318,6 +14510,9 @@ msgstr "Сверка обнаружила расхождения с постав
 
 msgid "Reconciling a purchase order against what was received and invoiced — implicit in Carbon, via the line quantities and GR/IR balance."
 msgstr "Сверка заказа поставщику с полученными товарами и выставленными счетами — выполняется автоматически в Carbon на основе количеств в строках и остатка GR/IR."
+
+msgid "Reconfigure"
+msgstr "Переконфигурировать"
 
 msgid "Record"
 msgstr "Записать"
@@ -14681,8 +14876,8 @@ msgstr "Заменить данные этой организации демон
 msgid "Replacement Order"
 msgstr "Заказ на замену"
 
-msgid "Replacing the PDF removes all balloon placements on this document. Feature rows and their values stay; you can place balloons again on the new drawing."
-msgstr "Замена PDF удаляет все размещения выносок на этом документе. Строки элементов и их значения остаются; вы можете разместить выноски снова на новом чертеже."
+msgid "Replacing the PDF removes all balloon placements on this document. Characteristic rows and their values stay; you can place balloons again on the new drawing."
+msgstr "Замена PDF удаляет все размещения выносок на этом документе. Строки характеристик и их значения остаются; вы можете разместить выноски снова на новом чертеже."
 
 msgid "Replenishment"
 msgstr "Пополнение"
@@ -15430,8 +15625,8 @@ msgstr "Объем выборки"
 msgid "Sampling"
 msgstr "Выборочный контроль"
 
-msgid "Sampling — Feature {featureLabel}"
-msgstr "Выборочный контроль — функция {featureLabel}"
+msgid "Sampling — Characteristic {featureLabel}"
+msgstr "Выборочный контроль — Характеристика {featureLabel}"
 
 msgid "Sampling Standard"
 msgstr "Стандарт выборочного контроля"
@@ -15632,6 +15827,9 @@ msgstr "Списано"
 msgid "Search"
 msgstr "Поиск"
 
+msgid "Search {gaugeTypeName}..."
+msgstr "Поиск {gaugeTypeName}..."
+
 msgid "Search accounts"
 msgstr "Поиск счетов"
 
@@ -15676,6 +15874,9 @@ msgstr "Поиск полей..."
 
 msgid "Search for existing or create a new one"
 msgstr "Поиск существующей или создание новой"
+
+msgid "Search gauges..."
+msgstr "Поиск средств измерения..."
 
 msgid "Search items or bins"
 msgstr "Поиск номенклатуры или ячеек"
@@ -15872,6 +16073,9 @@ msgstr "Выберите тип сотрудника"
 
 msgid "Select field"
 msgstr "Выберите поле"
+
+msgid "Select gauge"
+msgstr "Выберите средство измерения"
 
 msgid "Select Gauge"
 msgstr "Выбрать средство измерения"
@@ -16288,8 +16492,14 @@ msgstr "Отправить"
 msgid "Ship some, stock some"
 msgstr "Отправить часть, оставить часть на складе"
 
+msgid "Ship To"
+msgstr "Адрес доставки"
+
 msgid "Ship to Customer"
 msgstr "Отправить Покупателю"
+
+msgid "Ship Via"
+msgstr "Способ доставки"
 
 msgid "Ship-From Location"
 msgstr "Место отправки"
@@ -17609,6 +17819,9 @@ msgstr "Количество дней после метода расчета, в
 msgid "The append-only record of every stock movement; on-hand is the sum of its signed entries and the source of truth."
 msgstr "Журнал доступного только для добавления, отражающий каждое движение запасов; остаток на складе является суммой подписанных записей и источником истины."
 
+msgid "The authorization was refused in Onshape. Save the integration settings to try again."
+msgstr "Авторизация была отклонена в Onshape. Сохраните настройки интеграции и попробуйте еще раз."
+
 msgid "The authorization was refused in Onshape. Try connecting again."
 msgstr "Авторизация была отклонена в Onshape. Повторите попытку подключения."
 
@@ -17984,8 +18197,8 @@ msgstr "Партия будет отмечена как пройдено. Заф
 msgid "The lot will still be rejected, but an NCR cannot be created until at least one Issue Type is configured."
 msgstr "Партия все еще будет отклонена, но NCR не может быть создана до тех пор, пока не будет настроен хотя бы один тип проблемы."
 
-msgid "The lot's per-feature sampling plan will be re-resolved from the selected document."
-msgstr "План выборочного контроля партии по каждому признаку будет переопределен из выбранного документа."
+msgid "The lot's per-characteristic sampling plan will be re-resolved from the selected document."
+msgstr "План выборочного контроля для каждой характеристики партии будет переопределен на основе выбранного документа."
 
 msgid "The lowest amount this supplier will charge for this process, regardless of quantity; jobs below the breakeven volume still cost at least this much."
 msgstr "Минимальная сумма, которую этот поставщик будет взимать за этот процесс, независимо от количества; производственные заказы ниже объема безубыточности все равно стоят как минимум столько."
@@ -18060,6 +18273,9 @@ msgstr "Уровень наличного запаса, который запу�
 
 msgid "The Onshape connection expired"
 msgstr "Подключение Onshape истекло"
+
+msgid "The Onshape Government connection expired"
+msgstr "Срок действия подключения Onshape Government истек"
 
 msgid "The operations and steps your parts move through"
 msgstr "Операции и шаги, через которые переходят ваши детали"
@@ -18184,6 +18400,9 @@ msgstr "Тело запроса, отправляемое дословно с т
 
 msgid "The residual WIP a job has left at close, swept to a Production Variance account — the only variance Carbon books for a job."
 msgstr "Остаточное незавершенное производство, оставленное заданием при закрытии, перемещено на счет производственного отклонения — единственное отклонение, которое Carbon регистрирует для задания."
+
+msgid "The response from Onshape was missing required parameters. Check the private app's redirect URL, then save the integration settings again."
+msgstr "В ответе от Onshape отсутствовали обязательные параметры. Проверьте URL перенаправления приватного приложения, затем сохраните настройки интеграции снова."
 
 msgid "The response from Onshape was missing required parameters. Try connecting again."
 msgstr "В ответе Onshape отсутствовали обязательные параметры. Повторите попытку подключения."
@@ -18927,6 +19146,9 @@ msgstr "Допуск+"
 msgid "Tolerance (+/-)"
 msgstr "Допуск (+/-)"
 
+msgid "Tomorrow"
+msgstr "Завтра"
+
 msgid "tool"
 msgstr "Инструмент"
 
@@ -19340,6 +19562,9 @@ msgstr "Неизвестно"
 
 msgid "unknown error"
 msgstr "неизвестная ошибка"
+
+msgid "Unknown gauge"
+msgstr "Неизвестное средство измерения"
 
 msgid "unknown location"
 msgstr "неизвестное местоположение"
@@ -19912,6 +20137,9 @@ msgstr "Просмотр Примечаний"
 
 msgid "View on schedule board"
 msgstr "Открыть на доске расписания"
+
+msgid "View only — changes are not saved"
+msgstr "Только просмотр — изменения не сохраняются"
 
 msgid "View Open"
 msgstr "Просмотреть открытые"
@@ -20829,6 +21057,9 @@ msgstr "Ваше приглашение недействительно или у
 
 msgid "Your job here: check a real sample of each row, then mark it validated. Foundation data loads first, then master records, then open transactions at cutover."
 msgstr "Ваша задача здесь: проверьте реальный образец каждой строки, затем отметьте её как проверенную. Данные фундамента загружаются первыми, затем основные записи, затем открытые транзакции при переходе."
+
+msgid "Your latest changes could not be saved. Are you sure you want to leave this page?"
+msgstr "Ваши последние изменения не были сохранены. Вы уверены, что хотите покинуть эту страницу?"
 
 msgid "Your legal name, addresses, branding, and document defaults"
 msgstr "Ваше юридическое имя, адреса, брендинг и стандартные параметры документов"

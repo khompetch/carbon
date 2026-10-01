@@ -48,6 +48,9 @@ msgstr "„{taskName}\" ist erledigt – alle {0} seiner Setup-Map-Elemente sind
 msgid "(excluded for this customer)"
 msgstr "(für diesen Kunden ausgeschlossen)"
 
+msgid "(Inactive)"
+msgstr "(Inaktiv)"
+
 #. placeholder {0}: target.slackDays
 msgid "{0, plural, one {# day of slack} other {# days of slack}}"
 msgstr "{0, plural, one {# Tag Puffer} other {# Tage Puffer}}"
@@ -569,6 +572,12 @@ msgstr "Eine Änderungsmitteilung verfolgt eine kontrollierte Ingenieur- oder Fe
 
 msgid "A clearing account holding the value of goods received but not yet billed; the supplier invoice clears it."
 msgstr "Ein Clearingkonto, das den Wert der erhaltenen, aber noch nicht in Rechnung gestellten Waren hält; die Lieferantenrechnung gleicht es aus."
+
+msgid "A company connects to one Onshape at a time. Uninstall Onshape Government, then connect Onshape."
+msgstr "Ein Unternehmen verbindet sich gleichzeitig mit nur einem Onshape. Deinstallieren Sie Onshape Government, dann verbinden Sie Onshape."
+
+msgid "A company connects to one Onshape at a time. Uninstall Onshape, then connect Onshape Government."
+msgstr "Ein Unternehmen verbindet sich gleichzeitig mit nur einem Onshape. Deinstallieren Sie Onshape, dann verbinden Sie Onshape Government."
 
 msgid "A company that designs and builds its own finished products end to end (here, the shop building humanoid robots) rather than making parts to another company's specification."
 msgstr "Ein Unternehmen, das seine eigenen Fertigprodukte von Anfang bis Ende entwirft und baut (hier, der Shop, der humanoide Roboter baut), anstatt Teile nach den Vorgaben eines anderen Unternehmens herzustellen."
@@ -1424,6 +1433,9 @@ msgstr "Authentifikator-App hinzufügen"
 msgid "Add Calibration Record"
 msgstr "Kalibrierprotokoll hinzufügen"
 
+msgid "Add Characteristic"
+msgstr "Merkmal hinzufügen"
+
 msgid "Add Child Storage Unit"
 msgstr "Untergeordnete Lagereinheit hinzufügen"
 
@@ -1453,9 +1465,6 @@ msgstr "Mitarbeiter hinzufügen"
 
 msgid "Add Entry"
 msgstr "Eintrag hinzufügen"
-
-msgid "Add Feature"
-msgstr "Feature hinzufügen"
 
 msgid "Add from library…"
 msgstr "Aus Bibliothek hinzufügen…"
@@ -1640,6 +1649,9 @@ msgstr "Fügte {0} Linien hinzu"
 msgid "Added for this customer"
 msgstr "Für diesen Kunden hinzugefügt"
 
+msgid "Added to the unit price for the chosen values, before discounts and markups. Use a negative amount for a credit."
+msgstr "Wird zum Einzelpreis für die ausgewählten Werte hinzugefügt, vor Rabatten und Zuschlägen. Verwenden Sie einen negativen Betrag für eine Gutschrift."
+
 msgid "Adding demo records"
 msgstr "Demo-Datensätze werden hinzugefügt"
 
@@ -1740,6 +1752,9 @@ msgstr "Alle Abteilungen"
 msgid "All Documents"
 msgstr "Alle Dokumente"
 
+msgid "All gauges"
+msgstr "Alle Prüfmittel"
+
 msgid "All item types"
 msgstr "Alle Artikeltypen"
 
@@ -1758,6 +1773,9 @@ msgstr "alle Eigenfertigung {0}"
 
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "Alle Mitglieder der ausgewählten Gruppen und ausgewählten Personen können Anfragen genehmigen"
+
+msgid "All open jobs"
+msgstr "Alle offenen Fertigungsaufträge"
 
 msgid "All returnable lines"
 msgstr "Alle rückgabefähigen Positionen"
@@ -1949,6 +1967,9 @@ msgstr "Ein Arbeitsgang dieses Auftrags läuft in diesem Batch"
 msgid "An operation's position in its work center's queue — the order the floor picks work up. The engine numbers it from placement order (earliest projected start first); reordering cards on the Work Centers board overrides it without changing dates."
 msgstr "Die Position eines Arbeitsgangs in der Warteschlange seines Arbeitsplatzes — die Reihenfolge, in der die Fertigung die Arbeit aufnimmt. Die Engine nummeriert sie nach Platzierungsreihenfolge (frühester prognostizierter Start zuerst); das Neuordnen von Karten auf der Arbeitsplatz-Tafel setzt sie außer Kraft, ohne die Daten zu ändern."
 
+msgid "An unexpected error occurred while connecting to Onshape. Save the integration settings to try again."
+msgstr "Ein unerwarteter Fehler ist beim Verbinden mit Onshape aufgetreten. Speichern Sie die Integrationseinstellungen, um es erneut zu versuchen."
+
 msgid "An unexpected error occurred while connecting to Onshape. Try connecting again."
 msgstr "Bei der Verbindung mit Onshape ist ein unerwarteter Fehler aufgetreten. Versuchen Sie die Verbindung erneut."
 
@@ -1997,6 +2018,9 @@ msgstr "Eine weitere Lagereinheit, in die diese Einheit verschachtelt ist (z. B.
 
 msgid "Another system is connected to Ramp as its accounting system"
 msgstr "Ein anderes System ist mit Ramp als Buchhaltungssystem verbunden"
+
+msgid "Any"
+msgstr "Alle"
 
 msgid "Any item group"
 msgstr "Beliebige Artikelgruppe"
@@ -2077,8 +2101,8 @@ msgstr "Gilt für alle"
 msgid "Applies to all work centers"
 msgstr "Gilt für alle Arbeitsplätze"
 
-msgid "Applies to features without their own rule, and to the lot when this plan drives an inspection."
-msgstr "Gilt für Funktionen ohne eigene Regel und für die Charge, wenn dieser Plan eine Prüfung durchführt."
+msgid "Applies to characteristics without their own rule, and to the lot when this plan drives an inspection."
+msgstr "Gilt für Merkmale ohne eigene Regel und für die Charge, wenn dieser Plan eine Prüfung durchführt."
 
 msgid "Apply"
 msgstr "Anwenden"
@@ -3194,6 +3218,9 @@ msgstr "BOM"
 msgid "BoM + BoP"
 msgstr "BoM + BoP"
 
+msgid "BoM Explorer"
+msgstr "BoM-Explorer"
+
 msgid "BOM synced successfully"
 msgstr "BOM erfolgreich synchronisiert"
 
@@ -3684,6 +3711,12 @@ msgstr "Typ ändern"
 msgid "Changed By"
 msgstr "Geändert von"
 
+msgid "Changelog"
+msgstr "Änderungslog"
+
+msgid "Changelog newsletter"
+msgstr "Änderungslog-Newsletter"
+
 msgid "Changes"
 msgstr "Änderungen"
 
@@ -3695,6 +3728,15 @@ msgstr "Das Ändern aktualisiert die Teile-ID"
 
 msgid "Changing type resets this item's draft edits."
 msgstr "Das Ändern des Typs setzt die Entwurfsbearbeitungen dieses Elements zurück."
+
+msgid "Characteristic"
+msgstr "Merkmal"
+
+msgid "Characteristic values suggested from drawing"
+msgstr "Merkmalwerte aus der Zeichnung vorgeschlagen"
+
+msgid "Characteristics"
+msgstr "Merkmale"
 
 msgid "Charges"
 msgstr "Belastungen"
@@ -3763,6 +3805,9 @@ msgstr "Wählen Sie, wie Sie Positionen zu dieser Rückgabe hinzufügen möchten
 msgid "Choose what appears on the printed job traveler."
 msgstr "Wählen Sie, was auf der gedruckten Laufkarte erscheint."
 
+msgid "Choose whether the bill of material explorer on items, quotes, and jobs labels each line with its description or its item ID."
+msgstr "Wählen Sie, ob der Bill-of-Material-Explorer auf Artikeln, Angeboten und Fertigungsaufträgen jede Position mit ihrer Beschreibung oder ihrer Artikel-ID beschriftet."
+
 msgid "Choose your style"
 msgstr "Wählen Sie Ihren Stil"
 
@@ -3792,6 +3837,9 @@ msgstr "Fälligkeitsdatum löschen"
 
 msgid "Clear Filters"
 msgstr "Filter löschen"
+
+msgid "Clear gauge"
+msgstr "Prüfmittel löschen"
 
 msgid "Clear search"
 msgstr "Suche löschen"
@@ -3894,11 +3942,11 @@ msgstr "Zusammenklappen {0}"
 msgid "Collapse all"
 msgstr "Alle einklappen"
 
+msgid "Collapse characteristics table"
+msgstr "Merkmaltabelle ausblenden"
+
 msgid "Collapse Costs"
 msgstr "Kosten ausblenden"
-
-msgid "Collapse features table"
-msgstr "Features-Tabelle ausblenden"
 
 msgid "Collapse Labor"
 msgstr "Personal ausblenden"
@@ -4035,6 +4083,9 @@ msgstr "Das Abschließen dieser Schulung vergibt oder erneuert die ausgewählte 
 msgid "Completion Barcode"
 msgstr "Fertigstellungs-Barcode"
 
+msgid "Completion Date"
+msgstr "Fertigstellungsdatum"
+
 msgid "Completion in progress — retry in Shop Floor"
 msgstr "Fertigstellung in Bearbeitung – versuchen Sie es in der Werkstatt erneut."
 
@@ -4069,6 +4120,9 @@ msgstr "Konfiguration"
 
 msgid "Configuration Parameters"
 msgstr "Konfigurationsparameter"
+
+msgid "Configuration Prices"
+msgstr "Konfigurationspreise"
 
 msgid "Configuration, data migration, and any integrations"
 msgstr "Konfiguration, Datenmigration und alle Integrationen"
@@ -4144,6 +4198,9 @@ msgstr "konfiguriert"
 
 msgid "Configured"
 msgstr "Konfiguriert"
+
+msgid "Configured Part"
+msgstr "Konfiguriertes Teil"
 
 msgid "Confirm"
 msgstr "Bestätigen"
@@ -4394,6 +4451,9 @@ msgstr "Link in die Zwischenablage kopiert"
 msgid "Copied setup prompt to your clipboard"
 msgstr "Rüst-Ansage in die Zwischenablage kopiert"
 
+msgid "Copied!"
+msgstr "Kopiert!"
+
 msgid "Copies a setup prompt for your AI coding tool"
 msgstr "Kopiert eine Rüst-Eingabeaufforderung für Ihr KI-Codierungstool"
 
@@ -4409,11 +4469,20 @@ msgstr "API-Schlüssel kopieren"
 msgid "Copy batch number"
 msgstr "Los-Nummer kopieren"
 
+msgid "Copy change notice unique identifier"
+msgstr "Eindeutige Kennung der Änderungsmitteilung kopieren"
+
 msgid "Copy company unique identifier"
 msgstr "Eindeutige Unternehmenskennung kopieren"
 
 msgid "Copy consumable number"
 msgstr "Verbrauchsmaterialnummer kopieren"
+
+msgid "Copy consumable unique identifier"
+msgstr "Eindeutige Kennung des Verbrauchsmaterials kopieren"
+
+msgid "Copy customer unique identifier"
+msgstr "Kundennummer kopieren"
 
 msgid "Copy dispatch ID"
 msgstr "Instandhaltungsauftrags-ID kopieren"
@@ -4438,6 +4507,9 @@ msgstr "Eindeutige Kennung des Problems kopieren"
 
 msgid "Copy Job number"
 msgstr "Job-Nummer kopieren"
+
+msgid "Copy job unique identifier"
+msgstr "Fertigungsauftrags-Nummer kopieren"
 
 msgid "Copy link"
 msgstr "Link kopieren"
@@ -4517,6 +4589,15 @@ msgstr "Name der Verfahrensanweisung kopieren"
 msgid "Copy procedure unique identifier"
 msgstr "Eindeutige Kennung der Verfahrensanweisung kopieren"
 
+msgid "Copy purchase invoice unique identifier"
+msgstr "Eindeutige Kennung der Eingangsrechnung kopieren"
+
+msgid "Copy purchase order unique identifier"
+msgstr "Bestellnummer kopieren"
+
+msgid "Copy purchase return order unique identifier"
+msgstr "Eindeutige Kennung der Bestellrücksendung kopieren"
+
 msgid "Copy Quality Document"
 msgstr "Qualitätsdokument kopieren"
 
@@ -4526,17 +4607,38 @@ msgstr "Angebot kopieren"
 msgid "Copy Quote number"
 msgstr "Angebotsnummer kopieren"
 
+msgid "Copy quote unique identifier"
+msgstr "Angebotsnummer kopieren"
+
 msgid "Copy return number"
 msgstr "Rückgabennummer kopieren"
 
+msgid "Copy RFQ unique identifier"
+msgstr "Anfragenummer kopieren"
+
 msgid "Copy RMA number"
 msgstr "RMA-Nummer kopieren"
+
+msgid "Copy sales invoice unique identifier"
+msgstr "Eindeutige Kennung der Ausgangsrechnung kopieren"
+
+msgid "Copy sales order unique identifier"
+msgstr "Kundenauftrags-Nummer kopieren"
+
+msgid "Copy sales return order unique identifier"
+msgstr "Eindeutige Kennung der Kundenrücksendung kopieren"
 
 msgid "Copy service number"
 msgstr "Dienstleistungsnummer kopieren"
 
 msgid "Copy service unique identifier"
 msgstr "Eindeutige Kennung der Dienstleistung kopieren"
+
+msgid "Copy supplier quote unique identifier"
+msgstr "Eindeutige Kennung des Lieferantenangebots kopieren"
+
+msgid "Copy supplier unique identifier"
+msgstr "Lieferantennummer kopieren"
 
 msgid "Copy this item's pricing to another scope."
 msgstr "Kopieren Sie die Preise dieses Artikels auf einen anderen Geltungsbereich."
@@ -4546,6 +4648,9 @@ msgstr "Kopieren Sie diesen Link, um das Angebot mit einem Kunden zu teilen"
 
 msgid "Copy this link to share the quote with a supplier"
 msgstr "Kopieren Sie diesen Link, um das Angebot mit einem Lieferanten zu teilen"
+
+msgid "Copy to clipboard"
+msgstr "In die Zwischenablage kopieren"
 
 msgid "Copy tool number"
 msgstr "Werkzeugnummer kopieren"
@@ -4676,6 +4781,9 @@ msgstr "Konnte nicht gespeichert werden"
 msgid "Couldn't complete the Onshape connection"
 msgstr "Die Onshape-Verbindung konnte nicht abgeschlossen werden"
 
+msgid "Couldn't complete the Onshape Government connection"
+msgstr "Konnte die Onshape Government-Verbindung nicht abschließen"
+
 msgid "Couldn't load documents"
 msgstr "Dokumente konnten nicht geladen werden"
 
@@ -4690,6 +4798,9 @@ msgstr "Der Auftrag konnte nicht umgeplant werden. Bitte versuchen Sie es erneut
 
 msgid "Couldn't save the Onshape connection"
 msgstr "Die Onshape-Verbindung konnte nicht gespeichert werden"
+
+msgid "Couldn't save the Onshape Government connection"
+msgstr "Konnte die Onshape Government-Verbindung nicht speichern"
 
 msgid "Couldn't save the Ramp connection"
 msgstr "Die Ramp-Verbindung konnte nicht gespeichert werden"
@@ -6077,9 +6188,6 @@ msgstr "Erkannt vom Bewegungsplaner"
 msgid "Developer"
 msgstr "Entwickler"
 
-msgid "Diagram saved"
-msgstr "Diagramm gespeichert"
-
 msgid "Differs from the selection — allowed, but confirm they nest together"
 msgstr "Unterscheidet sich von der Auswahl — zulässig, aber bestätigen Sie, dass sie zusammenpassen"
 
@@ -6358,11 +6466,11 @@ msgstr "Auf Zeichnung platzieren durch Ziehen"
 msgid "Drag to reorder"
 msgstr "Zum Neuordnen ziehen"
 
-msgid "Drag to resize diagram and features"
-msgstr "Ziehen Sie, um das Diagramm und die Funktionen zu ändern"
+msgid "Drag to resize diagram and characteristics"
+msgstr "Zum Ändern der Größe von Diagramm und Merkmalen ziehen"
 
-msgid "Drag to resize drawing and features"
-msgstr "Zum Vergrößern von Zeichnung und Funktionen ziehen"
+msgid "Drag to resize drawing and characteristics"
+msgstr "Zum Ändern der Größe von Zeichnung und Merkmalen ziehen"
 
 msgid "Drag to zoom"
 msgstr "Zum Zoomen ziehen"
@@ -6373,8 +6481,11 @@ msgstr "Abheben"
 msgid "Drawing Number"
 msgstr "Zeichnungsnummer"
 
-msgid "Drawing replaced. Balloon placements were removed; feature rows are unchanged."
-msgstr "Zeichnung ersetzt. Ballonplatzierungen wurden entfernt; Funktionszeilen bleiben unverändert."
+msgid "Drawing replaced. Balloon placements were removed; characteristic rows are unchanged."
+msgstr "Zeichnung ersetzt. Anmerkungsplatzierungen wurden entfernt. Merkmalzeilen bleiben unverändert."
+
+msgid "Drop Ship"
+msgstr "Direktversand"
 
 msgid "Drop shipment"
 msgstr "Direktversand"
@@ -6446,9 +6557,6 @@ msgstr "fällig in 1 Tag"
 
 msgid "due now"
 msgstr "fällig sofort"
-
-msgid "Due within"
-msgstr "Fällig innerhalb"
 
 msgid "Duplicate"
 msgstr "Duplizieren"
@@ -6545,6 +6653,9 @@ msgstr "Jede Zeile ist ein Link von den Daten dieses Unternehmens zu einer Zeile
 
 msgid "Each line is a link from this company's data to a row it doesn't own. Removing those rows lets the restore run."
 msgstr "Jede Zeile ist ein Link aus den Daten dieses Unternehmens zu einer Zeile, die es nicht besitzt. Das Entfernen dieser Zeilen ermöglicht die Wiederherstellung."
+
+msgid "Each line shows its item ID and revision."
+msgstr "Jede Position zeigt ihre Artikel-ID und Revision."
 
 msgid "Each operation's unused material returns as soon as the operation is done."
 msgstr "Die ungenutzten Materialien jedes Arbeitsgangs werden zurückgegeben, sobald der Arbeitsgang erledigt ist."
@@ -7042,6 +7153,9 @@ msgstr "Aktivieren, um eine lesbare Kunden-ID in Listen, Formularen und Dropdown
 msgid "Enable to show a readable Supplier ID on lists, forms and dropdowns."
 msgstr "Aktivieren, um eine lesbare Lieferanten-ID in Listen, Formularen und Dropdown-Menüs anzuzeigen."
 
+msgid "Enable to show the item ID and revision instead of the description."
+msgstr "Aktivieren Sie, um die Artikel-ID und Revision anstelle der Beschreibung anzuzeigen."
+
 msgid "Enable to start tracking changes to your data."
 msgstr "Aktivieren Sie diese Option, um Änderungen an Ihren Daten zu verfolgen."
 
@@ -7145,6 +7259,9 @@ msgstr "Geben Sie den 6-stelligen Code aus Ihrer Authentifizierungs-App ein"
 
 msgid "Enter the 6-digit code from your authenticator app to resume."
 msgstr "Geben Sie den 6-stelligen Code aus Ihrer Authentifikator-App ein, um fortzufahren."
+
+msgid "Enter the Onshape URL, client ID and client secret of your private OAuth application, then save."
+msgstr "Geben Sie die Onshape URL, Client-ID und Client Secret Ihrer privaten OAuth-Anwendung ein, dann speichern Sie."
 
 msgid "Enter the quantity this movement should have been. An opposite movement for the difference is posted next to the original, in the original's time period."
 msgstr "Geben Sie die Menge ein, die diese Bewegung hätte sein sollen. Eine Gegenbewegung für die Differenz wird neben dem Original in dessen Zeitraum verbucht."
@@ -7362,6 +7479,9 @@ msgstr "Wechselkurs aktualisiert am"
 msgid "Exchange Rates"
 msgstr "Wechselkurse"
 
+msgid "Exchanging the authorization code failed. Check the Onshape URL and the client secret, then save the integration settings again."
+msgstr "Der Austausch des Autorisierungscodes ist fehlgeschlagen. Überprüfen Sie die Onshape URL und das Client Secret, dann speichern Sie die Integrationseinstellungen erneut."
+
 msgid "Exchanging the authorization code for access failed. Try connecting again."
 msgstr "Beim Austausch des Autorisierungscodes gegen eine Zugriffsberechtigung ist ein Fehler aufgetreten. Versuchen Sie erneut, die Verbindung herzustellen."
 
@@ -7398,11 +7518,11 @@ msgstr "Erweitern {0}"
 msgid "Expand all"
 msgstr "Alle erweitern"
 
+msgid "Expand characteristics table"
+msgstr "Merkmaltabelle erweitern"
+
 msgid "Expand Costs"
 msgstr "Kosten erweitern"
-
-msgid "Expand features table"
-msgstr "Features-Tabelle erweitern"
 
 msgid "Expand Labor"
 msgstr "Personal erweitern"
@@ -7587,7 +7707,7 @@ msgstr "Nicht bestanden"
 msgid "Failed"
 msgstr "Fehlgeschlagen"
 
-msgid "Failed features"
+msgid "Failed characteristics"
 msgstr "Fehlgeschlagene Merkmale"
 
 #. placeholder {0}: rows.length
@@ -7596,6 +7716,9 @@ msgstr "Fehler beim Hinzufügen der Position – {addedCount} von {0} Positionen
 
 msgid "Failed to add lines"
 msgstr "Fehler beim Hinzufügen von Zeilen"
+
+msgid "Failed to apply pricing rules"
+msgstr "Preisregeln konnten nicht angewendet werden"
 
 msgid "Failed to convert image"
 msgstr "Fehler beim Konvertieren des Bildes"
@@ -7839,6 +7962,9 @@ msgstr "Fehler beim Laden von verfolgten Entitäten"
 msgid "Failed to move account: {0}"
 msgstr "Konto konnte nicht verschoben werden: {0}"
 
+msgid "Failed to record gauge"
+msgstr "Prüfmittel konnte nicht aufgezeichnet werden"
+
 msgid "Failed to regenerate schedule"
 msgstr "Terminplan konnte nicht neu generiert werden"
 
@@ -7872,8 +7998,8 @@ msgstr "Fehler beim Abrufen der CSV-Spaltendaten."
 msgid "Failed to save configuration rule"
 msgstr "Fehler beim Speichern der Konfigurationsregel"
 
-msgid "Failed to save diagram"
-msgstr "Fehler beim Speichern des Diagramms"
+msgid "Failed to save inspection plan"
+msgstr "Prüfplan konnte nicht gespeichert werden"
 
 msgid "Failed to save measurement"
 msgstr "Messung konnte nicht gespeichert werden"
@@ -7973,15 +8099,6 @@ msgstr "Fax"
 
 msgid "Fax Number"
 msgstr "Faxnummer"
-
-msgid "Feature"
-msgstr "Merkmal"
-
-msgid "Feature values suggested from drawing"
-msgstr "Merkmalswerte aus Zeichnung vorgeschlagen"
-
-msgid "Features"
-msgstr "Funktionen"
 
 msgid "Fees"
 msgstr "Gebühren"
@@ -8287,6 +8404,9 @@ msgstr "Prüfmittel"
 
 msgid "Gauge Calibration Notifications"
 msgstr "Kalibrierbenachrichtigungen für Prüfmittel"
+
+msgid "Gauge for characteristic {characteristicLabel}: {currentGauge}"
+msgstr "Prüfmittel für Merkmal {characteristicLabel}: {currentGauge}"
 
 msgid "Gauge ID"
 msgstr "Prüfmittel-ID"
@@ -9028,6 +9148,9 @@ msgstr "In diesem Schritt"
 msgid "In use"
 msgstr "In Gebrauch"
 
+msgid "In your Enterprise settings under Developer, edit the private OAuth application's permissions to include \"Application can write to your documents\", then save the integration settings again."
+msgstr "Bearbeiten Sie in Ihren Enterprise-Einstellungen unter Developer die Berechtigungen der privaten OAuth-Anwendung, um „Application can write to your documents\" einzuschließen, dann speichern Sie die Integrationseinstellungen erneut."
+
 msgid "In-app"
 msgstr "In-App"
 
@@ -9210,6 +9333,9 @@ msgstr "Anweisungen werden von der Verfahrensanweisung geerbt."
 
 msgid "Integration"
 msgstr "Integration"
+
+msgid "Integration credentials"
+msgstr "Integrationsanmeldedaten"
 
 msgid "Integration not found"
 msgstr "Integration nicht gefunden"
@@ -10024,6 +10150,12 @@ msgstr "Zeilen benötigen interne Teilenummern"
 
 msgid "Lines need prices or lead times"
 msgstr "Positionen benötigen Preise oder Beschaffungszeiten"
+
+msgid "Lines show descriptions"
+msgstr "Positionen zeigen Beschreibungen"
+
+msgid "Lines show item IDs"
+msgstr "Positionen zeigen Artikel-IDs"
 
 msgid "Lineside"
 msgstr "Linienlager"
@@ -11353,6 +11485,15 @@ msgstr "Neueste zuerst"
 msgid "Next"
 msgstr "Weiter"
 
+msgid "Next 14 days"
+msgstr "Nächste 14 Tage"
+
+msgid "Next 30 days"
+msgstr "Nächste 30 Tage"
+
+msgid "Next 7 days"
+msgstr "Nächste 7 Tage"
+
 msgid "Next Calibration"
 msgstr "Nächste Kalibrierung"
 
@@ -11504,6 +11645,9 @@ msgstr "Noch keine Kommentare. Seien Sie der Erste, der einen Kommentar hinzufü
 msgid "No completed jobs within range"
 msgstr "Keine fertiggestellten Fertigungsaufträge im Bereich"
 
+msgid "No completion date"
+msgstr "Kein Fertigstellungsdatum"
+
 msgid "No components yet"
 msgstr "Noch keine Komponenten"
 
@@ -11600,6 +11744,9 @@ msgstr "Keine Prognose für diesen Auftrag verfügbar."
 msgid "No Gauge Selected"
 msgstr "Kein Prüfmittel ausgewählt"
 
+msgid "No gauges found."
+msgstr "Keine Prüfmittel gefunden."
+
 msgid "No grouped notifications"
 msgstr "Keine gruppierten Benachrichtigungen"
 
@@ -11626,6 +11773,9 @@ msgstr "Hier gibt es noch keine Bestandsbewegungen."
 
 msgid "No jobs are scheduled at this location yet — release a job to see work-center load."
 msgstr "Noch keine Fertigungsaufträge an diesem Standort geplant — geben Sie einen Fertigungsauftrag frei, um die Arbeitszentrums-Auslastung zu sehen."
+
+msgid "No jobs match your search."
+msgstr "Keine Fertigungsaufträge entsprechen Ihrer Suche."
 
 msgid "No jobs were created"
 msgstr "Keine Fertigungsaufträge wurden erstellt"
@@ -11683,6 +11833,12 @@ msgstr "Niemand zum Zuweisen"
 
 msgid "No open invoices"
 msgstr "Keine offenen Rechnungen"
+
+msgid "No open jobs for sales orders are projected to complete at this location in the next {horizon} days."
+msgstr "Keine offenen Fertigungsaufträge für Kundenaufträge werden voraussichtlich an diesem Standort in den nächsten {horizon} Tagen fertiggestellt."
+
+msgid "No open jobs for sales orders at this location."
+msgstr "Keine offenen Fertigungsaufträge für Kundenaufträge an diesem Standort."
 
 msgid "No open memos"
 msgstr "Keine offenen Notizen"
@@ -12268,6 +12424,9 @@ msgstr "Es kann jeweils nur eine Ausgabenintegration aktiv sein. Deinstallieren 
 msgid "Only qualified employees can be scheduled for and run this process"
 msgstr "Nur qualifizierte Mitarbeiter können für diesen Prozess eingeplant werden und diesen ausführen"
 
+msgid "Onshape authorized the connection but saving it failed. Save the integration settings to try again."
+msgstr "Onshape hat die Verbindung autorisiert, aber das Speichern ist fehlgeschlagen. Speichern Sie die Integrationseinstellungen, um es erneut zu versuchen."
+
 msgid "Onshape authorized the connection but saving it failed. Try connecting again."
 msgstr "Onshape hat die Verbindung autorisiert, das Speichern ist jedoch fehlgeschlagen. Versuchen Sie die Verbindung erneut."
 
@@ -12276,6 +12435,24 @@ msgstr "Onshape hat die Verbindung abgelehnt"
 
 msgid "Onshape didn't return an authorization code"
 msgstr "Onshape hat keinen Autorisierungscode zurückgegeben"
+
+msgid "Onshape Government denied the connection"
+msgstr "Onshape Government hat die Verbindung verweigert"
+
+msgid "Onshape Government didn't return an authorization code"
+msgstr "Onshape Government hat keinen Autorisierungscode zurückgegeben"
+
+msgid "Onshape Government is already connected"
+msgstr "Onshape Government ist bereits verbunden"
+
+msgid "Onshape Government isn't configured"
+msgstr "Onshape Government ist nicht konfiguriert"
+
+msgid "Onshape Government rejected the authorization"
+msgstr "Onshape Government hat die Autorisierung abgelehnt"
+
+msgid "Onshape is already connected"
+msgstr "Onshape ist bereits verbunden"
 
 msgid "Onshape isn't configured"
 msgstr "Onshape ist nicht konfiguriert"
@@ -12340,9 +12517,6 @@ msgstr "Im MES öffnen"
 msgid "Open Issues"
 msgstr "Offene Probleme"
 
-msgid "Open job"
-msgstr "Offener Auftrag"
-
 msgid "Open job demand plus outstanding transfers out of this bin"
 msgstr "Offener Fertigungsauftrag-Bedarf plus ausstehende Umlagerungen aus diesem Lagerplatz"
 
@@ -12390,6 +12564,9 @@ msgstr "Offene geplante Wartungen"
 
 msgid "Open task details"
 msgstr "Aufgabendetails öffnen"
+
+msgid "Open the Onshape Government integration and save its settings to connect again."
+msgstr "Öffnen Sie die Onshape Government-Integration und speichern Sie ihre Einstellungen, um sie erneut zu verbinden."
 
 msgid "Open the Ramp integration and try connecting again to finish setup."
 msgstr "Öffnen Sie die Ramp-Integration und versuchen Sie erneut, die Verbindung herzustellen, um die Einrichtung abzuschließen."
@@ -12639,6 +12816,12 @@ msgstr "Andernfalls"
 
 msgid "Out"
 msgstr "Aus"
+
+msgid "Out of calibration"
+msgstr "Nicht kalibriert"
+
+msgid "Outbound"
+msgstr "Versand"
 
 msgid "Outgoing"
 msgstr "Ausgehend"
@@ -12952,6 +13135,9 @@ msgstr "Personal"
 
 msgid "People"
 msgstr "Personen"
+
+msgid "Per unit"
+msgstr "Pro Einheit"
 
 msgid "Per Unit"
 msgstr "Pro Einheit"
@@ -13634,6 +13820,9 @@ msgstr "Prognosen"
 msgid "Projects"
 msgstr "Projekte"
 
+msgid "Promised"
+msgstr "Zugesagt"
+
 msgid "Promised Date"
 msgstr "Zugesagter Termin"
 
@@ -14307,6 +14496,9 @@ msgstr "Kürzliche Zahlungen"
 msgid "Recently Created"
 msgstr "Kürzlich erstellt"
 
+msgid "Recently used"
+msgstr "Zuletzt verwendet"
+
 msgid "Recertify Every (Days)"
 msgstr "Alle (Tage) Wiederbeglaubigung"
 
@@ -14318,6 +14510,9 @@ msgstr "Bei der Abstimmung wurden Abweichungen mit dem Anbieter gefunden"
 
 msgid "Reconciling a purchase order against what was received and invoiced — implicit in Carbon, via the line quantities and GR/IR balance."
 msgstr "Abstimmung einer Bestellung gegen das, was eingegangen und fakturiert wurde – implizit in Carbon über die Positionsmengen und den WE/RE-Saldo."
+
+msgid "Reconfigure"
+msgstr "Erneut konfigurieren"
 
 msgid "Record"
 msgstr "Aufnahme"
@@ -14681,8 +14876,8 @@ msgstr "Ersetzen Sie die Daten dieses Unternehmens durch einen Demo-Datensatz �
 msgid "Replacement Order"
 msgstr "Ersatzbestellung"
 
-msgid "Replacing the PDF removes all balloon placements on this document. Feature rows and their values stay; you can place balloons again on the new drawing."
-msgstr "Das Ersetzen der PDF entfernt alle Ballonplatzierungen in diesem Dokument. Funktionszeilen und ihre Werte bleiben erhalten; Sie können Ballons auf der neuen Zeichnung erneut platzieren."
+msgid "Replacing the PDF removes all balloon placements on this document. Characteristic rows and their values stay; you can place balloons again on the new drawing."
+msgstr "Das Ersetzen der PDF entfernt alle Anmerkungsplatzierungen. Merkmalzeilen und ihre Werte bleiben erhalten. Sie können Anmerkungen auf der neuen Zeichnung erneut platzieren."
 
 msgid "Replenishment"
 msgstr "Nachschub"
@@ -15430,8 +15625,8 @@ msgstr "Stichprobengröße"
 msgid "Sampling"
 msgstr "Stichprobenprüfung"
 
-msgid "Sampling — Feature {featureLabel}"
-msgstr "Stichprobenprüfung — Funktion {featureLabel}"
+msgid "Sampling — Characteristic {featureLabel}"
+msgstr "Stichprobenprüfung – Merkmal {featureLabel}"
 
 msgid "Sampling Standard"
 msgstr "Stichprobenstandard"
@@ -15632,6 +15827,9 @@ msgstr "Verschrottet"
 msgid "Search"
 msgstr "Suchen"
 
+msgid "Search {gaugeTypeName}..."
+msgstr "Nach {gaugeTypeName} suchen..."
+
 msgid "Search accounts"
 msgstr "Konten durchsuchen"
 
@@ -15676,6 +15874,9 @@ msgstr "Felder durchsuchen..."
 
 msgid "Search for existing or create a new one"
 msgstr "Suchen Sie nach einem vorhandenen oder erstellen Sie einen neuen"
+
+msgid "Search gauges..."
+msgstr "Prüfmittel suchen..."
 
 msgid "Search items or bins"
 msgstr "Artikel oder Lagerplätze suchen"
@@ -15872,6 +16073,9 @@ msgstr "Mitarbeitertyp auswählen"
 
 msgid "Select field"
 msgstr "Feld auswählen"
+
+msgid "Select gauge"
+msgstr "Prüfmittel auswählen"
 
 msgid "Select Gauge"
 msgstr "Prüfmittel wählen"
@@ -16288,8 +16492,14 @@ msgstr "Versand"
 msgid "Ship some, stock some"
 msgstr "Einige versenden, einige lagern"
 
+msgid "Ship To"
+msgstr "Lieferadresse"
+
 msgid "Ship to Customer"
 msgstr "An Kunde versenden"
+
+msgid "Ship Via"
+msgstr "Versandart"
 
 msgid "Ship-From Location"
 msgstr "Versendungsort"
@@ -17609,6 +17819,9 @@ msgstr "Die Anzahl der Tage nach der Berechnungsmethode, bis die Zahlung fällig
 msgid "The append-only record of every stock movement; on-hand is the sum of its signed entries and the source of truth."
 msgstr "Der unveränderliche Datensatz jeder Bestandsbewegung; der verfügbare Bestand ist die Summe seiner signierten Einträge und die maßgebliche Quelle."
 
+msgid "The authorization was refused in Onshape. Save the integration settings to try again."
+msgstr "Die Autorisierung wurde in Onshape verweigert. Speichern Sie die Integrationseinstellungen, um es erneut zu versuchen."
+
 msgid "The authorization was refused in Onshape. Try connecting again."
 msgstr "Die Autorisierung wurde in Onshape abgelehnt. Versuchen Sie die Verbindung erneut."
 
@@ -17984,8 +18197,8 @@ msgstr "Das Los wird als Bestanden markiert. {fails} erfasste Fehler werden für
 msgid "The lot will still be rejected, but an NCR cannot be created until at least one Issue Type is configured."
 msgstr "Das Los wird immer noch abgelehnt, aber ein NCR kann nicht erstellt werden, bis mindestens ein Problemtyp konfiguriert ist."
 
-msgid "The lot's per-feature sampling plan will be re-resolved from the selected document."
-msgstr "Der Stichprobenplan pro Merkmal des Loses wird aus dem ausgewählten Dokument neu aufgelöst."
+msgid "The lot's per-characteristic sampling plan will be re-resolved from the selected document."
+msgstr "Der Stichprobenplan pro Merkmal der Charge wird aus dem ausgewählten Dokument erneut bestimmt."
 
 msgid "The lowest amount this supplier will charge for this process, regardless of quantity; jobs below the breakeven volume still cost at least this much."
 msgstr "Der niedrigste Betrag, den dieser Lieferant für dieses Verfahren berechnet, unabhängig von der Menge; Fertigungsaufträge unter dem Break-Even-Volumen kosten mindestens diesen Betrag."
@@ -18060,6 +18273,9 @@ msgstr "Das Handbestandsniveau, das eine neue Auffüllungsbestellung gemäß den
 
 msgid "The Onshape connection expired"
 msgstr "Die Onshape-Verbindung ist abgelaufen"
+
+msgid "The Onshape Government connection expired"
+msgstr "Die Onshape Government-Verbindung ist abgelaufen"
 
 msgid "The operations and steps your parts move through"
 msgstr "Die Arbeitsgänge und Schritte, die Ihre Teile durchlaufen"
@@ -18184,6 +18400,9 @@ msgstr "Der Anforderungstext wird wörtlich mit einem JSON-Inhaltstyp gesendet, 
 
 msgid "The residual WIP a job has left at close, swept to a Production Variance account — the only variance Carbon books for a job."
 msgstr "Die verbleibende WIP, die ein Fertigungsauftrag beim Abschließen zurückgelassen hat, aufgeräumt auf ein Produktionsabweichungs-Konto – die einzige Abweichung, die Carbon für einen Fertigungsauftrag bucht."
+
+msgid "The response from Onshape was missing required parameters. Check the private app's redirect URL, then save the integration settings again."
+msgstr "Die Antwort von Onshape fehlten erforderliche Parameter. Überprüfen Sie die Umleitungs-URL der privaten Anwendung, dann speichern Sie die Integrationseinstellungen erneut."
 
 msgid "The response from Onshape was missing required parameters. Try connecting again."
 msgstr "In der Antwort von Onshape fehlten erforderliche Parameter. Versuchen Sie die Verbindung erneut."
@@ -18927,6 +19146,9 @@ msgstr "Tol+"
 msgid "Tolerance (+/-)"
 msgstr "Toleranz (+/-)"
 
+msgid "Tomorrow"
+msgstr "Morgen"
+
 msgid "tool"
 msgstr "Werkzeug"
 
@@ -19340,6 +19562,9 @@ msgstr "Unbekannt"
 
 msgid "unknown error"
 msgstr "unbekannter Fehler"
+
+msgid "Unknown gauge"
+msgstr "Unbekanntes Prüfmittel"
 
 msgid "unknown location"
 msgstr "unbekannter Ort"
@@ -19912,6 +20137,9 @@ msgstr "Notizen anzeigen"
 
 msgid "View on schedule board"
 msgstr "Auf der Plantafel anzeigen"
+
+msgid "View only — changes are not saved"
+msgstr "Nur anzeigen — Änderungen werden nicht gespeichert"
 
 msgid "View Open"
 msgstr "Offene anzeigen"
@@ -20829,6 +21057,9 @@ msgstr "Ihre Einladung ist ungültig oder wurde bereits angenommen. Bitte kontak
 
 msgid "Your job here: check a real sample of each row, then mark it validated. Foundation data loads first, then master records, then open transactions at cutover."
 msgstr "Ihre Aufgabe hier: Überprüfen Sie ein echtes Beispiel jeder Zeile und markieren Sie es dann als validiert. Grundlagendaten werden zuerst geladen, dann Masterdatensätze, dann offene Transaktionen beim Cutover."
+
+msgid "Your latest changes could not be saved. Are you sure you want to leave this page?"
+msgstr "Ihre letzten Änderungen konnten nicht gespeichert werden. Sind Sie sicher, dass Sie diese Seite verlassen möchten?"
 
 msgid "Your legal name, addresses, branding, and document defaults"
 msgstr "Ihr rechtlicher Name, Adressen, Branding und Dokumentstandards"

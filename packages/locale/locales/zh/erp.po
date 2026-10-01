@@ -48,6 +48,9 @@ msgstr "\"{taskName}\"已完成——其所有{0}个设置映射项都已配置�
 msgid "(excluded for this customer)"
 msgstr "(已为此客户排除)"
 
+msgid "(Inactive)"
+msgstr "(已停用)"
+
 #. placeholder {0}: target.slackDays
 msgid "{0, plural, one {# day of slack} other {# days of slack}}"
 msgstr "{0, plural, one {# 天的松弛} other {# 天的松弛}}"
@@ -569,6 +572,12 @@ msgstr "变更通知跟踪通过评审和实施的受控工程或制造变更。
 
 msgid "A clearing account holding the value of goods received but not yet billed; the supplier invoice clears it."
 msgstr "持有已收但未开票商品价值的结算账户；供应商发票将其结清。"
+
+msgid "A company connects to one Onshape at a time. Uninstall Onshape Government, then connect Onshape."
+msgstr "一家公司一次只能连接一个 Onshape。请卸载 Onshape Government，然后连接 Onshape。"
+
+msgid "A company connects to one Onshape at a time. Uninstall Onshape, then connect Onshape Government."
+msgstr "一家公司一次只能连接一个 Onshape。请卸载 Onshape，然后连接 Onshape Government。"
 
 msgid "A company that designs and builds its own finished products end to end (here, the shop building humanoid robots) rather than making parts to another company's specification."
 msgstr "设计和制造自己成品的公司（这里，制造人形机器人的工坊），而不是按照另一家公司的规格制造零件。"
@@ -1424,6 +1433,9 @@ msgstr "添加身份验证器应用"
 msgid "Add Calibration Record"
 msgstr "添加校准记录"
 
+msgid "Add Characteristic"
+msgstr "添加特性"
+
 msgid "Add Child Storage Unit"
 msgstr "添加子存储单元"
 
@@ -1453,9 +1465,6 @@ msgstr "添加员工"
 
 msgid "Add Entry"
 msgstr "添加条目"
-
-msgid "Add Feature"
-msgstr "添加功能"
 
 msgid "Add from library…"
 msgstr "从库中添加…"
@@ -1640,6 +1649,9 @@ msgstr "已添加 {0} 行"
 msgid "Added for this customer"
 msgstr "为此客户添加"
 
+msgid "Added to the unit price for the chosen values, before discounts and markups. Use a negative amount for a credit."
+msgstr "添加到所选配置的单价中，在折扣和加价之前生效。使用负数金额可作为抵扣。"
+
 msgid "Adding demo records"
 msgstr "正在添加演示记录"
 
@@ -1740,6 +1752,9 @@ msgstr "所有部门"
 msgid "All Documents"
 msgstr "所有文档"
 
+msgid "All gauges"
+msgstr "所有量具"
+
 msgid "All item types"
 msgstr "所有物料类型"
 
@@ -1758,6 +1773,9 @@ msgstr "全部自制 {0}"
 
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "所选组的所有成员和所选个人都将能够审批请求"
+
+msgid "All open jobs"
+msgstr "所有未结工单"
 
 msgid "All returnable lines"
 msgstr "所有可退货的行"
@@ -1949,6 +1967,9 @@ msgstr "此工作的一道工序在此批次中运行"
 msgid "An operation's position in its work center's queue — the order the floor picks work up. The engine numbers it from placement order (earliest projected start first); reordering cards on the Work Centers board overrides it without changing dates."
 msgstr "工序在所在工作中心队列中的位置——车间人员拿工作的顺序。引擎按安排顺序编号（最早预计开始时间优先）；在工作中心看板上重新排列卡片会覆盖它，不会改变日期。"
 
+msgid "An unexpected error occurred while connecting to Onshape. Save the integration settings to try again."
+msgstr "连接到 Onshape 时出现意外错误。保存集成设置以重试。"
+
 msgid "An unexpected error occurred while connecting to Onshape. Try connecting again."
 msgstr "连接 Onshape 时发生意外错误。请重新连接。"
 
@@ -1997,6 +2018,9 @@ msgstr "此存储单元嵌套在其中的另一个存储单元（例如，架内
 
 msgid "Another system is connected to Ramp as its accounting system"
 msgstr "另一个系统已连接到 Ramp 作为其会计系统"
+
+msgid "Any"
+msgstr "任何"
 
 msgid "Any item group"
 msgstr "任何项目组"
@@ -2077,8 +2101,8 @@ msgstr "适用于全部"
 msgid "Applies to all work centers"
 msgstr "适用于所有工作中心"
 
-msgid "Applies to features without their own rule, and to the lot when this plan drives an inspection."
-msgstr "适用于没有自己规则的功能，以及当该计划驱动检验时的批次。"
+msgid "Applies to characteristics without their own rule, and to the lot when this plan drives an inspection."
+msgstr "适用于没有自己规则的特性，以及当该计划驱动检验时适用于批次。"
 
 msgid "Apply"
 msgstr "应用"
@@ -3194,6 +3218,9 @@ msgstr "BOM"
 msgid "BoM + BoP"
 msgstr "BoM + BoP"
 
+msgid "BoM Explorer"
+msgstr "物料清单浏览器"
+
 msgid "BOM synced successfully"
 msgstr "BOM 同步成功"
 
@@ -3684,6 +3711,12 @@ msgstr "更改类型"
 msgid "Changed By"
 msgstr "更改者"
 
+msgid "Changelog"
+msgstr "更新日志"
+
+msgid "Changelog newsletter"
+msgstr "更新日志通讯"
+
 msgid "Changes"
 msgstr "更改"
 
@@ -3695,6 +3728,15 @@ msgstr "更改此项将更新零件ID"
 
 msgid "Changing type resets this item's draft edits."
 msgstr "更改类型将重置此项目的草稿编辑。"
+
+msgid "Characteristic"
+msgstr "特性"
+
+msgid "Characteristic values suggested from drawing"
+msgstr "从图纸建议的特性值"
+
+msgid "Characteristics"
+msgstr "特性"
 
 msgid "Charges"
 msgstr "卡消费"
@@ -3763,6 +3805,9 @@ msgstr "选择如何向此退货添加行。"
 msgid "Choose what appears on the printed job traveler."
 msgstr "选择打印工单流转卡上显示的内容。"
 
+msgid "Choose whether the bill of material explorer on items, quotes, and jobs labels each line with its description or its item ID."
+msgstr "选择物料清单浏览器是否在物料、报价单和工单上用描述或物料 ID 标记每行。"
+
 msgid "Choose your style"
 msgstr "选择您的风格"
 
@@ -3792,6 +3837,9 @@ msgstr "清除到期日"
 
 msgid "Clear Filters"
 msgstr "清除筛选"
+
+msgid "Clear gauge"
+msgstr "清除量具"
 
 msgid "Clear search"
 msgstr "清除搜索"
@@ -3894,11 +3942,11 @@ msgstr "折叠 {0}"
 msgid "Collapse all"
 msgstr "全部折叠"
 
+msgid "Collapse characteristics table"
+msgstr "折叠特性表"
+
 msgid "Collapse Costs"
 msgstr "折叠成本"
-
-msgid "Collapse features table"
-msgstr "折叠功能表"
 
 msgid "Collapse Labor"
 msgstr "折叠人工"
@@ -4035,6 +4083,9 @@ msgstr "完成此培训将授予或更新所选能力。"
 msgid "Completion Barcode"
 msgstr "完成条码"
 
+msgid "Completion Date"
+msgstr "完成日期"
+
 msgid "Completion in progress — retry in Shop Floor"
 msgstr "完成进行中 — 请在生产车间重试"
 
@@ -4069,6 +4120,9 @@ msgstr "配置"
 
 msgid "Configuration Parameters"
 msgstr "配置参数"
+
+msgid "Configuration Prices"
+msgstr "配置价格"
 
 msgid "Configuration, data migration, and any integrations"
 msgstr "配置、数据迁移和任何集成"
@@ -4144,6 +4198,9 @@ msgstr "已配置"
 
 msgid "Configured"
 msgstr "已配置"
+
+msgid "Configured Part"
+msgstr "配置零件"
 
 msgid "Confirm"
 msgstr "确认"
@@ -4394,6 +4451,9 @@ msgstr "已复制链接到剪贴板"
 msgid "Copied setup prompt to your clipboard"
 msgstr "已将换型提示复制到剪贴板"
 
+msgid "Copied!"
+msgstr "已复制！"
+
 msgid "Copies a setup prompt for your AI coding tool"
 msgstr "复制换型提示给您的AI编码工具"
 
@@ -4409,11 +4469,20 @@ msgstr "复制API密钥"
 msgid "Copy batch number"
 msgstr "复制生产批次号"
 
+msgid "Copy change notice unique identifier"
+msgstr "复制变更通知唯一标识符"
+
 msgid "Copy company unique identifier"
 msgstr "复制公司唯一标识符"
 
 msgid "Copy consumable number"
 msgstr "复制耗材编号"
+
+msgid "Copy consumable unique identifier"
+msgstr "复制耗材唯一标识符"
+
+msgid "Copy customer unique identifier"
+msgstr "复制客户唯一标识符"
 
 msgid "Copy dispatch ID"
 msgstr "复制维护工单ID"
@@ -4438,6 +4507,9 @@ msgstr "复制问题唯一标识符"
 
 msgid "Copy Job number"
 msgstr "复制工作单号"
+
+msgid "Copy job unique identifier"
+msgstr "复制工单唯一标识符"
 
 msgid "Copy link"
 msgstr "复制链接"
@@ -4517,6 +4589,15 @@ msgstr "复制程序文件名"
 msgid "Copy procedure unique identifier"
 msgstr "复制程序文件唯一标识符"
 
+msgid "Copy purchase invoice unique identifier"
+msgstr "复制采购发票唯一标识符"
+
+msgid "Copy purchase order unique identifier"
+msgstr "复制采购订单唯一标识符"
+
+msgid "Copy purchase return order unique identifier"
+msgstr "复制采购退货订单唯一标识符"
+
 msgid "Copy Quality Document"
 msgstr "复制质量文件"
 
@@ -4526,17 +4607,38 @@ msgstr "复制报价"
 msgid "Copy Quote number"
 msgstr "复制报价单号"
 
+msgid "Copy quote unique identifier"
+msgstr "复制报价单唯一标识符"
+
 msgid "Copy return number"
 msgstr "复制退货编号"
 
+msgid "Copy RFQ unique identifier"
+msgstr "复制询价单唯一标识符"
+
 msgid "Copy RMA number"
 msgstr "复制 RMA 编号"
+
+msgid "Copy sales invoice unique identifier"
+msgstr "复制销售发票唯一标识符"
+
+msgid "Copy sales order unique identifier"
+msgstr "复制销售订单唯一标识符"
+
+msgid "Copy sales return order unique identifier"
+msgstr "复制销售退货订单唯一标识符"
 
 msgid "Copy service number"
 msgstr "复制服务编号"
 
 msgid "Copy service unique identifier"
 msgstr "复制服务唯一标识符"
+
+msgid "Copy supplier quote unique identifier"
+msgstr "复制供应商报价唯一标识符"
+
+msgid "Copy supplier unique identifier"
+msgstr "复制供应商唯一标识符"
 
 msgid "Copy this item's pricing to another scope."
 msgstr "将此项目的定价复制到另一个范围。"
@@ -4546,6 +4648,9 @@ msgstr "复制此链接以与客户分享报价"
 
 msgid "Copy this link to share the quote with a supplier"
 msgstr "复制此链接以与供应商共享报价"
+
+msgid "Copy to clipboard"
+msgstr "复制到剪贴板"
 
 msgid "Copy tool number"
 msgstr "复制工具编号"
@@ -4676,6 +4781,9 @@ msgstr "无法保存"
 msgid "Couldn't complete the Onshape connection"
 msgstr "无法完成 Onshape 连接"
 
+msgid "Couldn't complete the Onshape Government connection"
+msgstr "无法完成 Onshape Government 连接"
+
 msgid "Couldn't load documents"
 msgstr "无法加载文档"
 
@@ -4690,6 +4798,9 @@ msgstr "无法重新安排作业。请重试。"
 
 msgid "Couldn't save the Onshape connection"
 msgstr "无法保存 Onshape 连接"
+
+msgid "Couldn't save the Onshape Government connection"
+msgstr "无法保存 Onshape Government 连接"
 
 msgid "Couldn't save the Ramp connection"
 msgstr "无法保存 Ramp 连接"
@@ -6077,9 +6188,6 @@ msgstr "由运动规划器检测"
 msgid "Developer"
 msgstr "开发人员"
 
-msgid "Diagram saved"
-msgstr "图表已保存"
-
 msgid "Differs from the selection — allowed, but confirm they nest together"
 msgstr "与选择不同 — 允许，但请确认它们能够嵌套在一起"
 
@@ -6358,11 +6466,11 @@ msgstr "拖动以在图纸上放置"
 msgid "Drag to reorder"
 msgstr "拖动以重新排序"
 
-msgid "Drag to resize diagram and features"
-msgstr "拖动以调整图表和功能的大小"
+msgid "Drag to resize diagram and characteristics"
+msgstr "拖动以调整图表和特性大小"
 
-msgid "Drag to resize drawing and features"
-msgstr "拖动以调整绘图和功能的大小"
+msgid "Drag to resize drawing and characteristics"
+msgstr "拖动以调整绘图和特性大小"
 
 msgid "Drag to zoom"
 msgstr "拖动以缩放"
@@ -6373,8 +6481,11 @@ msgstr "提取"
 msgid "Drawing Number"
 msgstr "图号"
 
-msgid "Drawing replaced. Balloon placements were removed; feature rows are unchanged."
-msgstr "图纸已替换。气球位置已移除；功能行保持不变。"
+msgid "Drawing replaced. Balloon placements were removed; characteristic rows are unchanged."
+msgstr "绘图已替换。气泡位置已移除；特性行保持不变。"
+
+msgid "Drop Ship"
+msgstr "代发货"
 
 msgid "Drop shipment"
 msgstr "直发"
@@ -6446,9 +6557,6 @@ msgstr "明天到期"
 
 msgid "due now"
 msgstr "立即到期"
-
-msgid "Due within"
-msgstr "应收期限"
 
 msgid "Duplicate"
 msgstr "复制"
@@ -6545,6 +6653,9 @@ msgstr "每一行都是从此公司的数据指向其不拥有的行的链接。
 
 msgid "Each line is a link from this company's data to a row it doesn't own. Removing those rows lets the restore run."
 msgstr "每一行都是从该公司的数据链接到它不拥有的一行。删除这些行可以运行恢复。"
+
+msgid "Each line shows its item ID and revision."
+msgstr "每行显示其物料 ID 和修订版。"
 
 msgid "Each operation's unused material returns as soon as the operation is done."
 msgstr "每个工序的未使用原材料在工序完成后立即退回。"
@@ -7042,6 +7153,9 @@ msgstr "启用以在列表、表单和下拉列表中显示可读的客户ID。"
 msgid "Enable to show a readable Supplier ID on lists, forms and dropdowns."
 msgstr "启用以在列表、表单和下拉列表中显示可读的供应商ID。"
 
+msgid "Enable to show the item ID and revision instead of the description."
+msgstr "启用以显示物料 ID 和修订版而不是描述。"
+
 msgid "Enable to start tracking changes to your data."
 msgstr "启用以开始跟踪您的数据变化。"
 
@@ -7145,6 +7259,9 @@ msgstr "输入来自您的身份验证器应用的6位数代码"
 
 msgid "Enter the 6-digit code from your authenticator app to resume."
 msgstr "输入您的身份验证器应用中的 6 位数字代码以继续。"
+
+msgid "Enter the Onshape URL, client ID and client secret of your private OAuth application, then save."
+msgstr "输入您的私有 OAuth 应用程序的 Onshape URL、客户端 ID 和客户端密钥，然后保存。"
 
 msgid "Enter the quantity this movement should have been. An opposite movement for the difference is posted next to the original, in the original's time period."
 msgstr "输入此移动应该的数量。差异的相反移动在原始时期内的原始旁边过账。"
@@ -7362,6 +7479,9 @@ msgstr "汇率更新于"
 msgid "Exchange Rates"
 msgstr "汇率"
 
+msgid "Exchanging the authorization code failed. Check the Onshape URL and the client secret, then save the integration settings again."
+msgstr "交换授权码失败。检查 Onshape URL 和客户端密钥，然后再次保存集成设置。"
+
 msgid "Exchanging the authorization code for access failed. Try connecting again."
 msgstr "用授权代码交换访问权限失败。请重新连接。"
 
@@ -7398,11 +7518,11 @@ msgstr "展开 {0}"
 msgid "Expand all"
 msgstr "全部展开"
 
+msgid "Expand characteristics table"
+msgstr "展开特性表"
+
 msgid "Expand Costs"
 msgstr "展开成本"
-
-msgid "Expand features table"
-msgstr "展开功能表"
 
 msgid "Expand Labor"
 msgstr "展开人工"
@@ -7587,8 +7707,8 @@ msgstr "不合格"
 msgid "Failed"
 msgstr "失败"
 
-msgid "Failed features"
-msgstr "失效特性"
+msgid "Failed characteristics"
+msgstr "失败的特性"
 
 #. placeholder {0}: rows.length
 msgid "Failed to add line — {addedCount} of {0} lines were added"
@@ -7596,6 +7716,9 @@ msgstr "无法添加行 — 已添加 {addedCount} / {0} 行"
 
 msgid "Failed to add lines"
 msgstr "添加行失败"
+
+msgid "Failed to apply pricing rules"
+msgstr "无法应用定价规则"
 
 msgid "Failed to convert image"
 msgstr "图像转换失败"
@@ -7839,6 +7962,9 @@ msgstr "加载跟踪实体失败"
 msgid "Failed to move account: {0}"
 msgstr "移动账户失败: {0}"
 
+msgid "Failed to record gauge"
+msgstr "未能记录量具"
+
 msgid "Failed to regenerate schedule"
 msgstr "排程再生成失败"
 
@@ -7872,8 +7998,8 @@ msgstr "未能检索 CSV 列数据。"
 msgid "Failed to save configuration rule"
 msgstr "保存配置规则失败"
 
-msgid "Failed to save diagram"
-msgstr "保存图表失败"
+msgid "Failed to save inspection plan"
+msgstr "未能保存检验计划"
 
 msgid "Failed to save measurement"
 msgstr "保存测量值失败"
@@ -7973,15 +8099,6 @@ msgstr "传真"
 
 msgid "Fax Number"
 msgstr "传真号码"
-
-msgid "Feature"
-msgstr "特征"
-
-msgid "Feature values suggested from drawing"
-msgstr "从绘图中建议的特征值"
-
-msgid "Features"
-msgstr "功能"
 
 msgid "Fees"
 msgstr "费用"
@@ -8287,6 +8404,9 @@ msgstr "量具"
 
 msgid "Gauge Calibration Notifications"
 msgstr "量具校准通知"
+
+msgid "Gauge for characteristic {characteristicLabel}: {currentGauge}"
+msgstr "特性{characteristicLabel}的量具：{currentGauge}"
 
 msgid "Gauge ID"
 msgstr "量具ID"
@@ -9028,6 +9148,9 @@ msgstr "在此步骤中"
 msgid "In use"
 msgstr "使用中"
 
+msgid "In your Enterprise settings under Developer, edit the private OAuth application's permissions to include \"Application can write to your documents\", then save the integration settings again."
+msgstr "在您的企业设置的开发者下，编辑私有 OAuth 应用程序的权限以包括\"应用程序可以写入您的文档\"，然后再次保存集成设置。"
+
 msgid "In-app"
 msgstr "应用内"
 
@@ -9210,6 +9333,9 @@ msgstr "说明从程序文件继承。"
 
 msgid "Integration"
 msgstr "集成"
+
+msgid "Integration credentials"
+msgstr "集成凭证"
 
 msgid "Integration not found"
 msgstr "集成未找到"
@@ -10024,6 +10150,12 @@ msgstr "行需要内部零件号"
 
 msgid "Lines need prices or lead times"
 msgstr "行需要价格或提前期"
+
+msgid "Lines show descriptions"
+msgstr "行显示描述"
+
+msgid "Lines show item IDs"
+msgstr "行显示物料 ID"
 
 msgid "Lineside"
 msgstr "线边"
@@ -11353,6 +11485,15 @@ msgstr "最新优先"
 msgid "Next"
 msgstr "下一步"
 
+msgid "Next 14 days"
+msgstr "接下来14天"
+
+msgid "Next 30 days"
+msgstr "接下来30天"
+
+msgid "Next 7 days"
+msgstr "接下来7天"
+
 msgid "Next Calibration"
 msgstr "下次校准"
 
@@ -11504,6 +11645,9 @@ msgstr "还没有评论。成为第一个添加评论的人。"
 msgid "No completed jobs within range"
 msgstr "范围内没有已完成的工单"
 
+msgid "No completion date"
+msgstr "无完成日期"
+
 msgid "No components yet"
 msgstr "还没有组件"
 
@@ -11600,6 +11744,9 @@ msgstr "此任务没有可用预测。"
 msgid "No Gauge Selected"
 msgstr "未选择量具"
 
+msgid "No gauges found."
+msgstr "未找到量具。"
+
 msgid "No grouped notifications"
 msgstr "没有分组通知"
 
@@ -11626,6 +11773,9 @@ msgstr "此处尚无物料库存活动。"
 
 msgid "No jobs are scheduled at this location yet — release a job to see work-center load."
 msgstr "此地点还没有排程工单——下达工单以查看工作中心负荷。"
+
+msgid "No jobs match your search."
+msgstr "没有工单与您的搜索匹配。"
 
 msgid "No jobs were created"
 msgstr "没有创建工单"
@@ -11683,6 +11833,12 @@ msgstr "没有人员可分配"
 
 msgid "No open invoices"
 msgstr "没有未结发票"
+
+msgid "No open jobs for sales orders are projected to complete at this location in the next {horizon} days."
+msgstr "该地点在接下来{horizon}天内没有计划完成的销售订单相关的未结工单。"
+
+msgid "No open jobs for sales orders at this location."
+msgstr "此地点没有销售订单相关的未结工单。"
 
 msgid "No open memos"
 msgstr "无未结单据"
@@ -12268,6 +12424,9 @@ msgstr "一次只能激活一个支出集成。请先卸载当前的集成，然
 msgid "Only qualified employees can be scheduled for and run this process"
 msgstr "只有合格的员工才能被安排和运行此流程"
 
+msgid "Onshape authorized the connection but saving it failed. Save the integration settings to try again."
+msgstr "Onshape 授权了连接但保存失败。保存集成设置以重试。"
+
 msgid "Onshape authorized the connection but saving it failed. Try connecting again."
 msgstr "Onshape 已授权此连接，但保存失败。请重新连接。"
 
@@ -12276,6 +12435,24 @@ msgstr "Onshape 拒绝了连接"
 
 msgid "Onshape didn't return an authorization code"
 msgstr "Onshape 未返回授权代码"
+
+msgid "Onshape Government denied the connection"
+msgstr "Onshape Government 拒绝了连接"
+
+msgid "Onshape Government didn't return an authorization code"
+msgstr "Onshape Government 未返回授权码"
+
+msgid "Onshape Government is already connected"
+msgstr "Onshape Government 已连接"
+
+msgid "Onshape Government isn't configured"
+msgstr "Onshape Government 未配置"
+
+msgid "Onshape Government rejected the authorization"
+msgstr "Onshape Government 拒绝了授权"
+
+msgid "Onshape is already connected"
+msgstr "Onshape 已连接"
 
 msgid "Onshape isn't configured"
 msgstr "尚未配置 Onshape"
@@ -12340,9 +12517,6 @@ msgstr "在 MES 中打开"
 msgid "Open Issues"
 msgstr "未结领料"
 
-msgid "Open job"
-msgstr "未完成的工作"
-
 msgid "Open job demand plus outstanding transfers out of this bin"
 msgstr "未结工单需求加上从此料箱转出的未清调拨"
 
@@ -12390,6 +12564,9 @@ msgstr "打开 Scheduled"
 
 msgid "Open task details"
 msgstr "打开任务详情"
+
+msgid "Open the Onshape Government integration and save its settings to connect again."
+msgstr "打开 Onshape Government 集成并保存其设置以重新连接。"
 
 msgid "Open the Ramp integration and try connecting again to finish setup."
 msgstr "打开 Ramp 集成，然后重新连接以完成配置。"
@@ -12639,6 +12816,12 @@ msgstr "否则"
 
 msgid "Out"
 msgstr "出"
+
+msgid "Out of calibration"
+msgstr "校准过期"
+
+msgid "Outbound"
+msgstr "出库"
 
 msgid "Outgoing"
 msgstr "出库"
@@ -12952,6 +13135,9 @@ msgstr "人员"
 
 msgid "People"
 msgstr "人员"
+
+msgid "Per unit"
+msgstr "每件"
 
 msgid "Per Unit"
 msgstr "每单位"
@@ -13634,6 +13820,9 @@ msgstr "预测"
 msgid "Projects"
 msgstr "项目"
 
+msgid "Promised"
+msgstr "承诺"
+
 msgid "Promised Date"
 msgstr "承诺日期"
 
@@ -14307,6 +14496,9 @@ msgstr "最近的付款"
 msgid "Recently Created"
 msgstr "最近创建"
 
+msgid "Recently used"
+msgstr "最近使用"
+
 msgid "Recertify Every (Days)"
 msgstr "每(天)重新认证"
 
@@ -14318,6 +14510,9 @@ msgstr "对账发现与提供商的差异"
 
 msgid "Reconciling a purchase order against what was received and invoiced — implicit in Carbon, via the line quantities and GR/IR balance."
 msgstr "将采购订单与已收货和已开票的内容进行对账——在Carbon中隐含进行，通过行数量和GR/IR余额。"
+
+msgid "Reconfigure"
+msgstr "重新配置"
 
 msgid "Record"
 msgstr "录音"
@@ -14681,8 +14876,8 @@ msgstr "用演示数据集替换此公司的数据——首先快照，以便您
 msgid "Replacement Order"
 msgstr "替换订单"
 
-msgid "Replacing the PDF removes all balloon placements on this document. Feature rows and their values stay; you can place balloons again on the new drawing."
-msgstr "替换 PDF 会移除此文件上的所有气球位置。功能行及其值保持不变；你可以在新绘图上重新放置气球。"
+msgid "Replacing the PDF removes all balloon placements on this document. Characteristic rows and their values stay; you can place balloons again on the new drawing."
+msgstr "替换PDF将移除此文件上的所有气泡位置。特性行及其值保持不变；您可以在新绘图上重新放置气泡。"
 
 msgid "Replenishment"
 msgstr "补货"
@@ -15430,8 +15625,8 @@ msgstr "样本量"
 msgid "Sampling"
 msgstr "抽样"
 
-msgid "Sampling — Feature {featureLabel}"
-msgstr "抽样 — 功能 {featureLabel}"
+msgid "Sampling — Characteristic {featureLabel}"
+msgstr "抽样 — 特性{featureLabel}"
 
 msgid "Sampling Standard"
 msgstr "抽样正常检验"
@@ -15632,6 +15827,9 @@ msgstr "已报废"
 msgid "Search"
 msgstr "搜索"
 
+msgid "Search {gaugeTypeName}..."
+msgstr "搜索{gaugeTypeName}..."
+
 msgid "Search accounts"
 msgstr "搜索账户"
 
@@ -15676,6 +15874,9 @@ msgstr "搜索字段..."
 
 msgid "Search for existing or create a new one"
 msgstr "搜索现有问题或创建新问题"
+
+msgid "Search gauges..."
+msgstr "搜索量具..."
 
 msgid "Search items or bins"
 msgstr "搜索物料或料箱"
@@ -15872,6 +16073,9 @@ msgstr "选择员工类型"
 
 msgid "Select field"
 msgstr "选择字段"
+
+msgid "Select gauge"
+msgstr "选择量具"
 
 msgid "Select Gauge"
 msgstr "选择量具"
@@ -16288,8 +16492,14 @@ msgstr "发货"
 msgid "Ship some, stock some"
 msgstr "发货一些，库存一些"
 
+msgid "Ship To"
+msgstr "发往"
+
 msgid "Ship to Customer"
 msgstr "发货给客户"
+
+msgid "Ship Via"
+msgstr "发货方式"
 
 msgid "Ship-From Location"
 msgstr "发货地点"
@@ -17609,6 +17819,9 @@ msgstr "计算方法后的天数，在该天数后付款到期"
 msgid "The append-only record of every stock movement; on-hand is the sum of its signed entries and the source of truth."
 msgstr "每个库存变动的追加专用记录；在手数量是其带符号条目的总和，也是单一信息源。"
 
+msgid "The authorization was refused in Onshape. Save the integration settings to try again."
+msgstr "授权在 Onshape 中被拒绝。保存集成设置以重试。"
+
 msgid "The authorization was refused in Onshape. Try connecting again."
 msgstr "授权在 Onshape 中被拒绝。请重新连接。"
 
@@ -17984,8 +18197,8 @@ msgstr "批次将标记为已通过。{fails} 个抽样失败已记录在案。"
 msgid "The lot will still be rejected, but an NCR cannot be created until at least one Issue Type is configured."
 msgstr "批次仍将被拒绝，但在配置至少一个问题类型之前无法创建 NCR。"
 
-msgid "The lot's per-feature sampling plan will be re-resolved from the selected document."
-msgstr "批次的每个特征抽样方案将从选定的文件重新解析。"
+msgid "The lot's per-characteristic sampling plan will be re-resolved from the selected document."
+msgstr "该批次各特征的抽样方案将从所选文件重新确定。"
 
 msgid "The lowest amount this supplier will charge for this process, regardless of quantity; jobs below the breakeven volume still cost at least this much."
 msgstr "此供应商对此工艺收费的最低金额，无论数量如何；低于盈亏平衡量的工单仍至少成本此金额。"
@@ -18060,6 +18273,9 @@ msgstr "按数量触发新补充订单的库存水平根据基于数量的政策
 
 msgid "The Onshape connection expired"
 msgstr "Onshape连接已过期"
+
+msgid "The Onshape Government connection expired"
+msgstr "Onshape Government 连接已过期"
 
 msgid "The operations and steps your parts move through"
 msgstr "您的零件所经历的工序和步骤"
@@ -18184,6 +18400,9 @@ msgstr "在替换其中的工作流变量后，使用 JSON 内容类型逐字发
 
 msgid "The residual WIP a job has left at close, swept to a Production Variance account — the only variance Carbon books for a job."
 msgstr "工作在关闭时留下的残余在制品，扫至生产差异帐户 - Carbon为工作记录的唯一差异。"
+
+msgid "The response from Onshape was missing required parameters. Check the private app's redirect URL, then save the integration settings again."
+msgstr "来自 Onshape 的响应缺少必需的参数。检查私有应用程序的重定向 URL，然后再次保存集成设置。"
 
 msgid "The response from Onshape was missing required parameters. Try connecting again."
 msgstr "Onshape 的响应缺少必需的参数。请重新连接。"
@@ -18927,6 +19146,9 @@ msgstr "公差+"
 msgid "Tolerance (+/-)"
 msgstr "容差 (+/-)"
 
+msgid "Tomorrow"
+msgstr "明天"
+
 msgid "tool"
 msgstr "工具"
 
@@ -19340,6 +19562,9 @@ msgstr "未知"
 
 msgid "unknown error"
 msgstr "未知错误"
+
+msgid "Unknown gauge"
+msgstr "未知量具"
 
 msgid "unknown location"
 msgstr "未知位置"
@@ -19912,6 +20137,9 @@ msgstr "查看备注"
 
 msgid "View on schedule board"
 msgstr "在排程看板中查看"
+
+msgid "View only — changes are not saved"
+msgstr "仅查看 — 更改不会被保存"
 
 msgid "View Open"
 msgstr "查看未结"
@@ -20833,6 +21061,9 @@ msgstr "您的邀请无效或已被接受。如果您认为这是错误，请联
 
 msgid "Your job here: check a real sample of each row, then mark it validated. Foundation data loads first, then master records, then open transactions at cutover."
 msgstr "你的工作是：检查每一行的真实样本，然后标记为已验证。基础数据首先加载，然后是主记录，最后是截止时的未结交易。"
+
+msgid "Your latest changes could not be saved. Are you sure you want to leave this page?"
+msgstr "您的最新更改未能保存。您确定要离开此页面吗？"
 
 msgid "Your legal name, addresses, branding, and document defaults"
 msgstr "你的法定名称、地址、品牌和文件默认值"

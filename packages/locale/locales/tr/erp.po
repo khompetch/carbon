@@ -48,6 +48,9 @@ msgstr "\"{taskName}\" bitti — tüm {0} Kurulum Haritası öğesi yapılandır
 msgid "(excluded for this customer)"
 msgstr "(bu müşteri için hariç tutulmuş)"
 
+msgid "(Inactive)"
+msgstr "(Pasif)"
+
 #. placeholder {0}: target.slackDays
 msgid "{0, plural, one {# day of slack} other {# days of slack}}"
 msgstr "{0, plural, one {# gün esneklik payı} other {# gün esneklik payı}}"
@@ -569,6 +572,12 @@ msgstr "Değişiklik bildirimi, kontrollü bir mühendislik veya üretim değiş
 
 msgid "A clearing account holding the value of goods received but not yet billed; the supplier invoice clears it."
 msgstr "Alınan ancak henüz faturalanmayan malların değerini tutan bir takas hesabı; tedarikçi faturası bunu temizler."
+
+msgid "A company connects to one Onshape at a time. Uninstall Onshape Government, then connect Onshape."
+msgstr "Bir şirket aynı anda bir Onshape'e bağlanabilir. Onshape Government'ı kaldırın, ardından Onshape'e bağlanın."
+
+msgid "A company connects to one Onshape at a time. Uninstall Onshape, then connect Onshape Government."
+msgstr "Bir şirket aynı anda bir Onshape'e bağlanabilir. Onshape'i kaldırın, ardından Onshape Government'a bağlanın."
 
 msgid "A company that designs and builds its own finished products end to end (here, the shop building humanoid robots) rather than making parts to another company's specification."
 msgstr "Başka bir şirketin spesifikasyonuna göre parça üretmek yerine, kendi bitmiş ürünlerini uçtan uca tasarlayan ve inşa eden bir şirket (burada insansı robotlar inşa eden mağaza)."
@@ -1424,6 +1433,9 @@ msgstr "Kimlik Doğrulayıcı Uygulaması Ekle"
 msgid "Add Calibration Record"
 msgstr "Kalibrasyon Kaydı Ekle"
 
+msgid "Add Characteristic"
+msgstr "Özellik Ekle"
+
 msgid "Add Child Storage Unit"
 msgstr "Alt Depolama Birimi Ekle"
 
@@ -1453,9 +1465,6 @@ msgstr "Çalışan Ekle"
 
 msgid "Add Entry"
 msgstr "Giri Ekle"
-
-msgid "Add Feature"
-msgstr "Özellik Ekle"
 
 msgid "Add from library…"
 msgstr "Kütüphaneden ekle…"
@@ -1640,6 +1649,9 @@ msgstr "Eklenen {0} satır"
 msgid "Added for this customer"
 msgstr "Bu müşteri için eklendi"
 
+msgid "Added to the unit price for the chosen values, before discounts and markups. Use a negative amount for a credit."
+msgstr "Seçilen değerler için birim fiyata eklenir, iskontolar ve marjlar öncesi. İndirim için negatif tutar kullanın."
+
 msgid "Adding demo records"
 msgstr "Demo kayıtları ekleniyor"
 
@@ -1740,6 +1752,9 @@ msgstr "Tüm departmanlar"
 msgid "All Documents"
 msgstr "Tüm Belgeler"
 
+msgid "All gauges"
+msgstr "Tüm ölçüm aletleri"
+
 msgid "All item types"
 msgstr "Tüm Stok kartı türleri"
 
@@ -1758,6 +1773,9 @@ msgstr "tümü {0} üretim"
 
 msgid "All members of selected groups and selected individuals will be able to approve requests"
 msgstr "Seçilen gruplardaki ve bireylerdeki tüm üyeler talepleri onaylayabilecektir"
+
+msgid "All open jobs"
+msgstr "Tüm açık iş emirleri"
 
 msgid "All returnable lines"
 msgstr "Tüm iade edilebilir satırlar"
@@ -1949,6 +1967,9 @@ msgstr "Bu işin bir operasyonu bu partide çalışıyor"
 msgid "An operation's position in its work center's queue — the order the floor picks work up. The engine numbers it from placement order (earliest projected start first); reordering cards on the Work Centers board overrides it without changing dates."
 msgstr "Bir operasyon'un iş merkezi'nin kuyruğundaki konumu — atölyenin işleri aldığı sıra. Motor, yerleştirme sırasından numaralandırır (en erken öngörülen başlangıç ilk); İş merkezleri panosundaki kartları yeniden sıralamak, tarihleri değiştirmeden bunu geçersiz kılar."
 
+msgid "An unexpected error occurred while connecting to Onshape. Save the integration settings to try again."
+msgstr "Onshape'e bağlanırken beklenmedik bir hata oluştu. Tekrar denemek için entegrasyon ayarlarını kaydedin."
+
 msgid "An unexpected error occurred while connecting to Onshape. Try connecting again."
 msgstr "Onshape'e bağlanırken beklenmeyen bir hata oluştu. Yeniden bağlanmayı deneyin."
 
@@ -1997,6 +2018,9 @@ msgstr "Bu depolama biriminin yerleştirildiği başka bir depolama birimi (örn
 
 msgid "Another system is connected to Ramp as its accounting system"
 msgstr "Başka bir sistem Ramp'a muhasebe sistemi olarak bağlı"
+
+msgid "Any"
+msgstr "Herhangi bir"
 
 msgid "Any item group"
 msgstr "Herhangi bir ürün grubu"
@@ -2077,8 +2101,8 @@ msgstr "Tümüne uygulanır"
 msgid "Applies to all work centers"
 msgstr "Tüm iş merkezlerine uygulanır"
 
-msgid "Applies to features without their own rule, and to the lot when this plan drives an inspection."
-msgstr "Kendi kuralı olmayan özelliklere ve bu plan bir muayene yaptırdığında lota uygulanır."
+msgid "Applies to characteristics without their own rule, and to the lot when this plan drives an inspection."
+msgstr "Kendi kuralı olmayan özelliklere ve bu kontrol planı bir muayene başlattığında lota uygulanır."
 
 msgid "Apply"
 msgstr "Uygula"
@@ -3194,6 +3218,9 @@ msgstr "BOM"
 msgid "BoM + BoP"
 msgstr "BOM + BOP"
 
+msgid "BoM Explorer"
+msgstr "BoM Gezgini"
+
 msgid "BOM synced successfully"
 msgstr "BOM başarıyla senkronize edildi"
 
@@ -3684,6 +3711,12 @@ msgstr "Tipi Değiştir"
 msgid "Changed By"
 msgstr "Değiştiren"
 
+msgid "Changelog"
+msgstr "Değişiklik Günlüğü"
+
+msgid "Changelog newsletter"
+msgstr "Değişiklik Günlüğü Haber Bülteni"
+
 msgid "Changes"
 msgstr "Değişiklikler"
 
@@ -3695,6 +3728,15 @@ msgstr "Bunu değiştirmek parça kimliğini güncelleyecektir"
 
 msgid "Changing type resets this item's draft edits."
 msgstr "Türü değiştirmek bu öğenin taslak düzenlemelerini sıfırlar."
+
+msgid "Characteristic"
+msgstr "Özellik"
+
+msgid "Characteristic values suggested from drawing"
+msgstr "Çizimden önerilen özellik değerleri"
+
+msgid "Characteristics"
+msgstr "Özellikler"
 
 msgid "Charges"
 msgstr "Harcamalar"
@@ -3763,6 +3805,9 @@ msgstr "Bu iade için satırları nasıl ekleyeceğinizi seçin."
 msgid "Choose what appears on the printed job traveler."
 msgstr "Yazdırılan İş takip kartında neyin görüneceğini seçin."
 
+msgid "Choose whether the bill of material explorer on items, quotes, and jobs labels each line with its description or its item ID."
+msgstr "Stok kartları, teklifler ve iş emirlerindeki malzeme ağacı gezgininin her satırı açıklama veya stok kartı kimliğiyle etiketleyip etiketlemeyeceğini seçin."
+
 msgid "Choose your style"
 msgstr "Stilini seçin"
 
@@ -3792,6 +3837,9 @@ msgstr "Son tarihi temizle"
 
 msgid "Clear Filters"
 msgstr "Filtreleri Temizle"
+
+msgid "Clear gauge"
+msgstr "Ölçüm aletini temizle"
 
 msgid "Clear search"
 msgstr "Aramayı temizle"
@@ -3894,11 +3942,11 @@ msgstr "{0} öğesini daralt"
 msgid "Collapse all"
 msgstr "Tümünü daralt"
 
+msgid "Collapse characteristics table"
+msgstr "Özellikler tablosunu daralt"
+
 msgid "Collapse Costs"
 msgstr "Maliyetleri Daralt"
-
-msgid "Collapse features table"
-msgstr "Özellikler tablosunu daralt"
 
 msgid "Collapse Labor"
 msgstr "İşçilik Süresini Daralt"
@@ -4035,6 +4083,9 @@ msgstr "Bu eğitimi tamamlamak seçilen yetkinliği verir veya yeniler."
 msgid "Completion Barcode"
 msgstr "Tamamlama Barkodu"
 
+msgid "Completion Date"
+msgstr "Tamamlama Tarihi"
+
 msgid "Completion in progress — retry in Shop Floor"
 msgstr "Tamamlama devam ediyor — Atölye'de yeniden deneyin"
 
@@ -4069,6 +4120,9 @@ msgstr "Yapılandırma"
 
 msgid "Configuration Parameters"
 msgstr "Yapılandırma Parametreleri"
+
+msgid "Configuration Prices"
+msgstr "Konfigürasyon Fiyatları"
 
 msgid "Configuration, data migration, and any integrations"
 msgstr "Yapılandırma, veri taşıması ve tüm entegrasyonlar"
@@ -4144,6 +4198,9 @@ msgstr "yapılandırıldı"
 
 msgid "Configured"
 msgstr "Yapılandırılmış"
+
+msgid "Configured Part"
+msgstr "Yapılandırılmış Parça"
 
 msgid "Confirm"
 msgstr "Onayla"
@@ -4394,6 +4451,9 @@ msgstr "Bağlantı panoya kopyalandı"
 msgid "Copied setup prompt to your clipboard"
 msgstr "Hazırlık istemi panonuza kopyalandı"
 
+msgid "Copied!"
+msgstr "Kopyalandı!"
+
 msgid "Copies a setup prompt for your AI coding tool"
 msgstr "AI kodlama aracınız için hazırlık talimatı kopyalar"
 
@@ -4409,11 +4469,20 @@ msgstr "API Anahtarını Kopyala"
 msgid "Copy batch number"
 msgstr "Parti Numarasını Kopyala"
 
+msgid "Copy change notice unique identifier"
+msgstr "Değişiklik bildirimi benzersiz tanıtıcısını kopyala"
+
 msgid "Copy company unique identifier"
 msgstr "Şirket benzersiz tanımlayıcısını kopyala"
 
 msgid "Copy consumable number"
 msgstr "Sarf malzemesi numarasını kopyala"
+
+msgid "Copy consumable unique identifier"
+msgstr "Sarf malzemesi benzersiz tanıtıcısını kopyala"
+
+msgid "Copy customer unique identifier"
+msgstr "Müşteri benzersiz tanıtıcısını kopyala"
 
 msgid "Copy dispatch ID"
 msgstr "Bakım emri ID'sini kopyala"
@@ -4438,6 +4507,9 @@ msgstr "Sorun benzersiz tanımlayıcısını kopyala"
 
 msgid "Copy Job number"
 msgstr "İş Numarasını Kopyala"
+
+msgid "Copy job unique identifier"
+msgstr "İş emri benzersiz tanıtıcısını kopyala"
 
 msgid "Copy link"
 msgstr "Bağlantıyı kopyala"
@@ -4517,6 +4589,15 @@ msgstr "Prosedür adını kopyala"
 msgid "Copy procedure unique identifier"
 msgstr "Prosedürün benzersiz tanımlayıcısını kopyala"
 
+msgid "Copy purchase invoice unique identifier"
+msgstr "Alış faturası benzersiz tanıtıcısını kopyala"
+
+msgid "Copy purchase order unique identifier"
+msgstr "Satın alma siparişi benzersiz tanıtıcısını kopyala"
+
+msgid "Copy purchase return order unique identifier"
+msgstr "Satın alma iade siparişi benzersiz tanıtıcısını kopyala"
+
 msgid "Copy Quality Document"
 msgstr "Kalite Belgesini Kopyala"
 
@@ -4526,17 +4607,38 @@ msgstr "Teklifi Kopyala"
 msgid "Copy Quote number"
 msgstr "Teklif numarasını kopyala"
 
+msgid "Copy quote unique identifier"
+msgstr "Teklif benzersiz tanıtıcısını kopyala"
+
 msgid "Copy return number"
 msgstr "İade numarasını kopyala"
 
+msgid "Copy RFQ unique identifier"
+msgstr "Teklif talebi benzersiz tanıtıcısını kopyala"
+
 msgid "Copy RMA number"
 msgstr "RMA numarasını kopyala"
+
+msgid "Copy sales invoice unique identifier"
+msgstr "Satış faturası benzersiz tanıtıcısını kopyala"
+
+msgid "Copy sales order unique identifier"
+msgstr "Satış siparişi benzersiz tanıtıcısını kopyala"
+
+msgid "Copy sales return order unique identifier"
+msgstr "Satış iade siparişi benzersiz tanıtıcısını kopyala"
 
 msgid "Copy service number"
 msgstr "Hizmet numarasını kopyala"
 
 msgid "Copy service unique identifier"
 msgstr "Hizmet benzersiz tanımlayıcısını kopyala"
+
+msgid "Copy supplier quote unique identifier"
+msgstr "Tedarikçi teklifi benzersiz tanıtıcısını kopyala"
+
+msgid "Copy supplier unique identifier"
+msgstr "Tedarikçi benzersiz tanıtıcısını kopyala"
 
 msgid "Copy this item's pricing to another scope."
 msgstr "Bu öğenin fiyatlandırmasını başka bir kapsamdaki konumlandırın."
@@ -4546,6 +4648,9 @@ msgstr "Bu bağlantıyı bir müşteriyle paylaşmak için kopyalayın"
 
 msgid "Copy this link to share the quote with a supplier"
 msgstr "Bu teklifi bir tedarikçiyle paylaşmak için bu bağlantıyı kopyalayın"
+
+msgid "Copy to clipboard"
+msgstr "Panoya kopyala"
 
 msgid "Copy tool number"
 msgstr "Araç numarasını kopyala"
@@ -4676,6 +4781,9 @@ msgstr "Kaydedilemedi"
 msgid "Couldn't complete the Onshape connection"
 msgstr "Onshape bağlantısı tamamlanamadı"
 
+msgid "Couldn't complete the Onshape Government connection"
+msgstr "Onshape Government bağlantısı tamamlanamadı"
+
 msgid "Couldn't load documents"
 msgstr "Belgeler yüklenemedi"
 
@@ -4690,6 +4798,9 @@ msgstr "İş yeniden planlanamadı. Lütfen tekrar deneyin."
 
 msgid "Couldn't save the Onshape connection"
 msgstr "Onshape bağlantısı kaydedilemedi"
+
+msgid "Couldn't save the Onshape Government connection"
+msgstr "Onshape Government bağlantısı kaydedilemedi"
 
 msgid "Couldn't save the Ramp connection"
 msgstr "Ramp bağlantısı kaydedilemedi"
@@ -6077,9 +6188,6 @@ msgstr "Hareket planlayıcısı tarafından algılandı"
 msgid "Developer"
 msgstr "Geliştirici"
 
-msgid "Diagram saved"
-msgstr "Şema kaydedildi"
-
 msgid "Differs from the selection — allowed, but confirm they nest together"
 msgstr "Seçimden farklı — izin verilir, ancak birlikte iç içe geçtiğini doğrulayın"
 
@@ -6358,11 +6466,11 @@ msgstr "Çizime yerleştirmek için sürükleyin"
 msgid "Drag to reorder"
 msgstr "Yeniden sıralamak için sürükleyin"
 
-msgid "Drag to resize diagram and features"
-msgstr "Şemayı ve özellikleri yeniden boyutlandırmak için sürükleyin"
+msgid "Drag to resize diagram and characteristics"
+msgstr "Diyagramı ve özellikleri yeniden boyutlandırmak için sürükleyin"
 
-msgid "Drag to resize drawing and features"
-msgstr "Çizim ve özellikleri yeniden boyutlandırmak için sürükleyin"
+msgid "Drag to resize drawing and characteristics"
+msgstr "Çizimi ve özellikleri yeniden boyutlandırmak için sürükleyin"
 
 msgid "Drag to zoom"
 msgstr "Yakınlaştırmak için sürükleyin"
@@ -6373,8 +6481,11 @@ msgstr "Çekiliyor"
 msgid "Drawing Number"
 msgstr "Resim numarası"
 
-msgid "Drawing replaced. Balloon placements were removed; feature rows are unchanged."
-msgstr "Çizim değiştirildi. Balon yerleşimleri kaldırıldı; özellik satırları değişmedi."
+msgid "Drawing replaced. Balloon placements were removed; characteristic rows are unchanged."
+msgstr "Çizim değiştirildi. Balon yerleştirmeleri kaldırıldı; özellik satırları değişmedi."
+
+msgid "Drop Ship"
+msgstr "Direkt Sevkiyat"
 
 msgid "Drop shipment"
 msgstr "Doğrudan Sevkiyat"
@@ -6446,9 +6557,6 @@ msgstr "1 gün içinde teslim"
 
 msgid "due now"
 msgstr "hemen teslim"
-
-msgid "Due within"
-msgstr "Süresi içinde"
 
 msgid "Duplicate"
 msgstr "Çoğalt"
@@ -6545,6 +6653,9 @@ msgstr "Her satır, bu şirketin verilerine ait olmayan bir satıra bağlantıd�
 
 msgid "Each line is a link from this company's data to a row it doesn't own. Removing those rows lets the restore run."
 msgstr "Her satır, bu şirketin verilerinden sahibi olmadığı bir satıra bir bağlantıdır. Bu satırları kaldırmak geri yüklemenin çalışmasını sağlar."
+
+msgid "Each line shows its item ID and revision."
+msgstr "Her satır stok kartı kimliğini ve revizyonunu gösterir."
 
 msgid "Each operation's unused material returns as soon as the operation is done."
 msgstr "Her operasyonun kullanılmayan malzemesi operasyon tamamlandıktan hemen sonra geri döner."
@@ -7042,6 +7153,9 @@ msgstr "Listeler, formlar ve açılır listelerde okunabilir bir Müşteri ID'si
 msgid "Enable to show a readable Supplier ID on lists, forms and dropdowns."
 msgstr "Listeler, formlar ve açılır listelerde okunabilir bir Tedarikçi ID'si göstermek için etkinleştirin."
 
+msgid "Enable to show the item ID and revision instead of the description."
+msgstr "Açıklama yerine stok kartı kimliğini ve revizyonunu göstermek için etkinleştirin."
+
 msgid "Enable to start tracking changes to your data."
 msgstr "Verilerinizi izlemeye başlamak için etkinleştirin."
 
@@ -7145,6 +7259,9 @@ msgstr "Doğrulayıcı uygulamanızdaki 6 haneli kodu girin"
 
 msgid "Enter the 6-digit code from your authenticator app to resume."
 msgstr "Devam etmek için kimlik doğrulayıcı uygulamanızdan 6 haneli kodu girin."
+
+msgid "Enter the Onshape URL, client ID and client secret of your private OAuth application, then save."
+msgstr "Özel OAuth uygulamanızın Onshape URL'sini, istemci ID'sini ve istemci gizli anahtarını girin, ardından kaydedin."
 
 msgid "Enter the quantity this movement should have been. An opposite movement for the difference is posted next to the original, in the original's time period."
 msgstr "Bu hareketin olması gereken miktarı girin. Farktaki ters hareket, orijinalin zaman döneminde orijinalin yanında deftere kaydedilir."
@@ -7362,6 +7479,9 @@ msgstr "Döviz kuru güncelleme tarihi"
 msgid "Exchange Rates"
 msgstr "Döviz kurları"
 
+msgid "Exchanging the authorization code failed. Check the Onshape URL and the client secret, then save the integration settings again."
+msgstr "Yetkilendirme kodu değişimi başarısız oldu. Onshape URL'sini ve istemci gizli anahtarını kontrol edin, ardından entegrasyon ayarlarını yeniden kaydedin."
+
 msgid "Exchanging the authorization code for access failed. Try connecting again."
 msgstr "Yetkilendirme kodunun erişim için değiştirilmesi başarısız oldu. Yeniden bağlanmayı deneyin."
 
@@ -7398,11 +7518,11 @@ msgstr "Genişlet {0}"
 msgid "Expand all"
 msgstr "Tümünü genişlet"
 
+msgid "Expand characteristics table"
+msgstr "Özellikler tablosunu genişlet"
+
 msgid "Expand Costs"
 msgstr "Maliyetleri Genişlet"
-
-msgid "Expand features table"
-msgstr "Özellikler tablosunu genişlet"
 
 msgid "Expand Labor"
 msgstr "İşçilik Genişlet"
@@ -7587,7 +7707,7 @@ msgstr "Uygun değil"
 msgid "Failed"
 msgstr "Başarısız"
 
-msgid "Failed features"
+msgid "Failed characteristics"
 msgstr "Başarısız özellikler"
 
 #. placeholder {0}: rows.length
@@ -7596,6 +7716,9 @@ msgstr "Satır eklenemedi — {0} satırdan {addedCount} tanesi eklendi"
 
 msgid "Failed to add lines"
 msgstr "Satırlar ekleme başarısız oldu"
+
+msgid "Failed to apply pricing rules"
+msgstr "Fiyatlandırma kuralları uygulanamadı"
 
 msgid "Failed to convert image"
 msgstr "Resim dönüştürme başarısız oldu"
@@ -7839,6 +7962,9 @@ msgstr "Takip edilen varlıklar yüklenemedi"
 msgid "Failed to move account: {0}"
 msgstr "Hesap taşınamadı: {0}"
 
+msgid "Failed to record gauge"
+msgstr "Ölçüm aleti kaydedilemedi"
+
 msgid "Failed to regenerate schedule"
 msgstr "Çizelge yeniden oluşturulamadı"
 
@@ -7872,8 +7998,8 @@ msgstr "CSV sütun verileri alınamadı."
 msgid "Failed to save configuration rule"
 msgstr "Yapılandırma kuralını kaydetme başarısız oldu"
 
-msgid "Failed to save diagram"
-msgstr "Şemayı kaydetme başarısız oldu"
+msgid "Failed to save inspection plan"
+msgstr "Kontrol planı kaydedilemedi"
 
 msgid "Failed to save measurement"
 msgstr "Ölçüm kaydedilemedi"
@@ -7973,15 +8099,6 @@ msgstr "Faks"
 
 msgid "Fax Number"
 msgstr "Faks Numarası"
-
-msgid "Feature"
-msgstr "Özellik"
-
-msgid "Feature values suggested from drawing"
-msgstr "Çizimden önerilen özellik değerleri"
-
-msgid "Features"
-msgstr "Özellikler"
 
 msgid "Fees"
 msgstr "Ücretler"
@@ -8287,6 +8404,9 @@ msgstr "Ölçüm aleti"
 
 msgid "Gauge Calibration Notifications"
 msgstr "Ölçüm Aleti Kalibrasyon Bildirimleri"
+
+msgid "Gauge for characteristic {characteristicLabel}: {currentGauge}"
+msgstr "Özellik {characteristicLabel} için ölçüm aleti: {currentGauge}"
 
 msgid "Gauge ID"
 msgstr "Ölçüm aleti ID"
@@ -9028,6 +9148,9 @@ msgstr "Bu adımda"
 msgid "In use"
 msgstr "Kullanımda"
 
+msgid "In your Enterprise settings under Developer, edit the private OAuth application's permissions to include \"Application can write to your documents\", then save the integration settings again."
+msgstr "Enterprise ayarlarınızın Geliştirici bölümünde, özel OAuth uygulamasının izinlerini «Uygulama belgelerinize yazabilir» izni dahil etmek için düzenleyin ve ardından entegrasyon ayarlarını yeniden kaydedin."
+
 msgid "In-app"
 msgstr "Uygulama içi"
 
@@ -9210,6 +9333,9 @@ msgstr "Talimatlar prosedürden miras alınır."
 
 msgid "Integration"
 msgstr "Entegrasyon"
+
+msgid "Integration credentials"
+msgstr "Entegrasyon kimlik bilgileri"
 
 msgid "Integration not found"
 msgstr "Entegrasyon bulunamadı"
@@ -10024,6 +10150,12 @@ msgstr "Satırlar dahili parça numaralarına ihtiyaç duyuyor"
 
 msgid "Lines need prices or lead times"
 msgstr "Satırlar fiyat veya tedarik süresi gerektirir"
+
+msgid "Lines show descriptions"
+msgstr "Satırlar açıklamaları gösterir"
+
+msgid "Lines show item IDs"
+msgstr "Satırlar stok kartı kimliklerini gösterir"
 
 msgid "Lineside"
 msgstr "Üretim Hattı Yanı"
@@ -11353,6 +11485,15 @@ msgstr "En yeniden önce"
 msgid "Next"
 msgstr "İleri"
 
+msgid "Next 14 days"
+msgstr "Sonraki 14 gün"
+
+msgid "Next 30 days"
+msgstr "Sonraki 30 gün"
+
+msgid "Next 7 days"
+msgstr "Sonraki 7 gün"
+
 msgid "Next Calibration"
 msgstr "Son Kalibrasyon"
 
@@ -11504,6 +11645,9 @@ msgstr "Henüz yorum yok. İlk yorumu ekleyin."
 msgid "No completed jobs within range"
 msgstr "Aralıkta tamamlanmış İş emri yok"
 
+msgid "No completion date"
+msgstr "Tamamlama tarihi yok"
+
 msgid "No components yet"
 msgstr "Henüz bileşen yok"
 
@@ -11600,6 +11744,9 @@ msgstr "Bu İş emri için Tahmin mevcut değildir."
 msgid "No Gauge Selected"
 msgstr "Ölçüm aleti seçilmedi"
 
+msgid "No gauges found."
+msgstr "Ölçüm aleti bulunamadı."
+
 msgid "No grouped notifications"
 msgstr "Gruplanmış bildirim yok"
 
@@ -11626,6 +11773,9 @@ msgstr "Burada henüz hiçbir maddenin envanter hareketi yok."
 
 msgid "No jobs are scheduled at this location yet — release a job to see work-center load."
 msgstr "Bu Lokasyonda henüz İş emri planlanmamış — çalışma merkezinin yükünü görmek için İş emrini Serbest bırakın."
+
+msgid "No jobs match your search."
+msgstr "Aramanızla eşleşen iş emri yok."
 
 msgid "No jobs were created"
 msgstr "İş emri oluşturulmadı"
@@ -11683,6 +11833,12 @@ msgstr "Atanacak kimse yok"
 
 msgid "No open invoices"
 msgstr "Açık fatura yok"
+
+msgid "No open jobs for sales orders are projected to complete at this location in the next {horizon} days."
+msgstr "Bu lokasyonda sonraki {horizon} gün içinde tamamlanması beklenen satış siparişleri için açık iş emri yok."
+
+msgid "No open jobs for sales orders at this location."
+msgstr "Bu lokasyonda satış siparişleri için açık iş emri yok."
 
 msgid "No open memos"
 msgstr "Açık muhasebe notları yok"
@@ -12268,6 +12424,9 @@ msgstr "Aynı anda yalnızca bir harcama entegrasyonu etkin olabilir. Önce mevc
 msgid "Only qualified employees can be scheduled for and run this process"
 msgstr "Yalnızca nitelikli çalışanlar bu işlem için planlanabilir ve çalıştırılabilir"
 
+msgid "Onshape authorized the connection but saving it failed. Save the integration settings to try again."
+msgstr "Onshape bağlantıyı yetkilendirdi ancak kaydedilemedi. Tekrar denemek için entegrasyon ayarlarını kaydedin."
+
 msgid "Onshape authorized the connection but saving it failed. Try connecting again."
 msgstr "Onshape bağlantıyı yetkilendirdi ancak kaydetme başarısız oldu. Yeniden bağlanmayı deneyin."
 
@@ -12276,6 +12435,24 @@ msgstr "Onshape bağlantıyı reddetti"
 
 msgid "Onshape didn't return an authorization code"
 msgstr "Onshape bir yetkilendirme kodu döndürmedi"
+
+msgid "Onshape Government denied the connection"
+msgstr "Onshape Government bağlantıyı reddetti"
+
+msgid "Onshape Government didn't return an authorization code"
+msgstr "Onshape Government yetkilendirme kodu döndürmedi"
+
+msgid "Onshape Government is already connected"
+msgstr "Onshape Government zaten bağlı"
+
+msgid "Onshape Government isn't configured"
+msgstr "Onshape Government yapılandırılmadı"
+
+msgid "Onshape Government rejected the authorization"
+msgstr "Onshape Government yetkilendirmeyi reddetti"
+
+msgid "Onshape is already connected"
+msgstr "Onshape zaten bağlı"
 
 msgid "Onshape isn't configured"
 msgstr "Onshape yapılandırılmamış"
@@ -12340,9 +12517,6 @@ msgstr "MES'te Aç"
 msgid "Open Issues"
 msgstr "Açık Sorunlar"
 
-msgid "Open job"
-msgstr "Açık iş"
-
 msgid "Open job demand plus outstanding transfers out of this bin"
 msgstr "Bu gözden çıkan açık iş emri talebi ve beklemede transferler"
 
@@ -12390,6 +12564,9 @@ msgstr "Planlanmış Açık"
 
 msgid "Open task details"
 msgstr "Görev ayrıntılarını aç"
+
+msgid "Open the Onshape Government integration and save its settings to connect again."
+msgstr "Onshape Government entegrasyonunu açın ve yeniden bağlanmak için ayarlarını kaydedin."
 
 msgid "Open the Ramp integration and try connecting again to finish setup."
 msgstr "Ramp entegrasyonunu açın ve kurulumu tamamlamak için yeniden bağlanmayı deneyin."
@@ -12639,6 +12816,12 @@ msgstr "Aksi takdirde"
 
 msgid "Out"
 msgstr "Dışı"
+
+msgid "Out of calibration"
+msgstr "Kalibrasyon dışı"
+
+msgid "Outbound"
+msgstr "Giden"
 
 msgid "Outgoing"
 msgstr "Çıkış"
@@ -12952,6 +13135,9 @@ msgstr "personel"
 
 msgid "People"
 msgstr "Personel"
+
+msgid "Per unit"
+msgstr "Birim başına"
 
 msgid "Per Unit"
 msgstr "Birim Başı"
@@ -13634,6 +13820,9 @@ msgstr "Projeksiyonlar"
 msgid "Projects"
 msgstr "Projeler"
 
+msgid "Promised"
+msgstr "Vaat Edilen"
+
 msgid "Promised Date"
 msgstr "Taahhüt Tarihi"
 
@@ -14307,6 +14496,9 @@ msgstr "Son ödemeler"
 msgid "Recently Created"
 msgstr "Son Oluşturulanlar"
 
+msgid "Recently used"
+msgstr "Son kullanılan"
+
 msgid "Recertify Every (Days)"
 msgstr "Her (Gün) Yeniden Sertifikalandır"
 
@@ -14318,6 +14510,9 @@ msgstr "Mutabakat sağlayıcıyla tutarsızlıklar buldu"
 
 msgid "Reconciling a purchase order against what was received and invoiced — implicit in Carbon, via the line quantities and GR/IR balance."
 msgstr "Satın alma siparişinin alınan ve faturalandırılana karşı uzlaştırması — Carbon'da satır miktarları ve GR/IR bakiyesi aracılığıyla örtük olarak yapılır."
+
+msgid "Reconfigure"
+msgstr "Yeniden Yapılandır"
 
 msgid "Record"
 msgstr "Kayıt"
@@ -14681,8 +14876,8 @@ msgstr "Bu şirketin verilerini bir demo veri seti ile değiştirin — önce an
 msgid "Replacement Order"
 msgstr "Değişim Siparişi"
 
-msgid "Replacing the PDF removes all balloon placements on this document. Feature rows and their values stay; you can place balloons again on the new drawing."
-msgstr "PDF'i değiştirmek bu belgedeki tüm balon yerleşimlerini kaldırır. Özellik satırları ve değerleri kalır; yeni çizim üzerinde tekrar balon yerleştirebilirsiniz."
+msgid "Replacing the PDF removes all balloon placements on this document. Characteristic rows and their values stay; you can place balloons again on the new drawing."
+msgstr "PDF'yi değiştirmek bu belgede tüm balon yerleştirmelerini kaldırır. Özellik satırları ve değerleri kalır; yeni çizimde tekrar balon yerleştirebilirsiniz."
 
 msgid "Replenishment"
 msgstr "Yenileştirme"
@@ -15430,7 +15625,7 @@ msgstr "Örneklem büyüklüğü"
 msgid "Sampling"
 msgstr "Örnekleme"
 
-msgid "Sampling — Feature {featureLabel}"
+msgid "Sampling — Characteristic {featureLabel}"
 msgstr "Örnekleme — Özellik {featureLabel}"
 
 msgid "Sampling Standard"
@@ -15632,6 +15827,9 @@ msgstr "Çıkartıldı"
 msgid "Search"
 msgstr "Ara"
 
+msgid "Search {gaugeTypeName}..."
+msgstr "Ara {gaugeTypeName}..."
+
 msgid "Search accounts"
 msgstr "Hesapları arayın"
 
@@ -15676,6 +15874,9 @@ msgstr "Alanları ara..."
 
 msgid "Search for existing or create a new one"
 msgstr "Mevcut birini arayın veya yeni bir tane oluşturun"
+
+msgid "Search gauges..."
+msgstr "Ölçüm aletleri ara..."
 
 msgid "Search items or bins"
 msgstr "Stok kartlarını veya gözleri ara"
@@ -15872,6 +16073,9 @@ msgstr "Çalışan Türü Seçin"
 
 msgid "Select field"
 msgstr "Alan seçin"
+
+msgid "Select gauge"
+msgstr "Ölçüm aleti seçin"
 
 msgid "Select Gauge"
 msgstr "Ölçüm Aleti Seç"
@@ -16288,8 +16492,14 @@ msgstr "Sevk Et"
 msgid "Ship some, stock some"
 msgstr "Bazı gönder, bazı stokla"
 
+msgid "Ship To"
+msgstr "Sevkiyat Adresi"
+
 msgid "Ship to Customer"
 msgstr "Müşteriye Gönder"
+
+msgid "Ship Via"
+msgstr "Sevkiyat Yöntemi"
 
 msgid "Ship-From Location"
 msgstr "Gönderme Konumu"
@@ -17609,6 +17819,9 @@ msgstr "Ödeme vadesinin hesaplama yönteminden sonraki gün sayısı"
 msgid "The append-only record of every stock movement; on-hand is the sum of its signed entries and the source of truth."
 msgstr "Her stok hareketinin yalnızca ekleme kaydı; eldeki tutar, imzalı girdilerinin toplamı ve gerçeğin kaynağıdır."
 
+msgid "The authorization was refused in Onshape. Save the integration settings to try again."
+msgstr "Yetkilendirme Onshape'te reddedildi. Tekrar denemek için entegrasyon ayarlarını kaydedin."
+
 msgid "The authorization was refused in Onshape. Try connecting again."
 msgstr "Yetkilendirme Onshape'te reddedildi. Yeniden bağlanmayı deneyin."
 
@@ -17984,8 +18197,8 @@ msgstr "Lot, Geçti olarak işaretlenecektir. {fails} örneklenen başarısızl�
 msgid "The lot will still be rejected, but an NCR cannot be created until at least one Issue Type is configured."
 msgstr "Lot yine de reddedilecek, ancak en az bir Hata Türü yapılandırılana kadar Bir Uygunluk Raporu (NCR) oluşturulamaz."
 
-msgid "The lot's per-feature sampling plan will be re-resolved from the selected document."
-msgstr "Lot'un her özellik başına örnekleme planı seçilen belgeden yeniden çözülecektir."
+msgid "The lot's per-characteristic sampling plan will be re-resolved from the selected document."
+msgstr "Lotun her karakteristiği için örnekleme planı seçilen belgeden yeniden belirlenecek."
 
 msgid "The lowest amount this supplier will charge for this process, regardless of quantity; jobs below the breakeven volume still cost at least this much."
 msgstr "Bu Tedarikçinin bu Proses için Miktar ne olursa olsun talep edebileceği en düşük tutar; başabaş hacminin altındaki İş emirleri en az bu tutardan maliyetlidir."
@@ -18060,6 +18273,9 @@ msgstr "Miktar tabanlı politikler altında yeni bir yenileme siparişini tetikl
 
 msgid "The Onshape connection expired"
 msgstr "Onshape bağlantısının süresi doldu"
+
+msgid "The Onshape Government connection expired"
+msgstr "Onshape Government bağlantısının süresi doldu"
 
 msgid "The operations and steps your parts move through"
 msgstr "Parçalarınızın geçtiği operasyonlar ve adımlar"
@@ -18184,6 +18400,9 @@ msgstr "İş akışı değişkenleri yerine konulduktan sonra JSON içerik tür�
 
 msgid "The residual WIP a job has left at close, swept to a Production Variance account — the only variance Carbon books for a job."
 msgstr "Bir iş emrinin kapatıldığında bıraktığı artık yarı mamul, Üretim Sapması hesabına aktarılan — Carbon'un bir iş emri için kaydedebileceği tek sapma."
+
+msgid "The response from Onshape was missing required parameters. Check the private app's redirect URL, then save the integration settings again."
+msgstr "Onshape'ten gelen yanıt gerekli parametreleri içermiyordu. Özel uygulamanın yeniden yönlendirme URL'sini kontrol edin, ardından entegrasyon ayarlarını yeniden kaydedin."
 
 msgid "The response from Onshape was missing required parameters. Try connecting again."
 msgstr "Onshape'ten gelen yanıtta gerekli parametreler eksikti. Yeniden bağlanmayı deneyin."
@@ -18927,6 +19146,9 @@ msgstr "Tolerans+"
 msgid "Tolerance (+/-)"
 msgstr "Tolerans (+/-)"
 
+msgid "Tomorrow"
+msgstr "Yarın"
+
 msgid "tool"
 msgstr "Araç"
 
@@ -19340,6 +19562,9 @@ msgstr "Bilinmeyen"
 
 msgid "unknown error"
 msgstr "bilinmeyen hata"
+
+msgid "Unknown gauge"
+msgstr "Bilinmeyen ölçüm aleti"
 
 msgid "unknown location"
 msgstr "bilinmeyen konum"
@@ -19912,6 +20137,9 @@ msgstr "Notları görüntüle"
 
 msgid "View on schedule board"
 msgstr "Çizelge panosunda görüntüle"
+
+msgid "View only — changes are not saved"
+msgstr "Yalnızca görüntüle — değişiklikler kaydedilmez"
 
 msgid "View Open"
 msgstr "Açık Gör"
@@ -20829,6 +21057,9 @@ msgstr "Davetiyeniz geçersiz veya zaten Kabul edilmiştir. Bu bir hata olduğun
 
 msgid "Your job here: check a real sample of each row, then mark it validated. Foundation data loads first, then master records, then open transactions at cutover."
 msgstr "Buradaki işiniz: her satırın gerçek bir örneğini kontrol edin, ardından doğrulanmış olarak işaretleyin. Temel veriler önce yüklenir, ardından ana kayıtlar, ardından kesme noktasında açık işlemler."
+
+msgid "Your latest changes could not be saved. Are you sure you want to leave this page?"
+msgstr "Son değişiklikleriniz kaydedilemedi. Bu sayfadan çıkmak istediğinizden emin misiniz?"
 
 msgid "Your legal name, addresses, branding, and document defaults"
 msgstr "Yasal adınız, adresler, marka kimliği ve belge varsayılanları"

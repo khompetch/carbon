@@ -5478,6 +5478,30 @@ export type Database = {
           }
         ]
       }
+      changelogDispatch: {
+        Row: {
+          description: string | null
+          dispatchedAt: string
+          emailsSent: number
+          guid: string
+          title: string | null
+        }
+        Insert: {
+          description?: string | null
+          dispatchedAt?: string
+          emailsSent?: number
+          guid: string
+          title?: string | null
+        }
+        Update: {
+          description?: string | null
+          dispatchedAt?: string
+          emailsSent?: number
+          guid?: string
+          title?: string | null
+        }
+        Relationships: []
+      }
       changeOrder: {
         Row: {
           approvalRequirements: string[] | null
@@ -7959,6 +7983,7 @@ export type Database = {
           salesRuleNotificationGroup: string[]
           samplingStandard: Database["public"]["Enums"]["samplingStandard"]
           shelfLabelSize: string | null
+          showBomExplorerReadableId: boolean
           showCurrencyTrailingZeros: boolean
           showCustomerReadableId: boolean
           showSupplierReadableId: boolean
@@ -8013,6 +8038,7 @@ export type Database = {
           salesRuleNotificationGroup?: string[]
           samplingStandard?: Database["public"]["Enums"]["samplingStandard"]
           shelfLabelSize?: string | null
+          showBomExplorerReadableId?: boolean
           showCurrencyTrailingZeros?: boolean
           showCustomerReadableId?: boolean
           showSupplierReadableId?: boolean
@@ -8067,6 +8093,7 @@ export type Database = {
           salesRuleNotificationGroup?: string[]
           samplingStandard?: Database["public"]["Enums"]["samplingStandard"]
           shelfLabelSize?: string | null
+          showBomExplorerReadableId?: boolean
           showCurrencyTrailingZeros?: boolean
           showCustomerReadableId?: boolean
           showSupplierReadableId?: boolean
@@ -19227,6 +19254,7 @@ export type Database = {
           createdAt: string
           createdBy: string
           description: string | null
+          gaugeTypeId: string | null
           id: string
           inspectionDocumentId: string
           label: string
@@ -19256,6 +19284,7 @@ export type Database = {
           createdAt?: string
           createdBy: string
           description?: string | null
+          gaugeTypeId?: string | null
           id?: string
           inspectionDocumentId: string
           label: string
@@ -19285,6 +19314,7 @@ export type Database = {
           createdAt?: string
           createdBy?: string
           description?: string | null
+          gaugeTypeId?: string | null
           id?: string
           inspectionDocumentId?: string
           label?: string
@@ -19386,6 +19416,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "inspectionDocuments"
             referencedColumns: ["id", "companyId"]
+          },
+          {
+            foreignKeyName: "inspectionFeature_gaugeTypeId_fkey"
+            columns: ["gaugeTypeId"]
+            isOneToOne: false
+            referencedRelation: "gaugeType"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "inspectionFeature_updatedBy_fkey"
@@ -20060,6 +20097,8 @@ export type Database = {
           companyId: string
           createdAt: string
           createdBy: string
+          gaugeId: string | null
+          gaugeRecordedAt: string | null
           id: string
           inspectionFeatureId: string
           inspectionId: string
@@ -20074,6 +20113,8 @@ export type Database = {
           companyId: string
           createdAt?: string
           createdBy: string
+          gaugeId?: string | null
+          gaugeRecordedAt?: string | null
           id?: string
           inspectionFeatureId: string
           inspectionId: string
@@ -20088,6 +20129,8 @@ export type Database = {
           companyId?: string
           createdAt?: string
           createdBy?: string
+          gaugeId?: string | null
+          gaugeRecordedAt?: string | null
           id?: string
           inspectionFeatureId?: string
           inspectionId?: string
@@ -20208,6 +20251,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "userDefaults"
             referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "inspectionSamplingPlan_gaugeId_fkey"
+            columns: ["gaugeId"]
+            isOneToOne: false
+            referencedRelation: "gauge"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inspectionSamplingPlan_gaugeId_fkey"
+            columns: ["gaugeId"]
+            isOneToOne: false
+            referencedRelation: "gauges"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -39746,6 +39803,7 @@ export type Database = {
           amount: number
           amountType: Database["public"]["Enums"]["pricingRuleAmountType"]
           companyId: string
+          configurationPrices: Json | null
           createdAt: string
           createdBy: string
           customerIds: string[] | null
@@ -39768,6 +39826,7 @@ export type Database = {
           amount: number
           amountType?: Database["public"]["Enums"]["pricingRuleAmountType"]
           companyId: string
+          configurationPrices?: Json | null
           createdAt?: string
           createdBy: string
           customerIds?: string[] | null
@@ -39790,6 +39849,7 @@ export type Database = {
           amount?: number
           amountType?: Database["public"]["Enums"]["pricingRuleAmountType"]
           companyId?: string
+          configurationPrices?: Json | null
           createdAt?: string
           createdBy?: string
           customerIds?: string[] | null
@@ -52022,6 +52082,7 @@ export type Database = {
           addOnCost: number
           assetId: string | null
           companyId: string
+          configuration: Json | null
           convertedAddOnCost: number | null
           convertedNonTaxableAddOnCost: number | null
           convertedShippingCost: number | null
@@ -52068,6 +52129,7 @@ export type Database = {
           addOnCost?: number
           assetId?: string | null
           companyId: string
+          configuration?: Json | null
           convertedAddOnCost?: number | null
           convertedNonTaxableAddOnCost?: number | null
           convertedShippingCost?: number | null
@@ -52114,6 +52176,7 @@ export type Database = {
           addOnCost?: number
           assetId?: string | null
           companyId?: string
+          configuration?: Json | null
           convertedAddOnCost?: number | null
           convertedNonTaxableAddOnCost?: number | null
           convertedShippingCost?: number | null
@@ -78768,6 +78831,7 @@ export type Database = {
           assetReadableId: string | null
           autodeskUrn: string | null
           companyId: string | null
+          configuration: Json | null
           convertedAddOnCost: number | null
           convertedNonTaxableAddOnCost: number | null
           convertedShippingCost: number | null
@@ -83189,6 +83253,42 @@ export type Database = {
         Args: { foreign_key: string; tbl: string }
         Returns: string
       }
+      get_completion_jobs: {
+        Args: {
+          company_id: string
+          location_id: string
+          search?: string
+          through_date?: string
+          time_zone: string
+        }
+        Returns: {
+          completionDate: string
+          customerId: string
+          customerName: string
+          customerReference: string
+          dropShipment: boolean
+          dueDate: string
+          id: string
+          itemName: string
+          itemReadableIdWithRevision: string
+          itemType: Database["public"]["Enums"]["itemType"]
+          jobId: string
+          jobOperations: Json
+          productionQuantity: number
+          projectedCompletionAt: string
+          promisedDate: string
+          quantityComplete: number
+          salesOrderId: string
+          salesOrderReadableId: string
+          shippingMethod: string
+          shipToCity: string
+          shipToCountryCode: string
+          shipToName: string
+          shipToState: string
+          status: Database["public"]["Enums"]["jobStatus"]
+          thumbnailPath: string
+        }[]
+      }
       get_consumable_details: {
         Args: { item_id: string }
         Returns: {
@@ -83239,7 +83339,7 @@ export type Database = {
         Returns: string[]
       }
       get_direct_ancestors_of_tracked_entities_strict: {
-        Args: { p_tracked_entity_ids: string[] }
+        Args: { p_company_id: string; p_tracked_entity_ids: string[] }
         Returns: {
           activityAttributes: Json
           attributes: Json
@@ -83285,7 +83385,7 @@ export type Database = {
         }[]
       }
       get_direct_descendants_of_tracked_entities_strict: {
-        Args: { p_tracked_entity_ids: string[] }
+        Args: { p_company_id: string; p_tracked_entity_ids: string[] }
         Returns: {
           activityAttributes: Json
           attributes: Json
@@ -83621,7 +83721,7 @@ export type Database = {
         }[]
       }
       get_job_operation_step_records: {
-        Args: { p_job_id: string }
+        Args: { p_company_id: string; p_job_id: string }
         Returns: {
           booleanValue: boolean
           companyId: string
@@ -85818,6 +85918,7 @@ export type Database = {
         | "Purchase Return Shipment"
         | "Charge"
         | "Reimbursement"
+        | "Maintenance Event"
       journalEntryStatus: "Draft" | "Posted" | "Reversed"
       journalLineDocumentType:
         | "Receipt"
@@ -85845,6 +85946,7 @@ export type Database = {
         | "Batch Merge"
         | "Charge"
         | "Reimbursement"
+        | "Maintenance Event"
       kanbanOutput: "label" | "qrcode" | "url"
       kanbanReplenishmentSystem: "Buy" | "Make" | "Transfer"
       macrsConvention: "Half-Year" | "Mid-Quarter"
@@ -85960,7 +86062,7 @@ export type Database = {
         | "Partial"
       pickMethodSortMethod: "Default" | "FEFO" | "FIFO" | "LIFO"
       pricingRuleAmountType: "Percentage" | "Fixed"
-      pricingRuleType: "Discount" | "Markup"
+      pricingRuleType: "Discount" | "Markup" | "Configuration"
       procedureStatus: "Draft" | "Active" | "Archived"
       procedureStepType:
         | "Value"
@@ -87250,6 +87352,7 @@ export const Constants = {
         "Purchase Return Shipment",
         "Charge",
         "Reimbursement",
+        "Maintenance Event",
       ],
       journalEntryStatus: ["Draft", "Posted", "Reversed"],
       journalLineDocumentType: [
@@ -87278,6 +87381,7 @@ export const Constants = {
         "Batch Merge",
         "Charge",
         "Reimbursement",
+        "Maintenance Event",
       ],
       kanbanOutput: ["label", "qrcode", "url"],
       kanbanReplenishmentSystem: ["Buy", "Make", "Transfer"],
@@ -87406,7 +87510,7 @@ export const Constants = {
       ],
       pickMethodSortMethod: ["Default", "FEFO", "FIFO", "LIFO"],
       pricingRuleAmountType: ["Percentage", "Fixed"],
-      pricingRuleType: ["Discount", "Markup"],
+      pricingRuleType: ["Discount", "Markup", "Configuration"],
       procedureStatus: ["Draft", "Active", "Archived"],
       procedureStepType: [
         "Value",

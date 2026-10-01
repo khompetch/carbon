@@ -1,3 +1,8 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
+// Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
+// including ports, remain AGPLv3; serving them over a network requires releasing their source.
+
 import { SUPABASE_URL } from "@carbon/auth";
 import type { Database, Json } from "@carbon/database";
 import { getCompanyTimeZone } from "@carbon/database";
@@ -1121,6 +1126,17 @@ export async function updateAllowLowercaseItemIdsSetting(
   return client
     .from("companySettings")
     .update(sanitize({ allowLowercaseItemIds }))
+    .eq("id", companyId);
+}
+
+export async function updateBomExplorerReadableIdSetting(
+  client: SupabaseClient<Database>,
+  companyId: string,
+  showBomExplorerReadableId: boolean
+) {
+  return client
+    .from("companySettings")
+    .update(sanitize({ showBomExplorerReadableId }))
     .eq("id", companyId);
 }
 
