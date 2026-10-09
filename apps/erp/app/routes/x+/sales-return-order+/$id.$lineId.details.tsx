@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -7,8 +6,9 @@ import { assertIsPost, error, notFound } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { validationError, validator } from "@carbon/form";
+import { redirect } from "@carbon/utils";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { redirect, useLoaderData, useParams } from "react-router";
+import { useLoaderData, useParams } from "react-router";
 import { useRouteData } from "~/hooks";
 import {
   getReturnReasonsList,
@@ -100,7 +100,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     readableIdLookups.push(
       client
         .from("salesInvoiceLine")
-        .select("salesInvoice(id, invoiceId)")
+        .select("salesInvoice!salesInvoiceLine_invoiceId_fkey(id, invoiceId)")
         .eq("id", line.data.salesInvoiceLineId)
         .eq("companyId", companyId)
         .maybeSingle()

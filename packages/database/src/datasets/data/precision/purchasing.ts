@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -280,7 +279,11 @@ export const PURCHASE_ORDERS: PurchaseOrderSpec[] = [
     status: "Rejected",
     orderDateOffset: -13,
     lines: [
-      { item: "SVC-CMM-PROG", purchaseQuantity: 1, supplierUnitPrice: 1450 }
+      {
+        item: "CMM Program Development",
+        purchaseQuantity: 1,
+        supplierUnitPrice: 1450
+      }
     ]
   },
 
@@ -605,7 +608,7 @@ export const STANDALONE_SUPPLIER_QUOTES: StandaloneSupplierQuoteSpec[] = [
     expirationOffset: 15,
     lines: [
       {
-        item: "SVC-CMM-PROG",
+        item: "CMM Program Development",
         supplierPartId: "PGS-CMM-DEV",
         prices: [{ quantity: 4, unitPrice: 1180, leadTime: 10 }]
       }

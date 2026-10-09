@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -7,8 +6,10 @@ import { useLingui } from "@lingui/react/macro";
 import {
   LuBan,
   LuGlobe,
+  LuKeyRound,
   LuList,
   LuPercent,
+  LuSection,
   LuShapes,
   LuShieldCheck,
   LuSquareUser,
@@ -52,7 +53,7 @@ export default function useSalesSubmodules() {
           table: "quote"
         },
         {
-          name: t`Orders`,
+          name: t`Sales Orders`,
           to: path.to.salesOrders,
           icon: <RiProgress8Line />,
           table: "salesOrder"
@@ -62,6 +63,23 @@ export default function useSalesSubmodules() {
           to: path.to.salesReturnOrders,
           icon: <LuUndo2 />,
           table: "salesReturnOrder"
+        }
+      ]
+    },
+    {
+      name: t`Deals`,
+      routes: [
+        {
+          name: t`Service Contracts`,
+          to: path.to.contracts,
+          icon: <LuSection />,
+          table: "customerContract"
+        },
+        {
+          name: t`Rental Agreements`,
+          to: path.to.rentalAgreements,
+          icon: <LuKeyRound />,
+          table: "rentalAgreement"
         }
       ]
     },

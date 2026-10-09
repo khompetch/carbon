@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { getCompanyTimeZone } from "@carbon/database";
+import { useAction } from "@carbon/query";
 import {
   Badge,
   Button,
@@ -12,6 +12,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  DateTimePicker,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuIcon,
@@ -19,7 +20,7 @@ import {
   DropdownMenuTrigger,
   HStack,
   IconButton,
-  Input,
+  MENU_ITEM_SHORTCUTS,
   Modal,
   ModalBody,
   ModalContent,
@@ -34,7 +35,9 @@ import {
   Thead,
   Tr
 } from "@carbon/react";
-import { datetime } from "@carbon/utils";
+import { datetime, fromLocalDateTime, toLocalDateTime } from "@carbon/utils";
+import type { CalendarDateTime } from "@internationalized/date";
+import { toCalendarDateTime } from "@internationalized/date";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useLocale } from "@react-aria/i18n";
 import { useEffect, useState } from "react";
@@ -47,7 +50,7 @@ import {
   LuTrash
 } from "react-icons/lu";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { Link, useFetcher, useLoaderData } from "react-router";
+import { Link, useLoaderData } from "react-router";
 import { DateTime } from "~/components";
 import {
   clockIn,
@@ -86,16 +89,6 @@ function formatDay(dateStr: string, locale: string) {
     month: "short",
     day: "numeric"
   });
-}
-
-function toLocalDatetimeInput(dateStr: string) {
-  const d = new Date(dateStr);
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  const hours = String(d.getHours()).padStart(2, "0");
-  const minutes = String(d.getMinutes()).padStart(2, "0");
-  return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -185,10 +178,18 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function MESTimecardPage() {
   const { entries, openEntry, weekOffset, weekStart, weekEnd } =
     useLoaderData<typeof loader>();
-  const fetcher = useFetcher<typeof action>();
+  const fetcher = useAction<typeof action>({
+    onSettled: (data) => {
+      if (data) {
+        setEditingId(null);
+      }
+    }
+  });
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editClockIn, setEditClockIn] = useState("");
-  const [editClockOut, setEditClockOut] = useState("");
+  const [editClockIn, setEditClockIn] = useState<CalendarDateTime | null>(null);
+  const [editClockOut, setEditClockOut] = useState<CalendarDateTime | null>(
+    null
+  );
   const [, setTick] = useState(0);
   const { t } = useLingui();
   const { locale } = useLocale();
@@ -204,20 +205,14 @@ export default function MESTimecardPage() {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    if (fetcher.data && fetcher.state === "idle") {
-      setEditingId(null);
-    }
-  }, [fetcher.data, fetcher.state]);
-
   function startEdit(entry: {
     id: string;
     clockIn: string;
     clockOut: string | null;
   }) {
     setEditingId(entry.id);
-    setEditClockIn(toLocalDatetimeInput(entry.clockIn));
-    setEditClockOut(entry.clockOut ? toLocalDatetimeInput(entry.clockOut) : "");
+    setEditClockIn(toLocalDateTime(entry.clockIn));
+    setEditClockOut(entry.clockOut ? toLocalDateTime(entry.clockOut) : null);
   }
 
   return (
@@ -345,19 +340,27 @@ export default function MESTimecardPage() {
                           {formatDay(entry.clockIn, locale)}
                         </Td>
                         <Td>
-                          <Input
-                            type="datetime-local"
+                          <DateTimePicker
+                            aria-label={t`Clock In`}
+                            size="sm"
                             value={editClockIn}
-                            onChange={(e) => setEditClockIn(e.target.value)}
-                            className="h-8 text-xs w-full [&::-webkit-calendar-picker-indicator]:hidden"
+                            onChange={(value) =>
+                              setEditClockIn(
+                                value ? toCalendarDateTime(value) : null
+                              )
+                            }
                           />
                         </Td>
                         <Td>
-                          <Input
-                            type="datetime-local"
+                          <DateTimePicker
+                            aria-label={t`Clock Out`}
+                            size="sm"
                             value={editClockOut}
-                            onChange={(e) => setEditClockOut(e.target.value)}
-                            className="h-8 text-xs w-full [&::-webkit-calendar-picker-indicator]:hidden"
+                            onChange={(value) =>
+                              setEditClockOut(
+                                value ? toCalendarDateTime(value) : null
+                              )
+                            }
                           />
                         </Td>
                         <Td className="text-muted-foreground text-center">—</Td>
@@ -378,26 +381,23 @@ export default function MESTimecardPage() {
                                 type="hidden"
                                 name="clockIn"
                                 value={
-                                  isNaN(new Date(editClockIn).getTime())
-                                    ? ""
-                                    : new Date(editClockIn).toISOString()
+                                  editClockIn
+                                    ? fromLocalDateTime(editClockIn)
+                                    : ""
                                 }
                               />
-                              {editClockOut &&
-                                !isNaN(new Date(editClockOut).getTime()) && (
-                                  <input
-                                    type="hidden"
-                                    name="clockOut"
-                                    value={new Date(editClockOut).toISOString()}
-                                  />
-                                )}
+                              {editClockOut && (
+                                <input
+                                  type="hidden"
+                                  name="clockOut"
+                                  value={fromLocalDateTime(editClockOut)}
+                                />
+                              )}
                               <Button
                                 isLoading={fetcher.state !== "idle"}
                                 variant="secondary"
                                 type="submit"
-                                disabled={isNaN(
-                                  new Date(editClockIn).getTime()
-                                )}
+                                disabled={!editClockIn}
                               >
                                 <Trans>Save</Trans>
                               </Button>
@@ -442,12 +442,14 @@ export default function MESTimecardPage() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem
+                                shortcut={MENU_ITEM_SHORTCUTS.edit}
                                 onClick={() => startEdit(entry)}
                               >
                                 <DropdownMenuIcon icon={<LuPencil />} />
                                 <Trans>Edit</Trans>
                               </DropdownMenuItem>
                               <DropdownMenuItem
+                                shortcut={MENU_ITEM_SHORTCUTS.delete}
                                 onClick={() =>
                                   setDeletingEntry({
                                     id: entry.id,

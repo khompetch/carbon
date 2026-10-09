@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -15,6 +14,7 @@ import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import type { TotpFactor } from "@carbon/auth/mfa.server";
 import { getTotpFactors } from "@carbon/auth/mfa.server";
 import { flash } from "@carbon/auth/session.server";
+import { useRevalidator } from "@carbon/query";
 import {
   Alert,
   AlertDescription,
@@ -48,7 +48,7 @@ import {
   LuTrash2
 } from "react-icons/lu";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { data, useFetcher, useLoaderData, useRevalidator } from "react-router";
+import { data, useFetcher, useLoaderData } from "react-router";
 import { DateTime } from "~/components";
 import {
   INVALID_CODE_MESSAGE,

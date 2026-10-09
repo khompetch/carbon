@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -71,18 +70,11 @@ const SalesInvoiceForm = ({ initialValues }: SalesInvoiceFormProps) => {
     paymentTermId: initialValues.paymentTermId
   });
 
-  const [customer, setCustomer] = useState<{
-    id: string | undefined;
-  }>({
-    id: initialValues.customerId
-  });
-
   const onCustomerChange = async (
     newValue: {
       value: string | undefined;
     } | null
   ) => {
-    setCustomer({ id: newValue?.value });
     if (newValue?.value !== invoiceCustomer.id) {
       onInvoiceCustomerChange(newValue);
     }
@@ -111,7 +103,6 @@ const SalesInvoiceForm = ({ initialValues }: SalesInvoiceFormProps) => {
       });
 
       const [customerData, paymentTermData] = await Promise.all([
-        // @ts-ignore TS2589: the composite customerShipping embed sits on the
         // instantiation-depth cliff — the cliff shifts as unrelated modules
         // join the program (same class as the purchasing.service
         // suppression). ts-ignore (not ts-expect-error) is used so it
@@ -206,6 +197,7 @@ const SalesInvoiceForm = ({ initialValues }: SalesInvoiceFormProps) => {
                 />
               )}
               <Customer
+                autoFocus={!isEditing}
                 name="customerId"
                 label={t`Customer`}
                 onChange={onCustomerChange}
@@ -224,7 +216,7 @@ const SalesInvoiceForm = ({ initialValues }: SalesInvoiceFormProps) => {
               <CustomerLocation
                 name="invoiceCustomerLocationId"
                 label={t`Invoice Customer Location`}
-                customer={customer.id}
+                customer={invoiceCustomer.id}
                 value={invoiceCustomer.invoiceCustomerLocationId}
                 onChange={(newValue) => {
                   if (newValue?.id) {
@@ -238,7 +230,7 @@ const SalesInvoiceForm = ({ initialValues }: SalesInvoiceFormProps) => {
               <CustomerContact
                 name="invoiceCustomerContactId"
                 label={t`Invoice Customer Contact`}
-                customer={customer.id}
+                customer={invoiceCustomer.id}
                 value={invoiceCustomer.invoiceCustomerContactId}
                 onChange={(newValue) => {
                   if (newValue?.id) {

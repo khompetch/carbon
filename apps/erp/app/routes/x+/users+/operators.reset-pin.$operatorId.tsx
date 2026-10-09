@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -19,11 +18,13 @@ import {
   ModalHeader,
   ModalOverlay,
   ModalTitle,
+  useCloseRoute,
   VStack
 } from "@carbon/react";
+import { redirect } from "@carbon/utils";
 import { Trans } from "@lingui/react/macro";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { redirect, useFetcher, useLoaderData, useNavigate } from "react-router";
+import { useFetcher, useLoaderData, useNavigate } from "react-router";
 import { getDatabaseClient } from "~/services/database.server";
 import { path } from "~/utils/path";
 
@@ -110,6 +111,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 export default function ResetPinRoute() {
   const { operator } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
+  const closeRoute = useCloseRoute();
   const formFetcher = useFetcher<typeof action>();
   const newPin =
     formFetcher.data?.success === true ? formFetcher.data.pin : null;
@@ -122,7 +124,7 @@ export default function ResetPinRoute() {
       onOpenChange={(open) => {
         if (open) return;
         if (newPin) navigate(path.to.operators);
-        else navigate(-1);
+        else closeRoute();
       }}
     >
       <ModalOverlay />

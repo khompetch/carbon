@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -19,6 +18,7 @@ import {
   ModalBody,
   ModalContent,
   ModalFooter,
+  ModalTitle,
   NumberDecrementStepper,
   NumberField,
   NumberIncrementStepper,
@@ -247,7 +247,9 @@ const ConversionFactor = forwardRef<
             <ModalBody>
               <VStack spacing={8}>
                 <VStack className="w-full text-center">
-                  <div className="w-full text-lg">{description}</div>
+                  <ModalTitle className="w-full text-lg font-normal leading-normal">
+                    {description}
+                  </ModalTitle>
                   <div className="w-full">
                     <Button
                       onClick={switchDirection}

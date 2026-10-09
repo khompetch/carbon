@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -20,10 +19,10 @@ import {
   TruncatedTooltipText,
   VStack
 } from "@carbon/react";
-import { getItemReadableId } from "@carbon/utils";
+import { distinctItemText, getItemReadableId } from "@carbon/utils";
 import { Trans } from "@lingui/react/macro";
 import { useLocale } from "@react-aria/i18n";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useMemo, useState } from "react";
 import { LuChevronRight, LuImage } from "react-icons/lu";
 import { Link, useParams } from "react-router";
@@ -104,7 +103,7 @@ const LineItems = ({
         const lineDescription = isGlAccount
           ? (accounts.find((a) => a.id === line.accountId)?.name ??
             "G/L Account")
-          : line.description;
+          : distinctItemText(itemReadableId, line.description);
         if (!line || !prices || !line.id) {
           return null;
         }
@@ -112,9 +111,9 @@ const LineItems = ({
         return (
           <motion.div
             key={line.id}
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
             className="py-6 w-full"
           >
             <HStack spacing={4} className="items-start">
@@ -160,12 +159,14 @@ const LineItems = ({
                       </motion.div>
                     </HStack>
                   </div>
-                  <TruncatedTooltipText
-                    className="text-muted-foreground text-sm truncate"
-                    tooltip={lineDescription}
-                  >
-                    {lineDescription}
-                  </TruncatedTooltipText>
+                  {lineDescription && (
+                    <TruncatedTooltipText
+                      className="text-muted-foreground text-sm truncate"
+                      tooltip={lineDescription}
+                    >
+                      {lineDescription}
+                    </TruncatedTooltipText>
+                  )}
                 </div>
               </VStack>
             </HStack>

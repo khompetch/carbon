@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { DateTimePicker, Hidden, Select, ValidatedForm } from "@carbon/form";
+import { useAction } from "@carbon/query";
 import {
   Button,
   Copy,
@@ -79,14 +79,14 @@ const MaintenanceDispatchProperties = () => {
       ? optimisticAssignment
       : (routeData?.dispatch?.assignee?.id ?? null);
 
-  const fetcher = useFetcher<{ error?: { message: string } }>();
-  const eventFetcher = useFetcher<{ error?: { message: string } }>();
-
-  useEffect(() => {
-    if (fetcher.data?.error) {
-      toast.error(fetcher.data.error.message);
+  const fetcher = useAction<{ error?: { message: string } }>({
+    onError: (data) => {
+      if (data?.error) {
+        toast.error(data.error.message);
+      }
     }
-  }, [fetcher.data]);
+  });
+  const eventFetcher = useFetcher<{ error?: { message: string } }>();
 
   useEffect(() => {
     if (

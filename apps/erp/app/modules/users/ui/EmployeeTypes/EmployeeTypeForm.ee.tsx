@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: LicenseRef-Carbon-Commercial
-// Copyright (C) Carbon Manufacturing Systems Corporation.
 // Carbon Enterprise file, licensed only under the Carbon Commercial License
 // (packages/ee/LICENSE). Not AGPL. Running, modifying, or copying it beyond those terms requires a commercial license.
 
@@ -13,11 +12,11 @@ import {
   ModalFooter,
   ModalHeader,
   ModalTitle,
+  useCloseRoute,
   VStack
 } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useMemo } from "react";
-import { useNavigate } from "react-router";
 import type { z } from "zod";
 import { Hidden, Input, Submit } from "~/components/Form";
 import PermissionMatrix from "~/components/PermissionMatrix";
@@ -46,8 +45,8 @@ type EmployeeTypeFormProps = {
 const EmployeeTypeForm = ({ initialValues }: EmployeeTypeFormProps) => {
   const { t } = useLingui();
   const userPermissions = usePermissions();
-  const navigate = useNavigate();
-  const onClose = () => navigate(-1);
+  const closeRoute = useCloseRoute();
+  const onClose = () => closeRoute();
 
   const { state: initialState, modules } = useMemo(
     () => fromEmployeeTypePermissions(initialValues.permissions),

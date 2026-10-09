@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
+import { useAction } from "@carbon/query";
 import {
   Button,
   Modal,
@@ -15,8 +15,7 @@ import {
   SHORTCUTS
 } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
-import { useEffect, useRef } from "react";
-import { useFetcher } from "react-router";
+import { useRef } from "react";
 
 type ConfirmDeleteProps = {
   action?: string;
@@ -51,14 +50,15 @@ const ConfirmDelete = ({
   onSubmit
 }: ConfirmDeleteProps) => {
   const { t } = useLingui();
-  const fetcher = useFetcher<{}>();
-  const submitted = useRef(false);
-  useEffect(() => {
-    if (fetcher.state === "idle" && submitted.current) {
-      onSubmit?.();
-      submitted.current = false;
+  const fetcher = useAction<{}>({
+    onSettled: () => {
+      if (submitted.current) {
+        onSubmit?.();
+        submitted.current = false;
+      }
     }
-  }, [fetcher.state, onSubmit]);
+  });
+  const submitted = useRef(false);
   return (
     <Modal
       open={isOpen}

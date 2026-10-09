@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { useCarbon } from "@carbon/auth";
 import { ValidatedForm } from "@carbon/form";
+import { useAction, useLoaderQuery } from "@carbon/query";
 import {
   Alert,
   AlertTitle,
@@ -25,6 +25,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalTitle,
+  PrefetchLink,
   Tabs,
   TabsContent,
   TabsList,
@@ -47,7 +48,7 @@ import {
   LuTriangleAlert
 } from "react-icons/lu";
 import { RiProgress4Line } from "react-icons/ri";
-import { Link, useFetcher, useLocation, useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { PrintButton } from "~/components";
 import { ConfiguratorModal } from "~/components/Configurator/ConfiguratorForm";
 import {
@@ -79,7 +80,13 @@ const JobMakeMethodTools = ({ makeMethod }: { makeMethod?: JobMakeMethod }) => {
   const { jobId, methodId } = useParams();
   if (!jobId) throw new Error("jobId not found");
 
-  const fetcher = useFetcher<{ error: string | null }>();
+  const fetcher = useAction<{ error: string | null }>({
+    onError: (data) => {
+      if (data?.error) {
+        toast.error(data.error);
+      }
+    }
+  });
   const routeData = useRouteData<{
     job: Job;
     method: Tree<JobMethod>;
@@ -118,12 +125,6 @@ const JobMakeMethodTools = ({ makeMethod }: { makeMethod?: JobMakeMethod }) => {
     !!fetcher.formData?.get("configuration");
   const isSaveMethodLoading =
     fetcher.state !== "idle" && fetcher.formAction === path.to.jobMethodSave;
-
-  useEffect(() => {
-    if (fetcher.data?.error) {
-      toast.error(fetcher.data.error);
-    }
-  }, [fetcher.data?.error]);
 
   const [includeInactive, setIncludeInactive] = useState<
     boolean | "indeterminate"
@@ -358,9 +359,9 @@ const JobMakeMethodTools = ({ makeMethod }: { makeMethod?: JobMakeMethod }) => {
                 )}
                 {itemLink && (
                   <MenubarItem leftIcon={<LuGitFork />} asChild>
-                    <Link prefetch="intent" to={itemLink}>
+                    <PrefetchLink to={itemLink}>
                       <Trans>Item Master</Trans>
-                    </Link>
+                    </PrefetchLink>
                   </MenubarItem>
                 )}
                 {makeMethod &&
@@ -730,13 +731,9 @@ const JobMakeMethodTools = ({ makeMethod }: { makeMethod?: JobMakeMethod }) => {
 
 function CompletedJobMethodForm({ currentJobId }: { currentJobId: string }) {
   const { t } = useLingui();
-  const jobsFetcher = useFetcher<{
+  const jobsFetcher = useLoaderQuery<{
     data: { id: string; jobId: string }[] | null;
-  }>();
-
-  useMount(() => {
-    jobsFetcher.load(`${path.to.api.jobs}?status=Completed&status=Closed`);
-  });
+  }>(`${path.to.api.jobs}?status=Completed&status=Closed`);
 
   const jobOptions = useMemo(
     () =>

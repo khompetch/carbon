@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -30,8 +29,8 @@ import {
   uncoveredSsoDomainError
 } from "@carbon/ee/sso.server";
 import { getLogger } from "@carbon/logger";
+import { redirect } from "@carbon/utils";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { redirect } from "react-router";
 import { getSupplierContact } from "~/modules/purchasing";
 import { getCustomerContact } from "~/modules/sales";
 import type { EmployeeInsert, InviteInsert, User } from "~/modules/users";
@@ -1333,12 +1332,12 @@ async function rollbackInvite(
     serviceRole
       .from("customerAccount")
       .delete()
-      .eq("userId", userId)
+      .eq("id", userId)
       .eq("companyId", companyId),
     serviceRole
       .from("supplierAccount")
       .delete()
-      .eq("userId", userId)
+      .eq("id", userId)
       .eq("companyId", companyId)
   ]);
 }

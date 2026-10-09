@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -84,7 +83,7 @@ const UserAttributesForm = ({ attributeCategory }: UserAttributesFormProps) => {
       <VStack spacing={4}>
         {attributeCategory.userAttribute.map((attribute) => {
           const genericProps = getGenericProps(
-            // @ts-ignore
+            // @ts-expect-error
             attribute as PublicAttributes["userAttribute"],
             optimisticUpdates[attribute.id]
           );
@@ -102,7 +101,6 @@ const UserAttributesForm = ({ attributeCategory }: UserAttributesFormProps) => {
                   [attribute.id]: value
                 }))
               }
-              // @ts-ignore
               updateFetcher={updateFetcher}
               userId={userId}
               {...genericProps}

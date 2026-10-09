@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -13,6 +12,7 @@ import {
   type DocumentTheme,
   type HeaderOptions
 } from "@carbon/documents/template";
+import { useAction } from "@carbon/query";
 import type { JSONContent } from "@carbon/react";
 import { arrayMove } from "@dnd-kit/sortable";
 import { nanoid } from "nanoid";
@@ -25,7 +25,6 @@ import {
   useMemo,
   useRef
 } from "react";
-import { useFetcher } from "react-router";
 import type { StoreApi } from "zustand";
 import { createStore, useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
@@ -330,7 +329,14 @@ export function DocumentTemplateProvider({
     store.setState({ sections: props.sections });
   }, [store, props.sections]);
 
-  const fetcher = useFetcher<{ success?: boolean }>();
+  const fetcher = useAction<{ success?: boolean }>({
+    onSuccess: (data) => {
+      if (savedRef.current && data?.success) {
+        savedRef.current = false;
+        store.getState().rebaseline();
+      }
+    }
+  });
   const isSaving = fetcher.state !== "idle";
   const savedRef = useRef(false);
 
@@ -347,14 +353,6 @@ export function DocumentTemplateProvider({
     savedRef.current = true;
     fetcher.submit(formData, { method: "post", action: props.actionPath });
   }, [store, fetcher, props.actionPath]);
-
-  // Once our save resolves, clear the dirty baseline to the just-saved state.
-  useEffect(() => {
-    if (savedRef.current && fetcher.state === "idle" && fetcher.data?.success) {
-      savedRef.current = false;
-      store.getState().rebaseline();
-    }
-  }, [fetcher.data, fetcher.state, store]);
 
   const value = useMemo(
     () => ({ store, save, isSaving }),

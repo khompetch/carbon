@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -120,6 +119,7 @@ import {
 } from "./Date";
 import type { DateTimeProps } from "./DateTime";
 import { DateTime } from "./DateTime";
+import { DisabledReason, getDisabledReason } from "./DisabledReason";
 import {
   Drawer,
   DrawerBody,
@@ -148,6 +148,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
 } from "./Dropdown";
+import { Enumerable } from "./Enumerable";
 import { File } from "./File";
 import {
   FormControl,
@@ -277,6 +278,7 @@ import {
   PopoverHeader,
   PopoverTrigger
 } from "./Popover";
+import { PrefetchLink } from "./PrefetchLink";
 import { Progress } from "./Progress";
 import { PulsingDot } from "./PulsingDot";
 import { RadioGroup, RadioGroupButton, RadioGroupItem } from "./Radio";
@@ -336,7 +338,8 @@ import { Status } from "./Status";
 import type { SubheadingProps } from "./Subheading";
 import { Subheading } from "./Subheading";
 import { Switch } from "./Switch";
-import { SHORTCUTS } from "./shortcuts";
+import type { MenuItemShortcut } from "./shortcuts";
+import { MENU_ITEM_SHORTCUTS, SHORTCUTS } from "./shortcuts";
 import { Table, TableCaption, Tbody, Td, Tfoot, Th, Thead, Tr } from "./Table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./Tabs";
 import type { TextareaProps } from "./Textarea";
@@ -373,6 +376,7 @@ import { VStack } from "./VStack";
 
 export * from "./Acknowledge";
 export * from "./hooks";
+export * from "./RecordOutlet";
 export {
   Accordion,
   AccordionContent,
@@ -400,6 +404,7 @@ export {
   AvatarGroupList,
   AvatarOverflowIndicator,
   Badge,
+  Enumerable,
   BadgeCloseButton,
   Button,
   Card,
@@ -459,6 +464,7 @@ export {
   DateRangePicker,
   DateTime,
   DateTimePicker,
+  DisabledReason,
   Drawer,
   DrawerBody,
   DrawerContent,
@@ -579,6 +585,7 @@ export {
   PopoverFooter,
   PopoverHeader,
   PopoverTrigger,
+  PrefetchLink,
   Progress,
   PulsingDot,
   RadioGroup,
@@ -601,6 +608,7 @@ export {
   SelectValue,
   Separator,
   KeyboardKeys,
+  MENU_ITEM_SHORTCUTS,
   SHORTCUTS,
   ShortcutHelpKeys,
   ShortcutHelpOverlay,
@@ -660,6 +668,7 @@ export {
   TrackedEntityPicker,
   usePickOrderOptions,
   TruncatedTooltipText,
+  getDisabledReason,
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -699,6 +708,7 @@ export type {
   Modifier,
   MultiSelectProps,
   NumberFieldProps,
+  MenuItemShortcut,
   OperatingSystemPlatform,
   Shortcut,
   ShortcutDefinition,

@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -70,7 +69,9 @@ vi.mock("@carbon/logger", () => ({
 vi.mock("@carbon/react", () => ({
   ClientOnly: () => null,
   cn: (...classes: unknown[]) => classes.filter(Boolean).join(" "),
-  toast: { error: vi.fn() }
+  toast: { error: vi.fn() },
+  // The board's provider reads the dates route's timezone once for its cards.
+  useRouteData: () => undefined
 }));
 vi.mock("@lingui/react/macro", () => ({
   useLingui: () => ({ t: () => "translated" })

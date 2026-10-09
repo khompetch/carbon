@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -10,8 +9,8 @@
 import workerSrc from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 /**
- * Point react-pdf's bundled pdfjs at the worker. Call once per app in the
- * client entry — react-pdf ships its own pdfjs instance, and that instance
+ * Point react-pdf's bundled pdfjs at the worker. Call at module scope in each
+ * (lazy) module that renders a PDF — react-pdf ships its own pdfjs instance, and that instance
  * (not the one `./pdf` loads for text extraction) is what `<Document>` and
  * any browser code importing `pdfjs` from "react-pdf" use.
  */

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 // Settings → Backups (company export / in-place restore).
+
 import { assertIsPost, error, success } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
@@ -18,6 +18,7 @@ import {
   validationError,
   validator
 } from "@carbon/form";
+import { useRevalidator } from "@carbon/query";
 import {
   Badge,
   Button,
@@ -34,26 +35,19 @@ import {
   useDisclosure,
   VStack
 } from "@carbon/react";
+import { getErrorMessage, redirect } from "@carbon/utils";
 import { msg } from "@lingui/core/macro";
 import { Plural, Trans, useLingui } from "@lingui/react/macro";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LuLoaderCircle } from "react-icons/lu";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import {
-  data,
-  redirect,
-  useFetcher,
-  useFetchers,
-  useLoaderData,
-  useRevalidator
-} from "react-router";
+import { data, useFetcher, useFetchers, useLoaderData } from "react-router";
 import { z } from "zod";
 import { DateTime } from "~/components";
 import { Confirm } from "~/components/Modals";
 import type { CompanyBackupSummary } from "~/modules/settings";
 import {
   deleteCompanyBackup,
-  exportCompanyBackup,
   getCompanyExportRun,
   getCompanyRestoreRuns,
   totalScopeRows
@@ -61,6 +55,7 @@ import {
 import {
   canManageBackups,
   dismissCompanyExportFailure,
+  exportCompanyBackup,
   finalizeCompanyRestore,
   getCompanyBackups,
   purgeCorruptedRows,
@@ -83,7 +78,6 @@ import {
   RestoreIncludeChoice,
   RestoreReviewRow
 } from "~/modules/settings/ui/Backups";
-import { getEdgeFunctionErrorMessage } from "~/utils/error";
 import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
 
@@ -194,7 +188,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
       const { label, includeStorage } = validation.data;
       await clearStaleExportFailure(client, companyId);
-      const result = await exportCompanyBackup(client, {
+      const result = await exportCompanyBackup({
         companyId,
         userId,
         label: label || undefined,
@@ -203,10 +197,7 @@ export async function action({ request }: ActionFunctionArgs) {
       if (result.error)
         return {
           success: false,
-          message: await getEdgeFunctionErrorMessage(
-            result.error,
-            "Failed to start backup"
-          )
+          message: getErrorMessage(result.error, "Failed to start backup")
         };
       return {
         success: true,
@@ -320,7 +311,7 @@ export async function action({ request }: ActionFunctionArgs) {
       const includeStorage =
         validation.data.includeStorage ?? run.data.includeStorage ?? "none";
       await clearStaleExportFailure(client, companyId);
-      const result = await exportCompanyBackup(client, {
+      const result = await exportCompanyBackup({
         companyId,
         userId,
         label,
@@ -330,10 +321,7 @@ export async function action({ request }: ActionFunctionArgs) {
       if (result.error)
         return {
           success: false,
-          message: await getEdgeFunctionErrorMessage(
-            result.error,
-            "Failed to start backup"
-          )
+          message: getErrorMessage(result.error, "Failed to start backup")
         };
       return {
         success: true,

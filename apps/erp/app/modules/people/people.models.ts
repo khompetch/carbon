@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -81,6 +80,12 @@ export const clockOutValidator = z.object({
   intent: z.literal("clockOut"),
   employeeId: zfd.text(z.string().optional()),
   note: zfd.text(z.string().optional())
+});
+
+// The "Forgot to Clock Out?" prompt: the clock-out is the time being set.
+export const setClockOutValidator = z.object({
+  intent: z.literal("clockOut"),
+  clockOut: z.string().min(1, { message: "Clock out is required" })
 });
 
 export const timecardValidator = z.object({

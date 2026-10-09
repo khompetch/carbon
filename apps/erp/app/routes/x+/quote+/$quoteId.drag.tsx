@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -12,10 +11,11 @@ import { storage, TEMP_STAGING_BUCKET } from "@carbon/files";
 import { supportedModelTypes } from "@carbon/files/cad";
 import { trigger } from "@carbon/jobs";
 import { getLogger } from "@carbon/logger";
+import { redirect } from "@carbon/utils";
 import { generateText, Output } from "ai";
 import { nanoid } from "nanoid";
 import type { ActionFunctionArgs } from "react-router";
-import { data, redirect } from "react-router";
+import { data } from "react-router";
 import { z } from "zod";
 import { upsertPart } from "~/modules/items";
 import {
@@ -24,6 +24,7 @@ import {
   upsertQuoteLineMethod
 } from "~/modules/sales";
 import { requireCompanyRecord } from "~/modules/shared/shared.server";
+import { getDatabaseClient } from "~/services/database.server";
 import { path } from "~/utils/path";
 
 const quoteDragValidator = z.object({
@@ -83,7 +84,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
     let revision = "0";
     try {
       const { output: parsedFilename } = await generateText({
-        // @ts-ignore
         model: openai("gpt-4o-mini"),
         output: Output.object({
           schema: z.object({
@@ -183,14 +183,18 @@ export async function action({ request, params }: ActionFunctionArgs) {
     targetLineId = createQuotationLine.data.id;
 
     // Create quote line method for Make items
-    const upsertMethod = await upsertQuoteLineMethod(serviceRole, {
-      quoteId,
-      quoteLineId: targetLineId,
-      itemId: partId ?? "",
-      configuration: undefined,
-      companyId,
-      userId
-    });
+    const upsertMethod = await upsertQuoteLineMethod(
+      serviceRole,
+      getDatabaseClient(),
+      {
+        quoteId,
+        quoteLineId: targetLineId,
+        itemId: partId ?? "",
+        configuration: undefined,
+        companyId,
+        userId
+      }
+    );
 
     if (upsertMethod.error) {
       throw redirect(
@@ -260,7 +264,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
     if (partId && modelId) {
       updates.push(
-        // @ts-ignore
+        // @ts-expect-error
         client
           .from("item")
           .update({ modelUploadId: modelId })

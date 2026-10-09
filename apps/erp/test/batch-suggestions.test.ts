@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -296,7 +295,7 @@ describe("rankSuggestions", () => {
   });
 });
 
-// The client mirror of the edge fn's assertMaterialCompatible: a candidate whose
+// The client mirror of the server fn's assertMaterialCompatible: a candidate whose
 // "must" dimension can't share a value with the current selection is LOCKED
 // (visible-but-uncheckable). A test that fails if the must-gating is reverted.
 describe("computeLockedById (must-violation gating)", () => {
@@ -784,6 +783,24 @@ describe("filterAndSortCandidates due filter", () => {
     expect(run({ kind: "range", start: day, end: day })).toEqual([
       "next-week"
     ]);
+  });
+
+  it("a range with only a start keeps everything due on or after it", () => {
+    expect(
+      run({ kind: "range", start: parseDate("2026-10-01"), end: null })
+    ).toEqual(["thu", "job-due", "next-week"]);
+  });
+
+  it("a range with only an end keeps everything due on or before it, overdue included", () => {
+    expect(
+      run({ kind: "range", start: null, end: parseDate("2026-09-29") })
+    ).toEqual(["overdue", "today"]);
+  });
+
+  it("an open-ended range still drops undated operations", () => {
+    expect(
+      run({ kind: "range", start: parseDate("2026-01-01"), end: null })
+    ).not.toContain("undated");
   });
 });
 

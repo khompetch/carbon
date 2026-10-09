@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -7,16 +6,26 @@ import type { Database, Json } from "@carbon/database";
 import { fetchAllFromTable, getCompanyTimeZone } from "@carbon/database";
 import type { Kysely, KyselyDatabase } from "@carbon/database/client";
 import {
+  type InvoiceDocumentIds,
+  loadDepositScope,
+  loadSalesInvoiceDocumentIds
+} from "@carbon/database/deposit-scope";
+import { getLogger } from "@carbon/logger";
+import { serverFns } from "@carbon/server-functions";
+import {
   allocatePaymentFunding,
   applyRate,
   assertCurrencyDecimals,
   assertExchangeRate,
+  calculateDueDate,
   chunkArray,
   datetime,
   type FundingConsumptionRow,
   type FundingPaymentRow,
   type FundingRequest,
+  type FundingScope,
   type FundingSource,
+  fundingScopeOf,
   invoiceRemainingAmounts,
   isEffectiveSettlement,
   PAYABLE_POSTING_DESCRIPTIONS,
@@ -67,48 +76,29 @@ import type {
   salesInvoiceValidator
 } from "./invoicing.models";
 
+const logger = getLogger("erp", "invoicing");
+
 const PURCHASE_INVOICES_LIST_COLUMNS =
   "id,invoiceId,supplierId,invoiceSupplierId,supplierReference,postingDate,dateIssued,dateDue,datePaid,balance,assignee,createdBy,createdAt,updatedBy,updatedAt,customFields,companyId,thumbnailPath,itemType,orderTotal,status,paymentTermName" as const;
 
 const SALES_INVOICES_LIST_COLUMNS =
-  "id,invoiceId,status,customerId,customerReference,invoiceCustomerId,postingDate,dateIssued,dateDue,datePaid,balance,assignee,companyId,customFields,createdAt,createdBy,updatedAt,updatedBy,thumbnailPath,itemType,invoiceTotal,paymentTermName" as const;
-
-/**
- * The payment term an invoice falls back to when none is specified — Net 30,
- * matching Stripe's default of 30 days until an invoice is due. Without it an
- * invoice with no payment term carried no due date at all, so it could never
- * read as overdue and never surfaced in AR/AP aging.
- *
- * Mirrors DEFAULT_PAYMENT_TERM in
- * packages/database/supabase/functions/shared/calculate-due-date.ts — keep the
- * two in sync.
- */
-export const DEFAULT_PAYMENT_TERM: {
-  daysDue: number;
-  calculationMethod: Database["public"]["Enums"]["paymentTermCalculationMethod"];
-} = { daysDue: 30, calculationMethod: "Net" };
+  "id,invoiceId,status,customerId,customerReference,invoiceCustomerId,postingDate,dateIssued,dateDue,datePaid,balance,assignee,companyId,customFields,createdAt,createdBy,updatedAt,updatedBy,thumbnailPath,itemType,invoiceTotal,paymentTermName,needsReview,automationHoldReason,sendError,sentAt" as const;
 
 /**
  * Compute an invoice's Due Date from its Issue Date and Payment Term.
  * Returns null only when the issue date is missing or can't be parsed — callers
  * fall back to a plain field update in that case. A missing payment term is NOT
  * a missing due date: an unset paymentTermId, or one whose row genuinely
- * doesn't exist for the company, falls back to DEFAULT_PAYMENT_TERM (Net 30).
+ * doesn't exist for the company, falls back to `DEFAULT_PAYMENT_TERM` (Net 30).
  * A payment-term *query failure* is different: it throws, so callers abort
  * instead of writing the invoice with a stale dateDue. The read is scoped by
  * companyId for tenant isolation (defense in depth alongside RLS) and uses
  * maybeSingle so an absent row is data: null (not an error) — keeping "missing"
  * distinguishable from "failed".
  *
- * The term's calculationMethod decides the anchor for daysDue:
- * - "Net": daysDue days after the issue date.
- * - "End of Month": daysDue days after the end of the issue month.
- * - "Day of Month": due on day daysDue of the month — the first occurrence on
- *   or after the issue date, clamped to the month's length (31 → Feb 28).
- *
- * Mirrors calculateDueDate in
- * packages/database/supabase/functions/shared/calculate-due-date.ts (used when
- * posting invoices) — keep the two in sync.
+ * The date arithmetic is `calculateDueDate` (@carbon/utils), the same one
+ * invoice posting uses.
+ * @mcp read
  */
 export async function computeInvoiceDateDue(
   client: SupabaseClient<Database>,
@@ -136,29 +126,7 @@ export async function computeInvoiceDateDue(
     );
   }
 
-  const { daysDue, calculationMethod } =
-    paymentTerm?.data ?? DEFAULT_PAYMENT_TERM;
-
-  try {
-    const issued = parseDate(dateIssued);
-    switch (calculationMethod) {
-      case "End of Month":
-        return endOfMonth(issued).add({ days: daysDue }).toString();
-      case "Day of Month": {
-        // set() clamps daysDue to the month's length
-        const sameMonth = issued.set({ day: daysDue });
-        return (
-          sameMonth.compare(issued) >= 0
-            ? sameMonth
-            : issued.add({ months: 1 }).set({ day: daysDue })
-        ).toString();
-      }
-      default:
-        return issued.add({ days: daysDue }).toString();
-    }
-  } catch {
-    return null;
-  }
+  return calculateDueDate(dateIssued, paymentTerm?.data);
 }
 
 /**
@@ -174,6 +142,7 @@ export async function computeInvoiceDateDue(
  * The deadline uses the same calculationMethod anchoring as the due date (see
  * computeInvoiceDateDue) but with `daysDiscount` instead of `daysDue`. Terms are
  * batch-loaded in one query — never per invoice (N+1).
+ * @mcp read
  */
 export async function computeEarlyPaymentDiscounts(
   client: SupabaseClient<Database>,
@@ -264,54 +233,49 @@ export async function computeEarlyPaymentDiscounts(
   return result;
 }
 
+/** @mcp create */
 export async function createPurchaseInvoiceFromPurchaseOrder(
   client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
   purchaseOrderId: string,
   companyId: string,
   userId: string
 ) {
-  return client.functions.invoke<{ id: string }>("convert", {
-    body: {
-      type: "purchaseOrderToPurchaseInvoice",
-      id: purchaseOrderId,
-      companyId,
-      userId
-    }
+  return serverFns.as({ client, db, companyId, userId }).invoke("convert", {
+    type: "purchaseOrderToPurchaseInvoice",
+    id: purchaseOrderId
   });
 }
 
+/** @mcp create */
 export async function createSalesInvoiceFromSalesOrder(
   client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
   salesOrderId: string,
   companyId: string,
   userId: string
 ) {
-  return client.functions.invoke<{ id: string }>("convert", {
-    body: {
-      type: "salesOrderToSalesInvoice",
-      id: salesOrderId,
-      companyId,
-      userId
-    }
+  return serverFns.as({ client, db, companyId, userId }).invoke("convert", {
+    type: "salesOrderToSalesInvoice",
+    id: salesOrderId
   });
 }
 
+/** @mcp create */
 export async function createSalesInvoiceFromShipment(
   client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
   shipmentId: string,
   companyId: string,
   userId: string
 ) {
-  return client.functions.invoke<{ id: string }>("convert", {
-    body: {
-      type: "shipmentToSalesInvoice",
-      id: shipmentId,
-      companyId,
-      userId
-    }
+  return serverFns.as({ client, db, companyId, userId }).invoke("convert", {
+    type: "shipmentToSalesInvoice",
+    id: shipmentId
   });
 }
 
+/** @mcp delete */
 export async function deletePurchaseInvoice(
   client: SupabaseClient<Database>,
   purchaseInvoiceId: string
@@ -340,6 +304,7 @@ export async function deletePurchaseInvoice(
   return client.from("purchaseInvoice").delete().eq("id", purchaseInvoiceId);
 }
 
+/** @mcp delete */
 export async function deletePurchaseInvoiceLine(
   client: SupabaseClient<Database>,
   purchaseInvoiceLineId: string
@@ -350,6 +315,7 @@ export async function deletePurchaseInvoiceLine(
     .eq("id", purchaseInvoiceLineId);
 }
 
+/** @mcp delete */
 export async function deleteSalesInvoice(
   client: SupabaseClient<Database>,
   salesInvoiceId: string
@@ -378,6 +344,7 @@ export async function deleteSalesInvoice(
   return client.from("salesInvoice").delete().eq("id", salesInvoiceId);
 }
 
+/** @mcp delete */
 export async function deleteSalesInvoiceLine(
   client: SupabaseClient<Database>,
   salesInvoiceLineId: string
@@ -385,6 +352,7 @@ export async function deleteSalesInvoiceLine(
   return client.from("salesInvoiceLine").delete().eq("id", salesInvoiceLineId);
 }
 
+/** @mcp read */
 export async function getPurchaseInvoice(
   client: SupabaseClient<Database>,
   purchaseInvoiceId: string
@@ -396,6 +364,7 @@ export async function getPurchaseInvoice(
     .single();
 }
 
+/** @mcp read */
 export async function getPurchaseInvoices(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -423,6 +392,7 @@ export async function getPurchaseInvoices(
   return query;
 }
 
+/** @mcp read */
 export async function getPurchaseInvoiceDelivery(
   client: SupabaseClient<Database>,
   purchaseInvoiceId: string
@@ -434,6 +404,7 @@ export async function getPurchaseInvoiceDelivery(
     .single();
 }
 
+/** @mcp read */
 export async function getPurchaseInvoiceLines(
   client: SupabaseClient<Database>,
   purchaseInvoiceId: string
@@ -446,6 +417,7 @@ export async function getPurchaseInvoiceLines(
     .order("createdAt", { ascending: true });
 }
 
+/** @mcp read */
 export async function getPurchaseInvoiceLine(
   client: SupabaseClient<Database>,
   purchaseInvoiceLineId: string
@@ -457,6 +429,7 @@ export async function getPurchaseInvoiceLine(
     .single();
 }
 
+/** @mcp read */
 export async function getSalesInvoice(
   client: SupabaseClient<Database>,
   salesInvoiceId: string
@@ -468,6 +441,7 @@ export async function getSalesInvoice(
     .single();
 }
 
+/** @mcp read */
 export async function getSalesInvoiceCustomerDetails(
   client: SupabaseClient<Database>,
   salesInvoiceId: string
@@ -479,6 +453,7 @@ export async function getSalesInvoiceCustomerDetails(
     .single();
 }
 
+/** @mcp read */
 export async function getSalesInvoices(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -506,6 +481,7 @@ export async function getSalesInvoices(
   return query;
 }
 
+/** @mcp read */
 export async function getSalesInvoiceShipment(
   client: SupabaseClient<Database>,
   salesInvoiceId: string
@@ -517,6 +493,7 @@ export async function getSalesInvoiceShipment(
     .single();
 }
 
+/** @mcp read */
 export async function getSalesInvoiceLines(
   client: SupabaseClient<Database>,
   salesInvoiceId: string
@@ -529,6 +506,7 @@ export async function getSalesInvoiceLines(
     .order("createdAt", { ascending: true });
 }
 
+/** @mcp read */
 export async function getSalesInvoiceLine(
   client: SupabaseClient<Database>,
   salesInvoiceLineId: string
@@ -540,6 +518,7 @@ export async function getSalesInvoiceLine(
     .single();
 }
 
+/** @mcp update */
 export async function updatePurchaseInvoiceExchangeRate(
   client: SupabaseClient<Database>,
   data: {
@@ -559,6 +538,7 @@ export async function updatePurchaseInvoiceExchangeRate(
   return client.from("purchaseInvoice").update(update).eq("id", update.id);
 }
 
+/** @mcp update */
 export async function updatePurchaseInvoiceStatus(
   client: SupabaseClient<Database>,
   update: {
@@ -585,6 +565,7 @@ export async function updatePurchaseInvoiceStatus(
   return client.from("purchaseInvoice").update(update).eq("id", update.id);
 }
 
+/** @mcp update */
 export async function updateSalesInvoiceExchangeRate(
   client: SupabaseClient<Database>,
   data: {
@@ -604,6 +585,7 @@ export async function updateSalesInvoiceExchangeRate(
   return client.from("salesInvoice").update(update).eq("id", update.id);
 }
 
+/** @mcp update */
 export async function updateSalesInvoiceStatus(
   client: SupabaseClient<Database>,
   update: {
@@ -630,6 +612,7 @@ export async function updateSalesInvoiceStatus(
   return client.from("salesInvoice").update(update).eq("id", update.id);
 }
 
+/** @mcp create destructive */
 export async function insertPurchaseInvoice(
   client: SupabaseClient<Database>,
   input: {
@@ -767,6 +750,7 @@ export async function insertPurchaseInvoice(
   };
 }
 
+/** @mcp update */
 export async function updatePurchaseInvoice(
   client: SupabaseClient<Database>,
   input: {
@@ -824,11 +808,14 @@ export async function upsertPurchaseInvoice(
         customFields?: Json;
       })
 ) {
+  // Shipping cost belongs to purchaseInvoiceDelivery, not the invoice row.
   if ("id" in purchaseInvoice) {
+    const { supplierShippingCost: _shipping, ...invoiceUpdate } =
+      purchaseInvoice;
     return client
       .from("purchaseInvoice")
       .update({
-        ...sanitize(purchaseInvoice),
+        ...sanitize(invoiceUpdate),
         updatedAt: datetime.timestamp()
       })
       .eq("id", purchaseInvoice.id)
@@ -877,8 +864,11 @@ export async function upsertPurchaseInvoice(
   const locationId =
     purchaseInvoice.locationId ?? purchaser?.data?.locationId ?? null;
 
-  const { companyGroupId: _companyGroupId, ...purchaseInvoiceData } =
-    purchaseInvoice;
+  const {
+    companyGroupId: _companyGroupId,
+    supplierShippingCost: _shipping,
+    ...purchaseInvoiceData
+  } = purchaseInvoice;
 
   const invoice = await client
     .from("purchaseInvoice")
@@ -917,35 +907,31 @@ export async function upsertPurchaseInvoice(
   return invoice;
 }
 
+/**
+ * Updates an invoice's delivery. The row is created with the invoice and
+ * shares its id, so there is nothing to insert here.
+ * @mcp update
+ */
 export async function upsertPurchaseInvoiceDelivery(
   client: SupabaseClient<Database>,
-  purchaseInvoiceDelivery:
-    | (z.infer<typeof purchaseInvoiceDeliveryValidator> & {
-        companyId: string;
-        createdBy: string;
-        customFields?: Json;
-      })
-    | (z.infer<typeof purchaseInvoiceDeliveryValidator> & {
-        id: string;
-        updatedBy: string;
-        customFields?: Json;
-      })
-) {
-  if ("id" in purchaseInvoiceDelivery) {
-    return client
-      .from("purchaseInvoiceDelivery")
-      .update(sanitize(purchaseInvoiceDelivery))
-      .eq("id", purchaseInvoiceDelivery.id)
-      .select("id")
-      .single();
+  purchaseInvoiceDelivery: z.infer<typeof purchaseInvoiceDeliveryValidator> & {
+    companyId: string;
+    updatedBy: string;
+    customFields?: Json;
   }
+) {
+  // The company scopes the row; it is never written to it.
+  const { companyId, ...delivery } = purchaseInvoiceDelivery;
   return client
     .from("purchaseInvoiceDelivery")
-    .insert([purchaseInvoiceDelivery])
+    .update(sanitize(delivery))
+    .eq("id", delivery.id)
+    .eq("companyId", companyId)
     .select("id")
     .single();
 }
 
+/** @mcp upsert */
 export async function upsertPurchaseInvoiceLine(
   client: SupabaseClient<Database>,
   purchaseInvoiceLine:
@@ -986,6 +972,7 @@ export async function upsertPurchaseInvoiceLine(
     .single();
 }
 
+/** @mcp update */
 export async function updatePurchaseInvoiceLineOrder(
   db: Kysely<KyselyDatabase>,
   companyId: string,
@@ -1003,6 +990,7 @@ export async function updatePurchaseInvoiceLineOrder(
   });
 }
 
+/** @mcp create destructive */
 export async function insertSalesInvoice(
   client: SupabaseClient<Database>,
   input: {
@@ -1145,6 +1133,7 @@ export async function insertSalesInvoice(
   };
 }
 
+/** @mcp update */
 export async function updateSalesInvoice(
   client: SupabaseClient<Database>,
   input: {
@@ -1203,10 +1192,11 @@ export async function upsertSalesInvoice(
       })
 ) {
   if ("id" in salesInvoice) {
+    const { supplierShippingCost: _shipping, ...invoiceUpdate } = salesInvoice;
     return client
       .from("salesInvoice")
       .update({
-        ...sanitize(salesInvoice),
+        ...sanitize(invoiceUpdate),
         updatedAt: datetime.timestamp()
       })
       .eq("id", salesInvoice.id)
@@ -1255,7 +1245,11 @@ export async function upsertSalesInvoice(
   const locationId =
     salesInvoice.locationId ?? salesPerson?.data?.locationId ?? null;
 
-  const { companyGroupId: _companyGroupId, ...salesInvoiceData } = salesInvoice;
+  const {
+    companyGroupId: _companyGroupId,
+    supplierShippingCost: _shipping,
+    ...salesInvoiceData
+  } = salesInvoice;
 
   const invoice = await client
     .from("salesInvoice")
@@ -1295,35 +1289,31 @@ export async function upsertSalesInvoice(
   return invoice;
 }
 
+/**
+ * Updates an invoice's shipment. The row is created with the invoice and
+ * shares its id, so there is nothing to insert here.
+ * @mcp update
+ */
 export async function upsertSalesInvoiceShipment(
   client: SupabaseClient<Database>,
-  salesInvoiceShipment:
-    | (z.infer<typeof salesInvoiceShipmentValidator> & {
-        companyId: string;
-        createdBy: string;
-        customFields?: Json;
-      })
-    | (z.infer<typeof salesInvoiceShipmentValidator> & {
-        id: string;
-        updatedBy: string;
-        customFields?: Json;
-      })
-) {
-  if ("id" in salesInvoiceShipment) {
-    return client
-      .from("salesInvoiceShipment")
-      .update(sanitize(salesInvoiceShipment))
-      .eq("id", salesInvoiceShipment.id)
-      .select("id")
-      .single();
+  salesInvoiceShipment: z.infer<typeof salesInvoiceShipmentValidator> & {
+    companyId: string;
+    updatedBy: string;
+    customFields?: Json;
   }
+) {
+  // The company scopes the row; it is never written to it.
+  const { companyId, ...shipment } = salesInvoiceShipment;
   return client
     .from("salesInvoiceShipment")
-    .insert([salesInvoiceShipment])
+    .update(sanitize(shipment))
+    .eq("id", shipment.id)
+    .eq("companyId", companyId)
     .select("id")
     .single();
 }
 
+/** @mcp upsert */
 export async function upsertSalesInvoiceLine(
   client: SupabaseClient<Database>,
   salesInvoiceLine:
@@ -1338,11 +1328,34 @@ export async function upsertSalesInvoiceLine(
         customFields?: Json;
       })
 ) {
-  if ("id" in salesInvoiceLine) {
+  // salesInvoiceLine has no purchase order columns.
+  const {
+    purchaseOrderId: _purchaseOrderId,
+    purchaseOrderLineId: _purchaseOrderLineId,
+    ...line
+  } = salesInvoiceLine;
+
+  // Only a Service line has a service period (a Rental line carries its
+  // billing period) — every other item type is a physical good, earned when it
+  // ships. A cleared DatePicker posts "", which a DATE column rejects, so both
+  // collapse to null.
+  const hasServicePeriod =
+    line.invoiceLineType === "Service" || line.invoiceLineType === "Rental";
+  const servicePeriod = {
+    serviceStartDate: (hasServicePeriod && line.serviceStartDate) || null,
+    serviceEndDate: (hasServicePeriod && line.serviceEndDate) || null
+  };
+
+  if ("id" in line) {
     return client
       .from("salesInvoiceLine")
-      .update(sanitize(salesInvoiceLine))
-      .eq("id", salesInvoiceLine.id)
+      .update(
+        sanitize({
+          ...line,
+          ...servicePeriod
+        })
+      )
+      .eq("id", line.id)
       .select("id")
       .single();
   }
@@ -1350,7 +1363,7 @@ export async function upsertSalesInvoiceLine(
   const existing = await client
     .from("salesInvoiceLine")
     .select("sortOrder")
-    .eq("invoiceId", salesInvoiceLine.invoiceId);
+    .eq("invoiceId", line.invoiceId);
 
   const maxSortOrder = (existing.data ?? []).reduce(
     (max, row) => Math.max(max, row.sortOrder ?? 0),
@@ -1359,11 +1372,12 @@ export async function upsertSalesInvoiceLine(
 
   return client
     .from("salesInvoiceLine")
-    .insert([{ ...salesInvoiceLine, sortOrder: maxSortOrder + 1 }])
+    .insert([{ ...line, ...servicePeriod, sortOrder: maxSortOrder + 1 }])
     .select("id")
     .single();
 }
 
+/** @mcp update */
 export async function updateSalesInvoiceLineOrder(
   db: Kysely<KyselyDatabase>,
   companyId: string,
@@ -1385,6 +1399,7 @@ export async function updateSalesInvoiceLineOrder(
 // Payments (AR receipts + AP disbursements + applications)
 // ======================================================================
 
+/** @mcp read */
 export async function getPayment(
   client: SupabaseClient<Database>,
   id: string,
@@ -1395,6 +1410,7 @@ export async function getPayment(
   return query.single();
 }
 
+/** @mcp read */
 export async function getPayments(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1411,7 +1427,7 @@ export async function getPayments(
 ) {
   let query = client
     .from("payment")
-    .select("*", { count: "exact" })
+    .select("*", { count: LIST_COUNT })
     .eq("companyId", companyId);
 
   if (args.search) {
@@ -1445,6 +1461,7 @@ export async function getPayments(
   return query;
 }
 
+/** @mcp read */
 export async function getCharge(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1458,6 +1475,7 @@ export async function getCharge(
     .single();
 }
 
+/** @mcp read */
 export async function getCharges(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1469,7 +1487,7 @@ export async function getCharges(
 ) {
   let query = client
     .from("charge")
-    .select("*", { count: "exact" })
+    .select("*", { count: LIST_COUNT })
     .eq("companyId", companyId);
 
   if (args.search) {
@@ -1492,6 +1510,7 @@ export async function getCharges(
   return query;
 }
 
+/** @mcp read */
 export async function getReimbursement(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1507,6 +1526,7 @@ export async function getReimbursement(
     .single();
 }
 
+/** @mcp read */
 export async function getReimbursements(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1518,7 +1538,7 @@ export async function getReimbursements(
 ) {
   let query = client
     .from("reimbursement")
-    .select("*", { count: "exact" })
+    .select("*", { count: LIST_COUNT })
     .eq("companyId", companyId);
 
   if (args.search) {
@@ -1542,11 +1562,57 @@ export async function getReimbursements(
 }
 
 /**
+ * The payments that settle a reimbursement, for its Documents panel. One read
+ * of its settlement rows with the payment embedded — a reimbursement is only
+ * ever settled by an employee payment, never by a memo — de-duplicated, since
+ * one payment can carry several settlement rows.
+ * @mcp read
+ */
+export async function getReimbursementRelatedItems(
+  client: SupabaseClient<Database>,
+  companyId: string,
+  reimbursementId: string
+) {
+  type Payment = Pick<
+    Database["public"]["Tables"]["payment"]["Row"],
+    "id" | "paymentId" | "status" | "paymentDate"
+  >;
+  const settlements = await fetchAllFromTable<{ payment: Payment | null }>(
+    client,
+    "invoiceSettlement",
+    "payment:payment!invoiceSettlement_paymentId_fkey(id, paymentId, status, paymentDate)",
+    (query) =>
+      query
+        .eq("companyId", companyId)
+        .eq("targetReimbursementId", reimbursementId)
+        .not("paymentId", "is", null)
+        .order("appliedDate")
+        .order("id")
+  );
+  if (settlements.error) {
+    logger.error("Failed to get reimbursement settlements", {
+      companyId,
+      reimbursementId,
+      error: settlements.error
+    });
+  }
+
+  const payments = new Map<string, Payment>();
+  for (const settlement of settlements.data ?? []) {
+    const payment = settlement.payment;
+    if (payment && !payments.has(payment.id)) payments.set(payment.id, payment);
+  }
+
+  return { payments: [...payments.values()] };
+}
+
+/**
  * Header edit. `.eq("status", "Draft")` is defence in depth alongside the
  * RLS UPDATE policy and the reimbursement_draft_guard trigger — a Posted
  * document is immutable, and a caller that tries gets zero rows rather than
  * a silent partial write. There is deliberately no insert branch: the Ramp
  * sync is the only thing that creates a reimbursement.
+ * @mcp update
  */
 export async function updateReimbursement(
   client: SupabaseClient<Database>,
@@ -1580,6 +1646,7 @@ export async function updateReimbursement(
  *
  * Delete-all-then-reinsert rather than a diff: the editor submits the whole
  * line set as one field, so a diff would be more code for the same result.
+ * @mcp upsert destructive
  */
 export async function upsertReimbursementLines(
   db: Kysely<KyselyDatabase>,
@@ -1660,6 +1727,7 @@ export async function upsertReimbursementLines(
   });
 }
 
+/** @mcp read */
 export async function getInvoiceSettlements(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1723,6 +1791,7 @@ export type InvoiceSettlementForInvoice = {
 // credit/debit memos. Used by the "Applied" panel on the sales/purchase invoice
 // detail page. Page the embedded parents with their applications so large histories
 // retain every source without oversized ID lookups.
+/** @mcp read */
 export async function getInvoiceSettlementsForInvoice(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1877,6 +1946,7 @@ export type MemoApplication = {
     | { type: "reimbursement"; id: string; readableId: string };
 };
 
+/** @mcp read */
 export async function getMemoApplications(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1994,8 +2064,180 @@ export async function getMemoApplications(
   return { data: rows, error: null };
 }
 
+/**
+ * The documents around a payment or memo, for its Documents panel: the
+ * statuses of what it settles, the credits a payment draws (memo settlements
+ * applied through it) and what those settle, its posting journal, and a
+ * memo's return order. One query per table; ids the caller does not pass are
+ * not queried.
+ */
+export async function getSettlementRelatedItems(
+  client: SupabaseClient<Database>,
+  companyId: string,
+  args: {
+    journalId: string | null;
+    targets: {
+      targetSalesInvoiceId: string | null;
+      targetPurchaseInvoiceId: string | null;
+      targetMemoId: string | null;
+      targetReimbursementId: string | null;
+    }[];
+    appliedViaPaymentId?: string;
+    // The payment is still Draft: credits applied through it are only staged,
+    // so what they target is not settled yet (as in getMemoApplications).
+    appliedViaPaymentStaged?: boolean;
+    salesReturnOrderId?: string | null;
+    purchaseReturnOrderId?: string | null;
+    /** A rental early-return credit memo's agreement. */
+    rentalAgreementId?: string | null;
+  }
+) {
+  const viaPayment = args.appliedViaPaymentId
+    ? await client
+        .from("invoiceSettlement")
+        .select(
+          "memoId, targetSalesInvoiceId, targetPurchaseInvoiceId, targetMemoId, targetReimbursementId"
+        )
+        .eq("companyId", companyId)
+        .eq("appliedViaPaymentId", args.appliedViaPaymentId)
+    : null;
+  if (viaPayment?.error) {
+    logger.error("Failed to get credits applied via payment", {
+      companyId,
+      paymentId: args.appliedViaPaymentId,
+      error: viaPayment.error
+    });
+  }
+  const viaRows = viaPayment?.data ?? [];
+  const targets = args.appliedViaPaymentStaged
+    ? args.targets
+    : [...args.targets, ...viaRows];
+
+  const unique = (ids: (string | null | undefined)[]) => [
+    ...new Set(ids.filter((id): id is string => Boolean(id)))
+  ];
+  const salesInvoiceIds = unique(targets.map((t) => t.targetSalesInvoiceId));
+  const purchaseInvoiceIds = unique(
+    targets.map((t) => t.targetPurchaseInvoiceId)
+  );
+  const creditIds = unique(viaRows.map((row) => row.memoId));
+  const memoIds = unique([...targets.map((t) => t.targetMemoId), ...creditIds]);
+  const reimbursementIds = unique(targets.map((t) => t.targetReimbursementId));
+
+  const [
+    journal,
+    salesInvoices,
+    purchaseInvoices,
+    memos,
+    reimbursements,
+    salesReturnOrder,
+    purchaseReturnOrder,
+    rentalAgreement
+  ] = await Promise.all([
+    args.journalId
+      ? client
+          .from("journal")
+          .select("id, journalEntryId, status")
+          .eq("id", args.journalId)
+          .eq("companyId", companyId)
+          .maybeSingle()
+      : null,
+    salesInvoiceIds.length > 0
+      ? client
+          .from("salesInvoices")
+          .select("id, invoiceId, status")
+          .in("id", salesInvoiceIds)
+          .eq("companyId", companyId)
+          .order("invoiceId")
+      : null,
+    purchaseInvoiceIds.length > 0
+      ? client
+          .from("purchaseInvoices")
+          .select("id, invoiceId, status")
+          .in("id", purchaseInvoiceIds)
+          .eq("companyId", companyId)
+          .order("invoiceId")
+      : null,
+    memoIds.length > 0
+      ? client
+          .from("memo")
+          .select("id, memoId, status")
+          .in("id", memoIds)
+          .eq("companyId", companyId)
+          .order("memoId")
+      : null,
+    reimbursementIds.length > 0
+      ? client
+          .from("reimbursement")
+          .select("id, reimbursementId, status")
+          .in("id", reimbursementIds)
+          .eq("companyId", companyId)
+          .order("reimbursementId")
+      : null,
+    args.salesReturnOrderId
+      ? client
+          .from("salesReturnOrder")
+          .select("id, salesReturnOrderId, status")
+          .eq("id", args.salesReturnOrderId)
+          .eq("companyId", companyId)
+          .maybeSingle()
+      : null,
+    args.purchaseReturnOrderId
+      ? client
+          .from("purchaseReturnOrder")
+          .select("id, purchaseReturnOrderId, status")
+          .eq("id", args.purchaseReturnOrderId)
+          .eq("companyId", companyId)
+          .maybeSingle()
+      : null,
+    args.rentalAgreementId
+      ? client
+          .from("rentalAgreement")
+          .select("id, rentalAgreementId, status")
+          .eq("id", args.rentalAgreementId)
+          .eq("companyId", companyId)
+          .maybeSingle()
+      : null
+  ]);
+
+  const failures = {
+    journal,
+    salesInvoices,
+    purchaseInvoices,
+    memos,
+    reimbursements,
+    salesReturnOrder,
+    purchaseReturnOrder,
+    rentalAgreement
+  };
+  for (const [read, result] of Object.entries(failures)) {
+    if (result?.error) {
+      logger.error("Failed to get settlement related {read}", {
+        read,
+        companyId,
+        error: result.error
+      });
+    }
+  }
+
+  const credits = new Set(creditIds);
+  const allMemos = memos?.data ?? [];
+  return {
+    journal: journal?.data ?? null,
+    salesInvoices: salesInvoices?.data ?? [],
+    purchaseInvoices: purchaseInvoices?.data ?? [],
+    memos: allMemos.filter((memo) => !credits.has(memo.id)),
+    credits: allMemos.filter((memo) => credits.has(memo.id)),
+    reimbursements: reimbursements?.data ?? [],
+    salesReturnOrder: salesReturnOrder?.data ?? null,
+    purchaseReturnOrder: purchaseReturnOrder?.data ?? null,
+    rentalAgreement: rentalAgreement?.data ?? null
+  };
+}
+
 // Open sales invoices for a customer (active status and a positive
 // balance). Drives the apply table on the AR payment detail.
+/** @mcp read */
 export async function getOpenSalesInvoicesForCustomer(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -2010,6 +2252,7 @@ export async function getOpenSalesInvoicesForCustomer(
     currencyCode
   );
 }
+/** @mcp read */
 export async function getOpenPurchaseInvoicesForSupplier(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -2059,6 +2302,10 @@ async function getOpenInvoicesForParty(
     Database["public"]["Tables"]["journalLine"]["Row"],
     "documentId" | "amount"
   >;
+  type DocumentLineRow = Pick<
+    Database["public"]["Tables"]["salesInvoiceLine"]["Row"],
+    "invoiceId" | "rentalAgreementId" | "salesOrderId"
+  >;
   const [invoices, company] = await Promise.all([
     fetchAllFromTable<OpenInvoiceRow>(
       client,
@@ -2094,51 +2341,91 @@ async function getOpenInvoicesForParty(
   const ids = invoices.data.map((i) => i.id!);
   const settlements: SettlementRow[] = [];
   const controls: ControlRow[] = [];
+  const documentLines: DocumentLineRow[] = [];
   // Bound filter URLs as well as response pages. A single invoice can itself
   // have more than one response page of control lines or settlements.
   for (const batch of chunkArray(ids, 100)) {
-    const [batchSettlements, batchControls] = await Promise.all([
-      fetchAllFromTable<SettlementRow>(
-        client,
-        "invoiceSettlement",
-        "paymentId, memoId, targetSalesInvoiceId, targetPurchaseInvoiceId, sourceAmount, appliedAmount, discountAmount, writeOffAmount, appliedViaPaymentId, payment:payment!invoiceSettlement_paymentId_fkey(status), memo:memo!invoiceSettlement_memoId_fkey(status), appliedViaPayment:payment!invoiceSettlement_appliedViaPaymentId_fkey(status)",
-        (query) =>
-          query
-            .eq("companyId", companyId)
-            .in(
-              isAR ? "targetSalesInvoiceId" : "targetPurchaseInvoiceId",
-              batch
+    const [batchSettlements, batchControls, batchDocumentLines] =
+      await Promise.all([
+        fetchAllFromTable<SettlementRow>(
+          client,
+          "invoiceSettlement",
+          "paymentId, memoId, targetSalesInvoiceId, targetPurchaseInvoiceId, sourceAmount, appliedAmount, discountAmount, writeOffAmount, appliedViaPaymentId, payment:payment!invoiceSettlement_paymentId_fkey(status), memo:memo!invoiceSettlement_memoId_fkey(status), appliedViaPayment:payment!invoiceSettlement_appliedViaPaymentId_fkey(status)",
+          (query) =>
+            query
+              .eq("companyId", companyId)
+              .in(
+                isAR ? "targetSalesInvoiceId" : "targetPurchaseInvoiceId",
+                batch
+              )
+              .order("id")
+        ),
+        fetchAllFromTable<ControlRow>(
+          client,
+          "journalLine",
+          "documentId, amount, journal:journalId!inner(status,sourceType,companyId)",
+          (query) =>
+            query
+              .eq("companyId", companyId)
+              .eq("journal.companyId", companyId)
+              .eq("journal.status", "Posted")
+              .eq(
+                "journal.sourceType",
+                isAR ? "Sales Invoice" : "Purchase Invoice"
+              )
+              .eq("documentType", "Invoice")
+              .in(
+                "description",
+                isAR
+                  ? RECEIVABLE_POSTING_DESCRIPTIONS
+                  : PAYABLE_POSTING_DESCRIPTIONS
+              )
+              .in("documentId", batch)
+              .order("id")
+        ),
+        // The documents each invoice bills: a customer deposit funds only an
+        // invoice of its own rental agreement or sales order.
+        isAR
+          ? fetchAllFromTable<DocumentLineRow>(
+              client,
+              "salesInvoiceLine",
+              "invoiceId, rentalAgreementId, salesOrderId",
+              (query) =>
+                query
+                  .eq("companyId", companyId)
+                  .in("invoiceId", batch)
+                  .or("rentalAgreementId.not.is.null,salesOrderId.not.is.null")
+                  .order("id")
             )
-            .order("id")
-      ),
-      fetchAllFromTable<ControlRow>(
-        client,
-        "journalLine",
-        "documentId, amount, journal:journalId!inner(status,sourceType,companyId)",
-        (query) =>
-          query
-            .eq("companyId", companyId)
-            .eq("journal.companyId", companyId)
-            .eq("journal.status", "Posted")
-            .eq(
-              "journal.sourceType",
-              isAR ? "Sales Invoice" : "Purchase Invoice"
-            )
-            .eq("documentType", "Invoice")
-            .in(
-              "description",
-              isAR
-                ? RECEIVABLE_POSTING_DESCRIPTIONS
-                : PAYABLE_POSTING_DESCRIPTIONS
-            )
-            .in("documentId", batch)
-            .order("id")
-      )
-    ]);
-    const error = batchSettlements.error ?? batchControls.error;
+          : { data: [] as DocumentLineRow[], error: null }
+      ]);
+    const error =
+      batchSettlements.error ?? batchControls.error ?? batchDocumentLines.error;
     if (error) return { data: null, error };
     settlements.push(...(batchSettlements.data ?? []));
     controls.push(...(batchControls.data ?? []));
+    documentLines.push(...(batchDocumentLines.data ?? []));
+  }
+  const documentsByInvoice = new Map<
+    string,
+    { rentalAgreementIds: string[]; salesOrderIds: string[] }
+  >();
+  for (const line of documentLines) {
+    const documents = documentsByInvoice.get(line.invoiceId) ?? {
+      rentalAgreementIds: [],
+      salesOrderIds: []
+    };
+    if (
+      line.rentalAgreementId &&
+      !documents.rentalAgreementIds.includes(line.rentalAgreementId)
+    )
+      documents.rentalAgreementIds.push(line.rentalAgreementId);
+    if (
+      line.salesOrderId &&
+      !documents.salesOrderIds.includes(line.salesOrderId)
+    )
+      documents.salesOrderIds.push(line.salesOrderId);
+    documentsByInvoice.set(line.invoiceId, documents);
   }
   try {
     const decimals = new Map(
@@ -2179,7 +2466,10 @@ async function getOpenInvoicesForParty(
             id: i.id,
             currencyCode: i.currencyCode,
             balance: remaining.remainingBase,
-            remainingDocument: remaining.remainingDocument
+            remainingDocument: remaining.remainingDocument,
+            rentalAgreementIds:
+              documentsByInvoice.get(i.id)?.rentalAgreementIds ?? [],
+            salesOrderIds: documentsByInvoice.get(i.id)?.salesOrderIds ?? []
           };
         })
         .filter((i) => i.remainingDocument > 0),
@@ -2211,6 +2501,7 @@ async function getOpenInvoicesForParty(
  * `reimbursement.amount` is DOCUMENT currency (there is no base-currency total
  * column), so it is converted once here; `invoiceRemainingAmounts` wants a base
  * total and converts back itself.
+ * @mcp read
  */
 export async function getOpenReimbursementsForEmployee(
   client: SupabaseClient<Database>,
@@ -2399,6 +2690,7 @@ function requireCurrencyDecimals(
   return value;
 }
 
+/** @mcp read */
 export async function getPaymentCurrencyConfiguration(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -2437,11 +2729,19 @@ async function loadOnAccountSources(
   party: PaymentParty,
   currencyCode?: string
 ) {
+  type OnAccountPaymentRow = FundingPaymentRow & {
+    rentalAgreementId: string | null;
+    salesOrderId: string | null;
+    depositAgreement: { readableId: string } | null;
+    depositOrder: { readableId: string } | null;
+  };
   const [payments, company] = await Promise.all([
-    fetchAllFromTable<FundingPaymentRow>(
+    fetchAllFromTable<OnAccountPaymentRow>(
       client,
       "payment",
-      "id, totalAmount, exchangeRate, postingDate, paymentDate, currencyCode",
+      // A deposit's document comes along with its readable id so the composer
+      // can say which document the deposit is reserved for.
+      "id, totalAmount, exchangeRate, postingDate, paymentDate, currencyCode, rentalAgreementId, salesOrderId, depositAgreement:rentalAgreement!payment_rentalAgreementId_fkey(readableId:rentalAgreementId), depositOrder:salesOrder!payment_salesOrderId_fkey(readableId:salesOrderId)",
       (query) => {
         query = query
           .eq("companyId", companyId)
@@ -2497,17 +2797,36 @@ async function loadOnAccountSources(
   const effective = (apps.data ?? []).filter(
     (a) => a.payment?.status === "Posted"
   );
+  const isAR = party.paymentType === "Receipt";
   return {
     sources: remainingFundingSources(
-      payments.data ?? [],
+      (payments.data ?? []).map((payment) => {
+        const scope = isAR ? fundingScopeOf(payment) : null;
+        return {
+          ...payment,
+          scope: scope && {
+            ...scope,
+            readableId:
+              (scope.type === "rentalAgreement"
+                ? payment.depositAgreement?.readableId
+                : payment.depositOrder?.readableId) ?? null
+          }
+        };
+      }),
       effective,
       decimals,
-      party.paymentType === "Receipt"
+      isAR
     ),
     decimals
   };
 }
 
+/** On-account credit funds any invoice; a deposit only its own document's. */
+function onAccountOnly(sources: FundingSource[]): FundingSource[] {
+  return sources.filter((source) => !source.scope);
+}
+
+/** @mcp read */
 export async function getAvailableOnAccountCreditSources(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -2528,16 +2847,19 @@ export async function getAvailableOnAccountCreditSources(
       party,
       currencyCode
     );
+    // `sources` keeps deposits (each carries its `scope`) for the allocator;
+    // the totals are on-account credit only, which any invoice can draw on.
+    const credit = onAccountOnly(sources);
     return {
       data: {
         sources,
         availableDocumentAmount: toDocumentAmount(
-          sources.reduce((sum, p) => sum + p.remainingDocument, 0),
+          credit.reduce((sum, p) => sum + p.remainingDocument, 0),
           1,
           requireCurrencyDecimals(decimals, currencyCode)
         ),
         availableBaseAmount: round(
-          sources.reduce((sum, p) => sum + p.remainingBase, 0)
+          credit.reduce((sum, p) => sum + p.remainingBase, 0)
         )
       },
       error: null
@@ -2555,7 +2877,10 @@ export async function getAvailableOnAccountCreditSources(
   }
 }
 
-/** Base-total contract for other readers; the composer uses typed document sources. */
+/**
+ * Base-total contract for other readers; the composer uses typed document sources.
+ * @mcp read
+ */
 export async function getAvailableOnAccountCredit(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -2563,12 +2888,15 @@ export async function getAvailableOnAccountCredit(
 ): Promise<number> {
   try {
     const { sources } = await loadOnAccountSources(client, companyId, party);
-    return round(sources.reduce((sum, p) => sum + p.remainingBase, 0));
+    return round(
+      onAccountOnly(sources).reduce((sum, p) => sum + p.remainingBase, 0)
+    );
   } catch {
     return 0;
   }
 }
 
+/** @mcp upsert */
 export async function upsertPayment(
   client: SupabaseClient<Database>,
   payment:
@@ -2592,6 +2920,8 @@ export async function upsertPayment(
           ...sanitize(payment),
           customerId: payment.customerId ?? null,
           supplierId: payment.supplierId ?? null,
+          salesOrderId: payment.salesOrderId ?? null,
+          rentalAgreementId: payment.rentalAgreementId ?? null,
           employeeId: payment.employeeId ?? null
         }
       ])
@@ -2604,6 +2934,8 @@ export async function upsertPayment(
       ...sanitize(payment),
       customerId: payment.customerId ?? null,
       supplierId: payment.supplierId ?? null,
+      salesOrderId: payment.salesOrderId ?? null,
+      rentalAgreementId: payment.rentalAgreementId ?? null,
       // Explicit null, like the two trade parties: switching a Draft payment's
       // payee must CLEAR the other two, or the widened one-of-three CHECK
       // rejects the update.
@@ -2615,11 +2947,17 @@ export async function upsertPayment(
 }
 
 // RLS DELETE policy on payment restricts to status='Draft'.
+/** @mcp delete */
 export async function deletePayment(
   client: SupabaseClient<Database>,
-  id: string
+  id: string,
+  companyId: string
 ) {
-  return client.from("payment").delete().eq("id", id);
+  return client
+    .from("payment")
+    .delete()
+    .eq("id", id)
+    .eq("companyId", companyId);
 }
 
 export async function upsertInvoiceSettlement(
@@ -3016,6 +3354,10 @@ async function loadTransactionMemoConsumption(
     .execute();
 }
 
+/**
+ * @mcp action destructive
+ * @mcp audit createdBy
+ */
 export async function replaceInvoiceSettlements(
   db: Kysely<KyselyDatabase>,
   args: {
@@ -3445,7 +3787,21 @@ export async function replaceInvoiceSettlements(
     priorQuery = isAR
       ? priorQuery.where("customerId", "=", partyId)
       : priorQuery.where("supplierId", "=", partyId);
-    const priorPayments = await priorQuery.orderBy("id").forUpdate().execute();
+    const priorPayments = (
+      await priorQuery.orderBy("id").forUpdate().execute()
+    ).map((p) => ({
+      ...p,
+      // A customer deposit funds only invoices of its own document.
+      scope: isAR ? fundingScopeOf(p) : null
+    }));
+    const currentScope: FundingScope | null = isAR
+      ? await loadDepositScope(trx, args.companyId, payment)
+      : null;
+    // Only read the invoices' documents when a deposit is in play.
+    const invoiceDocuments =
+      currentScope || priorPayments.some((p) => p.scope)
+        ? await loadSalesInvoiceDocumentIds(trx, args.companyId, ids)
+        : new Map<string, InvoiceDocumentIds>();
     const sourceIds = priorPayments.map((p) => p.id);
     const consumption = sourceIds.length
       ? await trx
@@ -3509,7 +3865,8 @@ export async function replaceInvoiceSettlements(
         remainingBase: invoice.remainingBase,
         requestedDocumentPrincipal: 0,
         discountAmount: 0,
-        writeOffAmount: 0
+        writeOffAmount: 0,
+        ...invoiceDocuments.get(id)
       };
       request.requestedDocumentPrincipal = toDocumentAmount(
         request.requestedDocumentPrincipal + sourceAmount,
@@ -3534,7 +3891,8 @@ export async function replaceInvoiceSettlements(
         remainingBase: toBaseAmount(
           Number(payment.totalAmount),
           Number(payment.exchangeRate)
-        )
+        ),
+        scope: currentScope
       },
       priorSources: remainingFundingSources(
         priorPayments,
@@ -3573,13 +3931,21 @@ export async function replaceInvoiceSettlements(
 // supplier), a signed amount against a reason GL account, and a set of
 // invoiceSettlement applications (memo as SOURCE) to open invoices of the same
 // party. Direction (Credit/Debit) is the discriminator; numbering uses the
-// creditMemo / debitMemo sequences. Posting is handled by the post-memo edge
+// creditMemo / debitMemo sequences. Posting is handled by the post-memo server
 // function; the apply table is editable only while the memo is Draft.
 
-export async function getMemo(client: SupabaseClient<Database>, id: string) {
-  return client.from("memo").select("*").eq("id", id).single();
+/** @mcp read */
+export async function getMemo(
+  client: SupabaseClient<Database>,
+  id: string,
+  companyId?: string
+) {
+  let query = client.from("memo").select("*").eq("id", id);
+  if (companyId) query = query.eq("companyId", companyId);
+  return query.single();
 }
 
+/** @mcp read */
 export async function getMemos(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -3596,7 +3962,7 @@ export async function getMemos(
 ) {
   let query = client
     .from("memo")
-    .select("*", { count: "exact" })
+    .select("*", { count: LIST_COUNT })
     .eq("companyId", companyId);
 
   if (args.search) {
@@ -3629,6 +3995,7 @@ export async function getMemos(
   return query;
 }
 
+/** @mcp upsert */
 export async function upsertMemo(
   client: SupabaseClient<Database>,
   memo:
@@ -3660,8 +4027,13 @@ export async function upsertMemo(
 }
 
 // RLS DELETE policy on memo restricts to status='Draft'.
-export async function deleteMemo(client: SupabaseClient<Database>, id: string) {
-  return client.from("memo").delete().eq("id", id);
+/** @mcp delete */
+export async function deleteMemo(
+  client: SupabaseClient<Database>,
+  id: string,
+  companyId: string
+) {
+  return client.from("memo").delete().eq("id", id).eq("companyId", companyId);
 }
 
 // The party's available credit to draw on when clearing invoices alongside cash:
@@ -3844,6 +4216,7 @@ async function loadAvailableMemoCredits(
   });
 }
 
+/** @mcp read */
 export async function getAvailableCreditsForParty(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -3870,6 +4243,7 @@ export async function getAvailableCreditsForParty(
   }
 }
 
+/** @mcp read */
 export async function getCompanyHasOpenCredits(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -3891,6 +4265,7 @@ export async function getCompanyHasOpenCredits(
 // The credit applications currently staged on a (Draft) payment — drives the
 // composer's pre-fill so a staged credit stays visible and editable instead of
 // silently vanishing from the available list.
+/** @mcp read */
 export async function getStagedCreditsForPayment(
   client: SupabaseClient<Database>,
   paymentId: string,
@@ -3937,6 +4312,10 @@ export async function getStagedCreditsForPayment(
   return { data, error: null };
 }
 
+/**
+ * @mcp action destructive
+ * @mcp audit createdBy
+ */
 export async function applyCreditsToInvoices(
   db: Kysely<KyselyDatabase>,
   args: {
@@ -4143,6 +4522,7 @@ export async function applyCreditsToInvoices(
 
 // Tie-out RPCs (migration 20260519140000_ar-ap-tie-out)
 
+/** @mcp read */
 export async function getArTieOut(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -4156,6 +4536,7 @@ export async function getArTieOut(
     .single();
 }
 
+/** @mcp read */
 export async function getApTieOut(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -4169,6 +4550,7 @@ export async function getApTieOut(
     .single();
 }
 
+/** @mcp read */
 export async function getArOpenByCustomer(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -4180,6 +4562,7 @@ export async function getArOpenByCustomer(
   });
 }
 
+/** @mcp read */
 export async function getApOpenBySupplier(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -4198,6 +4581,7 @@ export type AgingOptions = {
   bucketDays?: [number, number, number];
 };
 
+/** @mcp read */
 export async function getArAging(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -4215,6 +4599,7 @@ export async function getArAging(
   });
 }
 
+/** @mcp read */
 export async function getApAging(
   client: SupabaseClient<Database>,
   companyId: string,

@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -7,8 +6,10 @@ import { assertIsPost, error, notFound, success } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { validationError, validator } from "@carbon/form";
+import { useCloseRoute } from "@carbon/react";
+import { redirect } from "@carbon/utils";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { redirect, useLoaderData, useNavigate } from "react-router";
+import { useLoaderData } from "react-router";
 import {
   fixedAssetValidator,
   getFixedAsset,
@@ -18,14 +19,14 @@ import { FixedAssetForm } from "~/modules/accounting/ui/FixedAssets";
 import { path } from "~/utils/path";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const { client } = await requirePermissions(request, {
+  const { client, companyId } = await requirePermissions(request, {
     view: "accounting"
   });
 
   const { fixedAssetId } = params;
   if (!fixedAssetId) throw notFound("fixedAssetId not found");
 
-  const asset = await getFixedAsset(client, fixedAssetId);
+  const asset = await getFixedAsset(client, fixedAssetId, companyId);
 
   if (asset.error) {
     throw redirect(
@@ -66,6 +67,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     residualValuePercent: d.residualValuePercent,
     assetLifetimeUsage: d.assetLifetimeUsage ?? null,
     locationId: d.locationId ?? null,
+    workCenterId: d.workCenterId ?? null,
     taxDepreciationMethod: d.taxDepreciationMethod ?? null,
     taxUsefulLifeMonths: d.taxUsefulLifeMonths ?? null,
     taxResidualValuePercent: d.taxResidualValuePercent ?? null,
@@ -91,7 +93,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function FixedAssetDetailsRoute() {
   const { asset } = useLoaderData<typeof loader>();
-  const navigate = useNavigate();
+  const closeRoute = useCloseRoute();
 
   const initialValues = {
     id: asset.id,
@@ -106,6 +108,9 @@ export default function FixedAssetDetailsRoute() {
       ? Number(asset.assetLifetimeUsage)
       : undefined,
     locationId: asset.locationId ?? undefined,
+    // The action writes `workCenterId ?? null`: unseeded, saving the form
+    // cleared the asset's work center.
+    workCenterId: asset.workCenterId ?? undefined,
     taxDepreciationMethod: (asset as any).taxDepreciationMethod ?? undefined,
     taxUsefulLifeMonths: (asset as any).taxUsefulLifeMonths ?? undefined,
     taxResidualValuePercent:
@@ -122,7 +127,7 @@ export default function FixedAssetDetailsRoute() {
 
   return (
     <FixedAssetForm
-      onClose={() => navigate(-1)}
+      onClose={() => closeRoute()}
       key={initialValues.id}
       initialValues={initialValues}
     />

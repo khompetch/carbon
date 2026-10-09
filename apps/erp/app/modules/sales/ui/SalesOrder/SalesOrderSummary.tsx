@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -27,7 +26,11 @@ import {
   VStack
 } from "@carbon/react";
 import type { SalesOrderForProductionCheck } from "@carbon/utils";
-import { getSalesOrderJobStatus, hasLinesRequiringJobs } from "@carbon/utils";
+import {
+  distinctItemText,
+  getSalesOrderJobStatus,
+  hasLinesRequiringJobs
+} from "@carbon/utils";
 import {
   getLocalTimeZone,
   isSameDay,
@@ -36,7 +39,7 @@ import {
 } from "@internationalized/date";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useLocale } from "@react-aria/i18n";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useMemo, useState } from "react";
 import {
   LuChevronRight,
@@ -378,6 +381,11 @@ function LineItems({
         if (!line.id) return null;
 
         const isMade = line.methodType === "Make to Order";
+        const title =
+          line.salesOrderLineType === "Fixed Asset"
+            ? (line as any).assetReadableId || "Fixed Asset"
+            : line.itemReadableId;
+        const description = distinctItemText(title, line.description);
 
         const { jobLabel, jobVariant, jobs } = getSalesOrderJobStatus(
           // @ts-expect-error TS2345 - TODO: fix type
@@ -388,9 +396,9 @@ function LineItems({
         return (
           <motion.div
             key={line.id}
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
             className="border-b border-input py-6 w-full"
           >
             <HStack spacing={4} className="items-start">
@@ -419,11 +427,7 @@ function LineItems({
                   <div className="flex items-center justify-between w-full">
                     <VStack spacing={0} className="flex-1 min-w-0">
                       <HStack spacing={2} className="flex min-w-0 w-full">
-                        <Heading className="truncate">
-                          {line.salesOrderLineType === "Fixed Asset"
-                            ? (line as any).assetReadableId || "Fixed Asset"
-                            : line.itemReadableId}
-                        </Heading>
+                        <Heading className="truncate">{title}</Heading>
                         <Button
                           asChild
                           variant="link"
@@ -435,12 +439,14 @@ function LineItems({
                           </Link>
                         </Button>
                       </HStack>
-                      <TruncatedTooltipText
-                        className="text-muted-foreground text-sm truncate w-full"
-                        tooltip={line.description}
-                      >
-                        {line.description}
-                      </TruncatedTooltipText>
+                      {description && (
+                        <TruncatedTooltipText
+                          className="text-muted-foreground text-sm truncate w-full"
+                          tooltip={description}
+                        >
+                          {description}
+                        </TruncatedTooltipText>
+                      )}
                     </VStack>
                     <VStack
                       spacing={2}
@@ -448,6 +454,7 @@ function LineItems({
                     >
                       <HStack spacing={4}>
                         <MotionMoney
+                          className="font-semibold text-xl whitespace-nowrap"
                           value={
                             ((line?.convertedUnitPrice ?? 0) *
                               (line?.saleQuantity ?? 0) +
@@ -656,7 +663,7 @@ function LineItems({
                       </Td>
                     </Tr>
 
-                    <Tr key="total" className="font-bold">
+                    <Tr key="total" className="font-semibold">
                       <Td>Total</Td>
                       <Td className="text-right">
                         <MotionMoney

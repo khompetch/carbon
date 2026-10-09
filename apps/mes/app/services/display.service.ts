@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -274,6 +273,7 @@ export async function getWorkDisplayData(
   args: { workCenterId: string; companyId: string; locationId: string }
 ): Promise<WorkDisplayData> {
   const [events, queue, lastEnded] = await Promise.all([
+    // @ts-ignore TS2589: the PostgREST select parse crosses the instantiation-depth limit (see .ai/lessons.md)
     client
       .from("productionEvent")
       .select(

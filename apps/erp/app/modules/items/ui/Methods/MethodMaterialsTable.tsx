@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -35,16 +34,14 @@ const MethodMaterialsTable = memo(
             <HStack className="py-1">
               <Hyperlink
                 to={getPathToMakeMethod(
-                  // @ts-ignore
+                  // @ts-expect-error
                   row.original.makeMethod?.item?.type,
-                  // @ts-ignore
                   row.original.makeMethod?.item?.id,
-                  // @ts-ignore
+                  // @ts-expect-error
                   row.original.makeMethod?.id
                 )}
                 className="max-w-[260px] truncate"
               >
-                {/* @ts-ignore */}
                 {row.original.makeMethod?.item?.readableIdWithRevision}
               </Hyperlink>
             </HStack>

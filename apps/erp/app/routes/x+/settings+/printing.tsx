@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -17,13 +16,19 @@ import {
   upsertPrinterRoute
 } from "@carbon/printing";
 import { invalidatePrinterCache } from "@carbon/printing/printing.server";
-import { Button, Heading, ScrollArea, VStack } from "@carbon/react";
-import { labelSizes } from "@carbon/utils";
+import {
+  Button,
+  Heading,
+  RecordOutlet,
+  ScrollArea,
+  VStack
+} from "@carbon/react";
+import { labelSizes, redirect } from "@carbon/utils";
 import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { LuPrinter } from "react-icons/lu";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { Link, Outlet, redirect, useLoaderData } from "react-router";
+import { Link, useLoaderData } from "react-router";
 import { getLocationsList, getWorkCentersList } from "~/modules/resources";
 import { getCompanySettings, printerRouteValidator } from "~/modules/settings";
 import { AssignmentsCard, PrintersCard } from "~/modules/settings/ui/Printing";
@@ -262,7 +267,7 @@ export default function PrintingSettingsRoute() {
           workCenters={workCenters}
         />
       </VStack>
-      <Outlet />
+      <RecordOutlet />
     </ScrollArea>
   );
 }

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { DateTimePicker, Hidden, Submit, ValidatedForm } from "@carbon/form";
+import { useAction } from "@carbon/query";
 import {
   Button,
   Count,
@@ -18,6 +18,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  MENU_ITEM_SHORTCUTS,
   Modal,
   ModalBody,
   ModalContent,
@@ -32,7 +33,7 @@ import {
 import { formatDate } from "@carbon/utils";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useLocale } from "@react-aria/i18n";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { flushSync } from "react-dom";
 import {
   LuBox,
@@ -45,7 +46,7 @@ import {
   LuSearch,
   LuTrash
 } from "react-icons/lu";
-import { Link, useFetcher, useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { Employee, TextArea, WorkCenter } from "~/components/Form";
 import { ConfirmDelete } from "~/components/Modals";
 import { LevelLine } from "~/components/TreeView";
@@ -387,6 +388,7 @@ function MaintenanceExplorerChildItem({
           <DropdownMenuContent>
             {child.type === "event" && (
               <DropdownMenuItem
+                shortcut={MENU_ITEM_SHORTCUTS.edit}
                 onSelect={() => {
                   onEdit(child);
                 }}
@@ -397,6 +399,7 @@ function MaintenanceExplorerChildItem({
             )}
             {permissions.can("delete", "resources") && (
               <DropdownMenuItem
+                shortcut={MENU_ITEM_SHORTCUTS.delete}
                 destructive
                 onSelect={() => {
                   onDelete(child);
@@ -423,13 +426,13 @@ function NewTimecardModal({
   dispatchId: string;
 }) {
   const { t } = useLingui();
-  const fetcher = useFetcher();
-
-  useEffect(() => {
-    if (fetcher.state === "idle" && fetcher.data?.success === true) {
-      onClose();
+  const fetcher = useAction({
+    onSuccess: (data) => {
+      if (data?.success === true) {
+        onClose();
+      }
     }
-  }, [fetcher.state, fetcher.data, onClose]);
+  });
 
   return (
     <Modal
@@ -490,13 +493,13 @@ function EditTimecardModal({
   event: MaintenanceDispatchEvent & { type: "event" };
 }) {
   const { t } = useLingui();
-  const fetcher = useFetcher();
-
-  useEffect(() => {
-    if (fetcher.state === "idle" && fetcher.data?.success === true) {
-      onClose();
+  const fetcher = useAction({
+    onSuccess: (data) => {
+      if (data?.success === true) {
+        onClose();
+      }
     }
-  }, [fetcher.state, fetcher.data, onClose]);
+  });
 
   return (
     <Modal

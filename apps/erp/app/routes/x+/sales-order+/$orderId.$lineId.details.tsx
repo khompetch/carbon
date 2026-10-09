@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -16,23 +15,19 @@ import {
 import { validationError, validator } from "@carbon/form";
 import { getLogger } from "@carbon/logger";
 import type { JSONContent } from "@carbon/react";
-import { Card, CardHeader, CardTitle } from "@carbon/react";
+import { Card, CardHeader, CardTitle, RecordOutlet } from "@carbon/react";
+import { redirect } from "@carbon/utils";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { Fragment, Suspense } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import {
-  Await,
-  Outlet,
-  redirect,
-  useLoaderData,
-  useParams
-} from "react-router";
+import { Await, useLoaderData, useParams } from "react-router";
 import { CadModel, DeferredFiles } from "~/components";
 import { usePermissions, useRouteData } from "~/hooks";
 import { getItemReplenishment } from "~/modules/items";
 import { getJobsBySalesOrderLine } from "~/modules/production";
 import type {
   Opportunity,
+  PriceTraceStep,
   SalesOrder,
   SalesOrderLineType
 } from "~/modules/sales";
@@ -274,6 +269,8 @@ export default function EditSalesOrderLineRoute() {
     methodType: line?.methodType ?? "Make to Order",
     nonTaxableAddOnCost: line?.nonTaxableAddOnCost ?? 0,
     promisedDate: line?.promisedDate ?? undefined,
+    serviceStartDate: line?.serviceStartDate ?? "",
+    serviceEndDate: line?.serviceEndDate ?? "",
     saleQuantity: line?.saleQuantity ?? 1,
     setupPrice: line?.setupPrice ?? 0,
     storageUnitId: line?.storageUnitId ?? "",
@@ -283,6 +280,7 @@ export default function EditSalesOrderLineRoute() {
     shippingCost: line?.shippingCost ?? 0,
     configuration:
       (line?.configuration as Record<string, unknown> | null) ?? null,
+    priceTrace: (line?.priceTrace as PriceTraceStep[] | null) ?? null,
     assetReadableId: (line as any)?.assetReadableId ?? undefined,
     assetName: (line as any)?.assetName ?? undefined,
     ...getCustomFields(line?.customFields)
@@ -292,7 +290,7 @@ export default function EditSalesOrderLineRoute() {
     <Fragment key={lineId}>
       <SalesOrderLineForm
         key={initialValues.id}
-        // @ts-ignore
+        // @ts-expect-error
         initialValues={initialValues}
       />
 
@@ -376,7 +374,7 @@ export default function EditSalesOrderLineRoute() {
         viewerClassName="aspect-square min-h-[420px] max-h-[70vh]"
       />
 
-      <Outlet />
+      <RecordOutlet />
     </Fragment>
   );
 }

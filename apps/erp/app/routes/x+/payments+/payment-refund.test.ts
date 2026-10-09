@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -53,6 +52,11 @@ vi.mock("~/modules/invoicing", () => ({
   getOpenPurchaseInvoicesForSupplier: h.purchase,
   getAvailableOnAccountCreditSources: h.funding,
   getStagedCreditsForPayment: h.staged,
+  getOpenReimbursementsForEmployee: vi.fn(async () => ({
+    data: [],
+    error: null
+  })),
+  getSettlementRelatedItems: vi.fn(async () => ({})),
   isPaymentLocked: vi.fn(),
   PaymentApplications: vi.fn(),
   PaymentApplyTable: vi.fn(),
@@ -60,6 +64,14 @@ vi.mock("~/modules/invoicing", () => ({
   AvailableCreditsTable: vi.fn(),
   paymentValidator: {},
   upsertPayment: vi.fn()
+}));
+vi.mock("~/modules/invoicing/invoicing.server", () => ({
+  checkDepositDocument: vi.fn(async () => null),
+  getDepositDocuments: vi.fn(async () => [])
+}));
+vi.mock("~/components/DocumentPage", () => ({
+  DocumentPage: vi.fn(),
+  DocumentSidebar: vi.fn()
 }));
 
 import { loader } from "./$paymentId";

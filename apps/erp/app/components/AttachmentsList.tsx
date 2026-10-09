@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -10,6 +9,7 @@ import {
   storage
 } from "@carbon/files";
 import { MediaUploader, wasConvertedFromHeic } from "@carbon/files/media";
+import { useRevalidator } from "@carbon/query";
 import {
   Badge,
   HStack,
@@ -27,7 +27,6 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { useCallback, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { LuCloudUpload, LuFileText, LuX } from "react-icons/lu";
-import { useRevalidator } from "react-router";
 import { useUser } from "~/hooks";
 import { stripSpecialCharacters } from "~/utils/string";
 

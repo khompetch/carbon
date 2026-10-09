@@ -21,7 +21,6 @@
     "@vercel/analytics": "catalog:",
     "@vercel/react-router": "catalog:",
     "cookie": "catalog:",
-    "framer-motion": "catalog:",
     "isbot": "catalog:",
     "non.geist": "catalog:",
     "posthog-js": "catalog:",
@@ -40,6 +39,7 @@
   },
   "devDependencies": {
     "@carbon/config": "workspace:*",
+    "@carbon/dev": "workspace:*",
     "@lingui/vite-plugin": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
@@ -51,7 +51,6 @@
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
-    "vite-plugin-babel-macros": "catalog:",
     "wait-on": "catalog:"
   },
   "private": true,
@@ -61,7 +60,7 @@
     "dev": "react-router dev",
     "lint": "biome lint --write ",
     "start": "react-router-serve ./build/server/index.js",
-    "typecheck": "tsgo --noEmit",
+    "typecheck": "react-router typegen && tsgo --noEmit",
     "typegen": "react-router typegen"
   },
   "sideEffects": false

@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -13,8 +12,8 @@ import {
   VStack
 } from "@carbon/react";
 import { Trans } from "@lingui/react/macro";
-import type { DragControls } from "framer-motion";
-import { Reorder, useDragControls } from "framer-motion";
+import type { DragControls } from "motion/react";
+import { Reorder, useDragControls } from "motion/react";
 import { type ReactNode, useEffect, useState } from "react";
 import { useFetcher } from "react-router";
 import type { ListItem } from "~/types";

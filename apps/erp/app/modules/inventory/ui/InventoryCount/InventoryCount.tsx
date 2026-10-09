@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
+import { useRevalidator } from "@carbon/query";
 import {
   Button,
   HStack,
@@ -24,7 +24,7 @@ import {
   LuRotateCcw,
   LuSend
 } from "react-icons/lu";
-import { useFetcher, useRevalidator } from "react-router";
+import { useFetcher } from "react-router";
 import { usePermissions } from "~/hooks";
 import type {
   InventoryCountLine,

@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -15,6 +14,7 @@ import {
   Heading,
   HStack,
   IconButton,
+  MENU_ITEM_SHORTCUTS,
   useDisclosure,
   VStack
 } from "@carbon/react";
@@ -40,7 +40,7 @@ import {
 } from "../../items.models";
 import type { ChangeNotice } from "../../types";
 import ChangeNoticeStatus from "./ChangeNoticeStatus";
-import { releaseDialogOpenAtom } from "./releaseDialog.store";
+import { setReleaseDialogOpen } from "./releaseDialog.store";
 
 const ChangeNoticeHeader = () => {
   const { id } = useParams();
@@ -143,6 +143,7 @@ const ChangeNoticeHeader = () => {
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuItem
+                  shortcut={MENU_ITEM_SHORTCUTS.delete}
                   destructive
                   disabled={
                     !permissions.can("delete", "parts") ||
@@ -208,7 +209,7 @@ const ChangeNoticeHeader = () => {
               leftIcon={<LuCircleCheck />}
               variant="primary"
               isDisabled={!permissions.can("update", "parts")}
-              onClick={() => releaseDialogOpenAtom.set(true)}
+              onClick={() => setReleaseDialogOpen(true)}
             >
               {t`Release`}
             </Button>

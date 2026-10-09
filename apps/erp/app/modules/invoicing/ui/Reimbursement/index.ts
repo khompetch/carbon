@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -11,7 +10,9 @@ export type {
   JournalLineDimensionValue
 } from "~/modules/accounting/ui/JournalEntries/types";
 export { default as PayExpenseModal } from "./PayExpenseModal";
+export { default as ReimbursementDocuments } from "./ReimbursementDocuments";
 export { default as ReimbursementEditForm } from "./ReimbursementEditForm";
+export { default as ReimbursementHeader } from "./ReimbursementHeader";
 export { default as ReimbursementStatus } from "./ReimbursementStatus";
 export { default as ReimbursementSummary } from "./ReimbursementSummary";
 export { default as ReimbursementsTable } from "./ReimbursementsTable";

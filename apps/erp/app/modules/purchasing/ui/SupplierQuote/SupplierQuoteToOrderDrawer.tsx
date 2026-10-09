@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -32,6 +31,7 @@ import {
 } from "@carbon/react";
 import {
   deriveRate,
+  distinctItemText,
   INPUT_FORMAT,
   pluralize,
   taxableBase
@@ -213,7 +213,7 @@ const LinePricingForm = ({
         const lineDescription = isGlAccount
           ? (accounts.find((a) => a.id === line.accountId)?.name ??
             "G/L Account")
-          : line.description;
+          : distinctItemText(lineHeading, line.description);
 
         return (
           <VStack key={line.id}>
@@ -236,12 +236,14 @@ const LinePricingForm = ({
                   the card edge. min-w-0 is what lets truncate bite. */}
               <VStack spacing={0} className="flex-1 min-w-0">
                 <Heading className="min-w-0">{lineHeading}</Heading>
-                <TruncatedTooltipText
-                  className="text-muted-foreground text-base truncate"
-                  tooltip={lineDescription}
-                >
-                  {lineDescription}
-                </TruncatedTooltipText>
+                {lineDescription && (
+                  <TruncatedTooltipText
+                    className="text-muted-foreground text-base truncate"
+                    tooltip={lineDescription}
+                  >
+                    {lineDescription}
+                  </TruncatedTooltipText>
+                )}
               </VStack>
             </HStack>
             <LinePricingOptions

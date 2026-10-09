@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -89,6 +88,19 @@ export async function addWorktree(opts: {
   if (r.exitCode !== 0) {
     throw new Error((r.stderr || r.stdout || "git worktree add failed").trim());
   }
+}
+
+// Remove a worktree only if git agrees it is clean. Unlike `removeWorktree`
+// there is no fallback: git refusing means there is work in it (or it is
+// locked), and that is the answer. Returns whether it was removed.
+export async function removeCleanWorktree(path: string): Promise<boolean> {
+  const r = await execa("git", ["worktree", "remove", path], { reject: false });
+  return r.exitCode === 0;
+}
+
+// Drop git's records of worktrees whose directory no longer exists.
+export async function pruneWorktreeEntries(): Promise<void> {
+  await execa("git", ["worktree", "prune"], { reject: false });
 }
 
 export async function removeWorktree(

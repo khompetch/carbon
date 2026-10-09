@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -18,6 +17,7 @@ import {
 import { trigger } from "@carbon/jobs";
 import { getLogger } from "@carbon/logger";
 import { NotificationEvent } from "@carbon/notifications";
+import { unchecked } from "@carbon/utils";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { ActionFunctionArgs } from "react-router";
 import { qualityDocumentStatus } from "~/modules/quality/quality.models";
@@ -45,15 +45,31 @@ async function processToActive(
   const archivedIdsToMoveToDraft: string[] = [];
   const canTransitionToActive = (s: string | null) =>
     s === "Draft" || s === "Archived";
-  for (const doc of docList) {
-    if (!canTransitionToActive(doc.status)) continue;
-    const approvalRequired = await isApprovalRequired(
+  // The same answer for every document: read once, and only when one needs it.
+  const transitioning = docList.filter((doc) =>
+    canTransitionToActive(doc.status)
+  );
+  const approvalRequired =
+    transitioning.length > 0 &&
+    (await isApprovalRequired(
       serviceRole,
       "qualityDocument",
       companyId,
       undefined
+    ));
+  let approvers: Promise<string[]> | undefined;
+  const getApprovers = () => {
+    approvers ??= getApprovalRuleByAmount(
+      serviceRole,
+      "qualityDocument",
+      companyId,
+      undefined
+    ).then((rule) =>
+      rule.data ? getApproverUserIdsForRule(serviceRole, rule.data) : []
     );
-    if (!approvalRequired) continue;
+    return approvers;
+  };
+  for (const doc of approvalRequired ? transitioning : []) {
     const hasPending = await hasPendingApproval(
       serviceRole,
       "qualityDocument",
@@ -72,15 +88,7 @@ async function processToActive(
       amount: undefined
     });
 
-    const rule = await getApprovalRuleByAmount(
-      serviceRole,
-      "qualityDocument",
-      companyId,
-      undefined
-    );
-    const approverIds = rule.data
-      ? await getApproverUserIdsForRule(serviceRole, rule.data)
-      : [];
+    const approverIds = await getApprovers();
 
     if (approverIds.length > 0) {
       try {
@@ -201,11 +209,13 @@ export async function action({ request }: ActionFunctionArgs) {
     case "name":
       return await client
         .from("qualityDocument")
-        .update({
-          [field]: value,
-          updatedBy: userId,
-          updatedAt: new Date().toISOString()
-        })
+        .update(
+          unchecked({
+            [field]: value,
+            updatedBy: userId,
+            updatedAt: new Date().toISOString()
+          })
+        )
         .in("id", ids as string[])
         .eq("companyId", companyId);
     case "status": {

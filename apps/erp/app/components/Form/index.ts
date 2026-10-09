@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -69,7 +68,6 @@ import Process from "./Process";
 import Processes from "./Processes";
 import Sequence from "./Sequence";
 import SequenceOrCustomId from "./SequenceOrCustomId";
-import Service from "./Service";
 import {
   ShelfLifeStartProcess,
   ShelfLifeStartTiming
@@ -165,7 +163,6 @@ export {
   SelectControlled,
   Sequence,
   SequenceOrCustomId,
-  Service,
   StorageUnit,
   StorageTypes,
   Shift,

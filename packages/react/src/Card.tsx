@@ -1,10 +1,15 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import type { HTMLAttributes } from "react";
-import { createContext, forwardRef, useContext, useState } from "react";
+import {
+  createContext,
+  forwardRef,
+  useContext,
+  useMemo,
+  useState
+} from "react";
 import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 import { IconButton } from "./IconButton";
 import { cn } from "./utils/cn";
@@ -38,20 +43,28 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
 
     const isCollapsed = controlledIsCollapsed ?? uncontrolledIsCollapsed;
 
-    const toggle = () => {
-      if (onCollapsedChange) {
-        onCollapsedChange(!isCollapsed);
-      } else {
-        setUncontrolledIsCollapsed(!isCollapsed);
-      }
-    };
+    // A stable value: an inline object re-rendered every consumer whenever the
+    // card's parent rendered.
+    const context = useMemo(
+      () => ({
+        isCollapsed,
+        toggle: () => {
+          if (onCollapsedChange) {
+            onCollapsedChange(!isCollapsed);
+          } else {
+            setUncontrolledIsCollapsed(!isCollapsed);
+          }
+        }
+      }),
+      [isCollapsed, onCollapsedChange]
+    );
 
     return (
-      <CardContext.Provider value={{ isCollapsed, toggle }}>
+      <CardContext.Provider value={context}>
         <div
           ref={ref}
           className={cn(
-            "relative flex flex-col rounded-xl shadow-button-base dark:shadow-[inset_0_0.5px_0_rgb(255_255_255_/_0.08),_inset_0_0_1px_rgb(255_255_255_/_0.24),_0_0_0_0.5px_rgb(0,0,0,1),0px_0px_4px_rgba(0,_0,_0,_0.08)]  bg-accent dark:bg-card text-card-foreground p-0 w-full",
+            "relative flex flex-col rounded-xl border border-border bg-accent dark:bg-card text-card-foreground p-0 w-full",
             className
           )}
           {...props}
@@ -60,7 +73,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
             <IconButton
               aria-label={isCollapsed ? "Expand" : "Collapse"}
               variant="ghost"
-              onClick={toggle}
+              onClick={context.toggle}
               className="absolute right-2 top-2"
               icon={
                 isCollapsed ? (
@@ -203,7 +216,7 @@ const CardContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
       <div
         ref={ref}
         className={cn(
-          "flex flex-col flex-1 p-6 rounded-xl border border-border bg-card dark:bg-muted/40",
+          "flex flex-col flex-1 p-6 m-[-1px] rounded-xl border border-border bg-card dark:bg-muted/40",
           className
         )}
         {...props}

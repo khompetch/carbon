@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -128,7 +127,7 @@ const ArrayNumericInput = ({
     <FormControl isInvalid={!!error} isRequired>
       <HStack className="w-full content-between">
         <NumberField
-          // @ts-ignore
+          // @ts-expect-error
           {...getInputProps({
             id: name,
             ...rest

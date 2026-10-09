@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -19,10 +18,10 @@ import {
   TruncatedTooltipText,
   VStack
 } from "@carbon/react";
-import { getItemReadableId } from "@carbon/utils";
+import { distinctItemText, getItemReadableId } from "@carbon/utils";
 import { Trans } from "@lingui/react/macro";
 import { useLocale } from "@react-aria/i18n";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useState } from "react";
 import { LuChevronRight, LuImage } from "react-icons/lu";
 import { Link, useParams } from "react-router";
@@ -92,7 +91,7 @@ const LineItems = ({
             "Indirect Expense")
           : isFixedAsset
             ? line.description || "Fixed Asset"
-            : line.description;
+            : distinctItemText(itemReadableId, line.description);
         const lineTotal = (line.unitPrice ?? 0) * (line.quantity ?? 0);
         const supplierLineTotal =
           (line.supplierUnitPrice ?? 0) * (line.quantity ?? 0);
@@ -106,9 +105,9 @@ const LineItems = ({
         return (
           <motion.div
             key={line.id}
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
             className="border-b border-input py-6 w-full"
           >
             <HStack spacing={4} className="items-start">
@@ -154,12 +153,14 @@ const LineItems = ({
                           </Link>
                         </Button>
                       </HStack>
-                      <TruncatedTooltipText
-                        className="text-muted-foreground text-sm truncate w-full"
-                        tooltip={lineDescription}
-                      >
-                        {lineDescription}
-                      </TruncatedTooltipText>
+                      {lineDescription && (
+                        <TruncatedTooltipText
+                          className="text-muted-foreground text-sm truncate w-full"
+                          tooltip={lineDescription}
+                        >
+                          {lineDescription}
+                        </TruncatedTooltipText>
+                      )}
                     </VStack>
                     <VStack
                       spacing={2}
@@ -167,7 +168,7 @@ const LineItems = ({
                     >
                       <HStack spacing={4}>
                         <VStack spacing={0}>
-                          <span className="font-bold text-xl whitespace-nowrap">
+                          <span className="font-semibold text-xl whitespace-nowrap">
                             {formatter.format(total)}
                           </span>
                           {shouldConvertCurrency && (
@@ -195,7 +196,7 @@ const LineItems = ({
                           >
                             {line.quantity}
                             <MethodIcon
-                              // @ts-ignore
+                              // @ts-expect-error
                               type={line.methodType ?? "Pull from Inventory"}
                             />
                           </Badge>
@@ -335,7 +336,7 @@ const LineItems = ({
                       </Td>
                     </Tr>
 
-                    <Tr key="total" className="font-bold">
+                    <Tr key="total" className="font-semibold">
                       <Td>
                         <Trans>Total</Trans>
                       </Td>

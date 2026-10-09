@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -16,13 +15,14 @@ import {
   DrawerTitle,
   HStack,
   IconButton,
+  MENU_ITEM_SHORTCUTS,
   MenuIcon,
   MenuItem,
   useDebounce,
   useDisclosure
 } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
-import { Reorder } from "framer-motion";
+import { Reorder } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
 import { AiOutlineNumber } from "react-icons/ai";
 import { BiText } from "react-icons/bi";
@@ -54,7 +54,7 @@ const AttributeCategoryDetail = ({
     () =>
       Array.isArray(attributeCategory.userAttribute)
         ? attributeCategory.userAttribute.reduce<Record<string, Attribute>>(
-            // @ts-ignore
+            // @ts-expect-error
             (acc, attribute) => {
               if (!attribute) return acc;
               return {
@@ -125,13 +125,14 @@ const AttributeCategoryDetail = ({
   const renderContextMenu = (attributeId: string) => {
     return (
       <>
-        <MenuItem asChild>
+        <MenuItem shortcut={MENU_ITEM_SHORTCUTS.edit} asChild>
           <Link to={attributeId}>
             <MenuIcon icon={<LuPencil />} />
             <Trans>Edit Attribute</Trans>
           </Link>
         </MenuItem>
         <MenuItem
+          shortcut={MENU_ITEM_SHORTCUTS.delete}
           destructive
           onClick={() => onDelete(attributeMap[attributeId])}
         >
@@ -192,21 +193,18 @@ const AttributeCategoryDetail = ({
                           variant="ghost"
                         />
                         <p className="flex-grow text-foreground">
-                          {
-                            // @ts-ignore
-                            attributeMap[sortId]?.name
-                          }
+                          {attributeMap[sortId]?.name}
                         </p>
                         <Button
                           isDisabled
                           leftIcon={getIcon(
-                            // @ts-ignore
+                            // @ts-expect-error
                             attributeMap[sortId]?.attributeDataType
                           )}
                           variant="ghost"
                         >
                           {
-                            // @ts-ignore
+                            // @ts-expect-error
                             attributeMap[sortId]?.attributeDataType?.label ??
                               t`Unknown`
                           }

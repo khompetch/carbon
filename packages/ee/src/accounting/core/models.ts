@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: LicenseRef-Carbon-Commercial
-// Copyright (C) Carbon Manufacturing Systems Corporation.
 // Carbon Enterprise file, licensed only under the Carbon Commercial License
 // (packages/ee/LICENSE). Not AGPL. Running, modifying, or copying it beyond those terms requires a commercial license.
 
@@ -536,6 +535,28 @@ export const POSTING_POLICY: Record<
     defaultEnabled: true,
     defaultGranularity: "individual"
   },
+  // Off by default like the returns types above: a new journal type must never
+  // start pushing to a customer's external ledger unasked (plan decision 1,
+  // `.ai/plans/implemented/2026-09-22-revenue-recognition-rentals-and-contracts.md` Part I).
+  "Revenue Recognition": {
+    representation: "journal",
+    defaultEnabled: false,
+    defaultGranularity: "individual"
+  },
+  // Inventory ↔ fixed-asset transfers and job completions to an asset. Off by
+  // default for the same reason as 'Revenue Recognition'.
+  "Asset Transfer": {
+    representation: "journal",
+    defaultEnabled: false,
+    defaultGranularity: "individual"
+  },
+  // Sales-type lease commencement and end of term. Off by default for the
+  // same reason as 'Revenue Recognition'.
+  Lease: {
+    representation: "journal",
+    defaultEnabled: false,
+    defaultGranularity: "individual"
+  },
   "Non-Conformance": {
     representation: "journal",
     defaultEnabled: true,
@@ -958,6 +979,52 @@ export const ProviderIntegrationMetadataSchema = z.object({
   defaultPurchaseAccountCode: z.string().optional()
 });
 
+/**
+ * Whether an accounting integration may move data. A new connection starts
+ * OFF so the customer can map accounts and choose posting settings before
+ * anything reaches the provider; it is turned on from the integration drawer,
+ * and only once every required account is mapped. Stored at
+ * `metadata.settings.syncEnabled`. A row with no flag predates the switch and
+ * was already syncing, so absent reads as on — every connect path writes an
+ * explicit value.
+ */
+export function isAccountingSyncEnabled(metadata: unknown): boolean {
+  const settings =
+    metadata && typeof metadata === "object"
+      ? (metadata as { settings?: unknown }).settings
+      : undefined;
+  if (!settings || typeof settings !== "object") return true;
+  return (settings as Record<string, unknown>).syncEnabled !== false;
+}
+
+/**
+ * The sync switch for an OAuth (re)connection. A reconnect to the SAME
+ * provider organization (a Xero tenant, a QuickBooks realm) keeps the switch
+ * where it was — an expired grant must not pause an integration that was
+ * live. A first connection, or one to a different organization, starts off.
+ */
+export function syncEnabledOnConnect(
+  existingMetadata: unknown,
+  organizationId: string
+): boolean {
+  if (!existingMetadata || typeof existingMetadata !== "object") return false;
+  const credentials = (existingMetadata as { credentials?: unknown })
+    .credentials as Record<string, unknown> | undefined;
+  const providerMetadata = credentials?.providerMetadata as
+    | Record<string, unknown>
+    | undefined;
+  // Legacy rows kept the organization id directly on credentials.
+  const previousOrganizationId =
+    providerMetadata?.tenantId ??
+    providerMetadata?.realmId ??
+    credentials?.tenantId ??
+    credentials?.realmId;
+  return (
+    previousOrganizationId === organizationId &&
+    isAccountingSyncEnabled(existingMetadata)
+  );
+}
+
 // /********************************************************\
 // *              Sync Operation Schemas                    *
 // \********************************************************/
@@ -1204,10 +1271,17 @@ export const SalesInvoiceLineSchema = z.object({
   // not every provider selects it; push this to any payload that declares a
   // currency code, since unitPrice above is base.
   convertedUnitPrice: withNullable(z.number()).optional(),
+  // Line discount, a FRACTION in [0, 1] (the column's CHECK). It discounts the
+  // merchandise (quantity × unitPrice) only — add-ons and shipping are never
+  // discounted — and applies equally to `unitPrice` and `convertedUnitPrice`,
+  // which are both LIST prices. Absent means 0: lines mapped back from a
+  // provider carry its net price already.
+  discountPercent: z.number().min(0).max(1).optional(),
   shippingCost: z.number().default(0),
   addOnCost: z.number().default(0),
   nonTaxableAddOnCost: z.number().default(0),
   taxPercent: z.number(),
+  // Merchandise net of the line discount, in base currency.
   lineAmount: z.number()
 });
 

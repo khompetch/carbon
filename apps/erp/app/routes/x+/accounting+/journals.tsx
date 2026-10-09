@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { requirePermissions } from "@carbon/auth/auth.server";
-import { Button, VStack } from "@carbon/react";
+import { Button, RecordOutlet, VStack } from "@carbon/react";
 import { msg } from "@lingui/core/macro";
 import { LuCirclePlus } from "react-icons/lu";
 import type { LoaderFunctionArgs } from "react-router";
-import { Outlet, useFetcher, useLoaderData } from "react-router";
+import { useFetcher, useLoaderData } from "react-router";
 import { usePermissions } from "~/hooks";
 import { getJournalEntries } from "~/modules/accounting";
 import { JournalEntriesTable } from "~/modules/accounting/ui/JournalEntries";
@@ -78,7 +77,7 @@ export default function JournalEntriesRoute() {
           permissions.can("create", "accounting") && <NewJournalEntry />
         }
       />
-      <Outlet />
+      <RecordOutlet />
     </VStack>
   );
 }

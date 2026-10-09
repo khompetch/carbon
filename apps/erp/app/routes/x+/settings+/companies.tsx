@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -10,17 +9,18 @@ import { flash } from "@carbon/auth/session.server";
 import {
   Heading,
   HStack,
+  RecordOutlet,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger
 } from "@carbon/react";
-import { isInternalEmail } from "@carbon/utils";
+import { isInternalEmail, redirect } from "@carbon/utils";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useCallback } from "react";
 import type { LoaderFunctionArgs } from "react-router";
-import { Outlet, redirect, useLoaderData, useNavigate } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import { New } from "~/components";
 import { getSubsidiaries } from "~/modules/settings";
 import {
@@ -100,7 +100,7 @@ export default function SubsidiariesRoute() {
 
       <TabsContent value="tree">
         <CompaniesTreeView
-          // @ts-ignore
+          // @ts-expect-error
           companies={companies}
           onDelete={handleDelete}
           onAddChild={handleAddChild}
@@ -109,14 +109,14 @@ export default function SubsidiariesRoute() {
 
       <TabsContent value="list">
         <CompaniesListView
-          // @ts-ignore
+          // @ts-expect-error
           companies={companies}
           onDelete={handleDelete}
           onAddChild={handleAddChild}
         />
       </TabsContent>
 
-      <Outlet />
+      <RecordOutlet />
     </Tabs>
   );
 }

@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -10,11 +9,11 @@ import { forwardRef } from "react";
 
 import { cn } from "./utils/cn";
 
-const subheadingVariants = cva("uppercase tracking-wide", {
+const subheadingVariants = cva("text-sm", {
   variants: {
     variant: {
-      heavy: "text-xs font-medium text-muted-foreground",
-      light: "text-[11px]/[13px] font-light text-foreground/70"
+      heavy: "font-medium text-muted-foreground",
+      light: "font-light text-foreground/70"
     }
   },
   defaultVariants: {

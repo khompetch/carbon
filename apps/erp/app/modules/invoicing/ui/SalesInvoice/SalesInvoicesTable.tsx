@@ -1,9 +1,16 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
-import { HStack, MenuIcon, MenuItem, useDisclosure } from "@carbon/react";
+import {
+  Checkbox,
+  HStack,
+  MENU_ITEM_SHORTCUTS,
+  MenuIcon,
+  MenuItem,
+  Status,
+  useDisclosure
+} from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { ColumnDef } from "@tanstack/react-table";
 import { memo, useMemo, useState } from "react";
@@ -17,6 +24,7 @@ import {
   LuQrCode,
   LuStar,
   LuTrash,
+  LuTriangleAlert,
   LuUser
 } from "react-icons/lu";
 import { useNavigate } from "react-router";
@@ -70,7 +78,7 @@ const SalesInvoicesTable = memo(({ data, count }: SalesInvoicesTableProps) => {
             <ItemThumbnail
               size="sm"
               thumbnailPath={row.original.thumbnailPath}
-              // @ts-ignore
+              // @ts-expect-error
               type={row.original.itemType || "Part"}
             />
             <Hyperlink to={path.to.salesInvoiceDetails(row.original.id!)}>
@@ -127,10 +135,24 @@ const SalesInvoicesTable = memo(({ data, count }: SalesInvoicesTableProps) => {
       {
         accessorKey: "status",
         header: t`Status`,
-        cell: (item) => {
-          const status =
-            item.getValue<(typeof salesInvoiceStatusType)[number]>();
-          return <SalesInvoiceStatus status={status} />;
+        cell: ({ row }) => {
+          const invoice = row.original;
+          // A held draft, or a posted invoice whose email failed: the reason
+          // is the badge's tooltip. Filter on it with "Needs Review".
+          const reviewReason =
+            invoice.status === "Draft"
+              ? invoice.automationHoldReason
+              : invoice.sendError;
+          return (
+            <span className="flex items-center gap-1">
+              <SalesInvoiceStatus status={invoice.status} />
+              {invoice.needsReview && (
+                <Status color="orange" tooltip={reviewReason ?? undefined}>
+                  <Trans>Needs Review</Trans>
+                </Status>
+              )}
+            </span>
+          );
         },
         meta: {
           filter: {
@@ -142,6 +164,21 @@ const SalesInvoicesTable = memo(({ data, count }: SalesInvoicesTableProps) => {
           },
           pluralHeader: t`Statuses`,
           icon: <LuStar />
+        }
+      },
+      {
+        accessorKey: "needsReview",
+        header: t`Needs Review`,
+        cell: (item) => <Checkbox isChecked={item.getValue<boolean>()} />,
+        meta: {
+          filter: {
+            type: "static",
+            options: [
+              { value: "true", label: t`Yes` },
+              { value: "false", label: t`No` }
+            ]
+          },
+          icon: <LuTriangleAlert />
         }
       },
       {
@@ -188,6 +225,9 @@ const SalesInvoicesTable = memo(({ data, count }: SalesInvoicesTableProps) => {
           <DateTime value={item.getValue<string>()} variant="date" />
         ),
         meta: {
+          filter: {
+            type: "dateRange"
+          },
           icon: <LuCalendar />
         }
       },
@@ -198,6 +238,9 @@ const SalesInvoicesTable = memo(({ data, count }: SalesInvoicesTableProps) => {
           <DateTime value={item.getValue<string>()} variant="date" />
         ),
         meta: {
+          filter: {
+            type: "dateRange"
+          },
           icon: <LuCalendar />
         }
       },
@@ -208,6 +251,9 @@ const SalesInvoicesTable = memo(({ data, count }: SalesInvoicesTableProps) => {
           <DateTime value={item.getValue<string>()} variant="date" />
         ),
         meta: {
+          filter: {
+            type: "dateRange"
+          },
           icon: <LuCalendar />
         }
       },
@@ -218,6 +264,9 @@ const SalesInvoicesTable = memo(({ data, count }: SalesInvoicesTableProps) => {
           <DateTime value={item.getValue<string>()} variant="date" />
         ),
         meta: {
+          filter: {
+            type: "dateRange"
+          },
           icon: <LuCalendar />
         }
       },
@@ -292,6 +341,7 @@ const SalesInvoicesTable = memo(({ data, count }: SalesInvoicesTableProps) => {
     return (row: SalesInvoiceListItem) => (
       <>
         <MenuItem
+          shortcut={MENU_ITEM_SHORTCUTS.edit}
           disabled={!permissions.can("view", "invoicing")}
           onClick={() => navigate(path.to.salesInvoice(row.id!))}
         >
@@ -299,6 +349,7 @@ const SalesInvoicesTable = memo(({ data, count }: SalesInvoicesTableProps) => {
           <Trans>Edit</Trans>
         </MenuItem>
         <MenuItem
+          shortcut={MENU_ITEM_SHORTCUTS.delete}
           disabled={
             row.status !== "Draft" || !permissions.can("delete", "invoicing")
           }
@@ -326,6 +377,7 @@ const SalesInvoicesTable = memo(({ data, count }: SalesInvoicesTableProps) => {
         }}
         defaultColumnVisibility={{
           invoiceCustomerId: false,
+          needsReview: false,
           paymentTermName: false,
           dateIssued: false,
           datePaid: false,

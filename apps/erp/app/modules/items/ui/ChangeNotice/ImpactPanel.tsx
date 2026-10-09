@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -11,6 +10,7 @@ import {
   HStack,
   VStack
 } from "@carbon/react";
+import { distinctItemText } from "@carbon/utils";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { LuCircleCheck } from "react-icons/lu";
 import { UsedInItem, type UsedInNode } from "../Item/UsedIn";
@@ -142,7 +142,7 @@ function ImpactItem({ item }: { item: ChangeNoticeImpactItem }) {
         <span className="truncate text-sm font-medium">
           {item.readableIdWithRevision}
         </span>
-        {item.itemName && (
+        {distinctItemText(item.readableIdWithRevision, item.itemName) && (
           <span className="truncate text-xs text-muted-foreground">
             {item.itemName}
           </span>

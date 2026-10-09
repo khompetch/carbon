@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -14,8 +13,9 @@ import {
   resolveSalesOrderShipTo
 } from "@carbon/ee/rules.server";
 import { validationError, validator } from "@carbon/form";
+import { redirect } from "@carbon/utils";
 import type { ActionFunctionArgs } from "react-router";
-import { redirect, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useRouteData, useUser } from "~/hooks";
 import { getUnreleasedChangeOrderIssue } from "~/modules/items/items.server";
 import type { Customer, SalesOrder, SalesOrderLineType } from "~/modules/sales";
@@ -205,12 +205,14 @@ export default function NewSalesOrderLineRoute() {
       salesOrderData?.salesOrder?.receiptPromisedDate ??
       salesOrderData?.salesOrder?.receiptRequestedDate ??
       "",
+    serviceStartDate: "",
+    serviceEndDate: "",
     shippingCost: 0
   };
 
   return (
     <SalesOrderLineForm
-      // @ts-ignore
+      // @ts-expect-error
       initialValues={initialValues}
     />
   );

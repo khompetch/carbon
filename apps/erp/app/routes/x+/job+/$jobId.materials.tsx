@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -7,11 +6,10 @@ import { error } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { useMount, VStack } from "@carbon/react";
-import { datetime } from "@carbon/utils";
+import { datetime, redirect } from "@carbon/utils";
 import type { LoaderFunctionArgs } from "react-router";
-import { redirect, useLoaderData, useParams } from "react-router";
+import { useLoaderData } from "react-router";
 import { usePanels } from "~/components/Layout";
-import { useRealtime } from "~/hooks";
 import { getPicksByJobMaterial } from "~/modules/inventory";
 import { getItemSupersessionsForItems } from "~/modules/items";
 import {
@@ -228,10 +226,7 @@ export default function JobMaterialsRoute() {
     picksByMaterialId,
     consumeFirstByItemId
   } = useLoaderData<typeof loader>();
-  const { jobId } = useParams();
   const { setIsExplorerCollapsed } = usePanels();
-
-  useRealtime("pickingListLine", `jobId=eq.${jobId}`);
 
   useMount(() => {
     setIsExplorerCollapsed(true);

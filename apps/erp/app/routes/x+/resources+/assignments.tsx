@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -10,10 +9,13 @@ import {
   Badge,
   BarProgress,
   HStack,
+  MENU_ITEM_SHORTCUTS,
   MenuIcon,
   MenuItem,
+  RecordOutlet,
   VStack
 } from "@carbon/react";
+import { redirect } from "@carbon/utils";
 import { msg } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -31,13 +33,7 @@ import {
   LuUsers
 } from "react-icons/lu";
 import type { LoaderFunctionArgs } from "react-router";
-import {
-  Link,
-  Outlet,
-  redirect,
-  useFetcher,
-  useLoaderData
-} from "react-router";
+import { Link, useFetcher, useLoaderData } from "react-router";
 import { Hyperlink, New, Table } from "~/components";
 import { usePermissions } from "~/hooks";
 import {
@@ -225,14 +221,14 @@ const TrainingAssignmentsTable = memo(
 
         return (
           <>
-            <MenuItem asChild>
+            <MenuItem shortcut={MENU_ITEM_SHORTCUTS.view} asChild>
               <Link to={path.to.trainingAssignmentDetail(row.trainingId)}>
                 <MenuIcon icon={<LuEye />} />
                 <Trans>View Status</Trans>
               </Link>
             </MenuItem>
             {permissions.can("update", "resources") && (
-              <MenuItem asChild>
+              <MenuItem shortcut={MENU_ITEM_SHORTCUTS.edit} asChild>
                 <Link to={path.to.trainingAssignment(assignmentId)}>
                   <MenuIcon icon={<LuPencil />} />
                   <Trans>Edit Assignment</Trans>
@@ -286,7 +282,7 @@ export default function TrainingAssignmentsRoute() {
         data={summary}
         assignmentsByTraining={assignmentsByTraining}
       />
-      <Outlet />
+      <RecordOutlet />
     </VStack>
   );
 }

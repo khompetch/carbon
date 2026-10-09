@@ -1,9 +1,16 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
-import { Badge, HStack, MenuIcon, MenuItem, VStack } from "@carbon/react";
+import {
+  Badge,
+  HStack,
+  MenuIcon,
+  MenuItem,
+  PrefetchLink,
+  VStack
+} from "@carbon/react";
+import { distinctItemText } from "@carbon/utils";
 import { useLingui } from "@lingui/react/macro";
 import type { ColumnDef } from "@tanstack/react-table";
 import { memo, useCallback, useMemo, useState } from "react";
@@ -22,7 +29,6 @@ import {
   LuWarehouse,
   LuWrench
 } from "react-icons/lu";
-import { Link } from "react-router";
 import {
   DateTime,
   EmployeeAvatar,
@@ -33,7 +39,7 @@ import {
 } from "~/components";
 import { Enumerable } from "~/components/Enumerable";
 import { useLocations } from "~/components/Form/Location";
-import { usePermissions, useUser } from "~/hooks";
+import { usePermissions } from "~/hooks";
 import { useDebouncedRealtime } from "~/hooks/useDebouncedRealtime";
 import type { MethodItemType } from "~/modules/shared";
 import { usePeople } from "~/stores";
@@ -53,7 +59,6 @@ type StockMovementsTableProps = {
 const StockMovementsTable = memo(
   ({ data, count }: StockMovementsTableProps) => {
     const { t } = useLingui();
-    const { company } = useUser();
     const permissions = usePermissions();
     const [correctionTarget, setCorrectionTarget] =
       useState<StockMovement | null>(null);
@@ -67,7 +72,7 @@ const StockMovementsTable = memo(
     // Company-wide realtime: a single posting can insert many itemLedger rows
     // at once, so coalesce the burst into one route revalidation (1.5s debounce
     // inside useDebouncedRealtime) rather than revalidating per event.
-    useDebouncedRealtime("itemLedger", `companyId=eq.${company.id}`);
+    useDebouncedRealtime("itemLedger");
 
     const columns = useMemo<ColumnDef<StockMovement>[]>(() => {
       return [
@@ -84,7 +89,10 @@ const StockMovementsTable = memo(
               <Hyperlink to={getInventoryItemActivityPath(row.original)}>
                 <VStack spacing={0}>
                   <span>{row.original.itemReadableId}</span>
-                  {row.original.itemDescription && (
+                  {distinctItemText(
+                    row.original.itemReadableId,
+                    row.original.itemDescription
+                  ) && (
                     <span className="text-muted-foreground text-xs">
                       {row.original.itemDescription}
                     </span>
@@ -204,13 +212,12 @@ const StockMovementsTable = memo(
               row.original.trackedEntityReadableId || trackedEntityId;
             if (!trackedEntityId) return label ?? "";
             return (
-              <Link
-                prefetch="intent"
+              <PrefetchLink
                 to={`${path.to.traceabilityGraph}?trackedEntityId=${trackedEntityId}`}
                 className="text-foreground hover:underline"
               >
                 {label}
-              </Link>
+              </PrefetchLink>
             );
           },
           meta: {
@@ -236,6 +243,9 @@ const StockMovementsTable = memo(
             <DateTime value={item.getValue<string>()} variant="date" />
           ),
           meta: {
+            filter: {
+              type: "dateRange"
+            },
             icon: <LuCalendar />
           }
         },

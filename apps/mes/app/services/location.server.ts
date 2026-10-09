@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -52,7 +51,9 @@ export async function getLocation(
       .eq("id", location)
       .eq("companyId", companyId)
       .maybeSingle();
-    if (owned.error) {
+    // A request the browser gave up on (it navigated, or a newer reload
+    // replaced this one) aborts its reads: that is not a failure to report.
+    if (owned.error && !request.signal.aborted) {
       logger.error("Failed to verify the location cookie", {
         companyId,
         locationId: location,

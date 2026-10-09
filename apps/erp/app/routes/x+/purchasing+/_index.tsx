@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -7,6 +6,7 @@ import { requirePermissions } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import type { ApprovalRequest } from "@carbon/ee/approvals";
 import { getPendingApprovalsForApprover } from "@carbon/ee/approvals.server";
+import { useLoaderQuery } from "@carbon/query";
 import {
   Badge,
   Button,
@@ -50,7 +50,7 @@ import {
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useDateFormatter, useNumberFormatter } from "@react-aria/i18n";
 import type { DateRange } from "@react-types/datepicker";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import {
   LuChevronDown,
   LuClock,
@@ -62,7 +62,7 @@ import {
   LuPackageSearch
 } from "react-icons/lu";
 import type { LoaderFunctionArgs } from "react-router";
-import { Await, useFetcher, useLoaderData } from "react-router";
+import { Await, useLoaderData } from "react-router";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   DateSelect,
@@ -256,8 +256,6 @@ export default function PurchaseDashboard() {
   ]);
 
   const { t } = useLingui();
-  const kpiFetcher = useFetcher<typeof kpiLoader>();
-  const isFetching = kpiFetcher.state !== "idle" || !kpiFetcher.data;
 
   const dateFormatter = useDateFormatter({
     month: "short",
@@ -300,6 +298,15 @@ export default function PurchaseDashboard() {
 
   const selectedKpiData = KPIs.find((k) => k.key === selectedKpi) || KPIs[0];
 
+  const kpiFetcher = useLoaderQuery<typeof kpiLoader>(
+    `${path.to.api.purchasingKpi(
+      selectedKpiData.key
+    )}?start=${dateRange?.start.toString()}&end=${dateRange?.end.toString()}&interval=${interval}${
+      supplierId === "all" ? "" : `&supplierId=${supplierId}`
+    }`
+  );
+  const isFetching = kpiFetcher.isFetching || !kpiFetcher.data;
+
   const kpiLabels: Record<string, string> = useMemo(
     () => ({
       supplierQuoteCount: t`Supplier Quotes`,
@@ -310,17 +317,6 @@ export default function PurchaseDashboard() {
     }),
     [t]
   );
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: suppressed due to migration
-  useEffect(() => {
-    kpiFetcher.load(
-      `${path.to.api.purchasingKpi(
-        selectedKpiData.key
-      )}?start=${dateRange?.start.toString()}&end=${dateRange?.end.toString()}&interval=${interval}${
-        supplierId === "all" ? "" : `&supplierId=${supplierId}`
-      }`
-    );
-  }, [selectedKpi, dateRange, interval, selectedKpiData.key, supplierId]);
 
   const onIntervalChange = (value: string) => {
     const end = toCalendarDateTime(now("UTC"));

@@ -2,7 +2,7 @@
 paths:
   - "apps/erp/app/modules/purchasing/**"
   - "apps/erp/app/components/Form/ConversionFactor.tsx"
-  - "packages/database/supabase/functions/{create,convert,update-purchased-prices}/index.ts"
+  - "packages/server-functions/src/{create,convert,update-purchased-prices}/index.ts"
   - "packages/database/supabase/migrations/*conversion*.sql"
 ---
 
@@ -57,9 +57,9 @@ validators, and `zfd.numeric(z.number().min(0))` on `supplierPartValidator`.
 (`>0` is not enforced in zod; `supplierPart` allows `0`.)
 
 **Receipt / inventory posting — the real conversion happens here.** When a PO is
-received, the `create` edge function converts purchase quantities to inventory
+received, the `create` server function converts purchase quantities to inventory
 quantities and unit cost to inventory unit cost
-(`packages/database/supabase/functions/create/index.ts`):
+(`packages/server-functions/src/create/index.ts`):
 
 ```ts
 orderQuantity:    d.purchaseQuantity * (d.conversionFactor ?? 1),
@@ -75,8 +75,9 @@ forward likewise (`update-purchased-prices` uses the planning `ln` alias).
 
 **Reverse direction (planning → purchase qty).** MRP/planning has an inventory
 requirement and computes the purchase quantity, rounding up:
-`Math.ceil(inventoryQuantity / conversionFactor)` (when factor > 0) — see
-`PurchasingPlanningOrderDrawer.tsx` and `items/ui/Item/ItemReorderPolicy.tsx`.
+`round(inventoryQuantity / conversionFactor, 0, RoundingMode.Up)` (when factor
+> 0) — see `PurchasingPlanningOrderDrawer.tsx` and
+`production/ui/Planning/planned-orders-from-actions.ts`.
 
 **Display-only conversions** multiply purchase qty by the factor to show derived
 inventory qty (e.g. `PurchaseOrderSummary.tsx`, `SupplierQuoteSummary.tsx`) and
@@ -88,7 +89,7 @@ divide price by it for inventory unit price (`SupplierQuoteLinePricing.tsx`).
   `purchaseOrderLine` / `supplierQuoteLinePrice` are `GENERATED ALWAYS` and only
   divide by **`exchangeRate`** — they do **NOT** divide by `conversionFactor`
   (`20250807094441_fix-purchasing-conversion-factor.sql`). The conversion-factor
-  division is applied in **app/edge-function code**, not in those DB columns.
+  division is applied in **app/server-function code**, not in those DB columns.
 - Exchange-rate direction: `supplierUnitPrice / exchangeRate` (supplier→base
   currency), guarded against divide-by-zero.
 - The line tables used to clamp the factor to 2 dp, so `10.764` silently became

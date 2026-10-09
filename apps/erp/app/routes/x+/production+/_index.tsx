@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { useCarbon } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { activeJobStatuses } from "@carbon/database";
+import { useChangedRows, useLoaderQuery } from "@carbon/query";
 import {
   Badge,
   Button,
@@ -31,7 +31,6 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-  useRealtimeChannel,
   VStack
 } from "@carbon/react";
 import type { ChartConfig } from "@carbon/react/Chart";
@@ -64,7 +63,7 @@ import {
 } from "react-icons/lu";
 import { RiProgress8Line } from "react-icons/ri";
 import type { LoaderFunctionArgs } from "react-router";
-import { Await, Link, useFetcher, useLoaderData } from "react-router";
+import { Await, Link, useLoaderData } from "react-router";
 import { Bar, BarChart, LabelList, XAxis, YAxis } from "recharts";
 import {
   CustomerAvatar,
@@ -88,8 +87,13 @@ import type { WorkCenter } from "~/modules/resources";
 import { getWorkCentersListWithBlockingStatus } from "~/modules/resources";
 
 import type { loader as kpiLoader } from "~/routes/api+/production.kpi.$key";
+import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
 import { capitalize } from "~/utils/string";
+
+export const handle: Handle = {
+  realtime: ["job", "jobOperation"]
+};
 
 const chartConfig = {
   value: {
@@ -141,8 +145,6 @@ export default function ProductionDashboard() {
     useLoaderData<typeof loader>();
 
   const user = useUser();
-  const kpiFetcher = useFetcher<typeof kpiLoader>();
-  const isFetching = kpiFetcher.state !== "idle" || !kpiFetcher.data;
 
   const [interval, setInterval] = useState("month");
   const [selectedKpi, setSelectedKpi] = useState<
@@ -155,6 +157,13 @@ export default function ProductionDashboard() {
   });
 
   const selectedKpiData = KPIs.find((k) => k.key === selectedKpi) || KPIs[0];
+
+  const kpiFetcher = useLoaderQuery<typeof kpiLoader>(
+    `${path.to.api.productionKpi(
+      selectedKpiData.key
+    )}?start=${dateRange?.start.toString()}&end=${dateRange?.end.toString()}&interval=${interval}`
+  );
+  const isFetching = kpiFetcher.isFetching || !kpiFetcher.data;
 
   const kpiLabels: Record<string, string> = useMemo(
     () => ({
@@ -178,15 +187,6 @@ export default function ProductionDashboard() {
     if (!dateRange) return 0;
     return dateRange.end.compare(dateRange.start) * 24 * 60 * 60 * 1000;
   }, [dateRange]);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: suppressed due to migration
-  useEffect(() => {
-    kpiFetcher.load(
-      `${path.to.api.productionKpi(
-        selectedKpiData.key
-      )}?start=${dateRange?.start.toString()}&end=${dateRange?.end.toString()}&interval=${interval}`
-    );
-  }, [selectedKpi, dateRange, interval, selectedKpiData.key]);
 
   const onIntervalChange = (value: string) => {
     const end = toCalendarDateTime(now("UTC"));
@@ -431,8 +431,7 @@ export default function ProductionDashboard() {
                 </>
               )}
             </VStack>
-            {kpiFetcher.state === "idle" &&
-            kpiFetcher.data?.data?.length === 0 ? (
+            {!kpiFetcher.isFetching && kpiFetcher.data?.data?.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full">
                 <Empty className="py-8">
                   <p className="text-sm text-muted-foreground">
@@ -750,44 +749,34 @@ function WorkCenterCards({
     setEvents(initialEvents);
   }, [initialEvents]);
 
-  useRealtimeChannel({
-    topic: `production-dashboard-work-centers:${companyId}`,
-    setup(channel) {
-      return channel.on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "productionEvent",
-          filter: `companyId=eq.${companyId}`
-        },
-        (payload) => {
-          if (payload.eventType === "INSERT") {
-            const { new: inserted } = payload;
-            setEvents((prev) => [...prev, inserted as ActiveProductionEvent]);
-            ensureMetaData({ jobOperationId: inserted.jobOperationId });
-          } else if (payload.eventType === "UPDATE") {
-            const { new: updated } = payload;
-            setEvents((prev) => {
-              if (updated.endTime) {
-                return prev.filter((event) => event.id !== updated.id);
-              }
-              const exists = prev.some((event) => event.id === updated.id);
-              if (exists) {
-                return prev.map((event) =>
-                  event.id === updated.id ? { ...event, ...updated } : event
-                );
-              }
-              return [...prev, updated as ActiveProductionEvent];
-            });
-          } else if (payload.eventType === "DELETE") {
-            const { old: deleted } = payload;
-            setEvents((prev) =>
-              prev.filter((event) => event.id !== deleted.id)
+  useChangedRows<ActiveProductionEvent & { endTime?: string | null }>({
+    companyId,
+    table: "productionEvent",
+    onChange: ({ op, ids, rows }) => {
+      if (op === "DELETE") {
+        setEvents((prev) => prev.filter((event) => !ids.includes(event.id)));
+        return;
+      }
+      setEvents((prev) => {
+        let next = prev;
+        for (const row of rows) {
+          // A finished event leaves the board; a running one joins or updates.
+          if (row.endTime) {
+            next = next.filter((event) => event.id !== row.id);
+          } else if (next.some((event) => event.id === row.id)) {
+            next = next.map((event) =>
+              event.id === row.id ? { ...event, ...row } : event
             );
+          } else {
+            next = [...next, row];
           }
         }
-      );
+        return next;
+      });
+      for (const row of rows) {
+        if (!row.endTime)
+          ensureMetaData({ jobOperationId: row.jobOperationId });
+      }
     }
   });
 
@@ -820,14 +809,15 @@ function WorkCenterCards({
         return (
           <Card
             key={workCenter.id}
-            className="p-0 h-[300px] col-span-6 lg:col-span-3 xl:col-span-2"
+            className={cn(
+              "p-0 h-[300px] col-span-6 lg:col-span-3 xl:col-span-2",
+              isBlocked && "bg-red-100 dark:bg-red-900/50"
+            )}
           >
             <HStack
               className={cn(
-                "justify-between w-full relative rounded-t-lg",
-                isBlocked
-                  ? "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-400"
-                  : ""
+                "justify-between w-full relative",
+                isBlocked && "text-red-800 dark:text-red-400"
               )}
             >
               <CardHeader>
@@ -864,7 +854,14 @@ function WorkCenterCards({
                 )}
               </CardAction>
             </HStack>
-            <CardContent className="flex items-start justify-start p-6 pt-3 border-t">
+            <CardContent
+              className={cn(
+                "flex items-start justify-start p-6 pt-3 border-t",
+                // the content's own dark background is translucent; keep the
+                // red card color from bleeding through it
+                isBlocked && "dark:bg-card"
+              )}
+            >
               {!hasEvents ? (
                 <p className="text-muted-foreground text-center w-full h-full flex flex-col gap-2 items-center justify-center text-sm">
                   <Trans>Inactive</Trans>

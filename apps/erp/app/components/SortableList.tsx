@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -13,7 +12,7 @@ import {
   motion,
   Reorder,
   useDragControls
-} from "framer-motion";
+} from "motion/react";
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
@@ -65,7 +64,7 @@ function SortableListItem<T>({
 }: SortableListItemProps<T>) {
   const { t } = useLingui();
   const [isDragging, setIsDragging] = useState(false);
-  const [isDraggable] = useState(!isExpanded && !isReadOnly);
+  const isDraggable = !isExpanded && !isReadOnly;
   const dragControls = useDragControls();
   const itemRef = useRef<HTMLDivElement>(null);
 

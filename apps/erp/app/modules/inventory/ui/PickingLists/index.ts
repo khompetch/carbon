@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -12,6 +11,7 @@ export {
   PickingItemCard
 } from "./PickingItemCard";
 export { default as PickingKanban } from "./PickingKanban";
+export { default as PickingListDocuments } from "./PickingListDocuments";
 export { default as PickingListHeader } from "./PickingListHeader";
 export { default as PickingListLines } from "./PickingListLines";
 export { default as PickingListNotes } from "./PickingListNotes";

@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -12,12 +11,13 @@ import {
   isBlocked
 } from "@carbon/ee/rules.server";
 import { validationError, validator } from "@carbon/form";
+import { redirect } from "@carbon/utils";
 import type { ActionFunctionArgs } from "react-router";
-import { redirect } from "react-router";
 import {
   insertManualInventoryAdjustment,
   inventoryAdjustmentValidator
 } from "~/modules/inventory";
+import { getDatabaseClient } from "~/services/database.server";
 import { path, requestReferrer } from "~/utils/path";
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -104,11 +104,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  const itemLedger = await insertManualInventoryAdjustment(client, {
-    ...d,
-    companyId,
-    createdBy: userId
-  });
+  const itemLedger = await insertManualInventoryAdjustment(
+    client,
+    getDatabaseClient(),
+    {
+      ...d,
+      companyId,
+      createdBy: userId
+    }
+  );
 
   if (itemLedger.error) {
     // Return the error as fetcher data so the modal can toast the reason and

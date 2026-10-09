@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -7,6 +6,7 @@ import { assertIsPost } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { validationError, validator } from "@carbon/form";
 import { useRouteData } from "@carbon/react";
+import { isUniqueViolation } from "@carbon/utils";
 import type { ActionFunctionArgs } from "react-router";
 import { useNavigate, useParams } from "react-router";
 import type { ConsumableSummary } from "~/modules/items";
@@ -40,6 +40,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
     createdBy: userId,
     customFields: setCustomFields(formData)
   });
+
+  // buyMethod_part_supplier_unique: one supplier part per item and supplier
+  if (isUniqueViolation(createConsumableSupplier.error)) {
+    return validationError({
+      fieldErrors: {
+        supplierId: "This item already has a supplier part for this supplier"
+      }
+    });
+  }
 
   if (createConsumableSupplier.error) {
     return {

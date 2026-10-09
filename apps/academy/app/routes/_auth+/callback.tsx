@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -28,10 +27,17 @@ import {
   CarbonPulse,
   VStack
 } from "@carbon/react";
+import { redirect } from "@carbon/utils";
 import { useEffect, useRef, useState } from "react";
 import { LuTriangleAlert } from "react-icons/lu";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { data, Link, redirect, useFetcher, useLocation } from "react-router";
+import {
+  data,
+  Link,
+  useFetcher,
+  useLocation,
+  useSearchParams
+} from "react-router";
 import { path } from "~/utils/path";
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -55,7 +61,7 @@ export async function action({ request }: ActionFunctionArgs) {
     });
   }
 
-  const { refreshToken, userId } = validation.data;
+  const { refreshToken, userId, redirectTo } = validation.data;
   const serviceRole = getCarbonServiceRole();
   const companies = await serviceRole
     .from("userToCompany")
@@ -88,7 +94,7 @@ export async function action({ request }: ActionFunctionArgs) {
       authSession
     });
     const companyIdCookie = setCompanyId(authSession.companyId);
-    return redirect(path.to.root, {
+    return redirect(redirectTo || path.to.root, {
       headers: [
         ["Set-Cookie", sessionCookie],
         ["Set-Cookie", companyIdCookie]
@@ -108,6 +114,8 @@ export default function AuthCallback() {
   const [error, setError] = useState<string | null>(null);
 
   const { hash } = useLocation();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") ?? undefined;
 
   useEffect(() => {
     const hashParams = new URLSearchParams(hash.slice(1));
@@ -135,6 +143,7 @@ export default function AuthCallback() {
         const formData = new FormData();
         formData.append("refreshToken", refreshToken);
         formData.append("userId", userId);
+        if (redirectTo) formData.append("redirectTo", redirectTo);
 
         fetcher.submit(formData, { method: "post" });
       }
@@ -143,7 +152,7 @@ export default function AuthCallback() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [fetcher]);
+  }, [fetcher, redirectTo]);
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background">

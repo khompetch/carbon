@@ -1,14 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { assertIsPost } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
-import type {
-  ActionFunctionArgs,
-  ClientActionFunctionArgs
-} from "react-router";
+import type { ActionFunctionArgs } from "react-router";
 import { data } from "react-router";
 import {
   saveInspectionDocumentAtomic,
@@ -29,7 +25,6 @@ import {
   resolveInspectionFeaturePayloadIds,
   translateLegacyInspectionSavePayload
 } from "~/modules/quality/quality.server";
-import { invalidateInspectionDocuments } from "~/utils/react-query";
 
 function getErrorMessage(error: unknown, fallback: string) {
   if (error instanceof Error) return error.message;
@@ -254,9 +249,4 @@ export async function action({ request, params }: ActionFunctionArgs) {
     anchors: unknown[];
     balloons: unknown[];
   };
-}
-
-export async function clientAction({ serverAction }: ClientActionFunctionArgs) {
-  invalidateInspectionDocuments();
-  return await serverAction();
 }

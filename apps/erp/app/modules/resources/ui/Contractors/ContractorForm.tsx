@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -14,11 +13,12 @@ import {
   DrawerHeader,
   DrawerTitle,
   HStack,
+  useCloseRoute,
   VStack
 } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 import type { z } from "zod";
 import {
   CustomFormFields,
@@ -38,9 +38,9 @@ type ContractorFormProps = {
 const ContractorForm = ({ initialValues }: ContractorFormProps) => {
   const { t } = useLingui();
   const permissions = usePermissions();
-  const navigate = useNavigate();
+  const closeRoute = useCloseRoute();
   const location = useLocation();
-  const onClose = () => navigate(-1);
+  const onClose = () => closeRoute();
 
   const [supplier, setSupplier] = useState<string | null>(
     initialValues?.supplierId ?? null

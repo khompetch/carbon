@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -10,6 +9,7 @@ import {
   InputControlled,
   ValidatedForm
 } from "@carbon/form";
+import { useLoaderQuery } from "@carbon/query";
 import {
   Badge,
   Button,
@@ -36,11 +36,15 @@ import {
   useMount,
   VStack
 } from "@carbon/react";
-import { getItemReadableId, INPUT_FORMAT } from "@carbon/utils";
+import {
+  distinctItemText,
+  getItemReadableId,
+  INPUT_FORMAT
+} from "@carbon/utils";
 import { getLocalTimeZone, today } from "@internationalized/date";
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { PostgrestResponse } from "@supabase/supabase-js";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { LuBox, LuChevronRight, LuLandmark, LuReceipt } from "react-icons/lu";
 import { useFetcher, useParams } from "react-router";
 import type { z } from "zod";
@@ -69,7 +73,10 @@ import {
   useRouteData,
   useUser
 } from "~/hooks";
-import { getSupplierPartPriceBreaks } from "~/modules/items";
+import {
+  EACH_UNIT_OF_MEASURE_CODE,
+  getSupplierPartPriceBreaks
+} from "~/modules/items";
 import type { PurchaseOrder, PurchaseOrderLine } from "~/modules/purchasing";
 import {
   isPurchaseOrderLocked,
@@ -133,6 +140,11 @@ const PurchaseOrderLineForm = ({
   const [lineType, setLineType] = useState<ItemType>(
     initialValues.purchaseOrderLineType as ItemType
   );
+  // The picker's type filter. It starts on every item type; the line's own
+  // type (above) is a real enum value — "Item" is not one — and follows the
+  // selected item.
+  const [itemFilter, setItemFilter] = useState<ItemType | "Item">("Item");
+  const isService = lineType === "Service";
   const [locationId, setLocationId] = useState(initialValues.locationId);
   const [itemData, setItemData] = useState<{
     itemId: string;
@@ -250,7 +262,8 @@ const PurchaseOrderLineForm = ({
         .from("fixedAsset")
         .select("id, fixedAssetId, name, locationId")
         .eq("companyId", company.id)
-        .eq("status", "Draft")
+        // Under Construction too: a CIP asset collects purchased cost.
+        .in("status", ["Draft", "Under Construction"])
         .order("fixedAssetId");
       const options = (assets.data ?? []).map((a) => ({
         value: a.id,
@@ -323,7 +336,11 @@ const PurchaseOrderLineForm = ({
   const percentFormatter = usePercentFormatter();
 
   const onTypeChange = (t: ItemType | "Item") => {
-    if (t === lineType) return;
+    if (t === itemFilter) return;
+    setItemFilter(t);
+    // Widening to every type keeps the selected item; narrowing to another
+    // type clears it.
+    if (t === "Item" || t === lineType) return;
     setLineType(t as ItemType);
     setItemData({
       itemId: "",
@@ -405,22 +422,28 @@ const PurchaseOrderLineForm = ({
           exchangeRate
         );
 
+        // A service is always bought and "stocked" in EA, 1:1.
+        const isServiceItem = item.data?.type === "Service";
         setItemData({
           itemId: itemId,
           description: item.data?.name ?? "",
           purchaseQuantity: initialQty,
           supplierUnitPrice: resolvedPrice,
           supplierShippingCost: 0,
-          purchaseUom:
-            supplierPart?.data?.supplierUnitOfMeasureCode ??
-            itemReplenishment?.purchasingUnitOfMeasureCode ??
-            item.data?.unitOfMeasureCode ??
-            "EA",
-          inventoryUom: item.data?.unitOfMeasureCode ?? "EA",
-          conversionFactor:
-            supplierPart?.data?.conversionFactor ??
-            itemReplenishment?.conversionFactor ??
-            1,
+          purchaseUom: isServiceItem
+            ? EACH_UNIT_OF_MEASURE_CODE
+            : (supplierPart?.data?.supplierUnitOfMeasureCode ??
+              itemReplenishment?.purchasingUnitOfMeasureCode ??
+              item.data?.unitOfMeasureCode ??
+              "EA"),
+          inventoryUom: isServiceItem
+            ? EACH_UNIT_OF_MEASURE_CODE
+            : (item.data?.unitOfMeasureCode ?? "EA"),
+          conversionFactor: isServiceItem
+            ? 1
+            : (supplierPart?.data?.conversionFactor ??
+              itemReplenishment?.conversionFactor ??
+              1),
           requiredDate:
             leadTime === 0
               ? null
@@ -467,6 +490,15 @@ const PurchaseOrderLineForm = ({
   };
 
   const collapsedTaxPercent = initialValues?.taxPercent ?? 0;
+
+  const lineSubtitle = isFixedAsset
+    ? initialValues.assetName || indirectData.description
+    : isGLAccount
+      ? "G/L Account"
+      : distinctItemText(
+          getItemReadableId(items, itemData?.itemId),
+          itemData?.description
+        );
 
   return (
     <>
@@ -542,14 +574,7 @@ const PurchaseOrderLineForm = ({
                         <Badge variant="default">Outside Processing</Badge>
                       ) : isEditing ? (
                         <div className="flex flex-col items-start gap-1">
-                          <span>
-                            {isFixedAsset
-                              ? initialValues.assetName ||
-                                indirectData.description
-                              : isGLAccount
-                                ? "G/L Account"
-                                : itemData?.description}
-                          </span>
+                          {lineSubtitle && <span>{lineSubtitle}</span>}
                           <div className="flex items-center gap-2">
                             <Badge variant="outline">
                               {initialValues?.purchaseQuantity}
@@ -605,14 +630,30 @@ const PurchaseOrderLineForm = ({
                     <Hidden name="purchaseOrderLineType" value={lineType} />
                     <Hidden
                       name="inventoryUnitOfMeasureCode"
-                      value={itemData?.inventoryUom}
+                      value={
+                        isService
+                          ? EACH_UNIT_OF_MEASURE_CODE
+                          : itemData?.inventoryUom
+                      }
                     />
+                    {/* A service is always bought in EA, so no unit of
+                        measure or conversion factor is asked for. */}
+                    {isService && (
+                      <>
+                        <Hidden
+                          name="purchaseUnitOfMeasureCode"
+                          value={EACH_UNIT_OF_MEASURE_CODE}
+                        />
+                        <Hidden name="conversionFactor" value={1} />
+                      </>
+                    )}
                     <VStack>
                       <div className="grid w-full gap-x-8 gap-y-4 grid-cols-1 lg:grid-cols-3">
                         <Item
+                          autoFocus={!isEditing}
                           name="itemId"
-                          label={i18n._(itemTypeLabel(lineType))}
-                          type={lineType}
+                          label={i18n._(itemTypeLabel(itemFilter))}
+                          type={itemFilter}
                           validItemTypes={[...itemType]}
                           locationId={locationId}
                           replenishmentSystem={
@@ -691,7 +732,6 @@ const PurchaseOrderLineForm = ({
                           "Material",
                           "Consumable",
                           "Tool",
-                          "Service",
                           "Fixture"
                         ].includes(lineType) && (
                           <>
@@ -1097,12 +1137,9 @@ function JobOperationSelect(initialValues: { jobId?: string }) {
     initialValues.jobId ?? null
   );
 
-  const jobsFetcher =
-    useFetcher<PostgrestResponse<{ id: string; jobId: string }>>();
-  useMount(() => {
-    jobsFetcher.load(path.to.api.jobs);
-  });
-
+  const jobsFetcher = useLoaderQuery<
+    PostgrestResponse<{ id: string; jobId: string }>
+  >(path.to.api.jobs);
   const jobOptions = useMemo(
     () =>
       jobsFetcher.data?.data
@@ -1114,15 +1151,9 @@ function JobOperationSelect(initialValues: { jobId?: string }) {
     [jobsFetcher.data]
   );
 
-  const jobOperationFetcher =
-    useFetcher<PostgrestResponse<{ id: string; description: string }>>();
-  // biome-ignore lint/correctness/useExhaustiveDependencies: suppressed due to migration
-  useEffect(() => {
-    if (jobId) {
-      jobOperationFetcher.load(path.to.api.outsideOperations(jobId));
-    }
-  }, [jobId]);
-
+  const jobOperationFetcher = useLoaderQuery<
+    PostgrestResponse<{ id: string; description: string }>
+  >(jobId ? path.to.api.outsideOperations(jobId) : null);
   const jobOperationOptions = useMemo(() => {
     return (
       jobOperationFetcher.data?.data?.map((c) => ({

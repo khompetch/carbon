@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { useCarbon } from "@carbon/auth";
-import { convertKbToString, storage } from "@carbon/files";
+import { convertKbToString, downloadUrl, storage } from "@carbon/files";
 import { getLogger } from "@carbon/logger";
+import { useRevalidator } from "@carbon/query";
 import {
   Badge,
   Card,
@@ -20,6 +20,7 @@ import {
   File,
   HStack,
   IconButton,
+  MENU_ITEM_SHORTCUTS,
   Table,
   Tbody,
   Td,
@@ -40,7 +41,7 @@ import {
   LuShoppingCart,
   LuUpload
 } from "react-icons/lu";
-import { Outlet, useFetchers, useRevalidator, useSubmit } from "react-router";
+import { Outlet, useFetchers, useSubmit } from "react-router";
 import { DateTime, DocumentPreview, FileDropzone } from "~/components";
 import DocumentIcon from "~/components/DocumentIcon";
 import { useFileUpload, usePermissions, useUser } from "~/hooks";
@@ -170,6 +171,7 @@ const OpportunityDocuments = ({
                           </DropdownMenuTrigger>
                           <DropdownMenuContent>
                             <DropdownMenuItem
+                              shortcut={MENU_ITEM_SHORTCUTS.download}
                               onClick={() => download(attachment)}
                             >
                               <Trans>Download</Trans>
@@ -221,7 +223,7 @@ const DraggableCell = ({
 }) => {
   const context = useDndContext();
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: attachment.id,
+    id: attachment.id ?? attachment.name,
     data: {
       id: attachment.id,
       name: attachment.name,
@@ -266,7 +268,7 @@ const DraggableCell = ({
             <DocumentPreview
               bucket="private"
               pathToFile={getPath(attachment)}
-              // @ts-ignore
+              // @ts-expect-error
               type={getDocumentType(attachment.name)}
             >
               {attachment.name}
@@ -346,16 +348,7 @@ export const useOpportunityDocuments = ({
     async (attachment: FileObject) => {
       const url = path.to.file.previewFile(`private/${getPath(attachment)}`);
       try {
-        const response = await fetch(url);
-        const blob = await response.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        document.body.appendChild(a);
-        a.href = blobUrl;
-        a.download = attachment.name;
-        a.click();
-        window.URL.revokeObjectURL(blobUrl);
-        document.body.removeChild(a);
+        await downloadUrl(url, attachment.name);
       } catch (error) {
         toast.error(t`Error downloading file`);
         logger.error("Error", { error: error });
@@ -448,8 +441,13 @@ export default OpportunityDocuments;
 
 type OptimisticFileObject = Omit<
   FileObject,
-  "owner" | "updated_at" | "created_at" | "last_accessed_at" | "buckets"
->;
+  | "owner"
+  | "updated_at"
+  | "created_at"
+  | "last_accessed_at"
+  | "buckets"
+  | "metadata"
+> & { metadata: { size: number; mimetype: string } };
 export const usePendingItems = () => {
   type PendingItem = ReturnType<typeof useFetchers>[number] & {
     formData: FormData;

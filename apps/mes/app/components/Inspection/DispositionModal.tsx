@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -10,6 +9,7 @@ import {
   TextArea,
   ValidatedForm
 } from "@carbon/form";
+import { useAction } from "@carbon/query";
 import {
   Alert,
   AlertDescription,
@@ -113,7 +113,14 @@ const DispositionModal = ({
   onSubmit
 }: DispositionModalProps) => {
   const { t } = useLingui();
-  const fetcher = useFetcher<{}>();
+  const fetcher = useAction<{}>({
+    onSettled: () => {
+      if (submitted.current) {
+        onSubmit();
+        submitted.current = false;
+      }
+    }
+  });
   const targetsFetcher = useFetcher<{ operations: UpstreamOperation[] }>();
   const submitted = useRef(false);
   const loadedTargetsRef = useRef(false);
@@ -143,13 +150,6 @@ const DispositionModal = ({
     loadedTargetsRef.current = true;
     targetsFetcher.load(path.to.reworkTargets(operationId));
   }, [operationId, targetsFetcher.load]);
-
-  useEffect(() => {
-    if (fetcher.state === "idle" && submitted.current) {
-      onSubmit();
-      submitted.current = false;
-    }
-  }, [fetcher.state, onSubmit]);
 
   const targets = targetsFetcher.data?.operations ?? [];
   const hasIssueTypes = issueTypes.length > 0;

@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -60,7 +59,7 @@ const TimePicker = ({ name, label, termId, onChange }: TimePickerProps) => {
       <input type="hidden" name={name} value={time?.toString()} />
       <TimePickerBase
         value={time ?? undefined}
-        //@ts-ignore
+        //@ts-expect-error
         onChange={handleChange}
         isDisabled={isDisabled}
       />

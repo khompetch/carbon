@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -8,6 +7,7 @@ import { useMemo } from "react";
 import {
   LuBlocks,
   LuBox,
+  LuCalendarClock,
   LuCircleCheck,
   LuClipboardCheck,
   LuCreditCard,
@@ -114,6 +114,12 @@ export default function useSettingsSubmodules() {
             icon: <LuBox />
           },
           {
+            name: t`Invoicing`,
+            to: path.to.invoicingSettings,
+            role: "employee",
+            icon: <LuFileText />
+          },
+          {
             name: t`Items`,
             to: path.to.itemsSettings,
             role: "employee",
@@ -124,6 +130,12 @@ export default function useSettingsSubmodules() {
             to: path.to.peopleSettings,
             role: "employee",
             icon: <LuUsers />
+          },
+          {
+            name: t`Planning`,
+            to: path.to.planningSettings,
+            role: "employee",
+            icon: <LuCalendarClock />
           },
           {
             name: t`Purchasing`,

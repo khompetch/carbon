@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -12,9 +11,11 @@ import {
   DropdownMenuTrigger,
   HStack,
   IconButton,
+  MENU_ITEM_SHORTCUTS,
   useUrlParams,
   VStack
 } from "@carbon/react";
+import { distinctItemText } from "@carbon/utils";
 import { getLocalTimeZone, parseDate } from "@internationalized/date";
 import { useLingui } from "@lingui/react/macro";
 import { useDateFormatter, useNumberFormatter } from "@react-aria/i18n";
@@ -119,15 +120,20 @@ const DemandProjectionsTable = memo(
                 <ItemThumbnail
                   size="sm"
                   thumbnailPath={row.original.thumbnailPath}
-                  // @ts-ignore
+                  // @ts-expect-error
                   type={row.original.type}
                 />
 
                 <VStack spacing={0} className="font-medium">
                   {row.original.readableIdWithRevision}
-                  <div className="w-full truncate text-muted-foreground text-xs">
-                    {row.original.name}
-                  </div>
+                  {distinctItemText(
+                    row.original.readableIdWithRevision,
+                    row.original.name
+                  ) && (
+                    <div className="w-full truncate text-muted-foreground text-xs">
+                      {row.original.name}
+                    </div>
+                  )}
                 </VStack>
               </HStack>
             </Hyperlink>
@@ -160,7 +166,10 @@ const DemandProjectionsTable = memo(
                     />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem asChild>
+                    <DropdownMenuItem
+                      shortcut={MENU_ITEM_SHORTCUTS.edit}
+                      asChild
+                    >
                       <Link
                         to={path.to.demandProjection(
                           row.original.id!,
@@ -172,6 +181,7 @@ const DemandProjectionsTable = memo(
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
+                      shortcut={MENU_ITEM_SHORTCUTS.delete}
                       onSelect={() => setSelectedItem(row.original)}
                       destructive
                     >
@@ -195,7 +205,7 @@ const DemandProjectionsTable = memo(
           count={count}
           defaultColumnPinning={defaultColumnPinning}
           title={t`Demand Forecasts`}
-          table="production-planning"
+          table="demand-projection"
           withSavedView
           withSelectableRows
           withSimpleSorting

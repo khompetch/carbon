@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -29,7 +28,7 @@ import {
   scrapReasons,
   sequences,
   unitOfMeasures
-} from "../../supabase/functions/lib/seed.data.ts";
+} from "../seed-data.ts";
 import type { Database } from "../types.ts";
 import type { Resolved } from "./types.ts";
 
@@ -352,7 +351,7 @@ export async function seedCompanyReferenceData(
   }
 
   // Columns derive from the shared accountDefaults object so this insert
-  // can't drift from seed.data.ts when new defaults are added.
+  // can't drift from seed-data.ts when new defaults are added.
   const accountDefaultEntries = Object.entries(accountDefaults);
   const accountDefaultColumns = [
     ...accountDefaultEntries.map(([column]) => `"${column}"`),
@@ -382,8 +381,8 @@ export async function seedCompanyReferenceData(
         "assetAccountId", "accumulatedDepreciationAccountId",
         "depreciationExpenseAccountId", "writeOffAccountId",
         "writeDownAccountId", "gainOnDisposalAccountId", "lossOnDisposalAccountId",
-        "companyId", "createdBy"
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'system')`,
+        "isConstructionInProgress", "companyId", "createdBy"
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 'system')`,
       [
         fac.name,
         fac.depreciationMethod,
@@ -396,6 +395,7 @@ export async function seedCompanyReferenceData(
         accountIdByKey[fac.writeDownAccount],
         accountIdByKey[fac.gainOnDisposalAccount],
         accountIdByKey[fac.lossOnDisposalAccount],
+        fac.isConstructionInProgress,
         companyId
       ]
     );

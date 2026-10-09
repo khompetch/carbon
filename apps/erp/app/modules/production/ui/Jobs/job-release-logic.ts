@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -86,4 +85,34 @@ export function resolveOperationSupplier(
     : [];
   if (candidates.length === 1) return { supplierProcess: candidates[0]! };
   return { missing: candidates.length === 0 ? "none" : "choose" };
+}
+
+// What stands between a job and release, in words. A release with no dialog to
+// settle these in (bulk job release, batch release) refuses the job and names
+// them; the job's own Release dialog is where they are fixed.
+export function jobReleaseProblems(job: {
+  manufacturingBlocked: boolean;
+  missingAssemblies: { description: string }[];
+  outsideOperationsWithoutSupplier: {
+    description: string;
+    missing: "none" | "choose";
+  }[];
+}): string[] {
+  return [
+    ...(job.manufacturingBlocked ? ["manufacturing is blocked"] : []),
+    ...(job.missingAssemblies.length > 0
+      ? [
+          `no operations on ${job.missingAssemblies
+            .map((m) => m.description)
+            .join(", ")}`
+        ]
+      : []),
+    // No per-operation supplier picker here: an ambiguous or missing supplier
+    // is settled on the job's own Release.
+    ...job.outsideOperationsWithoutSupplier.map((op) =>
+      op.missing === "choose"
+        ? `choose a supplier for ${op.description} on the job`
+        : `${op.description} has no supplier`
+    )
+  ];
 }

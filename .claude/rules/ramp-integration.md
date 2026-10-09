@@ -3,7 +3,7 @@ paths:
   - packages/ee/src/ramp/**
   - packages/jobs/src/inngest/functions/integrations/ramp-sync*.ts
   - packages/jobs/src/inngest/functions/integrations/ramp-sweep.ts
-  - packages/database/supabase/functions/post-charge/**
+  - packages/server-functions/src/post-charge/**
   - apps/erp/app/modules/invoicing/ui/Charge/**
   - apps/erp/app/routes/x+/invoicing+/charges*.tsx
   - apps/erp/app/routes/api+/integrations.ramp.oauth.ts
@@ -80,14 +80,14 @@ providers, which own the data and mirror it out.
 >   2026-09-28, so a US supplier with a country but no state fell through to the
 >   useless "see the provider error" branch).
 >   The PREVENTIVE half is the `requireSupplierContactAndLocation` company setting
->   (`apps/erp/app/modules/settings/party-contact.ts`): when on, a supplier must have
+>   (`packages/lib/src/party-contact.ts`, re-exported by `apps/erp/app/modules/settings/party-contact.ts`): when on, a supplier must have
 >   an emailable contact AND a location whose address carries a country (plus a state
 >   when that country is US) before its supplier quote, purchase order or purchase
 >   invoice can be issued or posted, so the gap is caught while the person who can fix
 >   it is still looking at the document. ONE setting per party kind rather than two,
 >   because the platform needs all of it or none — a supplier with a contact but no
 >   location fails exactly as hard as one with neither. Enforced ONCE, on the PARTY
->   record, by `checkPartyContactRequirement` (`settings/party-contact.server.ts`) at
+>   record, by `checkPartyContactRequirement` (`@carbon/lib/party-contact.server`) at
 >   the six release/post boundaries — PO and supplier-quote finalize, sales-order
 >   confirm, quote finalize, and both invoice posts — surfaced as a flash naming the
 >   party and the missing fact.
@@ -496,7 +496,7 @@ mass-push.
 
 Card families use `stageOrResumeRampCharge` to advisory-lock the company/Ramp id
 and atomically create or resume the **Draft** `charge`, lines, and mapping before
-posting it through `post-charge`. A missing or ambiguous edge response succeeds
+posting it through `post-charge`. A missing or ambiguous response succeeds
 only when a tenant-scoped reread observes `Posted`; Ramp receipts are then stored on the
 Carbon transaction best-effort. A mapped Draft is refreshed from the latest validated Ramp
 header and coding in that same transaction; a failed refresh rolls back, and Posted rows
@@ -938,20 +938,16 @@ attached to the Carbon transaction; only the Rillet adapter currently uploads th
 provider. Full
 rules: `.claude/rules/accounting-sync-handlers.md` → "Card charges as provider objects".
 
-## post-charge edge function
+## post-charge server function
 
-`packages/database/supabase/functions/post-charge/` (registered in
-`config.toml`, `verify_jwt = true`). `{ type: "post" | "void", chargeId, userId,
-companyId }`. `postChargeTransaction` opens one Kysely transaction and performs
+`packages/server-functions/src/post-charge/` (`defineServerFn`,
+`permissions: { update: "invoicing" }`). Input `{ type: "post" | "void", chargeId }`;
+the context carries `companyId` / `userId`. `postChargeTransaction` opens one Kysely transaction and performs
 the tenant-scoped header `FOR UPDATE` as its first read; every settings, company, line,
 account, period, journal, dimension, and lifecycle write stays inside that transaction.
 Repeated post of Posted or void of Voided returns the stored journal id without another
 journal. The database parent-locking line trigger takes the same lock, closing the line-edit
 race.
-
-The handler requires invoicing-update permission. For an authenticated JWT, the shared
-edge permission helper requires its `sub` to equal the requested `userId` and looks up
-permissions for that subject; a body-supplied privileged user cannot substitute for it.
 
 - **post**: only from Draft. Requires company settings/config, active non-group posting
   accounts in the company group, a Liability card account, Asset payment offset, Revenue
@@ -998,8 +994,8 @@ account is **always booked as a LIABILITY** (a credit card is money owed). The f
 - Routes: `charges.tsx` (list, loader `getCharges`, filters
   search/type/status), `charges.$id.tsx` (read-only Drawer detail with lines +
   receipts + a **Void** action for Posted rows, `update: "invoicing"`),
-  `charges.$id.void.tsx` (action → service-role `functions.invoke(
-  "post-charge", { type: "void" })`).
+  `charges.$id.void.tsx` (action → `postCharge(ServerFnContext.system(...),
+  { type: "void", chargeId })`).
 - Components: `apps/erp/app/modules/invoicing/ui/Charge/` —
   `ChargesTable.tsx`, `ChargeStatus.tsx`, `index.ts`. Service:
   `getCharge(client, companyId, id)` / `getCharges` in

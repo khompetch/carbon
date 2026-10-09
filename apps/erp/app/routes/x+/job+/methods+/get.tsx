@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { validationError, validator } from "@carbon/form";
+import { redirect } from "@carbon/utils";
 import type { ActionFunctionArgs } from "react-router";
-import { data, redirect } from "react-router";
+import { data } from "react-router";
 import {
   getJobMethodValidator,
   recalculateJobOperationDependencies,
@@ -59,6 +59,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const jobMethod = await upsertJobMethod(
       serviceRole,
+      getDatabaseClient(),
       type === "item"
         ? "itemToJob"
         : type === "job"
@@ -68,7 +69,7 @@ export async function action({ request }: ActionFunctionArgs) {
     );
 
     const [calculateQuantities, calculateDependencies] = await Promise.all([
-      recalculateJobRequirements(serviceRole, {
+      recalculateJobRequirements(serviceRole, getDatabaseClient(), {
         id: validation.data.targetId,
         companyId: companyId,
         userId: userId
@@ -121,6 +122,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const makeMethod = await upsertJobMaterialMakeMethod(
       serviceRole,
+      getDatabaseClient(),
       makeMethodPayload
     );
 

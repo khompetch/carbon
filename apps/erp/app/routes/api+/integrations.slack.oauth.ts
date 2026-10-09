@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -16,8 +15,9 @@ import {
   getSlackInstaller,
   slackOAuthTokenResponseSchema
 } from "@carbon/ee/slack.server";
+import { redirectExternal } from "@carbon/utils";
 import type { LoaderFunctionArgs } from "react-router";
-import { data, redirect } from "react-router";
+import { data } from "react-router";
 import { z } from "zod";
 import { upsertCompanyIntegration } from "~/modules/settings/settings.server";
 import { oAuthCallbackSchema } from "~/modules/shared";
@@ -176,7 +176,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
       const redirectUrl = `${requestUrl.origin}${path.to.integrations}`;
 
-      return redirect(redirectUrl);
+      return redirectExternal(redirectUrl);
     } else {
       return data(
         { error: "Failed to save Slack integration" },

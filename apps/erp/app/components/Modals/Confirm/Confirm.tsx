@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -32,6 +31,8 @@ type ConfirmProps = {
   // Extra hidden fields posted with the confirmation (e.g. a status value),
   // letting callers reuse this dialog for status changes, not just deletes.
   children?: ReactNode;
+  // Read-only content shown under the text (e.g. a posting preview).
+  details?: ReactNode;
 };
 
 const Confirm = ({
@@ -44,7 +45,8 @@ const Confirm = ({
   confirmVariant,
   onCancel,
   onSubmit,
-  children
+  children,
+  details
 }: ConfirmProps) => {
   const fetcher = useFetcher<{ success: boolean; message: string }>();
   const submitted = useRef(false);
@@ -80,6 +82,7 @@ const Confirm = ({
         </ModalHeader>
         <ModalBody>
           <p className="text-sm text-muted-foreground">{text}</p>
+          {details}
         </ModalBody>
         <ModalFooter>
           <Button variant="secondary" onClick={onCancel}>

@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -17,8 +16,9 @@ import {
   verifySsoDomain
 } from "@carbon/ee/sso.server";
 import { validationError, validator } from "@carbon/form";
+import { redirect } from "@carbon/utils";
 import type { ActionFunctionArgs } from "react-router";
-import { data, redirect } from "react-router";
+import { data } from "react-router";
 import { ssoConnectionValidator, ssoDomainValidator } from "~/modules/settings";
 import { getDatabaseClient } from "~/services/database.server";
 import { path } from "~/utils/path";

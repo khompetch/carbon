@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -19,10 +18,10 @@ import {
   TruncatedTooltipText,
   VStack
 } from "@carbon/react";
-import { getItemReadableId } from "@carbon/utils";
+import { distinctItemText, getItemReadableId } from "@carbon/utils";
 import { Trans } from "@lingui/react/macro";
 import { useLocale } from "@react-aria/i18n";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useState } from "react";
 import { LuChevronRight, LuImage } from "react-icons/lu";
 import { Link, useParams } from "react-router";
@@ -42,6 +41,7 @@ import type {
   SalesInvoiceLine,
   SalesInvoiceShipment
 } from "../../types";
+import { useRentalLineTypeLabel } from "./useRentalLineTypeLabel";
 
 const LineItems = ({
   currencyCode,
@@ -63,6 +63,7 @@ const LineItems = ({
 
   const [items] = useItems();
   const percentFormatter = usePercentFormatter();
+  const rentalLineTypeLabel = useRentalLineTypeLabel();
   const [openItems, setOpenItems] = useState<string[]>([]);
   const unitOfMeasures = useUnitOfMeasure();
 
@@ -78,12 +79,19 @@ const LineItems = ({
         if (!line.id) return null;
 
         const itemReadableId =
-          line.invoiceLineType === "Fixed Asset"
-            ? (line as any).assetReadableId || "Fixed Asset"
-            : getItemReadableId(items, line.itemId);
-        const lineSubtotal = (line.unitPrice ?? 0) * (line.quantity ?? 0);
+          line.invoiceLineType === "Rental"
+            ? rentalLineTypeLabel(line.rentalLineType)
+            : line.invoiceLineType === "Fixed Asset"
+              ? (line as any).assetReadableId || "Fixed Asset"
+              : getItemReadableId(items, line.itemId);
+        const description = distinctItemText(itemReadableId, line.description);
+        // The discount reduces the merchandise only (the generated net
+        // prices); add-ons and shipping are not discounted.
+        const discountPercent = line.discountPercent ?? 0;
+        const discount = percentFormatter.format(discountPercent);
+        const lineSubtotal = (line.netUnitPrice ?? 0) * (line.quantity ?? 0);
         const customerSubtotal =
-          (line.convertedUnitPrice ?? 0) * (line.quantity ?? 0);
+          (line.convertedNetUnitPrice ?? 0) * (line.quantity ?? 0);
         const total =
           (lineSubtotal + (line.addOnCost ?? 0) + (line.shippingCost ?? 0)) *
             (1 + (line.taxPercent ?? 0)) +
@@ -108,9 +116,9 @@ const LineItems = ({
         return (
           <motion.div
             key={line.id}
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
             className="border-b border-input py-6 w-full"
           >
             <HStack spacing={4} className="items-start">
@@ -153,12 +161,14 @@ const LineItems = ({
                           </Link>
                         </Button>
                       </HStack>
-                      <TruncatedTooltipText
-                        className="text-muted-foreground text-sm truncate w-full"
-                        tooltip={line.description}
-                      >
-                        {line.description}
-                      </TruncatedTooltipText>
+                      {description && (
+                        <TruncatedTooltipText
+                          className="text-muted-foreground text-sm truncate w-full"
+                          tooltip={description}
+                        >
+                          {description}
+                        </TruncatedTooltipText>
+                      )}
                     </VStack>
                     <VStack
                       spacing={2}
@@ -166,7 +176,7 @@ const LineItems = ({
                     >
                       <HStack spacing={4}>
                         <VStack spacing={0}>
-                          <span className="font-bold text-xl whitespace-nowrap">
+                          <span className="font-semibold text-xl whitespace-nowrap">
                             {formatter.format(total)}
                           </span>
                           {shouldConvertCurrency && (
@@ -192,11 +202,12 @@ const LineItems = ({
                           className="flex items-center gap-2"
                         >
                           {line.quantity}
-                          {line.invoiceLineType !== "Fixed Asset" && (
-                            <MethodIcon
-                              type={line.methodType ?? "Pull from Inventory"}
-                            />
-                          )}
+                          {line.invoiceLineType !== "Fixed Asset" &&
+                            line.invoiceLineType !== "Rental" && (
+                              <MethodIcon
+                                type={line.methodType ?? "Pull from Inventory"}
+                              />
+                            )}
                         </Badge>
                         <Badge variant="green">
                           {formatter.format(line.unitPrice ?? 0)}{" "}
@@ -206,6 +217,11 @@ const LineItems = ({
                             )?.label
                           }
                         </Badge>
+                        {discountPercent > 0 ? (
+                          <Badge variant="secondary">
+                            <Trans>{discount} off</Trans>
+                          </Badge>
+                        ) : null}
                         {(line.taxPercent ?? 0) > 0 ? (
                           <Badge variant="red">
                             {percentFormatter.format(line.taxPercent ?? 0)} Tax
@@ -260,6 +276,11 @@ const LineItems = ({
                               {presentationCurrencyFormatter.format(
                                 line.convertedUnitPrice ?? 0
                               )}
+                            </span>
+                          )}
+                          {discountPercent > 0 && (
+                            <span className="text-muted-foreground text-xs">
+                              <Trans>{discount} off</Trans>
                             </span>
                           )}
                         </VStack>
@@ -318,7 +339,7 @@ const LineItems = ({
                       </Td>
                     </Tr>
 
-                    <Tr key="total" className="font-bold">
+                    <Tr key="total" className="font-semibold">
                       <Td>
                         <Trans>Total</Trans>
                       </Td>
@@ -376,11 +397,12 @@ const SalesInvoiceSummary = ({
 
   const isEditable = !isSalesInvoiceLocked(routeData?.salesInvoice?.status);
 
-  // Calculate totals
+  // Calculate totals. Merchandise is NET of the line discount, as in the
+  // `salesInvoices` view.
   const subtotal =
     routeData?.salesInvoiceLines?.reduce((acc, line) => {
       const lineSubtotal =
-        (line.unitPrice ?? 0) * (line.quantity ?? 0) +
+        (line.netUnitPrice ?? 0) * (line.quantity ?? 0) +
         (line.shippingCost ?? 0) +
         (line.addOnCost ?? 0) +
         (line.nonTaxableAddOnCost ?? 0);
@@ -390,7 +412,7 @@ const SalesInvoiceSummary = ({
   const customerSubtotal =
     routeData?.salesInvoiceLines?.reduce((acc, line) => {
       const lineSubtotal =
-        (line.convertedUnitPrice ?? 0) * (line.quantity ?? 0) +
+        (line.convertedNetUnitPrice ?? 0) * (line.quantity ?? 0) +
         (line.convertedShippingCost ?? 0) +
         (line.convertedAddOnCost ?? 0) +
         (line.convertedNonTaxableAddOnCost ?? 0);
@@ -402,7 +424,7 @@ const SalesInvoiceSummary = ({
     routeData?.salesInvoiceLines?.reduce((acc, line) => {
       const lineTaxAmount =
         (line.taxPercent ?? 0) *
-        ((line.unitPrice ?? 0) * (line.quantity ?? 0) +
+        ((line.netUnitPrice ?? 0) * (line.quantity ?? 0) +
           (line.shippingCost ?? 0) +
           (line.addOnCost ?? 0));
       return acc + lineTaxAmount;
@@ -412,7 +434,7 @@ const SalesInvoiceSummary = ({
     routeData?.salesInvoiceLines?.reduce((acc, line) => {
       const lineTaxAmount =
         (line.taxPercent ?? 0) *
-        ((line.convertedUnitPrice ?? 0) * (line.quantity ?? 0) +
+        ((line.convertedNetUnitPrice ?? 0) * (line.quantity ?? 0) +
           (line.convertedShippingCost ?? 0) +
           (line.convertedAddOnCost ?? 0));
       return acc + lineTaxAmount;

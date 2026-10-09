@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { useCarbon } from "@carbon/auth";
 import { Number, SelectControlled, Submit, ValidatedForm } from "@carbon/form";
+import { useAction } from "@carbon/query";
 import {
   Alert,
   AlertTitle,
@@ -26,6 +26,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
   HStack,
+  MENU_ITEM_SHORTCUTS,
   Menubar,
   MenubarItem,
   Modal,
@@ -35,6 +36,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalTitle,
+  PrefetchLink,
   toast,
   useDisclosure,
   VStack
@@ -55,7 +57,7 @@ import {
   LuStar,
   LuTriangleAlert
 } from "react-icons/lu";
-import { Link, useFetcher, useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { Hidden, Item, useConfigurableItems } from "~/components/Form";
 import { Confirm } from "~/components/Modals";
 import { usePermissions, useUser } from "~/hooks";
@@ -90,7 +92,13 @@ const MakeMethodTools = ({
 }: MakeMethodToolsProps) => {
   const permissions = usePermissions();
   const { t } = useLingui();
-  const fetcher = useFetcher<{ error: string | null }>();
+  const fetcher = useAction<{ error: string | null }>({
+    onError: (data) => {
+      if (data?.error) {
+        toast.error(data.error);
+      }
+    }
+  });
   const params = useParams();
   const { methodId, makeMethodId } = params;
   const activeMethodId = currentMethodId ?? makeMethodId ?? methodId;
@@ -99,12 +107,6 @@ const MakeMethodTools = ({
     fetcher.state !== "idle" && fetcher.formAction === path.to.makeMethodGet;
   const isSaveMethodLoading =
     fetcher.state !== "idle" && fetcher.formAction === path.to.makeMethodSave;
-
-  useEffect(() => {
-    if (fetcher.data?.error) {
-      toast.error(fetcher.data.error);
-    }
-  }, [fetcher.data?.error]);
 
   const [includeInactive, setIncludeInactive] = useState<boolean>(true);
   const configurableItemIds = useConfigurableItems();
@@ -257,9 +259,7 @@ const MakeMethodTools = ({
             </MenubarItem>
             {itemLink && (
               <MenubarItem leftIcon={<LuGitFork />} asChild>
-                <Link prefetch="intent" to={itemLink}>
-                  Item Master
-                </Link>
+                <PrefetchLink to={itemLink}>Item Master</PrefetchLink>
               </MenubarItem>
             )}
           </HStack>
@@ -314,6 +314,7 @@ const MakeMethodTools = ({
                                 isLocked={isChangeNoticeLocked}
                               >
                                 <DropdownMenuItem
+                                  shortcut={MENU_ITEM_SHORTCUTS.duplicate}
                                   disabled={isChangeNoticeLocked}
                                   onClick={() => {
                                     flushSync(() => {

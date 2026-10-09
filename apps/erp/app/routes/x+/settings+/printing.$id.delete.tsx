@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -9,8 +8,8 @@ import { flash } from "@carbon/auth/session.server";
 import type { PrintingSettings } from "@carbon/printing";
 import { deletePrinterRoute } from "@carbon/printing";
 import { invalidatePrinterCache } from "@carbon/printing/printing.server";
+import { redirect } from "@carbon/utils";
 import type { ActionFunctionArgs } from "react-router";
-import { redirect } from "react-router";
 import { path } from "~/utils/path";
 
 export async function action({ request, params }: ActionFunctionArgs) {

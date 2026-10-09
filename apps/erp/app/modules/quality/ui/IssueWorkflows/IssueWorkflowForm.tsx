@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -18,7 +17,7 @@ import {
 } from "@carbon/react";
 import { Editor } from "@carbon/react/Editor";
 import { Trans, useLingui } from "@lingui/react/macro";
-import { Reorder, useDragControls } from "framer-motion";
+import { Reorder, useDragControls } from "motion/react";
 import { useEffect, useState } from "react";
 import { LuGripVertical, LuX } from "react-icons/lu";
 import type { z } from "zod";
@@ -172,7 +171,7 @@ const IssueWorkflowForm = ({
             </p>
           </VStack>
         </HStack>
-        <Input name="name" label={t`Name`} />
+        <Input name="name" label={t`Name`} autoFocus={!isEditing} />
         <VStack spacing={2}>
           <label
             htmlFor="content"

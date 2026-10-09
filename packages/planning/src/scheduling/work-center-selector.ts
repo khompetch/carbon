@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -410,6 +409,20 @@ export class WorkCenterSelector {
             }
           }
         }
+        // Late vs the JOB due date, like any other placement: the batch's
+        // window is shared, so a member can finish after its own job is due.
+        if (!conflict && jobDueDate) {
+          const placedEndDate = businessDayFromMs(
+            batchPlacement.endAt,
+            ctx.timeZone
+          );
+          if (placedEndDate > jobDueDate) {
+            conflict = composeLateConflict(placedEndDate, jobDueDate, {
+              kind: "batch",
+              batchReadableId: batchPlacement.batchReadableId
+            });
+          }
+        }
         placedEndByOperation.set(op.id, batchPlacement.endAt);
         selections.set(op.id, {
           workCenterId: batchPlacement.workCenterId,
@@ -563,7 +576,7 @@ export class WorkCenterSelector {
       // Remaining-work netting: a started operation reserves only the work
       // left. Labor + machine scale by remaining quantity; setup is done once
       // any production event exists. A fully-complete op nets to 0 hours and is
-      // filtered from the reservation set in persistChanges (endAt > startAt).
+      // filtered from the reservation set in buildWrites (endAt > startAt).
       const { setup: setupFrac, work: workFrac } = remainingFractions(
         op,
         ctx.operationsWithEvents.has(op.id)

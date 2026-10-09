@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -205,7 +204,9 @@ const TableHeader = <T extends object>({
     !canSaveView &&
     !withCsvExport &&
     !withPagination &&
-    !withInlineEditing;
+    // Forced edit mode hides the Edit/Lock toggle, the only control inline
+    // editing adds to the toolbar.
+    (!withInlineEditing || forceEditMode);
 
   return (
     <div className={cn("w-full flex flex-col", !compact && "mb-8")}>

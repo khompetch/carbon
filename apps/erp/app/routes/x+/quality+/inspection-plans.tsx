@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { requirePermissions } from "@carbon/auth/auth.server";
-import { VStack } from "@carbon/react";
+import { RecordOutlet, VStack } from "@carbon/react";
 import { msg } from "@lingui/core/macro";
 import type { LoaderFunctionArgs } from "react-router";
-import { Outlet, useLoaderData } from "react-router";
+import { useLoaderData } from "react-router";
 import { getInspectionDocuments } from "~/modules/quality";
 import { InspectionDocumentTable } from "~/modules/quality/ui/InspectionDocument";
 import type { Handle } from "~/utils/handle";
@@ -51,7 +50,7 @@ export default function InspectionDocumentsRoute() {
   return (
     <VStack spacing={0} className="h-full">
       <InspectionDocumentTable data={diagrams} count={count} />
-      <Outlet />
+      <RecordOutlet />
     </VStack>
   );
 }

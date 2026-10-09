@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -26,19 +25,28 @@ export const BACKUP_VERSION = 1;
  * Tables whose contents must never travel in a backup — credentials,
  * integration tokens and webhook targets stay with the source company.
  * (`apiKeyRateLimit` dangles without its stripped `apiKey` and is an UNLOGGED
- * operational counter, never user data. `employeePin` holds console PIN
+ * operational counter, never user data. `tableChange` is the same kind of
+ * table: an UNLOGGED log of which rows changed, whose transaction ids mean
+ * nothing in another database. `employeePin` holds console PIN
  * hashes — a 4-digit PIN's bcrypt hash is brute-forced offline in minutes, so
  * it is a credential; being secret also keeps an in-place restore from wiping
- * every operator's PIN.)
+ * every operator's PIN. `ssoConnection` / `ssoDomain` are the company's login
+ * identity — `providerId` and a verified `domain` are unique across ALL
+ * companies, so a copy collides with the source company or hands its domain to
+ * another. `oauthCode` is a live auth code, and dangles without `oauthClient`.)
  */
 export const SECRET_TABLES = [
   "apiKey",
   "apiKeyRateLimit",
+  "tableChange",
   "companyIntegration",
   "employeePin",
   "webhook",
   "oauthClient",
-  "oauthToken"
+  "oauthCode",
+  "oauthToken",
+  "ssoConnection",
+  "ssoDomain"
 ];
 
 /**
@@ -283,6 +291,7 @@ export async function getCompanyTableCatalog(
            is_generated, identity_generation, column_default
     FROM information_schema.columns
     WHERE table_schema = 'public'
+    ORDER BY table_name, ordinal_position
   `.execute(db);
 
   const primaryKeys = await sql<{

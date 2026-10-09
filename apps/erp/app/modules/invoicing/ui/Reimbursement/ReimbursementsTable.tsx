@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -96,7 +95,7 @@ const ReimbursementsTable = memo(
           header: t`Date`,
           cell: (item) =>
             formatDate(item.getValue<string>(), undefined, locale),
-          meta: { icon: <LuCalendar /> }
+          meta: { filter: { type: "dateRange" }, icon: <LuCalendar /> }
         },
         {
           accessorKey: "reference",

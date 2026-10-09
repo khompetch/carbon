@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -9,8 +8,10 @@ import { flash } from "@carbon/auth/session.server";
 import { upsertApiKey } from "@carbon/ee/api-keys.server";
 import { requireFeature } from "@carbon/ee/plan.server";
 import { validationError, validator } from "@carbon/form";
+import { useCloseRoute } from "@carbon/react";
+import { redirect } from "@carbon/utils";
 import type { ActionFunctionArgs } from "react-router";
-import { data, redirect, useNavigate, useParams } from "react-router";
+import { data, useParams } from "react-router";
 import { useRouteData } from "~/hooks";
 import type { ApiKey } from "~/modules/settings";
 import { ApiKeyForm, apiKeyValidator } from "~/modules/settings";
@@ -73,7 +74,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function EditApiKeyRoute() {
-  const navigate = useNavigate();
+  const closeRoute = useCloseRoute();
   const params = useParams();
   const routeData = useRouteData<{ apiKeys: ApiKey[]; companyId: string }>(
     path.to.apiKeys
@@ -94,7 +95,7 @@ export default function EditApiKeyRoute() {
       initialValues={initialValues}
       companyId={routeData?.companyId}
       existingScopes={(apiKey as any)?.scopes ?? null}
-      onClose={() => navigate(-1)}
+      onClose={() => closeRoute()}
     />
   );
 }

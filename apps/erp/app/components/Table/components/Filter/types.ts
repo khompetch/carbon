@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -44,4 +43,9 @@ export type ColumnFilterData =
       isArray?: boolean;
       render: (ctx: CustomFilterRenderContext) => ReactNode;
       getLabel?: (value: string) => ReactNode;
+    }
+  | {
+      /** From / To date pickers on a DATE column; either bound may be open */
+      type: "dateRange";
+      isArray?: never;
     };

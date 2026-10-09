@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -15,13 +14,14 @@ import {
   DrawerTitle,
   HStack,
   IconButton,
+  MENU_ITEM_SHORTCUTS,
   MenuIcon,
   MenuItem,
   useDebounce,
   useDisclosure
 } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
-import { Reorder } from "framer-motion";
+import { Reorder } from "motion/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AiOutlineNumber } from "react-icons/ai";
 import { BiText } from "react-icons/bi";
@@ -75,7 +75,7 @@ const CustomFieldCategoryDetail = ({
       Array.isArray(customFieldTable.fields)
         ? customFieldTable.fields.reduce<
             Record<string, CustomFieldAndDataType>
-            // @ts-ignore
+            // @ts-expect-error
           >((acc, field) => {
             if (!field) return acc;
             const customField = field as CustomFieldAndDataType;
@@ -153,13 +153,17 @@ const CustomFieldCategoryDetail = ({
   const renderContextMenu = (fieldId: string) => {
     return (
       <>
-        <MenuItem asChild>
+        <MenuItem shortcut={MENU_ITEM_SHORTCUTS.edit} asChild>
           <Link to={`${fieldId}?${params.toString()}`}>
             <MenuIcon icon={<LuPencil />} />
             <Trans>Edit Custom Field</Trans>
           </Link>
         </MenuItem>
-        <MenuItem destructive onClick={() => onDelete(fieldMap[fieldId])}>
+        <MenuItem
+          shortcut={MENU_ITEM_SHORTCUTS.delete}
+          destructive
+          onClick={() => onDelete(fieldMap[fieldId])}
+        >
           <MenuIcon icon={<LuTrash />} />
           <Trans>Delete Custom Field</Trans>
         </MenuItem>

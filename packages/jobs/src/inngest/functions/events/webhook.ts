@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -10,6 +9,8 @@ import { inngest } from "../../client.ts";
 import { toWebhookBody, webhookPayloadSchema } from "./webhook-body.ts";
 
 const RETRIES = 3;
+// A documented part of the webhook contract (docs: building/webhooks).
+const WEBHOOK_TIMEOUT_MS = 30_000;
 
 export const webhookFunction = inngest.createFunction(
   {
@@ -64,7 +65,8 @@ export const webhookFunction = inngest.createFunction(
           headers: {
             "Content-Type": "application/json",
             ...payload.config.headers
-          }
+          },
+          timeout: WEBHOOK_TIMEOUT_MS
         });
       } catch (err) {
         // Count one failure per event, not per attempt — otherwise retries

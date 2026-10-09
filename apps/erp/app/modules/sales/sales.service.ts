@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -10,9 +9,15 @@ import { storage } from "@carbon/files";
 import { trackWorkEvent } from "@carbon/lib/telemetry";
 import { raiseMoment } from "@carbon/lib/workflows";
 import { getLogger } from "@carbon/logger";
-import type { PickPartial } from "@carbon/utils";
+import { serverFns } from "@carbon/server-functions";
+import type {
+  DefaultRentalRates,
+  PickPartial,
+  ScopedRentalRate
+} from "@carbon/utils";
 import {
   datetime,
+  defaultRentalRates,
   EPSILON,
   getSalesReturnOrderStatus,
   round
@@ -49,6 +54,10 @@ import type {
   customerAccountingValidator,
   customerBankAccountValidator,
   customerContactValidator,
+  customerContractInvoiceAutomationValidator,
+  customerContractLineValidator,
+  customerContractValidator,
+  customerItemRentalRateValidator,
   customerPaymentValidator,
   customerShippingValidator,
   customerStatusValidator,
@@ -56,6 +65,7 @@ import type {
   customerTypeValidator,
   customerValidator,
   getMethodValidator,
+  itemRentalRateValidator,
   noQuoteReasonValidator,
   pricingRuleValidator,
   quoteLineAdditionalChargesValidator,
@@ -66,6 +76,10 @@ import type {
   quoteShipmentValidator,
   quoteStatusType,
   quoteValidator,
+  rentalAgreementChargeValidator,
+  rentalAgreementInvoiceAutomationValidator,
+  rentalAgreementLineValidator,
+  rentalAgreementValidator,
   returnReasonValidator,
   salesOrderLineValidator,
   salesOrderPaymentValidator,
@@ -80,7 +94,12 @@ import type {
   salesRfqValidator,
   selectedLinesValidator
 } from "./sales.models";
-import { costCategoryKeys, OPEN_SALES_ORDER_STATUSES } from "./sales.models";
+import {
+  contractEndDate,
+  costCategoryKeys,
+  isQuoteLocked,
+  OPEN_SALES_ORDER_STATUSES
+} from "./sales.models";
 import type { CategoryMarkups, QuoteLinePriceSource } from "./sales.utils";
 import {
   applyPriceRules,
@@ -88,8 +107,10 @@ import {
   configuredQuoteBasePrice,
   decideRecalcPricing,
   getEffectiveDefaultMarkups,
+  QUOTE_BASE_PRICE_SOURCES,
   resolvePreservedQuoteLinePriceFields,
-  toMatchedRule
+  toMatchedRule,
+  withBasePriceSource
 } from "./sales.utils";
 import type {
   OverrideEntry,
@@ -101,6 +122,7 @@ import type {
   PriceSource,
   PriceTraceStep,
   Quotation,
+  QuoteLinePriceTrace,
   SalesOrder,
   SalesRFQ
 } from "./types";
@@ -140,24 +162,27 @@ export async function closeSalesOrder(
     .single();
 }
 
+/** @mcp update */
 export async function convertSalesRfqToQuote(
   client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
   payload: {
     id: string;
     companyId: string;
     userId: string;
   }
 ) {
-  return client.functions.invoke<{ convertedId: string }>("convert", {
-    body: {
-      type: "salesRfqToQuote",
-      ...payload
-    }
+  const { companyId, userId, id } = payload;
+  return serverFns.as({ client, db, companyId, userId }).invoke("convert", {
+    type: "salesRfqToQuote",
+    id
   });
 }
 
+/** @mcp update */
 export async function convertQuoteToOrder(
   client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
   payload: {
     id: string;
     selectedLines: z.infer<typeof selectedLinesValidator>;
@@ -168,15 +193,13 @@ export async function convertQuoteToOrder(
     digitalQuoteAcceptedByEmail?: string;
   }
 ) {
-  const result = await client.functions.invoke<{ convertedId: string }>(
-    "convert",
-    {
-      body: {
-        type: "quoteToSalesOrder",
-        ...payload
-      }
-    }
-  );
+  const { companyId, userId, ...input } = payload;
+  const result = await serverFns
+    .as({ client, db, companyId, userId })
+    .invoke("convert", {
+      type: "quoteToSalesOrder",
+      ...input
+    });
 
   if (!result.error && result.data?.convertedId) {
     await raiseMoment("sales.quoteAccepted", {
@@ -205,15 +228,18 @@ export async function convertQuoteToOrder(
   return result;
 }
 
+/** @mcp create */
 export async function copyQuoteLine(
   client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
   payload: z.infer<typeof getMethodValidator> & {
     companyId: string;
     userId: string;
   }
 ) {
-  return client.functions.invoke<{ copiedId: string }>("get-method", {
-    body: {
+  return serverFns
+    .as({ client, db, companyId: payload.companyId, userId: payload.userId })
+    .invoke("get-method", {
       ...payload,
       type: "quoteLineToQuoteLine",
       parts: {
@@ -224,25 +250,31 @@ export async function copyQuoteLine(
         steps: payload.steps,
         workInstructions: payload.workInstructions
       }
-    }
-  });
+    });
 }
 
+/** @mcp create */
 export async function copyQuote(
   client: SupabaseClient<Database>,
-  payload: Omit<z.infer<typeof getMethodValidator>, "type"> & {
+  db: Kysely<KyselyDatabase>,
+  payload: {
+    /** The quote to copy. */
+    sourceId: string;
+    /** The same quote id for a new revision, "" for a new quote. */
+    targetId: string;
     companyId: string;
     userId: string;
   }
 ) {
-  return client.functions.invoke<{ newQuoteId: string }>("get-method", {
-    body: {
+  return serverFns
+    .as({ client, db, companyId: payload.companyId, userId: payload.userId })
+    .invoke("get-method", {
       ...payload,
       type: "quoteToQuote"
-    }
-  });
+    });
 }
 
+/** @mcp create */
 export async function createPricingRule(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -312,6 +344,7 @@ function normalizePricingRule<
   };
 }
 
+/** @mcp delete */
 export async function deleteCustomer(
   client: SupabaseClient<Database>,
   customerId: string
@@ -319,6 +352,7 @@ export async function deleteCustomer(
   return client.from("customer").delete().eq("id", customerId);
 }
 
+/** @mcp delete */
 export async function deleteCustomerBankAccount(
   client: SupabaseClient<Database>,
   id: string
@@ -326,6 +360,7 @@ export async function deleteCustomerBankAccount(
   return client.from("customerBankAccount").delete().eq("id", id);
 }
 
+/** @mcp read */
 export async function getCustomerBankAccounts(
   client: SupabaseClient<Database>,
   customerId: string
@@ -337,6 +372,7 @@ export async function getCustomerBankAccounts(
     .order("name");
 }
 
+/** @mcp upsert */
 export async function upsertCustomerBankAccount(
   db: Kysely<KyselyDatabase>,
   bankAccount:
@@ -377,6 +413,7 @@ export async function upsertCustomerBankAccount(
     .executeTakeFirstOrThrow();
 }
 
+/** @mcp delete */
 export async function deleteCustomerContact(
   client: SupabaseClient<Database>,
   customerId: string,
@@ -402,6 +439,7 @@ export async function deleteCustomerContact(
   return customerContact;
 }
 
+/** @mcp delete */
 export async function deleteCustomerLocation(
   client: SupabaseClient<Database>,
   customerId: string,
@@ -426,6 +464,7 @@ export async function deleteCustomerLocation(
   }
 }
 
+/** @mcp delete */
 export async function deleteCustomerStatus(
   client: SupabaseClient<Database>,
   customerStatusId: string
@@ -433,6 +472,7 @@ export async function deleteCustomerStatus(
   return client.from("customerStatus").delete().eq("id", customerStatusId);
 }
 
+/** @mcp delete */
 export async function deleteCustomerType(
   client: SupabaseClient<Database>,
   customerTypeId: string
@@ -440,6 +480,7 @@ export async function deleteCustomerType(
   return client.from("customerType").delete().eq("id", customerTypeId);
 }
 
+/** @mcp delete */
 export async function deleteNoQuoteReason(
   client: SupabaseClient<Database>,
   noQuoteReasonId: string
@@ -447,6 +488,7 @@ export async function deleteNoQuoteReason(
   return client.from("noQuoteReason").delete().eq("id", noQuoteReasonId);
 }
 
+/** @mcp delete */
 export async function deletePricingRule(
   client: SupabaseClient<Database>,
   pricingRuleId: string
@@ -454,6 +496,7 @@ export async function deletePricingRule(
   return client.from("pricingRule").delete().eq("id", pricingRuleId);
 }
 
+/** @mcp delete */
 export async function deleteQuote(
   client: SupabaseClient<Database>,
   quoteId: string
@@ -468,6 +511,7 @@ export async function deleteQuoteMakeMethod(
   return client.from("quoteMakeMethod").delete().eq("id", quoteMakeMethodId);
 }
 
+/** @mcp delete */
 export async function deleteQuoteLine(
   client: SupabaseClient<Database>,
   quoteLineId: string
@@ -475,6 +519,7 @@ export async function deleteQuoteLine(
   return client.from("quoteLine").delete().eq("id", quoteLineId);
 }
 
+/** @mcp delete */
 export async function deleteQuoteMaterial(
   client: SupabaseClient<Database>,
   quoteMaterialId: string
@@ -489,6 +534,7 @@ export async function deleteQuoteOperation(
   return client.from("quoteOperation").delete().eq("id", quoteOperationId);
 }
 
+/** @mcp delete */
 export async function deleteQuoteOperationStep(
   client: SupabaseClient<Database>,
   id: string
@@ -496,6 +542,7 @@ export async function deleteQuoteOperationStep(
   return client.from("quoteOperationStep").delete().eq("id", id);
 }
 
+/** @mcp delete */
 export async function deleteQuoteOperationParameter(
   client: SupabaseClient<Database>,
   id: string
@@ -503,6 +550,7 @@ export async function deleteQuoteOperationParameter(
   return client.from("quoteOperationParameter").delete().eq("id", id);
 }
 
+/** @mcp delete */
 export async function deleteQuoteOperationTool(
   client: SupabaseClient<Database>,
   id: string
@@ -510,6 +558,7 @@ export async function deleteQuoteOperationTool(
   return client.from("quoteOperationTool").delete().eq("id", id);
 }
 
+/** @mcp delete */
 export async function deleteSalesOrder(
   client: SupabaseClient<Database>,
   salesOrderId: string
@@ -517,6 +566,7 @@ export async function deleteSalesOrder(
   return client.from("salesOrder").delete().eq("id", salesOrderId);
 }
 
+/** @mcp delete */
 export async function deleteSalesOrderLine(
   client: SupabaseClient<Database>,
   salesOrderLineId: string
@@ -524,6 +574,7 @@ export async function deleteSalesOrderLine(
   return client.from("salesOrderLine").delete().eq("id", salesOrderLineId);
 }
 
+/** @mcp delete */
 export async function deleteSalesRFQ(
   client: SupabaseClient<Database>,
   salesRfqId: string
@@ -531,6 +582,7 @@ export async function deleteSalesRFQ(
   return client.from("salesRfq").delete().eq("id", salesRfqId);
 }
 
+/** @mcp delete */
 export async function deleteSalesRFQLine(
   client: SupabaseClient<Database>,
   salesRFQLineId: string
@@ -538,6 +590,7 @@ export async function deleteSalesRFQLine(
   return client.from("salesRfqLine").delete().eq("id", salesRFQLineId);
 }
 
+/** @mcp create */
 export async function duplicatePricingRule(
   client: SupabaseClient<Database>,
   id: string,
@@ -577,6 +630,7 @@ export async function duplicatePricingRule(
     .single();
 }
 
+/** @mcp read */
 export async function getConfigurationParametersByQuoteLineId(
   client: SupabaseClient<Database>,
   quoteLineId: string,
@@ -622,6 +676,7 @@ export async function getConfigurationParametersByQuoteLineId(
   return { groups: groups.data ?? [], parameters: parameters.data ?? [] };
 }
 
+/** @mcp read */
 export async function getCustomer(
   client: SupabaseClient<Database>,
   customerId: string,
@@ -632,6 +687,7 @@ export async function getCustomer(
   return query.single();
 }
 
+/** @mcp read */
 export async function getCustomerContact(
   client: SupabaseClient<Database>,
   customerContactId: string,
@@ -647,6 +703,7 @@ export async function getCustomerContact(
   return query.single();
 }
 
+/** @mcp read */
 export async function getCustomerContacts(
   client: SupabaseClient<Database>,
   customerId: string,
@@ -662,6 +719,7 @@ export async function getCustomerContacts(
   return query;
 }
 
+/** @mcp read */
 export async function getCustomerItemPriceOverride(
   client: SupabaseClient<Database>,
   customerId: string,
@@ -685,6 +743,7 @@ export async function getCustomerItemPriceOverride(
   return { data: applyBreakToParent(data, quantity, date), error: null };
 }
 
+/** @mcp read */
 export async function getCustomerLocation(
   client: SupabaseClient<Database>,
   customerLocationId: string,
@@ -700,6 +759,7 @@ export async function getCustomerLocation(
   return query.single();
 }
 
+/** @mcp read */
 export async function getCustomerLocations(
   client: SupabaseClient<Database>,
   customerId: string,
@@ -715,6 +775,7 @@ export async function getCustomerLocations(
   return query;
 }
 
+/** @mcp read */
 export async function getCustomerPayment(
   client: SupabaseClient<Database>,
   customerId: string,
@@ -728,6 +789,7 @@ export async function getCustomerPayment(
   return query.single();
 }
 
+/** @mcp read */
 export async function getCustomerShipping(
   client: SupabaseClient<Database>,
   customerId: string,
@@ -741,6 +803,7 @@ export async function getCustomerShipping(
   return query.single();
 }
 
+/** @mcp read */
 export async function getCustomerTax(
   client: SupabaseClient<Database>,
   customerId: string,
@@ -754,6 +817,7 @@ export async function getCustomerTax(
   return query.single();
 }
 
+/** @mcp read */
 export async function getCustomerTypeItemPriceOverride(
   client: SupabaseClient<Database>,
   customerTypeId: string,
@@ -777,6 +841,7 @@ export async function getCustomerTypeItemPriceOverride(
   return { data: applyBreakToParent(data, quantity, date), error: null };
 }
 
+/** @mcp read */
 export async function getAllCustomersItemPriceOverride(
   client: SupabaseClient<Database>,
   itemId: string,
@@ -865,6 +930,7 @@ function pickBestBreak(
   return best;
 }
 
+/** @mcp read */
 export async function getCustomers(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -875,7 +941,7 @@ export async function getCustomers(
   let query = client
     .from("customers")
     .select("*", {
-      count: "exact"
+      count: LIST_COUNT
     })
     .eq("companyId", companyId);
 
@@ -889,6 +955,7 @@ export async function getCustomers(
   return query;
 }
 
+/** @mcp read */
 export async function getCustomersList(
   client: SupabaseClient<Database>,
   companyId: string
@@ -901,6 +968,7 @@ export async function getCustomersList(
   );
 }
 
+/** @mcp read */
 export async function getCustomerStatus(
   client: SupabaseClient<Database>,
   customerStatusId: string
@@ -912,6 +980,7 @@ export async function getCustomerStatus(
     .single();
 }
 
+/** @mcp read */
 export async function getCustomerStatuses(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -919,7 +988,7 @@ export async function getCustomerStatuses(
 ) {
   let query = client
     .from("customerStatus")
-    .select("id, name, customFields", { count: "exact" })
+    .select("id, name, customFields", { count: LIST_COUNT })
     .eq("companyId", companyId);
 
   if (args?.search) {
@@ -935,6 +1004,7 @@ export async function getCustomerStatuses(
   return query;
 }
 
+/** @mcp read */
 export async function getCustomerStatusesList(
   client: SupabaseClient<Database>,
   companyId: string
@@ -946,6 +1016,7 @@ export async function getCustomerStatusesList(
     .order("name");
 }
 
+/** @mcp read */
 export async function getCustomerType(
   client: SupabaseClient<Database>,
   customerTypeId: string
@@ -957,6 +1028,7 @@ export async function getCustomerType(
     .single();
 }
 
+/** @mcp read */
 export async function getCustomerTypes(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -964,7 +1036,7 @@ export async function getCustomerTypes(
 ) {
   let query = client
     .from("customerType")
-    .select("*", { count: "exact" })
+    .select("*", { count: LIST_COUNT })
     .eq("companyId", companyId);
 
   if (args?.search) {
@@ -980,6 +1052,7 @@ export async function getCustomerTypes(
   return query;
 }
 
+/** @mcp read */
 export async function getCustomerTypesList(
   client: SupabaseClient<Database>,
   companyId: string
@@ -991,6 +1064,7 @@ export async function getCustomerTypesList(
     .order("name");
 }
 
+/** @mcp read */
 export async function getExternalSalesOrderLines(
   client: SupabaseClient<Database>,
   customerId: string,
@@ -1000,7 +1074,7 @@ export async function getExternalSalesOrderLines(
     "get_sales_order_lines_by_customer_id",
     { customer_id: customerId },
     {
-      count: "exact"
+      count: LIST_COUNT
     }
   );
 
@@ -1019,6 +1093,7 @@ export async function getExternalSalesOrderLines(
   return query;
 }
 
+/** @mcp read */
 export async function getModelByQuoteLineId(
   client: SupabaseClient<Database>,
   quoteLineId: string
@@ -1034,6 +1109,7 @@ export async function getModelByQuoteLineId(
   return getModelByItemId(client, quoteLine.data.itemId);
 }
 
+/** @mcp read */
 export async function getNoQuoteReasonsList(
   client: SupabaseClient<Database>,
   companyId: string
@@ -1045,6 +1121,7 @@ export async function getNoQuoteReasonsList(
     .order("name");
 }
 
+/** @mcp read */
 export async function getNoQuoteReason(
   client: SupabaseClient<Database>,
   noQuoteReasonId: string
@@ -1056,6 +1133,7 @@ export async function getNoQuoteReason(
     .single();
 }
 
+/** @mcp read */
 export async function getNoQuoteReasons(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1063,7 +1141,7 @@ export async function getNoQuoteReasons(
 ) {
   let query = client
     .from("noQuoteReason")
-    .select("*", { count: "exact" })
+    .select("*", { count: LIST_COUNT })
     .eq("companyId", companyId);
 
   if (args?.search) {
@@ -1079,6 +1157,7 @@ export async function getNoQuoteReasons(
   return query;
 }
 
+/** @mcp read */
 export async function getOpportunity(
   client: SupabaseClient<Database>,
   opportunityId: string | null
@@ -1119,6 +1198,7 @@ export async function getOpportunity(
   }>;
 }
 
+/** @mcp read */
 export async function getOpportunityDocuments(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1141,6 +1221,7 @@ export async function getOpportunityDocuments(
   }));
 }
 
+/** @mcp read */
 export async function getOpportunityLineDocuments(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1179,6 +1260,7 @@ export async function getOpportunityLineDocuments(
   return [...opportunityLineDocs, ...itemDocs];
 }
 
+/** @mcp read */
 export async function getPricingRule(
   client: SupabaseClient<Database>,
   id: string
@@ -1186,6 +1268,7 @@ export async function getPricingRule(
   return client.from("pricingRule").select("*").eq("id", id).single();
 }
 
+/** @mcp read */
 export async function getPricingRules(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1193,7 +1276,7 @@ export async function getPricingRules(
 ) {
   let query = client
     .from("pricingRule")
-    .select("*", { count: "exact" })
+    .select("*", { count: LIST_COUNT })
     .eq("companyId", companyId);
 
   if (args?.search) {
@@ -1215,6 +1298,7 @@ export const priceSourceTypes = [
   "Rule"
 ] as const;
 
+/** @mcp read */
 export async function getQuote(
   client: SupabaseClient<Database>,
   quoteId: string
@@ -1222,6 +1306,7 @@ export async function getQuote(
   return client.from("quotes").select("*").eq("id", quoteId).single();
 }
 
+/** @mcp read */
 export async function getQuotes(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1246,6 +1331,7 @@ export async function getQuotes(
   return query;
 }
 
+/** @mcp read */
 export async function getQuotesList(
   client: SupabaseClient<Database>,
   companyId: string
@@ -1259,6 +1345,7 @@ export async function getQuotesList(
   );
 }
 
+/** @mcp read */
 export async function getQuoteAssembliesByLine(
   client: SupabaseClient<Database>,
   quoteLineId: string
@@ -1269,6 +1356,7 @@ export async function getQuoteAssembliesByLine(
     .eq("quoteLineId", quoteLineId);
 }
 
+/** @mcp read */
 export async function getQuoteAssemblies(
   client: SupabaseClient<Database>,
   quoteId: string
@@ -1276,6 +1364,7 @@ export async function getQuoteAssemblies(
   return client.from("quoteMakeMethod").select("*").eq("quoteId", quoteId);
 }
 
+/** @mcp read */
 export async function getQuoteCustomerDetails(
   client: SupabaseClient<Database>,
   quoteId: string
@@ -1287,6 +1376,7 @@ export async function getQuoteCustomerDetails(
     .single();
 }
 
+/** @mcp read */
 export async function getQuoteLine(
   client: SupabaseClient<Database>,
   quoteLineId: string
@@ -1294,6 +1384,7 @@ export async function getQuoteLine(
   return client.from("quoteLines").select("*").eq("id", quoteLineId).single();
 }
 
+/** @mcp read */
 export async function getQuoteLinesList(
   client: SupabaseClient<Database>,
   quoteId: string
@@ -1313,6 +1404,7 @@ type QuoteMethodTreeItem = {
   children: QuoteMethodTreeItem[];
 };
 
+/** @mcp read */
 export async function getQuoteMakeMethod(
   client: SupabaseClient<Database>,
   quoteMakeMethodId: string
@@ -1324,6 +1416,7 @@ export async function getQuoteMakeMethod(
     .single();
 }
 
+/** @mcp read */
 export async function getRootQuoteMakeMethod(
   client: SupabaseClient<Database>,
   quoteLineId: string
@@ -1336,6 +1429,7 @@ export async function getRootQuoteMakeMethod(
     .single();
 }
 
+/** @mcp read */
 export async function getQuoteMethodTrees(
   client: SupabaseClient<Database>,
   quoteId: string
@@ -1351,6 +1445,7 @@ export async function getQuoteMethodTrees(
   };
 }
 
+/** @mcp read */
 export async function getQuoteMethodTreeArray(
   client: SupabaseClient<Database>,
   quoteId: string
@@ -1378,7 +1473,7 @@ function getQuoteMethodTreeArrayToTree(
     const parentId = item.parentMaterialId;
 
     if (!Object.prototype.hasOwnProperty.call(lookup, itemId)) {
-      // @ts-ignore
+      // @ts-expect-error
       lookup[itemId] = { id: itemId, children: [] };
     }
 
@@ -1391,7 +1486,7 @@ function getQuoteMethodTreeArrayToTree(
       rootItems.push(treeItem);
     } else {
       if (!Object.prototype.hasOwnProperty.call(lookup, parentId)) {
-        // @ts-ignore
+        // @ts-expect-error
         lookup[parentId] = { id: parentId, children: [] };
       }
 
@@ -1403,6 +1498,7 @@ function getQuoteMethodTreeArrayToTree(
   // return rootItems.map((item) => traverseAndRenameIds(item));
 }
 
+/** @mcp read */
 export async function getQuoteLines(
   client: SupabaseClient<Database>,
   quoteId: string
@@ -1415,6 +1511,7 @@ export async function getQuoteLines(
     .order("itemReadableId", { ascending: true });
 }
 
+/** @mcp read */
 export async function getQuoteByExternalId(
   client: SupabaseClient<Database>,
   externalId: string
@@ -1426,6 +1523,7 @@ export async function getQuoteByExternalId(
     .single();
 }
 
+/** @mcp read */
 export async function getQuoteLinePrices(
   client: SupabaseClient<Database>,
   quoteLineId: string
@@ -1436,6 +1534,7 @@ export async function getQuoteLinePrices(
     .eq("quoteLineId", quoteLineId);
 }
 
+/** @mcp read */
 export async function getQuoteLinePricesByQuoteId(
   client: SupabaseClient<Database>,
   quoteId: string
@@ -1447,6 +1546,7 @@ export async function getQuoteLinePricesByQuoteId(
     .order("quoteLineId", { ascending: true });
 }
 
+/** @mcp read */
 export async function getQuoteLinePricesByItemId(
   client: SupabaseClient<Database>,
   itemId: string,
@@ -1461,6 +1561,7 @@ export async function getQuoteLinePricesByItemId(
     .order("qty", { ascending: true });
 }
 
+/** @mcp read */
 export async function getQuoteLinePricesByItemIds(
   client: SupabaseClient<Database>,
   itemIds: string[],
@@ -1476,6 +1577,7 @@ export async function getQuoteLinePricesByItemIds(
     .limit(10);
 }
 
+/** @mcp read */
 export async function getQuoteMaterials(
   client: SupabaseClient<Database>,
   quoteId: string
@@ -1483,6 +1585,7 @@ export async function getQuoteMaterials(
   return client.from("quoteMaterial").select("*").eq("quoteId", quoteId);
 }
 
+/** @mcp read */
 export async function getQuoteMaterial(
   client: SupabaseClient<Database>,
   materialId: string
@@ -1494,6 +1597,7 @@ export async function getQuoteMaterial(
     .single();
 }
 
+/** @mcp read */
 export async function getQuoteMaterialsByLine(
   client: SupabaseClient<Database>,
   quoteLineId: string
@@ -1504,6 +1608,7 @@ export async function getQuoteMaterialsByLine(
     .eq("quoteLineId", quoteLineId);
 }
 
+/** @mcp read */
 export async function getQuoteMaterialsByMethodId(
   client: SupabaseClient<Database>,
   quoteMakeMethodId: string
@@ -1515,6 +1620,7 @@ export async function getQuoteMaterialsByMethodId(
     .order("order", { ascending: true });
 }
 
+/** @mcp read */
 export async function getQuoteMaterialsByOperation(
   client: SupabaseClient<Database>,
   quoteOperationId: string
@@ -1525,6 +1631,7 @@ export async function getQuoteMaterialsByOperation(
     .eq("quoteOperationId", quoteOperationId);
 }
 
+/** @mcp read */
 export async function getQuoteOperation(
   client: SupabaseClient<Database>,
   quoteOperationId: string
@@ -1536,6 +1643,7 @@ export async function getQuoteOperation(
     .single();
 }
 
+/** @mcp read */
 export async function getQuoteOperationsByLine(
   client: SupabaseClient<Database>,
   quoteLineId: string
@@ -1546,6 +1654,7 @@ export async function getQuoteOperationsByLine(
     .eq("quoteLineId", quoteLineId);
 }
 
+/** @mcp read */
 export async function getQuoteOperationsByMethodId(
   client: SupabaseClient<Database>,
   quoteMakeMethodId: string
@@ -1559,6 +1668,7 @@ export async function getQuoteOperationsByMethodId(
     .order("order", { ascending: true });
 }
 
+/** @mcp read */
 export async function getQuoteOperations(
   client: SupabaseClient<Database>,
   quoteId: string
@@ -1566,6 +1676,7 @@ export async function getQuoteOperations(
   return client.from("quoteOperation").select("*").eq("quoteId", quoteId);
 }
 
+/** @mcp read */
 export async function getQuotePayment(
   client: SupabaseClient<Database>,
   quoteId: string
@@ -1573,6 +1684,7 @@ export async function getQuotePayment(
   return client.from("quotePayment").select("*").eq("id", quoteId).single();
 }
 
+/** @mcp read */
 export async function getQuoteShipment(
   client: SupabaseClient<Database>,
   quoteId: string
@@ -1580,6 +1692,7 @@ export async function getQuoteShipment(
   return client.from("quoteShipment").select("*").eq("id", quoteId).single();
 }
 
+/** @mcp read */
 export async function getRelatedPricesForQuoteLine(
   client: SupabaseClient<Database>,
   itemId: string,
@@ -1608,6 +1721,7 @@ export async function getRelatedPricesForQuoteLine(
   };
 }
 
+/** @mcp read */
 export async function getSalesDocumentsAssignedToMe(
   client: SupabaseClient<Database>,
   userId: string,
@@ -1640,6 +1754,7 @@ export async function getSalesDocumentsAssignedToMe(
   return merged;
 }
 
+/** @mcp read */
 export async function getSalesOrder(
   client: SupabaseClient<Database>,
   salesOrderId: string
@@ -1647,6 +1762,7 @@ export async function getSalesOrder(
   return client.from("salesOrders").select("*").eq("id", salesOrderId).single();
 }
 
+/** @mcp read */
 export async function getSalesOrderCustomerDetails(
   client: SupabaseClient<Database>,
   salesOrderId: string
@@ -1658,6 +1774,7 @@ export async function getSalesOrderCustomerDetails(
     .single();
 }
 
+/** @mcp read */
 export async function getSalesOrderRelatedItems(
   client: SupabaseClient<Database>,
   salesOrderId: string,
@@ -1709,6 +1826,7 @@ export async function getSalesOrderRelatedItems(
   };
 }
 
+/** @mcp read */
 export async function getSalesOrders(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1740,6 +1858,7 @@ export async function getSalesOrders(
   return query;
 }
 
+/** @mcp read */
 export async function getSalesOrdersList(
   client: SupabaseClient<Database>,
   companyId: string
@@ -1752,6 +1871,7 @@ export async function getSalesOrdersList(
   );
 }
 
+/** @mcp read */
 export async function getSalesOrdersByIds(
   client: SupabaseClient<Database>,
   ids: string[]
@@ -1759,6 +1879,7 @@ export async function getSalesOrdersByIds(
   return client.from("salesOrder").select("id, salesOrderId").in("id", ids);
 }
 
+/** @mcp read */
 export async function getSalesOrderPayment(
   client: SupabaseClient<Database>,
   salesOrderId: string
@@ -1770,6 +1891,7 @@ export async function getSalesOrderPayment(
     .single();
 }
 
+/** @mcp read */
 export async function getSalesTerms(
   client: SupabaseClient<Database>,
   companyId: string
@@ -1777,6 +1899,7 @@ export async function getSalesTerms(
   return client.from("terms").select("salesTerms").eq("id", companyId).single();
 }
 
+/** @mcp read */
 export async function getSalesOrderShipment(
   client: SupabaseClient<Database>,
   salesOrderId: string
@@ -1788,10 +1911,12 @@ export async function getSalesOrderShipment(
     .single();
 }
 
+/** @mcp read */
 export async function getSalesOrderCustomers(client: SupabaseClient<Database>) {
   return client.from("salesOrderCustomers").select("id, name");
 }
 
+/** @mcp read */
 export async function getSalesOrderLines(
   client: SupabaseClient<Database>,
   salesOrderId: string
@@ -1804,6 +1929,7 @@ export async function getSalesOrderLines(
     .order("itemReadableId", { ascending: true });
 }
 
+/** @mcp read */
 export async function getSalesOrderInvoiceLines(
   client: SupabaseClient<Database>,
   salesOrderId: string
@@ -1814,6 +1940,7 @@ export async function getSalesOrderInvoiceLines(
     .eq("salesOrderId", salesOrderId);
 }
 
+/** @mcp read */
 export async function getSalesOrderInvoicesByIds(
   client: SupabaseClient<Database>,
   invoiceIds: string[]
@@ -1824,6 +1951,7 @@ export async function getSalesOrderInvoicesByIds(
     .in("id", invoiceIds);
 }
 
+/** @mcp read */
 export async function getSalesOrderInvoicePaymentsByIds(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1847,6 +1975,7 @@ export async function getSalesOrderInvoicePaymentsByIds(
   );
 }
 
+/** @mcp read */
 export async function getSalesOrderLinesByItemId(
   client: SupabaseClient<Database>,
   itemId: string
@@ -1864,6 +1993,7 @@ export async function getSalesOrderLinesByItemId(
  * job's item, on sales orders that are still open (not Completed/Invoiced/
  * Cancelled/Closed). Joins the base salesOrder header so we can filter on its
  * status (the salesOrderLines view only exposes the line-level status).
+ * @mcp read
  */
 export async function getOpenSalesOrderLinesForItem(
   client: SupabaseClient<Database>,
@@ -1881,6 +2011,7 @@ export async function getOpenSalesOrderLinesForItem(
     .order("createdAt", { ascending: false });
 }
 
+/** @mcp read */
 export async function getSalesOrderLinesByItemIds(
   client: SupabaseClient<Database>,
   itemIds: string[]
@@ -1894,6 +2025,7 @@ export async function getSalesOrderLinesByItemIds(
     .limit(10);
 }
 
+/** @mcp read */
 export async function getSalesOrderLine(
   client: SupabaseClient<Database>,
   salesOrderLineId: string
@@ -1905,6 +2037,7 @@ export async function getSalesOrderLine(
     .single();
 }
 
+/** @mcp read */
 export async function getSalesOrderLineShipments(
   client: SupabaseClient<Database>,
   salesOrderLineId: string
@@ -1916,6 +2049,7 @@ export async function getSalesOrderLineShipments(
     .gt("shippedQuantity", 0);
 }
 
+/** @mcp read */
 export async function getSalesRFQ(
   client: SupabaseClient<Database>,
   id: string
@@ -1923,6 +2057,7 @@ export async function getSalesRFQ(
   return client.from("salesRfqs").select("*").eq("id", id).single();
 }
 
+/** @mcp read */
 export async function getSalesRFQs(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -1932,7 +2067,7 @@ export async function getSalesRFQs(
 ) {
   let query = client
     .from("salesRfqs")
-    .select("*", { count: "exact" })
+    .select("*", { count: LIST_COUNT })
     .eq("companyId", companyId);
 
   if (args.search) {
@@ -1947,6 +2082,7 @@ export async function getSalesRFQs(
   return query;
 }
 
+/** @mcp read */
 export async function getSalesRFQLine(
   client: SupabaseClient<Database>,
   lineId: string
@@ -1954,6 +2090,7 @@ export async function getSalesRFQLine(
   return client.from("salesRfqLines").select("*").eq("id", lineId).single();
 }
 
+/** @mcp read */
 export async function getSalesRFQLines(
   client: SupabaseClient<Database>,
   salesRfqId: string
@@ -1966,6 +2103,7 @@ export async function getSalesRFQLines(
     .order("customerPartId", { ascending: true });
 }
 
+/** @mcp create */
 export async function insertCustomerContact(
   client: SupabaseClient<Database>,
   customerContact: {
@@ -2011,6 +2149,7 @@ export async function insertCustomerContact(
     .single();
 }
 
+/** @mcp create */
 export async function insertCustomerLocation(
   client: SupabaseClient<Database>,
   customerLocation: {
@@ -2067,18 +2206,22 @@ export async function insertSalesOrderLines(
     customFields?: Json;
   })[]
 ) {
-  const linesWithDefaults = salesOrderLines.map((line) => ({
-    ...line,
-    setupPrice: line.setupPrice ?? 0,
-    unitPrice: line.unitPrice ?? 0,
-    shippingCost: line.shippingCost ?? 0,
-    addOnCost: line.addOnCost ?? 0,
-    nonTaxableAddOnCost: line.nonTaxableAddOnCost ?? 0,
-    taxPercent: line.taxPercent ?? 0
-  }));
+  // salesOrderLine has no serviceId column.
+  const linesWithDefaults = salesOrderLines.map(
+    ({ serviceId: _serviceId, ...line }) => ({
+      ...line,
+      setupPrice: line.setupPrice ?? 0,
+      unitPrice: line.unitPrice ?? 0,
+      shippingCost: line.shippingCost ?? 0,
+      addOnCost: line.addOnCost ?? 0,
+      nonTaxableAddOnCost: line.nonTaxableAddOnCost ?? 0,
+      taxPercent: line.taxPercent ?? 0
+    })
+  );
   return client.from("salesOrderLine").insert(linesWithDefaults).select("id");
 }
 
+/** @mcp update */
 export async function finalizeQuote(
   client: SupabaseClient<Database>,
   quoteId: string,
@@ -2123,6 +2266,7 @@ export async function finalizeQuote(
   return lineUpdate;
 }
 
+/** @mcp update */
 export async function releaseSalesOrder(
   client: SupabaseClient<Database>,
   salesOrderId: string,
@@ -2138,6 +2282,7 @@ export async function releaseSalesOrder(
     .eq("id", salesOrderId);
 }
 
+/** @mcp action */
 export async function resolvePrice(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -2372,6 +2517,7 @@ async function resolvePostingGroupFilter(
   return { itemIds, filters: remaining };
 }
 
+/** @mcp action */
 export async function resolvePriceList(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -2411,7 +2557,7 @@ export async function resolvePriceList(
     .from("item")
     .select(
       "id, readableId, name, thumbnailPath, itemUnitSalePrice(unitSalePrice), itemCost(itemPostingGroupId)",
-      { count: "exact" }
+      { count: LIST_COUNT }
     )
     .eq("active", true)
     .in("id", overriddenItemIds);
@@ -2688,6 +2834,7 @@ export async function resolvePriceList(
   };
 }
 
+/** @mcp read */
 export async function getBaseCatalog(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -2697,7 +2844,7 @@ export async function getBaseCatalog(
     .from("item")
     .select(
       "id, readableId, name, thumbnailPath, itemUnitSalePrice(unitSalePrice), itemCost(itemPostingGroupId)",
-      { count: "exact" }
+      { count: LIST_COUNT }
     )
     .eq("companyId", companyId)
     .eq("active", true);
@@ -2757,6 +2904,7 @@ export async function getBaseCatalog(
   return { data: rows, count: count ?? 0 };
 }
 
+/** @mcp upsert */
 export async function upsertCustomer(
   client: SupabaseClient<Database>,
   customer:
@@ -2789,6 +2937,7 @@ export async function upsertCustomer(
     .single();
 }
 
+/** @mcp upsert destructive */
 export async function upsertCustomerItemPriceOverride(
   db: Kysely<KyselyDatabase>,
   companyId: string,
@@ -3002,6 +3151,7 @@ export async function upsertCustomerItemPriceOverride(
   }
 }
 
+/** @mcp delete */
 export async function deleteCustomerItemPriceOverride(
   client: SupabaseClient<Database>,
   id: string,
@@ -3027,12 +3177,12 @@ type CustomerItemPriceOverrideWithRelations =
     }[];
   };
 
+/** @mcp read */
 export async function getCustomerItemPriceOverrideById(
   client: SupabaseClient<Database>,
   id: string,
   companyId: string
 ): Promise<PostgrestSingleResponse<CustomerItemPriceOverrideWithRelations>> {
-  // @ts-ignore - nested select instantiation exceeds tsgo depth limit
   return client
     .from("customerItemPriceOverride")
     .select(
@@ -3049,6 +3199,7 @@ export async function getCustomerItemPriceOverrideById(
     .single();
 }
 
+/** @mcp read */
 export async function getCustomerItemPriceOverridesList(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -3068,7 +3219,7 @@ export async function getCustomerItemPriceOverridesList(
       customerType:customerTypeId(id, name),
       item:itemId(id, name, unitSalePrice:itemUnitSalePrice(unitSalePrice))
     `,
-      { count: "exact" }
+      { count: LIST_COUNT }
     )
     .eq("companyId", companyId);
 
@@ -3109,6 +3260,7 @@ export async function updateCustomerAccounting(
     .eq("id", customerAccounting.id);
 }
 
+/** @mcp update */
 export async function updateCustomerContact(
   client: SupabaseClient<Database>,
   customerContact: {
@@ -3131,14 +3283,22 @@ export async function updateCustomerContact(
       return customFieldUpdate;
     }
   }
+  // The contact id is the row key and the location is set on customerContact
+  // above; neither is a contact column.
+  const {
+    contactId: _contactId,
+    customerLocationId: _customerLocationId,
+    ...contact
+  } = customerContact.contact;
   return client
     .from("contact")
-    .update(sanitize(customerContact.contact))
+    .update(sanitize(contact))
     .eq("id", customerContact.contactId)
     .select("id")
     .single();
 }
 
+/** @mcp update */
 export async function updateCustomerLocation(
   client: SupabaseClient<Database>,
   customerLocation: {
@@ -3175,6 +3335,7 @@ export async function updateCustomerLocation(
     .select("id")
     .single();
 }
+/** @mcp update */
 export async function updateCustomerPayment(
   client: SupabaseClient<Database>,
   customerPayment: z.infer<typeof customerPaymentValidator> & {
@@ -3187,6 +3348,7 @@ export async function updateCustomerPayment(
     .eq("customerId", customerPayment.customerId);
 }
 
+/** @mcp update */
 export async function updateCustomerShipping(
   client: SupabaseClient<Database>,
   customerShipping: z.infer<typeof customerShippingValidator> & {
@@ -3199,6 +3361,7 @@ export async function updateCustomerShipping(
     .eq("customerId", customerShipping.customerId);
 }
 
+/** @mcp update */
 export async function updateCustomerTax(
   client: SupabaseClient<Database>,
   customerTax: z.infer<typeof customerTaxValidator> & {
@@ -3212,6 +3375,7 @@ export async function updateCustomerTax(
     .eq("customerId", customerTax.customerId);
 }
 
+/** @mcp update */
 export async function updatePricingRule(
   client: SupabaseClient<Database>,
   id: string,
@@ -3232,6 +3396,7 @@ export async function updatePricingRule(
     .single();
 }
 
+/** @mcp upsert */
 export async function upsertCustomerStatus(
   client: SupabaseClient<Database>,
   customerStatus:
@@ -3256,6 +3421,7 @@ export async function upsertCustomerStatus(
   }
 }
 
+/** @mcp upsert */
 export async function upsertCustomerType(
   client: SupabaseClient<Database>,
   customerType:
@@ -3280,6 +3446,7 @@ export async function upsertCustomerType(
   }
 }
 
+/** @mcp upsert */
 export async function upsertNoQuoteReason(
   client: SupabaseClient<Database>,
   noQuoteReason:
@@ -3326,6 +3493,7 @@ export async function updateSalesRFQFavorite(
   }
 }
 
+/** @mcp update */
 export async function updateQuoteExchangeRate(
   client: SupabaseClient<Database>,
   data: {
@@ -3342,6 +3510,7 @@ export async function updateQuoteExchangeRate(
   return client.from("quote").update(update).eq("id", update.id);
 }
 
+/** @mcp update */
 export async function updateQuoteLinePrecision(
   db: Kysely<KyselyDatabase>,
   companyId: string,
@@ -3368,6 +3537,7 @@ export async function updateQuoteLinePrecision(
   });
 }
 
+/** @mcp update */
 export async function updateSalesOrderExchangeRate(
   client: SupabaseClient<Database>,
   data: {
@@ -3404,6 +3574,7 @@ export async function updateQuoteFavorite(
   }
 }
 
+/** @mcp update */
 export async function updateSalesRFQStatus(
   client: SupabaseClient<Database>,
   update: {
@@ -3430,6 +3601,7 @@ export async function updateSalesRFQStatus(
   return client.from("salesRfq").update(updateData).eq("id", update.id);
 }
 
+/** @mcp update */
 export async function updateQuoteMaterialOrder(
   client: SupabaseClient<Database>,
   updates: {
@@ -3444,6 +3616,7 @@ export async function updateQuoteMaterialOrder(
   return Promise.all(updatePromises);
 }
 
+/** @mcp update */
 export async function updateQuoteOperationOrder(
   client: SupabaseClient<Database>,
   updates: {
@@ -3458,6 +3631,7 @@ export async function updateQuoteOperationOrder(
   return Promise.all(updatePromises);
 }
 
+/** @mcp update */
 export async function updateQuoteStatus(
   client: SupabaseClient<Database>,
   update: {
@@ -3478,8 +3652,10 @@ export async function updateQuoteStatus(
   return client.from("quote").update(updateData).eq("id", update.id);
 }
 
+/** @mcp upsert */
 export async function upsertMakeMethodFromQuoteLine(
   client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
   lineMethod: {
     itemId: string;
     quoteId: string;
@@ -3496,20 +3672,25 @@ export async function upsertMakeMethodFromQuoteLine(
     };
   }
 ) {
-  return client.functions.invoke("get-method", {
-    body: {
+  return serverFns
+    .as({
+      client,
+      db,
+      companyId: lineMethod.companyId,
+      userId: lineMethod.userId
+    })
+    .invoke("get-method", {
       type: "quoteLineToItem",
       sourceId: `${lineMethod.quoteId}:${lineMethod.quoteLineId}`,
       targetId: lineMethod.itemId,
-      companyId: lineMethod.companyId,
-      userId: lineMethod.userId,
       parts: lineMethod.parts
-    }
-  });
+    });
 }
 
+/** @mcp upsert */
 export async function upsertMakeMethodFromQuoteMethod(
   client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
   quoteMethod: {
     sourceId: string;
     targetId: string;
@@ -3525,16 +3706,19 @@ export async function upsertMakeMethodFromQuoteMethod(
     };
   }
 ) {
-  const { error } = await client.functions.invoke("get-method", {
-    body: {
+  const { error } = await serverFns
+    .as({
+      client,
+      db,
+      companyId: quoteMethod.companyId,
+      userId: quoteMethod.userId
+    })
+    .invoke("get-method", {
       type: "quoteMakeMethodToItem",
       sourceId: quoteMethod.sourceId,
       targetId: quoteMethod.targetId,
-      companyId: quoteMethod.companyId,
-      userId: quoteMethod.userId,
       parts: quoteMethod.parts
-    }
-  });
+    });
 
   if (error) {
     return {
@@ -3546,6 +3730,7 @@ export async function upsertMakeMethodFromQuoteMethod(
   return { data: null, error: null };
 }
 
+/** @mcp create */
 export async function insertQuote(
   client: SupabaseClient<Database>,
   input: {
@@ -3718,6 +3903,7 @@ export async function insertQuote(
   return { data: { id: createdQuoteId, quoteId }, error: null };
 }
 
+/** @mcp update */
 export async function updateQuote(
   client: SupabaseClient<Database>,
   input: {
@@ -3795,7 +3981,10 @@ export async function updateQuote(
     .single();
 }
 
-/** @deprecated Use insertQuote for new quotes, updateQuote for existing quotes */
+/**
+ * @deprecated Use insertQuote for new quotes, updateQuote for existing quotes
+ * @mcp upsert
+ */
 export async function upsertQuote(
   client: SupabaseClient<Database>,
   quote:
@@ -3963,7 +4152,13 @@ export async function upsertQuote(
         .eq("id", opportunityId);
     }
 
-    const { companyGroupId: _cgId, ...quoteUpdateData } = quote;
+    // quote has no name column, and stores notes as internalNotes/externalNotes.
+    const {
+      companyGroupId: _cgId,
+      name: _name,
+      notes: _notes,
+      ...quoteUpdateData
+    } = quote;
     return client
       .from("quote")
       .update({
@@ -3974,6 +4169,7 @@ export async function upsertQuote(
   }
 }
 
+/** @mcp upsert */
 export async function upsertQuoteLine(
   client: SupabaseClient<Database>,
   quotationLine:
@@ -4014,6 +4210,7 @@ export async function upsertQuoteLine(
     .single();
 }
 
+/** @mcp update */
 export async function updateQuoteLineOrder(
   db: Kysely<KyselyDatabase>,
   companyId: string,
@@ -4031,6 +4228,7 @@ export async function updateQuoteLineOrder(
   });
 }
 
+/** @mcp upsert */
 export async function upsertQuoteLineAdditionalCharges(
   client: SupabaseClient<Database>,
   lineId: string,
@@ -4054,8 +4252,17 @@ type QuoteLinePriceInput = {
   shippingCost?: number;
   categoryMarkups?: Record<string, number>;
   priceSource?: "system" | "manual";
+  // How unitPrice was resolved. Unlike the fields above, an omitted trace is
+  // NOT carried over: it explains the unit price, which every caller restates.
+  priceTrace?: PriceTraceStep[] | null;
 };
 
+/**
+ * @mcp upsert destructive — it delegates to rewriteQuoteLinePrices, which
+ *                  deleteFrom("quoteLinePrice") then re-inserts. The body of
+ *                  THIS function holds no delete, so reading it cannot show
+ *                  that; declaring it is the point.
+ */
 export async function upsertQuoteLinePrices(
   db: Kysely<KyselyDatabase>,
   companyId: string,
@@ -4071,6 +4278,7 @@ export async function upsertQuoteLinePrices(
     shippingCost?: number;
     categoryMarkups?: Record<string, number>;
     priceSource?: "system" | "manual";
+    priceTrace?: PriceTraceStep[] | null;
   }[]
 ) {
   return db
@@ -4102,6 +4310,8 @@ async function rewriteQuoteLinePrices(
       unitPrice: Number(price.unitPrice),
       leadTime: Number(price.leadTime),
       discountPercent: Number(price.discountPercent),
+      // A precision rebuild only re-rounds the price; its explanation stands.
+      priceTrace: (price.priceTrace as PriceTraceStep[] | null) ?? null,
       createdBy: price.createdBy
     }));
 
@@ -4157,6 +4367,9 @@ async function rewriteQuoteLinePrices(
           companyId,
           quoteId,
           unitPrice: round(p.unitPrice, quoteLine.unitPricePrecision),
+          // Kysely sends a JS array as a Postgres array literal; jsonb needs
+          // JSON text.
+          priceTrace: p.priceTrace ? JSON.stringify(p.priceTrace) : null,
           // Explicit value wins, omitted value is preserved from the stored row.
           ...resolvePreservedQuoteLinePriceFields(p, {
             leadTime: existing ? Number(existing.leadTime) : undefined,
@@ -4195,7 +4408,8 @@ async function rewriteQuoteLinePrices(
 
 async function buildCostEffects(
   client: SupabaseClient<Database>,
-  quoteLineId: string
+  quoteLineId: string,
+  { refreshBuyCosts = true }: { refreshBuyCosts?: boolean } = {}
 ) {
   const operationsResult = await client
     .from("quoteOperation")
@@ -4205,7 +4419,8 @@ async function buildCostEffects(
   const operations = operationsResult.data ?? [];
 
   // Refresh Buy material costs from supplier price breaks; resolveBuyUnitCost
-  // leaves a typed cost alone.
+  // leaves a typed cost alone. A read-only caller skips the write — the cost
+  // effects below price Buy materials from the same breaks either way.
   const buyMaterials = await client
     .from("quoteMaterial")
     .select("id, itemId, unitCost, unitCostSource")
@@ -4217,7 +4432,7 @@ async function buildCostEffects(
   ];
   const priceMap = await getSupplierPriceBreaksForItems(client, buyItemIds);
 
-  for (const mat of buyMaterials.data ?? []) {
+  for (const mat of refreshBuyCosts ? (buyMaterials.data ?? []) : []) {
     if (mat.unitCostSource === "manual") continue;
     const price = resolveBuyUnitCost(mat, 1, priceMap);
     if (price !== mat.unitCost) {
@@ -4502,6 +4717,7 @@ export type QuoteLinePriceRow = {
   discountPercent: number;
   categoryMarkups?: Record<string, number>;
   priceSource?: string;
+  priceTrace?: PriceTraceStep[] | null;
 };
 
 type BuildPriceRowsResult = {
@@ -4528,6 +4744,7 @@ async function getConfiguredSalePrice(
   return { data: data?.unitSalePrice ?? null, error };
 }
 
+/** @mcp action */
 export async function buildMakeToOrderPriceRows(
   client: SupabaseClient<Database>,
   quoteId: string,
@@ -4627,27 +4844,31 @@ export async function buildMakeToOrderPriceRows(
       defaultMarkups: effectiveDefaults
     });
 
-    const finalPrice = itemId
-      ? (
-          await resolvePrice(client, companyId, {
-            itemId,
-            quantity: qty,
-            customerId,
-            existingBasePrice: basePrice ?? rollupPrice,
-            configuration
-          })
-        ).finalPrice
-      : rollupPrice;
+    const resolved = itemId
+      ? await resolvePrice(client, companyId, {
+          itemId,
+          quantity: qty,
+          customerId,
+          existingBasePrice: basePrice ?? rollupPrice,
+          configuration
+        })
+      : null;
 
     priceRows.push({
       quoteId,
       quoteLineId,
       companyId,
       quantity: qty,
-      unitPrice: round(finalPrice, precision),
+      unitPrice: round(resolved?.finalPrice ?? rollupPrice, precision),
       // A row priced from the sale price is not cost-plus.
       categoryMarkups: basePrice === null ? effectiveDefaults : {},
       priceSource: "system",
+      priceTrace: resolved
+        ? withBasePriceSource(
+            resolved.trace,
+            basePrice === null ? QUOTE_BASE_PRICE_SOURCES.costPlus : null
+          )
+        : null,
       exchangeRate,
       createdBy: userId,
       leadTime: 0,
@@ -4658,6 +4879,7 @@ export async function buildMakeToOrderPriceRows(
   return { rows: priceRows, error: null };
 }
 
+/** @mcp action */
 export async function calculatePricesForQuantities(
   client: SupabaseClient<Database>,
   quoteId: string,
@@ -4686,6 +4908,7 @@ export async function calculatePricesForQuantities(
   return { error: null };
 }
 
+/** @mcp action */
 export async function buildPullFromInventoryPriceRows(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -4743,6 +4966,7 @@ export async function buildPullFromInventoryPriceRows(
       companyId,
       quantity: qty,
       unitPrice: round(resolved.finalPrice, precision),
+      priceTrace: resolved.trace,
       exchangeRate,
       createdBy: userId,
       leadTime: 0,
@@ -4753,6 +4977,7 @@ export async function buildPullFromInventoryPriceRows(
   return { rows: priceRows, error: null };
 }
 
+/** @mcp action */
 export async function resolveQuoteLinePrices(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -4783,6 +5008,7 @@ export async function resolveQuoteLinePrices(
   return { error: null };
 }
 
+/** @mcp action */
 export async function buildPurchaseToOrderPriceRows(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -4843,6 +5069,10 @@ export async function buildPurchaseToOrderPriceRows(
       companyId,
       quantity: qty,
       unitPrice: round(resolved.finalPrice, precision),
+      priceTrace: withBasePriceSource(
+        resolved.trace,
+        QUOTE_BASE_PRICE_SOURCES.supplier
+      ),
       exchangeRate,
       createdBy: userId,
       leadTime: 0,
@@ -4853,6 +5083,7 @@ export async function buildPurchaseToOrderPriceRows(
   return { rows: priceRows, error: null };
 }
 
+/** @mcp action */
 export async function resolvePurchaseToOrderPrices(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -4883,6 +5114,7 @@ export async function resolvePurchaseToOrderPrices(
   return { error: null };
 }
 
+/** @mcp update */
 export async function recalculateQuoteLinePrices(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -4976,6 +5208,7 @@ export async function recalculateQuoteLinePrices(
     quantity: number;
     unitPrice: number;
     categoryMarkups: Record<string, number>;
+    priceTrace: PriceTraceStep[] | null;
   }[] = [];
   for (const row of existingPrices.data) {
     const qty = row.quantity;
@@ -5016,24 +5249,28 @@ export async function recalculateQuoteLinePrices(
       defaultMarkups: effectiveDefaults
     });
 
-    const finalPrice =
+    const resolved =
       itemId && companyId
-        ? (
-            await resolvePrice(client, companyId, {
-              itemId,
-              quantity: qty,
-              customerId,
-              existingBasePrice: basePrice ?? rollupPrice,
-              configuration
-            })
-          ).finalPrice
-        : rollupPrice;
+        ? await resolvePrice(client, companyId, {
+            itemId,
+            quantity: qty,
+            customerId,
+            existingBasePrice: basePrice ?? rollupPrice,
+            configuration
+          })
+        : null;
 
     repricedRows.push({
       quantity: qty,
-      unitPrice: round(finalPrice, precision),
+      unitPrice: round(resolved?.finalPrice ?? rollupPrice, precision),
       // A row priced from the sale price is not cost-plus.
-      categoryMarkups: basePrice === null ? markups : {}
+      categoryMarkups: basePrice === null ? markups : {},
+      priceTrace: resolved
+        ? withBasePriceSource(
+            resolved.trace,
+            basePrice === null ? QUOTE_BASE_PRICE_SOURCES.costPlus : null
+          )
+        : null
     });
   }
 
@@ -5046,6 +5283,7 @@ export async function recalculateQuoteLinePrices(
         unitPrice: row.unitPrice,
         categoryMarkups: row.categoryMarkups,
         priceSource: "system",
+        priceTrace: row.priceTrace,
         updatedBy: userId
       })
       .eq("quoteLineId", quoteLineId)
@@ -5064,8 +5302,243 @@ export async function recalculateQuoteLinePrices(
   return { error: null };
 }
 
+/**
+ * Explains each quantity's price on a quote line. `trace` is the snapshot
+ * written with the price — how it was actually reached, whatever the rules say
+ * now. `currentTrace` re-runs today's pipeline from the base the row's builder
+ * starts from — the cost-plus rollup (or a configured part's sale price) for
+ * Make to Order, the supplier price break for Purchase to Order, the item's
+ * sale price for Pull from Inventory — so the UI can show what repricing would
+ * change. A manual row has neither: a person stated that price and no rule
+ * touched it. Read-only — null data when the line is not this quote's in this
+ * company.
+ * @mcp read
+ */
+export async function getQuoteLinePriceTraces(
+  client: SupabaseClient<Database>,
+  companyId: string,
+  quoteId: string,
+  quoteLineId: string
+): Promise<{
+  data: QuoteLinePriceTrace[] | null;
+  error: PostgrestError | null;
+}> {
+  const [lineResult, quoteResult, pricesResult] = await Promise.all([
+    client
+      .from("quoteLine")
+      .select("itemId, methodType, configuration")
+      .eq("id", quoteLineId)
+      .eq("quoteId", quoteId)
+      .eq("companyId", companyId)
+      .maybeSingle(),
+    client
+      .from("quote")
+      .select("customerId")
+      .eq("id", quoteId)
+      .eq("companyId", companyId)
+      .maybeSingle(),
+    client
+      .from("quoteLinePrice")
+      .select("quantity, unitPrice, priceSource, categoryMarkups, priceTrace")
+      .eq("quoteLineId", quoteLineId)
+      .eq("companyId", companyId)
+      .order("quantity")
+  ]);
+
+  const error = lineResult.error ?? quoteResult.error ?? pricesResult.error;
+  if (error) return { data: null, error };
+  if (!lineResult.data || !quoteResult.data) return { data: null, error: null };
+
+  const itemId = lineResult.data.itemId;
+  const methodType = lineResult.data.methodType;
+  const customerId = quoteResult.data.customerId ?? undefined;
+  const configuration = asConfiguration(lineResult.data.configuration);
+  const rows = pricesResult.data ?? [];
+
+  const stored = (row: (typeof rows)[number]): QuoteLinePriceTrace => ({
+    quantity: row.quantity,
+    unitPrice: row.unitPrice,
+    priceSource: row.priceSource as QuoteLinePriceSource,
+    trace: (row.priceTrace as PriceTraceStep[] | null) ?? null,
+    currentTrace: null
+  });
+
+  if (!itemId) return { data: rows.map(stored), error: null };
+
+  // The base price each system row starts from today, and what it is; an
+  // undefined amount lets resolvePrice read the item's sale price, as the Pull
+  // from Inventory builder does.
+  type BasePrice = { amount: number | undefined; source: string | null };
+  let basePriceFor: (row: (typeof rows)[number]) => BasePrice = () => ({
+    amount: undefined,
+    source: null
+  });
+
+  if (methodType === "Make to Order") {
+    const [settingsResult, salePrice, costEffects] = await Promise.all([
+      client
+        .from("companySettings")
+        .select("quoteLineCategoryMarkups")
+        .eq("id", companyId)
+        .single(),
+      getConfiguredSalePrice(client, companyId, itemId, configuration),
+      buildCostEffects(client, quoteLineId, { refreshBuyCosts: false })
+    ]);
+    if (settingsResult.error)
+      return { data: null, error: settingsResult.error };
+    if (salePrice.error) return { data: null, error: salePrice.error };
+    // No costed method yet: nothing to roll up, so nothing to compare against.
+    if (!costEffects) return { data: rows.map(stored), error: null };
+
+    const defaultMarkups: Record<string, number> = {};
+    for (const [key, value] of Object.entries(
+      (settingsResult.data.quoteLineCategoryMarkups as Record<
+        string,
+        number
+      >) ?? {}
+    )) {
+      defaultMarkups[key] = value * 100;
+    }
+    const effectiveDefaults = getEffectiveDefaultMarkups(defaultMarkups);
+    const { effects } = costEffects;
+
+    basePriceFor = (row) => {
+      const categoryMarkups = row.categoryMarkups as CategoryMarkups | null;
+      const decision = decideRecalcPricing(
+        { priceSource: row.priceSource, categoryMarkups },
+        effectiveDefaults
+      );
+      const markups = decision.mode === "reprice" ? decision.markups : {};
+      const qty = row.quantity;
+      const rollupPrice = costCategoryKeys.reduce((sum, key) => {
+        const total = effects[key].reduce((acc, fn) => acc + fn(qty), 0);
+        const cost = qty > 0 ? total / qty : 0;
+        return sum + cost * (1 + (markups[key] ?? 0) / 100);
+      }, 0);
+      const configuredPrice = configuredQuoteBasePrice({
+        configuration,
+        unitSalePrice: salePrice.data,
+        categoryMarkups,
+        defaultMarkups: effectiveDefaults
+      });
+      return configuredPrice === null
+        ? { amount: rollupPrice, source: QUOTE_BASE_PRICE_SOURCES.costPlus }
+        : { amount: configuredPrice, source: null };
+    };
+  } else if (methodType === "Purchase to Order") {
+    const priceMap = await getSupplierPriceBreaksForItems(client, [itemId]);
+    basePriceFor = (row) => ({
+      amount: lookupBuyPriceFromMap(itemId, row.quantity, priceMap, 0),
+      source: QUOTE_BASE_PRICE_SOURCES.supplier
+    });
+  }
+
+  const data = await Promise.all(
+    rows.map(async (row) => {
+      if (row.priceSource === "manual") return stored(row);
+      const base = basePriceFor(row);
+      const { trace } = await resolvePrice(client, companyId, {
+        itemId,
+        quantity: row.quantity,
+        customerId,
+        existingBasePrice: base.amount,
+        configuration
+      });
+      return {
+        ...stored(row),
+        currentTrace: withBasePriceSource(trace, base.source)
+      };
+    })
+  );
+
+  return { data, error: null };
+}
+
+export class QuoteLockedError extends Error {
+  constructor() {
+    super("Cannot modify a locked quote. Reopen it first.");
+  }
+}
+
+/**
+ * Reprices a quote line's system rows to what today's rules give — the
+ * `currentTrace` getQuoteLinePriceTraces shows — storing that trace with the
+ * price. Manual rows, and rows today's pipeline cannot price, are rewritten
+ * unchanged; one transaction either way. Draft quotes only (QuoteLockedError
+ * otherwise) — checked here, not in the route, because this is also an MCP
+ * tool.
+ * @mcp action
+ */
+export async function repriceQuoteLineFromRules(
+  client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
+  companyId: string,
+  quoteId: string,
+  quoteLineId: string,
+  userId: string
+): Promise<{ data: null; error: PostgrestError | Error | null }> {
+  const quote = await client
+    .from("quote")
+    .select("status")
+    .eq("id", quoteId)
+    .eq("companyId", companyId)
+    .maybeSingle();
+  if (quote.error) return { data: null, error: quote.error };
+  if (!quote.data) return { data: null, error: new Error("Quote not found") };
+  if (isQuoteLocked(quote.data.status)) {
+    return { data: null, error: new QuoteLockedError() };
+  }
+
+  const traces = await getQuoteLinePriceTraces(
+    client,
+    companyId,
+    quoteId,
+    quoteLineId
+  );
+  if (traces.error) return { data: null, error: traces.error };
+  if (!traces.data) {
+    return { data: null, error: new Error("Quote line not found") };
+  }
+
+  const prices = traces.data.map((price) => {
+    const finalPrice = price.currentTrace?.at(-1)?.amount;
+    if (!price.currentTrace || finalPrice === undefined) {
+      return {
+        quoteLineId,
+        quantity: price.quantity,
+        unitPrice: price.unitPrice,
+        priceTrace: price.trace,
+        createdBy: userId
+      };
+    }
+    return {
+      quoteLineId,
+      quantity: price.quantity,
+      unitPrice: finalPrice,
+      priceTrace: price.currentTrace,
+      priceSource: "system" as const,
+      createdBy: userId
+    };
+  });
+
+  try {
+    await upsertQuoteLinePrices(db, companyId, quoteId, quoteLineId, prices);
+  } catch (error) {
+    logger.error("Failed to reprice quote line from rules", {
+      companyId,
+      quoteId,
+      quoteLineId,
+      error
+    });
+    return { data: null, error: error as Error };
+  }
+  return { data: null, error: null };
+}
+
+/** @mcp upsert */
 export async function upsertQuoteLineMethod(
   client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
   lineMethod: {
     itemId: string;
     quoteId: string;
@@ -5116,11 +5589,15 @@ export async function upsertQuoteLineMethod(
     body.parts = lineMethod.parts;
   }
 
-  return client.functions.invoke("get-method", {
-    body
-  });
+  return serverFns
+    .as({ client, db, companyId: body.companyId, userId: body.userId })
+    .invoke("get-method", body);
 }
 
+/**
+ * @mcp upsert
+ * @mcp key quoteMaterial id
+ */
 export async function upsertQuoteMaterial(
   client: SupabaseClient<Database>,
   quoteMaterial:
@@ -5168,8 +5645,10 @@ export async function upsertQuoteMaterial(
     .single();
 }
 
+/** @mcp upsert */
 export async function upsertQuoteMaterialMakeMethod(
   client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
   quoteMethod: {
     sourceId: string;
     targetId: string;
@@ -5219,9 +5698,9 @@ export async function upsertQuoteMaterialMakeMethod(
     body.parts = quoteMethod.parts;
   }
 
-  const { error } = await client.functions.invoke("get-method", {
-    body
-  });
+  const { error } = await serverFns
+    .as({ client, db, companyId: body.companyId, userId: body.userId })
+    .invoke("get-method", body);
 
   if (error) {
     return {
@@ -5233,6 +5712,10 @@ export async function upsertQuoteMaterialMakeMethod(
   return { data: null, error: null };
 }
 
+/**
+ * @mcp upsert
+ * @mcp key quoteOperation id
+ */
 export async function upsertQuoteOperation(
   client: SupabaseClient<Database>,
   operation:
@@ -5285,6 +5768,7 @@ export async function upsertQuoteOperation(
     .single();
 }
 
+/** @mcp upsert */
 export async function upsertQuoteOperationStep(
   client: SupabaseClient<Database>,
   quoteOperationStep:
@@ -5319,6 +5803,7 @@ export async function upsertQuoteOperationStep(
     .single();
 }
 
+/** @mcp upsert */
 export async function upsertQuoteOperationParameter(
   client: SupabaseClient<Database>,
   quoteOperationParameter:
@@ -5348,6 +5833,7 @@ export async function upsertQuoteOperationParameter(
     .single();
 }
 
+/** @mcp upsert */
 export async function upsertQuoteOperationTool(
   client: SupabaseClient<Database>,
   quoteOperationTool:
@@ -5377,6 +5863,7 @@ export async function upsertQuoteOperationTool(
     .single();
 }
 
+/** @mcp upsert */
 export async function upsertQuotePayment(
   client: SupabaseClient<Database>,
   quotePayment:
@@ -5405,6 +5892,7 @@ export async function upsertQuotePayment(
     .single();
 }
 
+/** @mcp upsert */
 export async function upsertQuoteShipment(
   client: SupabaseClient<Database>,
   quoteShipment:
@@ -5453,6 +5941,7 @@ export async function updateSalesOrderFavorite(
   }
 }
 
+/** @mcp update */
 export async function updateSalesOrderStatus(
   client: SupabaseClient<Database>,
   update: {
@@ -5476,6 +5965,7 @@ export async function updateSalesOrderStatus(
   return client.from("salesOrder").update(updateData).eq("id", update.id);
 }
 
+/** @mcp create */
 export async function insertSalesOrder(
   client: SupabaseClient<Database>,
   input: {
@@ -5651,6 +6141,7 @@ export async function insertSalesOrder(
   return { data: { id: orderId, salesOrderId }, error: null };
 }
 
+/** @mcp update */
 export async function updateSalesOrder(
   client: SupabaseClient<Database>,
   input: {
@@ -5727,6 +6218,7 @@ export const LIVE_JOB_STATUSES: Database["public"]["Enums"]["jobStatus"][] = [
   "Paused"
 ];
 
+/** @mcp action */
 export async function cancelSalesOrder(
   client: SupabaseClient<Database>,
   args: {
@@ -5814,7 +6306,10 @@ export async function cancelSalesOrder(
   };
 }
 
-/** @deprecated Use insertSalesOrder for new orders, updateSalesOrder for existing orders */
+/**
+ * @deprecated Use insertSalesOrder for new orders, updateSalesOrder for existing orders
+ * @mcp upsert
+ */
 export async function upsertSalesOrder(
   client: SupabaseClient<Database>,
   salesOrder:
@@ -5866,7 +6361,16 @@ export async function upsertSalesOrder(
         .eq("id", opportunityId);
     }
 
-    const { companyGroupId: _cgId, ...salesOrderUpdateData } = salesOrder;
+    // Dates live on salesOrderShipment, the quote link on the opportunity, and
+    // notes as internalNotes/externalNotes; none is a salesOrder column.
+    const {
+      companyGroupId: _cgId,
+      notes: _notes,
+      requestedDate: _requestedDate,
+      promisedDate: _promisedDate,
+      quoteId: _quoteId,
+      ...salesOrderUpdateData
+    } = salesOrder;
     return client
       .from("salesOrder")
       .update(sanitize(salesOrderUpdateData))
@@ -5996,6 +6500,7 @@ export async function upsertSalesOrder(
   return order;
 }
 
+/** @mcp upsert */
 export async function upsertSalesOrderShipment(
   client: SupabaseClient<Database>,
   salesOrderShipment:
@@ -6024,6 +6529,7 @@ export async function upsertSalesOrderShipment(
     .single();
 }
 
+/** @mcp upsert */
 export async function upsertSalesOrderLine(
   client: SupabaseClient<Database>,
   salesOrderLine:
@@ -6038,10 +6544,31 @@ export async function upsertSalesOrderLine(
         customFields?: Json;
       })
 ) {
+  // Only a Service line has a service period — every other item type is a
+  // physical good, earned when it ships. A cleared DatePicker posts "", which
+  // a DATE column rejects, so both collapse to null.
+  const isService = salesOrderLine.salesOrderLineType === "Service";
+  const servicePeriod = {
+    serviceStartDate: (isService && salesOrderLine.serviceStartDate) || null,
+    serviceEndDate: (isService && salesOrderLine.serviceEndDate) || null
+  };
+  // A service is promised for the day it starts: a line with a service period
+  // takes its promised date from it, and the form hides the field.
+  const promisedDate =
+    servicePeriod.serviceStartDate ?? salesOrderLine.promisedDate;
+
   if ("id" in salesOrderLine) {
+    // salesOrderLine has no serviceId column.
+    const { serviceId: _serviceId, ...lineUpdate } = salesOrderLine;
     return client
       .from("salesOrderLine")
-      .update(sanitize(salesOrderLine))
+      .update(
+        sanitize({
+          ...lineUpdate,
+          ...servicePeriod,
+          promisedDate
+        })
+      )
       .eq("id", salesOrderLine.id)
       .select("id")
       .single();
@@ -6087,6 +6614,8 @@ export async function upsertSalesOrderLine(
         addOnCost: salesOrderLine.addOnCost ?? 0,
         nonTaxableAddOnCost: salesOrderLine.nonTaxableAddOnCost ?? 0,
         taxPercent: salesOrderLine.taxPercent ?? 0,
+        ...servicePeriod,
+        promisedDate,
         exchangeRate,
         sortOrder: maxSortOrder + 1
       }
@@ -6095,6 +6624,7 @@ export async function upsertSalesOrderLine(
     .single();
 }
 
+/** @mcp update */
 export async function updateSalesOrderLineOrder(
   db: Kysely<KyselyDatabase>,
   companyId: string,
@@ -6112,6 +6642,7 @@ export async function updateSalesOrderLineOrder(
   });
 }
 
+/** @mcp upsert */
 export async function upsertSalesOrderPayment(
   client: SupabaseClient<Database>,
   salesOrderPayment:
@@ -6125,10 +6656,12 @@ export async function upsertSalesOrderPayment(
         customFields?: Json;
       })
 ) {
+  // The currency is the order's; salesOrderPayment has no currencyCode column.
   if ("id" in salesOrderPayment) {
+    const { currencyCode: _currencyCode, ...paymentUpdate } = salesOrderPayment;
     return client
       .from("salesOrderPayment")
-      .update(sanitize(salesOrderPayment))
+      .update(sanitize(paymentUpdate))
       .eq("id", salesOrderPayment.id)
       .select("id")
       .single();
@@ -6140,6 +6673,7 @@ export async function upsertSalesOrderPayment(
     .single();
 }
 
+/** @mcp create */
 export async function insertSalesRFQ(
   client: SupabaseClient<Database>,
   db: Kysely<KyselyDatabase>,
@@ -6365,7 +6899,10 @@ export async function updateSalesRFQ(
     .single();
 }
 
-/** @deprecated Use insertSalesRFQ for new RFQs, updateSalesRFQ for existing RFQs */
+/**
+ * @deprecated Use insertSalesRFQ for new RFQs, updateSalesRFQ for existing RFQs
+ * @mcp upsert
+ */
 export async function upsertSalesRFQ(
   client: SupabaseClient<Database>,
   rfq:
@@ -6434,6 +6971,7 @@ export async function upsertSalesRFQ(
   }
 }
 
+/** @mcp upsert */
 export async function upsertSalesRFQLine(
   client: SupabaseClient<Database>,
 
@@ -6474,6 +7012,7 @@ export async function upsertSalesRFQLine(
     .single();
 }
 
+/** @mcp update */
 export async function updateSalesRFQLineOrder(
   db: Kysely<KyselyDatabase>,
   companyId: string,
@@ -6493,6 +7032,7 @@ export async function updateSalesRFQLineOrder(
 
 // ─── Sales Return Orders (RMAs) ───
 
+/** @mcp read */
 export async function getReturnReasons(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -6500,7 +7040,7 @@ export async function getReturnReasons(
 ) {
   let query = client
     .from("returnReason")
-    .select("*", { count: "exact" })
+    .select("*", { count: LIST_COUNT })
     .eq("companyId", companyId);
 
   if (args?.search) {
@@ -6516,6 +7056,7 @@ export async function getReturnReasons(
   return query;
 }
 
+/** @mcp read */
 export async function getReturnReasonsList(
   client: SupabaseClient<Database>,
   companyId: string
@@ -6527,6 +7068,7 @@ export async function getReturnReasonsList(
     .order("name");
 }
 
+/** @mcp read */
 export async function getReturnReason(
   client: SupabaseClient<Database>,
   returnReasonId: string
@@ -6538,6 +7080,7 @@ export async function getReturnReason(
     .single();
 }
 
+/** @mcp upsert */
 export async function upsertReturnReason(
   client: SupabaseClient<Database>,
   returnReason:
@@ -6571,6 +7114,7 @@ export async function upsertReturnReason(
     .single();
 }
 
+/** @mcp delete */
 export async function deleteReturnReason(
   client: SupabaseClient<Database>,
   returnReasonId: string
@@ -6578,6 +7122,7 @@ export async function deleteReturnReason(
   return client.from("returnReason").delete().eq("id", returnReasonId);
 }
 
+/** @mcp read */
 export async function getSalesReturnOrders(
   client: SupabaseClient<Database>,
   companyId: string,
@@ -6615,6 +7160,7 @@ export async function getSalesReturnOrders(
   return query;
 }
 
+/** @mcp read */
 export async function getSalesReturnOrder(
   client: SupabaseClient<Database>,
   salesReturnOrderId: string
@@ -6626,6 +7172,7 @@ export async function getSalesReturnOrder(
     .single();
 }
 
+/** @mcp read */
 export async function getSalesReturnOrderLines(
   client: SupabaseClient<Database>,
   salesReturnOrderId: string,
@@ -6641,6 +7188,7 @@ export async function getSalesReturnOrderLines(
     .order("lineNumber");
 }
 
+/** @mcp read */
 export async function getSalesReturnOrderLine(
   client: SupabaseClient<Database>,
   lineId: string
@@ -6652,6 +7200,7 @@ export async function getSalesReturnOrderLine(
     .single();
 }
 
+/** @mcp read */
 export async function getSalesReturnOrderLineTrackedEntities(
   client: SupabaseClient<Database>,
   lineIds: string[]
@@ -6662,6 +7211,7 @@ export async function getSalesReturnOrderLineTrackedEntities(
     .in("salesReturnOrderLineId", lineIds);
 }
 
+/** @mcp create */
 export async function insertSalesReturnOrder(
   client: SupabaseClient<Database>,
   input: {
@@ -6783,6 +7333,7 @@ export async function updateSalesReturnOrder(
     .single();
 }
 
+/** @mcp upsert */
 export async function upsertSalesReturnOrderLine(
   client: SupabaseClient<Database>,
   line:
@@ -6833,6 +7384,7 @@ export async function upsertSalesReturnOrderLine(
     .single();
 }
 
+/** @mcp delete */
 export async function deleteSalesReturnOrder(
   client: SupabaseClient<Database>,
   salesReturnOrderId: string
@@ -6840,6 +7392,7 @@ export async function deleteSalesReturnOrder(
   return client.from("salesReturnOrder").delete().eq("id", salesReturnOrderId);
 }
 
+/** @mcp delete */
 export async function deleteSalesReturnOrderLine(
   client: SupabaseClient<Database>,
   lineId: string
@@ -6847,6 +7400,7 @@ export async function deleteSalesReturnOrderLine(
   return client.from("salesReturnOrderLine").delete().eq("id", lineId);
 }
 
+/** @mcp read */
 export async function getSalesReturnOrderReceipts(
   client: SupabaseClient<Database>,
   salesReturnOrderId: string,
@@ -6861,6 +7415,7 @@ export async function getSalesReturnOrderReceipts(
     .order("createdAt", { ascending: false });
 }
 
+/** @mcp read */
 export async function getSalesReturnOrderCredits(
   client: SupabaseClient<Database>,
   salesReturnOrderId: string,
@@ -6874,6 +7429,7 @@ export async function getSalesReturnOrderCredits(
     .order("createdAt", { ascending: false });
 }
 
+/** @mcp read */
 export async function getSalesReturnOrderIssues(
   client: SupabaseClient<Database>,
   salesReturnOrderId: string,
@@ -6893,6 +7449,7 @@ export async function getSalesReturnOrderIssues(
  * the governing SOURCE rows (shipment/SO/invoice lines) are row-locked so two
  * concurrent confirms against the same source line serialize, and the
  * aggregates are re-read under that lock (replaceInvoiceSettlements pattern).
+ * @mcp action
  */
 export async function confirmSalesReturnOrder(
   db: Kysely<KyselyDatabase>,
@@ -7107,6 +7664,7 @@ export async function confirmSalesReturnOrder(
  * receipt exists and nothing received, so reviving is safe). "To Receive" no
  * longer implies nothing received (it also covers partially received), so the
  * nothing-received invariant is enforced on the line quantities directly.
+ * @mcp action
  */
 export async function reopenSalesReturnOrder(
   db: Kysely<KyselyDatabase>,
@@ -7157,6 +7715,7 @@ export async function reopenSalesReturnOrder(
   });
 }
 
+/** @mcp action */
 export async function cancelSalesReturnOrder(
   db: Kysely<KyselyDatabase>,
   { id, companyId, userId }: { id: string; companyId: string; userId: string }
@@ -7221,6 +7780,7 @@ export async function cancelSalesReturnOrder(
  * short-closing the last open line completes the RMA (there is no separate
  * manual Complete action, mirroring the Purchase Order). Disposition is tracked
  * independently and does not gate completion.
+ * @mcp action
  */
 export async function shortCloseSalesReturnOrderLine(
   db: Kysely<KyselyDatabase>,
@@ -7312,6 +7872,7 @@ export async function shortCloseSalesReturnOrderLine(
  * lines from shipment" modal stays responsive when a customer has thousands of
  * shipment lines. Each row carries `totalCount` — the size of the full
  * returnable set before limit/offset — so the UI can page through the rest.
+ * @mcp read
  */
 export async function getReturnableLinesForCustomer(
   client: SupabaseClient<Database>,
@@ -7338,6 +7899,7 @@ export async function getReturnableLinesForCustomer(
  * Entity picker source for RMA lines: serials/batches shipped to this
  * customer (Consumed entities tagged with a posted shipment's id — the
  * attributes->>X query pattern from getTrackedEntitiesByMakeMethodId).
+ * @mcp read
  */
 export async function getShippedTrackedEntitiesForCustomer(
   client: SupabaseClient<Database>,
@@ -7414,6 +7976,7 @@ export async function getShippedTrackedEntitiesForCustomer(
  * Per-line creditable pool = received − already credited. Draft memos count
  * against the pool (two Drafts must not double-credit); the VIEW's displayed
  * quantityCredited still derives from Posted memos only.
+ * @mcp read
  */
 export async function getCreditableQuantities(
   client: SupabaseClient<Database>,
@@ -7472,6 +8035,8 @@ export async function getCreditableQuantities(
  * Drafts count so two drafts can't double-credit) is validated inside the
  * transaction under a row lock on the RMA lines. Amount is rounded ONCE at
  * the currency's decimals (settlement boundary). Returns the memo id.
+ * @mcp create
+ * @mcp audit companyGroupId, createdBy, updatedBy, userId
  */
 export async function createSalesReturnOrderCredit(
   client: SupabaseClient<Database>,
@@ -7654,6 +8219,7 @@ export async function createSalesReturnOrderCredit(
  * lines, priced via resolvePrice (user adjusts on the draft — e.g. to zero
  * for warranty). One replacement per RMA; re-invoking returns the existing
  * link. Rollback-by-delete on line failure (the insertSalesOrder pattern).
+ * @mcp create
  */
 export async function createReplacementSalesOrder(
   client: SupabaseClient<Database>,
@@ -7745,6 +8311,7 @@ export async function createReplacementSalesOrder(
       itemId: line.itemId,
       saleQuantity: Number(line.quantity),
       unitPrice: price.finalPrice,
+      priceTrace: price.trace,
       unitOfMeasureCode: line.unitOfMeasureCode,
       companyId,
       createdBy: userId
@@ -7777,6 +8344,7 @@ export async function createReplacementSalesOrder(
  * shape the NCR disposition writes. Scrap/Rework are set via Issue escalation
  * (the line's issue route), not through this function's callers' UI, but the
  * write itself is shared: those dispositions have no entity side effects here.
+ * @mcp update
  */
 export async function setSalesReturnOrderLineDisposition(
   client: SupabaseClient<Database>,
@@ -8013,6 +8581,9 @@ export async function setSalesReturnOrderLineDisposition(
  * returned `path`, the document type as `sourceDocument`, and the quote/order id as
  * `sourceDocumentId`. The storage folder is scoped by `opportunityId`, which is a
  * different id from `sourceDocumentId`.
+ * @mcp create — part of the documented MCP signed-URL upload flow
+ *       (packages/files/AGENTS.md): a non-browser caller mints a staged
+ *       upload URL, then insertUploadedDocument converts and lands it.
  */
 export async function createOpportunityDocumentUploadUrl(
   client: SupabaseClient<Database>,
@@ -8031,6 +8602,9 @@ export async function createOpportunityDocumentUploadUrl(
  * two-step upload flow: PUT the file bytes to the returned `signedUrl`, then call
  * `documents_insertUploadedDocument` with the returned `path`, the line's document
  * type as `sourceDocument`, and the line id as `sourceDocumentId`.
+ * @mcp create — part of the documented MCP signed-URL upload flow
+ *       (packages/files/AGENTS.md): a non-browser caller mints a staged
+ *       upload URL, then insertUploadedDocument converts and lands it.
  */
 export async function createOpportunityLineDocumentUploadUrl(
   client: SupabaseClient<Database>,
@@ -8042,4 +8616,1611 @@ export async function createOpportunityLineDocumentUploadUrl(
     entityId: args.lineId,
     name: args.name
   });
+}
+
+// ----------------------------------------------------------------------
+// Rental agreements (spec §3). Lifecycle changes — activate, return, close,
+// cancel — go through the post-rental-agreement edge function; invoices are
+// generated by the `create-rental-invoices` server function. These are the plain reads and
+// the Draft-stage writes.
+// ----------------------------------------------------------------------
+
+/** @mcp read */
+export async function getRentalAgreements(
+  client: SupabaseClient<Database>,
+  companyId: string,
+  args: GenericQueryFilters & {
+    search: string | null;
+  }
+) {
+  let query = client
+    .from("rentalAgreements")
+    .select("*", { count: LIST_COUNT })
+    .eq("companyId", companyId);
+
+  if (args.search) {
+    query = query.or(
+      `rentalAgreementId.ilike.%${args.search}%,customerName.ilike.%${args.search}%`
+    );
+  }
+
+  query = setGenericQueryFilters(query, args, [
+    { column: "createdAt", ascending: false }
+  ]);
+
+  return query;
+}
+
+/** @mcp read */
+export async function getRentalAgreement(
+  client: SupabaseClient<Database>,
+  rentalAgreementId: string,
+  companyId: string
+) {
+  return client
+    .from("rentalAgreements")
+    .select("*")
+    .eq("id", rentalAgreementId)
+    .eq("companyId", companyId)
+    .single();
+}
+
+/** `rentalAgreementId` (the readable RA number) comes from the caller —
+ *  the table has no default, so the route draws it from the sequence. */
+/** The terms a caller may write — never `status`, `activatedAt`, `closedAt`
+ *  or anything the lifecycle (post-rental-agreement) owns. These writers are
+ *  also MCP tools, whose inputs reach them unfiltered, so the fields are
+ *  picked rather than spread. */
+function rentalAgreementTerms(
+  terms: Omit<
+    z.infer<typeof rentalAgreementValidator>,
+    "id" | "rentalAgreementId"
+  >
+) {
+  return {
+    customerId: terms.customerId,
+    customerLocationId: terms.customerLocationId,
+    customerContactId: terms.customerContactId,
+    salesPersonId: terms.salesPersonId,
+    locationId: terms.locationId,
+    startDate: terms.startDate,
+    // A cleared DatePicker posts "", which a DATE column rejects.
+    endDate: terms.endDate || null,
+    billingCycle: terms.billingCycle,
+    billingTiming: terms.billingTiming,
+    paymentTermId: terms.paymentTermId,
+    currencyCode: terms.currencyCode,
+    // NOT NULL DEFAULT 1 and not on the form: only a caller that sends a rate
+    // writes one, or an explicit null would override the default.
+    ...(terms.exchangeRate !== undefined
+      ? { exchangeRate: terms.exchangeRate }
+      : {}),
+    depositAmount: terms.depositAmount,
+    taxPercent: terms.taxPercent,
+    discountRate: terms.discountRate,
+    ownershipTransfers: terms.ownershipTransfers,
+    specializedAsset: terms.specializedAsset,
+    purchaseOptionAmount: terms.purchaseOptionAmount,
+    purchaseOptionReasonablyCertain: terms.purchaseOptionReasonablyCertain,
+    notes: terms.notes
+  };
+}
+
+/** @mcp create */
+export async function insertRentalAgreement(
+  client: SupabaseClient<Database>,
+  rentalAgreement: Omit<z.infer<typeof rentalAgreementValidator>, "id"> & {
+    rentalAgreementId: string;
+    companyId: string;
+    createdBy: string;
+    customFields?: Json;
+  }
+) {
+  return client
+    .from("rentalAgreement")
+    .insert([
+      {
+        ...sanitize(rentalAgreementTerms(rentalAgreement)),
+        endDate: rentalAgreement.endDate || null,
+        rentalAgreementId: rentalAgreement.rentalAgreementId,
+        companyId: rentalAgreement.companyId,
+        createdBy: rentalAgreement.createdBy,
+        customFields: rentalAgreement.customFields
+      }
+    ])
+    .select("id, rentalAgreementId")
+    .single();
+}
+
+/** A refusal shaped like a PostgREST error, so every caller's existing
+ *  `result.error` handling (routes, MCP dispatch) reports it unchanged. */
+function rentalRefusal(code: string, message: string) {
+  return {
+    data: null,
+    error: { message, details: "", hint: "", code } as PostgrestError
+  };
+}
+
+/** Billing periods and the lease classification are cut from the terms at
+ *  activation, so only a Draft agreement's terms can change. * @mcp update
+ */
+export async function updateRentalAgreement(
+  client: SupabaseClient<Database>,
+  rentalAgreement: Omit<
+    z.infer<typeof rentalAgreementValidator>,
+    "id" | "rentalAgreementId"
+  > & {
+    id: string;
+    companyId: string;
+    updatedBy: string;
+    customFields?: Json;
+  }
+) {
+  const current = await client
+    .from("rentalAgreement")
+    .select("status")
+    .eq("id", rentalAgreement.id)
+    .eq("companyId", rentalAgreement.companyId)
+    .single();
+  if (current.error) return current;
+  if (current.data.status !== "Draft") {
+    return rentalRefusal(
+      "RENTAL_AGREEMENT_NOT_DRAFT",
+      "Only a Draft rental agreement's terms can be edited"
+    );
+  }
+
+  return client
+    .from("rentalAgreement")
+    .update(
+      sanitize({
+        ...rentalAgreementTerms(rentalAgreement),
+        endDate: rentalAgreement.endDate || null,
+        customFields: rentalAgreement.customFields,
+        updatedBy: rentalAgreement.updatedBy,
+        updatedAt: datetime.timestamp()
+      })
+    )
+    .eq("id", rentalAgreement.id)
+    .eq("companyId", rentalAgreement.companyId)
+    .eq("status", "Draft")
+    .select("id")
+    .single();
+}
+
+/** How the daily run's invoices are handled for one agreement — an
+ *  operational preference, not a term, so it stays editable while Active.
+ *  Null falls back to the company's setting. Sending needs an email to send
+ *  to, so `Post and Email` is refused when the contact has none.
+ *  @mcp update
+ */
+export async function updateRentalAgreementInvoiceAutomation(
+  client: SupabaseClient<Database>,
+  args: {
+    id: string;
+    companyId: string;
+    invoiceAutomation: z.infer<
+      typeof rentalAgreementInvoiceAutomationValidator
+    >["invoiceAutomation"];
+    updatedBy: string;
+  }
+) {
+  const current = await client
+    .from("rentalAgreement")
+    .select("status, customerContactId")
+    .eq("id", args.id)
+    .eq("companyId", args.companyId)
+    .single();
+  if (current.error) return current;
+  if (current.data.status !== "Draft" && current.data.status !== "Active") {
+    return rentalRefusal(
+      "RENTAL_AGREEMENT_CLOSED",
+      "Invoicing can only be changed on a Draft or Active agreement"
+    );
+  }
+
+  if (args.invoiceAutomation === "Post and Email") {
+    const contact = current.data.customerContactId
+      ? await client
+          .from("customerContact")
+          .select("contact(email)")
+          .eq("id", current.data.customerContactId)
+          .eq("companyId", args.companyId)
+          .maybeSingle()
+      : null;
+    if (contact?.error) return contact;
+    if (!contact?.data?.contact?.email) {
+      return rentalRefusal(
+        "RENTAL_INVOICE_EMAIL_NO_CONTACT",
+        "Add a contact with an email to send invoices"
+      );
+    }
+  }
+
+  return client
+    .from("rentalAgreement")
+    .update(
+      sanitize({
+        invoiceAutomation: args.invoiceAutomation,
+        updatedBy: args.updatedBy,
+        updatedAt: datetime.timestamp()
+      })
+    )
+    .eq("id", args.id)
+    .eq("companyId", args.companyId)
+    .select("id")
+    .single();
+}
+
+/** Only a Draft agreement can be deleted — an activated one has billing
+ *  periods and possibly invoices; it is cancelled or closed instead. * @mcp delete
+ */
+export async function deleteRentalAgreement(
+  client: SupabaseClient<Database>,
+  rentalAgreementId: string,
+  companyId: string
+) {
+  return client
+    .from("rentalAgreement")
+    .delete()
+    .eq("id", rentalAgreementId)
+    .eq("companyId", companyId)
+    .eq("status", "Draft")
+    .select("id")
+    .single();
+}
+
+/** @mcp read */
+export async function getRentalAgreementLines(
+  client: SupabaseClient<Database>,
+  rentalAgreementId: string,
+  companyId: string
+) {
+  return client
+    .from("rentalAgreementLine")
+    .select(
+      "*, fixedAsset(id, fixedAssetId, name, serialNumber), item(readableIdWithRevision, name, thumbnailPath)"
+    )
+    .eq("rentalAgreementId", rentalAgreementId)
+    .eq("companyId", companyId)
+    .order("createdAt", { ascending: true });
+}
+
+/** @mcp read */
+export async function getRentalAgreementLine(
+  client: SupabaseClient<Database>,
+  rentalAgreementLineId: string,
+  companyId: string
+) {
+  return client
+    .from("rentalAgreementLine")
+    .select(
+      "*, fixedAsset(id, fixedAssetId, name, serialNumber), item(readableIdWithRevision, name, thumbnailPath)"
+    )
+    .eq("id", rentalAgreementLineId)
+    .eq("companyId", companyId)
+    .single();
+}
+
+/** The line's item and serial always come from its fleet unit, never the
+ *  form, so a line cannot name one unit and bill another's rates. Units are
+ *  added, changed and removed only while the agreement is Draft — activation
+ *  cuts billing periods from them — and a line never moves between
+ *  agreements. * @mcp upsert
+ */
+export async function upsertRentalAgreementLine(
+  client: SupabaseClient<Database>,
+  line:
+    | (Omit<z.infer<typeof rentalAgreementLineValidator>, "id" | "itemId"> & {
+        companyId: string;
+        createdBy: string;
+      })
+    | (Omit<z.infer<typeof rentalAgreementLineValidator>, "id" | "itemId"> & {
+        id: string;
+        companyId: string;
+        updatedBy: string;
+      })
+) {
+  const { companyId } = line;
+  if ("id" in line) {
+    const existing = await client
+      .from("rentalAgreementLine")
+      .select("rentalAgreementId")
+      .eq("id", line.id)
+      .eq("companyId", companyId)
+      .single();
+    if (existing.error) return existing;
+    if (existing.data.rentalAgreementId !== line.rentalAgreementId) {
+      return rentalRefusal(
+        "RENTAL_LINE_WRONG_AGREEMENT",
+        "This unit does not belong to this rental agreement"
+      );
+    }
+  }
+
+  const agreement = await client
+    .from("rentalAgreement")
+    .select("status, customerId, currencyCode, startDate")
+    .eq("id", line.rentalAgreementId)
+    .eq("companyId", companyId)
+    .single();
+  if (agreement.error) return agreement;
+  if (agreement.data.status !== "Draft") {
+    return rentalRefusal(
+      "RENTAL_AGREEMENT_NOT_DRAFT",
+      "Units can only be added or changed on a Draft rental agreement"
+    );
+  }
+
+  const asset = await client
+    .from("fixedAsset")
+    .select("id, itemId, trackedEntityId")
+    .eq("id", line.fixedAssetId)
+    .eq("companyId", companyId)
+    .single();
+  if (asset.error) return asset;
+  if (!asset.data.itemId) {
+    return rentalRefusal("RENTAL_ASSET_NO_ITEM", "The fleet unit has no item");
+  }
+
+  // The unit's own rate. An API caller may leave it out and get the rate
+  // the form would have started from: the customer's, its type's, else the
+  // item's, for this frequency.
+  let rate = line.rate;
+  if (rate === undefined) {
+    const defaults = await getDefaultRentalRates(client, {
+      companyId,
+      customerId: agreement.data.customerId,
+      currencyCode: agreement.data.currencyCode,
+      asOf: agreement.data.startDate,
+      itemIds: [asset.data.itemId]
+    });
+    if (defaults.error) return defaults;
+    rate = defaults.data[asset.data.itemId]?.[line.rateUnit]?.rate;
+    if (rate === undefined) {
+      return rentalRefusal(
+        "RENTAL_LINE_NO_RATE",
+        `No ${line.rateUnit.toLowerCase()} rate is set for this item; enter the rate`
+      );
+    }
+  }
+
+  // Picked, not spread: this writer is also an MCP tool, and `status` and
+  // the classification columns belong to activation.
+  const values = {
+    rentalAgreementId: line.rentalAgreementId,
+    fixedAssetId: line.fixedAssetId,
+    itemId: asset.data.itemId,
+    trackedEntityId: asset.data.trackedEntityId,
+    rateUnit: line.rateUnit,
+    rate,
+    fairValue: line.fairValue ?? null,
+    economicLifeMonths: line.economicLifeMonths ?? null,
+    guaranteedResidualValue: line.guaranteedResidualValue ?? 0,
+    unguaranteedResidualValue: line.unguaranteedResidualValue ?? 0
+  };
+
+  if ("id" in line) {
+    return client
+      .from("rentalAgreementLine")
+      .update({
+        ...values,
+        updatedBy: line.updatedBy,
+        updatedAt: datetime.timestamp()
+      })
+      .eq("id", line.id)
+      .eq("companyId", companyId)
+      .select("id")
+      .single();
+  }
+
+  return client
+    .from("rentalAgreementLine")
+    .insert([{ ...values, companyId, createdBy: line.createdBy }])
+    .select("id")
+    .single();
+}
+
+/** Adds several fleet units to a Draft agreement at once (the setup wizard's
+ *  Add Units), each at its rate on file for the frequency — the customer's,
+ *  its type's, else the item's — or 0 when there is none, to be priced in
+ *  the grid. One read of the agreement, one of the units, one of the rates,
+ *  one insert. Not an MCP tool: `upsertRentalAgreementLine` covers a single
+ *  unit. */
+export async function insertRentalAgreementLines(
+  client: SupabaseClient<Database>,
+  args: {
+    rentalAgreementId: string;
+    companyId: string;
+    createdBy: string;
+    fixedAssetIds: string[];
+    rateUnit: z.infer<typeof rentalAgreementLineValidator>["rateUnit"];
+  }
+) {
+  const { rentalAgreementId, companyId, createdBy, rateUnit } = args;
+  const fixedAssetIds = [...new Set(args.fixedAssetIds)];
+
+  const agreement = await client
+    .from("rentalAgreement")
+    .select("status, customerId, currencyCode, startDate")
+    .eq("id", rentalAgreementId)
+    .eq("companyId", companyId)
+    .single();
+  if (agreement.error) return agreement;
+  if (agreement.data.status !== "Draft") {
+    return rentalRefusal(
+      "RENTAL_AGREEMENT_NOT_DRAFT",
+      "Units can only be added or changed on a Draft rental agreement"
+    );
+  }
+
+  const assets = await client
+    .from("fixedAsset")
+    .select("id, itemId, trackedEntityId")
+    .eq("companyId", companyId)
+    .in("id", fixedAssetIds);
+  if (assets.error) return assets;
+  if (assets.data.length !== fixedAssetIds.length) {
+    return rentalRefusal(
+      "RENTAL_ASSET_NOT_FOUND",
+      "A fleet unit could not be found"
+    );
+  }
+  if (assets.data.some((asset) => !asset.itemId)) {
+    return rentalRefusal("RENTAL_ASSET_NO_ITEM", "The fleet unit has no item");
+  }
+
+  const itemIds = [
+    ...new Set(assets.data.map((asset) => asset.itemId as string))
+  ];
+  const defaults = await getDefaultRentalRates(client, {
+    companyId,
+    customerId: agreement.data.customerId,
+    currencyCode: agreement.data.currencyCode,
+    asOf: agreement.data.startDate,
+    itemIds
+  });
+  if (defaults.error) return defaults;
+
+  return client
+    .from("rentalAgreementLine")
+    .insert(
+      assets.data.map((asset) => ({
+        rentalAgreementId,
+        fixedAssetId: asset.id,
+        itemId: asset.itemId as string,
+        trackedEntityId: asset.trackedEntityId,
+        rateUnit,
+        rate: defaults.data[asset.itemId as string]?.[rateUnit]?.rate ?? 0,
+        companyId,
+        createdBy
+      }))
+    )
+    .select("id");
+}
+
+/** Only from a Draft agreement — an activated line has billing periods
+ *  behind it; return the unit or cancel the agreement instead. * @mcp delete
+ */
+export async function deleteRentalAgreementLine(
+  client: SupabaseClient<Database>,
+  rentalAgreementLineId: string,
+  companyId: string
+) {
+  const line = await client
+    .from("rentalAgreementLine")
+    .select("id, rentalAgreement!inner(status)")
+    .eq("id", rentalAgreementLineId)
+    .eq("companyId", companyId)
+    .single();
+  if (line.error) return line;
+  if (line.data.rentalAgreement.status !== "Draft") {
+    return rentalRefusal(
+      "RENTAL_AGREEMENT_NOT_DRAFT",
+      "Units can only be removed from a Draft rental agreement"
+    );
+  }
+
+  return client
+    .from("rentalAgreementLine")
+    .delete()
+    .eq("id", rentalAgreementLineId)
+    .eq("companyId", companyId);
+}
+
+/**
+ * Every charge on the agreement's lines, with the line's fleet unit.
+ * @mcp read
+ */
+export async function getRentalAgreementCharges(
+  client: SupabaseClient<Database>,
+  rentalAgreementId: string,
+  companyId: string
+) {
+  return client
+    .from("rentalAgreementCharge")
+    .select(
+      "*, rentalAgreementLine!inner(id, rentalAgreementId, fixedAsset(fixedAssetId, name))"
+    )
+    .eq("rentalAgreementLine.rentalAgreementId", rentalAgreementId)
+    .eq("companyId", companyId)
+    .order("chargeDate", { ascending: true });
+}
+
+/**
+ * A variable charge (damage, delivery, overage) on one unit of an open
+ * agreement. Always written as charge type `Charge`: `Rent` is billed only from the
+ * schedule and `Purchase Option` only by Sell to Customer
+ * (`insertRentalPurchaseOptionCharge`, `sales.server.ts`), whose guards a
+ * caller-chosen type would skip. Fields are listed rather than spread so a
+ * payload cannot set the charge type or the billing stamp either.
+ * @mcp upsert
+ */
+export async function upsertRentalAgreementCharge(
+  client: SupabaseClient<Database>,
+  charge:
+    | (Omit<z.infer<typeof rentalAgreementChargeValidator>, "id"> & {
+        companyId: string;
+        createdBy: string;
+      })
+    | (Omit<z.infer<typeof rentalAgreementChargeValidator>, "id"> & {
+        id: string;
+        companyId: string;
+        updatedBy: string;
+      })
+) {
+  const fields = {
+    rentalAgreementLineId: charge.rentalAgreementLineId,
+    chargeDate: charge.chargeDate,
+    description: charge.description,
+    amount: charge.amount,
+    taxPercent: charge.taxPercent
+  };
+
+  // The agreement is the line's own, read under the caller's company.
+  const line = await client
+    .from("rentalAgreementLine")
+    .select("id, rentalAgreementId, rentalAgreement!inner(status)")
+    .eq("id", charge.rentalAgreementLineId)
+    .eq("companyId", charge.companyId)
+    .single();
+  if (line.error) return line;
+  const status = line.data.rentalAgreement.status;
+  if (status !== "Draft" && status !== "Active") {
+    return rentalRefusal(
+      "RENTAL_AGREEMENT_NOT_OPEN",
+      "Charges can only be added to or changed on an open rental agreement"
+    );
+  }
+
+  if ("id" in charge) {
+    // A charge moves only between units of its own agreement.
+    const existing = await client
+      .from("rentalAgreementCharge")
+      .select("rentalAgreementLine!inner(rentalAgreementId)")
+      .eq("id", charge.id)
+      .eq("companyId", charge.companyId)
+      .single();
+    if (existing.error) return existing;
+    if (
+      existing.data.rentalAgreementLine.rentalAgreementId !==
+      line.data.rentalAgreementId
+    ) {
+      return rentalRefusal(
+        "RENTAL_CHARGE_WRONG_AGREEMENT",
+        "A charge can only move to a unit on its own rental agreement"
+      );
+    }
+
+    // A charge already on an invoice is fixed; the invoice line is the
+    // record. Only a `Charge` is edited here — a Purchase Option charge is
+    // written by Sell to Customer alone.
+    return client
+      .from("rentalAgreementCharge")
+      .update(
+        sanitize({
+          ...fields,
+          updatedBy: charge.updatedBy,
+          updatedAt: datetime.timestamp()
+        })
+      )
+      .eq("id", charge.id)
+      .eq("companyId", charge.companyId)
+      .eq("chargeType", "Charge")
+      .is("salesInvoiceLineId", null)
+      .select("id")
+      .single();
+  }
+
+  return client
+    .from("rentalAgreementCharge")
+    .insert([
+      {
+        ...fields,
+        chargeType: "Charge" as const,
+        companyId: charge.companyId,
+        createdBy: charge.createdBy
+      }
+    ])
+    .select("id")
+    .single();
+}
+
+/**
+ * A charge that has been invoiced stays — void or delete the invoice first —
+ * and only an open (Draft or Active) agreement's charges can be removed.
+ * @mcp delete
+ */
+export async function deleteRentalAgreementCharge(
+  client: SupabaseClient<Database>,
+  rentalAgreementChargeId: string,
+  companyId: string
+) {
+  const charge = await client
+    .from("rentalAgreementCharge")
+    .select("id, rentalAgreementLine!inner(rentalAgreement!inner(status))")
+    .eq("id", rentalAgreementChargeId)
+    .eq("companyId", companyId)
+    .single();
+  if (charge.error) return charge;
+  const status = charge.data.rentalAgreementLine.rentalAgreement.status;
+  if (status !== "Draft" && status !== "Active") {
+    return rentalRefusal(
+      "RENTAL_AGREEMENT_NOT_OPEN",
+      "Charges can only be removed from an open rental agreement"
+    );
+  }
+
+  return client
+    .from("rentalAgreementCharge")
+    .delete()
+    .eq("id", rentalAgreementChargeId)
+    .eq("companyId", companyId)
+    .is("salesInvoiceLineId", null)
+    .select("id")
+    .single();
+}
+
+/**
+ * Every billing period of the agreement's lines, oldest first.
+ * @mcp read
+ */
+export async function getRentalBillingPeriods(
+  client: SupabaseClient<Database>,
+  rentalAgreementId: string,
+  companyId: string
+) {
+  return client
+    .from("rentalBillingPeriod")
+    .select(
+      "*, rentalAgreementLine!inner(id, rentalAgreementId, fixedAsset(fixedAssetId, name)), memo(id, memoId, status)"
+    )
+    .eq("rentalAgreementLine.rentalAgreementId", rentalAgreementId)
+    .eq("companyId", companyId)
+    .order("periodStart", { ascending: true })
+    .order("isAdjustment", { ascending: true });
+}
+
+/**
+ * Fleet units free to put on a new line.
+ * @mcp read
+ */
+export async function getRentableFleetAssets(
+  client: SupabaseClient<Database>,
+  companyId: string
+) {
+  return client
+    .from("fleetAssets")
+    .select(
+      "id, fixedAssetId, name, serialNumber, itemId, itemReadableId, itemName, className"
+    )
+    .eq("companyId", companyId)
+    .eq("fleetStatus", "Available")
+    .order("fixedAssetId");
+}
+
+/** @mcp read */
+export async function getItemRentalRate(
+  client: SupabaseClient<Database>,
+  itemId: string,
+  companyId: string,
+  currencyCode: string
+) {
+  return client
+    .from("itemRentalRate")
+    .select("*")
+    .eq("itemId", itemId)
+    .eq("companyId", companyId)
+    .eq("currencyCode", currencyCode)
+    .maybeSingle();
+}
+
+/**
+ * One ladder per item and currency: an existing row is replaced in place.
+ * @mcp upsert
+ */
+export async function upsertItemRentalRate(
+  client: SupabaseClient<Database>,
+  rate: Omit<z.infer<typeof itemRentalRateValidator>, "id"> & {
+    companyId: string;
+    userId: string;
+  }
+) {
+  const { userId, ...values } = rate;
+  const tiers = {
+    dayRate: values.dayRate ?? null,
+    weekRate: values.weekRate ?? null,
+    monthRate: values.monthRate ?? null
+  };
+  return client
+    .from("itemRentalRate")
+    .upsert(
+      [
+        {
+          itemId: values.itemId,
+          currencyCode: values.currencyCode,
+          companyId: values.companyId,
+          ...tiers,
+          createdBy: userId,
+          updatedBy: userId,
+          updatedAt: datetime.timestamp()
+        }
+      ],
+      { onConflict: "companyId,itemId,currencyCode" }
+    )
+    .select("id")
+    .single();
+}
+
+export async function deleteItemRentalRate(
+  client: SupabaseClient<Database>,
+  itemRentalRateId: string,
+  companyId: string
+) {
+  return client
+    .from("itemRentalRate")
+    .delete()
+    .eq("id", itemRentalRateId)
+    .eq("companyId", companyId);
+}
+
+/** Per item: the rate a rental unit starts at for each frequency. */
+export type DefaultRentalRatesByItem = Record<string, DefaultRentalRates>;
+
+/** The rate each item starts at on a rental line for this customer, per
+ *  frequency — the customer's own rate, else its customer type's, else the
+ *  item's (`defaultRentalRates`) — in effect on `asOf`, the agreement's start
+ *  date. Keyed by item id. One query per table over every item. * @mcp read
+ */
+export async function getDefaultRentalRates(
+  client: SupabaseClient<Database>,
+  args: {
+    companyId: string;
+    customerId: string;
+    currencyCode: string;
+    asOf: string;
+    itemIds: string[];
+  }
+): Promise<
+  | { data: DefaultRentalRatesByItem; error: null }
+  | { data: null; error: PostgrestError }
+> {
+  const { companyId, customerId, currencyCode, asOf } = args;
+  const itemIds = [...new Set(args.itemIds)];
+  if (itemIds.length === 0) return { data: {}, error: null };
+
+  const customer = await client
+    .from("customer")
+    .select("customerTypeId")
+    .eq("id", customerId)
+    .eq("companyId", companyId)
+    .maybeSingle();
+  if (customer.error) return { data: null, error: customer.error };
+  const customerTypeId = customer.data?.customerTypeId ?? null;
+
+  // Two plain `.eq` reads rather than one `.or()` string: `customerId` is a
+  // caller's value (this is an MCP tool) and never belongs in a filter string.
+  const scopedSelect =
+    "itemId, customerId, customerTypeId, dayRate, weekRate, monthRate, validFrom, validTo";
+  const [itemRates, customerRates, typeRates] = await Promise.all([
+    client
+      .from("itemRentalRate")
+      .select("itemId, dayRate, weekRate, monthRate")
+      .eq("companyId", companyId)
+      .eq("currencyCode", currencyCode)
+      .in("itemId", itemIds),
+    client
+      .from("customerItemRentalRate")
+      .select(scopedSelect)
+      .eq("companyId", companyId)
+      .eq("currencyCode", currencyCode)
+      .eq("customerId", customerId)
+      .in("itemId", itemIds),
+    customerTypeId
+      ? client
+          .from("customerItemRentalRate")
+          .select(scopedSelect)
+          .eq("companyId", companyId)
+          .eq("currencyCode", currencyCode)
+          .eq("customerTypeId", customerTypeId)
+          .in("itemId", itemIds)
+      : null
+  ]);
+  if (itemRates.error) return { data: null, error: itemRates.error };
+  if (customerRates.error) return { data: null, error: customerRates.error };
+  if (typeRates?.error) return { data: null, error: typeRates.error };
+  const scopedRates = [...customerRates.data, ...(typeRates?.data ?? [])];
+
+  const itemRateById = new Map(itemRates.data.map((row) => [row.itemId, row]));
+  const result: DefaultRentalRatesByItem = {};
+  for (const itemId of itemIds) {
+    const item = itemRateById.get(itemId);
+    result[itemId] = defaultRentalRates({
+      customerId,
+      customerTypeId,
+      asOf,
+      scoped: scopedRates.filter(
+        (row): boolean => row.itemId === itemId
+      ) satisfies ScopedRentalRate[],
+      item: item
+        ? {
+            dayRate: item.dayRate,
+            weekRate: item.weekRate,
+            monthRate: item.monthRate
+          }
+        : null
+    });
+  }
+  return { data: result, error: null };
+}
+
+/** @mcp read */
+export async function getCustomerItemRentalRates(
+  client: SupabaseClient<Database>,
+  itemId: string,
+  companyId: string
+) {
+  return client
+    .from("customerItemRentalRate")
+    .select("*, customer(id, name), customerType(id, name)")
+    .eq("itemId", itemId)
+    .eq("companyId", companyId)
+    .order("createdAt", { ascending: true });
+}
+
+/** @mcp read */
+export async function getCustomerItemRentalRate(
+  client: SupabaseClient<Database>,
+  customerItemRentalRateId: string,
+  companyId: string
+) {
+  return client
+    .from("customerItemRentalRate")
+    .select("*")
+    .eq("id", customerItemRentalRateId)
+    .eq("companyId", companyId)
+    .single();
+}
+
+/** One row per customer (or customer type), item and currency — a second
+ *  row for the same scope is refused by the unique index (23505). * @mcp upsert
+ */
+export async function upsertCustomerItemRentalRate(
+  client: SupabaseClient<Database>,
+  rate: z.infer<typeof customerItemRentalRateValidator> & {
+    companyId: string;
+    userId: string;
+  }
+) {
+  const values = {
+    itemId: rate.itemId,
+    currencyCode: rate.currencyCode,
+    customerId: rate.customerId || null,
+    customerTypeId: rate.customerId ? null : rate.customerTypeId || null,
+    dayRate: rate.dayRate ?? null,
+    weekRate: rate.weekRate ?? null,
+    monthRate: rate.monthRate ?? null,
+    validFrom: rate.validFrom || null,
+    validTo: rate.validTo || null,
+    notes: rate.notes || null
+  };
+  if (rate.id) {
+    return client
+      .from("customerItemRentalRate")
+      .update({
+        ...values,
+        updatedBy: rate.userId,
+        updatedAt: datetime.timestamp()
+      })
+      .eq("id", rate.id)
+      .eq("companyId", rate.companyId)
+      .select("id")
+      .single();
+  }
+  return client
+    .from("customerItemRentalRate")
+    .insert([{ ...values, companyId: rate.companyId, createdBy: rate.userId }])
+    .select("id")
+    .single();
+}
+
+/** @mcp delete */
+export async function deleteCustomerItemRentalRate(
+  client: SupabaseClient<Database>,
+  customerItemRentalRateId: string,
+  companyId: string
+) {
+  return client
+    .from("customerItemRentalRate")
+    .delete()
+    .eq("id", customerItemRentalRateId)
+    .eq("companyId", companyId);
+}
+
+/** The live rental line a fleet unit is on rent under, if any — a unit on
+ *  rent cannot be taken out of service; return it from the agreement first. * @mcp read
+ */
+export async function getOnRentLineForAsset(
+  client: SupabaseClient<Database>,
+  fixedAssetId: string,
+  companyId: string
+) {
+  return client
+    .from("rentalAgreementLine")
+    .select("id, rentalAgreement(id, rentalAgreementId)")
+    .eq("fixedAssetId", fixedAssetId)
+    .eq("companyId", companyId)
+    .eq("status", "On Rent")
+    .limit(1)
+    .maybeSingle();
+}
+
+/**
+ * Customer payments held against the agreement — deposits and refunds.
+ * @mcp read
+ */
+export async function getRentalAgreementDeposits(
+  client: SupabaseClient<Database>,
+  rentalAgreementId: string,
+  companyId: string
+) {
+  return client
+    .from("payment")
+    .select(
+      "id, paymentId, paymentType, status, paymentDate, totalAmount, currencyCode"
+    )
+    .eq("rentalAgreementId", rentalAgreementId)
+    .eq("companyId", companyId)
+    .order("paymentDate", { ascending: true });
+}
+
+/** @mcp read */
+export async function getRentalAgreementRelatedDocuments(
+  client: SupabaseClient<Database>,
+  rentalAgreementId: string,
+  companyId: string
+) {
+  const [shipments, receipts] = await Promise.all([
+    client
+      .from("shipment")
+      .select(
+        "id, shipmentId, status, postingDate, shipmentFixedAssetLine(rentalAgreementLineId, shipped)"
+      )
+      .eq("sourceDocument", "Rental Agreement")
+      .eq("sourceDocumentId", rentalAgreementId)
+      .eq("companyId", companyId)
+      .order("createdAt"),
+    client
+      .from("receipt")
+      .select(
+        "id, receiptId, status, postingDate, receiptFixedAssetLine(rentalAgreementLineId, received)"
+      )
+      .eq("sourceDocument", "Rental Agreement")
+      .eq("sourceDocumentId", rentalAgreementId)
+      .eq("companyId", companyId)
+      .order("createdAt")
+  ]);
+  return {
+    data: { shipments: shipments.data ?? [], receipts: receipts.data ?? [] },
+    error: shipments.error ?? receipts.error
+  };
+}
+
+// ----------------------------------------------------------------------
+// Customer contracts (`.ai/specs/implemented/2026-09-22-revenue-recognition-rentals-and-contracts.md` Part III). Confirm, schedule
+// edits, amend, cancel and revert go through the `post-customer-contract`
+// server function; invoices are drafted by `create-contract-invoices`. These
+// are the plain reads and the Draft-stage writes. They are MCP tools, so they
+// carry their own guards and build every row from an explicit field picker.
+// ----------------------------------------------------------------------
+
+/**
+ * Lists contracts with their customer, value invoiced to date and next invoice date.
+ * @mcp read
+ */
+export async function getContracts(
+  client: SupabaseClient<Database>,
+  companyId: string,
+  args: GenericQueryFilters & {
+    search: string | null;
+  }
+) {
+  let query = client
+    .from("customerContracts")
+    .select("*", { count: LIST_COUNT })
+    .eq("companyId", companyId);
+
+  if (args.search) {
+    query = query.or(
+      `customerContractId.ilike.%${args.search}%,name.ilike.%${args.search}%,customerName.ilike.%${args.search}%`
+    );
+  }
+
+  query = setGenericQueryFilters(query, args, [
+    { column: "createdAt", ascending: false }
+  ]);
+
+  return query;
+}
+
+/**
+ * Gets one contract with its customer, value invoiced to date and next invoice date.
+ * @mcp read
+ */
+export async function getContract(
+  client: SupabaseClient<Database>,
+  customerContractId: string,
+  companyId: string
+) {
+  return client
+    .from("customerContracts")
+    .select("*")
+    .eq("id", customerContractId)
+    .eq("companyId", companyId)
+    .single();
+}
+
+/**
+ * Lists a contract's lines with their service items.
+ * @mcp read
+ */
+export async function getContractLines(
+  client: SupabaseClient<Database>,
+  customerContractId: string,
+  companyId: string
+) {
+  return client
+    .from("customerContractLine")
+    .select("*, item(name, readableIdWithRevision, type)")
+    .eq("customerContractId", customerContractId)
+    .eq("companyId", companyId)
+    .order("sortOrder", { ascending: true, nullsFirst: false })
+    .order("startDate", { ascending: true });
+}
+
+/**
+ * Gets one contract line with its service item.
+ * @mcp read
+ */
+export async function getContractLine(
+  client: SupabaseClient<Database>,
+  customerContractLineId: string,
+  companyId: string
+) {
+  return client
+    .from("customerContractLine")
+    .select("*, item(name, readableIdWithRevision, type)")
+    .eq("id", customerContractLineId)
+    .eq("companyId", companyId)
+    .single();
+}
+
+/**
+ * Gets a contract's persisted invoice schedule: planned invoices with their lines, and the cancellation credits that sit on a memo instead of an invoice.
+ * An unedited Draft has none — its schedule is computed from the lines.
+ * @mcp read
+ */
+export async function getContractInvoiceSchedule(
+  client: SupabaseClient<Database>,
+  customerContractId: string,
+  companyId: string
+) {
+  const [invoices, credits] = await Promise.all([
+    client
+      .from("customerContractInvoice")
+      .select("*, customerContractInvoiceLine(*)")
+      .eq("customerContractId", customerContractId)
+      .eq("companyId", companyId)
+      .order("invoiceDate", { ascending: true })
+      .order("periodStart", {
+        ascending: true,
+        referencedTable: "customerContractInvoiceLine"
+      }),
+    client
+      .from("customerContractInvoiceLine")
+      .select("*")
+      .eq("customerContractId", customerContractId)
+      .eq("companyId", companyId)
+      .is("customerContractInvoiceId", null)
+      .order("periodStart", { ascending: true })
+  ]);
+
+  if (invoices.error) return { data: null, error: invoices.error };
+  if (credits.error) return { data: null, error: credits.error };
+  return {
+    data: { invoices: invoices.data, credits: credits.data },
+    error: null
+  };
+}
+
+/**
+ * Lists a contract's amendments, oldest first, with the lines each one added or replaced.
+ * @mcp read
+ */
+export async function getContractAmendments(
+  client: SupabaseClient<Database>,
+  customerContractId: string,
+  companyId: string
+) {
+  return client
+    .from("customerContractAmendment")
+    .select(
+      "*, customerContractLine(id, revenueType, itemId, description, quantity, rate, rateUnit, startDate, endDate, amendsLineId)"
+    )
+    .eq("customerContractId", customerContractId)
+    .eq("companyId", companyId)
+    .order("amendmentDate", { ascending: true })
+    .order("createdAt", { ascending: true });
+}
+
+/**
+ * Lists the statuses of a customer's contracts, from which a new contract's type is suggested.
+ * @mcp read
+ */
+export async function getCustomerContractStatuses(
+  client: SupabaseClient<Database>,
+  companyId: string,
+  customerId: string
+) {
+  return client
+    .from("customerContract")
+    .select("status")
+    .eq("companyId", companyId)
+    .eq("customerId", customerId);
+}
+
+/** A refusal shaped like a PostgREST error, so every caller's existing
+ *  `result.error` handling (routes, MCP dispatch) reports it unchanged. */
+function contractRefusal(code: string, message: string) {
+  return {
+    data: null,
+    error: { message, details: "", hint: "", code } as PostgrestError
+  };
+}
+
+/** Percent points (10) to the 0–1 fraction the columns hold, at internal
+ *  scale so 14.3 does not store as 0.14300000000000002. */
+function percentToFraction(points: number) {
+  return round(points / 100);
+}
+
+/** The terms a caller may write — never `status`, the confirm / cancel / end
+ *  stamps or `salesOrderId`, which the lifecycle owns. Picked rather than
+ *  spread, since MCP inputs reach these writers unfiltered. `endDate` and
+ *  `termMonths` come from the duration. */
+function customerContractTerms(
+  terms: Omit<
+    z.infer<typeof customerContractValidator>,
+    "id" | "customerContractId"
+  >
+) {
+  const { endDate, termMonths } = contractEndDate(
+    terms.startDate,
+    terms.duration,
+    terms.endDate
+  );
+  return {
+    name: terms.name,
+    // NOT NULL with a default: an omitted type leaves the column alone
+    // rather than writing the null `sanitize` turns undefined into.
+    ...(terms.contractType ? { contractType: terms.contractType } : {}),
+    customerId: terms.customerId,
+    invoiceCustomerId: terms.invoiceCustomerId,
+    invoiceCustomerContactId: terms.invoiceCustomerContactId,
+    invoiceCustomerLocationId: terms.invoiceCustomerLocationId,
+    shipToCustomerLocationId: terms.shipToCustomerLocationId,
+    salesPersonId: terms.salesPersonId,
+    projectId: terms.projectId,
+    customerReference: terms.customerReference,
+    closeDate: terms.closeDate,
+    startDate: terms.startDate,
+    endDate,
+    termMonths,
+    renewal: terms.renewal,
+    renewalUplift: percentToFraction(terms.renewalUplift),
+    billingFrequency: terms.billingFrequency,
+    billingAlignment: terms.billingAlignment,
+    billingTiming: terms.billingTiming,
+    // A cleared DatePicker posts "", which a DATE column rejects.
+    firstInvoiceDate: terms.firstInvoiceDate || null,
+    billedThrough: terms.billedThrough || null,
+    recognizeRevenueFrom: terms.recognizeRevenueFrom || null,
+    // Empty is the company default.
+    invoiceAutomation: terms.invoiceAutomation || null,
+    paymentTermId: terms.paymentTermId,
+    currencyCode: terms.currencyCode,
+    // NOT NULL DEFAULT 1 and not on the form: only a caller that sends a rate
+    // writes one.
+    ...(terms.exchangeRate !== undefined
+      ? { exchangeRate: terms.exchangeRate }
+      : {}),
+    notes: terms.notes
+  };
+}
+
+/**
+ * Creates a Draft contract; its end date and term come from the duration.
+ * `customerContractId` (the readable CON number) comes from the caller — the
+ * route draws it from the sequence.
+ * @mcp create
+ */
+export async function insertContract(
+  client: SupabaseClient<Database>,
+  contract: Omit<z.infer<typeof customerContractValidator>, "id"> & {
+    customerContractId: string;
+    companyId: string;
+    createdBy: string;
+    customFields?: Json;
+  }
+) {
+  return client
+    .from("customerContract")
+    .insert([
+      {
+        ...sanitize(customerContractTerms(contract)),
+        customerContractId: contract.customerContractId,
+        companyId: contract.companyId,
+        createdBy: contract.createdBy,
+        customFields: contract.customFields
+      }
+    ])
+    .select("id, customerContractId")
+    .single();
+}
+
+/**
+ * Updates a Draft contract's terms; an Active contract is changed with Amend.
+ * @mcp update
+ */
+export async function updateContract(
+  client: SupabaseClient<Database>,
+  contract: Omit<
+    z.infer<typeof customerContractValidator>,
+    "id" | "customerContractId"
+  > & {
+    id: string;
+    updatedBy: string;
+    customFields?: Json;
+  }
+) {
+  const current = await client
+    .from("customerContract")
+    .select("status")
+    .eq("id", contract.id)
+    .single();
+  if (current.error) return current;
+  if (current.data.status !== "Draft") {
+    return contractRefusal(
+      "CONTRACT_NOT_DRAFT",
+      "Only a Draft contract can be edited — use Amend"
+    );
+  }
+
+  return client
+    .from("customerContract")
+    .update(
+      sanitize({
+        ...customerContractTerms(contract),
+        customFields: contract.customFields,
+        updatedBy: contract.updatedBy,
+        updatedAt: datetime.timestamp()
+      })
+    )
+    .eq("id", contract.id)
+    .eq("status", "Draft")
+    .select("id")
+    .single();
+}
+
+/**
+ * Sets a contract's type (New Sales, Expansion, …) in any status — a reporting classification, not a term.
+ * @mcp update
+ */
+export async function updateContractType(
+  client: SupabaseClient<Database>,
+  args: {
+    id: string;
+    companyId: string;
+    contractType: Database["public"]["Enums"]["customerContractType"];
+    updatedBy: string;
+  }
+) {
+  return client
+    .from("customerContract")
+    .update({
+      contractType: args.contractType,
+      updatedBy: args.updatedBy,
+      updatedAt: datetime.timestamp()
+    })
+    .eq("id", args.id)
+    .eq("companyId", args.companyId)
+    .select("id")
+    .single();
+}
+
+/**
+ * Sets a contract's notes in any status: notes are not a term, so they stay
+ * editable after Confirm.
+ * @mcp update
+ */
+export async function updateContractNotes(
+  client: SupabaseClient<Database>,
+  args: {
+    id: string;
+    companyId: string;
+    notes: Json | null;
+    updatedBy: string;
+  }
+) {
+  return client
+    .from("customerContract")
+    .update({
+      notes: args.notes,
+      updatedBy: args.updatedBy,
+      updatedAt: datetime.timestamp()
+    })
+    .eq("id", args.id)
+    .eq("companyId", args.companyId)
+    .select("id")
+    .single();
+}
+
+/**
+ * Sets how the daily run handles one contract's invoices, in any status; null falls back to the company's setting.
+ * Sending needs an email to send to, so `Post and Email` is refused when the
+ * invoice contact has none. `Post and Send via Stripe` is accepted here;
+ * Confirm and the job check the customer's Stripe link.
+ *
+ * Not an MCP tool: switching a live contract to a posting mode needs
+ * `create: invoicing`, and Stripe mode needs Stripe connected — checks the
+ * route (`contract+/update.tsx`) makes and an MCP `update` tool would skip.
+ */
+export async function updateContractInvoiceAutomation(
+  client: SupabaseClient<Database>,
+  args: {
+    id: string;
+    companyId: string;
+    invoiceAutomation: z.infer<
+      typeof customerContractInvoiceAutomationValidator
+    >["invoiceAutomation"];
+    updatedBy: string;
+  }
+) {
+  if (args.invoiceAutomation === "Post and Email") {
+    const current = await client
+      .from("customerContract")
+      .select("invoiceCustomerContactId")
+      .eq("id", args.id)
+      .eq("companyId", args.companyId)
+      .single();
+    if (current.error) return current;
+
+    const contact = current.data.invoiceCustomerContactId
+      ? await client
+          .from("customerContact")
+          .select("contact(email)")
+          .eq("id", current.data.invoiceCustomerContactId)
+          .eq("companyId", args.companyId)
+          .maybeSingle()
+      : null;
+    if (contact?.error) return contact;
+    if (!contact?.data?.contact?.email) {
+      return contractRefusal(
+        "CONTRACT_INVOICE_EMAIL_NO_CONTACT",
+        "Add an invoice contact with an email to send invoices"
+      );
+    }
+  }
+
+  return client
+    .from("customerContract")
+    .update({
+      invoiceAutomation: args.invoiceAutomation,
+      updatedBy: args.updatedBy,
+      updatedAt: datetime.timestamp()
+    })
+    .eq("id", args.id)
+    .eq("companyId", args.companyId)
+    .select("id")
+    .single();
+}
+
+/**
+ * Adds or changes a line on a Draft contract; the item must be a Service item.
+ * Lines on an Active contract change through Amend, and a line never moves
+ * between contracts.
+ * @mcp upsert
+ */
+export async function upsertContractLine(
+  client: SupabaseClient<Database>,
+  line:
+    | (Omit<z.infer<typeof customerContractLineValidator>, "id"> & {
+        companyId: string;
+        createdBy: string;
+      })
+    | (Omit<z.infer<typeof customerContractLineValidator>, "id"> & {
+        id: string;
+        updatedBy: string;
+      })
+) {
+  let companyId: string;
+  if ("id" in line) {
+    const existing = await client
+      .from("customerContractLine")
+      .select("companyId, customerContractId")
+      .eq("id", line.id)
+      .single();
+    if (existing.error) return existing;
+    if (existing.data.customerContractId !== line.customerContractId) {
+      return contractRefusal(
+        "CONTRACT_LINE_WRONG_CONTRACT",
+        "This line does not belong to this contract"
+      );
+    }
+    companyId = existing.data.companyId;
+  } else {
+    companyId = line.companyId;
+  }
+
+  const contract = await client
+    .from("customerContract")
+    .select("status")
+    .eq("id", line.customerContractId)
+    .eq("companyId", companyId)
+    .single();
+  if (contract.error) return contract;
+  if (contract.data.status !== "Draft") {
+    return contractRefusal(
+      "CONTRACT_NOT_DRAFT",
+      "Lines can only be added or changed on a Draft contract — use Amend"
+    );
+  }
+
+  const item = await client
+    .from("item")
+    .select("type")
+    .eq("id", line.itemId)
+    .eq("companyId", companyId)
+    .single();
+  if (item.error) return item;
+  if (item.data.type !== "Service") {
+    return contractRefusal(
+      "CONTRACT_LINE_NOT_SERVICE",
+      "A contract line must be a Service item"
+    );
+  }
+
+  // Picked, not spread: amendment and sales-order provenance and the sort
+  // order belong to the server functions.
+  const values = {
+    customerContractId: line.customerContractId,
+    revenueType: line.revenueType,
+    itemId: line.itemId,
+    description: line.description ?? null,
+    quantity: line.quantity,
+    rate: line.rate,
+    rateUnit: line.revenueType === "Recurring" ? (line.rateUnit ?? null) : null,
+    discountPercent: percentToFraction(line.discountPercent),
+    discountEndsOn: line.discountEndsOn || null,
+    taxPercent: percentToFraction(line.taxPercent),
+    startDate: line.startDate,
+    endDate: line.endDate || null,
+    goLiveDate: line.goLiveDate || null,
+    revenueMethod: line.revenueMethod,
+    revenueStartDate: line.revenueStartDate || null,
+    revenueEndDate: line.revenueEndDate || null,
+    projectId: line.projectId || null
+  };
+
+  if ("id" in line) {
+    return client
+      .from("customerContractLine")
+      .update({
+        ...values,
+        updatedBy: line.updatedBy,
+        updatedAt: datetime.timestamp()
+      })
+      .eq("id", line.id)
+      .eq("companyId", companyId)
+      .select("id")
+      .single();
+  }
+
+  return client
+    .from("customerContractLine")
+    .insert([{ ...values, companyId, createdBy: line.createdBy }])
+    .select("id")
+    .single();
+}
+
+/** Adds several Service items to a Draft contract at once, each as a line
+ *  with the defaults a new line gets (the setup wizard's Add Products).
+ *  One read of the contract, one of the items, one insert. Not an MCP tool:
+ *  `upsertContractLine` covers a single line. */
+export async function insertContractLines(
+  client: SupabaseClient<Database>,
+  args: {
+    customerContractId: string;
+    companyId: string;
+    createdBy: string;
+    itemIds: string[];
+    revenueType: Database["public"]["Enums"]["contractRevenueType"];
+    rateUnit: Database["public"]["Enums"]["contractRateUnit"] | null;
+    startDate: string;
+    projectId: string | null;
+  }
+) {
+  const contract = await client
+    .from("customerContract")
+    .select("status")
+    .eq("id", args.customerContractId)
+    .eq("companyId", args.companyId)
+    .single();
+  if (contract.error) return contract;
+  if (contract.data.status !== "Draft") {
+    return contractRefusal(
+      "CONTRACT_NOT_DRAFT",
+      "Lines can only be added or changed on a Draft contract — use Amend"
+    );
+  }
+
+  const itemIds = [...new Set(args.itemIds)];
+  const items = await client
+    .from("item")
+    .select("id, type")
+    .eq("companyId", args.companyId)
+    .in("id", itemIds);
+  if (items.error) return items;
+  if (
+    items.data.length !== itemIds.length ||
+    items.data.some((item) => item.type !== "Service")
+  ) {
+    return contractRefusal(
+      "CONTRACT_LINE_NOT_SERVICE",
+      "A contract line must be a Service item"
+    );
+  }
+
+  const order = new Map(itemIds.map((id, index) => [id, index]));
+  const rows = [...items.data]
+    .sort((a, b) => (order.get(a.id) ?? 0) - (order.get(b.id) ?? 0))
+    .map((item) => ({
+      customerContractId: args.customerContractId,
+      companyId: args.companyId,
+      createdBy: args.createdBy,
+      revenueType: args.revenueType,
+      itemId: item.id,
+      quantity: 1,
+      // As a line added one at a time: the rate is the user's to set (an
+      // item's sale price is in the company currency, not the contract's).
+      rate: 0,
+      rateUnit: args.revenueType === "Recurring" ? args.rateUnit : null,
+      discountPercent: 0,
+      taxPercent: 0,
+      startDate: args.startDate,
+      revenueMethod: "Daily" as const,
+      projectId: args.projectId
+    }));
+
+  return client.from("customerContractLine").insert(rows).select("id");
 }

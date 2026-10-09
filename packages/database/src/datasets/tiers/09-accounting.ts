@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
-import { round } from "../../../supabase/functions/shared/precision.ts";
+import { round } from "../../precision.ts";
 import {
   CLOSED_PERIOD_MONTHS_BACK,
   LOCKED_PERIOD_MONTHS_BACK,
@@ -492,7 +491,9 @@ export async function runTier9(ctx: Ctx): Promise<void> {
       await insertRow(ctx, "depreciationRunLine", {
         depreciationRunId: run,
         fixedAssetId: line.fixedAssetId,
-        amount: line.amount
+        amount: line.amount,
+        // One line per asset per month; the run covers this one month.
+        periodEnd: previousMonthEnd(ctx.anchor)
       });
     }
     ctx.refs.documents["depreciationRun:draft"] = run;

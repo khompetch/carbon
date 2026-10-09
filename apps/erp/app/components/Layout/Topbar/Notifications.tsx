@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 "use client";
 import type { ApprovalDocumentType } from "@carbon/ee/approvals";
 import { NotificationEvent, renderInlineLinks } from "@carbon/notifications";
+import { useLoaderQuery } from "@carbon/query";
 import {
   Badge,
   Button,
@@ -52,7 +52,7 @@ import {
   RiProgress4Line,
   RiProgress8Line
 } from "react-icons/ri";
-import { Link, useFetcher, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { DateTime } from "~/components";
 import { useNotifications, useUser } from "~/hooks";
 import { usePeople } from "~/stores";
@@ -346,6 +346,16 @@ function GenericNotification({
         <Notification
           icon={<LuRefreshCw />}
           to={path.to.integration(id)}
+          {...props}
+        />
+      );
+    case NotificationEvent.RecurringInvoicing:
+      // The description carries the digest's counts; id is only the first
+      // invoice, so land on the invoices that need review instead.
+      return (
+        <Notification
+          icon={<LuDollarSign />}
+          to={`${path.to.invoicingSales}?filter=needsReview:eq:true`}
           {...props}
         />
       );
@@ -650,8 +660,13 @@ const Notifications = () => {
   } = useUser();
   const [isOpen, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("inbox");
-  const [trainingsLoaded, setTrainingsLoaded] = useState(false);
-  const trainingsFetcher = useFetcher<{ data: OutstandingTraining[] }>();
+  // Loaded when the tab is opened, and again each time the popover reopens.
+  const trainingsFetcher = useLoaderQuery<{ data: OutstandingTraining[] }>(
+    isOpen && activeTab === "trainings"
+      ? path.to.api.outstandingTrainings
+      : null,
+    { staleTime: 0 }
+  );
 
   const {
     fetchDigestChildren,
@@ -673,21 +688,6 @@ const Notifications = () => {
     (notification) => notification.read
   );
 
-  // Lazy load trainings when the tab is selected
-  useEffect(() => {
-    if (activeTab === "trainings" && !trainingsLoaded && isOpen) {
-      trainingsFetcher.load(path.to.api.outstandingTrainings);
-      setTrainingsLoaded(true);
-    }
-  }, [activeTab, trainingsLoaded, isOpen, trainingsFetcher]);
-
-  // Reset trainings loaded state when popover closes
-  useEffect(() => {
-    if (!isOpen) {
-      setTrainingsLoaded(false);
-    }
-  }, [isOpen]);
-
   // biome-ignore lint/correctness/useExhaustiveDependencies: suppressed due to migration
   useEffect(() => {
     if (isOpen && hasUnseenNotifications) {
@@ -696,7 +696,7 @@ const Notifications = () => {
   }, [hasUnseenNotifications, isOpen]);
 
   const outstandingTrainings = trainingsFetcher.data?.data ?? [];
-  const isLoadingTrainings = trainingsFetcher.state === "loading";
+  const isLoadingTrainings = trainingsFetcher.isFetching;
 
   return (
     <Popover onOpenChange={setOpen} open={isOpen}>

@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -17,7 +16,7 @@ import type {
 import { forwardRef } from "react";
 import { RxMagnifyingGlass } from "react-icons/rx";
 
-import { Modal, ModalContent } from "./Modal";
+import { Modal, ModalContent, ModalTitle } from "./Modal";
 import { cn } from "./utils/cn";
 
 const Command = forwardRef<
@@ -35,12 +34,23 @@ const Command = forwardRef<
 ));
 Command.displayName = CommandPrimitive.displayName;
 
-interface CommandDialogProps extends DialogProps {}
+interface CommandDialogProps extends DialogProps {
+  /** Announced by screen readers; the palette shows no visible heading. */
+  title?: string;
+}
 
-const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
+const CommandDialog = ({
+  children,
+  title = "Search",
+  ...props
+}: CommandDialogProps) => {
   return (
     <Modal {...props}>
-      <ModalContent className="overflow-hidden p-0 [&>button[type=button]]:top-1 [&>button[type=button]]:right-2 [&>button[type=button]]:p-3">
+      <ModalContent
+        aria-describedby={undefined}
+        className="overflow-hidden p-0 [&>button[type=button]]:top-1 [&>button[type=button]]:right-2 [&>button[type=button]]:p-3"
+      >
+        <ModalTitle className="sr-only">{title}</ModalTitle>
         <Command className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
           {children}
         </Command>

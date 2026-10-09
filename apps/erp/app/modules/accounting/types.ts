@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -519,8 +518,13 @@ import type {
   getFixedAssetClass,
   getFixedAssetClasses,
   getFixedAssetDisposal,
+  getFixedAssetRelatedItems,
   getFixedAssets
 } from "./accounting.service";
+
+export type FixedAssetRelatedItems = Awaited<
+  ReturnType<typeof getFixedAssetRelatedItems>
+>;
 
 export type FixedAssetClass = NonNullable<
   Awaited<ReturnType<typeof getFixedAssetClass>>["data"]

@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: LicenseRef-Carbon-Commercial
-// Copyright (C) Carbon Manufacturing Systems Corporation.
 // Carbon Enterprise file, licensed only under the Carbon Commercial License
 // (packages/ee/LICENSE). Not AGPL. Running, modifying, or copying it beyond those terms requires a commercial license.
 
@@ -12,7 +11,8 @@ import type {
 export type IntegrationAction = {
   id: string;
   label: string;
-  description: string;
+  /** Shown under the label. Omit when the label says enough. */
+  description?: string;
   endpoint: string;
   /**
    * Name of a boolean setting that must be enabled for this action to be shown.
@@ -172,12 +172,19 @@ export type IntegrationServerHooks = {
   onUninstall?: (companyId: string) => void | Promise<void>;
   /**
    * Server-side validation hook to check integration health/credentials.
-   * Returns true if the integration is healthy, false otherwise.
+   * Returns true if the integration is healthy, false otherwise, or a result
+   * whose `reason` tells the person what failed and where to fix it.
    */
   onHealthcheck?: (
     companyId: string,
     metadata: Record<string, unknown>
-  ) => Promise<boolean>;
+  ) => Promise<boolean | IntegrationHealthcheckResult>;
+};
+
+export type IntegrationHealthcheckResult = {
+  healthy: boolean;
+  /** Shown with an unhealthy status. */
+  reason?: string;
 };
 
 /**

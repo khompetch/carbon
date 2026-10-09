@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Carbon-Commercial
-// Copyright (C) Carbon Manufacturing Systems Corporation.
 // Carbon Enterprise file, licensed only under the Carbon Commercial License
 // (packages/ee/LICENSE). Not AGPL. Running, modifying, or copying it beyond those terms requires a commercial license.
 
 import { ValidatedForm } from "@carbon/form";
+import { useLoaderQuery } from "@carbon/query";
 import {
   Button,
   Drawer,
@@ -13,12 +13,10 @@ import {
   DrawerHeader,
   DrawerTitle,
   HStack,
-  useMount,
   VStack
 } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useEffect, useMemo } from "react";
-import { useFetcher } from "react-router";
 import { Employees, Hidden, Radios, Submit } from "~/components/Form";
 import PermissionMatrix from "~/components/PermissionMatrix";
 import { usePermissions } from "~/hooks";
@@ -44,7 +42,7 @@ const BulkEditPermissions = ({
 }: BulkEditPermissionsProps) => {
   const { t } = useLingui();
   const permissions = usePermissions();
-  const emptyPermissionsFetcher = useFetcher<{
+  const emptyPermissionsFetcher = useLoaderQuery<{
     permissions: Record<
       string,
       {
@@ -52,13 +50,9 @@ const BulkEditPermissions = ({
         permission: CompanyPermission;
       }
     >;
-  }>();
+  }>(path.to.api.emptyPermissions);
 
   const canEditPermissions = permissions.can("update", "users");
-
-  useMount(() => {
-    emptyPermissionsFetcher.load(path.to.api.emptyPermissions);
-  });
 
   const { state: initialState, modules } = useMemo(() => {
     if (emptyPermissionsFetcher.data) {

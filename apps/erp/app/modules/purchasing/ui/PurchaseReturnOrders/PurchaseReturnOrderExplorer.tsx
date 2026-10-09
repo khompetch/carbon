@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -14,6 +13,7 @@ import {
   DropdownMenuTrigger,
   HStack,
   IconButton,
+  MENU_ITEM_SHORTCUTS,
   Modal,
   ModalBody,
   ModalContent,
@@ -28,6 +28,7 @@ import {
   useShortcutKeyMap,
   VStack
 } from "@carbon/react";
+import { distinctItemText } from "@carbon/utils";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useRef, useState } from "react";
 import {
@@ -313,9 +314,14 @@ function PurchaseReturnOrderLineItem({
             <span className="font-semibold line-clamp-1">
               {line.item?.readableIdWithRevision}
             </span>
-            <span className="text-muted-foreground text-xs truncate line-clamp-1">
-              {line.item?.name}
-            </span>
+            {distinctItemText(
+              line.item?.readableIdWithRevision,
+              line.item?.name
+            ) && (
+              <span className="text-muted-foreground text-xs truncate line-clamp-1">
+                {line.item?.name}
+              </span>
+            )}
           </VStack>
         </HStack>
         <div className="absolute right-2">
@@ -347,6 +353,7 @@ function PurchaseReturnOrderLineItem({
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem
+                  shortcut={MENU_ITEM_SHORTCUTS.delete}
                   destructive
                   disabled={
                     isDisabled || !permissions.can("delete", "purchasing")

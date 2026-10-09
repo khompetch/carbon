@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
+import { useLoaderQuery } from "@carbon/query";
 import {
   Alert,
   AlertDescription,
@@ -28,6 +28,7 @@ import {
   useDisclosure,
   VStack
 } from "@carbon/react";
+import { getReadableIdWithRevision } from "@carbon/utils";
 import { Trans, useLingui } from "@lingui/react/macro";
 import {
   lazy,
@@ -60,7 +61,6 @@ import type {
 } from "~/modules/quality/types";
 import { useItems } from "~/stores/items";
 import { path } from "~/utils/path";
-import { getReadableIdWithRevision } from "~/utils/string";
 import type { DrawingBalloon } from "./InspectionDrawingPane";
 import type { MeasurementSaveResult } from "./InspectionMeasurementGrid";
 import InspectionMeasurementGrid from "./InspectionMeasurementGrid";
@@ -792,7 +792,7 @@ function DocumentSwitchModal({
 }) {
   const { t } = useLingui();
   const fetcher = useFetcher<{}>();
-  const optionsFetcher = useFetcher<{
+  const optionsFetcher = useLoaderQuery<{
     data:
       | {
           id: string;
@@ -801,15 +801,8 @@ function DocumentSwitchModal({
           version: number;
         }[]
       | null;
-  }>();
+  }>(path.to.api.inspectionDocuments(itemId));
   const [documentId, setDocumentId] = useState(currentDocumentId ?? "none");
-
-  useEffect(() => {
-    if (optionsFetcher.state === "idle" && optionsFetcher.data == null) {
-      optionsFetcher.load(path.to.api.inspectionDocuments(itemId));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const options = optionsFetcher.data?.data ?? [];
 

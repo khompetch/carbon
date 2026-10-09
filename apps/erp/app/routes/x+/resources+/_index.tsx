@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { requirePermissions } from "@carbon/auth/auth.server";
+import { useLoaderQuery } from "@carbon/query";
 import {
   Badge,
   Button,
@@ -43,7 +43,7 @@ import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useDateFormatter, useNumberFormatter } from "@react-aria/i18n";
 import type { DateRange } from "@react-types/datepicker";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import {
   LuCalendarClock,
   LuChevronDown,
@@ -55,7 +55,7 @@ import {
   LuWrench
 } from "react-icons/lu";
 import type { LoaderFunctionArgs } from "react-router";
-import { Await, useFetcher, useLoaderData } from "react-router";
+import { Await, useLoaderData } from "react-router";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { DateSelect, Empty, Hyperlink, MetricCard } from "~/components";
 import { CSVLink } from "~/components/CSVLink";
@@ -144,9 +144,6 @@ export default function MaintenanceDashboard() {
     assignedToMe
   } = useLoaderData<typeof loader>();
 
-  const kpiFetcher = useFetcher<typeof kpiLoader>();
-  const isFetching = kpiFetcher.state !== "idle" || !kpiFetcher.data;
-
   const dateFormatter = useDateFormatter({
     month: "short",
     day: "numeric"
@@ -182,6 +179,15 @@ export default function MaintenanceDashboard() {
   const selectedKpiData =
     MaintenanceKPIs.find((k) => k.key === selectedKpi) || MaintenanceKPIs[0];
 
+  const kpiFetcher = useLoaderQuery<typeof kpiLoader>(
+    `${path.to.api.resourcesKpi(
+      selectedKpiData.key
+    )}?start=${dateRange?.start.toString()}&end=${dateRange?.end.toString()}&interval=${interval}${
+      workCenterId === "all" ? "" : `&workCenterId=${workCenterId}`
+    }`
+  );
+  const isFetching = kpiFetcher.isFetching || !kpiFetcher.data;
+
   const kpiLabels: Record<string, string> = useMemo(
     () => ({
       mttr: t`Mean Time To Repair`,
@@ -192,17 +198,6 @@ export default function MaintenanceDashboard() {
     }),
     [t]
   );
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: deps are intentionally limited
-  useEffect(() => {
-    kpiFetcher.load(
-      `${path.to.api.resourcesKpi(
-        selectedKpiData.key
-      )}?start=${dateRange?.start.toString()}&end=${dateRange?.end.toString()}&interval=${interval}${
-        workCenterId === "all" ? "" : `&workCenterId=${workCenterId}`
-      }`
-    );
-  }, [selectedKpi, dateRange, interval, selectedKpiData.key, workCenterId]);
 
   const onIntervalChange = (value: string) => {
     const end = today("UTC");
@@ -332,7 +327,7 @@ export default function MaintenanceDashboard() {
           ? item.date
           : "month" in item
             ? item.month
-            : // @ts-ignore
+            : // @ts-expect-error
               item.monthKey,
         item.value
       ])

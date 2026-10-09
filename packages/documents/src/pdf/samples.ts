@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -52,6 +51,7 @@ export const SAMPLE_SALES_INVOICE = {
       quantity: 10,
       unitOfMeasureCode: "EA",
       convertedUnitPrice: 24.5,
+      discountPercent: 0.2,
       convertedAddOnCost: 0,
       convertedNonTaxableAddOnCost: 0,
       convertedShippingCost: 0,
@@ -66,6 +66,7 @@ export const SAMPLE_SALES_INVOICE = {
       quantity: 4,
       unitOfMeasureCode: "EA",
       convertedUnitPrice: 12,
+      discountPercent: 0,
       convertedAddOnCost: 5,
       convertedNonTaxableAddOnCost: 0,
       convertedShippingCost: 0,

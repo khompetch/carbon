@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -12,12 +11,12 @@ import {
   Heading,
   HStack,
   IconButton,
-  LabelWithHelp
+  LabelWithHelp,
+  useCloseRoute
 } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useCallback, useMemo, useState } from "react";
 import { LuDownload } from "react-icons/lu";
-import { useNavigate } from "react-router";
 import { Combobox, Hidden, Submit } from "~/components/Form";
 import { usePermissions } from "~/hooks";
 import { path } from "~/utils/path";
@@ -70,8 +69,8 @@ const AccountDefaultsForm = ({
 }: AccountDefaultsFormProps) => {
   const { t } = useLingui();
   const permissions = usePermissions();
-  const navigate = useNavigate();
-  const onClose = () => navigate(-1);
+  const closeRoute = useCloseRoute();
+  const onClose = () => closeRoute();
   const [salesAccount, setSalesAccount] = useState(initialValues.salesAccount);
 
   const isDisabled = !permissions.can("update", "accounting");
@@ -133,6 +132,27 @@ const AccountDefaultsForm = ({
             label: t`Customer Write-Off (Bad Debt)`,
             description: t`Expense account for customer balances written off as uncollectable on AR settlement`,
             badgeType: "Expense"
+          },
+          {
+            name: "deferredRevenueAccount",
+            label: t`Deferred Revenue`,
+            description: t`Liability credited when a service-dated or rental invoice line is billed before the revenue is earned; released by recognition runs`,
+            badgeType: "Liability",
+            termId: "account-default-deferred-revenue"
+          },
+          {
+            name: "contractAssetAccount",
+            label: t`Contract Assets`,
+            description: t`Unbilled receivable for rent earned before it is invoiced`,
+            badgeType: "Asset",
+            termId: "account-default-contract-assets"
+          },
+          {
+            name: "netInvestmentInLeasesAccount",
+            label: t`Net Investment in Leases`,
+            description: t`Receivable recognized at commencement of a sales-type lease, reduced by each rental payment`,
+            badgeType: "Asset",
+            termId: "account-default-net-investment-in-leases"
           }
         ]
       },
@@ -332,6 +352,27 @@ const AccountDefaultsForm = ({
             label: t`Realized Exchange Gain`,
             description: t`Other Income account for FX gains when a payment settles a foreign-currency invoice at a more favorable rate`,
             badgeType: "Revenue"
+          },
+          {
+            name: "rentalIncomeAccount",
+            label: t`Rental Income`,
+            description: t`Revenue recognized straight-line for operating rentals and for variable rental charges`,
+            badgeType: "Revenue",
+            termId: "account-default-rental-income"
+          },
+          {
+            name: "leaseRevenueAccount",
+            label: t`Lease Revenue`,
+            description: t`Revenue recognized at commencement of a sales-type lease`,
+            badgeType: "Revenue",
+            termId: "account-default-lease-revenue"
+          },
+          {
+            name: "leaseInterestIncomeAccount",
+            label: t`Interest Income – Leases`,
+            description: t`Other Income account for the monthly interest earned on the net investment in sales-type leases`,
+            badgeType: "Revenue",
+            termId: "account-default-lease-interest-income"
           }
         ]
       },
@@ -637,7 +678,7 @@ const AccountDefaultsForm = ({
                 {group.fields.map((field) => (
                   <div
                     key={field.name}
-                    className="group rounded-lg border border-border p-4 transition-all hover:border-muted-foreground/30"
+                    className="group rounded-lg border border-border p-4 transition-colors hover:border-muted-foreground/30"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">

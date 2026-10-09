@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -12,18 +11,23 @@ import {
   useIsMobile
 } from "@carbon/react";
 import { Trans } from "@lingui/react/macro";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "motion/react";
 import type { ComponentProps, PropsWithChildren } from "react";
 import {
   createContext,
   forwardRef,
   useContext,
   useEffect,
-  useMemo
+  useMemo,
+  useRef
 } from "react";
 import { LuPanelLeft } from "react-icons/lu";
+import type { Location } from "react-router";
+import { useLocation, useMatches, useNavigation } from "react-router";
 import { useOptimisticLocation } from "~/hooks";
 import { useUIStore } from "~/stores/ui";
+import type { Handle } from "~/utils/handle";
+import { useSlidingHoverCard } from "./useSlidingHoverCard";
 
 interface CollapsibleSidebarContextValue {
   hasSidebar: boolean;
@@ -44,7 +48,10 @@ export function useCollapsibleSidebar() {
   return context;
 }
 
-export function CollapsibleSidebarProvider({ children }: PropsWithChildren) {
+function CollapsibleSidebarProvider({
+  hasSidebar,
+  children
+}: PropsWithChildren<{ hasSidebar: boolean }>) {
   const isMobile = useIsMobile();
   const isSidebarOpen = useUIStore((state) => state.isSidebarOpen);
   const setSidebarOpen = useUIStore((state) => state.setSidebarOpen);
@@ -53,25 +60,26 @@ export function CollapsibleSidebarProvider({ children }: PropsWithChildren) {
     (state) => state.setHasContentSidebar
   );
 
+  // Only a change of breakpoint moves it: opening on mount would undo the
+  // user's collapse, and on a phone open the drawer for a frame.
+  const wasMobile = useRef(false);
   useEffect(() => {
-    if (isMobile) {
-      setSidebarOpen(false);
-    } else {
-      setSidebarOpen(true);
-    }
+    if (isMobile) setSidebarOpen(false);
+    else if (wasMobile.current) setSidebarOpen(true);
+    wasMobile.current = isMobile;
   }, [isMobile, setSidebarOpen]);
 
   // Tell the (global) Topbar that this route has a content sub-nav, so it can
-  // surface a mobile "Sections" trigger. Cleared when the module unmounts.
+  // surface a mobile "Sections" trigger.
   useEffect(() => {
-    setHasContentSidebar(true);
+    setHasContentSidebar(hasSidebar);
     return () => setHasContentSidebar(false);
-  }, [setHasContentSidebar]);
+  }, [hasSidebar, setHasContentSidebar]);
 
   return (
     <CollapsibleSidebarContext.Provider
       value={{
-        hasSidebar: true,
+        hasSidebar,
         isOpen: isSidebarOpen,
         onToggle: toggleSidebar
       }}
@@ -107,9 +115,84 @@ CollapsibleSidebarTrigger.displayName = "CollapsibleSidebarTrigger";
 // ease-out-quart: feels snappy and responsive for sidebar expand/collapse
 const easeOutQuart = [0.165, 0.84, 0.44, 1] as const;
 
-export const CollapsibleSidebar = ({
+/**
+ * The location a module sidebar highlights against: the pending one while it
+ * is still inside this sidebar, otherwise the one on screen. A sidebar about
+ * to be replaced keeps its highlight instead of going blank for the length of
+ * the loader.
+ */
+export function useSidebarLocation(isInside: (pathname: string) => boolean) {
+  const current = useLocation();
+  const pending: Location | undefined = useNavigation().location;
+  return pending && isInside(pending.pathname) ? pending : current;
+}
+
+/**
+ * The scrolling list of links inside the module sidebar, with the same hover
+ * card the icon rail has: one card for the whole list, moved with a transform
+ * to the link under the pointer, so the highlight travels between links
+ * instead of each one fading its own. The active link keeps its own
+ * background. A link opts in with `data-nav-item`.
+ */
+export function SidebarLinks({ children }: PropsWithChildren) {
+  const { containerRef, cardRef, handlers } =
+    useSlidingHoverCard<HTMLDivElement>();
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-accent h-full w-full pb-8"
+      {...handlers}
+    >
+      <span
+        ref={cardRef}
+        aria-hidden
+        className="pointer-events-none absolute left-0 top-0 rounded-md bg-active/60 opacity-0 transition-[transform,opacity] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transition-none"
+      />
+      {children}
+    </div>
+  );
+}
+
+/**
+ * The one module sidebar, rendered by the app shell around every page. A
+ * module layout names its sub-navigation on its route handle (`sidebar`) and
+ * the shell renders it here, so the sidebar's frame, width and collapsed
+ * state stay put from module to module and only its links change. Pages
+ * outside a module (detail pages) have none and get the full width.
+ */
+export function ModuleSidebarLayout({ children }: PropsWithChildren) {
+  const matches = useMatches();
+  const handles = matches.map((match) => match.handle as Handle | undefined);
+  const Sidebar = handles.some((handle) => handle?.hideModuleSidebar)
+    ? undefined
+    : handles.find((handle) => handle?.sidebar)?.sidebar;
+
+  return (
+    <CollapsibleSidebarProvider hasSidebar={Boolean(Sidebar)}>
+      {/* `contents` when there is no sidebar: the page lays out exactly as if
+          this wrapper were not here, and stays in the same place in the tree. */}
+      <div
+        className={
+          Sidebar
+            ? "grid grid-cols-[auto_minmax(0,1fr)] w-full h-full"
+            : "contents"
+        }
+      >
+        {Sidebar ? (
+          <CollapsibleSidebar>
+            <Sidebar />
+          </CollapsibleSidebar>
+        ) : null}
+        {children}
+      </div>
+    </CollapsibleSidebarProvider>
+  );
+}
+
+const CollapsibleSidebar = ({
   children,
-  width = 180
+  width = 240
 }: PropsWithChildren<{ width?: number }>) => {
   const { isOpen } = useCollapsibleSidebar();
   const shouldReduceMotion = useReducedMotion();
@@ -166,7 +249,9 @@ export const CollapsibleSidebar = ({
   return (
     <motion.div
       animate={isOpen ? "visible" : "hidden"}
-      initial={shouldReduceMotion ? false : variants.visible}
+      // No enter animation: arriving from a page without a sidebar must not
+      // replay the collapse.
+      initial={false}
       transition={
         shouldReduceMotion
           ? { duration: 0 }

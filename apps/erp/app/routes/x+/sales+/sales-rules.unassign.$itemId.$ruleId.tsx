@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -8,9 +7,9 @@ import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { requireFeature } from "@carbon/ee/plan.server";
 import { unassignSalesRule } from "@carbon/ee/rules.server";
+import { redirect } from "@carbon/utils";
 import type { ActionFunctionArgs } from "react-router";
-import { redirect } from "react-router";
-import { path } from "~/utils/path";
+import { path, requestReferrer } from "~/utils/path";
 
 export async function action({ request, params }: ActionFunctionArgs) {
   assertIsPost(request);
@@ -36,13 +35,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
   });
   if (result.error) {
     throw redirect(
-      request.headers.get("Referer") ?? path.to.salesRules,
+      requestReferrer(request) ?? path.to.salesRules,
       await flash(request, error(result.error, "Failed to unassign rule"))
     );
   }
 
   throw redirect(
-    request.headers.get("Referer") ?? path.to.salesRules,
+    requestReferrer(request) ?? path.to.salesRules,
     await flash(request, success("Rule unassigned"))
   );
 }

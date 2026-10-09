@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
@@ -55,12 +54,10 @@ describe("classifyPath", () => {
       "apps/erp/sst-env.d.ts",
       "packages/ee/sst-env.d.ts",
       "packages/database/src/types.ts",
-      "packages/database/supabase/functions/lib/types.ts",
       "packages/database/src/swagger-docs-schema.ts",
       "packages/ee/src/workflows/catalog/events.generated.ts",
       "packages/ee/src/paperless-parts/lib/client.ts",
-      "packages/database/supabase/functions/lib/postgres/kysely-supabase.types.ts",
-      "apps/erp/public/pdf.worker.min.mjs"
+      "packages/database/supabase/edge-runtime/main/index.ts"
     ]) {
       const result = classifyPath(path);
       expect(result, path).toMatchObject({ excluded: true });
@@ -131,7 +128,6 @@ describe("isLicenseCandidate", () => {
       "contrib/building/examples/a.ts",
       ".claude/skills/x/a.mjs",
       ".github/scripts/a.js",
-      "docker/edge-functions/main/index.ts",
       "patches/a.ts",
       "apps/erp/app/styles.css",
       "packages/database/supabase/migrations/1.sql",

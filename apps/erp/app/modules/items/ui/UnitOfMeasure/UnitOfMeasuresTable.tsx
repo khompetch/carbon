@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (C) Carbon Manufacturing Systems Corporation and contributors.
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
-import { MenuIcon, MenuItem } from "@carbon/react";
+import { MENU_ITEM_SHORTCUTS, MenuIcon, MenuItem } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { ColumnDef } from "@tanstack/react-table";
 import { memo, useCallback, useMemo } from "react";
@@ -14,6 +13,7 @@ import { Enumerable } from "~/components/Enumerable";
 import { usePermissions, useUrlParams } from "~/hooks";
 import { useCustomColumns } from "~/hooks/useCustomColumns";
 import { path } from "~/utils/path";
+import { EACH_UNIT_OF_MEASURE_CODE } from "../../items.models";
 import type { UnitOfMeasure } from "../../types";
 
 type UnitOfMeasuresTableProps = {
@@ -60,6 +60,7 @@ const UnitOfMeasuresTable = memo(
         return (
           <>
             <MenuItem
+              shortcut={MENU_ITEM_SHORTCUTS.edit}
               disabled={!permissions.can("update", "parts")}
               onClick={() => {
                 navigate(`${path.to.uom(row.id)}?${params.toString()}`);
@@ -69,8 +70,13 @@ const UnitOfMeasuresTable = memo(
               <Trans>Edit Unit of Measure</Trans>
             </MenuItem>
             <MenuItem
+              shortcut={MENU_ITEM_SHORTCUTS.delete}
               destructive
-              disabled={!permissions.can("delete", "parts")}
+              // Each is built in; the database refuses to delete it.
+              disabled={
+                !permissions.can("delete", "parts") ||
+                row.code === EACH_UNIT_OF_MEASURE_CODE
+              }
               onClick={() => {
                 navigate(`${path.to.deleteUom(row.id)}?${params.toString()}`);
               }}
