@@ -45,6 +45,8 @@ import {
   linearSyncFunction,
   mountPublishFunction,
   mountSweepFunction,
+  oeeSweepFunction,
+  oeeSyncFunction,
   onshapeBackfillFunction,
   onshapeRevisionSyncFunction,
   paperlessPartsFunction,
@@ -62,6 +64,7 @@ import {
 import {
   notifyFunction,
   sendEmailFunction,
+  sendPushFunction,
   sendSlackFunction
 } from "./functions/notifications";
 import {
@@ -94,6 +97,7 @@ import {
   companyTemplateFunction,
   companyTemplateRevertFunction,
   invoiceAutomateFunction,
+  kanbanLevelCheckFunction,
   modelCompactFunction,
   modelOptimizeFunction,
   modelThumbnailFunction,
@@ -117,6 +121,7 @@ export const functions = [
   // Notifications
   notifyFunction,
   sendEmailFunction,
+  sendPushFunction,
   sendSlackFunction,
   // Event handlers
   auditFunction,
@@ -144,6 +149,7 @@ export const functions = [
   companyTemplateFunction,
   companyTemplateRevertFunction,
   invoiceAutomateFunction,
+  kanbanLevelCheckFunction,
   modelCompactFunction,
   modelOptimizeFunction,
   modelThumbnailFunction,
@@ -190,6 +196,8 @@ export const functions = [
   onshapeRevisionSyncFunction,
   rampSyncFunction,
   rampSweepFunction,
+  oeeSweepFunction,
+  oeeSyncFunction,
   syncExternalAccountingFunction,
   slackDocumentCreatedFunction,
   slackDocumentStatusUpdateFunction,
