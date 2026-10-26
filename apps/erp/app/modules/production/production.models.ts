@@ -14,8 +14,9 @@ import {
   operationTypes,
   procedureStepType,
   standardFactorType,
+  stepListValues,
   toTiptapDoc
-} from "../shared";
+} from "../shared/shared.models";
 import type {
   ItemOrderStatus,
   JobOrderStatusCategory,
@@ -109,6 +110,18 @@ export function isJobEditableFromPlanning(
 // The one definition lives in @carbon/utils, shared with the OEE sync.
 export { isJobLocked, JOB_LOCKED_STATUSES } from "@carbon/utils";
 
+export const JOB_LOCKED_MESSAGE =
+  "Cannot modify a locked job. Reopen it first.";
+
+/** The statuses a job can be cancelled from. */
+export const CANCELLABLE_JOB_STATUSES = [
+  "Draft",
+  "Planned",
+  "Ready",
+  "In Progress",
+  "Paused"
+] as const;
+
 export const DATE_COLUMN_SENTINELS = [
   "unscheduled",
   "next-week",
@@ -185,6 +198,16 @@ export function isAssemblyPlanRunning(
     return age < ASSEMBLY_PLAN_PROCESSING_STALE_MS;
   }
   return job.status === "Queued" && age < ASSEMBLY_PLAN_QUEUED_STALE_MS;
+}
+
+/** Start a motion plan unless the model is still converting or a plan is live. */
+export function shouldStartAssemblyPlan(
+  processingStatus: string | null | undefined,
+  planJob: { status: string; createdAt: string } | null | undefined
+): boolean {
+  const isConverting =
+    processingStatus === "Queued" || processingStatus === "Processing";
+  return !isConverting && !isAssemblyPlanRunning(planJob);
 }
 
 export const jobOperationStatus = [
@@ -369,6 +392,24 @@ export function makeToAssetItemError(job: {
     return "Make to Asset needs a serialized item or a quantity of one";
   }
   return null;
+}
+
+/** Why a Make to Asset job cannot be released, or null: the item rule, then
+ *  a sales order line (a sale, not a capitalisation). */
+export function makeToAssetReleaseError(job: {
+  fixedAssetClassId?: string | null;
+  fixedAssetId?: string | null;
+  salesOrderLineId?: string | null;
+  itemTrackingType?: string | null;
+  quantity?: number | null;
+}): string | null {
+  if (!job.fixedAssetClassId && !job.fixedAssetId) return null;
+  return (
+    makeToAssetItemError(job) ??
+    (job.salesOrderLineId
+      ? "A job linked to a sales order line cannot complete to a fixed asset"
+      : null)
+  );
 }
 
 export const leftoverAction = ["ship", "receive", "split", "discard"] as const;
@@ -957,7 +998,7 @@ export const procedureStepValidator = z
     unitOfMeasureCode: zfd.text(z.string().optional()),
     minValue: zfd.numeric(z.number().min(0).optional()),
     maxValue: zfd.numeric(z.number().min(0).optional()),
-    listValues: z.array(z.string()).optional(),
+    listValues: stepListValues,
     sortOrder: zfd.numeric(z.number().min(0).optional())
   })
   .refine(
@@ -975,17 +1016,13 @@ export const procedureStepValidator = z
   .refine(
     (data) => {
       if (data.type === "List") {
-        return (
-          !!data.listValues &&
-          data.listValues.length > 0 &&
-          data.listValues.every((option) => option.trim() !== "")
-        );
+        return !!data.listValues && data.listValues.length > 0;
       }
       return true;
     },
     {
       message: "List options are required",
-      path: ["listOptions"]
+      path: ["listValues"]
     }
   )
   .refine(
@@ -1537,7 +1574,7 @@ const assemblyInstructionStepFields = z.object({
   unitOfMeasureCode: zfd.text(z.string().optional()),
   minValue: zfd.numeric(z.number().min(0).optional()),
   maxValue: zfd.numeric(z.number().min(0).optional()),
-  listValues: z.array(z.string()).optional(),
+  listValues: stepListValues,
   componentNodeIds: jsonField(z.array(z.string()).optional()),
   motion: jsonField(motionSchema.optional()),
   camera: jsonField(cameraSchema.nullable().optional()),
@@ -1558,11 +1595,7 @@ function refineAssemblyInstructionStep(
   }
   if (
     data.type === "List" &&
-    !(
-      Array.isArray(data.listValues) &&
-      data.listValues.length > 0 &&
-      data.listValues.every((option) => option.trim() !== "")
-    )
+    !(Array.isArray(data.listValues) && data.listValues.length > 0)
   ) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,

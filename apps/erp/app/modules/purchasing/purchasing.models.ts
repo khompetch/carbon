@@ -8,7 +8,10 @@ import {
   addMonths,
   bicMatchesCountry,
   getBankFieldConfig,
+  getCompletionAfterQuantityChange,
   isValidSwiftBic,
+  RoundingMode,
+  round,
   type TaxPair,
   taxableBase,
   taxPairFromAmount,
@@ -24,7 +27,11 @@ import {
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 import { address, contact } from "~/types/validators";
-import { incoterms, itemType, taxExemptionReasons } from "../shared";
+import {
+  incoterms,
+  itemType,
+  taxExemptionReasons
+} from "../shared/shared.models";
 
 export const KPIs = [
   {
@@ -806,6 +813,85 @@ export function taxPairForQuantity(
   );
 }
 
+/** A purchase order line as a planning Increase / Decrease reads it. */
+export type PlanningQuantityLine = {
+  supplierUnitPrice: number | null;
+  supplierShippingCost: number | null;
+  purchaseQuantity: number | null;
+  quantityReceived: number | null;
+  quantityInvoiced: number | null;
+  receivedComplete: boolean | null;
+  taxPercent: number | null;
+  supplierTaxAmount: number | null;
+  conversionFactor: number | null;
+  currencyCode: string | null;
+  baseCurrencyCode: string | null;
+};
+
+/** A PO with no currency is in the company's base currency, as the PO line
+ *  form reads it. */
+export function planningLineCurrencyCode(line: {
+  currencyCode: string | null;
+  baseCurrencyCode: string | null;
+}): string | null {
+  return line.currencyCode ?? line.baseCurrencyCode;
+}
+
+/**
+ * The write a planning Increase / Decrease makes on its PO line, or why it
+ * cannot. `suggestedQuantity` is in INVENTORY units and is what the line
+ * should still BRING (MRP reads a line's `quantityToReceive`): it is
+ * converted by the line's own `conversionFactor`, rounded up to a whole
+ * purchase unit, and what was already received is added back.
+ */
+export function planningQuantityChange(
+  line: PlanningQuantityLine | undefined,
+  decimalsByCode: Map<string, number>,
+  suggestedQuantity: number
+):
+  | {
+      ok: true;
+      quantity: number;
+      percent: number;
+      amount: number;
+      receivedComplete: boolean;
+      invoicedComplete: boolean;
+    }
+  | { ok: false; message: string } {
+  const currencyCode = line ? planningLineCurrencyCode(line) : null;
+  const decimals = currencyCode ? decimalsByCode.get(currencyCode) : undefined;
+  if (!line || decimals === undefined) {
+    return {
+      ok: false,
+      message: line
+        ? `Currency ${currencyCode ?? "(none)"} has no precision`
+        : "Purchase order line not found"
+    };
+  }
+  const conversionFactor = Number(line.conversionFactor) || 1;
+  // MRP suggests a whole number of purchase units already
+  // (`quantityAfterApply`, @carbon/planning); the inner round strips float
+  // noise (1.1 / 0.1 = 11.000000000000002) that would otherwise ceil it a
+  // whole purchase unit up.
+  const toReceive =
+    conversionFactor > 0
+      ? round(
+          round(Number(suggestedQuantity) / conversionFactor),
+          0,
+          RoundingMode.Up
+        )
+      : Number(suggestedQuantity);
+  const quantity = round((Number(line.quantityReceived) || 0) + toReceive);
+  const pair = taxPairForQuantity(line, quantity, decimals);
+  return {
+    ok: true,
+    quantity,
+    percent: pair.percent,
+    amount: pair.amount,
+    ...getCompletionAfterQuantityChange(line, quantity)
+  };
+}
+
 /**
  * The week a planned PO line is ordered in, as the date that week starts.
  * Planning raises one PO per supplier per week, so each PO can be finalized
@@ -887,6 +973,30 @@ export function canCreatePurchaseOrderRevision(transition: {
   );
 }
 
+/**
+ * Why `userId` may not delete a purchase order, or null. Only a Draft,
+ * Planned or Needs Approval order can be deleted, and one that needs approval
+ * only by the person who requested it (`requestedBy`, its latest pending
+ * request): an approver rejects it instead.
+ */
+export function purchaseOrderDeleteRefusal({
+  status,
+  requestedBy,
+  userId
+}: {
+  status: string | null | undefined;
+  requestedBy: string | null | undefined;
+  userId: string;
+}): "status" | "notRequester" | null {
+  if (!["Draft", "Planned", "Needs Approval"].includes(status ?? "")) {
+    return "status";
+  }
+  if (status === "Needs Approval" && requestedBy && requestedBy !== userId) {
+    return "notRequester";
+  }
+  return null;
+}
+
 // ─── Purchase Return Orders (Supplier Returns) ───
 
 export const purchaseReturnOrderStatusType = [
@@ -944,6 +1054,72 @@ export const purchaseReturnOrderLineValidator = z.object({
   purchaseInvoiceLineId: zfd.text(z.string().optional()),
   trackedEntityIds: zfd.repeatableOfType(z.string()).optional()
 });
+
+/**
+ * The first field a change to a confirmed return line would move that is
+ * locked after confirmation, by its label; null when none. A field counts as
+ * changed only when it was sent AND differs — the update writes only the
+ * fields it is given.
+ */
+export function lockedReturnLineField(
+  next: {
+    quantity: number;
+    itemId: string;
+    unitPrice: number;
+    restockFeePercent?: number;
+    unitOfMeasureCode?: string;
+    purchaseOrderLineId?: string;
+    receiptLineId?: string;
+    purchaseInvoiceLineId?: string;
+  },
+  current: {
+    quantity: number | null;
+    itemId: string | null;
+    unitPrice: number | null;
+    restockFeePercent: number | null;
+    unitOfMeasureCode: string | null;
+    purchaseOrderLineId: string | null;
+    receiptLineId: string | null;
+    purchaseInvoiceLineId: string | null;
+  }
+): string | null {
+  const fields: [string, unknown, unknown][] = [
+    ["Quantity", Number(next.quantity), Number(current.quantity)],
+    ["Item", next.itemId, current.itemId],
+    ["Unit price", Number(next.unitPrice), Number(current.unitPrice)],
+    [
+      "Restocking fee",
+      next.restockFeePercent === undefined
+        ? undefined
+        : Number(next.restockFeePercent),
+      Number(current.restockFeePercent)
+    ],
+    [
+      "Unit of measure",
+      next.unitOfMeasureCode,
+      current.unitOfMeasureCode ?? undefined
+    ],
+    [
+      "Purchase order line link",
+      next.purchaseOrderLineId,
+      current.purchaseOrderLineId ?? undefined
+    ],
+    [
+      "Receipt line link",
+      next.receiptLineId,
+      current.receiptLineId ?? undefined
+    ],
+    [
+      "Invoice line link",
+      next.purchaseInvoiceLineId,
+      current.purchaseInvoiceLineId ?? undefined
+    ]
+  ];
+  const changed = fields.find(
+    ([, value, saved]) => value !== undefined && value !== saved
+  );
+  return changed ? changed[0] : null;
+}
 
 // Credit dialog: repeatable per-line quantity rows (same encoding as
 // selectedLines — a JSON-encoded field)
@@ -1423,3 +1599,26 @@ export const leasePurchaseValidator = z.object({
   name: z.string().trim().min(1, { message: "Asset name is required" }),
   notes: zfd.text(z.string().optional())
 });
+
+/**
+ * Which RFQ models go in the email and which go as download links: in line
+ * order, each model that still fits in `budgetBytes` is attached, the rest are
+ * linked, so one large model does not push out the small ones after it.
+ */
+export function splitRfqModelAttachments<T extends { size: number }>(
+  models: T[],
+  budgetBytes: number
+): { attach: T[]; link: T[] } {
+  const attach: T[] = [];
+  const link: T[] = [];
+  let left = budgetBytes;
+  for (const model of models) {
+    if (model.size <= left) {
+      attach.push(model);
+      left -= model.size;
+    } else {
+      link.push(model);
+    }
+  }
+  return { attach, link };
+}

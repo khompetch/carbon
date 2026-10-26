@@ -25,13 +25,16 @@ import {
   SUPABASE_ANON_KEY,
   VERCEL_URL
 } from "../config/env";
-import { getCarbon } from "../lib/supabase";
-import { getCarbonAPIKeyClient, getCarbonClient } from "../lib/supabase/client";
+import {
+  getCarbon,
+  getCarbonAPIKeyClient,
+  getCarbonClient
+} from "../lib/supabase/client";
 import {
   getCarbonServiceRole,
   requestFetch
 } from "../lib/supabase/client.server";
-import type { AuthSession } from "../types";
+import type { AuthSession, Permission } from "../types";
 import { path } from "../utils/path";
 import { error } from "../utils/result";
 import { type ApiKeyRecord, getApiKeyRecord } from "./api-key.server";
@@ -43,7 +46,7 @@ import {
   flash,
   requireAuthSession
 } from "./session.server";
-import { getCompaniesForUser } from "./users";
+import { getCompaniesForUser, makePermissionsFromClaims } from "./users";
 import { getUserClaims } from "./users.server";
 
 const log = getLogger("auth");
@@ -128,9 +131,9 @@ export {
   hashApiKey
 } from "./api-key.server";
 
-// Exported so the Carbon API v1 surface can read a key's scopes for its per-operation
-// scope gate (the gate lives in oRPC middleware, not in requirePermissions). The
-// carbon-key branch of requirePermissions already covers client/rate-limit/plan/expiry.
+// Exported so the Carbon API v1 surface can read a key's scopes: each service
+// function's own permission gate checks them per operation. The carbon-key
+// branch of requirePermissions already covers client/rate-limit/plan/expiry.
 // Kept as `{ data, error }` for its existing callers; the row now comes through the
 // ~30s Redis cache (with per-request memoization) in api-key.server.ts.
 export async function getCompanyIdFromAPIKey(apiKey: string) {
@@ -217,6 +220,10 @@ export async function requirePermissions(
   userId: string;
   sessionUserId: string;
   consoleMode: boolean;
+  /** How the caller authenticated: a session, or an API key. */
+  caller: "session" | "apiKey";
+  /** The session user's claims, or the API key's scopes, per module. */
+  permissions: Record<string, Permission>;
 }> {
   const apiKey = request.headers.get("carbon-key");
 
@@ -336,7 +343,9 @@ export async function requirePermissions(
         userId,
         sessionUserId: userId,
         email: "",
-        consoleMode: false
+        consoleMode: false,
+        caller: "apiKey",
+        permissions: makePermissionsFromClaims(scopes)?.permissions ?? {}
       };
     }
   }
@@ -380,7 +389,9 @@ export async function requirePermissions(
       email,
       userId: await getEffectiveUser(request, companyId, userId, consoleMode),
       sessionUserId: userId,
-      consoleMode
+      consoleMode,
+      caller: "session",
+      permissions: myClaims.permissions
     };
   }
 
@@ -434,7 +445,7 @@ export async function requirePermissions(
 
   return {
     client:
-      !!requiredPermissions.bypassRls && myClaims.role === "employee"
+      requiredPermissions.bypassRls && myClaims.role === "employee"
         ? serviceRoleForRequest()
         : carbonForRequest(accessToken, request),
     companyId,
@@ -442,7 +453,9 @@ export async function requirePermissions(
     email,
     userId: await getEffectiveUser(request, companyId, userId, consoleMode),
     sessionUserId: userId,
-    consoleMode
+    consoleMode,
+    caller: "session",
+    permissions: myClaims.permissions
   };
 }
 

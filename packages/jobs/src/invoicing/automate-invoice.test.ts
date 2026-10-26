@@ -33,7 +33,7 @@ vi.mock("@carbon/ee/rules.server", () => ({
 // The Stripe API call only: the connected-account and customer-link reads run
 // for real against the fake client. The Stripe SDK module is replaced so
 // loading the real reads does not construct a Stripe or Supabase client.
-vi.mock("../../../stripe/src/connect.server", () => ({
+vi.mock("@carbon/stripe/connect.server", () => ({
   createAndSendConnectInvoice: () => {
     throw new Error("The Stripe API is not reachable in tests");
   }
@@ -51,12 +51,9 @@ vi.mock("@carbon/lib/party-contact.server", () => ({
   checkPartyContactRequirement: (...args: unknown[]) =>
     contactRequirement(...args)
 }));
-vi.mock("@carbon/server-functions", () => ({
-  serverFns: {
-    system: () => ({
-      invoke: (_name: string, input: unknown) => postInvoice(input)
-    })
-  }
+vi.mock("@carbon/api/postings.server", () => ({
+  posting: (_name: string, _handles: unknown, input: unknown) =>
+    postInvoice(input)
 }));
 vi.mock("@carbon/lib/workflows", () => ({
   raiseMoment: (...args: unknown[]) => raiseMoment(...args)
@@ -73,8 +70,8 @@ vi.mock("@carbon/lib/sales-invoice-document.server", () => ({
 vi.mock("@carbon/documents/email", () => ({
   SalesInvoiceEmail: (props: unknown) => props
 }));
-vi.mock("@react-email/components", () => ({
-  renderAsync: async () => "<p>invoice</p>"
+vi.mock("react-email", () => ({
+  render: async () => "<p>invoice</p>"
 }));
 vi.mock("@carbon/files", () => ({
   getDocumentType: () => "PDF",

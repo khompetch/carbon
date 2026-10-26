@@ -4,6 +4,7 @@
 
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
+import { validateEnv } from "@carbon/env/validate";
 import { keyOf, loadBaseline } from "./baseline";
 import type {
   ConformanceCheck,
@@ -13,12 +14,29 @@ import type {
   Violation
 } from "./check";
 import {
+  DEPLOYMENTS_SET_REQUIRED_ENV,
+  findDeploymentEnvGaps
+} from "./conformance/deployments-set-required-env";
+import {
   DOCUMENT_SEQUENCE_SYNCED,
   findUnsyncedDocumentSequences
 } from "./conformance/document-sequence-synced";
 import { edgeFunctionAuthorizesCaller } from "./conformance/edge-function-authorizes-caller";
+import {
+  EVENT_IGNORED_COLUMNS,
+  findIgnoredColumnDrift
+} from "./conformance/event-ignored-columns";
+import {
+  FUNCTION_REDEFINITION_KEEPS_CHANGES,
+  findDroppedFunctionChanges
+} from "./conformance/function-redefinition-keeps-changes";
 import { indexRedirectBeforeLoaders } from "./conformance/index-redirect-before-loaders";
 import { journalStatusFilter } from "./conformance/journal-status-filter";
+import { linguiMacroMisuse } from "./conformance/lingui-macro-misuse";
+import {
+  findUnselectedListColumns,
+  LIST_SELECT_COVERS_COLUMNS
+} from "./conformance/list-select-covers-columns";
 import { moduleShape } from "./conformance/module-shape";
 import {
   MANAGED_FUNCTION_SETS,
@@ -45,28 +63,59 @@ import { noNoopOpenChange } from "./conformance/no-noop-open-change";
 import { noNumericPrecision } from "./conformance/no-numeric-precision";
 import { noPostgresChanges } from "./conformance/no-postgres-changes";
 import { noRawForwardedHeaders } from "./conformance/no-raw-forwarded-headers";
+import { noRawOrSearch } from "./conformance/no-raw-or-search";
 import { noRawRedirect } from "./conformance/no-raw-redirect";
 import { noRawRevalidator } from "./conformance/no-raw-revalidator";
 import { noRawRounding } from "./conformance/no-raw-rounding";
 import { noRequiredColumnWithoutDefault } from "./conformance/no-required-column-without-default";
+import { noServerCodeInClient } from "./conformance/no-server-code-in-client";
 import { noStateCopyOfLoaderData } from "./conformance/no-state-copy-of-loader-data";
 import { noUnguardedSubmit } from "./conformance/no-unguarded-submit";
 import { noUnroundedTrackedQuantity } from "./conformance/no-unrounded-tracked-quantity";
 import { noUnscopedKyselyWrite } from "./conformance/no-unscoped-kysely-write";
 import { noViewWithoutInvoker } from "./conformance/no-view-without-invoker";
 import { noZeroConcurrency } from "./conformance/no-zero-concurrency";
-import { serverFnAuthorizesCaller } from "./conformance/server-fn-authorizes-caller";
+import {
+  findProviderRoleDrift,
+  PROVIDER_ROLE_BACKFILLED
+} from "./conformance/provider-role-backfilled";
+import { routeActionShape } from "./conformance/route-action-shape";
+import {
+  findScheduledSqlDrift,
+  SCHEDULED_SQL_CONSTANTS
+} from "./conformance/scheduled-sql-constants";
+import { serviceFnFile } from "./conformance/service-fn-file";
+import {
+  findUndeclaredSideEffectImports,
+  SIDE_EFFECT_IMPORT_DECLARED
+} from "./conformance/side-effect-import-declared";
 import { spdxLicenseHeader } from "./conformance/spdx-license-header";
+import {
+  findStampColumnMismatches,
+  STAMP_MATCHES_COLUMNS
+} from "./conformance/stamp-matches-columns";
+import { testMocksOwnModule } from "./conformance/test-mocks-own-module";
+import { testReadsSource } from "./conformance/test-reads-source";
+import {
+  loadDeploymentEnvSources,
+  loadEventFunctionSources,
+  loadIntegrationConfigs,
+  loadListSources,
+  loadScheduledConstantSources
+} from "./sources/cross-file";
 import { loadDbTableColumns } from "./sources/db-columns";
 import { loadDocumentSequenceSources } from "./sources/document-sequences";
-import {
-  loadEdgeFunctions,
-  loadServerFunctions
-} from "./sources/edge-functions";
+import { loadEdgeFunctions } from "./sources/edge-functions";
 import { loadLicenseFiles } from "./sources/license-files";
 import { loadSqlFiles, migrationsDir, repoRoot } from "./sources/migrations";
-import { loadModules, modulesDir } from "./sources/modules";
+import {
+  loadModuleServerFiles,
+  loadModules,
+  modulesDir
+} from "./sources/modules";
 import { loadServerFiles } from "./sources/server-files";
+import { loadSideEffectPackages } from "./sources/side-effect-packages";
+import { loadTestFiles } from "./sources/test-files";
 import {
   loadTypescriptFiles,
   REQUEST_HANDLING_ROOTS,
@@ -85,7 +134,8 @@ export const CONFORMANCE_CHECKS: ConformanceCheck[] = [
 /** Checks that run over server-side TS, not SQL migrations. */
 export const SERVER_CHECKS: ConformanceCheck[] = [
   noLocalTimezone,
-  noZeroConcurrency
+  noZeroConcurrency,
+  routeActionShape
 ];
 
 /** Checks that run over ALL app + shared-package TS (client and server). */
@@ -93,6 +143,8 @@ export const TS_CHECKS: ConformanceCheck[] = [
   noRawRounding,
   noInlineFractionDigits,
   noDbClientInService,
+  noServerCodeInClient,
+  serviceFnFile,
   noDefaultOnEffects,
   noUnroundedTrackedQuantity,
   noIntegrationIdBranching,
@@ -103,13 +155,16 @@ export const TS_CHECKS: ConformanceCheck[] = [
   journalStatusFilter
 ];
 
+/** Checks that run over git-tracked vitest files (apps, packages, scripts, docs). */
+export const TEST_CHECKS: ConformanceCheck[] = [
+  testReadsSource,
+  testMocksOwnModule
+];
+
 /** Checks that run once per edge function, over all of its .ts files. */
 export const EDGE_FUNCTION_CHECKS: ConformanceCheck[] = [
   edgeFunctionAuthorizesCaller
 ];
-
-/** Checks that run once per `@carbon/server-functions` entry point. */
-export const SERVER_FN_CHECKS: ConformanceCheck[] = [serverFnAuthorizesCaller];
 
 export const STRUCTURE_CHECKS: StructureCheck[] = [moduleShape];
 
@@ -164,6 +219,9 @@ export function loadManagedFunctions(root: string): ManagedFunction[] {
 
 /** Every finding across the real migrations (text) + modules (structure) + server TS + app TS + edge functions + license headers under `root`. */
 export function collectFindings(root: string = repoRoot()): Finding[] {
+  const migrations = loadSqlFiles(migrationsDir(root));
+  const listSources = loadListSources(root);
+  const eventSources = loadEventFunctionSources(root);
   return [
     ...scanAll(loadSqlFiles(migrationsDir(root)), [
       ...CONFORMANCE_CHECKS,
@@ -181,9 +239,11 @@ export function collectFindings(root: string = repoRoot()): Finding[] {
     ...scanAll(loadTypescriptFiles(root, REQUEST_HANDLING_ROOTS), [
       noRawForwardedHeaders,
       noInterpolatedErrorLog,
-      noRawRedirect
+      noRawRedirect,
+      linguiMacroMisuse
     ]),
     ...scanAll(loadTypescriptFiles(root), [
+      noRawOrSearch,
       noRawRevalidator,
       noInlineSensorOptions,
       noBareOutlet,
@@ -193,14 +253,44 @@ export function collectFindings(root: string = repoRoot()): Finding[] {
       indexRedirectBeforeLoaders
     ]),
     ...scanAll(loadEdgeFunctions(root), EDGE_FUNCTION_CHECKS),
-    ...scanAll(loadServerFunctions(root), SERVER_FN_CHECKS),
     ...scanAll(loadLicenseFiles(root), [spdxLicenseHeader]),
     ...findDuplicatedAppFiles(loadTypescriptFiles(root, SHARED_APP_DIRS)).map(
       (violation) => ({ checkId: NO_DUPLICATED_APP_FILE, violation })
     ),
     ...findUnsyncedDocumentSequences(loadDocumentSequenceSources(root)).map(
       (violation) => ({ checkId: DOCUMENT_SEQUENCE_SYNCED, violation })
-    )
+    ),
+    ...findDroppedFunctionChanges(migrations).map((violation) => ({
+      checkId: FUNCTION_REDEFINITION_KEEPS_CHANGES,
+      violation
+    })),
+    ...findStampColumnMismatches(
+      loadModuleServerFiles(root),
+      loadDbTableColumns(root)
+    ).map((violation) => ({ checkId: STAMP_MATCHES_COLUMNS, violation })),
+    ...findUndeclaredSideEffectImports(loadSideEffectPackages(root)).map(
+      (violation) => ({ checkId: SIDE_EFFECT_IMPORT_DECLARED, violation })
+    ),
+    ...scanAll(loadTestFiles(root), TEST_CHECKS),
+    ...findUnselectedListColumns(listSources.services, listSources.tables).map(
+      (violation) => ({ checkId: LIST_SELECT_COVERS_COLUMNS, violation })
+    ),
+    ...findProviderRoleDrift(loadIntegrationConfigs(root), migrations).map(
+      (violation) => ({ checkId: PROVIDER_ROLE_BACKFILLED, violation })
+    ),
+    ...findIgnoredColumnDrift(
+      eventSources.functions,
+      eventSources.auditConfig
+    ).map((violation) => ({ checkId: EVENT_IGNORED_COLUMNS, violation })),
+    ...findScheduledSqlDrift(
+      migrations,
+      loadScheduledConstantSources(root)
+    ).map((violation) => ({ checkId: SCHEDULED_SQL_CONSTANTS, violation })),
+    ...findDeploymentEnvGaps(loadDeploymentEnvSources(root), (env) =>
+      validateEnv(env)
+        .problems.filter((p) => p.level === "error")
+        .map((p) => p.name)
+    ).map((violation) => ({ checkId: DEPLOYMENTS_SET_REQUIRED_ENV, violation }))
   ];
 }
 

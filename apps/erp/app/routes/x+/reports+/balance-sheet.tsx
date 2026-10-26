@@ -17,24 +17,23 @@ import { useLocale } from "@react-aria/i18n";
 import { useState } from "react";
 import type { LoaderFunctionArgs } from "react-router";
 import { useLoaderData } from "react-router";
-import {
-  financialReportParamsValidator,
-  getCompaniesInGroup,
-  getFinancialStatementPeriodSeries,
-  getFiscalYearSettings
-} from "~/modules/accounting";
+import { financialReportParamsValidator } from "~/modules/accounting/accounting.models";
 import {
   applyCtaToReportPeriodSeriesForReport,
-  getConsolidatedPeriodSeriesForReport
-} from "~/modules/accounting/accounting.server";
+  getCompaniesInGroup,
+  getConsolidatedPeriodSeriesForReport,
+  getFinancialStatementPeriodSeries,
+  getFiscalYearSettings
+} from "~/modules/accounting/accounting.service";
+import { selectReportCompanyIds } from "~/modules/accounting/accounting.utils";
 import {
   exportPeriodReport,
   getPeriodColumnLabel,
   MultiPeriodStatementTree,
   ReportFilters
 } from "~/modules/accounting/ui/Reports";
-import { months } from "~/modules/shared";
-import { getCompanyTimeZone } from "~/modules/shared/timezone.server";
+import { months } from "~/modules/shared/shared.models";
+import { getCompanyTimeZone } from "~/modules/shared/shared.service";
 import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
 import { revalidateIgnoringOffset } from "~/utils/revalidate";
@@ -91,18 +90,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const parentCompany = companiesList.find((c) => !c.parentCompanyId);
   const parentCurrency = parentCompany?.baseCurrencyCode ?? null;
 
-  const selectedCompanyIds =
-    companiesParam === "all"
-      ? companiesList.map((c) => c.id)
-      : companiesParam
-        ? [companiesParam]
-        : [companyId];
-  if (
-    selectedCompanyIds.length === 0 ||
-    selectedCompanyIds.some(
-      (id) => !companiesList.some((company) => company.id === id)
-    )
-  ) {
+  const selectedCompanyIds = selectReportCompanyIds(
+    companiesParam,
+    companiesList.map((c) => c.id),
+    companyId
+  );
+  if (!selectedCompanyIds) {
     throw new Response("Company not found", { status: 404 });
   }
   const isMultiCompany = selectedCompanyIds.length > 1;
