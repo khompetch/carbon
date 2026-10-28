@@ -3133,6 +3133,7 @@ export type Database = {
           decisionAt: string | null
           decisionBy: string | null
           decisionNotes: string | null
+          decisionSignaturePath: string | null
           documentId: string
           documentType: Database["public"]["Enums"]["approvalDocumentType"]
           id: string
@@ -3150,6 +3151,7 @@ export type Database = {
           decisionAt?: string | null
           decisionBy?: string | null
           decisionNotes?: string | null
+          decisionSignaturePath?: string | null
           documentId: string
           documentType: Database["public"]["Enums"]["approvalDocumentType"]
           id?: string
@@ -3167,6 +3169,7 @@ export type Database = {
           decisionAt?: string | null
           decisionBy?: string | null
           decisionNotes?: string | null
+          decisionSignaturePath?: string | null
           documentId?: string
           documentType?: Database["public"]["Enums"]["approvalDocumentType"]
           id?: string
@@ -8373,6 +8376,7 @@ export type Database = {
           requireBackflushStorageUnit: boolean
           requireCustomerContactAndLocation: boolean
           requireMfa: boolean
+          requirePurchaseOrderApprovalSignature: boolean
           requireSupplierContactAndLocation: boolean
           rescheduleToleranceDays: number
           returnPickedMaterialTiming: string
@@ -8449,6 +8453,7 @@ export type Database = {
           requireBackflushStorageUnit?: boolean
           requireCustomerContactAndLocation?: boolean
           requireMfa?: boolean
+          requirePurchaseOrderApprovalSignature?: boolean
           requireSupplierContactAndLocation?: boolean
           rescheduleToleranceDays?: number
           returnPickedMaterialTiming?: string
@@ -8525,6 +8530,7 @@ export type Database = {
           requireBackflushStorageUnit?: boolean
           requireCustomerContactAndLocation?: boolean
           requireMfa?: boolean
+          requirePurchaseOrderApprovalSignature?: boolean
           requireSupplierContactAndLocation?: boolean
           rescheduleToleranceDays?: number
           returnPickedMaterialTiming?: string
@@ -21986,6 +21992,7 @@ export type Database = {
           drawingNumber: string | null
           fileName: string | null
           id: string
+          modelUploadId: string | null
           pageCount: number | null
           partId: string
           samplingAql: number | null
@@ -22015,6 +22022,7 @@ export type Database = {
           drawingNumber?: string | null
           fileName?: string | null
           id?: string
+          modelUploadId?: string | null
           pageCount?: number | null
           partId: string
           samplingAql?: number | null
@@ -22044,6 +22052,7 @@ export type Database = {
           drawingNumber?: string | null
           fileName?: string | null
           id?: string
+          modelUploadId?: string | null
           pageCount?: number | null
           partId?: string
           samplingAql?: number | null
@@ -22127,6 +22136,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "userDefaults"
             referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "inspectionDocument_modelUploadId_fkey"
+            columns: ["modelUploadId"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["modelId"]
+          },
+          {
+            foreignKeyName: "inspectionDocument_modelUploadId_fkey"
+            columns: ["modelUploadId"]
+            isOneToOne: false
+            referencedRelation: "modelUpload"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inspectionDocument_modelUploadId_fkey"
+            columns: ["modelUploadId"]
+            isOneToOne: false
+            referencedRelation: "salesRfqLines"
+            referencedColumns: ["modelId"]
           },
           {
             foreignKeyName: "inspectionDocument_partId_fkey"
@@ -22254,6 +22284,7 @@ export type Database = {
           label: string
           nominalValue: string | null
           pageNumber: number
+          pmiItemId: string | null
           samplingAql: number | null
           samplingInspectionLevel:
             | Database["public"]["Enums"]["inspectionLevel"]
@@ -22284,6 +22315,7 @@ export type Database = {
           label: string
           nominalValue?: string | null
           pageNumber: number
+          pmiItemId?: string | null
           samplingAql?: number | null
           samplingInspectionLevel?:
             | Database["public"]["Enums"]["inspectionLevel"]
@@ -22314,6 +22346,7 @@ export type Database = {
           label?: string
           nominalValue?: string | null
           pageNumber?: number
+          pmiItemId?: string | null
           samplingAql?: number | null
           samplingInspectionLevel?:
             | Database["public"]["Enums"]["inspectionLevel"]
@@ -37108,6 +37141,7 @@ export type Database = {
           optimizeStatus: Database["public"]["Enums"]["modelProcessingStatus"]
           originalPath: string | null
           originalSize: number | null
+          pmiPath: string | null
           processedAt: string | null
           processingError: string | null
           processingStatus: Database["public"]["Enums"]["modelProcessingStatus"]
@@ -37134,6 +37168,7 @@ export type Database = {
           optimizeStatus?: Database["public"]["Enums"]["modelProcessingStatus"]
           originalPath?: string | null
           originalSize?: number | null
+          pmiPath?: string | null
           processedAt?: string | null
           processingError?: string | null
           processingStatus?: Database["public"]["Enums"]["modelProcessingStatus"]
@@ -37160,6 +37195,7 @@ export type Database = {
           optimizeStatus?: Database["public"]["Enums"]["modelProcessingStatus"]
           originalPath?: string | null
           originalSize?: number | null
+          pmiPath?: string | null
           processedAt?: string | null
           processingError?: string | null
           processingStatus?: Database["public"]["Enums"]["modelProcessingStatus"]
@@ -39123,6 +39159,13 @@ export type Database = {
             foreignKeyName: "nonConformancePurchaseOrderLine_purchaseOrderId_fkey"
             columns: ["purchaseOrderId"]
             isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["purchaseOrderId"]
+          },
+          {
+            foreignKeyName: "nonConformancePurchaseOrderLine_purchaseOrderId_fkey"
+            columns: ["purchaseOrderId"]
+            isOneToOne: false
             referencedRelation: "purchaseOrderLocations"
             referencedColumns: ["id"]
           },
@@ -39152,6 +39195,13 @@ export type Database = {
             columns: ["purchaseOrderLineId"]
             isOneToOne: false
             referencedRelation: "purchaseOrderLines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "nonConformancePurchaseOrderLine_purchaseOrderLineId_fkey"
+            columns: ["purchaseOrderLineId"]
+            isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
             referencedColumns: ["id"]
           },
           {
@@ -44841,6 +44891,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "planningAction_purchaseOrderLineId_fkey"
+            columns: ["purchaseOrderLineId"]
+            isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "planningAction_supplierId_fkey"
             columns: ["supplierId"]
             isOneToOne: false
@@ -45825,6 +45882,7 @@ export type Database = {
       }
       process: {
         Row: {
+          abilityPolicy: Database["public"]["Enums"]["processAbilityPolicy"]
           active: boolean
           batchable: boolean
           batchRules: Json | null
@@ -45844,6 +45902,7 @@ export type Database = {
           updatedBy: string | null
         }
         Insert: {
+          abilityPolicy?: Database["public"]["Enums"]["processAbilityPolicy"]
           active?: boolean
           batchable?: boolean
           batchRules?: Json | null
@@ -45863,6 +45922,7 @@ export type Database = {
           updatedBy?: string | null
         }
         Update: {
+          abilityPolicy?: Database["public"]["Enums"]["processAbilityPolicy"]
           active?: boolean
           batchable?: boolean
           batchRules?: Json | null
@@ -47384,6 +47444,13 @@ export type Database = {
             foreignKeyName: "purchaseInvoiceLines_purchaseOrderId_fkey"
             columns: ["purchaseOrderId"]
             isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["purchaseOrderId"]
+          },
+          {
+            foreignKeyName: "purchaseInvoiceLines_purchaseOrderId_fkey"
+            columns: ["purchaseOrderId"]
+            isOneToOne: false
             referencedRelation: "purchaseOrderLocations"
             referencedColumns: ["id"]
           },
@@ -47413,6 +47480,13 @@ export type Database = {
             columns: ["purchaseOrderLineId"]
             isOneToOne: false
             referencedRelation: "purchaseOrderLines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchaseInvoiceLines_purchaseOrderLineId_fkey"
+            columns: ["purchaseOrderLineId"]
+            isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
             referencedColumns: ["id"]
           },
           {
@@ -48040,6 +48114,13 @@ export type Database = {
             foreignKeyName: "purchaseOrderDelivery_id_fkey"
             columns: ["id"]
             isOneToOne: true
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["purchaseOrderId"]
+          },
+          {
+            foreignKeyName: "purchaseOrderDelivery_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
             referencedRelation: "purchaseOrderLocations"
             referencedColumns: ["id"]
           },
@@ -48128,6 +48209,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "purchaseOrder"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchaseOrderFavorites_purchaseOrderId_fkey"
+            columns: ["purchaseOrderId"]
+            isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["purchaseOrderId"]
           },
           {
             foreignKeyName: "purchaseOrderFavorites_purchaseOrderId_fkey"
@@ -48573,6 +48661,13 @@ export type Database = {
             foreignKeyName: "purchaseOrderLine_purchaseOrderId_fkey"
             columns: ["purchaseOrderId"]
             isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["purchaseOrderId"]
+          },
+          {
+            foreignKeyName: "purchaseOrderLine_purchaseOrderId_fkey"
+            columns: ["purchaseOrderId"]
+            isOneToOne: false
             referencedRelation: "purchaseOrderLocations"
             referencedColumns: ["id"]
           },
@@ -48681,6 +48776,13 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "purchaseOrder"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchaseOrderPayment_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["purchaseOrderId"]
           },
           {
             foreignKeyName: "purchaseOrderPayment_id_fkey"
@@ -48815,6 +48917,13 @@ export type Database = {
             foreignKeyName: "purchaseOrderStatusHistory_purchaseOrderId_fkey"
             columns: ["purchaseOrderId"]
             isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["purchaseOrderId"]
+          },
+          {
+            foreignKeyName: "purchaseOrderStatusHistory_purchaseOrderId_fkey"
+            columns: ["purchaseOrderId"]
+            isOneToOne: false
             referencedRelation: "purchaseOrderLocations"
             referencedColumns: ["id"]
           },
@@ -48894,6 +49003,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "purchaseOrder"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchaseOrderTransaction_purchaseOrderId_fkey"
+            columns: ["purchaseOrderId"]
+            isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["purchaseOrderId"]
           },
           {
             foreignKeyName: "purchaseOrderTransaction_purchaseOrderId_fkey"
@@ -49139,6 +49255,13 @@ export type Database = {
             foreignKeyName: "purchaseReturnOrder_purchaseOrderId_fkey"
             columns: ["purchaseOrderId"]
             isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["purchaseOrderId"]
+          },
+          {
+            foreignKeyName: "purchaseReturnOrder_purchaseOrderId_fkey"
+            columns: ["purchaseOrderId"]
+            isOneToOne: false
             referencedRelation: "purchaseOrderLocations"
             referencedColumns: ["id"]
           },
@@ -49155,6 +49278,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "purchaseOrder"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchaseReturnOrder_replacementPurchaseOrderId_fkey"
+            columns: ["replacementPurchaseOrderId"]
+            isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["purchaseOrderId"]
           },
           {
             foreignKeyName: "purchaseReturnOrder_replacementPurchaseOrderId_fkey"
@@ -49617,6 +49747,13 @@ export type Database = {
             columns: ["purchaseOrderLineId"]
             isOneToOne: false
             referencedRelation: "purchaseOrderLines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchaseReturnOrderLine_purchaseOrderLineId_fkey"
+            columns: ["purchaseOrderLineId"]
+            isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
             referencedColumns: ["id"]
           },
           {
@@ -50582,6 +50719,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "purchaseOrder"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchasingRfqToPurchaseOrder_purchaseOrderId_fkey"
+            columns: ["purchaseOrderId"]
+            isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["purchaseOrderId"]
           },
           {
             foreignKeyName: "purchasingRfqToPurchaseOrder_purchaseOrderId_fkey"
@@ -54458,6 +54602,13 @@ export type Database = {
             columns: ["purchaseOrderLineId"]
             isOneToOne: false
             referencedRelation: "purchaseOrderLines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "receiptFixedAssetLine_purchaseOrderLineId_fkey"
+            columns: ["purchaseOrderLineId"]
+            isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
             referencedColumns: ["id"]
           },
           {
@@ -70403,6 +70554,7 @@ export type Database = {
           isConsoleOperator: boolean
           lastName: string
           phone: string | null
+          signaturePath: string | null
           updatedAt: string | null
         }
         Insert: {
@@ -70421,6 +70573,7 @@ export type Database = {
           isConsoleOperator?: boolean
           lastName?: string
           phone?: string | null
+          signaturePath?: string | null
           updatedAt?: string | null
         }
         Update: {
@@ -70439,6 +70592,7 @@ export type Database = {
           isConsoleOperator?: boolean
           lastName?: string
           phone?: string | null
+          signaturePath?: string | null
           updatedAt?: string | null
         }
         Relationships: []
@@ -77050,9 +77204,22 @@ export type Database = {
           drawingNumber: string | null
           fileName: string | null
           id: string | null
+          modelUploadId: string | null
           pageCount: number | null
           partId: string | null
           partReadableId: string | null
+          samplingAql: number | null
+          samplingInspectionLevel:
+            | Database["public"]["Enums"]["inspectionLevel"]
+            | null
+          samplingPercentage: number | null
+          samplingPlanType:
+            | Database["public"]["Enums"]["samplingPlanType"]
+            | null
+          samplingSampleSize: number | null
+          samplingSeverity:
+            | Database["public"]["Enums"]["inspectionSeverity"]
+            | null
           storagePath: string | null
           updatedAt: string | null
           updatedBy: string | null
@@ -77122,6 +77289,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "userDefaults"
             referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "inspectionDocument_modelUploadId_fkey"
+            columns: ["modelUploadId"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["modelId"]
+          },
+          {
+            foreignKeyName: "inspectionDocument_modelUploadId_fkey"
+            columns: ["modelUploadId"]
+            isOneToOne: false
+            referencedRelation: "modelUpload"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inspectionDocument_modelUploadId_fkey"
+            columns: ["modelUploadId"]
+            isOneToOne: false
+            referencedRelation: "salesRfqLines"
+            referencedColumns: ["modelId"]
           },
           {
             foreignKeyName: "inspectionDocument_partId_fkey"
@@ -81522,6 +81710,13 @@ export type Database = {
             foreignKeyName: "purchaseOrderLine_purchaseOrderId_fkey"
             columns: ["purchaseOrderId"]
             isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["purchaseOrderId"]
+          },
+          {
+            foreignKeyName: "purchaseOrderLine_purchaseOrderId_fkey"
+            columns: ["purchaseOrderId"]
+            isOneToOne: false
             referencedRelation: "purchaseOrderLocations"
             referencedColumns: ["id"]
           },
@@ -82229,6 +82424,9 @@ export type Database = {
       }
       processes: {
         Row: {
+          abilityPolicy:
+            | Database["public"]["Enums"]["processAbilityPolicy"]
+            | null
           active: boolean | null
           batchable: boolean | null
           batchRules: Json | null
@@ -82693,6 +82891,13 @@ export type Database = {
             foreignKeyName: "purchaseInvoiceLines_purchaseOrderId_fkey"
             columns: ["purchaseOrderId"]
             isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["purchaseOrderId"]
+          },
+          {
+            foreignKeyName: "purchaseInvoiceLines_purchaseOrderId_fkey"
+            columns: ["purchaseOrderId"]
+            isOneToOne: false
             referencedRelation: "purchaseOrderLocations"
             referencedColumns: ["id"]
           },
@@ -82722,6 +82927,13 @@ export type Database = {
             columns: ["purchaseOrderLineId"]
             isOneToOne: false
             referencedRelation: "purchaseOrderLines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchaseInvoiceLines_purchaseOrderLineId_fkey"
+            columns: ["purchaseOrderLineId"]
+            isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
             referencedColumns: ["id"]
           },
           {
@@ -83335,6 +83547,13 @@ export type Database = {
             foreignKeyName: "purchaseOrderLine_purchaseOrderId_fkey"
             columns: ["purchaseOrderId"]
             isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["purchaseOrderId"]
+          },
+          {
+            foreignKeyName: "purchaseOrderLine_purchaseOrderId_fkey"
+            columns: ["purchaseOrderId"]
+            isOneToOne: false
             referencedRelation: "purchaseOrderLocations"
             referencedColumns: ["id"]
           },
@@ -83393,6 +83612,94 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "userDefaults"
             referencedColumns: ["userId"]
+          }
+        ]
+      }
+      purchaseOrderLinesToReceive: {
+        Row: {
+          companyId: string | null
+          description: string | null
+          id: string | null
+          itemId: string | null
+          itemName: string | null
+          itemReadableId: string | null
+          itemType: Database["public"]["Enums"]["itemType"] | null
+          locationId: string | null
+          orderDate: string | null
+          promisedDate: string | null
+          purchaseOrderId: string | null
+          purchaseOrderLineType:
+            | Database["public"]["Enums"]["purchaseOrderLineType"]
+            | null
+          purchaseOrderReadableId: string | null
+          purchaseOrderType:
+            | Database["public"]["Enums"]["purchaseOrderType"]
+            | null
+          purchaseQuantity: number | null
+          purchaseUnitOfMeasureCode: string | null
+          quantityReceived: number | null
+          quantityToReceive: number | null
+          receivedComplete: boolean | null
+          revisionId: number | null
+          searchText: string | null
+          sortOrder: number | null
+          status: Database["public"]["Enums"]["purchaseOrderStatus"] | null
+          supplierId: string | null
+          supplierName: string | null
+          supplierPartId: string | null
+          supplierReference: string | null
+          thumbnailPath: string | null
+          trackingNumber: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchaseOrderLine_itemId_fkey"
+            columns: ["itemId"]
+            isOneToOne: false
+            referencedRelation: "consumables"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchaseOrderLine_itemId_fkey"
+            columns: ["itemId"]
+            isOneToOne: false
+            referencedRelation: "item"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchaseOrderLine_itemId_fkey"
+            columns: ["itemId"]
+            isOneToOne: false
+            referencedRelation: "materials"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchaseOrderLine_itemId_fkey"
+            columns: ["itemId"]
+            isOneToOne: false
+            referencedRelation: "parts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchaseOrderLine_itemId_fkey"
+            columns: ["itemId"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchaseOrderLine_itemId_fkey"
+            columns: ["itemId"]
+            isOneToOne: false
+            referencedRelation: "tools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchaseOrderLine_purchaseUnitOfMeasureCode_fkey"
+            columns: ["purchaseUnitOfMeasureCode", "companyId"]
+            isOneToOne: false
+            referencedRelation: "unitOfMeasure"
+            referencedColumns: ["code", "companyId"]
           }
         ]
       }
@@ -83962,6 +84269,13 @@ export type Database = {
             foreignKeyName: "purchaseReturnOrder_purchaseOrderId_fkey"
             columns: ["purchaseOrderId"]
             isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["purchaseOrderId"]
+          },
+          {
+            foreignKeyName: "purchaseReturnOrder_purchaseOrderId_fkey"
+            columns: ["purchaseOrderId"]
+            isOneToOne: false
             referencedRelation: "purchaseOrderLocations"
             referencedColumns: ["id"]
           },
@@ -83978,6 +84292,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "purchaseOrder"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchaseReturnOrder_replacementPurchaseOrderId_fkey"
+            columns: ["replacementPurchaseOrderId"]
+            isOneToOne: false
+            referencedRelation: "purchaseOrderLinesToReceive"
+            referencedColumns: ["purchaseOrderId"]
           },
           {
             foreignKeyName: "purchaseReturnOrder_replacementPurchaseOrderId_fkey"
@@ -94620,6 +94941,10 @@ export type Database = {
         Args: { p_new: Json; p_old: Json; p_operation: string; p_table: string }
         Returns: undefined
       }
+      sync_delete_unlinked_contact: {
+        Args: { p_new: Json; p_old: Json; p_operation: string; p_table: string }
+        Returns: undefined
+      }
       sync_delete_user_identity_group: {
         Args: { p_new: Json; p_old: Json; p_operation: string; p_table: string }
         Returns: undefined
@@ -95501,6 +95826,7 @@ export type Database = {
         | "File"
         | "Task"
         | "Inspection"
+      processAbilityPolicy: "Warn" | "Block"
       productionEventType: "Setup" | "Labor" | "Machine"
       productionQuantityType: "Rework" | "Scrap" | "Production"
       purchaseInvoiceStatus:
@@ -97060,6 +97386,7 @@ export const Constants = {
         "Task",
         "Inspection",
       ],
+      processAbilityPolicy: ["Warn", "Block"],
       productionEventType: ["Setup", "Labor", "Machine"],
       productionQuantityType: ["Rework", "Scrap", "Production"],
       purchaseInvoiceStatus: [
