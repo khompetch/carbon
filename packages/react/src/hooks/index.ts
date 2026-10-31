@@ -7,6 +7,7 @@ import useDebounce from "./useDebounce";
 import useDisclosure from "./useDisclosure";
 import { useEdition } from "./useEdition";
 import useEscape from "./useEscape";
+import { useFeatureFlags } from "./useFeatureFlags";
 import useHydrated from "./useHydrated";
 import { useIdle } from "./useIdle";
 import useInitialDimensions from "./useInitialDimenions";
@@ -32,6 +33,7 @@ import { useShortcutKeyMap, useShortcutKeys } from "./useShortcutKeys";
 import { useShortcutSequence } from "./useShortcutSequence";
 import { useThemePreview } from "./useThemePreview";
 import useThrottle from "./useThrottle";
+import { useDensityScale, useUiScale } from "./useUiScale";
 import { useUrlParams } from "./useUrlParams";
 
 export type { Shortcut, ShortcutDefinition };
@@ -39,9 +41,11 @@ export {
   getSystemMode,
   useCloseRoute,
   useDebounce,
+  useDensityScale,
   useDisclosure,
   useEdition,
   useEscape,
+  useFeatureFlags,
   useHydrated,
   useIdle,
   useInitialDimensions,
@@ -65,5 +69,6 @@ export {
   useShortcutSequence,
   useThemePreview,
   useThrottle,
+  useUiScale,
   useUrlParams
 };

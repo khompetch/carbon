@@ -122,6 +122,7 @@ import {
   DatePicker,
   DateRangePicker,
   DateTimePicker,
+  TimeCombobox,
   TimePicker
 } from "./Date";
 import type { DateTimeProps } from "./DateTime";
@@ -173,6 +174,7 @@ import {
   EnumerableAsText,
   useEnumerableAsText
 } from "./Enumerable";
+import { ErrorReason, errorDescription, toastError } from "./ErrorReason";
 import { File } from "./File";
 import {
   FormControl,
@@ -574,6 +576,8 @@ export {
   dockMenuRowClassName,
   Enumerable,
   EnumerableAsText,
+  ErrorReason,
+  errorDescription,
   File,
   FormControl,
   FormErrorMessage,
@@ -758,6 +762,7 @@ export {
   Tfoot,
   Th,
   Thead,
+  TimeCombobox,
   TimePicker,
   Toaster,
   Toggle,
@@ -772,6 +777,7 @@ export {
   TruncatedTooltipText,
   TVColorBars,
   toast,
+  toastError,
   useBotProtection,
   useEnumerableAsText,
   useModalCardType,

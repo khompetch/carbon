@@ -10,7 +10,7 @@ import { trigger } from "@carbon/jobs";
 import { postSuggestionToCarbonSlack } from "@carbon/lib/slack.server";
 import { getLogger } from "@carbon/logger";
 import { NotificationEvent } from "@carbon/notifications";
-import { datetime, unchecked } from "@carbon/utils";
+import { datetime, requireAffected, unchecked } from "@carbon/utils";
 import { parseAbsolute } from "@internationalized/date";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
@@ -202,12 +202,15 @@ export const removeEmployeeAbility = defineServiceFn({
   permission: { update: "resources" },
 
   async run(ctx, { abilityId, employeeAbilityId }) {
-    const removed = await ctx.asCaller.supabase
-      .from("employeeAbility")
-      .delete()
-      .eq("id", employeeAbilityId)
-      .eq("abilityId", abilityId)
-      .eq("companyId", ctx.company.id);
+    const removed = await requireAffected(
+      ctx.asCaller.supabase
+        .from("employeeAbility")
+        .delete()
+        .eq("id", employeeAbilityId)
+        .eq("abilityId", abilityId)
+        .eq("companyId", ctx.company.id)
+        .select("id")
+    );
     if (removed.error) {
       return ctx.error(
         "internal",
@@ -256,7 +259,8 @@ export const createLocation = defineServiceFn({
  * Update a location.
  *
  * @remarks
- * The location's timezone may change, so its cached timezone is dropped.
+ * The location's timezone may change, so its cached timezone is dropped, and
+ * a new timezone re-plans the schedule: shifts are local times.
  *
  * @mcp
  */
@@ -269,6 +273,19 @@ export const updateLocation = defineServiceFn({
   permission: { create: "resources", update: "resources" },
 
   async run(ctx, { id, ...location }) {
+    const previous = await ctx.asCaller.supabase
+      .from("location")
+      .select("timezone")
+      .eq("id", id)
+      .eq("companyId", ctx.company.id)
+      .maybeSingle();
+    if (previous.error) {
+      return ctx.error(
+        "internal",
+        "Failed to update location.",
+        previous.error
+      );
+    }
     const update = await service.upsertLocation(ctx.asCaller.supabase, {
       id,
       ...location,
@@ -279,6 +296,17 @@ export const updateLocation = defineServiceFn({
     }
 
     await invalidateLocationTimeZone(id, ctx.company.id);
+    if (
+      previous.data !== null &&
+      previous.data.timezone !== location.timezone
+    ) {
+      await notifyScheduleInputsChanged(
+        ctx.company.id,
+        "location",
+        "Location timezone changed",
+        id
+      );
+    }
     return { id };
   }
 });
@@ -309,11 +337,32 @@ export const createProcess = defineServiceFn({
   async run(ctx, { id: _id, ...process }) {
     const client = ctx.asCaller.supabase;
     const companyId = ctx.company.id;
+    const taken = await service.findProcessNamed(
+      client,
+      companyId,
+      process.name
+    );
+    if (taken.error) {
+      return ctx.error("internal", "Failed to create process.", taken.error);
+    }
+    if (taken.data) {
+      return ctx.error(
+        "conflict",
+        service.processNameTakenMessage(process.name, taken.data.active)
+      );
+    }
     const insert = await service.insertProcess(client, {
       ...process,
       companyId,
       createdBy: ctx.auditUserId
     });
+    // 23505: another request created the same name since the check above.
+    if (insert.error?.code === "23505") {
+      return ctx.error(
+        "conflict",
+        service.processNameTakenMessage(process.name)
+      );
+    }
     if (insert.error || !insert.data?.id) {
       return ctx.error("internal", "Failed to create process.", insert.error);
     }
@@ -376,12 +425,35 @@ export const updateProcess = defineServiceFn({
     if (!existing.data) return ctx.error("notFound", "Process not found");
     const previouslyRequiredAbility = existing.data.requiresAbility ?? false;
 
+    const taken = await service.findProcessNamed(
+      client,
+      companyId,
+      process.name,
+      id
+    );
+    if (taken.error) {
+      return ctx.error("internal", "Failed to update process.", taken.error);
+    }
+    if (taken.data) {
+      return ctx.error(
+        "conflict",
+        service.processNameTakenMessage(process.name, taken.data.active)
+      );
+    }
+
     const update = await service.updateProcess(ctx.asSystem.pg, {
       id,
       ...process,
       companyId,
       updatedBy: ctx.auditUserId
     });
+    // 23505: another request took the name since the check above.
+    if (update.code === "23505") {
+      return ctx.error(
+        "conflict",
+        service.processNameTakenMessage(process.name)
+      );
+    }
     if (update.error) {
       return ctx.error("internal", "Failed to update process.", update.error);
     }
@@ -1104,12 +1176,15 @@ export const deleteMaintenanceEvent = defineServiceFn({
     const dispatch = await service.editableDispatch(ctx, dispatchId);
     if (dispatch instanceof CarbonError) return dispatch;
 
-    const removed = await ctx.asCaller.supabase
-      .from("maintenanceDispatchEvent")
-      .delete()
-      .eq("id", eventId)
-      .eq("maintenanceDispatchId", dispatchId)
-      .eq("companyId", ctx.company.id);
+    const removed = await requireAffected(
+      ctx.asCaller.supabase
+        .from("maintenanceDispatchEvent")
+        .delete()
+        .eq("id", eventId)
+        .eq("maintenanceDispatchId", dispatchId)
+        .eq("companyId", ctx.company.id)
+        .select("id")
+    );
     if (removed.error) {
       return ctx.error("internal", "Failed to delete timecard", removed.error);
     }

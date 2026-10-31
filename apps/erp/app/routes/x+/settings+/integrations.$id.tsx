@@ -10,9 +10,12 @@ import { flash } from "@carbon/auth/session.server";
 import type { Database } from "@carbon/database";
 import {
   integrations as availableIntegrations,
+  Email,
   emailSettingsForm,
+  Gmail,
   getIntegrationConfigById,
   type IntegrationID,
+  picksCredentialFreeEmail,
   picksServerMail,
   resolveIntegrationTopology
 } from "@carbon/ee";
@@ -52,6 +55,7 @@ import {
   getIntegrationServerHooks,
   onshapeConnectionHasWriteScope
 } from "@carbon/ee/hooks.server";
+import { readConnections } from "@carbon/ee/integrations/connections";
 import {
   getPath,
   patchIntegrationState,
@@ -69,6 +73,7 @@ import { requireFeature } from "@carbon/ee/plan.server";
 import { LEDGER_FAMILY_KEYS, type LedgerFamilyKey } from "@carbon/ee/sync";
 import { STRIPE_SECRET_KEY } from "@carbon/env";
 import { validationError, validator } from "@carbon/form";
+import { allowlistEntry, requiredScopesFor } from "@carbon/jobs/integrations";
 import { SERVER_MAIL_CONFIGURED } from "@carbon/lib/email.server";
 import { getLogger } from "@carbon/logger";
 import { Badge } from "@carbon/react";
@@ -120,6 +125,7 @@ import {
 import { IntegrationForm, SyncActivity } from "~/modules/settings/ui";
 import { AccountingSyncControl } from "~/modules/settings/ui/Integrations/AccountingSyncControl";
 import { AccountMapping } from "~/modules/settings/ui/Integrations/AccountMapping";
+import { ConnectionsTab } from "~/modules/settings/ui/Integrations/ConnectionsTab";
 import { DimensionMapping } from "~/modules/settings/ui/Integrations/DimensionMapping";
 import type { IntegrationFormTab } from "~/modules/settings/ui/Integrations/IntegrationForm";
 import { useMountActionStates } from "~/modules/settings/ui/Integrations/MountPublishStatus";
@@ -525,10 +531,29 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     dynamicOptions.reimbursementBankAccountId = assetOptions;
   }
 
+  // A failed read still opens the page, with no Gmail accounts to pick.
+  const gmailAccounts =
+    integrationId === Email.id
+      ? await readConnections(client, companyId, Gmail.id).catch((error) => {
+          logger.error("Failed to read the company's Gmail accounts", {
+            companyId,
+            error
+          });
+          return [];
+        })
+      : [];
+
   // Server mail is offered only where the server has mail settings.
-  const emailForm = emailSettingsForm(integrationId, SERVER_MAIL_CONFIGURED);
+  const emailForm = emailSettingsForm(
+    integrationId,
+    SERVER_MAIL_CONFIGURED,
+    gmailAccounts
+  );
   if (emailForm?.providerOptions) {
     dynamicOptions.provider = emailForm.providerOptions;
+  }
+  if (emailForm) {
+    dynamicOptions.gmailConnectionId = emailForm.gmailConnectionOptions;
   }
 
   const integrationData = await getIntegration(
@@ -548,6 +573,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
       accountingSync: null,
       postingSync: null,
       dimensionSync: null,
+      connections: null,
       devices: null
     };
   }
@@ -1001,6 +1027,46 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
       })
     : null;
 
+  // An allowlisted workflow piece has no settings — what it has is the accounts a
+  // workflow step can act as, so its card gets that list as a tab.
+  const piece = allowlistEntry(integrationId);
+  const [connectionRows, requiredScopes] = piece
+    ? await Promise.all([
+        readConnections(client, companyId, integrationId),
+        requiredScopesFor(integrationId)
+      ])
+    : [[], []];
+  const connections = piece
+    ? {
+        pieceName: integrationId,
+        defaultName: piece.label,
+        // Only what the tab renders. `metadata` can carry workspace facts that
+        // are not for the browser; `scopes` is the one key the tab compares.
+        rows: connectionRows.map(
+          ({
+            id,
+            pieceName,
+            name,
+            accountLabel,
+            status,
+            lastError,
+            metadata
+          }) => ({
+            id,
+            pieceName,
+            name,
+            accountLabel,
+            status,
+            lastError,
+            metadata: { scopes: metadata.scopes }
+          })
+        ),
+        // What a connection must hold for this piece's steps; an account that
+        // predates a scope shows "Reconnect needed".
+        requiredScopes: [...requiredScopes]
+      }
+    : null;
+
   // The header's sync switch: off on a new connection, and only switchable on
   // once every required account is mapped.
   const accountingSync = accountMapping
@@ -1021,6 +1087,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     accountingSync,
     postingSync,
     dimensionSync,
+    connections,
     devices
   };
 }
@@ -1290,15 +1357,14 @@ async function installIntegration({ request, params }: ActionFunctionArgs) {
   // integration active but non-functional, so require one here. Scoped to
   // form-entered secrets — OAuth providers get their credentials via the
   // callback, so they are never blocked here.
-  const usesServerMail = picksServerMail(integrationId, metadata);
-  if (usesServerMail && !SERVER_MAIL_CONFIGURED) {
+  if (picksServerMail(integrationId, metadata) && !SERVER_MAIL_CONFIGURED) {
     return data(
       {},
       await flash(
         request,
         error(
           null,
-          "This server has no mail settings. Ask your administrator to set them up, or pick Resend or Custom SMTP."
+          "This server has no mail settings. Ask your administrator to set them up, or pick Resend, Custom SMTP or Gmail."
         )
       )
     );
@@ -1313,7 +1379,9 @@ async function installIntegration({ request, params }: ActionFunctionArgs) {
     "sense"
   ]);
   if (
-    (FORM_SECRET_INTEGRATIONS.has(integrationId) && !usesServerMail) ||
+    // Email's Server mail and Gmail have no credential to enter.
+    (FORM_SECRET_INTEGRATIONS.has(integrationId) &&
+      !picksCredentialFreeEmail(integrationId, metadata)) ||
     integrationId === ONSHAPE_GOVERNMENT_INTEGRATION_ID
   ) {
     const alreadyVaulted = existing.data?.secretRef != null;
@@ -1505,7 +1573,7 @@ async function installIntegration({ request, params }: ActionFunctionArgs) {
         await flash(
           request,
           error(
-            "onshape connection is read-only",
+            null,
             `${integration.name} is connected with read-only access. ${reconnect}, then enable asset sync.`
           )
         )
@@ -1554,6 +1622,7 @@ export default function IntegrationRoute() {
     accountingSync,
     postingSync,
     dimensionSync,
+    connections,
     devices
   } = useLoaderData<typeof loader>();
 
@@ -1568,6 +1637,21 @@ export default function IntegrationRoute() {
   // and Sync Activity tabs next to the Settings form (deep-linkable via
   // ?tab=<value>).
   const tabs: IntegrationFormTab[] = [];
+  if (connections) {
+    tabs.push({
+      value: "connections",
+      label: <Trans>Accounts</Trans>,
+      content: (tabBar) => (
+        <ConnectionsTab
+          tabs={tabBar}
+          pieceName={connections.pieceName}
+          defaultName={connections.defaultName}
+          connections={connections.rows}
+          requiredScopes={connections.requiredScopes}
+        />
+      )
+    });
+  }
   if (devices) {
     tabs.push({
       value: "devices",

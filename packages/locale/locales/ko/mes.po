@@ -12,6 +12,9 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+msgid "\"{column}\" is required."
+msgstr ""
+
 msgid "(Inactive)"
 msgstr "(비활성)"
 
@@ -84,6 +87,12 @@ msgstr "{0}이 배치 {1}에서 실행"
 msgid "{0} Scrapped"
 msgstr "{0} 스크랩됨"
 
+msgid "{columns} does not match an existing \"{target}\"."
+msgstr ""
+
+msgid "{columns} does not match an existing record."
+msgstr ""
+
 msgid "{completed} of {quantity}"
 msgstr "{completed} / {quantity}"
 
@@ -110,8 +119,26 @@ msgstr "🚨 안내: {0}에 계정이 erp.try.carbon.ms(으)로 이전됩니다"
 msgid "A previous completion did not finish. Retrying resumes the remaining steps — quantities are not double-counted."
 msgstr "이전 완료가 완료되지 않았습니다. 다시 시도하면 남은 단계가 재개되며 — 수량이 중복으로 계산되지 않습니다."
 
+msgid "A record with these values already exists."
+msgstr ""
+
+msgid "A record with this {columns} already exists."
+msgstr ""
+
+msgid "A referenced record does not exist."
+msgstr ""
+
+msgid "A required field was missing."
+msgstr ""
+
+msgid "A value is not valid."
+msgstr ""
+
 msgid "About"
 msgstr "정보"
+
+msgid "About this field"
+msgstr "이 필드에 대해"
 
 msgid "Accept"
 msgstr "수락"
@@ -302,6 +329,9 @@ msgstr "배치 총계"
 msgid "Behind target by {daysBehindTarget} day(s)"
 msgstr "목표에서 {daysBehindTarget}일 뒤짐"
 
+msgid "Bigger or smaller text. The layout stays put."
+msgstr ""
+
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"
 msgstr "{0}에 의해 차단됨"
@@ -436,6 +466,12 @@ msgstr "열: {0}"
 msgid "Columns"
 msgstr "열"
 
+msgid "Comfortable"
+msgstr ""
+
+msgid "Compact"
+msgstr ""
+
 msgid "Companies"
 msgstr "회사"
 
@@ -549,6 +585,9 @@ msgstr "단계 삭제"
 
 msgid "Delete Timecard (<0/>)"
 msgstr "타임카드 삭제 (<0/>)"
+
+msgid "Density"
+msgstr ""
 
 msgid "Describe the problem..."
 msgstr "문제를 설명하세요..."
@@ -941,6 +980,9 @@ msgstr "{issuedQuantity}를 {lotLabel}에서 발급함"
 msgid "Issued {issuedQuantity} of {lotLabel} — {remainingQuantity} remains"
 msgstr "{issuedQuantity}를 {lotLabel}에서 발급함 — {remainingQuantity}가 남음"
 
+msgid "It is still used by a \"{table}\" record; remove that first."
+msgstr ""
+
 msgid "Item"
 msgstr "품목"
 
@@ -976,6 +1018,12 @@ msgstr "키트"
 
 msgid "Labor"
 msgstr "노무"
+
+msgid "Large"
+msgstr ""
+
+msgid "Larger"
+msgstr ""
 
 msgid "Last completed"
 msgstr "마지막 완료"
@@ -1234,6 +1282,12 @@ msgstr "오늘 예정된 유지보수가 없습니다"
 msgid "No matches. Type to create one."
 msgstr "일치항목이 없습니다. 입력하여 새로 만드세요."
 
+msgid "No matching record was found."
+msgstr ""
+
+msgid "No matching time"
+msgstr "일치하는 시간 없음"
+
 msgid "No materials"
 msgstr "자재 없음"
 
@@ -1284,6 +1338,9 @@ msgstr "필요한 샘플이 없습니다."
 
 msgid "No scheduled time"
 msgstr "예정된 시간 없음"
+
+msgid "No serial number"
+msgstr "일련번호 없음"
 
 msgid "No serial numbers"
 msgstr "시리얼 번호 없음"
@@ -1753,6 +1810,9 @@ msgstr "시리얼 번호를 스캔하거나 검색하세요..."
 msgid "Scan or select a tracked entity from this lot to add it as a sample column, then record its result in the grid."
 msgstr "이 로트에서 추적 대상을 스캔하거나 선택하여 샘플 열로 추가한 다음 그리드에 결과를 기록하세요."
 
+msgid "Scan or select the unit, then scan the kanban card again"
+msgstr "단위를 스캔하거나 선택한 다음 칸반 카드를 다시 스캔하세요"
+
 msgid "Scan received"
 msgstr "스캔을 받았습니다"
 
@@ -1978,6 +2038,12 @@ msgstr "사이즈"
 msgid "Slack"
 msgstr "Slack"
 
+msgid "Small"
+msgstr ""
+
+msgid "Smaller"
+msgstr ""
+
 msgid "Source"
 msgstr "소스"
 
@@ -2073,6 +2139,9 @@ msgstr "시스템"
 msgid "Tag"
 msgstr "태그"
 
+msgid "Text size"
+msgstr ""
+
 msgid "The accent color used across Carbon."
 msgstr "Carbon 전체에서 사용되는 강조 색상입니다."
 
@@ -2098,6 +2167,12 @@ msgstr "로트는 여전히 처리되지만 최소한 하나의 Issue Type이 �
 #. placeholder {0}: (batch.operations ?? []).length
 msgid "The timer and completion are shared by all {0} jobs. Steps, materials and files here are this job's own."
 msgstr "타이머와 완료는 모든 {0} 작업 지시에 공유됩니다. 여기의 단계, 자재 및 파일은 이 작업 지시의 것입니다."
+
+msgid "The values break a rule on this record."
+msgstr ""
+
+msgid "The values break the rule \"{constraint}\"."
+msgstr ""
 
 msgid "Theme color"
 msgstr "테마 색상"
@@ -2132,14 +2207,20 @@ msgstr "이 부품은 주문 제작되었습니다. 이를 스크랩하면 라�
 msgid "This part will be scrapped from stock. Its requirement stays open so you can issue a replacement."
 msgstr "이 부품은 재고에서 폐기됩니다. 요구사항은 열려있으므로 교체품을 발급할 수 있습니다."
 
-msgid "This unit will be permanently scrapped and a replacement serial number will be created."
-msgstr "이 개가 영구적으로 스크랩되고 대체 시리얼 번호가 생성됩니다."
+msgid "This unit will be permanently scrapped and a replacement unit will be created."
+msgstr "이 유닛은 영구적으로 스크랩되고 대체 유닛이 생성됩니다."
 
 msgid "Thumbnail"
 msgstr "썸네일"
 
 msgid "Tick the jobs this was done for."
 msgstr "이것이 수행된 작업 지시를 체크하세요."
+
+msgid "Tighter or roomier layout. The text stays put."
+msgstr ""
+
+msgid "Time"
+msgstr "시간"
 
 msgid "Time and cost split across jobs proportionally to quantity."
 msgstr "시간과 원가는 수량에 비례하여 작업 지시 간에 배분됩니다."
@@ -2360,6 +2441,12 @@ msgid "You can still start this operation."
 msgstr ""
 
 msgid "You can't work on this operation"
+msgstr ""
+
+msgid "You do not have permission to do this"
+msgstr ""
+
+msgid "You don't have permission to change this record, or it no longer exists."
 msgstr ""
 
 msgid "You don't have the {processName} ability"

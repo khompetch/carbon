@@ -116,7 +116,7 @@ import type {
   OperationWithDetails,
   ProductionEvent as ProductionEventType
 } from "~/services/types";
-import { isKanbanCompleteScan } from "~/utils/kanban";
+import { isKanbanCompleteScan, kanbanCompleteTarget } from "~/utils/kanban";
 import { ORIGIN_PARAM, readOrigin, useOrigin } from "~/utils/origin";
 import { getPrivateUrl, path } from "~/utils/path";
 import { deriveUnits } from "~/utils/units";
@@ -464,7 +464,7 @@ function SlidePins({
       {openPin && (openToolName || openPin.label) && (
         <div className="absolute inset-x-0 bottom-0 z-20 flex items-start gap-2 bg-background/90 px-3 py-2 text-left shadow-sm backdrop-blur-sm">
           <span
-            className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold text-white"
+            className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full text-[0.6875rem] font-semibold text-white"
             style={{ backgroundColor: openPin.color ?? "#ef4444" }}
           >
             {openIndex + 1}
@@ -597,11 +597,36 @@ export function AssemblyView({
 
   // Kanban barcode scan → complete the operation (matches the operation view).
   // The wedge takes a scan's Enter in the capture phase, so the Enter/Space
-  // shortcut below never sees it.
+  // shortcut below never sees it. A serial scan completes the unit on screen
+  // (the ?trackedEntityId the operator scanned or selected), never one the
+  // server picks: at a later operation that pick need not be the unit in hand.
+  const selectedEntityParam = searchParams.get("trackedEntityId");
   const completeFetcher = useFetcher();
   useKeyboardWedge({
     test: (input) => !!kanban && isKanbanCompleteScan(input, kanban),
-    callback: () => completeFetcher.load(path.to.endOperation(operationId)),
+    callback: () => {
+      const selected = selectedEntityParam
+        ? trackedEntities.find((entity) => entity.id === selectedEntityParam)
+        : undefined;
+      const target = kanbanCompleteTarget({
+        requiresSerialTracking,
+        isFirstOperation,
+        selectedEntityId: selected?.id ?? null,
+        selectedIsIncomplete:
+          !!selected && isUnitIncompleteForOperation(selected, operationId)
+      });
+      if (target.action === "select") {
+        toast.info(t`Scan or select the unit, then scan the kanban card again`);
+        serialModal.onOpen();
+        return;
+      }
+      const endPath = path.to.endOperation(operationId);
+      return completeFetcher.load(
+        target.trackedEntityId
+          ? `${endPath}?trackedEntityId=${target.trackedEntityId}`
+          : endPath
+      );
+    },
     inTextFields: true,
     active: !!kanban?.id
   });
@@ -1538,6 +1563,39 @@ export function AssemblyView({
     }
   }, [completeUnitFetcher.state, completeUnitFetcher.data]);
 
+  // Later operations: when the unit the operator holds becomes complete here —
+  // by a kanban scan, which leaves it in the URL, or by any other completion —
+  // ask for the next one. Edge-triggered off the held unit, so a dismissed
+  // picker stays closed across revalidations.
+  const heldEntityRef = useRef<string | null>(null);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: edge-detect on the held unit
+  useEffect(() => {
+    if (!navigatesByEntity || isFirstOperation) return;
+    const selected = selectedEntityParam
+      ? unitEntities.find((entity) => entity.id === selectedEntityParam)
+      : undefined;
+    if (selected && isUnitIncompleteForOperation(selected, operationId)) {
+      heldEntityRef.current = selected.id;
+      return;
+    }
+    const heldJustCompleted =
+      !!heldEntityRef.current && heldEntityRef.current === selectedEntityParam;
+    heldEntityRef.current = null;
+    if (
+      heldJustCompleted &&
+      unitEntities.some((entity) =>
+        isUnitIncompleteForOperation(entity, operationId)
+      )
+    ) {
+      serialModal.onOpen();
+    }
+  }, [
+    navigatesByEntity,
+    isFirstOperation,
+    trackedEntities,
+    selectedEntityParam
+  ]);
+
   // Later operations: prompt the operator to scan/select the unit on arrival. Every
   // unit already carries a printed label (labels print at the first operation's
   // completion), so there is nothing to auto-select. Prompt once per mount — even if
@@ -1932,7 +1990,7 @@ export function AssemblyView({
           {/* Part info. For a multi-quantity build the tracked-entity identity moves
               into the dedicated Units section below the timers. */}
           <div className="shrink-0 border-b border-border px-3 py-2.5">
-            <p className="truncate text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+            <p className="truncate text-[0.6875rem] font-semibold text-muted-foreground uppercase tracking-wider">
               {job?.itemReadableIdWithRevision ?? "—"}
             </p>
             {distinctItemText(
@@ -1947,21 +2005,21 @@ export function AssemblyView({
               <div className="mt-1.5 flex items-center gap-1.5 min-w-0">
                 <Badge
                   variant="secondary"
-                  className="font-mono text-[10px] shrink-0"
+                  className="font-mono text-[0.625rem] shrink-0"
                 >
                   {requiresBatchTracking ? "Batch" : "S/N"}
                 </Badge>
                 {currentEntity.readableId ? (
                   <span className="flex min-w-0 items-center gap-1.5">
-                    <span className="truncate text-[10px] font-medium">
+                    <span className="truncate text-[0.625rem] font-medium">
                       {currentEntity.readableId}
                     </span>
-                    <span className="truncate font-mono text-[10px] text-muted-foreground">
+                    <span className="truncate font-mono text-[0.625rem] text-muted-foreground">
                       {currentEntity.id.slice(0, 8)}
                     </span>
                   </span>
                 ) : (
-                  <span className="truncate font-mono text-[10px] text-muted-foreground">
+                  <span className="truncate font-mono text-[0.625rem] text-muted-foreground">
                     {currentEntity.id.slice(0, 8)}
                   </span>
                 )}
@@ -1972,7 +2030,7 @@ export function AssemblyView({
           {/* Cumulative timer — click a row to choose which clock the play
               button tracks. Only work types this operation uses are shown. */}
           <div className="flex shrink-0 flex-col gap-3 border-b border-border px-3 py-3">
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <p className="text-[0.6875rem] font-semibold uppercase tracking-wider text-muted-foreground">
               Progress
             </p>
             {/* The live tick lives inside TimeRows so the per-second re-render is
@@ -2077,7 +2135,7 @@ export function AssemblyView({
             if (containments.length === 0) return null;
             return (
               <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-3 py-3">
-                <p className="mb-1 shrink-0 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                <p className="mb-1 shrink-0 text-[0.6875rem] font-semibold uppercase tracking-wider text-muted-foreground">
                   Containment
                 </p>
                 <Accordion type="multiple" className="flex flex-col">
@@ -2094,7 +2152,7 @@ export function AssemblyView({
                           </span>
                           <Badge
                             variant="outline"
-                            className="w-fit font-mono text-[9px]"
+                            className="w-fit font-mono text-[0.5625rem]"
                           >
                             {action.nonConformanceId}
                           </Badge>
@@ -2102,7 +2160,7 @@ export function AssemblyView({
                       </AccordionTrigger>
                       <AccordionContent className="pb-2 pt-0">
                         <div
-                          className="prose prose-sm max-w-none rounded-md border border-amber-500/30 bg-amber-500/5 p-2 text-[11px] leading-snug text-foreground/90 dark:prose-invert"
+                          className="prose prose-sm max-w-none rounded-md border border-amber-500/30 bg-amber-500/5 p-2 text-[0.6875rem] leading-snug text-foreground/90 dark:prose-invert"
                           dangerouslySetInnerHTML={{
                             __html: generateHTML(
                               action.notes as Parameters<typeof generateHTML>[0]
@@ -2120,7 +2178,7 @@ export function AssemblyView({
           {/* Operation status — mirrors the operation view's header strip. */}
           {operation && (
             <div className="mt-auto flex shrink-0 flex-col gap-1.5 border-t border-border px-3 py-3">
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="text-[0.6875rem] font-semibold uppercase tracking-wider text-muted-foreground">
                 Status
               </p>
               {operation.jobReadableId && (
@@ -2337,7 +2395,7 @@ export function AssemblyView({
                       )}
                     >
                       <LuPlay className="size-5 text-muted-foreground" />
-                      <span className="pointer-events-none absolute bottom-0.5 right-0.5 rounded bg-background/80 px-0.5 text-[8px] font-semibold text-muted-foreground">
+                      <span className="pointer-events-none absolute bottom-0.5 right-0.5 rounded bg-background/80 px-0.5 text-[0.5rem] font-semibold text-muted-foreground">
                         3D
                       </span>
                     </button>
@@ -2368,7 +2426,7 @@ export function AssemblyView({
                           <LuBox className="size-5 text-muted-foreground" />
                         )}
                         {media?.kind === "model" && (
-                          <span className="pointer-events-none absolute bottom-0.5 right-0.5 rounded bg-background/80 px-0.5 text-[8px] font-semibold text-muted-foreground">
+                          <span className="pointer-events-none absolute bottom-0.5 right-0.5 rounded bg-background/80 px-0.5 text-[0.5rem] font-semibold text-muted-foreground">
                             3D
                           </span>
                         )}
@@ -2511,7 +2569,7 @@ export function AssemblyView({
                             {t.item?.name ?? "Unknown tool"}
                           </span>
                           {t.item?.readableId && (
-                            <span className="truncate font-mono text-[10px] text-muted-foreground">
+                            <span className="truncate font-mono text-[0.625rem] text-muted-foreground">
                               {t.item.readableId}
                             </span>
                           )}
@@ -2527,7 +2585,7 @@ export function AssemblyView({
                               {seq.map((n) => (
                                 <span
                                   key={n}
-                                  className="flex size-4 items-center justify-center rounded-full bg-foreground text-[9px] font-bold text-background"
+                                  className="flex size-4 items-center justify-center rounded-full bg-foreground text-[0.5625rem] font-bold text-background"
                                 >
                                   {n}
                                 </span>
@@ -3069,7 +3127,7 @@ function TimerControl({
               {() => formatElapsed(elapsed)}
             </ClientOnly>
           </span>
-          <span className="text-[9px] max-md:text-xs uppercase tracking-wider text-muted-foreground">
+          <span className="text-[0.5625rem] max-md:text-xs uppercase tracking-wider text-muted-foreground">
             {workTypeLabels[workType]}
           </span>
         </span>
@@ -3107,7 +3165,7 @@ function SidebarSection({
     >
       <Separator />
       <div className="flex shrink-0 items-center justify-between gap-2 px-3.5 pb-1 pt-2.5">
-        <h3 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+        <h3 className="text-[0.6875rem] font-semibold uppercase tracking-wider text-muted-foreground">
           {title}
         </h3>
         {action}
@@ -3252,19 +3310,19 @@ function MaterialRow({
         <span className="truncate text-sm font-medium leading-snug text-foreground">
           {material.description}
         </span>
-        <span className="truncate font-mono text-[10px] text-muted-foreground">
+        <span className="truncate font-mono text-[0.625rem] text-muted-foreground">
           {material.itemReadableId}
         </span>
       </div>
       {/* Count hard-right, with the tracking badges tucked beneath it. */}
       <div className="flex shrink-0 flex-col items-end gap-1">
         {fullyIssued || extraIssued ? (
-          <span className="flex items-center gap-1 text-[11px] font-medium tabular-nums text-emerald-500">
+          <span className="flex items-center gap-1 text-[0.6875rem] font-medium tabular-nums text-emerald-500">
             {issued}/{required}
             <LuCheck className="size-3" />
           </span>
         ) : partiallyIssued ? (
-          <span className="text-[11px] tabular-nums text-amber-500">
+          <span className="text-[0.6875rem] tabular-nums text-amber-500">
             {issued}/{required}
           </span>
         ) : (
@@ -3526,7 +3584,7 @@ function UnitNavigator({
     <div className="flex shrink-0 flex-col border-b border-border">
       {/* Section header: label + compact pager grouped top-right. */}
       <div className="flex items-center justify-between px-3 pb-1.5 pt-3">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+        <p className="text-[0.6875rem] font-semibold uppercase tracking-wider text-muted-foreground">
           {isTracked ? trackingLabel : "Units"}
         </p>
         <div className="flex items-center gap-0.5">
@@ -3611,7 +3669,7 @@ function UnitNavigator({
                     >
                       {u.entity.readableId}
                     </span>
-                    <span className="truncate font-mono text-[10px] text-muted-foreground">
+                    <span className="truncate font-mono text-[0.625rem] text-muted-foreground">
                       {u.entity.id.slice(0, 8)}
                     </span>
                   </span>
@@ -3629,7 +3687,7 @@ function UnitNavigator({
                 <span className="truncate">{`Unit ${u.index + 1}`}</span>
               )}
               {isScrapped && (
-                <span className="ml-auto shrink-0 text-[10px] font-semibold uppercase tracking-wide text-red-500">
+                <span className="ml-auto shrink-0 text-[0.625rem] font-semibold uppercase tracking-wide text-red-500">
                   Scrapped
                 </span>
               )}
@@ -3657,7 +3715,7 @@ function TabButton({
       onClick={onClick}
       className={cn(
         "rounded-md px-3 py-1 text-xs font-medium transition-colors",
-        "max-md:min-h-11 max-md:min-w-11 max-md:rounded-none max-md:border-b-2 max-md:border-transparent max-md:px-0 max-md:text-[15px]",
+        "max-md:min-h-11 max-md:min-w-11 max-md:rounded-none max-md:border-b-2 max-md:border-transparent max-md:px-0 max-md:text-[0.9375rem]",
         active
           ? "bg-foreground text-background max-md:border-foreground max-md:bg-transparent max-md:text-foreground"
           : "text-muted-foreground hover:bg-muted hover:text-foreground max-md:hover:bg-transparent"
@@ -3802,7 +3860,7 @@ function TimerRow({
       <div className="flex items-center justify-between gap-1">
         <span
           className={cn(
-            "flex items-center gap-1 text-[10px]",
+            "flex items-center gap-1 text-[0.625rem]",
             running ? "font-semibold text-foreground" : "text-muted-foreground"
           )}
         >
@@ -3818,7 +3876,7 @@ function TimerRow({
         </span>
         <span
           className={cn(
-            "font-mono text-[10px] tabular-nums",
+            "font-mono text-[0.625rem] tabular-nums",
             overrun ? "text-red-500" : "text-muted-foreground"
           )}
         >

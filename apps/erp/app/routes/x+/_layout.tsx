@@ -25,6 +25,7 @@ import { withEmailDelivery } from "@carbon/ee";
 import { isApprovalRequired } from "@carbon/ee/approvals.server";
 import { isAuditLogEnabled } from "@carbon/ee/audit.server";
 import { getPlan } from "@carbon/ee/plan.server";
+import { evaluateBrowserFlags } from "@carbon/env/flags.server";
 import { getVapidDetails } from "@carbon/env/push.server";
 import { SERVER_MAIL_CONFIGURED } from "@carbon/lib/email.server";
 import { getLogger } from "@carbon/logger";
@@ -32,7 +33,7 @@ import { getImplementationCheckStates } from "@carbon/onboarding/server";
 import type { PrintingSettings } from "@carbon/printing";
 import { PrintingProvider } from "@carbon/printing/ui";
 import { RouteRealtime, useLoaderQuery } from "@carbon/query";
-import { setClientCompanyId } from "@carbon/query/cache";
+import { RefreshRate, setClientCompanyId } from "@carbon/query/cache";
 import {
   AnnouncementBar,
   ItarEntityCertification,
@@ -140,7 +141,8 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const authSession = await requireAuthSession(request, { verify: true });
-  const { accessToken, companyId, expiresAt, expiresIn, userId } = authSession;
+  const { accessToken, companyId, email, expiresAt, expiresIn, userId } =
+    authSession;
 
   // Block ERP access when console mode is active on this terminal.
   // Console terminals should only access the MES app.
@@ -346,6 +348,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
     auditLogEnabled,
     company,
     companies: companies.data ?? [],
+    // Feature flags with `browser: true`, read with `useFeatureFlags().feature(key)`.
+    flags: await evaluateBrowserFlags({ companyId, email }),
     companySettings: companySettings.data ?? null,
     customFields: customFields.data ?? [],
     defaults: defaults.data,
@@ -410,8 +414,10 @@ export default function AuthenticatedRoute() {
   // During render, not in an effect: clientLoaders and the first child read it.
   setClientCompanyId(company?.id ?? null, user?.id ?? null);
   const { t } = useLingui();
+  // Not data a save or a realtime change touches, so it refreshes on its own.
   const systemStatus = useLoaderQuery<typeof systemStatusLoader>(
-    path.to.api.systemStatus
+    path.to.api.systemStatus,
+    { invalidate: false, refetchInterval: RefreshRate.Low }
   );
   const { locale } = useLocale();
   const moveDate = systemStatus.data?.accountMoveDate;

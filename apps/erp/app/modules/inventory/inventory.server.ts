@@ -3,7 +3,7 @@
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import {
-  type CarbonError,
+  CarbonError,
   createServiceContext,
   defineServiceFn
 } from "@carbon/api/service-fn.server";
@@ -25,6 +25,7 @@ import {
   getErrorMessage,
   getOverReceiptViolations,
   isUniqueViolation,
+  requireAffected,
   round,
   type Violation
 } from "@carbon/utils";
@@ -801,14 +802,17 @@ export const updateReceiptFixedAssetLine = defineServiceFn({
       return ctx.error("rule", "A posted receipt can no longer be changed");
     }
 
-    const update = await serviceRole
-      .from("receiptFixedAssetLine")
-      .update({
-        ...service.receiptFixedAssetLineChange(change),
-        updatedBy: ctx.auditUserId
-      })
-      .eq("id", id)
-      .eq("companyId", ctx.company.id);
+    const update = await requireAffected(
+      serviceRole
+        .from("receiptFixedAssetLine")
+        .update({
+          ...service.receiptFixedAssetLineChange(change),
+          updatedBy: ctx.auditUserId
+        })
+        .eq("id", id)
+        .eq("companyId", ctx.company.id)
+        .select("id")
+    );
     if (update.error) {
       return ctx.error("internal", "Failed to update the line", update.error);
     }
@@ -1159,18 +1163,21 @@ export const assignReceiptReturnEntity = defineServiceFn({
         .eq("companyId", companyId);
     }
 
-    const assigned = await serviceRole
-      .from("trackedEntity")
-      .update({
-        attributes: {
-          ...service.withoutReceiptTracking(attributes),
-          Receipt: receiptId,
-          "Receipt Line": receiptLineId,
-          ...(index != null ? { "Receipt Line Index": index } : {})
-        } as Json
-      })
-      .eq("id", trackedEntityId)
-      .eq("companyId", companyId);
+    const assigned = await requireAffected(
+      serviceRole
+        .from("trackedEntity")
+        .update({
+          attributes: {
+            ...service.withoutReceiptTracking(attributes),
+            Receipt: receiptId,
+            "Receipt Line": receiptLineId,
+            ...(index != null ? { "Receipt Line Index": index } : {})
+          } as Json
+        })
+        .eq("id", trackedEntityId)
+        .eq("companyId", companyId)
+        .select("id")
+    );
     if (assigned.error) {
       return ctx.error("internal", "Failed to update tracking", assigned.error);
     }
@@ -1227,13 +1234,16 @@ export const removeReceiptReturnEntity = defineServiceFn({
       return ctx.error("rule", "Entity is not assigned to this receipt line");
     }
 
-    const cleared = await ctx.asSystem.supabase
-      .from("trackedEntity")
-      .update({
-        attributes: service.withoutReceiptTracking(attributes) as Json
-      })
-      .eq("id", trackedEntityId)
-      .eq("companyId", ctx.company.id);
+    const cleared = await requireAffected(
+      ctx.asSystem.supabase
+        .from("trackedEntity")
+        .update({
+          attributes: service.withoutReceiptTracking(attributes) as Json
+        })
+        .eq("id", trackedEntityId)
+        .eq("companyId", ctx.company.id)
+        .select("id")
+    );
     if (cleared.error) {
       return ctx.error("internal", "Failed to update tracking", cleared.error);
     }
@@ -1260,7 +1270,9 @@ type ExpiredEntityPolicy = "Warn" | "Block" | "BlockWithOverride";
  * order, a purchase order, a purchase return order, an outbound warehouse
  * transfer or a rental agreement. With no source document it creates an
  * empty shipment. The location is the caller's default location, which a
- * sales order or purchase order shipment requires.
+ * purchase order shipment requires. A sales order shipment ships from the
+ * order's location, or from the caller's default location when one of the
+ * order's lines ships from there.
  *
  * A return order or rental agreement with a Draft shipment already returns
  * that shipment instead of a second one.
@@ -1275,7 +1287,22 @@ export const createShipment = defineServiceFn({
   permission: { create: "inventory" },
 
   async run(ctx, { sourceDocument, sourceDocumentId }) {
-    const locationId = await service.defaultLocationOf(ctx);
+    let locationId = await service.defaultLocationOf(ctx);
+    if (sourceDocument === "Sales Order") {
+      const location = await service.salesOrderShipmentLocationOf(
+        ctx,
+        sourceDocumentId,
+        locationId
+      );
+      if (location.error) {
+        return ctx.error(
+          "internal",
+          "Failed to load the sales order's location",
+          location.error
+        );
+      }
+      locationId = location.data ?? undefined;
+    }
 
     if (
       !locationId &&
@@ -1975,18 +2002,21 @@ export const updateShipmentFixedAssetLine = defineServiceFn({
       return ctx.error("rule", "A posted shipment can no longer be changed");
     }
 
-    const update = await serviceRole
-      .from("shipmentFixedAssetLine")
-      .update({
-        ...(change.field === "shipped"
-          ? { shipped: change.value }
-          : change.field === "serialNumber"
-            ? { serialNumber: change.value || null }
-            : { meter: change.value === "" ? null : Number(change.value) }),
-        updatedBy: ctx.auditUserId
-      })
-      .eq("id", id)
-      .eq("companyId", ctx.company.id);
+    const update = await requireAffected(
+      serviceRole
+        .from("shipmentFixedAssetLine")
+        .update({
+          ...(change.field === "shipped"
+            ? { shipped: change.value }
+            : change.field === "serialNumber"
+              ? { serialNumber: change.value || null }
+              : { meter: change.value === "" ? null : Number(change.value) }),
+          updatedBy: ctx.auditUserId
+        })
+        .eq("id", id)
+        .eq("companyId", ctx.company.id)
+        .select("id")
+    );
     if (update.error) {
       return ctx.error("internal", "Failed to update the line", update.error);
     }
@@ -3445,6 +3475,15 @@ export const scanKanban = defineServiceFn({
     }
     const card = kanban.data;
 
+    // replenishKanban checks a Transfer card's units itself, for scans and
+    // level checks alike.
+    if (card.replenishmentSystem !== "Transfer") {
+      const refused = await service.refuseNonNettableKanbanUnits(ctx, [
+        card.storageUnitId
+      ]);
+      if (refused) return refused;
+    }
+
     /** No one at a kanban card can choose a purchase order, so unlike
      *  `releaseJobs` a supplier's newest Draft PO is reused rather than a
      *  blocker. */
@@ -3513,6 +3552,13 @@ export const scanKanban = defineServiceFn({
           companyId,
           jobId,
           error: failure
+        });
+      }
+      for (const warning of result.data?.warnings ?? []) {
+        logger.warn("A kanban job was released with a warning", {
+          companyId,
+          jobId,
+          warning: warning.message
         });
       }
 
@@ -4594,6 +4640,7 @@ export const getAvailableTrackedEntities = defineServiceFn({
     itemId: z.string(),
     locationId: z.string(),
     excludeLineside: z.boolean().optional(),
+    excludeNonNettable: z.boolean().optional(),
     excludeAllocated: z.boolean().optional(),
     excludeLineId: z.string().nullable().optional(),
     inStorageUnit: z.looseObject({ id: z.string().nullable() }).optional()
@@ -5797,7 +5844,9 @@ const kanbanInput = z
  *
  * @remarks
  * A Buy kanban needs its supplier; a Transfer kanban needs a from and a to
- * storage unit, and only it can have a replenishment level.
+ * storage unit, and only it can have a replenishment level. Neither storage
+ * unit may be non-nettable. When the location's Kanbans printer auto-prints,
+ * the new kanban's Create card is printed.
  *
  * @mcp
  */
@@ -5805,13 +5854,28 @@ export const createKanban = defineServiceFn({
   input: kanbanInput,
   permission: { create: "inventory" },
   async run(ctx, { id: _id, ...input }) {
-    return unwrap(
+    const refused = await service.refuseNonNettableKanbanUnits(ctx, [
+      input.storageUnitId,
+      input.fromStorageUnitId
+    ]);
+    if (refused) return refused;
+    const created = unwrap(
       ctx,
       await service.upsertKanban(
         ctx.asCaller.supabase,
         payload(ctx, input).forCreate() as never
       )
     );
+    if (created instanceof CarbonError || !created) return created;
+
+    await service.autoPrint(ctx, {
+      sourceDocument: "Kanban",
+      sourceDocumentId: created.id,
+      locationId: input.locationId,
+      context: "kanban"
+    });
+
+    return created;
   }
 });
 
@@ -5829,6 +5893,26 @@ export const updateKanban = defineServiceFn({
   }),
   permission: { update: "inventory" },
   async run(ctx, input) {
+    // Only a unit the update sets: a kanban whose unit became non-nettable
+    // later stays editable; scanKanban and replenishKanban refuse its scans.
+    const current = await ctx.asCaller.supabase
+      .from("kanban")
+      .select("storageUnitId, fromStorageUnitId")
+      .eq("id", input.id)
+      .eq("companyId", ctx.company.id)
+      .maybeSingle();
+    if (current.error) {
+      return ctx.error("internal", "Failed to load kanban", current.error);
+    }
+    const refused = await service.refuseNonNettableKanbanUnits(ctx, [
+      input.storageUnitId !== current.data?.storageUnitId
+        ? input.storageUnitId
+        : null,
+      input.fromStorageUnitId !== current.data?.fromStorageUnitId
+        ? input.fromStorageUnitId
+        : null
+    ]);
+    if (refused) return refused;
     return unwrap(
       ctx,
       await service.upsertKanban(
@@ -5855,6 +5939,12 @@ export const createStorageUnit = defineServiceFn({
     parentId: z.string().optional(),
     workCenterId: z.string().optional(),
     storageTypeIds: z.array(z.string()).optional(),
+    nonNettable: z
+      .boolean()
+      .describe(
+        "Stock in it is not supply: MRP and planning ignore it, and picking never sources from it."
+      )
+      .optional(),
     customFields: z.unknown().optional()
   }),
   permission: { create: "inventory" },
@@ -5886,6 +5976,12 @@ export const updateStorageUnit = defineServiceFn({
       parentId: z.string().optional(),
       workCenterId: z.string().optional(),
       storageTypeIds: z.array(z.string()).optional(),
+      nonNettable: z
+        .boolean()
+        .describe(
+          "Stock in it is not supply: MRP and planning ignore it, and picking never sources from it."
+        )
+        .optional(),
       customFields: z.unknown().optional(),
       id: z.string().describe("The storage unit to update.").optional()
     })
@@ -6244,6 +6340,10 @@ export const getStorageTypesList = defineServiceFn({
 export const createStorageType = defineServiceFn({
   input: z.looseObject({
     name: z.string().min(1),
+    nonNettable: z
+      .boolean()
+      .describe("Every storage unit of this type is non-nettable.")
+      .optional(),
     customFields: z.unknown().optional()
   }),
   permission: { create: "parts" },
@@ -6270,6 +6370,10 @@ export const updateStorageType = defineServiceFn({
   input: z
     .looseObject({
       name: z.string().min(1),
+      nonNettable: z
+        .boolean()
+        .describe("Every storage unit of this type is non-nettable.")
+        .optional(),
       customFields: z.unknown().optional(),
       id: z.string().describe("The storage type to update.").optional()
     })

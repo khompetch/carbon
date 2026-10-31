@@ -12,6 +12,9 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+msgid "\"{column}\" is required."
+msgstr ""
+
 msgid "(Inactive)"
 msgstr "（已停用）"
 
@@ -84,6 +87,12 @@ msgstr "工单 {0} 在生产批次 {1}"
 msgid "{0} Scrapped"
 msgstr "{0} 已报废"
 
+msgid "{columns} does not match an existing \"{target}\"."
+msgstr ""
+
+msgid "{columns} does not match an existing record."
+msgstr ""
+
 msgid "{completed} of {quantity}"
 msgstr "{completed} 的 {quantity}"
 
@@ -110,8 +119,26 @@ msgstr "🚨 提醒：您的账户将于 {0} 迁移至 erp.try.carbon.ms"
 msgid "A previous completion did not finish. Retrying resumes the remaining steps — quantities are not double-counted."
 msgstr "之前的完成未完成。重试会恢复剩余步骤 — 数量不会重复计数。"
 
+msgid "A record with these values already exists."
+msgstr ""
+
+msgid "A record with this {columns} already exists."
+msgstr ""
+
+msgid "A referenced record does not exist."
+msgstr ""
+
+msgid "A required field was missing."
+msgstr ""
+
+msgid "A value is not valid."
+msgstr ""
+
 msgid "About"
 msgstr "关于"
+
+msgid "About this field"
+msgstr "关于此字段"
 
 msgid "Accept"
 msgstr "接受"
@@ -302,6 +329,9 @@ msgstr "生产批次总计"
 msgid "Behind target by {daysBehindTarget} day(s)"
 msgstr "落后于目标 {daysBehindTarget} 天"
 
+msgid "Bigger or smaller text. The layout stays put."
+msgstr ""
+
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"
 msgstr "被 {0} 阻塞"
@@ -436,6 +466,12 @@ msgstr "列：{0}"
 msgid "Columns"
 msgstr "列"
 
+msgid "Comfortable"
+msgstr ""
+
+msgid "Compact"
+msgstr ""
+
 msgid "Companies"
 msgstr "公司"
 
@@ -549,6 +585,9 @@ msgstr "删除步骤"
 
 msgid "Delete Timecard (<0/>)"
 msgstr "删除工时表 (<0/>)"
+
+msgid "Density"
+msgstr ""
 
 msgid "Describe the problem..."
 msgstr "描述问题..."
@@ -941,6 +980,9 @@ msgstr "已发放 {issuedQuantity} 个 {lotLabel}"
 msgid "Issued {issuedQuantity} of {lotLabel} — {remainingQuantity} remains"
 msgstr "已发放 {issuedQuantity} 个 {lotLabel} — 还剩 {remainingQuantity} 件"
 
+msgid "It is still used by a \"{table}\" record; remove that first."
+msgstr ""
+
 msgid "Item"
 msgstr "物料"
 
@@ -976,6 +1018,12 @@ msgstr "套件"
 
 msgid "Labor"
 msgstr "人工"
+
+msgid "Large"
+msgstr ""
+
+msgid "Larger"
+msgstr ""
 
 msgid "Last completed"
 msgstr "最后完成"
@@ -1234,6 +1282,12 @@ msgstr "今天没有计划的维护"
 msgid "No matches. Type to create one."
 msgstr "没有匹配项。输入以创建一个。"
 
+msgid "No matching record was found."
+msgstr ""
+
+msgid "No matching time"
+msgstr "没有匹配的时间"
+
 msgid "No materials"
 msgstr "没有原材料"
 
@@ -1284,6 +1338,9 @@ msgstr "不需要样本。"
 
 msgid "No scheduled time"
 msgstr "无排定时间"
+
+msgid "No serial number"
+msgstr "无序列号"
 
 msgid "No serial numbers"
 msgstr "无序列号"
@@ -1753,6 +1810,9 @@ msgstr "扫码或搜索序列号..."
 msgid "Scan or select a tracked entity from this lot to add it as a sample column, then record its result in the grid."
 msgstr "从此批次中扫码或选择追踪实体并将其添加为样本列，然后在网格中记录其结果。"
 
+msgid "Scan or select the unit, then scan the kanban card again"
+msgstr "请扫描或选择该单元，然后再次扫描看板卡"
+
 msgid "Scan received"
 msgstr "已收到扫码"
 
@@ -1978,6 +2038,12 @@ msgstr "大小"
 msgid "Slack"
 msgstr "Slack"
 
+msgid "Small"
+msgstr ""
+
+msgid "Smaller"
+msgstr ""
+
 msgid "Source"
 msgstr "来源"
 
@@ -2073,6 +2139,9 @@ msgstr "系统"
 msgid "Tag"
 msgstr "标签"
 
+msgid "Text size"
+msgstr ""
+
 msgid "The accent color used across Carbon."
 msgstr "整个 Carbon 中使用的强调色。"
 
@@ -2098,6 +2167,12 @@ msgstr "该批次仍将进行处置，但在至少配置一个问题类型之前
 #. placeholder {0}: (batch.operations ?? []).length
 msgid "The timer and completion are shared by all {0} jobs. Steps, materials and files here are this job's own."
 msgstr "计时器和完成状态由所有 {0} 个工单共享。此处的步骤、物料和文件属于此工单。"
+
+msgid "The values break a rule on this record."
+msgstr ""
+
+msgid "The values break the rule \"{constraint}\"."
+msgstr ""
 
 msgid "Theme color"
 msgstr "主题颜色"
@@ -2132,14 +2207,20 @@ msgstr "此零件是按订单制造的。将其报废可重新打开其工艺路
 msgid "This part will be scrapped from stock. Its requirement stays open so you can issue a replacement."
 msgstr "此零件将从库存报废。其要求保持未结，以便您可以领料替代品。"
 
-msgid "This unit will be permanently scrapped and a replacement serial number will be created."
-msgstr "此单元将被永久报废，并将创建替换序列号。"
+msgid "This unit will be permanently scrapped and a replacement unit will be created."
+msgstr "此单元将被永久报废，并将创建替换单元。"
 
 msgid "Thumbnail"
 msgstr "缩略图"
 
 msgid "Tick the jobs this was done for."
 msgstr "标记完成此项工作的工单。"
+
+msgid "Tighter or roomier layout. The text stays put."
+msgstr ""
+
+msgid "Time"
+msgstr "时间"
 
 msgid "Time and cost split across jobs proportionally to quantity."
 msgstr "时间和成本按数量比例分配到各个工作中。"
@@ -2360,6 +2441,12 @@ msgid "You can still start this operation."
 msgstr ""
 
 msgid "You can't work on this operation"
+msgstr ""
+
+msgid "You do not have permission to do this"
+msgstr ""
+
+msgid "You don't have permission to change this record, or it no longer exists."
 msgstr ""
 
 msgid "You don't have the {processName} ability"

@@ -22,6 +22,7 @@ import {
   type FlatTree,
   flattenTree,
   generateBomIds,
+  requireAffected,
   round,
   type TrackedActivityAttributes
 } from "@carbon/utils";
@@ -75,6 +76,49 @@ function notFoundResponse(message: string) {
     status: 404,
     statusText: "Not Found"
   };
+}
+
+const UNIQUE_VIOLATION = "23505";
+
+function conflictResponse(message: string) {
+  return {
+    data: null,
+    error: {
+      name: "PostgrestError",
+      message,
+      details: "",
+      hint: "",
+      code: "PGRST409"
+    } as PostgrestError,
+    count: null,
+    status: 409,
+    statusText: "Conflict"
+  };
+}
+
+/** Whether a production event already records this serial (its tracked activity output). */
+async function timerRecordsEntity(
+  client: SupabaseClient<Database>,
+  productionEventId: string,
+  trackedEntityId: string,
+  companyId: string
+) {
+  const activities = await client
+    .from("trackedActivity")
+    .select("id")
+    .eq("sourceDocument", "Production Event")
+    .eq("sourceDocumentId", productionEventId)
+    .eq("companyId", companyId);
+  const activityIds = activities.data?.map((activity) => activity.id) ?? [];
+  if (activityIds.length === 0) return false;
+  const output = await client
+    .from("trackedActivityOutput")
+    .select("trackedActivityId")
+    .in("trackedActivityId", activityIds)
+    .eq("trackedEntityId", trackedEntityId)
+    .eq("companyId", companyId)
+    .limit(1);
+  return (output.data?.length ?? 0) > 0;
 }
 
 export async function getOpenJobs(
@@ -257,6 +301,36 @@ export async function getJobOperationDependencies(
     .eq("jobId", jobId);
 }
 
+/**
+ * Is this the first operation of its make method's routing? A serial unit only
+ * earns a printed label when it is completed at its first operation, so this
+ * decides both the label auto-print and how the operation views pick units.
+ *
+ * "First" means no jobOperationDependency whose predecessor shares this op's
+ * jobMakeMethodId. Cross make-method (subassembly) dependencies are ignored: a
+ * parent-assembly op still has no printed label just because a subassembly
+ * finished first. `order` is only a display/sort field, not a precedence signal.
+ *
+ * Fails closed: an errored lookup reads as "not first" — no auto-select, no
+ * label — which is the safe default when we can't confirm there's no predecessor.
+ */
+export async function isFirstOperationOfMakeMethod(
+  client: SupabaseClient<Database>,
+  operationId: string,
+  jobMakeMethodId: string
+): Promise<boolean> {
+  const priorDependency = await client
+    .from("jobOperationDependency")
+    .select(
+      "dependsOn:jobOperation!jobOperationDependency_dependsOnId_fk!inner(jobMakeMethodId)"
+    )
+    .eq("operationId", operationId)
+    .eq("dependsOn.jobMakeMethodId", jobMakeMethodId)
+    .limit(1)
+    .maybeSingle();
+  return !priorDependency.error && !priorDependency.data;
+}
+
 export async function getUpstreamOperations(
   client: SupabaseClient<Database>,
   operationId: string
@@ -311,12 +385,15 @@ export async function deleteAttributeRecord(
   client: SupabaseClient<Database>,
   args: { id: string; companyId: string; userId: string }
 ) {
-  return client
-    .from("jobOperationStepRecord")
-    .delete()
-    .eq("id", args.id)
-    .eq("companyId", args.companyId)
-    .eq("createdBy", args.userId);
+  return requireAffected(
+    client
+      .from("jobOperationStepRecord")
+      .delete()
+      .eq("id", args.id)
+      .eq("companyId", args.companyId)
+      .eq("createdBy", args.userId)
+      .select("id")
+  );
 }
 
 export async function finishJobOperation(
@@ -2731,6 +2808,47 @@ export async function startProductionEvent(
   });
   if (!refs.ok) return notFoundResponse(refs.message);
 
+  // A Setup or Labor timer the operator already has running on this operation
+  // is returned, not started again: a double-tap, or a second device, would
+  // otherwise count the labor twice. The partial unique index on open events
+  // refuses an insert that races past this read; that start returns the
+  // running timer too.
+  const isTimer = data.type === "Setup" || data.type === "Labor";
+  const runningTimer = async () => {
+    const running = await client
+      .from("productionEvent")
+      .select("*")
+      .eq("jobOperationId", data.jobOperationId)
+      .eq("type", data.type)
+      .eq("employeeId", data.employeeId)
+      .eq("companyId", data.companyId)
+      .is("endTime", null)
+      .limit(1);
+    if (running.error) return { data: null, error: running.error };
+    const row = running.data[0];
+    if (!row) return null;
+    if (!trackedEntityId) return { data: [row], error: null };
+    // A serial start must record that serial; a timer running for another
+    // unit is refused rather than reported as this unit's start.
+    return (await timerRecordsEntity(
+      client,
+      row.id,
+      trackedEntityId,
+      data.companyId
+    ))
+      ? { data: { id: row.id }, error: null }
+      : conflictResponse(
+          `A ${data.type.toLowerCase()} timer is already running on this operation for another unit. Stop it before starting this one.`
+        );
+  };
+  const raced = (error: PostgrestError | null) =>
+    isTimer && error?.code === UNIQUE_VIOLATION;
+
+  if (isTimer) {
+    const running = await runningTimer();
+    if (running) return running;
+  }
+
   // The tracked entity is the separate argument; productionEvent has no column for it.
   const { trackedEntityId: _trackedEntityId, ...event } = data;
 
@@ -2747,7 +2865,11 @@ export async function startProductionEvent(
         .single()
     ]);
 
-    if (eventInsert.error) return eventInsert;
+    if (eventInsert.error) {
+      if (raced(eventInsert.error))
+        return (await runningTimer()) ?? eventInsert;
+      return eventInsert;
+    }
     if (operation.error) return operation;
 
     const trackedActivityInsert = await client
@@ -2819,6 +2941,8 @@ export async function startProductionEvent(
     .from("productionEvent")
     .insert(event)
     .select("*");
+
+  if (raced(eventInsert.error)) return (await runningTimer()) ?? eventInsert;
 
   if (!eventInsert.error) {
     await autoStartJobAndOperation(client, {

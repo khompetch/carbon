@@ -20,6 +20,7 @@ import {
   startMachineProductionEvent,
   startProductionEvent
 } from "~/services/operations.service";
+import { assignSerialNumberOnFirstTouch } from "~/services/serial-number.server";
 import { OUTSIDE_PROCESSING_REFUSAL } from "~/utils/operationView";
 import { path, requestReferrer } from "~/utils/path";
 
@@ -170,6 +171,15 @@ async function productionEventAction({ request }: ActionFunctionArgs) {
       await postEnded(startEvent.data.endedEventIds);
     }
 
+    // First touch: number the unit if it has no serial number yet.
+    if (trackedEntityId) {
+      await assignSerialNumberOnFirstTouch({
+        trackedEntityId,
+        jobOperationId: d.jobOperationId,
+        companyId
+      });
+    }
+
     return data(
       startEvent.data,
       await flash(request, success(`Started ${d.type.toLowerCase()} operation`))
@@ -177,7 +187,7 @@ async function productionEventAction({ request }: ActionFunctionArgs) {
   }
 
   if (!id) {
-    return data({}, await flash(request, error("No event id provided")));
+    return data({}, await flash(request, error(null, "No event id provided")));
   }
   // End on the event's own work center and type, not the form's.
   const event = await client
