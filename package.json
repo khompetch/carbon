@@ -14,6 +14,7 @@
     "dompurify": "catalog:",
     "execa": "^8.0.1",
     "fdir": "6.5.0",
+    "libpg-query": "18.1.5",
     "linguito": "^0.5.2",
     "lint-staged": "16.4.0",
     "nanoid": "catalog:",
@@ -122,7 +123,8 @@
     "patchedDependencies": {
       "@react-router/dev@7.18.4": "patches/@react-router__dev@7.18.4.patch",
       "@vercel/react-router@1.2.6": "patches/@vercel__react-router@1.2.6.patch",
-      "supabase@2.89.0": "patches/supabase@2.89.0.patch"
+      "supabase@2.89.0": "patches/supabase@2.89.0.patch",
+      "vite@8.3.3": "patches/vite@8.3.3.patch"
     },
     "ignoredBuiltDependencies": [
       "simple-git-hooks"
