@@ -25747,6 +25747,9 @@ export default {
             $ref: "#/parameters/rowFilter.payment.customerContractId"
           },
           {
+            $ref: "#/parameters/rowFilter.payment.purchaseOrderId"
+          },
+          {
             $ref: "#/parameters/select"
           },
           {
@@ -25893,6 +25896,9 @@ export default {
             $ref: "#/parameters/rowFilter.payment.customerContractId"
           },
           {
+            $ref: "#/parameters/rowFilter.payment.purchaseOrderId"
+          },
+          {
             $ref: "#/parameters/preferReturn"
           }
         ],
@@ -25991,6 +25997,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.payment.customerContractId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.payment.purchaseOrderId"
           },
           {
             $ref: "#/parameters/body.payment"
@@ -100966,6 +100975,9 @@ export default {
             $ref: "#/parameters/rowFilter.invoiceSettlement.targetReimbursementId"
           },
           {
+            $ref: "#/parameters/rowFilter.invoiceSettlement.targetPaymentId"
+          },
+          {
             $ref: "#/parameters/select"
           },
           {
@@ -101088,6 +101100,9 @@ export default {
             $ref: "#/parameters/rowFilter.invoiceSettlement.targetReimbursementId"
           },
           {
+            $ref: "#/parameters/rowFilter.invoiceSettlement.targetPaymentId"
+          },
+          {
             $ref: "#/parameters/preferReturn"
           }
         ],
@@ -101162,6 +101177,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.invoiceSettlement.targetReimbursementId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.invoiceSettlement.targetPaymentId"
           },
           {
             $ref: "#/parameters/body.invoiceSettlement"
@@ -119658,6 +119676,186 @@ export default {
         tags: ["projectBaseline"]
       }
     },
+    "/documentEdit": {
+      get: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.documentType"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.documentId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.blocks"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.settings"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.createdBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.createdAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.updatedBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.updatedAt"
+          },
+          {
+            $ref: "#/parameters/select"
+          },
+          {
+            $ref: "#/parameters/order"
+          },
+          {
+            $ref: "#/parameters/range"
+          },
+          {
+            $ref: "#/parameters/rangeUnit"
+          },
+          {
+            $ref: "#/parameters/offset"
+          },
+          {
+            $ref: "#/parameters/limit"
+          },
+          {
+            $ref: "#/parameters/preferCount"
+          }
+        ],
+        responses: {
+          "200": {
+            description: "OK",
+            schema: {
+              items: {
+                $ref: "#/definitions/documentEdit"
+              },
+              type: "array"
+            }
+          },
+          "206": {
+            description: "Partial Content"
+          }
+        },
+        tags: ["documentEdit"]
+      },
+      post: {
+        parameters: [
+          {
+            $ref: "#/parameters/body.documentEdit"
+          },
+          {
+            $ref: "#/parameters/select"
+          },
+          {
+            $ref: "#/parameters/preferPost"
+          }
+        ],
+        responses: {
+          "201": {
+            description: "Created"
+          }
+        },
+        tags: ["documentEdit"]
+      },
+      delete: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.documentType"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.documentId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.blocks"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.settings"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.createdBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.createdAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.updatedBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.updatedAt"
+          },
+          {
+            $ref: "#/parameters/preferReturn"
+          }
+        ],
+        responses: {
+          "204": {
+            description: "No Content"
+          }
+        },
+        tags: ["documentEdit"]
+      },
+      patch: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.documentType"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.documentId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.blocks"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.settings"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.createdBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.createdAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.updatedBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.documentEdit.updatedAt"
+          },
+          {
+            $ref: "#/parameters/body.documentEdit"
+          },
+          {
+            $ref: "#/parameters/preferReturn"
+          }
+        ],
+        responses: {
+          "204": {
+            description: "No Content"
+          }
+        },
+        tags: ["documentEdit"]
+      }
+    },
     "/salesOrderTransaction": {
       get: {
         parameters: [
@@ -120620,7 +120818,7 @@ export default {
       get: {
         parameters: [
           {
-            format: "extensions.vector",
+            format: "vector",
             in: "query",
             name: "query_embedding",
             required: true,
@@ -120681,7 +120879,7 @@ export default {
                   type: "string"
                 },
                 query_embedding: {
-                  format: "extensions.vector",
+                  format: "vector",
                   type: "string"
                 }
               },
@@ -123514,6 +123712,51 @@ export default {
           }
         },
         tags: ["(rpc) sync_delete_unlinked_contact"]
+      }
+    },
+    "/rpc/prevent_prepaid_purchase_order_deletion": {
+      post: {
+        parameters: [
+          {
+            in: "body",
+            name: "args",
+            required: true,
+            schema: {
+              properties: {
+                p_new: {
+                  format: "jsonb"
+                },
+                p_old: {
+                  format: "jsonb"
+                },
+                p_operation: {
+                  format: "text",
+                  type: "string"
+                },
+                p_table: {
+                  format: "text",
+                  type: "string"
+                }
+              },
+              required: ["p_table", "p_operation", "p_new", "p_old"],
+              type: "object"
+            }
+          },
+          {
+            $ref: "#/parameters/preferParams"
+          }
+        ],
+        produces: [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        responses: {
+          "200": {
+            description: "OK"
+          }
+        },
+        tags: ["(rpc) prevent_prepaid_purchase_order_deletion"]
       }
     },
     "/rpc/get_ar_aging": {
@@ -132545,6 +132788,63 @@ export default {
         tags: ["(rpc) get_ar_open_by_customer"]
       }
     },
+    "/rpc/get_supplier_prepayment_refund_currencies": {
+      get: {
+        parameters: [
+          {
+            format: "text",
+            in: "query",
+            name: "_company_id",
+            required: true,
+            type: "string"
+          }
+        ],
+        produces: [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        responses: {
+          "200": {
+            description: "OK"
+          }
+        },
+        tags: ["(rpc) get_supplier_prepayment_refund_currencies"]
+      },
+      post: {
+        parameters: [
+          {
+            in: "body",
+            name: "args",
+            required: true,
+            schema: {
+              properties: {
+                _company_id: {
+                  format: "text",
+                  type: "string"
+                }
+              },
+              required: ["_company_id"],
+              type: "object"
+            }
+          },
+          {
+            $ref: "#/parameters/preferParams"
+          }
+        ],
+        produces: [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        responses: {
+          "200": {
+            description: "OK"
+          }
+        },
+        tags: ["(rpc) get_supplier_prepayment_refund_currencies"]
+      }
+    },
     "/rpc/verify_employee_pin": {
       get: {
         parameters: [
@@ -134489,6 +134789,51 @@ export default {
         tags: ["(rpc) purchaseLinePivotLines"]
       }
     },
+    "/rpc/prevent_invalid_deposit_refund": {
+      post: {
+        parameters: [
+          {
+            in: "body",
+            name: "args",
+            required: true,
+            schema: {
+              properties: {
+                p_new: {
+                  format: "jsonb"
+                },
+                p_old: {
+                  format: "jsonb"
+                },
+                p_operation: {
+                  format: "text",
+                  type: "string"
+                },
+                p_table: {
+                  format: "text",
+                  type: "string"
+                }
+              },
+              required: ["p_table", "p_operation", "p_new", "p_old"],
+              type: "object"
+            }
+          },
+          {
+            $ref: "#/parameters/preferParams"
+          }
+        ],
+        produces: [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        responses: {
+          "200": {
+            description: "OK"
+          }
+        },
+        tags: ["(rpc) prevent_invalid_deposit_refund"]
+      }
+    },
     "/rpc/sync_storage_type_nettable": {
       post: {
         parameters: [
@@ -135897,7 +136242,7 @@ export default {
       get: {
         parameters: [
           {
-            format: "extensions.vector",
+            format: "vector",
             in: "query",
             name: "query_embedding",
             required: true,
@@ -135958,7 +136303,7 @@ export default {
                   type: "string"
                 },
                 query_embedding: {
-                  format: "extensions.vector",
+                  format: "vector",
                   type: "string"
                 }
               },
@@ -148006,6 +148351,10 @@ export default {
           type: "string"
         },
         customerContractId: {
+          format: "text",
+          type: "string"
+        },
+        purchaseOrderId: {
           format: "text",
           type: "string"
         }
@@ -183573,6 +183922,10 @@ export default {
         targetReimbursementId: {
           format: "text",
           type: "string"
+        },
+        targetPaymentId: {
+          format: "text",
+          type: "string"
         }
       },
       type: "object"
@@ -192677,6 +193030,68 @@ export default {
         },
         createdAt: {
           default: "now()",
+          format: "timestamp with time zone",
+          type: "string"
+        }
+      },
+      type: "object"
+    },
+    documentEdit: {
+      required: [
+        "id",
+        "companyId",
+        "documentType",
+        "documentId",
+        "blocks",
+        "settings",
+        "createdBy",
+        "createdAt"
+      ],
+      properties: {
+        id: {
+          default: "public.id('dedit'::text)",
+          description: "Note:\nThis is a Primary Key.<pk/>",
+          format: "text",
+          type: "string"
+        },
+        companyId: {
+          description:
+            "Note:\nThis is a Primary Key.<pk/>\nThis is a Foreign Key to `company.id`.<fk table='company' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        documentType: {
+          format: "text",
+          type: "string"
+        },
+        documentId: {
+          format: "text",
+          type: "string"
+        },
+        blocks: {
+          format: "jsonb"
+        },
+        settings: {
+          format: "jsonb"
+        },
+        createdBy: {
+          description:
+            "Note:\nThis is a Foreign Key to `user.id`.<fk table='user' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        createdAt: {
+          default: "now()",
+          format: "timestamp with time zone",
+          type: "string"
+        },
+        updatedBy: {
+          description:
+            "Note:\nThis is a Foreign Key to `user.id`.<fk table='user' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        updatedAt: {
           format: "timestamp with time zone",
           type: "string"
         }
@@ -206306,6 +206721,12 @@ export default {
     },
     "rowFilter.payment.customerContractId": {
       name: "customerContractId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.payment.purchaseOrderId": {
+      name: "purchaseOrderId",
       required: false,
       in: "query",
       type: "string"
@@ -245949,6 +246370,12 @@ export default {
       in: "query",
       type: "string"
     },
+    "rowFilter.invoiceSettlement.targetPaymentId": {
+      name: "targetPaymentId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
     "body.printerRoute": {
       name: "printerRoute",
       description: "printerRoute",
@@ -256003,6 +256430,75 @@ export default {
     },
     "rowFilter.projectBaseline.createdAt": {
       name: "createdAt",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "body.documentEdit": {
+      name: "documentEdit",
+      description: "documentEdit",
+      required: false,
+      in: "body",
+      schema: {
+        $ref: "#/definitions/documentEdit"
+      }
+    },
+    "rowFilter.documentEdit.id": {
+      name: "id",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.documentEdit.companyId": {
+      name: "companyId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.documentEdit.documentType": {
+      name: "documentType",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.documentEdit.documentId": {
+      name: "documentId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.documentEdit.blocks": {
+      name: "blocks",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.documentEdit.settings": {
+      name: "settings",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.documentEdit.createdBy": {
+      name: "createdBy",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.documentEdit.createdAt": {
+      name: "createdAt",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.documentEdit.updatedBy": {
+      name: "updatedBy",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.documentEdit.updatedAt": {
+      name: "updatedAt",
       required: false,
       in: "query",
       type: "string"
