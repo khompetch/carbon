@@ -11,7 +11,6 @@ FROM supabase/edge-runtime:v1.74.0
 # context (the shim only existed so bind-mount-era CMD arrays could be reused),
 # and a Dockerfile can set the entrypoint directly.
 COPY packages/database/supabase/functions /home/deno/functions
-COPY packages/database/src /home/src
 COPY packages/dev/docker/edge-main /home/deno/main
 
 ENTRYPOINT ["edge-runtime"]

@@ -13,7 +13,10 @@
 #                     (documents, avatars, models) that the metadata points at.
 #
 # Restore (DB):
-#   gunzip -c db.sql.gz | docker exec -i <project>-postgres-1 psql -U postgres postgres
+#   gunzip -c db.sql.gz | docker exec -i <project>-postgres-1 psql -U supabase_admin postgres
+#   (supabase_admin, not postgres: postgres may not change the auth and storage
+#   schemas. "already exists" errors for auth/storage/realtime are expected —
+#   their services create those schemas on boot; the rows still load.)
 # Restore (storage volume):
 #   docker run --rm -v <project>_storage:/data -v "$PWD:/in:ro" alpine:3 \
 #     sh -c 'rm -rf /data/* && tar xzf /in/storage.tar.gz -C /data'
