@@ -4422,6 +4422,34 @@ the error set against an untouched checkout of `main`.
 **Rule:** After a codemod declares or renames variables, scan each new name for an earlier use in the same function. Run the database tests that cover the touched writes before committing.
 **Applies to:** Scripted refactors in service files.
 
+## A catalog default holding a variable changes what a stored word means
+
+- **Context:** document texts store only the words a user changed, keyed by catalog key.
+- **Problem:** when a key's default goes from `Date:` to `Date: {order.date}`, a stored `Order date:` keeps the key and prints no value, because the block no longer adds it.
+- **Rule:** before moving a value into a catalog default, confirm no stored row holds that key. If one can, migrate the stored words too. Nothing checks a default's variables except `texts.test.ts`, so keep it passing.
+- **Applies to:** `packages/documents/src/template/texts/`, `documentTemplate`, `documentEdit`.
+
+## Content sized from its own scroll box needs a fixed scrollbar
+
+- **Context:** The document preview draws PDF pages at the width of the box that scrolls them.
+- **Problem:** A page about as tall as the box looped forever: the scrollbar narrowed the box, the narrower page fit, the scrollbar left, the wider page no longer fit. It redrew about 60 times a second, at only some window heights, so it looked like a random flicker on open.
+- **Rule:** When a box's content takes its size from the box, keep the scrollbar's space fixed (`overflow-y-scroll`) so the width cannot depend on the content's height.
+- **Applies to:** Any `useResizeObserver` width that sizes content inside the observed scroll box.
+
+## A tagged `t` only works in the component that called `useLingui`
+
+- **Context:** a helper took `t` as a parameter and used it as a tagged template.
+- **Problem:** the Lingui macro transforms `t` only where `useLingui` binds it. Typecheck passes, but `extract` drops the message and the call receives a template array at runtime.
+- **Rule:** keep the tagged `t` in the component or a closure inside it. Pass finished strings to helpers. If a new message is missing after `lingui:extract`, look for this first.
+- **Applies to:** every `t` passed through a function parameter.
+
+## A fetcher's failed load replaces the whole page
+
+- **Context:** A modal loaded an optional extra (the values behind its pencils) with `useFetcher().load`.
+- **Problem:** A loader that throws sends a fetcher's error to the nearest route boundary (`setFetcherError`). The record page became an error screen, and the modal and its unsaved draft went with it.
+- **Rule:** When a page can work without the data, load it with a plain `fetch` and handle the failure there, or return the failure from the loader as data.
+- **Applies to:** Every `fetcher.load` for something optional, especially behind unsaved work.
+
 ## Lingui `plural()` must be the whole message, with no variables in its branches
 
 **Context:** Accessibility labels like "3 jobs for SO000001, in progress" were written as `` t`${plural(n, { one: "# job for", other: "# jobs for" })} ${orderId}` `` and later with `${orderId}` inside the branches.
@@ -4659,3 +4687,39 @@ took 20 from the bin and left the 3. TypeScript `id !== null` and SQL
 
 **Applies to:** `packages/database/src/picked-consumption.ts`, `backflush_job_materials`,
 and any bin or stripe filter where `null` is both a key and "unset".
+
+## The edge runtime reuses a worker, env and all, per pool key
+
+**Context:** One shared `supabase/edge-runtime` serving every worktree, with the
+dispatcher (`packages/dev/docker/edge-main/index.ts`) passing each request's
+worktree API as `SUPABASE_URL` in `EdgeRuntime.userWorkers.create({ envVars })`.
+
+**Problem:** The runtime keeps a live worker per pool key and returns it for the
+next `create` with the same key (`crates/base/src/worker/pool.rs`). The key
+defaults to the service path, so a worker created with worktree A's env would
+serve worktree B's next request with A's `SUPABASE_URL`. Nothing errors.
+
+**Rule:** A dispatcher that varies `envVars` per request must pass `poolKey` that
+includes every value that varies (here `${api} ${servicePath}`).
+
+**Applies to:** `packages/dev/docker/edge-main/index.ts` and any other
+`--main-service` dispatcher.
+
+## On carbon-shared, a shared service's bare name answers in every worktree
+
+**Context:** Envoy's `functions` cluster listed the worktree's private
+`edge-runtime` first and the shared `carbon-edge-runtime` second.
+
+**Problem:** crbn-shared's service is also called `edge-runtime` and joins
+`carbon-shared`, which every worktree's gateway joins too. With no private runtime
+the bare name resolved to the shared one; with one, Docker happened to answer with
+the private one only. "Private first" depended on Docker's DNS order, and the
+fallback was never used.
+
+**Rule:** A worktree container on `carbon-shared` reaches its own services by a
+`local-*` alias on its default network (`local-meta`, `local-edge-runtime`), and
+shared ones by `container_name` (`carbon-*`). Check a new name with
+`docker exec <api-gw> getent ahostsv4 <name>` with and without the other side up.
+
+**Applies to:** `packages/dev/docker/envoy/cds.template.yaml`,
+`packages/dev/docker/docker-compose.dev.yml`, `.claude/rules/dev-shared-services.md`.

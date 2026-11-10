@@ -1,9 +1,10 @@
 # Carbon on Dokploy (bundled Supabase)
 
 Deploy the full Carbon stack — `erp`, `mes`, and a self-hosted **Supabase**
-(Postgres, GoTrue, PostgREST, Realtime, Storage, postgres-meta, Kong, Studio,
-Edge Functions), plus Redis and Inngest — as a single [Dokploy](https://dokploy.com)
-Docker Compose application on your VPS.
+(Postgres 17, GoTrue, PostgREST, Realtime, Storage + imgproxy, Supavisor, an
+Envoy API gateway, Edge Functions, and an optional Studio), plus Redis and
+Inngest — as a single [Dokploy](https://dokploy.com) Docker Compose
+application on your VPS.
 
 This is adapted from [`../simple-docker-caddy`](../simple-docker-caddy), which
 does the same thing via Docker Swarm behind a Caddy reverse proxy. This recipe
@@ -11,21 +12,28 @@ targets Dokploy instead: plain environment variables (Dokploy's own encrypted
 Environment panel) rather than Docker Swarm secrets, and no bundled reverse
 proxy — Dokploy's Traefik handles domains and HTTPS.
 
+**Upgrading an existing deployment?** Read [Upgrading](#upgrading) first. The
+move to Postgres 17 and the Envoy gateway needs manual steps; a plain Redeploy
+stops at `pg-version-check`.
+
 If you'd rather point Carbon at a Supabase instance you already run somewhere
-else, drop the `postgres`/`gotrue`/`postgrest`/`realtime`/`storage`/`meta`/
-`studio`/`edge-runtime`/`kong` services from `docker-compose.yml` and set
-`SUPABASE_URL`/`SUPABASE_ANON_KEY`/`SUPABASE_SERVICE_ROLE_KEY`/
-`SUPABASE_JWT_SECRET`/`SUPABASE_DB_URL` to point at it instead.
+else, drop the `pg-version-check`/`postgres`/`supavisor`/`gotrue`/`postgrest`/
+`realtime`/`storage`/`imgproxy`/`meta`/`studio`/`edge-runtime`/`gateway`
+services from `docker-compose.yml` and set `SUPABASE_URL`/`SUPABASE_ANON_KEY`/
+`SUPABASE_SERVICE_ROLE_KEY`/`SUPABASE_JWT_SECRET`/`SUPABASE_DB_URL`/
+`SUPABASE_DB_POOLER_URL` to point at it instead.
 
 ## Files
 
 | File | Purpose |
 |---|---|
-| `docker-compose.yml` | `erp` + `mes` (built from the repo's root `Dockerfile`), a one-shot `migrate` job that gates them (built from the same Dockerfile's `ops` stage), a full self-hosted Supabase, `redis`, and `inngest`. |
+| `docker-compose.yml` | `erp` + `mes` (built from the repo's root `Dockerfile`), a one-shot `migrate` job that gates them (built from the same Dockerfile's `bootstrap` stage), a full self-hosted Supabase, `redis`, and `inngest`. |
 | `edge-runtime.Dockerfile` | Bakes the edge functions into the `edge-runtime` image (bind mounts proved fragile — see Troubleshooting). |
+| `envoy/` | The API gateway's config (from BYOC, the same files as `../simple-docker-caddy/envoy`). |
+| `supavisor/pooler.exs` | Seeds Supavisor's tenant on boot (from BYOC). |
 | `.env.example` | Template for every environment variable the compose file needs. |
 | `bin/run.sh` | Neutral `exec "$@"` entrypoint shim — lets several Supabase images' proven CMD arrays be reused unchanged without Swarm secrets. |
-| `postgres/01-roles.sh`, `postgres/02-performance.sh` | Postgres role bootstrap and tuning, run once on first init. |
+| `postgres/01-roles.sh`, `02-performance.sh`, `03-pooler.sh` | Role passwords, tuning, and what Supavisor needs (`_supabase` database, `pgbouncer` role). Run once, on first init of an empty `pgdata` volume. |
 | `scripts/gen-supabase-keys.sh` | Generates the Supabase JWT key trio (openssl only). |
 | `scripts/backup.sh` | Nightly-able backup: Postgres dump + storage volume archive. |
 
@@ -38,6 +46,8 @@ openssl rand -hex 24   # POSTGRES_PASSWORD
 openssl rand -hex 32   # SESSION_SECRET
 openssl rand -hex 32   # INNGEST_SIGNING_KEY
 openssl rand -hex 16   # INNGEST_EVENT_KEY
+openssl rand -hex 32   # SUPAVISOR_SECRET_KEY_BASE
+openssl rand -hex 16   # SUPAVISOR_VAULT_ENC_KEY
 bash contrib/deploying/dokploy/scripts/gen-supabase-keys.sh   # SUPABASE_JWT_SECRET / SUPABASE_ANON_KEY / SUPABASE_SERVICE_ROLE_KEY
 ```
 
@@ -57,7 +67,9 @@ fill in every value — the secrets from step 1, plus:
 
 - `DOMAIN`, `ERP_URL`, `MES_URL`, `SUPABASE_URL` — must match the domains you
   set up in step 4.
-- GoTrue SMTP settings, if you want invite/magic-link emails to actually send.
+- SMTP (`GOTRUE_SMTP_*` and `SMTP_FROM`). GoTrue (magic links, invites) and the
+  apps both send through this one account. Without it, no email is sent.
+- `ADMIN_EMAIL` — the first admin account (see step 7).
 - Postgres tuning (`PG_*`) — defaults suit a ~4 GB VPS; adjust for yours.
 
 ## 4. Configure domains
@@ -66,53 +78,80 @@ In Dokploy's **Domains** tab for this application, add a domain for each of:
 
 - `erp` (internal port `3000`)
 - `mes` (internal port `3000`)
-- `kong` (internal port `8000`) — this is the Supabase API gateway; its
+- `gateway` (internal port `8000`) — this is the Supabase API gateway; its
   domain must match `SUPABASE_URL` from step 3.
 
 Enable HTTPS on all three — Dokploy provisions Let's Encrypt certificates via
 its own Traefik instance automatically.
 
-`studio` (the DB admin UI) is intentionally **not** domain-mapped by default —
-it has no auth of its own. Reach it via an SSH tunnel to the VPS
-(`ssh -L 3000:localhost:<studio-container-port> ...`) or, if you must expose
-it, add a domain in Dokploy and put it behind Dokploy's own basic-auth /
-access-control feature first.
+Never map a domain to `imgproxy`, `supavisor`, `meta` or `studio`. imgproxy reads
+the storage volume with no RLS, and meta runs SQL as `supabase_admin` with no
+auth.
+
+### Supabase Studio
+
+Studio and postgres-meta are **off by default**. To run them, add
+`COMPOSE_PROFILES=studio` to the environment and redeploy. Then reach Studio
+through an SSH tunnel to the container's IP:
+
+```bash
+# on the VPS
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <project>-studio-1
+# from your machine
+ssh -L 3000:<studio-ip>:3000 <vps>   # then open http://localhost:3000
+```
+
+Remove the profile again when you are done.
 
 ## 5. Deploy
 
-Trigger a deploy in Dokploy. It builds the `erp` image from the repo's root
-`Dockerfile`, builds `mes`, builds the small `ops` image the `migrate` job
-below runs (a cache hit off the erp build — it stops before the app bundle),
+Trigger a deploy in Dokploy. It builds the `erp` and `mes` images from the
+repo's root `Dockerfile`, builds the small `bootstrap` image that the `migrate`
+job runs (it installs only `@carbon/database`), bakes the `edge-runtime` image,
 and pulls the pinned Supabase/Redis/Inngest images.
+
+The start order is:
+
+```
+pg-version-check → postgres → supavisor, gotrue, postgrest, storage, gateway …
+postgres + storage healthy → migrate (migrations, then seed) → erp + mes
+```
 
 ## 6. Database migrations (automatic)
 
 **You don't run these by hand.** The compose file has a one-shot `migrate`
-service that applies pending migrations on every deploy, and `erp`/`mes` gate
-on it via `depends_on: condition: service_completed_successfully`. The order
-is always:
+service that runs on every deploy, and `erp`/`mes` gate on it via
+`depends_on: condition: service_completed_successfully`. It does two things:
 
-```
-postgres + storage healthy  →  migrate runs to completion  →  erp + mes start
-```
+1. `supabase migration up --include-all` — applies pending migrations.
+2. `pnpm db:seed` (`packages/database/src/seed.ts`) — idempotent, safe on
+   every deploy. It writes:
+   - the `config` row (`apiUrl` + `anonKey`). Database triggers use it to call
+     back into the API. Because the job sets it to the internal gateway URL,
+     Postgres never goes out through Traefik.
+   - the `inngest_event_url` Vault secret. Without it, Postgres never delivers
+     its events (event queue, notifications) to Inngest.
+   - the `ADMIN_EMAIL` account, when that is set.
+
+   The seed is retried up to 10 times, because GoTrue and PostgREST can still
+   be booting when the migrations finish.
 
 That ordering is the point: app code never boots against a schema that hasn't
 caught up to it, and a failed migration aborts the deploy loudly instead of
 leaving the apps serving against a stale schema. It mirrors what
 [`../simple-docker-caddy`](../simple-docker-caddy) does with a Swarm
-`--mode replicated-job` (`deploy.sh` → `cmd_migrate` → "Rolling apps now that
-the schema exists").
+`--mode replicated-job` (`deploy.sh` → `cmd_migrate`).
 
-The job runs the root `Dockerfile`'s `ops` stage, built from the same context
-and revision as `erp`, so the schema and the code that assumes it can never
-come from different revisions. It is a separate image from the one `erp`
-serves because the served `runner` stage deliberately strips the supabase CLI
-(along with esbuild, tar and npm) to keep build-tool CVEs out of the image
-that faces the internet; `ops` is the un-hardened stage kept for exactly these
-short-lived one-off jobs. `supabase migration up` only applies what's missing,
-so a deploy with no new migrations finishes in about a second.
+The job runs the root `Dockerfile`'s `bootstrap` stage, built from the same
+revision as `erp`, so the schema and the code that assumes it can never come
+from different revisions. It is a separate image from the one `erp` serves
+because the served `runner` stage deliberately strips the supabase CLI (along
+with esbuild, tar and npm) to keep build-tool CVEs out of the image that faces
+the internet; `bootstrap` is the un-hardened stage kept for exactly these
+short-lived jobs. `migrate` exits with code 0 and stays exited. Dokploy shows
+it greyed out; that is not a failure.
 
-**The first deploy is the slow one** — there are ~930 migrations to apply and
+**The first deploy is the slow one** — there are ~1000 migrations to apply and
 it takes several minutes. Watch the `migrate` service's logs in Dokploy. If
 your deploy times out before it finishes, apply them once manually (below),
 then redeploy — subsequent runs only have to apply what's new.
@@ -120,9 +159,9 @@ then redeploy — subsequent runs only have to apply what's new.
 ### Running migrations by hand
 
 Still useful for bootstrapping a slow first run, or for debugging. `postgres`
-isn't published outside the Docker network and Kong only proxies HTTP
-(auth/rest/storage/realtime) — it can't carry a raw Postgres connection — so
-this has to run from *inside* the compose network:
+isn't published outside the Docker network and the gateway only proxies HTTP —
+it can't carry a raw Postgres connection — so this has to run from *inside*
+the compose network:
 
 SSH to the VPS, go to the directory Dokploy checked the compose file out into
 (`/etc/dokploy/compose/<app-name>/code/contrib/deploying/dokploy` — it holds
@@ -137,17 +176,17 @@ directory and you get a **second, empty stack** — new volumes, no data. Read
 the right value off a running container
 (`docker inspect -f '{{index .Config.Labels "com.docker.compose.project"}}' <container>`).
 
-That runs the migration in a fresh container on the stack's own network with
-the same env the deploy uses — no password to paste — and is safe to repeat:
-`migration up` only applies what is missing.
+That runs the migrations and the seed in a fresh container on the stack's own
+network with the same env the deploy uses — no password to paste — and is safe
+to repeat.
 
-To drive the CLI yourself, run it in the **ops** image, not `erp` — the served
-app image strips the Supabase CLI:
+To drive the CLI yourself, run it in the **bootstrap** image (the `migrate`
+service), not `erp` — the served app image strips the Supabase CLI:
 
 ```bash
 docker compose -p <project> run --rm --entrypoint sh migrate -c '
   PGSSLMODE=disable pnpm exec supabase migration up --include-all \
-    --db-url "postgresql://supabase_admin:<POSTGRES_PASSWORD>@postgres:5432/postgres?sslmode=disable"
+    --db-url "postgresql://supabase_admin:$POSTGRES_PASSWORD@postgres:5432/postgres?sslmode=disable"
 '
 ```
 
@@ -169,20 +208,37 @@ Four things that are easy to get wrong:
 ### Before a deploy that carries migrations
 
 There are no down migrations; the only way back is a restore. Run
-`./scripts/backup.sh` (step 8) *before* deploying schema changes, not just
+`./scripts/backup.sh` (step 9) *before* deploying schema changes, not just
 nightly. Write migrations expand-then-contract — add the new column, ship code
 that writes both, backfill, and only drop the old one in a later deploy — so
 the old containers keep working during the window where both are alive.
 
-## 7. Verify
+## 7. First admin
+
+`GOTRUE_DISABLE_SIGNUP=true` keeps the public signup closed, so somebody has to
+exist first. Two ways:
+
+- **`ADMIN_EMAIL`** (recommended): set it and redeploy. The `migrate` job
+  creates that account and makes it the instance admin. Log in at
+  `https://erp.example.com/login` with a magic link, and the onboarding wizard
+  creates the first company.
+- **Log in with any email**: an unknown email gets a 6-digit verification code
+  and is walked into onboarding. Carbon signs up through the Supabase admin API
+  (service-role key), which `GOTRUE_DISABLE_SIGNUP` does not block.
+
+Both need working SMTP (step 3) to deliver the email.
+
+## 8. Verify
 
 ```bash
 curl -f https://erp.example.com/health
 curl -f https://mes.example.com/health
-curl -f https://supabase.example.com/auth/v1/health
+curl -f https://supabase.example.com/auth/v1/health -H "apikey: $SUPABASE_ANON_KEY"
 ```
 
-## 8. Backups
+The gateway answers `401` on protected routes without an `apikey` header.
+
+## 9. Backups
 
 A complete backup is **two paired artifacts** — restore them together, never
 one without the other:
@@ -213,25 +269,78 @@ machine is not a backup:
 Restore:
 
 ```bash
-# database
-gunzip -c db.sql.gz | docker exec -i <project>-postgres-1 psql -U postgres postgres
+# database — as supabase_admin: postgres may not change the auth and storage schemas
+gunzip -c db.sql.gz | docker exec -i <project>-postgres-1 psql -U supabase_admin postgres
 # storage volume
 docker run --rm -v <project>_storage:/data -v "$PWD:/in:ro" alpine:3 \
   sh -c 'rm -rf /data/* && tar xzf /in/storage.tar.gz -C /data'
 ```
 
+The database restore reports "already exists" errors for the auth, storage and
+realtime schemas, which their services create on boot. The rows still load.
+
 Test a restore at least once (e.g. into a scratch Dokploy project) — an
 untested backup is not a backup.
 
-Then log in at `https://erp.example.com/login` with the email you want as the
-first admin — there's no separate account-bootstrap script. An unknown email
-gets a 6-digit verification code (sent via `RESEND_API_KEY`, so that must be
-set) and is walked into the onboarding wizard, which creates the first
-company and makes that user its owner. `GOTRUE_DISABLE_SIGNUP=true` does not
-block this — Carbon's signup goes through the Supabase admin API
-(service-role key), a separate path from GoTrue's public self-service signup.
+## Upgrading
+
+### From a deployment made before November 2026
+
+This version changes three things that a Redeploy alone cannot do:
+
+| Change | What you do |
+|---|---|
+| Postgres 15 → 17. Postgres 17 cannot open a Postgres 15 data volume. | Dump and restore (below). `pg-version-check` stops the deploy until you do. |
+| Kong → Envoy. The `kong` service is now `gateway` (the repo's `kong.yml` is gone). | In Dokploy's Domains tab, move the `SUPABASE_URL` domain from `kong` to `gateway`, port `8000`. |
+| New required variables. | Add `SUPAVISOR_SECRET_KEY_BASE`, `SUPAVISOR_VAULT_ENC_KEY` (step 1) and `SMTP_FROM`. Rename `CARBON_IMAGE_OPS` to `CARBON_IMAGE_BOOTSTRAP` if you set it. Remove `RESEND_DOMAIN`. Set `EDGE_VERIFY_JWT=true`. |
+
+Do the Postgres move during a maintenance window. The dump must be restored
+into an **empty** Postgres 17, before `migrate` runs. If `migrate` runs first,
+the restore cannot overwrite the rows that migrations seed, and those tables
+keep the defaults instead of your data.
+
+1. In Dokploy, add the new variables and move the domain to `gateway`. Do
+   **not** deploy yet.
+2. On the VPS, in the compose directory
+   (`/etc/dokploy/compose/<app-name>/code/contrib/deploying/dokploy`), with the
+   **old** stack still running:
+
+   ```bash
+   PROJECT=<project>        # docker compose ls shows it
+   # Dump the database, and archive the storage volume as well.
+   ./scripts/backup.sh
+   # Stop the stack, then remove ONLY Postgres's data volume.
+   # The storage, redis and inngest volumes stay as they are.
+   docker compose -p "$PROJECT" down
+   docker volume rm "${PROJECT}_pgdata"
+   ```
+
+3. Still on the VPS, get the new revision and start **only** Postgres 17. On
+   the empty volume, the first-init scripts set the role passwords and the
+   Supavisor setup. Compose warns that the new variables are unset; Postgres
+   does not use them.
+
+   ```bash
+   git pull
+   docker compose -p "$PROJECT" up -d postgres
+   until docker exec "${PROJECT}-postgres-1" pg_isready -h 127.0.0.1 -U postgres; do sleep 2; done
+   gunzip -c backups/carbon-<timestamp>/db.sql.gz \
+     | docker exec -i "${PROJECT}-postgres-1" psql -U supabase_admin postgres
+   ```
+
+   "already exists" errors for the auth, storage and realtime schemas are
+   expected. The rows still load.
+
+4. In Dokploy, **Deploy**. `migrate` applies only the migrations that the dump
+   predates, then the seed rewrites the `config` row and the Inngest event URL.
+
+Keep the backup until you have logged in and checked your data.
 
 ## Troubleshooting
+
+**The deploy stops at `pg-version-check`** with `pgdata holds Postgres 15 data`
+— the volume is from before the Postgres 17 move. Follow
+[Upgrading](#upgrading). Do not delete the volume before you have a dump.
 
 **`erp`/`mes` never start, and `migrate` is the last thing in the logs** — this
 is the gate working as designed, not a hang. Something upstream of the apps
@@ -243,6 +352,9 @@ docker compose logs migrate       # or open the service's logs in Dokploy
 
 - A SQL error means a migration genuinely failed — fix it, don't bypass the
   gate. The apps are being kept off a half-migrated schema on purpose.
+- `seed failed (attempt 10/10)` — the seed could not reach the API through the
+  gateway. Check `gateway`, `gotrue` and `postgrest` logs, and that
+  `SUPABASE_ANON_KEY`/`SUPABASE_SERVICE_ROLE_KEY` match `SUPABASE_JWT_SECRET`.
 - `password authentication failed for user "supabase_admin"` means
   `postgres/01-roles.sh` never ran. It only runs on the **first** init of an
   empty `pgdata` volume, so a volume that was created before the roles script
@@ -252,37 +364,45 @@ docker compose logs migrate       # or open the service's logs in Dokploy
   (`postgres` + `storage` healthy) hasn't been satisfied. Check those two
   services first.
 - `Command "supabase" not found` (or `supabase: not found`) means `migrate` is
-  running the served app image instead of the `ops` one. The app image strips
-  the supabase CLI; `migrate` must carry `build: *ops-build` (i.e.
-  `target: ops`) and its own `CARBON_IMAGE_OPS` tag. If you pinned
-  `CARBON_IMAGE_ERP`/`CARBON_IMAGE_OPS` to registry images, check they aren't
-  both pointing at the app image.
+  running the served app image instead of the `bootstrap` one. The app image
+  strips the supabase CLI; `migrate` must carry `build: *bootstrap-build`
+  (i.e. `target: bootstrap`) and its own `CARBON_IMAGE_BOOTSTRAP` tag. If you
+  pinned `CARBON_IMAGE_ERP`/`CARBON_IMAGE_BOOTSTRAP` to registry images, check
+  they aren't both pointing at the app image.
 
-**`exec: "/carbon/bin/run.sh": permission denied`** on `postgres`, `gotrue`,
-`realtime`, `storage`, `meta`, or `studio` — `bin/run.sh` lost its executable
-bit somewhere between git and the container. All the `.sh` files here are
-committed mode `755`; a clone made on a filesystem that drops the bit (or a
-`core.fileMode=false` checkout that re-committed them) breaks every service
-that uses the shim as its `entrypoint`. Fix it in git rather than on the
-server, or the next clone reintroduces it:
+**Supavisor fails with `password authentication failed for user "pgbouncer"`**
+or `database "_supabase" does not exist` — `postgres/03-pooler.sh` did not run,
+because the `pgdata` volume was initialised before it existed. The Postgres 17
+upgrade above creates a fresh volume, so this only happens if the script was
+skipped. Run it once by hand, then restart `supavisor`:
 
 ```bash
-git update-index --chmod=+x contrib/deploying/dokploy/bin/run.sh
+docker exec -i -e POSTGRES_USER=supabase_admin <project>-postgres-1 bash < postgres/03-pooler.sh
 ```
 
-**"Failed to send verification code" on first login** — `RESEND_API_KEY` is
-missing/invalid, or `RESEND_DOMAIN` isn't a verified sending domain in your
-Resend account. Check the `erp` container logs right after a login attempt
-for the underlying Resend error. To unblock testing without email delivery,
-set `DISABLE_RESEND=1` on `erp` and redeploy — the verification code gets
-printed to the `erp` logs instead of emailed (not for production use, since
-other features like user invites also go through Resend).
+**`exec: "/carbon/bin/run.sh": permission denied`** on `postgres`, `supavisor`,
+`gotrue`, `realtime`, `storage`, `meta`, or `studio` — `bin/run.sh` lost its
+executable bit somewhere between git and the container. The same goes for
+`envoy/docker-entrypoint.sh` on `gateway`. All the `.sh` files here are
+committed mode `755`; a clone made on a filesystem that drops the bit (or a
+`core.fileMode=false` checkout that re-committed them) breaks every service
+that uses them as its `entrypoint`. Fix it in git rather than on the server,
+or the next clone reintroduces it:
+
+```bash
+git update-index --chmod=+x contrib/deploying/dokploy/bin/run.sh contrib/deploying/dokploy/envoy/docker-entrypoint.sh
+```
+
+**No verification code or invite email arrives** — SMTP is not set or is
+wrong. Check `GOTRUE_SMTP_*` and `SMTP_FROM`, then the `gotrue` and `erp` logs
+right after a login attempt. To unblock testing without email delivery, set
+`DISABLE_RESEND=1` on `erp` and redeploy. The verification code then appears
+in the `erp` logs instead (not for production use).
 
 **An edge function fails with `worker boot error: ... could not find an
-appropriate entrypoint`** (e.g. onboarding's "Fatal: failed to seed company")
-— on current versions of this recipe this should no longer happen: the
-functions are baked into the `edge-runtime` image at build time
-(`edge-runtime.Dockerfile`). It used to happen when the functions were
+appropriate entrypoint`** — on current versions of this recipe this should no
+longer happen: the functions are baked into the `edge-runtime` image at build
+time (`edge-runtime.Dockerfile`). It used to happen when the functions were
 bind-mounted from the checkout: Docker only evaluates a bind mount when a
 container is *created*, so an `edge-runtime` created before a `git pull`
 populated those directories kept serving an empty, stale view of them

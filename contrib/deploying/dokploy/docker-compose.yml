@@ -2,20 +2,20 @@
 # Carbon on Dokploy — full stack: erp + mes + a self-hosted Supabase + Redis +
 # Inngest, as a single plain Docker Compose v2 project (not Docker Swarm).
 #
-# This bundles its own Supabase (Postgres, GoTrue, PostgREST, Realtime,
-# Storage, postgres-meta, Kong, Studio, Edge Functions) rather than pointing
-# at an external one. It's adapted from ../simple-docker-caddy (the Swarm +
-# Caddy recipe) with two differences: plain environment variables instead of
-# Docker Swarm secrets (Dokploy's Environment panel already stores these
-# securely), and no bundled reverse proxy — Dokploy's own Traefik handles
-# domains + HTTPS.
+# This bundles its own Supabase (Postgres 17, GoTrue, PostgREST, Realtime,
+# Storage + imgproxy, Supavisor, an Envoy API gateway, Edge Functions, and an
+# optional Studio) rather than pointing at an external one. It's adapted from
+# ../simple-docker-caddy (the Swarm + Caddy recipe) with two differences:
+# plain environment variables instead of Docker Swarm secrets (Dokploy's
+# Environment panel already stores these securely), and no bundled reverse
+# proxy — Dokploy's own Traefik handles domains + HTTPS.
 #
 # Deploy: in Dokploy, create an Application of type "Docker Compose" pointing
 # at this repo, with Compose Path set to
 # contrib/deploying/dokploy/docker-compose.yml, then map a domain to each of
-# `erp` (port 3000), `mes` (port 3000), and `kong` (port 8000 — the Supabase
-# gateway). See README.md in this folder for the full walkthrough, including
-# how to generate the secrets in .env.example.
+# `erp` (port 3000), `mes` (port 3000), and `gateway` (port 8000 — the
+# Supabase API gateway). See README.md in this folder for the full
+# walkthrough, including how to generate the secrets in .env.example.
 ###############################################################################
 
 # The erp build definition. Declared as an anchor so the `erp` service and any
@@ -33,32 +33,70 @@ x-erp-build: &erp-build
     # don't build simultaneously.
     NODE_OPTIONS: "--max-old-space-size=4096"
 
-# The migration runner's build. Same context and same Dockerfile as `erp` —
-# so the schema and the code that assumes it still come from one revision —
-# but it stops at the Dockerfile's `ops` stage instead of the default
-# `runner`.
+# The migration runner's build. Same context and same revision as `erp` — so
+# the schema and the code that assumes it still come from one checkout — but
+# the Dockerfile's `bootstrap` stage instead of the default `runner`.
 #
 # `runner` is deliberately hardened: it deletes the supabase CLI (plus
 # esbuild, tsx's compiler, tar and npm) from the runtime node_modules so the
 # served image carries no build-tool CVEs. `pnpm exec supabase migration up`
-# therefore does not exist in it any more, and a `migrate` service pointed at
-# the app image fails with `Command "supabase" not found` — which, because
-# erp/mes gate on `service_completed_successfully`, aborts the whole deploy.
-# `ops` is the un-hardened stage the Dockerfile publishes for exactly these
-# short-lived one-off Jobs (it is never exposed and never serves traffic).
-#
-# It stops at `deps`, so it never runs the app bundle build: the deps layer is
-# a straight cache hit off the erp build, and this image costs nothing extra
-# to produce beyond the tag.
-x-ops-build: &ops-build
+# therefore does not exist in it, and a `migrate` service pointed at the app
+# image fails with `Command "supabase" not found` — which, because erp/mes
+# gate on `service_completed_successfully`, aborts the whole deploy.
+# `bootstrap` is the un-hardened stage the Dockerfile publishes for exactly
+# these short-lived jobs (it is never exposed and never serves traffic). It
+# installs only @carbon/database, so it is small and quick to build.
+# (`ops` is the stage's former name, kept upstream as a deprecated alias.)
+x-bootstrap-build: &bootstrap-build
   context: ../../..
   dockerfile: Dockerfile
-  target: ops
+  target: bootstrap
+
+# erp and mes share every runtime setting except the app they serve.
+x-app-environment: &app-environment
+  NODE_ENV: production
+  PORT: "3000"
+  TZ: UTC
+  SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres?sslmode=disable
+  # The app's pool, through Supavisor in transaction mode as in production.
+  # The user is `<role>.<tenant>`; the tenant is POOLER_TENANT_ID below.
+  SUPABASE_DB_POOLER_URL: postgresql://postgres.carbon:${POSTGRES_PASSWORD}@supavisor:6543/postgres?sslmode=disable
+  REDIS_URL: redis://redis:6379
+  # Without this, inngest.send()/the SDK default to Inngest Cloud instead
+  # of the bundled self-hosted server, and fail auth against it.
+  INNGEST_BASE_URL: http://inngest:8288
+  # App email (invites, notifications) goes over SMTP, sharing GoTrue's
+  # account. RESEND_API_KEY is optional — leave it empty.
+  SMTP_HOST: ${GOTRUE_SMTP_HOST:-}
+  SMTP_PORT: ${GOTRUE_SMTP_PORT:-587}
+  SMTP_USER: ${GOTRUE_SMTP_USER:-}
+  SMTP_PASSWORD: ${GOTRUE_SMTP_PASSWORD:-}
+  SMTP_FROM: ${SMTP_FROM:-}
+
+x-app-healthcheck: &app-healthcheck
+  test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+  interval: 15s
+  timeout: 6s
+  retries: 5
+  start_period: 40s
+
+x-app-depends-on: &app-depends-on
+  # Never boot app code against a schema that has not caught up to it.
+  migrate:
+    condition: service_completed_successfully
+  gateway:
+    condition: service_started
+  supavisor:
+    condition: service_started
+  redis:
+    condition: service_started
+  inngest:
+    condition: service_started
 
 services:
   # ─────────────────────────── Schema migration ──────────────────────────────
-  # One-shot job: applies pending migrations, exits, stays exited. Compose's
-  # equivalent of the Swarm `--mode replicated-job` in
+  # One-shot job: applies pending migrations, runs the bootstrap seed, exits,
+  # stays exited. Compose's equivalent of the Swarm `--mode replicated-job` in
   # ../simple-docker-caddy/deploy.sh (cmd_migrate), which likewise waits for
   # postgres + storage to be healthy before it runs.
   #
@@ -66,20 +104,30 @@ services:
   # BEFORE any app code that assumes it, and a failed migration aborts the
   # deploy loudly instead of leaving the apps to run against a stale schema.
   # Re-running is cheap and safe: `migration up` only applies what is missing,
-  # so a deploy with no new migrations finishes in about a second.
+  # and the seed is idempotent, so a deploy with nothing new finishes fast.
   migrate:
-    # The ops image (see x-ops-build above), not the served app image: the app
-    # image no longer ships the supabase CLI. Built from the same context and
-    # revision as `erp`, so the schema and the code that assumes it still
-    # cannot come from different revisions.
-    image: ${CARBON_IMAGE_OPS:-carbon-ops:local}
-    build: *ops-build
+    image: ${CARBON_IMAGE_BOOTSTRAP:-carbon-bootstrap:local}
+    build: *bootstrap-build
     working_dir: /repo/packages/database
     environment:
       # The bundled Postgres has no TLS configured. Without BOTH of these the
       # CLI fails with "tls error (server refused TLS connection)".
       PGSSLMODE: disable
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # For src/seed.ts (`pnpm db:seed`), which talks to the API through the
+      # gateway as service_role. It writes:
+      #   - the `config` row (apiUrl + anonKey) that database triggers use to
+      #     call back into the API — the internal gateway URL, so Postgres
+      #     never hairpins through Traefik;
+      #   - the Vault secret `inngest_event_url`, without which Postgres never
+      #     delivers its events (event queue, notifications) to Inngest;
+      #   - the instance admin account, when ADMIN_EMAIL is set.
+      SUPABASE_URL: http://gateway:8000
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      INNGEST_EVENT_KEY: ${INNGEST_EVENT_KEY}
+      INNGEST_BASE_URL: http://inngest:8288
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
     # `$$` survives compose interpolation as a literal `$`, so sh expands the
     # password inside the container instead of it being baked into argv where
     # `docker inspect` would print it — the same reason the Swarm recipe reads
@@ -88,17 +136,30 @@ services:
     # supabase_admin, not postgres: the migrations create Supabase-owned
     # schemas and extensions. --include-all is required, or the CLI silently
     # skips every migration whose timestamp predates the newest applied one.
+    #
+    # The seed is retried: on a cold start GoTrue/PostgREST may still be
+    # booting behind the gateway when the migrations finish.
     command:
       - sh
       - -c
       - >-
         pnpm exec supabase migration up --include-all
         --db-url "postgresql://supabase_admin:$$POSTGRES_PASSWORD@postgres:5432/postgres?sslmode=disable"
+        && for i in 1 2 3 4 5 6 7 8 9 10; do
+        pnpm run db:seed && exit 0;
+        echo "seed failed (attempt $$i/10), retrying in 6s"; sleep 6;
+        done; exit 1
     depends_on:
       postgres:
         condition: service_healthy
       storage:
         condition: service_healthy
+      gateway:
+        condition: service_started
+      gotrue:
+        condition: service_started
+      postgrest:
+        condition: service_started
     # NOT `unless-stopped` — a finished one-shot job must stay finished, or
     # Docker restarts it forever.
     restart: "no"
@@ -112,31 +173,10 @@ services:
     image: ${CARBON_IMAGE_ERP:-carbon-erp:local}
     build: *erp-build
     env_file: .env
-    environment:
-      NODE_ENV: production
-      PORT: "3000"
-      SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres?sslmode=disable
-      REDIS_URL: redis://redis:6379
-      # Without this, inngest.send()/the SDK default to Inngest Cloud instead
-      # of the bundled self-hosted server, and fail auth against it.
-      INNGEST_BASE_URL: http://inngest:8288
-    healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
-      interval: 15s
-      timeout: 6s
-      retries: 5
-      start_period: 40s
+    environment: *app-environment
+    healthcheck: *app-healthcheck
     restart: unless-stopped
-    depends_on:
-      # Never boot app code against a schema that has not caught up to it.
-      migrate:
-        condition: service_completed_successfully
-      kong:
-        condition: service_started
-      redis:
-        condition: service_started
-      inngest:
-        condition: service_started
+    depends_on: *app-depends-on
 
   mes:
     build:
@@ -146,28 +186,10 @@ services:
         APP: mes
         NODE_OPTIONS: "--max-old-space-size=4096"
     env_file: .env
-    environment:
-      NODE_ENV: production
-      PORT: "3000"
-      SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres?sslmode=disable
-      REDIS_URL: redis://redis:6379
-      INNGEST_BASE_URL: http://inngest:8288
-    healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
-      interval: 15s
-      timeout: 6s
-      retries: 5
-      start_period: 40s
+    environment: *app-environment
+    healthcheck: *app-healthcheck
     restart: unless-stopped
-    depends_on:
-      migrate:
-        condition: service_completed_successfully
-      kong:
-        condition: service_started
-      redis:
-        condition: service_started
-      inngest:
-        condition: service_started
+    depends_on: *app-depends-on
 
   redis:
     image: redis:7-alpine
@@ -192,14 +214,38 @@ services:
       - http://erp:3000/api/inngest
       - --sdk-url
       - http://mes:3000/api/inngest
-    env_file: .env
+    environment:
+      INNGEST_EVENT_KEY: ${INNGEST_EVENT_KEY}
+      INNGEST_SIGNING_KEY: ${INNGEST_SIGNING_KEY}
     volumes:
       - inngest-data:/data
     restart: unless-stopped
 
   # ──────────────────────────── Supabase (self-hosted) ─────────────────────────
+  # Refuses to let Postgres start on a data volume from another major version.
+  # Postgres 17 cannot open a Postgres 15 data directory: it exits, and with
+  # `restart: unless-stopped` it would restart forever while every other
+  # service fails behind it. This one-shot check fails the deploy with a clear
+  # message instead. Upgrade with a dump and restore: see "Upgrading to
+  # Postgres 17" in README.md. A fresh, empty volume passes.
+  pg-version-check:
+    image: alpine:3
+    command:
+      - sh
+      - -c
+      - >-
+        v="$$(cat /data/PG_VERSION 2>/dev/null || true)";
+        if [ -n "$$v" ] && [ "$$v" != "17" ]; then
+        echo "pgdata holds Postgres $$v data; this stack runs Postgres 17.";
+        echo "Upgrade with a dump and restore: see 'Upgrading to Postgres 17' in contrib/deploying/dokploy/README.md";
+        exit 1;
+        fi
+    volumes:
+      - pgdata:/data:ro
+    restart: "no"
+
   postgres:
-    image: supabase/postgres:15.14.1.112
+    image: supabase/postgres:17.6.1.173
     entrypoint: ["/carbon/bin/run.sh"]
     # Do NOT override shared_preload_libraries here: the image's own
     # postgresql.conf already preloads the full set Carbon needs
@@ -210,6 +256,7 @@ services:
       - -c
       - config_file=/etc/postgresql/postgresql.conf
     environment:
+      TZ: UTC
       POSTGRES_HOST: /var/run/postgresql
       POSTGRES_PORT: "5432"
       PGPORT: "5432"
@@ -228,14 +275,23 @@ services:
     volumes:
       - ./bin/run.sh:/carbon/bin/run.sh:ro
       - pgdata:/var/lib/postgresql/data
+      # The Postgres 17 image keeps its custom config here; persist it with
+      # the data, as the Swarm recipe does.
+      - pgconfig:/etc/postgresql-custom
+      # First-init only (empty pgdata): role passwords, tuning, and what
+      # Supavisor needs (_supabase database, pgbouncer role + auth function).
       - ./postgres/01-roles.sh:/docker-entrypoint-initdb.d/zz-carbon-01-roles.sh:ro
       - ./postgres/02-performance.sh:/docker-entrypoint-initdb.d/zz-carbon-02-performance.sh:ro
+      - ./postgres/03-pooler.sh:/docker-entrypoint-initdb.d/zz-carbon-03-pooler.sh:ro
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres", "-h", "127.0.0.1"]
       interval: 5s
       timeout: 5s
       retries: 20
     restart: unless-stopped
+    depends_on:
+      pg-version-check:
+        condition: service_completed_successfully
     # Supabase Studio's default project config expects the Postgres host to
     # be named `db` (the convention in official self-host Supabase compose
     # files) — alias it here so `meta`/`studio` resolve it without needing
@@ -244,8 +300,48 @@ services:
       default:
         aliases: [db]
 
+  # The connection pooler, as BYOC and hosted Supabase run it: Supavisor in
+  # transaction mode on 6543. The apps' pool connects here as postgres.carbon
+  # (user.tenant); the services that need session state connect directly.
+  supavisor:
+    image: supabase/supavisor:2.9.12
+    entrypoint: ["/carbon/bin/run.sh"]
+    # migrate its own catalogue, seed the tenant from pooler.exs, then serve.
+    command:
+      - /bin/sh
+      - -c
+      - /app/bin/migrate && /app/bin/supavisor eval "$$(cat /etc/pooler/pooler.exs)" && exec /app/bin/server
+    environment:
+      PORT: "4000"
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DATABASE_URL: ecto://supabase_admin:${POSTGRES_PASSWORD}@postgres:5432/_supabase
+      CLUSTER_POSTGRES: "true"
+      REGION: local
+      ERL_AFLAGS: -proto_dist inet_tcp
+      SECRET_KEY_BASE: ${SUPAVISOR_SECRET_KEY_BASE}
+      VAULT_ENC_KEY: ${SUPAVISOR_VAULT_ENC_KEY}
+      API_JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      METRICS_JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      POOLER_TENANT_ID: carbon
+      # Postgres connections for the apps; with the other services' it stays
+      # under PG_MAX_CONNECTIONS.
+      POOLER_DEFAULT_POOL_SIZE: ${SUPAVISOR_POOL_SIZE:-20}
+      POOLER_MAX_CLIENT_CONN: ${SUPAVISOR_MAX_CLIENT_CONN:-100}
+      POOLER_POOL_MODE: transaction
+      DB_POOL_SIZE: "5"
+    volumes:
+      - ./bin/run.sh:/carbon/bin/run.sh:ro
+      - ./supavisor/pooler.exs:/etc/pooler/pooler.exs:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
   gotrue:
-    image: supabase/gotrue:v2.189.0
+    image: supabase/gotrue:v2.196.0
     entrypoint: ["/carbon/bin/run.sh"]
     command: ["auth"]
     environment:
@@ -255,7 +351,7 @@ services:
       GOTRUE_DB_DRIVER: postgres
       GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:${POSTGRES_PASSWORD}@postgres:5432/postgres
       GOTRUE_SITE_URL: ${ERP_URL}
-      GOTRUE_URI_ALLOW_LIST: ${ERP_URL},${MES_URL}
+      GOTRUE_URI_ALLOW_LIST: ${ERP_URL},${ERP_URL}/callback,${MES_URL},${MES_URL}/callback
       GOTRUE_DISABLE_SIGNUP: ${GOTRUE_DISABLE_SIGNUP:-true}
       GOTRUE_JWT_SECRET: ${SUPABASE_JWT_SECRET}
       GOTRUE_JWT_EXP: "3600"
@@ -278,14 +374,20 @@ services:
       GOTRUE_EXTERNAL_AZURE_CLIENT_ID: ${SUPABASE_AUTH_EXTERNAL_AZURE_CLIENT_ID:-}
       GOTRUE_EXTERNAL_AZURE_SECRET: ${SUPABASE_AUTH_EXTERNAL_AZURE_CLIENT_SECRET:-}
       GOTRUE_EXTERNAL_AZURE_REDIRECT_URI: ${SUPABASE_AUTH_EXTERNAL_AZURE_REDIRECT_URI:-}
+      # Enterprise SAML SSO. The key is ignored while SAML_ENABLED=false.
+      GOTRUE_SAML_ENABLED: ${SAML_ENABLED:-false}
+      GOTRUE_SAML_PRIVATE_KEY: ${SAML_PRIVATE_KEY:-}
       GOTRUE_MAILER_TEMPLATES_MAGIC_LINK: ${ERP_URL}/templates/magic-link.html
       GOTRUE_MAILER_TEMPLATES_INVITE: ${ERP_URL}/templates/invite.html
+      GOTRUE_MFA_TOTP_ENROLL_ENABLED: "true"
+      GOTRUE_MFA_TOTP_VERIFY_ENABLED: "true"
+      GOTRUE_MFA_MAX_ENROLLED_FACTORS: "10"
     volumes:
       - ./bin/run.sh:/carbon/bin/run.sh:ro
     restart: unless-stopped
 
   postgrest:
-    image: postgrest/postgrest:v13.0.8
+    image: postgrest/postgrest:v14.17
     environment:
       PGRST_DB_URI: postgres://authenticator:${POSTGRES_PASSWORD}@postgres:5432/postgres
       PGRST_DB_SCHEMAS: public,storage,graphql_public
@@ -297,7 +399,7 @@ services:
     restart: unless-stopped
 
   realtime:
-    image: supabase/realtime:v2.89.0
+    image: supabase/realtime:v2.134.10
     entrypoint: ["/carbon/bin/run.sh"]
     command: ["/usr/bin/tini", "-s", "-g", "--", "/app/run.sh", "/app/bin/server"]
     networks:
@@ -328,7 +430,7 @@ services:
     restart: unless-stopped
 
   storage:
-    image: supabase/storage-api:v1.58.4
+    image: supabase/storage-api:v1.74.0
     entrypoint: ["/carbon/bin/run.sh"]
     command: ["docker-entrypoint.sh", "node", "dist/start/server.js"]
     environment:
@@ -343,7 +445,9 @@ services:
       TENANT_ID: stub
       REGION: stub
       GLOBAL_S3_BUCKET: stub
-      ENABLE_IMAGE_TRANSFORMATION: "false"
+      # Resize + HEIC→JPEG decode, which the app's media pipeline relies on.
+      ENABLE_IMAGE_TRANSFORMATION: "true"
+      IMGPROXY_URL: http://imgproxy:5001
     volumes:
       - ./bin/run.sh:/carbon/bin/run.sh:ro
       - storage:/var/lib/storage
@@ -354,8 +458,32 @@ services:
       retries: 30
     restart: unless-stopped
 
+  # Image transformations for the storage API. Internal only — never map a
+  # domain or publish a port: direct imgproxy access reads the storage volume
+  # with no RLS.
+  imgproxy:
+    image: darthsim/imgproxy:v3.31.4
+    environment:
+      IMGPROXY_BIND: ":5001"
+      IMGPROXY_LOCAL_FILESYSTEM_ROOT: /
+      IMGPROXY_USE_ETAG: "true"
+      # Default is 16.8Mpx, which rejects 48MP iPhone photos.
+      IMGPROXY_MAX_SRC_RESOLUTION: "60"
+    volumes:
+      - storage:/var/lib/storage
+    healthcheck:
+      test: ["CMD", "imgproxy", "health"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+  # postgres-meta runs SQL as supabase_admin and has no auth of its own, so
+  # it and Studio are OFF by default. Start both with COMPOSE_PROFILES=studio
+  # in .env. Neither gets a domain; see README "Supabase Studio".
   meta:
     image: supabase/postgres-meta:v0.96.5
+    profiles: [studio]
     entrypoint: ["/carbon/bin/run.sh"]
     command: ["docker-entrypoint.sh", "node", "dist/server/server.js"]
     environment:
@@ -369,25 +497,27 @@ services:
       - ./bin/run.sh:/carbon/bin/run.sh:ro
     restart: unless-stopped
 
-  # Internal DB admin UI — not domain-mapped by default. See README for how to
-  # reach it (SSH tunnel, or map a Dokploy domain with basic-auth yourself).
   studio:
     image: supabase/studio:2026.04.28-sha-89d08a2
+    profiles: [studio]
     entrypoint: ["/carbon/bin/run.sh"]
     command: ["docker-entrypoint.sh", "node", "apps/studio/server.js"]
     environment:
       # Next.js standalone binds to $HOSTNAME, which Docker sets to the
       # container ID (-> overlay IP only). Force 0.0.0.0 so the healthcheck
-      # on 127.0.0.1 and requests via kong/Dokploy both reach it.
+      # on 127.0.0.1 and an SSH tunnel both reach it.
       HOSTNAME: 0.0.0.0
       STUDIO_PG_META_URL: http://meta:8080
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       DEFAULT_ORGANIZATION_NAME: Carbon
       DEFAULT_PROJECT_NAME: Carbon
-      SUPABASE_URL: http://kong:8000
+      SUPABASE_URL: http://gateway:8000
       SUPABASE_PUBLIC_URL: ${SUPABASE_URL}
       SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
       SUPABASE_SERVICE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      # With this unset the SQL editor throws "SNIPPETS_MANAGEMENT_FOLDER env
+      # var is not set". Studio creates the folder itself.
+      SNIPPETS_MANAGEMENT_FOLDER: /app/snippets
     volumes:
       - ./bin/run.sh:/carbon/bin/run.sh:ro
     # The image's built-in healthcheck demands HTTP 200 from
@@ -410,36 +540,44 @@ services:
       context: ../../..
       dockerfile: contrib/deploying/dokploy/edge-runtime.Dockerfile
     environment:
+      TZ: UTC
       JWT_SECRET: ${SUPABASE_JWT_SECRET}
-      SUPABASE_URL: http://kong:8000
+      SUPABASE_URL: http://gateway:8000
       SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
       SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
-      SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
-      VERIFY_JWT: ${EDGE_VERIFY_JWT:-false}
-      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      # Keep it on: the gateway forwards /functions/v1/ without checking
+      # tokens, so this is the only signature check (what Supabase Cloud does).
+      VERIFY_JWT: ${EDGE_VERIFY_JWT:-true}
     restart: unless-stopped
 
   # Public API gateway — the only Supabase service that needs a Dokploy domain
-  # (map it to SUPABASE_URL/SUPABASE_HOST below). Aggregates auth/rest/storage/
-  # realtime/functions behind one origin.
-  kong:
-    image: kong:2.8.1
+  # (map it to SUPABASE_URL, port 8000). Aggregates auth/rest/storage/
+  # realtime/functions behind one origin. Envoy with BYOC's config (./envoy),
+  # as Supabase self-hosting uses since it replaced Kong. Protected routes
+  # need the anon or service-role key. There is no route to postgres-meta or
+  # Studio.
+  gateway:
+    image: envoyproxy/envoy:v1.39.1
+    entrypoint: ["/etc/envoy/docker-entrypoint.sh"]
     environment:
-      KONG_DATABASE: "off"
-      KONG_DECLARATIVE_CONFIG: /home/kong/kong.yml
-      KONG_DNS_ORDER: LAST,A,CNAME
-      KONG_PLUGINS: request-transformer,cors,key-auth,acl,basic-auth
+      ANON_KEY: ${SUPABASE_ANON_KEY}
+      SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
     volumes:
-      - ../../../packages/dev/docker/kong.yml:/home/kong/kong.yml:ro
-    healthcheck:
-      test: ["CMD", "kong", "health"]
-      interval: 15s
-      timeout: 5s
-      retries: 10
+      - ./envoy:/etc/envoy:ro
+      # docker-entrypoint.sh writes the keyed lds.yaml here.
+      - type: tmpfs
+        target: /etc/envoy-generated
+    # The old service name, so anything still addressing `kong:8000` inside
+    # the network keeps working. Dokploy domains are mapped by service name,
+    # so the public domain must be moved to `gateway` (see README).
+    networks:
+      default:
+        aliases: [kong]
     restart: unless-stopped
 
 volumes:
   pgdata:
+  pgconfig:
   storage:
   redis-data:
   inngest-data:
