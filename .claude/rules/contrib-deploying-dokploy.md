@@ -23,14 +23,21 @@ Two deliberate differences from the Swarm recipe:
   domains; there is no Caddy service and nothing publishes ports.
 
 ## Files (all under `contrib/deploying/dokploy/`)
-- `docker-compose.yml` — 14 services: `migrate`, `erp`, `mes`, `redis`,
-  `inngest`, `postgres`, `gotrue`, `postgrest`, `realtime`, `storage`, `meta`,
-  `studio`, `edge-runtime`, `kong`. Unlike the Swarm file this IS
-  `docker compose up`-able: it uses `build:`, `depends_on`, `restart:`, the
-  top-level `x-erp-build` / `x-ops-build` anchors, and no
-  `deploy:`/`secrets:` blocks.
-- `edge-runtime.Dockerfile` — bakes `packages/database/supabase/functions`,
-  `packages/database/src`, and `packages/dev/docker/edge-main` INTO the image.
+- `docker-compose.yml` — 17 services: `migrate`, `erp`, `mes`, `redis`,
+  `inngest`, `pg-version-check`, `postgres` (17), `supavisor`, `gotrue`,
+  `postgrest`, `realtime`, `storage`, `imgproxy`, `meta` + `studio` (profile
+  `studio`, off by default), `edge-runtime`, `gateway` (Envoy). Unlike the
+  Swarm file this IS `docker compose up`-able: it uses `build:`, `depends_on`,
+  `restart:`, `profiles:`, the top-level `x-erp-build` / `x-bootstrap-build` /
+  `x-app-*` anchors, and no `deploy:`/`secrets:` blocks.
+- `envoy/` — byte-identical copy of `../simple-docker-caddy/envoy` (the API
+  gateway that replaced Kong; `packages/dev/docker/kong.yml` no longer
+  exists). Bind-mounted `./envoy:/etc/envoy:ro`; `docker-entrypoint.sh` writes
+  the keyed `lds.yaml` to a tmpfs. `gateway` carries network alias `kong`.
+- `supavisor/pooler.exs` + `postgres/03-pooler.sh` — copies of the Swarm
+  ones. The apps get `SUPABASE_DB_POOLER_URL=postgres.carbon@supavisor:6543`.
+- `edge-runtime.Dockerfile` — bakes `packages/database/supabase/functions`
+  and `packages/dev/docker/edge-main` INTO the image.
   Build context is the repo root. No `run.sh` shim (the root `.dockerignore`
   excludes `contrib/` from the build context; a Dockerfile sets ENTRYPOINT
   directly).
@@ -40,6 +47,10 @@ Two deliberate differences from the Swarm recipe:
 - `postgres/01-roles.sh` — Supabase role passwords from `POSTGRES_PASSWORD`.
 - `postgres/02-performance.sh` — first-init tuning via `ALTER SYSTEM` from
   `CARBON_PG_*`.
+- `pg-version-check` — alpine one-shot reading `pgdata/PG_VERSION`; `postgres`
+  gates on it. A non-17 volume fails the deploy with a pointer to README
+  "Upgrading" (dump → drop `pgdata` → start only `postgres` → restore →
+  Deploy). Restore BEFORE `migrate` runs, or migration-seeded rows win.
 - `scripts/gen-supabase-keys.sh` — Supabase JWT trio, `openssl` only.
 - `scripts/backup.sh` — `pg_dump` + storage volume tarball.
 - `.env.example` — EVERY variable, secrets included (unlike the Swarm recipe,
@@ -51,11 +62,20 @@ Two deliberate differences from the Swarm recipe:
 `--mode replicated-job` in `deploy.sh cmd_migrate`:
 
 ```
-postgres + storage healthy → migrate runs to completion → erp + mes start
+postgres + storage healthy → migrate (migration up, then db:seed) → erp + mes start
 ```
 
-- `image: ${CARBON_IMAGE_OPS:-carbon-ops:local}` + `build: *ops-build` — the
-  root `Dockerfile`'s **`ops`** stage, same context and revision as `erp`, so
+After the migrations, `migrate` runs `pnpm run db:seed`
+(`packages/database/src/seed.ts`, retried 10×) with `SUPABASE_URL=http://gateway:8000`.
+It writes the `config` row (`apiUrl`/`anonKey` — DB triggers call back
+through it), the Vault `inngest_event_url` (without it Postgres events never
+reach Inngest — the pre-Nov-2026 Dokploy stack never set it), and the
+`ADMIN_EMAIL` account. So `migrate` also depends on `gateway`, `gotrue`,
+`postgrest`.
+
+- `image: ${CARBON_IMAGE_BOOTSTRAP:-carbon-bootstrap:local}` + `build:
+  *bootstrap-build` — the root `Dockerfile`'s **`bootstrap`** stage (`ops` is
+  now its deprecated alias), same revision as `erp`, so
   schema and code still cannot come from different revisions. It carries
   `build:` as well as `image:` so a `docker compose pull` can't go hunting for
   a local-only tag on a registry.
@@ -70,9 +90,9 @@ postgres + storage healthy → migrate runs to completion → erp + mes start
   never start and Dokploy reports a failed deployment. #1539 added `ops`
   (`FROM deps`, un-hardened, never exposed, scanned report-only) for exactly
   these one-off Jobs; upstream's Helm migrate Job and seed hook use it the
-  same way. `target: ops` also skips the `build` stage, so the ops image is a
-  straight cache hit off the erp build. Anything else that needs the CLI or
-  `tsx` at runtime (a manual migration, a seed) must run from `ops` too —
+  same way. `bootstrap` installs only `@carbon/database`, so it builds fast
+  on its own. Anything else that needs the CLI or
+  `tsx` at runtime (a manual migration, a seed) must run from it too —
   `docker compose run --rm migrate`, never `docker exec` into `erp`.
 - `restart: "no"` (quoted — bare `no` is YAML false). A finished job must stay
   finished; `unless-stopped` would loop it forever. `Exited (0)` is the healthy
@@ -140,28 +160,32 @@ OAuth blocks — irrelevant to `migration up`), the real result
   empty functions dir forever (`worker boot error: … could not find an
   appropriate entrypoint`, surfacing as onboarding's "Fatal: failed to seed
   company"). A Redeploy now ships function changes atomically with the image.
-- **`kong` still bind-mounts** `../../../packages/dev/docker/kong.yml`, so the
-  repo checkout must exist on the host. It is the only Supabase service needing
-  a domain (map it to `SUPABASE_URL`).
+- **`gateway` bind-mounts `./envoy`**, and `postgres`/`supavisor` bind-mount
+  their init files, so the repo checkout must exist on the host. `gateway` is
+  the only Supabase service needing a domain (map it to `SUPABASE_URL`, port
+  8000). Keep `envoy/` in sync with `../simple-docker-caddy/envoy`.
 - **Healthchecks use `127.0.0.1`, never `localhost`**; `studio` additionally
   needs `HOSTNAME=0.0.0.0` (Next.js standalone binds `$HOSTNAME`, which Docker
   sets to the container id) plus a healthcheck override with a `start_period`.
-- **Domains**: `erp` (3000), `mes` (3000), `kong` (8000) get Dokploy domains.
-  `studio` is deliberately unmapped — it has no auth of its own.
+- **Domains**: `erp` (3000), `mes` (3000), `gateway` (8000) get Dokploy domains.
+  `studio`, `meta`, `imgproxy`, `supavisor` are never mapped.
+- **Email** is SMTP: the apps get `SMTP_*` mapped from `GOTRUE_SMTP_*` plus
+  `SMTP_FROM`; `RESEND_API_KEY` is optional.
 - **Build OOM on small VPSes**: `COMPOSE_PARALLEL_LIMIT=1` in `.env` plus the
   `NODE_OPTIONS: --max-old-space-size=4096` build arg in `x-erp-build`. Symptom
   is a hang around `rendering chunks`.
-- **`CARBON_IMAGE_ERP`** tags the erp image, **`CARBON_IMAGE_OPS`** the
+- **`CARBON_IMAGE_ERP`** tags the erp image, **`CARBON_IMAGE_BOOTSTRAP`** the
   migration one. They are deliberately DIFFERENT images (see the gate above);
   pointing both at the app image is the `Command "supabase" not found` failure.
   Override them to run two Carbon stacks on one host or to pull prebuilt
   registry images.
-- **Volumes**: `pgdata`, `storage`, `redis-data`, `inngest-data`. A backup is
+- **Volumes**: `pgdata`, `pgconfig`, `storage`, `redis-data`, `inngest-data`. A backup is
   the PAIRED `db.sql.gz` + `storage.tar.gz` (`STORAGE_BACKEND: file` puts
   uploads on the volume, metadata in Postgres) — restore both or neither.
 - **First admin**: no bootstrap script. Logging in at `/login` with an unknown
-  email sends a 6-digit code (needs a working `RESEND_API_KEY`; `DISABLE_RESEND=1`
-  prints it to the `erp` log instead) and walks into the onboarding wizard, which
+  email sends a 6-digit code (needs working SMTP; `DISABLE_RESEND=1`
+  prints it to the `erp` log instead), or set `ADMIN_EMAIL` and the seed
+  creates the account, and walks into the onboarding wizard, which
   creates the first company and its owner. `GOTRUE_DISABLE_SIGNUP=true` does not
   block this — Carbon signs up through the Supabase admin API.
 
@@ -175,10 +199,8 @@ docker compose config | grep '\${'     # must be empty — no unresolved vars
 
 `docker compose config` re-escapes a literal `$` as `$$` on output, so seeing
 `$$POSTGRES_PASSWORD` in `migrate`'s command is correct, not a double-escape.
-Also confirm `migrate` still resolves `target: ops` and that its `image:`
-differs from `erp`'s.
-
-The sibling Swarm recipe (`../simple-docker-caddy/deploy.sh` → `cmd_migrate`)
-still runs `pnpm exec supabase migration up` in `$CARBON_IMAGE_ERP` and so
-carries the same break; it needs its own `ops` image before it will migrate
-again.
+Also confirm `migrate` still resolves `target: bootstrap` and that its
+`image:` differs from `erp`'s, and that `COMPOSE_PROFILES=studio docker compose
+config --services` adds `meta` + `studio`. `docker compose config` needs a
+`.env` beside the file (`env_file: .env`) — make a throwaway one from
+`.env.example` and delete it.
