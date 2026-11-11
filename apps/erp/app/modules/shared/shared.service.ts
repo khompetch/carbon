@@ -1562,7 +1562,7 @@ type AppShellRows = {
   defaults: Views["userDefaults"]["Row"] | null;
   modulePreferences: Pick<
     PublicTables["userModulePreference"]["Row"],
-    "module" | "position" | "hidden"
+    "module" | "position" | "hidden" | "hiddenSubmodules" | "submoduleOrder"
   >[];
   printerRoutes: PrinterRoute[];
   implementationHub: PublicTables["implementationHub"]["Row"] | null;
@@ -4585,17 +4585,22 @@ async function writeGroup(
       }
       const addedBefore = totalMethodRows(added);
 
+      // The import appends to the routing and the bill of materials. A
+      // correction's operations and materials share these tables (with
+      // their own Op Nos from 1) and are not part of either.
       const existingMaterials = await trx
         .selectFrom("methodMaterial")
         .select(["itemId", "order"])
         .where("makeMethodId", "=", makeMethodId)
         .where("companyId", "=", companyId)
+        .where("methodCorrectionId", "is", null)
         .execute();
       const existingOperations = await trx
         .selectFrom("methodOperation")
         .select(["id", "order"])
         .where("makeMethodId", "=", makeMethodId)
         .where("companyId", "=", companyId)
+        .where("methodCorrectionId", "is", null)
         .execute();
 
       const opPlan = planOperationAppend({
@@ -12332,6 +12337,46 @@ export async function createDocument(
       const isOutsideOperation =
         purchaseOrder.data.purchaseOrderType === "Outside Processing";
 
+      // A part with a Receipt inspection plan is received into the location's
+      // inspection storage unit, and the line keeps a snapshot of that.
+      const lineLocationIds = [
+        ...new Set(
+          [
+            locationId,
+            ...purchaseOrderLines.data.map((d) => d.locationId)
+          ].filter((id): id is string => !!id)
+        )
+      ];
+      const [inspectionAssignments, receiptLocations] = await Promise.all([
+        many(
+          db,
+          "itemInspectionDocumentAssignment",
+          { companyId, usage: "Receipt", itemId: receiptItemIds },
+          { columns: ["itemId"] }
+        ),
+        many(
+          db,
+          "location",
+          { companyId, id: lineLocationIds },
+          { columns: ["id", "inspectionStorageUnitId"] }
+        )
+      ]);
+      if (inspectionAssignments.error)
+        throw new Error(inspectionAssignments.error.message);
+      if (receiptLocations.error)
+        throw new Error(receiptLocations.error.message);
+      const inspectedItemIds = new Set(
+        isOutsideOperation
+          ? []
+          : (inspectionAssignments.data ?? []).map((row) => row.itemId)
+      );
+      const inspectionUnitByLocation = new Map(
+        (receiptLocations.data ?? []).map((row) => [
+          row.id,
+          row.inspectionStorageUnitId
+        ])
+      );
+
       const previouslyReceivedQuantitiesByLine = (
         purchaseOrderLines.data ?? []
       ).reduce<Record<string, number>>((acc, d) => {
@@ -12380,7 +12425,11 @@ export async function createDocument(
             unitPrice / (d.conversionFactor ?? 1) + shippingAndTaxUnitCost,
           unitOfMeasure: d.inventoryUnitOfMeasureCode ?? "EA",
           locationId: d.locationId ?? null,
+          requiresInspection: inspectedItemIds.has(d.itemId),
           storageUnitId:
+            (inspectedItemIds.has(d.itemId)
+              ? inspectionUnitByLocation.get(d.locationId ?? locationId ?? "")
+              : null) ??
             d.storageUnitId ??
             defaultStorageUnitByItemLocation.get(
               pickMethodKey(d.itemId!, d.locationId ?? null)
@@ -12733,6 +12782,20 @@ export async function createDocument(
         }
       }
 
+      // Returned goods land in the location's inspection storage unit when it
+      // has one; the RMA line disposition releases them.
+      const returnLocation = locationId
+        ? await maybeSingle(
+            db,
+            "location",
+            { id: locationId, companyId },
+            { columns: ["inspectionStorageUnitId"] }
+          )
+        : { data: null, error: null };
+      if (returnLocation.error) throw new Error(returnLocation.error.message);
+      const returnInspectionStorageUnitId =
+        returnLocation.data?.inspectionStorageUnitId ?? null;
+
       // A supplied id that is not this company's receipt is a 404, not a
       // silent create-new.
       if (existingReceiptId && !receipt.data)
@@ -12760,7 +12823,10 @@ export async function createDocument(
           lineId: d.id,
           itemId: d.itemId,
           locationId,
-          storageUnitId: defaultStorageUnitByItem.get(d.itemId) ?? null,
+          storageUnitId:
+            returnInspectionStorageUnitId ??
+            defaultStorageUnitByItem.get(d.itemId) ??
+            null,
           requiresSerialTracking: serializedItems.has(d.itemId),
           requiresBatchTracking: batchItems.has(d.itemId),
           receivedQuantity: startAtZero ? 0 : outstanding,
@@ -16751,6 +16817,10 @@ export function buildAdjustmentJournalLines(args: {
     inventoryAdjustmentVarianceAccount: string;
   };
   offsetAccount?: string | null;
+  // The offset account's type, which signs its line. An expense (the variance
+  // or scrap account) unless the caller offsets elsewhere, such as Goods
+  // Received Not Invoiced (a liability) when a receipt is reversed.
+  offsetAccountType?: AccountType;
   offsetDescription?: string;
   companyId: string;
 }): [JournalLineInsert, JournalLineInsert] {
@@ -16784,7 +16854,9 @@ export function buildAdjustmentJournalLines(args: {
         args.accountDefaults.inventoryAdjustmentVarianceAccount,
       description: args.offsetDescription ?? "Inventory Adjustment",
       amount: round(
-        args.isGain ? credit("expense", args.cost) : debit("expense", args.cost)
+        args.isGain
+          ? credit(args.offsetAccountType ?? "expense", args.cost)
+          : debit(args.offsetAccountType ?? "expense", args.cost)
       )
     }
   ];
@@ -17186,6 +17258,8 @@ export interface BookAdjustmentArgs {
     // write-offs pass the company's scrapAccount so cost of quality is separable
     // on the P&L.
     offsetAccount?: string | null;
+    // The offset account's type (signs its line); expense by default.
+    offsetAccountType?: AccountType;
     offsetDescription?: string;
     // journal.sourceType for a header this call creates (default
     // 'Inventory Adjustment'). Ignored when getJournalId supplies a shared journal.
@@ -17603,6 +17677,7 @@ export async function valueMovement(
     replenishmentSystem: item.replenishmentSystem,
     accountDefaults: accounting.accountDefaults,
     offsetAccount: accounting.offsetAccount,
+    offsetAccountType: accounting.offsetAccountType,
     offsetDescription: accounting.offsetDescription,
     companyId
   });

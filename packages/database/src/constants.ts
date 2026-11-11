@@ -47,6 +47,7 @@ export const Constants = {
         "supplier",
         "changeOrder",
         "projectChangeRequest",
+        "purchaseOrderForceDelete",
       ],
       approvalStatus: ["Pending", "Approved", "Rejected", "Cancelled"],
       assemblyInstructionStatus: ["Draft", "Published", "Archived"],
@@ -115,6 +116,8 @@ export const Constants = {
       ],
       contractRevenueStatus: ["Planned", "Recognized", "Recognized Externally"],
       contractRevenueType: ["One-time", "Recurring"],
+      correctionMeasurementCondition: ["Below Minimum", "Above Maximum"],
+      correctionReturnTo: ["Re-inspect", "Continue"],
       costLedgerType: [
         "Direct Cost",
         "Revaluation",
@@ -377,11 +380,12 @@ export const Constants = {
         "Service Center",
       ],
       indirectRateType: ["Provisional", "Target", "Actual", "Final"],
+      inspectionDocumentStatus: ["Draft", "Active", "Archived"],
       inspectionDocumentUsage: ["Receipt"],
       inspectionLevel: ["I", "II", "III", "S1", "S2", "S3", "S4"],
       inspectionSampleStatusType: ["Pending", "Passed", "Failed"],
       inspectionSeverity: ["Normal", "Tightened", "Reduced"],
-      inspectionSourceDocument: ["Receipt", "Job Operation"],
+      inspectionSourceDocument: ["Receipt", "Job Operation", "Manual"],
       inspectionStatus: ["Pass", "Fail"],
       inspectionStatusType: [
         "Pending",
@@ -389,6 +393,7 @@ export const Constants = {
         "Passed",
         "Failed",
         "Partial",
+        "Cancelled",
       ],
       intercompanyEliminationRole: [
         "Control",
@@ -857,6 +862,12 @@ export const Constants = {
         "Overdue",
         "Voided",
       ],
+      purchaseOrderForceDeleteStatus: [
+        "Pending",
+        "Executed",
+        "Rejected",
+        "Cancelled",
+      ],
       purchaseOrderLineType: [
         "Comment",
         "G/L Account",
@@ -911,6 +922,15 @@ export const Constants = {
         "Direct Supervision",
         "Direct Support",
         "Not Qualified",
+      ],
+      receiptInspectionStatus: [
+        "Not Required",
+        "Pending Inspection",
+        "Inspection In Progress",
+        "Inspection Passed",
+        "Inspection Failed",
+        "Partially Passed",
+        "Put Away",
       ],
       receiptSourceDocument: [
         "Sales Order",

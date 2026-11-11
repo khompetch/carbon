@@ -222,6 +222,10 @@ msgstr "{0, plural, one {# 测试} other {# 测试}}"
 msgid "{0, plural, one {# tool} other {# tools}}"
 msgstr "{0, plural, one {# 刀具} other {# 刀具}}"
 
+#. placeholder {0}: plan.versions.length
+msgid "{0, plural, one {# version} other {# versions}}"
+msgstr "{0, plural, one {# 个版本} other {# 个版本}}"
+
 #. placeholder {0}: item.demandAccumulationPeriod
 msgid "{0, plural, one {# week} other {# weeks}}"
 msgstr "{0, plural, other {#周}}"
@@ -262,7 +266,7 @@ msgstr "{0, plural, one {移动 # 项物料} other {移动全部 # 项物料}}"
 msgid "{0, plural, one {Post or delete the # document dated before the cutover.} other {Post or delete the # documents dated before the cutover.}}"
 msgstr "{0, plural, one {过账或删除日期在截断前的 # 份文件。} other {过账或删除日期在截断前的 # 份文档。}}"
 
-#. placeholder {0}: pendingRemoval.count
+#. placeholder {0}: removal.count
 msgid "{0, plural, one {Removing this path will also disconnect # connection.} other {Removing this path will also disconnect # connections.}}"
 msgstr "{0, plural, one {删除此路径还将断开 # 个连接。} other {删除此路径还将断开 # 个连接。}}"
 
@@ -302,6 +306,11 @@ msgstr "{0}（类型）"
 #. placeholder {0}: file.filename
 msgid "{0} (unavailable)"
 msgstr "{0}（不可用）"
+
+#. placeholder {0}: formatter.format(material.quantity)
+#. placeholder {1}: material.unitOfMeasureCode
+msgid "{0} {1} per unit"
+msgstr "每件 {0} {1}"
 
 #. placeholder {0}: formatQuantity(pickedQuantity)
 #. placeholder {1}: formatQuantity(quantity)
@@ -462,6 +471,10 @@ msgstr "{0}库存，用于{1}个组件；剩余的{2}将按{3}拣货"
 #. placeholder {2}: consumeFirst.successorReadableId
 msgid "{0} in stock; the remaining {1} will be picked as {2}"
 msgstr "{0}库存；剩余的{1}将按{2}拣货"
+
+#. placeholder {0}: location.name
+msgid "{0} inspection storage unit"
+msgstr "{0} 检验存储单元"
 
 #. placeholder {0}: billedExternally.length
 msgid "{0} invoices were billed in your previous system and are not drafted again."
@@ -624,6 +637,10 @@ msgstr "{0} 已收货 · {1} 已开贷项"
 msgid "{0} registered"
 msgstr "{0}已登记"
 
+#. placeholder {0}: location.name
+msgid "{0} rejected storage unit"
+msgstr "{0} 拒收存储单元"
+
 #. placeholder {0}: integration.name
 msgid "{0} reports the ledger is held by"
 msgstr "{0}报告账本由以下机构持有"
@@ -770,6 +787,12 @@ msgstr "{0}h 需要"
 #. placeholder {0}: formatHours(staffedWeek)
 msgid "{0}h staffed"
 msgstr "{0}小时配置人员"
+
+msgid "{acceptedQuantity} of {lotSize} accepted."
+msgstr "已接受 {lotSize} 中的 {acceptedQuantity}。"
+
+msgid "{acceptedQuantity} of {lotSize} accepted. The rest stays held until its NCR is closed."
+msgstr "已接受 {lotSize} 中的 {acceptedQuantity}。其余部分保持冻结，直到其 NCR 关闭。"
 
 msgid "{account} has posted history, so it cannot be removed."
 msgstr "{account} 有已过账的历史记录，因此无法删除。"
@@ -1097,6 +1120,9 @@ msgstr "{name} 在 {end} 结束（之前是 {was}）"
 msgid "{name} ends {end} (was open-ended)"
 msgstr "{name} 在 {end} 结束（之前是开放式）"
 
+msgid "{name} is inactive. Choose an active storage unit."
+msgstr "{name} 已停用。请选择启用的存储单元。"
+
 msgid "{name} needs an account number."
 msgstr "{name} 需要账户编号。"
 
@@ -1174,6 +1200,9 @@ msgstr "{passing} 项，共 {total} 项资产"
 msgid "{percent} picked"
 msgstr "{percent}已拣货"
 
+msgid "{percentage}%"
+msgstr "{percentage}%"
+
 msgid "{position} of {total}"
 msgstr "{position}/{total}"
 
@@ -1200,6 +1229,9 @@ msgstr "已收 {received} / 已订购 {ordered}"
 
 msgid "{ref} not found"
 msgstr "未找到 {ref}"
+
+msgid "{rejectedQuantity} will stay held as rejected."
+msgstr "{rejectedQuantity} 将作为拒收保持冻结。"
 
 msgid "{remaining, plural, one {{jobId} is complete. # unit is not delivered} other {{jobId} is complete. # units are not delivered}}"
 msgstr "{remaining, plural, one {{jobId} 已完成。# 件未交付} other {{jobId} 已完成。# 件未交付}}"
@@ -1591,6 +1623,9 @@ msgstr "创建操作员时会生成4位数PIN。"
 msgid "A 4\" x 2\" or 3\" x 2\" label prints one card per label, for a thermal printer such as a Zebra."
 msgstr "4\" x 2\" 或 3\" x 2\" 标签每张打印一张卡片，适用于 Zebra 等热敏打印机。"
 
+msgid "A batch lot is accepted or rejected as a whole."
+msgstr "批次批量只能整体接受或拒收。"
+
 msgid "A batch needs at least one operation. To break up the whole batch, use Dissolve instead."
 msgstr "生产批次需要至少一个工序。要分解整个生产批次，请改用\"分解\"。"
 
@@ -1943,7 +1978,7 @@ msgid "A nonconformance task that stops the problem recurring elsewhere — dist
 msgstr "一项不合格任务，用于防止问题在其他地方重复出现——不同于纠正修复和围堵。"
 
 msgid "A number or sign next to a figure changes what it says. Put a word between them."
-msgstr ""
+msgstr "数字或符号紧挨数值时会改变其含义。请在二者之间加入文字。"
 
 msgid "A part"
 msgstr "一个零件"
@@ -1953,6 +1988,9 @@ msgstr "零件包含可以购买或制造的特定项目的信息。"
 
 msgid "A part in this step may tip once placed — consider a fixture or a second person."
 msgstr "此步骤中的零件放置后可能会翻倒 — 考虑使用工装夹具或另一个人员。"
+
+msgid "A PDF drawing to balloon, or a STEP model. Click to choose a file."
+msgstr "用于标注的 PDF 图纸或 STEP 模型。点击选择文件。"
 
 msgid "A photo or PDF the operator sees on this step"
 msgstr "操作员在此步骤中看到的照片或 PDF"
@@ -2440,6 +2478,13 @@ msgstr "关于（通知）"
 msgid "About this field"
 msgstr "关于此字段"
 
+#. placeholder {0}: result.step.maxValue
+msgid "Above {0}"
+msgstr "高于 {0}"
+
+msgid "Above maximum"
+msgstr "超过最大值"
+
 msgid "Above the upper limit"
 msgstr "高于上限"
 
@@ -2488,6 +2533,9 @@ msgstr "已接受"
 #. placeholder {0}: formatDate(certification.certifiedAt)
 msgid "Accepted {0}"
 msgstr "已接受 {0}"
+
+msgid "Accepted quantity"
+msgstr "接受数量"
 
 msgid "Account"
 msgstr "账户"
@@ -2733,6 +2781,10 @@ msgstr "操作类型"
 msgid "Actions"
 msgstr "操作"
 
+#. placeholder {0}: inspection.inspectionId
+msgid "Actions for {0}"
+msgstr "{0} 的操作"
+
 msgid "Actions for {attributeName}"
 msgstr "{attributeName} 的操作"
 
@@ -2906,6 +2958,9 @@ msgstr "为工作的每个部分添加一行：时间和原材料、成本加价
 
 msgid "Add a line to the document"
 msgstr "在文件中添加一行"
+
+msgid "Add a List, Inspection or Measurement (with a min or max) step to an operation to map its results to corrections."
+msgstr "为工序添加列表、检验或测量（带最小值或最大值）步骤，以将其结果映射到纠正。"
 
 msgid "Add a materials section that lists each item on the bill of materials with its quantity."
 msgstr "添加一个列出物料清单上每个物料及其数量的物料部分。"
@@ -3454,6 +3509,9 @@ msgstr "之后"
 
 msgid "After (calculation method)"
 msgstr "之后（计算方法）"
+
+msgid "After the correction"
+msgstr "纠正之后"
 
 msgid "Afternoon, {name}."
 msgstr "下午，{name}。"
@@ -4046,6 +4104,9 @@ msgstr "任何"
 msgid "Any day in the month adds that month"
 msgstr "月份中的任何一天都会添加该月份"
 
+msgid "any fields set to update on every push"
+msgstr "任何设置为每次推送时更新的字段"
+
 msgid "Any item group"
 msgstr "任何项目组"
 
@@ -4259,6 +4320,12 @@ msgstr "审批{displayName}"
 msgid "Approve all"
 msgstr "全部审批"
 
+msgid "Approve and delete"
+msgstr ""
+
+msgid "Approve and Delete"
+msgstr ""
+
 msgid "Approve Request"
 msgstr "审批请求"
 
@@ -4273,6 +4340,15 @@ msgstr "批准人"
 
 msgid "Approved On"
 msgstr "批准日期"
+
+msgid "Approving also reverses its receipts {receipts}: the stock they brought in is removed and their postings are reversed. It is refused if that stock was used since."
+msgstr ""
+
+msgid "Approving deletes the purchase order and all of its lines now. This cannot be undone."
+msgstr ""
+
+msgid "Approving reverses {receipts}, then deletes the purchase order and all of its lines. This cannot be undone."
+msgstr ""
 
 msgid "Approximate — derived from scheduled dates; no capacity reservation exists for this row."
 msgstr "近似 — 由计划日期推导；此行不存在产能预留。"
@@ -4427,8 +4503,8 @@ msgid "Are you sure you want to delete {0}?"
 msgstr "你确定要删除 {0} 吗？"
 
 #. placeholder {0}: asset.fixedAssetId
-#. placeholder {0}: getQuoteDisplayId( routeData?.quote )
 #. placeholder {0}: getQuoteDisplayId( selectedQuotation )
+#. placeholder {0}: getQuoteDisplayId( routeData?.quote )
 msgid "Are you sure you want to delete {0}? This cannot be undone."
 msgstr "您确定要删除 {0} 吗？此操作无法撤销。"
 
@@ -4441,12 +4517,12 @@ msgstr "您确定要删除 {orderLabel} 吗？此操作无法撤销。"
 msgid "Are you sure you want to delete {readableId}? This cannot be undone."
 msgstr "确定要删除 {readableId} 吗？此操作无法撤销。"
 
-#. placeholder {0}: deleting.number
+#. placeholder {0}: deleting.item.number
 msgid "Are you sure you want to delete payment {0}?"
 msgstr "您确定要删除付款{0}吗？"
 
 #. placeholder {0}: activeView.name
-#. placeholder {0}: viewPendingDelete.name
+#. placeholder {0}: viewPendingDelete.item.name
 msgid "Are you sure you want to delete the \"{0}\" view? This cannot be undone."
 msgstr "确定要删除\"{0}\"查看吗？此操作无法撤消。"
 
@@ -4778,7 +4854,7 @@ msgstr "你确定要拒绝此供应商吗？"
 msgid "Are you sure you want to release this job? It will become available to the shop floor, and drive purchasing and production."
 msgstr "确定要下达此工单吗？它将对车间可用，并驱动采购和生产。"
 
-#. placeholder {0}: deleting.description
+#. placeholder {0}: deleting.item.description
 msgid "Are you sure you want to remove {0} and its payment rows from this lease?"
 msgstr "您确定要从此租赁中移除 {0} 及其付款行吗？"
 
@@ -5271,6 +5347,9 @@ msgstr "仅在 {plan} 计划中可用"
 msgid "Available on the Business plan"
 msgstr "在商业计划中可用"
 
+msgid "Available or On Hold serials and batches. Available ones go On Hold until the inspection is dispositioned."
+msgstr "可用或搁置状态的序列号与生产批次。可用项在检验处置前将转为搁置。"
+
 msgid "Avatar style"
 msgstr "头像风格"
 
@@ -5552,8 +5631,15 @@ msgstr "开始"
 msgid "Being phased out — successor: <0>{0}</0>"
 msgstr "正在逐步淘汰—后继物料：<0>{0}</0>"
 
+#. placeholder {0}: result.step.minValue
+msgid "Below {0}"
+msgstr "低于 {0}"
+
 msgid "Below level"
 msgstr "低于水位线"
+
+msgid "Below minimum"
+msgstr "低于最小值"
 
 msgid "Below safety stock"
 msgstr "低于安全库存"
@@ -5821,6 +5907,9 @@ msgstr "BoM浏览器设置已更新"
 msgid "BOM synced successfully"
 msgstr "BOM 同步成功"
 
+msgid "BOM synced. Not written: {notWritten}"
+msgstr "BOM 已同步。未写入：{notWritten}"
+
 msgid "BOMs"
 msgstr "BOMs"
 
@@ -5880,9 +5969,6 @@ msgstr "两项测试都通过；考虑未资助 (§41(d)(4)(H))"
 
 msgid "Bottleneck"
 msgstr "瓶颈"
-
-msgid "Bottom of page"
-msgstr "页面底部"
 
 msgid "Branch an editable copy of this version that you can change and publish."
 msgstr "创建此版本的可编辑副本，您可以对其进行更改和发布。"
@@ -6111,6 +6197,9 @@ msgstr "按存储单元"
 msgid "By you · edited <0/>"
 msgstr "由你·编辑于<0/>"
 
+msgid "CAD model"
+msgstr "CAD 模型"
+
 msgid "CAD Model"
 msgstr "CAD 模型"
 
@@ -6196,6 +6285,9 @@ msgstr "取消"
 msgid "Cancel {0}"
 msgstr "取消 {0}"
 
+msgid "Cancel {name}?"
+msgstr "取消 {name}？"
+
 msgid "Cancel {readableId}"
 msgstr "取消 {readableId}"
 
@@ -6210,6 +6302,9 @@ msgstr "取消变更通知"
 
 msgid "Cancel Contract"
 msgstr "取消合约"
+
+msgid "Cancel Inspection"
+msgstr "取消检验"
 
 msgid "Cancel Job"
 msgstr "取消工作"
@@ -6231,6 +6326,9 @@ msgstr "取消采购订单"
 
 msgid "Cancel purchase order {target}"
 msgstr "取消采购订单 {target}"
+
+msgid "Cancel Request"
+msgstr ""
 
 msgid "Cancel Return"
 msgstr "取消退货"
@@ -6815,6 +6913,12 @@ msgstr "选择成本池"
 msgid "Choose a serial number"
 msgstr "选择序列号"
 
+msgid "Choose a storage unit at this location for inspected parts."
+msgstr "请为需检验的零件选择此地点的存储单元。"
+
+msgid "Choose a storage unit at this location."
+msgstr "请选择此地点的存储单元。"
+
 #. placeholder {0}: op.description
 msgid "choose a supplier for {0} on the job"
 msgstr "为工单上的{0}选择供应商"
@@ -6995,9 +7099,6 @@ msgstr "点击或拖动以替换"
 
 msgid "Click to rename"
 msgstr "单击以重命名"
-
-msgid "Click to upload a PDF drawing"
-msgstr "点击上传 PDF 图纸"
 
 msgid "CLIN"
 msgstr "CLIN"
@@ -7502,6 +7603,9 @@ msgstr "配置"
 msgid "Configure {label}"
 msgstr "配置 {label}"
 
+msgid "Configure at least one Issue Type. The rejected part of the lot needs an NCR."
+msgstr "请至少配置一个问题类型。批次的拒收部分需要 NCR。"
+
 msgid "Configure Carbon"
 msgstr "配置 Carbon"
 
@@ -7796,6 +7900,9 @@ msgstr "继续"
 
 msgid "Continue Setup"
 msgstr "继续配置"
+
+msgid "Continue to the next operation"
+msgstr "继续下一工序"
 
 msgid "Contra-asset account for the amortization of right-of-use assets"
 msgstr "使用权资产摊销的对资产账户"
@@ -8441,6 +8548,9 @@ msgstr "无法列出提供商的设备。已映射的设备仍会显示。"
 msgid "Could not load operations"
 msgstr "无法加载工序"
 
+msgid "Could not load the non-nettable storage units. Non-nettable markers may be missing."
+msgstr "无法加载不计入MRP的存储单元。部分标记可能缺失。"
+
 msgid "Could not load what ran on {workCenterName}."
 msgstr "无法加载在 {workCenterName} 上运行的内容。"
 
@@ -8751,6 +8861,10 @@ msgstr "已创建 <0/>"
 
 msgid "Created <0/> by <1/>"
 msgstr "由 <1/> 创建于 <0/>"
+
+#. placeholder {0}: created.inspectionId
+msgid "Created <0>{0}</0>"
+msgstr "已创建 <0>{0}</0>"
 
 msgid "Created account"
 msgstr "已创建账户"
@@ -9835,7 +9949,7 @@ msgstr "删除"
 msgid "Delete {0}"
 msgstr "删除 {0}"
 
-#. placeholder {0}: deleting.readableId
+#. placeholder {0}: deleting.item.readableId
 #. placeholder {0}: element.readableId
 msgid "Delete {0} and every element below it? An element that has costs, time, a job or a purchase order line cannot be deleted."
 msgstr "删除 {0} 及其下方的每个要素？具有成本、时间、工单或采购订单行的要素无法删除。"
@@ -9913,6 +10027,9 @@ msgstr "删除合约"
 msgid "Delete Contractor"
 msgstr "删除外协人员"
 
+msgid "Delete correction"
+msgstr "删除纠正"
+
 msgid "Delete Count"
 msgstr "删除计数"
 
@@ -9960,6 +10077,9 @@ msgstr "删除群组"
 
 msgid "Delete Holiday"
 msgstr "删除假期"
+
+msgid "Delete Inspection"
+msgstr "删除检验"
 
 msgid "Delete Inspection Plan"
 msgstr "删除检验计划"
@@ -10023,6 +10143,10 @@ msgstr "删除备忘录"
 
 msgid "Delete Month"
 msgstr "删除月份"
+
+#. placeholder {0}: row.original.key
+msgid "Delete parameter {0}"
+msgstr "删除参数 {0}"
 
 msgid "Delete Part"
 msgstr "删除零件"
@@ -10245,6 +10369,9 @@ msgstr "已删除"
 
 msgid "Deleted attribute value"
 msgstr "已删除属性值"
+
+msgid "Deleting this correction removes its operations, materials and result mappings. Jobs already created keep their own copy."
+msgstr "删除此纠正将移除其工序、物料和结果映射。已创建的工单将保留各自的副本。"
 
 msgid "Deliver"
 msgstr "交付"
@@ -10927,11 +11054,17 @@ msgstr "绘制它，或上传其图像。"
 msgid "Drawing"
 msgstr "提取"
 
-msgid "Drawing Number"
-msgstr "图号"
-
 msgid "Drawing replaced. Balloon placements were removed; characteristic rows are unchanged."
 msgstr "绘图已替换。气泡位置已移除；特性行保持不变。"
+
+msgid "drawings"
+msgstr "图纸"
+
+msgid "Drop a drawing or model"
+msgstr "拖放图纸或模型"
+
+msgid "Drop a PDF drawing or a STEP model"
+msgstr "拖放 PDF 图纸或 STEP 模型"
 
 msgid "Drop an image of your signature"
 msgstr "拖放您的签名图像"
@@ -11079,9 +11212,6 @@ msgstr "例如 Acme Manufacturing"
 msgid "e.g. Detroit"
 msgstr "例：Detroit"
 
-msgid "e.g. DWG-1234"
-msgstr "例如 DWG-1234"
-
 msgid "e.g. GB123456789"
 msgstr "例：GB123456789"
 
@@ -11096,6 +11226,9 @@ msgstr "例如 Marco + 地区负责人"
 
 msgid "e.g. MI"
 msgstr "例：MI"
+
+msgid "e.g. R1234 Receipt"
+msgstr "例如 R1234 收货"
 
 msgid "e.g. Suite 200"
 msgstr "例：Suite 200"
@@ -11207,10 +11340,6 @@ msgstr "每个周期为一个月,按月费率计算。"
 
 msgid "Each physical unit gets its own tracked entity and unique number — one entity, one unit."
 msgstr "每个物理件获得其自己的追踪实体和唯一编号——一个实体，一个件。"
-
-#. placeholder {0}: replaced.join(", ")
-msgid "Each push replaces: {0}. Other edits stay."
-msgstr "每次推送替换: {0}. 其他编辑保留。"
 
 msgid "Each rental agreement's or contract's salesperson (or its creator) gets a daily summary of its invoices."
 msgstr "每个租赁协议或合约的销售人员（或其创建者）每日获得其发票摘要。"
@@ -11366,6 +11495,12 @@ msgstr "编辑联系人"
 
 msgid "Edit Contractor"
 msgstr "编辑外协人员"
+
+msgid "Edit correction"
+msgstr "编辑纠正"
+
+msgid "Edit Correction"
+msgstr "编辑纠正"
 
 msgid "Edit cost"
 msgstr "编辑成本"
@@ -11579,6 +11714,9 @@ msgstr "编辑生产数量"
 
 msgid "Edit Project"
 msgstr "编辑项目"
+
+msgid "Edit Properties"
+msgstr "编辑属性"
 
 msgid "Edit purchase order line type"
 msgstr "编辑采购订单行类型"
@@ -12064,6 +12202,9 @@ msgstr "输入借方为正数，贷方为负数。CSV 需要包含以下列：ac
 
 msgid "Enter debits as positive and credits as negative amounts. The CSV needs the columns accountNumber, debit and credit. An import replaces the whole trial balance."
 msgstr "输入借方为正数，贷方为负数。CSV 需要包含以下列：accountNumber、借方 和 贷方。导入会替换整个试算表。"
+
+msgid "Enter how much of the lot of {lotSize} passed. The accepted quantity is ready for putaway. The rest stays held until its NCR is closed."
+msgstr "请输入 {lotSize} 批次中通过的数量。接受数量可以上架。其余部分保持冻结，直到其 NCR 关闭。"
 
 msgid "Enter number…"
 msgstr "输入数字…"
@@ -12796,6 +12937,9 @@ msgstr "失败"
 msgid "Failed characteristics"
 msgstr "失败的特性"
 
+msgid "Failed inspection"
+msgstr "检验不合格"
+
 #. placeholder {0}: rows.length
 msgid "Failed to add line — {addedCount} of {0} lines were added"
 msgstr "无法添加行 — 已添加 {addedCount} / {0} 行"
@@ -13218,6 +13362,9 @@ msgstr "上传 PDF 失败"
 msgid "Failed to upload signature"
 msgstr "上传签名失败"
 
+msgid "Failed to upload the model"
+msgstr "模型上传失败"
+
 msgid "Failed to upload thumbnail"
 msgstr "上传缩略图失败"
 
@@ -13445,6 +13592,9 @@ msgstr "在所有行都被拣货或标记为短缺后才能完成。"
 msgid "Fire on quote lines, sales order lines and sales invoice lines."
 msgstr "在报价行、销售订单行和销售发票行上触发。"
 
+msgid "First {count}"
+msgstr "前 {count} 个"
+
 msgid "First invoice"
 msgstr "第一份发票"
 
@@ -13621,6 +13771,18 @@ msgstr "例如：站点或下单人"
 
 msgid "For Form 6765 Section E"
 msgstr "表格 6765 E 部分"
+
+msgid "Force delete"
+msgstr ""
+
+msgid "Force Delete (Admin)"
+msgstr ""
+
+msgid "Force delete {purchaseOrderReadableId}"
+msgstr ""
+
+msgid "Force delete waiting for another Admin's approval"
+msgstr ""
 
 msgid "Forecast"
 msgstr "预测"
@@ -14182,6 +14344,12 @@ msgstr "晚上好，{name}。"
 msgid "Good morning, {name}."
 msgstr "早上好，{name}。"
 
+msgid "Goods-in storage"
+msgstr "收货存储"
+
+msgid "Goods-in storage updated"
+msgstr "收货存储已更新"
+
 msgid "Google Calendar"
 msgstr "Google日历"
 
@@ -14345,6 +14513,7 @@ msgid "Hide"
 msgstr "隐藏"
 
 #. placeholder {0}: module.name
+#. placeholder {0}: route.name
 msgid "Hide {0}"
 msgstr "隐藏 {0}"
 
@@ -14356,6 +14525,10 @@ msgstr "隐藏账户号码"
 
 msgid "Hide Again"
 msgstr "再次隐藏"
+
+#. placeholder {0}: group.name
+msgid "Hide all in {0}"
+msgstr "隐藏{0}中的全部"
 
 msgid "Hide block"
 msgstr "隐藏块"
@@ -15006,6 +15179,9 @@ msgstr "已停用的操作不会出现在选择列表中"
 msgid "Inactive categories cannot be picked for new time"
 msgstr "已停用的分类无法为新工时选择"
 
+msgid "Inactive units are not offered when choosing a unit"
+msgstr ""
+
 msgid "Inbound inspection"
 msgstr "来料检验"
 
@@ -15187,6 +15363,9 @@ msgstr "检查前N个"
 msgid "Inspect Item"
 msgstr "检查项目"
 
+msgid "Inspected by"
+msgstr "检验人"
+
 msgid "Inspecting an item you received shows a warning."
 msgstr "检查您收到的物料会显示警告。"
 
@@ -15201,9 +15380,8 @@ msgid "Inspection {0}"
 msgstr "检验 {0}"
 
 #. placeholder {0}: inspection.inspectionId
-#. placeholder {1}: inspection.status
-msgid "Inspection {0} · {1}"
-msgstr "检验 {0} · {1}"
+msgid "Inspection {0}: {statusLabel}"
+msgstr "检验 {0}：{statusLabel}"
 
 msgid "Inspection Date"
 msgstr "检验日期"
@@ -15211,14 +15389,29 @@ msgstr "检验日期"
 msgid "Inspection document"
 msgstr "检验文件"
 
+msgid "Inspection failed"
+msgstr "检验不合格"
+
+msgid "Inspection Failed"
+msgstr "检验不合格"
+
 msgid "Inspection file"
 msgstr "检验文件"
+
+msgid "Inspection In Progress"
+msgstr "检验进行中"
 
 msgid "Inspection Job"
 msgstr "检验工作"
 
 msgid "Inspection Level"
 msgstr "检验水平"
+
+msgid "Inspection Name"
+msgstr "检验名称"
+
+msgid "Inspection Passed"
+msgstr "检验已通过"
 
 msgid "Inspection Plan"
 msgstr "检验计划"
@@ -15229,11 +15422,23 @@ msgstr "检验计划分配"
 msgid "Inspection Plans"
 msgstr "检验计划"
 
+msgid "Inspection required"
+msgstr "需要检验"
+
+msgid "Inspection status"
+msgstr "检验状态"
+
 msgid "Inspection Status"
+msgstr "检验状态"
+
+msgid "Inspection Statuses"
 msgstr "检验状态"
 
 msgid "Inspection Step"
 msgstr "检验步骤"
+
+msgid "Inspection storage unit"
+msgstr "检验存储单元"
 
 msgid "Inspections"
 msgstr "检验"
@@ -15781,6 +15986,12 @@ msgstr "即将推出。请联系 Carbon 为您的公司进行设置。"
 msgid "It is still used by a \"{table}\" record; remove that first."
 msgstr "它仍然被「{table}」记录使用；请先删除它。"
 
+msgid "It never touches the supplier's side of the books. Void the order's shipments and prepayments first, and remove its lines from purchase invoices. The request is refused until you do."
+msgstr ""
+
+msgid "It permanently deletes this purchase order and all of its lines, whatever its status or approval. It cannot be undone."
+msgstr ""
+
 msgid "It shows with no hours until you add some."
 msgstr "添加工时后才会显示。"
 
@@ -15906,7 +16117,7 @@ msgstr "此窗口内的物料将获得黄色徽章。"
 msgid "Items: item master, BOMs, Bill of Process, engineering changes, CAD"
 msgstr "物料：物料主数据、BOM、工序清单、工程变更、CAD"
 
-#. placeholder {0}: formatQuantity(rowTotal(removing))
+#. placeholder {0}: formatQuantity(rowTotal(removedRow))
 msgid "Its {0} h of draft time this week are deleted."
 msgstr "本周的{0}小时草稿时间已被删除。"
 
@@ -16068,6 +16279,9 @@ msgstr "看板输出"
 msgid "Kanban output setting updated"
 msgstr "看板输出设置已更新"
 
+msgid "Kanban QR code"
+msgstr "看板二维码"
+
 msgid "Kanbans"
 msgstr "看板"
 
@@ -16099,10 +16313,13 @@ msgid "Keep matching items"
 msgstr "保留匹配的物料"
 
 msgid "Keep mine"
-msgstr ""
+msgstr "保留我的"
 
 msgid "Keep navigation open"
 msgstr "保持导航展开"
+
+msgid "Keep one, or hide {moduleName} itself"
+msgstr "至少保留一项，或隐藏{moduleName}本身"
 
 msgid "Keep only items where…"
 msgstr "仅保留满足以下条件的物料…"
@@ -16312,8 +16529,8 @@ msgstr "上次推送 {when} 失败：{0}"
 msgid "Last push {when}:"
 msgstr "最后一次推送 {when}："
 
-msgid "Last pushed {lastPushed}."
-msgstr "最后推送：{lastPushed}。"
+msgid "Last pushed {lastPushed}"
+msgstr "最后推送：{lastPushed}"
 
 msgid "Last Quarter"
 msgstr "上一季度"
@@ -16495,6 +16712,9 @@ msgstr "留空以自动使用下一个修订版"
 
 msgid "Leave empty for exact match"
 msgstr "留空以精确匹配"
+
+msgid "Leave empty for no limit. Past it, MES offers only Scrap or a quality issue."
+msgstr "留空表示不设上限。超过该次数后，MES 仅提供报废或质量问题选项。"
 
 msgid "Leave empty to use the account default"
 msgstr "留空以使用帐户默认值"
@@ -16844,7 +17064,7 @@ msgid "Linked Record"
 msgstr "关联记录"
 
 msgid "Linked to a shared section. Edit it in the library to update it everywhere."
-msgstr ""
+msgstr "已关联到共享章节。在库中编辑即可在所有位置更新。"
 
 msgid "Links"
 msgstr "链接"
@@ -17231,6 +17451,9 @@ msgstr "自制 {amount} 件至 {date}"
 msgid "Make {quantity}"
 msgstr "制造 {quantity}"
 
+msgid "Make a new version to change this plan"
+msgstr "如需修改此计划，请创建新版本"
+
 msgid "Make Active"
 msgstr "启用"
 
@@ -17294,6 +17517,9 @@ msgstr "再次启用此文件。"
 
 msgid "Makes this document active and visible."
 msgstr "启用此文件并使其可见。"
+
+msgid "Makes this version Active again and archives the Active version."
+msgstr "将此版本重新设为启用，并归档当前启用的版本。"
 
 msgid "Manage"
 msgstr "管理"
@@ -17418,6 +17644,9 @@ msgstr "标记浅色模式"
 
 msgid "Mark not done"
 msgstr "标记为未完成"
+
+msgid "Mark Partial"
+msgstr "标记为部分"
 
 msgid "Mark reviewed"
 msgstr "标记为已审查"
@@ -17658,6 +17887,13 @@ msgstr "矩阵"
 
 msgid "Maturity Analysis"
 msgstr "到期日分析"
+
+#. placeholder {0}: correction.maxAttempts
+msgid "Max {0} per unit"
+msgstr "每件最多 {0} 次"
+
+msgid "Max attempts per unit"
+msgstr "每件最大尝试次数"
 
 msgid "Max Lead Time"
 msgstr "最长提前期"
@@ -18078,6 +18314,7 @@ msgid "Move"
 msgstr "移动"
 
 #. placeholder {0}: element.readableId
+#. placeholder {0}: route.name
 msgid "Move {0}"
 msgstr "移动 {0}"
 
@@ -18457,6 +18694,9 @@ msgstr "新合约"
 msgid "New Contractor"
 msgstr "新建外协人员"
 
+msgid "New Correction"
+msgstr "新建纠正"
+
 msgid "New Cost Center"
 msgstr "新建成本中心"
 
@@ -18538,6 +18778,9 @@ msgstr "新假期"
 
 msgid "New IC Transaction"
 msgstr "新IC事务"
+
+msgid "New Inspection"
+msgstr "新建检验"
 
 msgid "New Inspection Plan"
 msgstr "新检验计划"
@@ -19157,6 +19400,12 @@ msgstr "截至结转日期，无控制帐户有余额"
 msgid "No conversion is required"
 msgstr "不需要转换"
 
+msgid "No correction"
+msgstr "无纠正"
+
+msgid "No corrections yet."
+msgstr "暂无纠正。"
+
 msgid "No cost"
 msgstr "无成本"
 
@@ -19547,6 +19796,9 @@ msgstr "没有未结销售订单行"
 msgid "No open work has a target date."
 msgstr "没有未结工作设置了目标日期。"
 
+msgid "No operations"
+msgstr "无工序"
+
 msgid "No operations found."
 msgstr "未找到工序。"
 
@@ -19836,6 +20088,9 @@ msgstr "此查看未应用任何排序"
 msgid "No statement for this period"
 msgstr "此期间没有报表"
 
+msgid "No step results suggest this correction."
+msgstr "没有步骤结果建议此纠正。"
+
 msgid "No step selected"
 msgstr "未选择步骤"
 
@@ -19865,6 +20120,9 @@ msgstr "此地点的存储单元中没有任何库存。"
 
 msgid "No storage unit is short for open jobs or below zero."
 msgstr "没有存储单元因未结工单而缺料或库存为负。"
+
+msgid "No storage units at this location"
+msgstr "此地点没有存储单元"
 
 msgid "No storage units or tracking numbers match."
 msgstr "没有存储单元或追踪号与之匹配。"
@@ -19942,7 +20200,7 @@ msgid "No values available"
 msgstr "没有可用的值"
 
 msgid "No values found"
-msgstr ""
+msgstr "未找到值"
 
 msgid "No variable matches {query}"
 msgstr "没有变量匹配{query}"
@@ -20056,6 +20314,9 @@ msgstr "不工作日，排班和产能规划会考虑这些日期"
 msgid "None"
 msgstr "无"
 
+msgid "None available"
+msgstr "无可用项"
+
 msgid "Normal"
 msgstr "正常"
 
@@ -20102,7 +20363,7 @@ msgstr "不是工单时间"
 msgid "Not mapped"
 msgstr "未映射"
 
-#. placeholder {0}: created.moveError
+#. placeholder {0}: created.moveError.replace(/\.$/, "")
 #. placeholder {1}: created.stockTransferId
 msgid "Not moved: {0}. Recorded on <0>{1}</0>"
 msgstr "未移动：{0}。已记录在<0>{1}</0>"
@@ -20157,6 +20418,12 @@ msgstr "未开始"
 
 msgid "Not synced"
 msgstr "未同步"
+
+msgid "Not usable stock. MRP and planning do not count it, and picking does not take from it."
+msgstr "不可用库存。MRP 和计划不计入此库存，拣货也不会从中取货。"
+
+msgid "Not used yet."
+msgstr "尚未使用。"
 
 msgid "Not working today"
 msgstr "今天不工作"
@@ -20218,6 +20485,9 @@ msgstr "暂无内容"
 
 msgid "Nothing in the archive"
 msgstr "存档中没有任何内容"
+
+msgid "Nothing is deleted yet. The request goes to the other Admins' approvals, and the order is deleted when one of them approves it."
+msgstr ""
 
 msgid "Nothing is due. Invoices are created automatically when a period comes due."
 msgstr "当前没有应付款项。当到期期间来临时，发票会自动生成。"
@@ -20432,6 +20702,10 @@ msgstr "现有：从 {before} 到 {after}"
 
 msgid "On Hold"
 msgstr "搁置"
+
+#. placeholder {0}: entity.quantity
+msgid "On Hold · {0}"
+msgstr "搁置 · {0}"
 
 msgid "On its side"
 msgstr "侧放"
@@ -20716,6 +20990,9 @@ msgstr "未结操作"
 msgid "Open an NCR for MRB disposition"
 msgstr "打开 NCR 进行 MRB 处置"
 
+msgid "Open an NCR for the failed units"
+msgstr "为不合格单元创建 NCR"
+
 msgid "Open AP"
 msgstr "未结应付账款"
 
@@ -20802,6 +21079,9 @@ msgstr "打开菜单"
 
 msgid "Open My Time"
 msgstr "打开我的时间表"
+
+msgid "Open NCR"
+msgstr "打开 NCR"
 
 msgid "Open one to change the plan in a draft that reviewers approve before it applies."
 msgstr "打开一个以更改审核者批准后才能应用的草稿中的计划。"
@@ -21515,8 +21795,14 @@ msgstr "零件供应商已创建"
 msgid "Partial"
 msgstr "部分"
 
+msgid "Partial Lot"
+msgstr "部分批次"
+
 msgid "Partially Delivered"
 msgstr "部分已交付"
+
+msgid "Partially Passed"
+msgstr "部分通过"
 
 msgid "Partially Returned"
 msgstr "部分已退回"
@@ -21646,7 +21932,7 @@ msgstr "付款"
 msgid "Payment — {0}"
 msgstr "付款 — {0}"
 
-#. placeholder {0}: deleting.number
+#. placeholder {0}: deleting.item.number
 msgid "payment {0}"
 msgstr "付款{0}"
 
@@ -21767,6 +22053,12 @@ msgstr "待处理审批"
 
 msgid "Pending Employee Review"
 msgstr "待员工评审"
+
+msgid "Pending inspection"
+msgstr "待检验"
+
+msgid "Pending Inspection"
+msgstr "待检验"
 
 msgid "people"
 msgstr "人员"
@@ -22209,7 +22501,7 @@ msgid "Playback"
 msgstr "回放"
 
 msgid "Please <0>change it</0>."
-msgstr ""
+msgstr "请<0>更改</0>。"
 
 msgid "Please contact your administrator to enable audit logging."
 msgstr "请联系您的管理员以启用审计日志。"
@@ -22934,6 +23226,9 @@ msgstr "承诺日期"
 msgid "Properties"
 msgstr "属性"
 
+msgid "Properties (apply to all serials on this line)"
+msgstr "属性（适用于本行的所有序列号）"
+
 msgid "Property"
 msgstr "属性"
 
@@ -22996,6 +23291,9 @@ msgstr "公开"
 
 msgid "Publish"
 msgstr "发布"
+
+msgid "Publish once your changes are saved."
+msgstr "保存更改后即可发布。"
 
 msgid "Publish Training"
 msgstr "发布培训"
@@ -23096,6 +23394,9 @@ msgstr "采购订单审批"
 
 msgid "Purchase order for {supplierName}"
 msgstr "{supplierName} 的采购订单"
+
+msgid "Purchase Order Force Delete"
+msgstr ""
 
 msgid "Purchase Order ID"
 msgstr "采购订单ID"
@@ -23232,23 +23533,30 @@ msgstr "发布不包含维度的凭证"
 msgid "Push to accounting"
 msgstr "推送到会计系统"
 
-msgid "Pushes don't change this item's fields, so edits made here stay."
-msgstr "推送不会更改此物料的字段，所以在此处进行的编辑保留。"
+msgid "Pushes from Onshape can update this item's {pushTargets}, but not its fields."
+msgstr "来自 Onshape 的推送可以更新此物料的{pushTargets}，但不会更改其字段。"
 
-msgid "Pushes from Onshape stop updating this item. Pushing this part from Onshape again links it back."
-msgstr "来自 Onshape 的推送停止更新此物料。再次从 Onshape 推送此零件将其链接回。"
+msgid "Pushes from Onshape can update this item's {pushTargets}."
+msgstr "来自 Onshape 的推送可以更新此物料的{pushTargets}。"
 
-msgid "Pushes replace only the fields that Onshape's Fields page sets to Update on every push."
-msgstr "推送仅替换 Onshape 的 Fields 页面在每次推送时设置为更新的字段。"
+msgid "Pushes stop updating this item, and its current data stays. Any later push that includes this part number links it again."
+msgstr "推送将停止更新此物料，其当前数据保持不变。之后任何包含此零件号的推送都会重新链接它。"
 
 msgid "Put a contract project on hold under a stop-work order, with its 90-day end date, and resume it when the order ends."
 msgstr "将合同项目根据停工令搁置，包含其90天结束日期，当订单结束时恢复。"
+
+msgid "Put Away"
+msgstr "上架"
 
 msgid "Put on hold"
 msgstr "搁置"
 
 msgid "Put this charge on its own invoice, held for review before it is posted. Otherwise it goes on the agreement's next invoice."
 msgstr "将此费用单独放在发票上，在过账之前保留以待评审。否则，它将放在协议的下一张发票上。"
+
+#. placeholder {0}: transfer.stockTransferId
+msgid "Putaway {0}"
+msgstr "上架 {0}"
 
 msgid "Putting your data back"
 msgstr "正在恢复您的数据"
@@ -23274,6 +23582,10 @@ msgstr "二维码用于启动此看板的下一个操作"
 
 msgid "Qty"
 msgstr "数量"
+
+#. placeholder {0}: formatter.format(use.quantity)
+msgid "Qty {0}"
+msgstr "数量 {0}"
 
 msgid "Qty {jobQuantity}"
 msgstr "数量 {jobQuantity}"
@@ -23640,6 +23952,9 @@ msgstr "重新转换模型"
 msgid "Re-date to first open day"
 msgstr "重新日期至第一个开放日"
 
+msgid "Re-inspect at the operation that found it"
+msgstr "在发现问题的工序重新检验"
+
 msgid "Re-keying between quoting, the floor, and finance"
 msgstr "在报价、车间和财务之间重复输入数据"
 
@@ -23651,6 +23966,9 @@ msgstr "重新计划当前步骤顺序中的动作 — 步骤将在完成时更�
 
 msgid "Re-send"
 msgstr "重新发送"
+
+msgid "Re-torque nut"
+msgstr "重新紧固螺母"
 
 msgid "Reactivate"
 msgstr "重新激活"
@@ -23687,6 +24005,9 @@ msgstr "就绪"
 
 msgid "Ready at"
 msgstr "就绪于"
+
+msgid "Ready for putaway"
+msgstr "可上架"
 
 msgid "Ready for Quote"
 msgstr "可报价"
@@ -23842,14 +24163,14 @@ msgstr "已接收"
 msgid "Received {0} of {1}"
 msgstr "已接收 {1} 中的 {0}"
 
-msgid "Received At"
-msgstr "接收于"
-
-msgid "Received By"
-msgstr "接收人"
+msgid "Received Date"
+msgstr "收货日期"
 
 msgid "Received lines from this supplier with quantity remaining to return"
 msgstr "来自此供应商且还有数量待退货的已收行"
+
+msgid "Received parts that need inspection go to the inspection storage unit. Rejected stock moves to the rejected storage unit. To keep their stock out of planning, make them non-nettable in their own settings."
+msgstr "需要检验的收货零件会进入检验存储单元。被拒收的库存会移至拒收存储单元。若不想让其库存计入计划，请在存储单元自身的设置中将其设为不计入MRP。"
 
 msgid "Received Qty"
 msgstr "已收货数量"
@@ -24187,6 +24508,9 @@ msgstr "拒绝人"
 msgid "Rejected Date"
 msgstr "拒绝日期"
 
+msgid "Rejected storage unit"
+msgstr "拒收存储单元"
+
 msgid "Relabels the hub and frames the deal."
 msgstr "重新标记中心并框架化交易。"
 
@@ -24209,7 +24533,7 @@ msgid "Release Batch"
 msgstr "下达生产批次"
 
 #. placeholder {0}: batch.readableId
-#. placeholder {0}: releaseTarget.readableId
+#. placeholder {0}: releaseTarget.item.readableId
 msgid "Release batch {0}"
 msgstr "下达生产批次{0}"
 
@@ -24309,7 +24633,7 @@ msgstr "从最近记录中移除{0}"
 msgid "Remove {0} from recent searches"
 msgstr "从最近搜索中移除 {0}"
 
-#. placeholder {0}: removing.jobReadableId ?? "this operation"
+#. placeholder {0}: removing.item.jobReadableId ?? "this operation"
 msgid "Remove {0} from this batch? Its operation goes back to the schedule to run on its own."
 msgstr "从此生产批次中移除 {0}？其工序回到排程以单独运行。"
 
@@ -24322,7 +24646,7 @@ msgstr "从此步骤中移除 {0}"
 msgid "Remove {0} of {memberCount} operations from {1}?"
 msgstr "从 {1} 中移除 {0} 个（共 {memberCount} 个）工序？"
 
-#. placeholder {0}: removing.readableId
+#. placeholder {0}: removedRow.readableId
 msgid "Remove {0}?"
 msgstr "移除{0}?"
 
@@ -24349,7 +24673,7 @@ msgid "Remove authenticator app"
 msgstr "移除身份验证器应用"
 
 msgid "Remove block"
-msgstr ""
+msgstr "移除区块"
 
 msgid "Remove clause"
 msgstr "移除条款"
@@ -24740,8 +25064,14 @@ msgstr "请求审批"
 msgid "Request date"
 msgstr "请求日期"
 
+msgid "Request Force Delete"
+msgstr ""
+
 msgid "Requested"
-msgstr "已请求"
+msgstr "已申请"
+
+msgid "Requested by"
+msgstr ""
 
 msgid "Requested By"
 msgstr "请求人"
@@ -24860,9 +25190,6 @@ msgstr "需要采取行动"
 
 msgid "Requires Adjustment"
 msgstr "需要调整"
-
-msgid "Requires inspection"
-msgstr "需要检验"
 
 msgid "Requires inspection. A lot opens when the receipt posts."
 msgstr "需要检验。过账收据时将创建一个批次。"
@@ -24994,7 +25321,7 @@ msgstr "补货费"
 msgid "Restock Fee Percent"
 msgstr "补货费百分比"
 
-#. placeholder {0}: percentFormatter.format( line.restockFeePercent )
+#. placeholder {0}: percentFormatter.format(line.restockFeePercent)
 msgid "Restocking fee {0}"
 msgstr "补货费 {0}"
 
@@ -25030,6 +25357,9 @@ msgstr "限制成员计费"
 
 msgid "Result"
 msgstr "结果"
+
+msgid "Result mappings"
+msgstr "结果映射"
 
 msgid "Results"
 msgstr "结果"
@@ -25382,6 +25712,12 @@ msgstr "已撤销"
 
 msgid "Rework"
 msgstr "返工"
+
+msgid "Rework-only operations that a step result suggests, such as a re-torque when a check finds a nut too loose. Normal units never run them."
+msgstr "仅用于返工的工序，由步骤结果提示，例如检验发现螺母松动时的重新紧固。正常件从不执行这些工序。"
+
+msgid "Rework-only operations that a step result suggests. This job keeps its own copy from the make method."
+msgstr "步骤结果提示的仅用于返工的工序。此工单保留从制造方法复制的副本。"
 
 msgid "RFQ"
 msgstr "询价单"
@@ -27180,7 +27516,7 @@ msgid "Shared channel"
 msgstr "共享频道"
 
 msgid "Shared Section (deleted)"
-msgstr ""
+msgstr "共享章节（已删除）"
 
 msgid "Shared Sections"
 msgstr "共享部分"
@@ -27454,6 +27790,7 @@ msgid "Show"
 msgstr "显示"
 
 #. placeholder {0}: group.name
+#. placeholder {0}: route.name
 msgid "Show {0}"
 msgstr "显示 {0}"
 
@@ -27481,6 +27818,10 @@ msgstr "显示全部"
 
 msgid "Show all hidden on this step"
 msgstr "显示此步骤上隐藏的全部内容"
+
+#. placeholder {0}: group.name
+msgid "Show all in {0}"
+msgstr "显示{0}中的全部"
 
 msgid "Show available batch numbers"
 msgstr "显示可用批次号"
@@ -27823,7 +28164,7 @@ msgid "Someone"
 msgstr "某人"
 
 msgid "Someone else just saved this template. Refresh to load their version, or keep editing to overwrite it when you save."
-msgstr ""
+msgstr "其他人刚刚保存了此模板。刷新以加载其版本，或继续编辑，保存时将覆盖该版本。"
 
 msgid "Someone who can update accounting has to enter what it cost to make before it can be capitalized."
 msgstr "能够更新会计的人员必须先输入该资产的制造成本，才能将其资本化。"
@@ -27863,6 +28204,12 @@ msgstr "最早优先排序"
 
 msgid "Sort latest first"
 msgstr "最新优先排序"
+
+msgid "Sorted by activity date, newest first"
+msgstr "按活动日期排序，最新在前"
+
+msgid "Sorted by activity date, oldest first"
+msgstr "按活动日期排序，最早在前"
 
 msgid "Source"
 msgstr "来源"
@@ -28458,6 +28805,10 @@ msgstr "子装配体路径"
 
 msgid "Sub-Departments"
 msgstr "子部门"
+
+#. placeholder {0}: module.name
+msgid "Sub-modules of {0}"
+msgstr "{0}的子模块"
 
 msgid "Subassembly"
 msgstr "子装配件"
@@ -29395,6 +29746,12 @@ msgstr "该字段包含多个值，因此它们被合并为一个列表。"
 msgid "That integration is not available"
 msgstr "该集成不可用"
 
+msgid "That is the whole lot rejected. Use Reject Lot instead."
+msgstr "这会拒收整个批次。请改用拒收批次。"
+
+msgid "That is the whole lot. Use Accept Lot instead."
+msgstr "这是整个批次。请改用接受批次。"
+
 msgid "That list was empty."
 msgstr "该列表为空。"
 
@@ -29807,7 +30164,7 @@ msgid "The document could not be downloaded."
 msgstr "无法下载文档。"
 
 msgid "The document could not be opened."
-msgstr ""
+msgstr "无法打开文件。"
 
 msgid "The early hours, {name}."
 msgstr "早晨时刻，{name}。"
@@ -29829,9 +30186,6 @@ msgstr "从客户报价到收款的端到端商业流程：询价到报价到销
 
 msgid "The endpoint that receives a POST request with the updated data when the table is updated"
 msgstr "接收表格更新时包含更新数据的POST请求的端点"
-
-msgid "The engineering drawing this inspection plan is tied to; inspections recorded against this part reference back to this drawing."
-msgstr "此检验计划关联的工程图纸；针对此零件记录的检验将引用此图纸。"
 
 msgid "The entry window, the timecard check, dilution and the certification an employee signs at submit. DCAA is turned on and off at Settings → Projects."
 msgstr "输入窗口、工时单检查、稀释和员工在提交时签署的验证。DCAA在设置 → 项目中打开和关闭。"
@@ -29985,6 +30339,12 @@ msgstr "贸易术语规则（FOB、DAP、EXW、CIF 等），规定在发往此�
 
 msgid "The indirect cost a pool's rate puts on a project: rate × the project's base, posted to the project ledger as Burden rows, year to date less what earlier runs posted."
 msgstr "池的费率对项目的间接成本：费率×项目的基数，过账到项目分类账作为负担行，年初至今少于之前运行过账的金额。"
+
+msgid "The inspection is deleted and its tracked entities return to the status they had before it."
+msgstr "检验已删除，其被跟踪的实体将恢复到检验前的状态。"
+
+msgid "The inspection leaves the shop floor with no verdict. What it recorded is kept, and its held tracked entities return to the status they had before it."
+msgstr "检验在未形成结论的情况下离开车间。已记录的内容予以保留，其处于搁置状态的被跟踪实体恢复到检验前的状态。"
 
 msgid "The integration authorized the connection but saving it failed. Try connecting again."
 msgstr "集成已授权连接，但保存失败。请尝试重新连接。"
@@ -30377,7 +30737,7 @@ msgid "The preset bundle of tasks and approval requirements applied to this issu
 msgstr "应用于此问题的预设任务和审批要求捆绑；设置时覆盖问题类型的默认工作流。"
 
 msgid "The preview could not be drawn. It shows the last one that was."
-msgstr ""
+msgstr "无法绘制预览。当前显示的是上一次成功绘制的预览。"
 
 msgid "The price of an hour on a Time & Materials line: the line's rate for the employee, else for the labor category, else the labor category's default Bill Rate, in effect on the day."
 msgstr "时间和物料订单行上一小时的价格：员工的订单行费率，或劳动力分类的费率，或劳动力分类的默认账单费率，有效期为当天。"
@@ -30873,6 +31233,12 @@ msgstr "然后调整为"
 msgid "Then by"
 msgstr "然后按"
 
+msgid "Then continue"
+msgstr "然后继续"
+
+msgid "Then re-inspect"
+msgstr "然后重新检验"
+
 msgid "There are more received than ordered"
 msgstr "收到的数量多于订购的数量"
 
@@ -31080,8 +31446,17 @@ msgstr "此信息将用于文件标题"
 msgid "This information will be visible to all users, so be careful what you share."
 msgstr "此信息将对所有用户可见，请谨慎分享。"
 
+msgid "this inspection"
+msgstr "此检验"
+
 msgid "this inspection plan"
 msgstr "这个检验计划"
+
+msgid "This inspection plan has no parameters."
+msgstr "此检验计划没有参数。"
+
+msgid "This inspection plan has no work instructions."
+msgstr "此检验计划没有作业指导书。"
 
 msgid "This integration can't be connected on this Carbon instance."
 msgstr "此集成无法在此 Carbon 实例上连接。"
@@ -31116,6 +31491,9 @@ msgstr "这是一个采购项目 — 它没有BoM/BoP；只有其属性和文档
 
 msgid "This is a unique identifier for the webhook"
 msgstr "这是webhook的唯一标识符"
+
+msgid "This is an Admin override"
+msgstr ""
 
 msgid "This is an ITAR-controlled environment. Access is restricted to U.S. Persons."
 msgstr "这是一个ITAR管制环境。访问仅限于美国人。"
@@ -31178,6 +31556,12 @@ msgstr "该地点仅排程在人员配备板上已分配操作员的工作。此
 msgid "This lot is expired and can't be picked."
 msgstr "此批次已过期且无法拣货。"
 
+msgid "This lot is partly accepted, but its NCR did not open. The NCR decides the rejected part of the lot."
+msgstr "此批次已部分接受，但其 NCR 未能创建。批次的拒收部分由 NCR 决定。"
+
+msgid "This lot is partly accepted. An NCR records the failed units and decides what happens to them."
+msgstr "此批次已部分接受。NCR 记录不合格单元并决定其处理方式。"
+
 msgid "This may take a moment. Hang tight."
 msgstr "这可能需要一些时间。请稍候。"
 
@@ -31227,7 +31611,7 @@ msgid "This PIN will not be shown again. You will need it to exit console mode o
 msgstr "此PIN将不再显示。您需要它来在MES终端上退出控制台模式。"
 
 msgid "This preview is paused because a text changes a figure."
-msgstr ""
+msgstr "由于某段文字改变了数值，此预览已暂停。"
 
 msgid "This price was entered manually, so no pricing rules were applied."
 msgstr "此价格手动输入，因此未应用定价规则。"
@@ -31293,7 +31677,7 @@ msgid "This serial"
 msgstr "此序列号"
 
 msgid "This shared section no longer exists. Remove the block or recreate the section."
-msgstr ""
+msgstr "此共享章节已不存在。请移除该区块或重新创建该章节。"
 
 msgid "This station runs ability-gated work — it only runs while a qualified operator is on shift; operators assigned on the manning board further shape available labor."
 msgstr "此工作中心运行需要特定技能的工作 — 仅当具有资格的操作员值班时才运行；人员配置委员会上指定的操作员进一步形成可用的人工。"
@@ -31344,6 +31728,9 @@ msgstr "此版本属于变更通知<0>{0}</0>。请在那里编辑。"
 
 msgid "This version cannot be opened"
 msgstr "无法打开此版本"
+
+msgid "This version is a Draft. Publishing makes it Active and archives the Active version."
+msgstr "此版本为草稿。发布后将其设为启用，并归档当前启用的版本。"
 
 msgid "This version is published"
 msgstr "此版本已发布"
@@ -32108,6 +32495,9 @@ msgstr "重试"
 msgid "Tuesday"
 msgstr "星期二"
 
+msgid "Turn Off"
+msgstr ""
+
 msgid "Turn On"
 msgstr "打开"
 
@@ -32174,6 +32564,9 @@ msgstr "输入 '{' 以表示变量"
 #. placeholder {0}: company.name
 msgid "Type {0} to confirm"
 msgstr "输入 {0} 以确认"
+
+msgid "Type {purchaseOrderReadableId} to confirm"
+msgstr ""
 
 msgid "Type {TRIGGER} to insert a variable"
 msgstr "输入 {TRIGGER} 以插入变量"
@@ -32332,6 +32725,9 @@ msgstr "未开票发货"
 msgid "Unique, uppercase, without spaces (max 10 characters)"
 msgstr "唯一、大写、无空格（最多 10 个字符）"
 
+msgid "Unique, without spaces (max 10 characters), such as kg or BX"
+msgstr ""
+
 msgid "Unit"
 msgstr "单位"
 
@@ -32405,6 +32801,9 @@ msgstr "计量单位"
 
 msgid "Units reported as unrecoverable at an operation, with a reason — the alternative to rework."
 msgstr "在操作中报告为无法恢复的单位,带有原因 — 返工的替代方案。"
+
+msgid "Units that failed a sample stay Rejected. Every other unit, including units never sampled, is ready for putaway."
+msgstr "抽样不合格的单元仍为已拒绝。其他所有单元，包括从未抽样的单元，均可上架。"
 
 msgid "Units this customer owns show here once registered."
 msgstr "此客户拥有的单位在已登记后显示在此处。"
@@ -32752,6 +33151,9 @@ msgstr "已上传签名"
 msgid "Uploaded: {0}"
 msgstr "已上传：{0}"
 
+msgid "Uploading"
+msgstr "上传中"
+
 #. placeholder {0}: avatarFile.name
 #. placeholder {0}: file.name
 #. placeholder {0}: fileUpload.name
@@ -32939,6 +33341,9 @@ msgstr "使用 {0}"
 msgid "Uses {0} · {1}"
 msgstr "使用 {0} · {1}"
 
+msgid "Uses on this job"
+msgstr "本工单中的使用情况"
+
 #. placeholder {0}: use.number
 #. placeholder {1}: use.title
 msgid "Uses sub-assembly {0} · {1}"
@@ -33096,6 +33501,9 @@ msgstr "版本 {0}"
 msgid "Version {0} is published now and will be replaced."
 msgstr "版本{0}现已发布，将被替换。"
 
+msgid "Version published"
+msgstr "版本已发布"
+
 msgid "Version:"
 msgstr "版本："
 
@@ -33195,6 +33603,9 @@ msgstr "在新标签页中查看"
 
 msgid "View in project plan"
 msgstr "在项目计划中查看"
+
+msgid "View Inspection"
+msgstr "查看检验"
 
 msgid "View Issue"
 msgstr "查看问题"
@@ -33718,6 +34129,9 @@ msgstr "这些行的含义"
 msgid "What this field held before the change. Leave blank for nothing."
 msgstr "此字段在更改之前持有的内容。留空表示无。"
 
+msgid "What this inspection plan is called (e.g. R1234 Receipt); it is how the plan is picked for a part's receipt or an inspection operation."
+msgstr "此检验计划的名称（例如 R1234 收货）。系统据此为零件的收货或检验工序选择该计划。"
+
 msgid "What this receipt is fulfilling — a purchase order, a return, an inbound transfer, or a manual receipt with no parent."
 msgstr "此收据正在履行 — 采购订单、退货、入库转移或无父级的手动收据。"
 
@@ -33732,6 +34146,9 @@ msgstr "这个时间记录计为——人工(操作员时间)、机器(加工时
 
 msgid "What to set up"
 msgstr "要设置什么"
+
+msgid "What was entered wrongly, and why the order cannot be corrected or closed instead"
+msgstr ""
 
 msgid "What we're assuming"
 msgstr "我们的假设"
@@ -33814,11 +34231,11 @@ msgstr "分配序列号时"
 msgid "When supplier responses are expected back; suppliers see this date on the RFQ portal and Carbon stops accepting late responses after it (configurable)."
 msgstr "何时预期供应商回复;供应商在RFQ门户上看到该日期,Carbon在之后停止接受迟到的回复(可配置)。"
 
-msgid "When the buyer asked for the goods; the supplier may promise something else on Promised Date and post something else again on Delivery Date."
-msgstr "当采购员要求货物时；供应商可能在承诺日期承诺其他内容，在交货日期再过账其他内容。"
+msgid "When the buyer asked for the goods; the supplier may promise something else on Receipt Promised Date and post something else again on Delivery Date."
+msgstr "买方要求收到货物的时间。供应商可能在收货承诺日期中给出另一个承诺，并在交货日期中再记录另一个时间。"
 
-msgid "When the buyer needs this line's goods on the dock. A new line starts on the order's Requested Date; planning uses this date for stock-availability and outside-processing scheduling."
-msgstr "采购员需要本行物料到货的日期。新增行默认从订单的要求日期开始；计划根据此日期安排库存可用性和外协加工的排程。"
+msgid "When the buyer needs this line's goods on the dock. A new line starts on the order's Receipt Requested Date; planning uses this date for stock-availability and outside-processing scheduling."
+msgstr "买方需要本行货物到达收货站台的时间。新行默认采用订单的收货要求日期；计划使用此日期进行库存可用性及外协加工排程。"
 
 msgid "When the contract runs and what happens when it completes."
 msgstr "当合同运行时以及完成时会发生什么。"
@@ -34156,6 +34573,9 @@ msgstr "在制品"
 #. placeholder {0}: percentFormatter.format(contingency)
 msgid "with {0} contingency"
 msgstr "含{0}应急储备"
+
+msgid "With Previous"
+msgstr "同上一个"
 
 msgid "Withdraw"
 msgstr "撤回"
@@ -34558,6 +34978,9 @@ msgstr "自定义汇率"
 
 msgid "Your real data is loaded and you have checked a sample and approved it."
 msgstr "您的真实数据已加载，您已检查样本并批准了它。"
+
+msgid "Your reason and the decision are kept in the audit log."
+msgstr ""
 
 msgid "Your session was locked after inactivity."
 msgstr "你的会话因不活动而被已锁定。"
