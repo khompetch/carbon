@@ -7,7 +7,9 @@ import {
   addDays,
   addMonths,
   bicMatchesCountry,
+  colorNames,
   EPSILON,
+  equals,
   getBankFieldConfig,
   getCompletionAfterQuantityChange,
   getRemainingQuantityToInvoice,
@@ -38,7 +40,11 @@ import {
   hasContactNameOrEmail
 } from "~/types/validators";
 import {
+  FORCE_DELETE_MIN_REASON_LENGTH,
+  forceDeleteApprovalRefusal,
+  forceDeleteWithdrawRefusal,
   incoterms,
+  isForceDeleteConfirmed,
   itemType,
   taxExemptionReasons
 } from "../shared/shared.models";
@@ -145,6 +151,8 @@ export const plannedOrderValidator = z.object({
   existingReadableId: zfd.text(z.string().optional()),
   existingStatus: zfd.text(z.enum(purchaseOrderStatusType).optional()),
   supplierId: zfd.text(z.string().optional()),
+  // The Order action this suggestion came from, which Order settles
+  planningActionId: zfd.text(z.string().optional()),
   itemReadableId: zfd.text(z.string().optional()),
   unitPrice: zfd.numeric(z.number().optional()),
   unitOfMeasureCode: zfd.text(z.string().optional()),
@@ -208,6 +216,8 @@ export const purchaseOrderDeliveryValidator = z
     // shippingTermId: zfd.text(z.string().optional()),
     trackingNumber: z.string(),
     deliveryDate: zfd.text(z.string().optional()),
+    shippedDate: zfd.text(z.string().optional()),
+    expectedReceiptDate: zfd.text(z.string().optional()),
     receiptRequestedDate: zfd.text(z.string().optional()),
     receiptPromisedDate: zfd.text(z.string().optional()),
     dropShipment: zfd.checkbox(),
@@ -376,6 +386,13 @@ export const selectedLineSchema = z.object({
 
 export const selectedLinesValidator = z.record(z.string(), selectedLineSchema);
 
+export const supplierStageValidator = z.object({
+  id: zfd.text(z.string().optional()),
+  name: z.string().trim().min(1, { message: "Name is required" }),
+  /** Empty keeps the color derived from the name. */
+  color: zfd.text(z.enum(colorNames).optional())
+});
+
 export const supplierValidator = z.object({
   id: zfd.text(z.string().optional()),
   readableId: zfd.text(z.string().optional()),
@@ -384,6 +401,7 @@ export const supplierValidator = z.object({
     (val) => (val === "" ? undefined : val),
     z.enum(supplierStatusType).optional().nullable()
   ),
+  supplierStageId: zfd.text(z.string().optional()),
   supplierTypeId: zfd.text(z.string().optional()),
   accountManagerId: zfd.text(z.string().optional()),
   currencyCode: zfd.text(z.string().optional()),
@@ -399,6 +417,7 @@ export const supplierApprovalValidator = z.object({
   supplierStatus: z.enum(supplierStatusType, {
     error: "Supplier status is required"
   }),
+  supplierStageId: zfd.text(z.string().optional()),
   supplierTypeId: zfd.text(z.string().optional()),
   accountManagerId: zfd.text(z.string().optional()),
   currencyCode: zfd.text(z.string().optional()),
@@ -716,6 +735,148 @@ export const purchasingRfqLineValidator = z.object({
   conversionFactor: zfd.numeric(z.number().optional()),
   order: zfd.numeric(z.number().min(0))
 });
+
+/** The parts of one Request Quote: each line goes to its own suppliers. */
+export const requestQuoteValidator = z.object({
+  locationId: z.string().optional(),
+  lines: z
+    .array(
+      z.object({
+        itemId: z.string().min(1),
+        /** In the item's inventory unit. */
+        quantity: z
+          .number()
+          .positive({ message: "Each part needs a quantity above 0" }),
+        supplierIds: z
+          .array(z.string().min(1))
+          .min(1, { message: "Choose a supplier for each part" })
+      })
+    )
+    .min(1, { message: "Choose at least one part" })
+    // One insert writes every line; this keeps it under Postgres's bind limit.
+    .max(1000, { message: "Request a quote for at most 1000 parts at a time" })
+});
+
+export type RequestQuoteLine = z.infer<
+  typeof requestQuoteValidator
+>["lines"][number];
+
+/** Whole purchase units when the unit differs, as planning orders them; the
+ * inner round strips float noise (1.1 / 0.1 = 11.000000000000002). */
+export function toPurchaseQuantity(inventoryQuantity: number, factor: number) {
+  return factor === 1
+    ? round(inventoryQuantity)
+    : round(round(inventoryQuantity / factor), 0, RoundingMode.Up);
+}
+
+/** One RFQ per set of suppliers, because every supplier on an RFQ gets every line. */
+export function groupRequestQuoteLines(lines: RequestQuoteLine[]) {
+  const groups = new Map<
+    string,
+    { supplierIds: string[]; lines: RequestQuoteLine[] }
+  >();
+  for (const line of lines) {
+    const supplierIds = [...new Set(line.supplierIds)].sort();
+    const key = supplierIds.join("|");
+    const group = groups.get(key) ?? { supplierIds, lines: [] };
+    group.lines.push(line);
+    groups.set(key, group);
+  }
+  return [...groups.values()];
+}
+
+type MethodTreeRow = {
+  methodMaterialId: string;
+  parentMaterialId: string | null;
+  itemId: string;
+  itemReadableId: string;
+  description: string;
+  unitOfMeasureCode: string | null;
+  quantity: number;
+  methodType: string;
+  replenishmentSystem: string | null;
+  isPickDescendant: boolean | null;
+};
+
+export type RfqLineFromMethod = {
+  itemId: string;
+  itemReadableId: string;
+  description: string;
+  unitOfMeasureCode: string | null;
+  /** For one of the root item, in the item's inventory unit. */
+  quantity: number;
+  usedIn: string[];
+};
+
+/**
+ * The parts to buy for one of the root item, from its `get_method_tree` rows.
+ * It walks into each Make to Order line and does not list it. It lists each
+ * other line unless the item is only ever made, and a Make to Order line that
+ * has no method to walk and can be bought. The contents of a part pulled from
+ * stock are not needed, so it skips them, and so is a line with no quantity.
+ * Repeats of an item add up.
+ */
+export function getRfqLinesFromMethod(
+  tree: MethodTreeRow[],
+  rootId: string,
+  rootReadableId: string
+): RfqLineFromMethod[] {
+  const childrenOf = new Map<string, MethodTreeRow[]>();
+  for (const row of tree) {
+    if (!row.parentMaterialId) continue;
+    const siblings = childrenOf.get(row.parentMaterialId) ?? [];
+    siblings.push(row);
+    childrenOf.set(row.parentMaterialId, siblings);
+  }
+
+  const lines = new Map<string, RfqLineFromMethod>();
+  const walk = (
+    parentId: string,
+    parentReadableId: string,
+    multiplier: number,
+    path: Set<string>
+  ) => {
+    for (const row of childrenOf.get(parentId) ?? []) {
+      if (row.isPickDescendant || path.has(row.methodMaterialId)) continue;
+      const quantity = round(multiplier * row.quantity);
+      // Nothing to buy, and a quantity of 0 fails the RFQ line's positive check.
+      if (!(quantity > 0)) continue;
+      if (
+        row.methodType === "Make to Order" &&
+        (childrenOf.has(row.methodMaterialId) ||
+          row.replenishmentSystem === "Make")
+      ) {
+        walk(
+          row.methodMaterialId,
+          row.itemReadableId,
+          quantity,
+          new Set(path).add(row.methodMaterialId)
+        );
+        continue;
+      }
+      if (row.replenishmentSystem === "Make") continue;
+
+      const line = lines.get(row.itemId);
+      if (!line) {
+        lines.set(row.itemId, {
+          itemId: row.itemId,
+          itemReadableId: row.itemReadableId,
+          description: row.description,
+          unitOfMeasureCode: row.unitOfMeasureCode,
+          quantity,
+          usedIn: [parentReadableId]
+        });
+        continue;
+      }
+      line.quantity = round(line.quantity + quantity);
+      if (!line.usedIn.includes(parentReadableId)) {
+        line.usedIn.push(parentReadableId);
+      }
+    }
+  };
+  walk(rootId, rootReadableId, 1, new Set());
+  return [...lines.values()];
+}
 
 export const purchasingRfqSuppliersValidator = z.object({
   purchasingRfqId: z.string().min(1, { message: "RFQ is required" }),
@@ -1198,6 +1359,37 @@ export function purchaseOrderPromisedDateRefusal(
     : "Cannot change the promised date of a fully received purchase order.";
 }
 
+/**
+ * The date the supplier promised for a PO line: the line's own, else its
+ * order's delivery date — the same COALESCE the `openPurchaseOrderLines` view
+ * gives MRP. MRP dates the line by this ahead of the required date, so a
+ * planning date change (which writes the required date) cannot move it.
+ */
+export function promisedDateOf(line: {
+  promisedDate: string | null;
+  receiptPromisedDate: string | null | undefined;
+}): string | null {
+  return line.promisedDate ?? line.receiptPromisedDate ?? null;
+}
+
+/** A line that receives goods has no promised date. Comment lines receive nothing. */
+export function isPurchaseOrderMissingPromisedDate(
+  lines: {
+    purchaseOrderLineType: string | null;
+    promisedDate: string | null;
+  }[],
+  receiptPromisedDate: string | null | undefined
+): boolean {
+  return lines.some(
+    (line) =>
+      line.purchaseOrderLineType !== "Comment" &&
+      !promisedDateOf({
+        promisedDate: line.promisedDate,
+        receiptPromisedDate
+      })
+  );
+}
+
 /** A line's own dates. `receivedDate` is its delivery date. */
 export const purchaseOrderLineDateFields = [
   "requiredDate",
@@ -1493,6 +1685,39 @@ export function findPlanningPurchaseOrder<
 }
 
 /**
+ * The line of a planning PO that a new order adds its quantity to: same item,
+ * required date, owner (project or planning group) and conversion factor. A
+ * line with another factor is never merged: the order's quantity is in the
+ * supplier part's purchase units, so added there it would be the wrong amount.
+ */
+export function findMergeablePlanningLine<
+  L extends {
+    itemId: string | null;
+    requiredDate: string | null;
+    projectId: string | null;
+    planningGroupId: string | null;
+    conversionFactor: number | null;
+  }
+>(
+  lines: L[],
+  target: {
+    itemId: string;
+    requiredDate: string | null;
+    planningSegmentId: string;
+    conversionFactor: number;
+  }
+): L | undefined {
+  return lines.find(
+    (line) =>
+      line.itemId === target.itemId &&
+      line.requiredDate === target.requiredDate &&
+      (line.planningGroupId ?? line.projectId ?? "") ===
+        target.planningSegmentId &&
+      equals(line.conversionFactor ?? 1, target.conversionFactor)
+  );
+}
+
+/**
  * The statuses a reopen moves a purchase order back to: Draft from the PO
  * page, Planned from the planning pages. Planned because Draft is not MRP
  * supply (`openPurchaseOrderLines` leaves it out): a PO reopened to Draft from
@@ -1552,7 +1777,8 @@ export function purchaseOrderDeleteRefusal({
 
 // ─── Purchase Order Force Delete (Admin override) ───
 
-export const PURCHASE_ORDER_FORCE_DELETE_MIN_REASON_LENGTH = 10;
+export const PURCHASE_ORDER_FORCE_DELETE_MIN_REASON_LENGTH =
+  FORCE_DELETE_MIN_REASON_LENGTH;
 
 export const purchaseOrderForceDeleteRequestValidator = z.object({
   intent: z.literal("request"),
@@ -1738,26 +1964,9 @@ export function purchaseOrderForceDeleteUsedStockMessage(
  * request, only an Admin, and never the Admin who asked: one other Admin's
  * approval deletes the order.
  */
-export function purchaseOrderForceDeleteApprovalRefusal({
-  status,
-  requestedBy,
-  userId,
-  isAdmin
-}: {
-  status: string;
-  requestedBy: string;
-  userId: string;
-  isAdmin: boolean;
-}): string | null {
-  if (status !== "Pending") {
-    return `This force delete request is ${status.toLowerCase()}`;
-  }
-  if (!isAdmin) return "Only an Admin can approve a force delete";
-  if (requestedBy === userId) {
-    return "You asked for this force delete: another Admin must approve it";
-  }
-  return null;
-}
+/** Why `userId` cannot approve this request, or null (`forceDeleteApprovalRefusal`). */
+export const purchaseOrderForceDeleteApprovalRefusal =
+  forceDeleteApprovalRefusal;
 
 /**
  * The `documentId` of a force delete notification: the order and the
@@ -1772,43 +1981,14 @@ export function purchaseOrderForceDeleteNotificationId(
 }
 
 /**
- * Why `userId` cannot reject or cancel this request, or null. Any Admin may
- * reject it; only the Admin who asked may cancel it.
+ * Why `userId` cannot reject or cancel this request, or null
+ * (`forceDeleteWithdrawRefusal`).
  */
-export function purchaseOrderForceDeleteWithdrawRefusal({
-  intent,
-  status,
-  requestedBy,
-  userId,
-  isAdmin
-}: {
-  intent: "reject" | "cancel";
-  status: string;
-  requestedBy: string;
-  userId: string;
-  isAdmin: boolean;
-}): string | null {
-  if (status !== "Pending") {
-    return `This force delete request is ${status.toLowerCase()}`;
-  }
-  if (!isAdmin) return "Only an Admin can decide a force delete";
-  if (intent === "cancel" && requestedBy !== userId) {
-    return "Only the Admin who asked can cancel this force delete; reject it instead";
-  }
-  return null;
-}
+export const purchaseOrderForceDeleteWithdrawRefusal =
+  forceDeleteWithdrawRefusal;
 
-/** Whether the order's own number was typed to confirm (case and spaces ignored). */
-export function isPurchaseOrderForceDeleteConfirmed(
-  confirmation: string,
-  purchaseOrderReadableId: string
-): boolean {
-  const norm = (s: string) => s.replace(/\s+/g, "").toUpperCase();
-  return (
-    norm(confirmation) !== "" &&
-    norm(confirmation) === norm(purchaseOrderReadableId)
-  );
-}
+/** Whether the order's own number was typed to confirm (`isForceDeleteConfirmed`). */
+export const isPurchaseOrderForceDeleteConfirmed = isForceDeleteConfirmed;
 
 // ─── Purchase Return Orders (Supplier Returns) ───
 
@@ -2451,4 +2631,94 @@ export function splitRfqFileAttachments<T extends { size: number }>(
     }
   }
   return { attach, link };
+}
+
+// ─── Receipt reversal: what the order gets back ───
+//
+// Shared by the receipt void (`postReceipt`) and the force delete's
+// adjust-out reversal (`restorePurchaseOrderReceived`), so both give an
+// order back the same received quantities and status.
+
+/**
+ * Each order line's received quantity after the receipt's lines are
+ * reversed: what they received, in the purchase unit (the first line's
+ * conversion factor, as the void reads it), comes off, never below zero.
+ * Only lines the receipt received on, with a purchase quantity, are
+ * returned.
+ */
+export function receivedAfterReceiptReversal(
+  orderLines: {
+    id: string;
+    purchaseQuantity: number | null;
+    quantityReceived: number | null;
+  }[],
+  receiptLines: {
+    lineId: string | null;
+    receivedQuantity: number | null;
+    conversionFactor: number | null;
+  }[]
+): Record<string, { quantityReceived: number; receivedComplete: boolean }> {
+  const byLine = new Map<string, typeof receiptLines>();
+  for (const line of receiptLines) {
+    if (!line.lineId) continue;
+    byLine.set(line.lineId, [...(byLine.get(line.lineId) ?? []), line]);
+  }
+  const result: Record<
+    string,
+    { quantityReceived: number; receivedComplete: boolean }
+  > = {};
+  for (const line of orderLines) {
+    const received = byLine.get(line.id);
+    const purchaseQuantity = Number(line.purchaseQuantity ?? 0);
+    if (!received?.length || purchaseQuantity <= 0) continue;
+    const receivedInPurchaseUnit =
+      received.reduce((sum, r) => {
+        const quantity = Number(r.receivedQuantity);
+        return sum + (Number.isNaN(quantity) ? 0 : quantity);
+      }, 0) / Number(received[0]!.conversionFactor ?? 1);
+    const quantityReceived = Math.max(
+      0,
+      Number(line.quantityReceived ?? 0) - receivedInPurchaseUnit
+    );
+    result[line.id] = {
+      quantityReceived,
+      receivedComplete: quantityReceived >= purchaseQuantity
+    };
+  }
+  return result;
+}
+
+/**
+ * The order's status once its lines hold these quantities: Completed when
+ * every line is received and invoiced, else what is still to do. Comment
+ * lines count as done; G/L Account and Service lines are never received.
+ */
+export function purchaseOrderStatusAfterReversal(
+  lines: {
+    purchaseOrderLineType: string | null;
+    purchaseQuantity: number | null;
+    quantityReceived: number | null;
+    quantityInvoiced: number | null;
+  }[]
+): Database["public"]["Enums"]["purchaseOrderStatus"] {
+  const done = (target: number | null, have: number | null) => {
+    const goal = Number(target ?? 0);
+    return goal <= 0 || Number(have ?? 0) >= goal;
+  };
+  const allInvoiced = lines.every(
+    (line) =>
+      line.purchaseOrderLineType === "Comment" ||
+      done(line.purchaseQuantity, line.quantityInvoiced)
+  );
+  const allReceived = lines.every(
+    (line) =>
+      line.purchaseOrderLineType === "Comment" ||
+      line.purchaseOrderLineType === "G/L Account" ||
+      line.purchaseOrderLineType === "Service" ||
+      done(line.purchaseQuantity, line.quantityReceived)
+  );
+  if (allInvoiced && allReceived) return "Completed";
+  if (allInvoiced) return "To Receive";
+  if (allReceived) return "To Invoice";
+  return "To Receive and Invoice";
 }
