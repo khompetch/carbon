@@ -9,6 +9,7 @@ import {
   isPurchaseOrderBulkDeletable,
   isPurchaseOrderForceDeleteConfirmed,
   isPurchaseOrderLocked,
+  isPurchaseOrderMissingPromisedDate,
   isPurchaseOrderPromisedDateEditable,
   leaseDetailsValidator,
   leaseDurationOf,
@@ -32,8 +33,10 @@ import {
   purchaseOrderForceDeleteUsedStockMessage,
   purchaseOrderForceDeleteWithdrawRefusal,
   purchaseOrderLineDateRefusal,
+  purchaseOrderStatusAfterReversal,
   purchaseOrderStatusType,
   purchaseOrderValidator,
+  receivedAfterReceiptReversal,
   resolveLeaseDates,
   shortClosePurchaseOrderLineRefusal,
   splitRfqFileAttachments,
@@ -814,6 +817,40 @@ describe("supplierContactEmailRequiredValidator", () => {
   });
 });
 
+describe("isPurchaseOrderMissingPromisedDate", () => {
+  const line = (promisedDate: string | null, type = "Part") => ({
+    purchaseOrderLineType: type,
+    promisedDate
+  });
+
+  it("finds a line with no date on an order with no date", () => {
+    expect(
+      isPurchaseOrderMissingPromisedDate([line("2026-12-01"), line(null)], null)
+    ).toBe(true);
+  });
+
+  it("lets the order's date cover every line", () => {
+    expect(
+      isPurchaseOrderMissingPromisedDate([line(null), line(null)], "2026-12-01")
+    ).toBe(false);
+  });
+
+  it("accepts lines that each have a date", () => {
+    expect(isPurchaseOrderMissingPromisedDate([line("2026-12-01")], null)).toBe(
+      false
+    );
+  });
+
+  it("skips Comment lines", () => {
+    expect(
+      isPurchaseOrderMissingPromisedDate(
+        [line("2026-12-01"), line(null, "Comment")],
+        null
+      )
+    ).toBe(false);
+  });
+});
+
 describe("purchase order force delete", () => {
   const noBlockers = {
     shipments: [],
@@ -1072,5 +1109,60 @@ describe("purchase order force delete", () => {
         }).success
       ).toBe(true);
     });
+  });
+});
+
+describe("receipt reversal: order quantities", () => {
+  it("takes what the receipt received off each line, in the purchase unit", () => {
+    expect(
+      receivedAfterReceiptReversal(
+        [
+          { id: "l1", purchaseQuantity: 10, quantityReceived: 10 },
+          { id: "l2", purchaseQuantity: 4, quantityReceived: 4 }
+        ],
+        [
+          { lineId: "l1", receivedQuantity: 12, conversionFactor: 2 },
+          { lineId: "l1", receivedQuantity: 4, conversionFactor: 2 },
+          { lineId: null, receivedQuantity: 9, conversionFactor: 1 }
+        ]
+      )
+    ).toEqual({ l1: { quantityReceived: 2, receivedComplete: false } });
+  });
+
+  it("never goes below zero", () => {
+    expect(
+      receivedAfterReceiptReversal(
+        [{ id: "l1", purchaseQuantity: 5, quantityReceived: 1 }],
+        [{ lineId: "l1", receivedQuantity: 3, conversionFactor: 1 }]
+      )
+    ).toEqual({ l1: { quantityReceived: 0, receivedComplete: false } });
+  });
+
+  it("projects the order status from received and invoiced lines", () => {
+    const line = (
+      purchaseOrderLineType: string,
+      quantityReceived: number,
+      quantityInvoiced: number
+    ) => ({
+      purchaseOrderLineType,
+      purchaseQuantity: 5,
+      quantityReceived,
+      quantityInvoiced
+    });
+    expect(purchaseOrderStatusAfterReversal([line("Part", 5, 5)])).toBe(
+      "Completed"
+    );
+    expect(purchaseOrderStatusAfterReversal([line("Part", 0, 5)])).toBe(
+      "To Receive"
+    );
+    expect(purchaseOrderStatusAfterReversal([line("Part", 5, 0)])).toBe(
+      "To Invoice"
+    );
+    expect(
+      purchaseOrderStatusAfterReversal([
+        line("Part", 0, 0),
+        line("Service", 0, 5)
+      ])
+    ).toBe("To Receive and Invoice");
   });
 });
