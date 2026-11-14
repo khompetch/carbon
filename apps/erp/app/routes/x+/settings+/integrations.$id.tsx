@@ -108,6 +108,8 @@ import {
   dimensionValueMappingBulkUpsertValidator,
   dimensionValueMappingUpsertValidator,
   postingSyncSettingsValidator,
+  pulseDeviceDeleteValidator,
+  pulseDeviceUpsertValidator,
   syncEnabledValidator,
   syncOperationTransitionValidator,
   workCenterDeviceUpsertValidator
@@ -116,6 +118,7 @@ import {
   getIntegration,
   getOeeDevicesTabData,
   getProviderDimensionTargets,
+  getPulseDevicesTabData,
   invalidateIntegrationHealthCache,
   isIntegrationInstallWithheld,
   upsertCompanyIntegration,
@@ -130,6 +133,7 @@ import type { IntegrationFormTab } from "~/modules/settings/ui/Integrations/Inte
 import { useMountActionStates } from "~/modules/settings/ui/Integrations/MountPublishStatus";
 import { OeeDevices } from "~/modules/settings/ui/Integrations/OeeDevices.ee";
 import { PostingSyncSettings } from "~/modules/settings/ui/Integrations/PostingSyncSettings";
+import { PulseDevices } from "~/modules/settings/ui/Integrations/PulseDevices.ee";
 import {
   SYNC_ACTIVITY_SORTS,
   type SyncReconciliationReport
@@ -573,7 +577,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
       postingSync: null,
       dimensionSync: null,
       connections: null,
-      devices: null
+      devices: null,
+      pulseDevices: null
     };
   }
 
@@ -590,6 +595,14 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const devicesPromise =
     providerRole === "oee" && integrationData.data.active
       ? getOeeDevicesTabData(client, companyId, integrationId)
+      : Promise.resolve(null);
+
+  // A provider whose devices live in Carbon also gets the Pulse Devices tab.
+  const pulseDevicesPromise =
+    providerRole === "oee" &&
+    (integration as { registersDevices?: boolean }).registersDevices &&
+    integrationData.data.active
+      ? getPulseDevicesTabData(client, companyId)
       : Promise.resolve(null);
 
   // Any provider-role integration writes accountingSyncOperation rows — a spend
@@ -1075,7 +1088,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
       }
     : null;
 
-  const devices = await devicesPromise;
+  const [devices, pulseDevices] = await Promise.all([
+    devicesPromise,
+    pulseDevicesPromise
+  ]);
 
   return {
     installed: integrationData.data.active,
@@ -1087,7 +1103,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     postingSync,
     dimensionSync,
     connections,
-    devices
+    devices,
+    pulseDevices
   };
 }
 
@@ -1197,6 +1214,25 @@ export async function action(args: ActionFunctionArgs) {
         deviceName: input.data.deviceName,
         workCenterId: input.data.workCenterId
       });
+    }
+    case "upsert-pulse-device": {
+      const input = await validator(pulseDeviceUpsertValidator).request(
+        args,
+        params
+      );
+      if ("invalid" in input) return input.invalid;
+      const { intent: _, ...device } = input.data;
+      const api = await carbon(args.request);
+      return api.settings.savePulseDevice(device);
+    }
+    case "delete-pulse-device": {
+      const input = await validator(pulseDeviceDeleteValidator).request(
+        args,
+        params
+      );
+      if ("invalid" in input) return input.invalid;
+      const api = await carbon(args.request);
+      return api.settings.deletePulseDevice({ id: input.data.id });
     }
   }
 
@@ -1648,7 +1684,8 @@ export default function IntegrationRoute() {
     postingSync,
     dimensionSync,
     connections,
-    devices
+    devices,
+    pulseDevices
   } = useLoaderData<typeof loader>();
 
   const dialog = useRouteDialog(path.to.integrations);
@@ -1682,6 +1719,13 @@ export default function IntegrationRoute() {
       value: "devices",
       label: <Trans>Devices</Trans>,
       content: (tabBar) => <OeeDevices tabs={tabBar} {...devices} />
+    });
+  }
+  if (pulseDevices) {
+    tabs.push({
+      value: "pulse-devices",
+      label: <Trans>Pulse Devices</Trans>,
+      content: (tabBar) => <PulseDevices tabs={tabBar} {...pulseDevices} />
     });
   }
   if (accountMapping) {

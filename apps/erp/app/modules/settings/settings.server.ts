@@ -56,6 +56,10 @@ import {
 import { ONSHAPE_V2_INTEGRATION_ID } from "@carbon/ee/onshape";
 import { isIntegrationWhitelisted } from "@carbon/ee/plan";
 import { companyHasFeature } from "@carbon/ee/plan.server";
+import {
+  deletePulseDevice as deletePulseDeviceRow,
+  savePulseDevice as savePulseDeviceRow
+} from "@carbon/ee/pulse/devices.server";
 import { updateRequireMfaSetting } from "@carbon/ee/two-factor.server";
 import { trigger } from "@carbon/jobs";
 import {
@@ -2910,6 +2914,96 @@ export const saveOeeDeviceMapping = defineServiceFn({
       );
     }
     return { externalDeviceId, workCenterId: workCenterId ?? null };
+  }
+});
+
+/**
+ * Register a Pulse device, or change the settings of a registered one.
+ *
+ * @remarks
+ * The device key is the device's MQTT username and topic segment. It is
+ * unique on the whole server and cannot change after the device is
+ * registered. The ingest service reads the new settings within a minute.
+ * Pulse is a commercial feature.
+ */
+export const savePulseDevice = defineServiceFn({
+  input: z.object({
+    id: z.string().optional(),
+    deviceKey: z.string().min(1),
+    name: z.string().min(1),
+    locationId: z.string().optional(),
+    piecesPerPulse: z.number().positive(),
+    expectedCycleSeconds: z.number().positive().optional(),
+    idleAfterSeconds: z.number().int().positive().optional(),
+    offlineAfterSeconds: z.number().int().positive(),
+    debounceMs: z.number().int().min(0),
+    bucketSeconds: z.number().int().positive(),
+    active: z.boolean()
+  }),
+  permission: { update: "settings" },
+  async run(ctx, { id, deviceKey, ...settings }) {
+    let result: Awaited<ReturnType<typeof savePulseDeviceRow>>;
+    try {
+      result = await savePulseDeviceRow(
+        ctx.asCaller.supabase,
+        ctx.asSystem.pg,
+        {
+          companyId: ctx.company.id,
+          userId: ctx.auditUserId,
+          id,
+          deviceKey,
+          settings: {
+            ...settings,
+            locationId: settings.locationId ?? null,
+            expectedCycleSeconds: settings.expectedCycleSeconds ?? null,
+            idleAfterSeconds: settings.idleAfterSeconds ?? null
+          }
+        }
+      );
+    } catch (err) {
+      if (!(err instanceof EntitlementError)) throw err;
+      return ctx.error(
+        "entitlement",
+        `Failed to save the device: ${err.message}`
+      );
+    }
+    if (result.error) {
+      return ctx.error("rule", `Failed to save the device: ${result.error}`);
+    }
+    await service.clearOeeDevicesCache(ctx.company.id, "pulse");
+    return result.data;
+  }
+});
+
+/**
+ * Delete a Pulse device with its counts and state changes.
+ *
+ * @remarks
+ * A device mapped to a work center is refused: unmap it first.
+ */
+export const deletePulseDevice = defineServiceFn({
+  input: z.object({ id: z.string().min(1) }),
+  permission: { update: "settings" },
+  async run(ctx, { id }) {
+    let result: Awaited<ReturnType<typeof deletePulseDeviceRow>>;
+    try {
+      result = await deletePulseDeviceRow(
+        ctx.asCaller.supabase,
+        ctx.asSystem.pg,
+        { companyId: ctx.company.id, id }
+      );
+    } catch (err) {
+      if (!(err instanceof EntitlementError)) throw err;
+      return ctx.error(
+        "entitlement",
+        `Failed to delete the device: ${err.message}`
+      );
+    }
+    if (result.error) {
+      return ctx.error("rule", `Failed to delete the device: ${result.error}`);
+    }
+    await service.clearOeeDevicesCache(ctx.company.id, "pulse");
+    return result.data;
   }
 });
 /**

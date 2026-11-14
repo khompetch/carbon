@@ -2349,6 +2349,85 @@ export async function getOeeDevicesTabData(
   };
 }
 
+/** Drop an OEE integration's cached device list, after its devices change. */
+export async function clearOeeDevicesCache(
+  companyId: string,
+  integrationId: string
+): Promise<void> {
+  try {
+    await redis.del(oeeDevicesCacheKey(companyId, integrationId));
+  } catch (error) {
+    logger.error("Failed to clear the OEE device cache", {
+      companyId,
+      integrationId,
+      error
+    });
+  }
+}
+
+/**
+ * Data for the Pulse Devices tab: the company's registered devices with
+ * their health, the work center each is mapped to, the locations a device
+ * can sit at, and the ingest service's last heartbeat. The heartbeat row is
+ * service-only (one row for the whole server), so the service role reads it.
+ */
+export async function getPulseDevicesTabData(
+  client: SupabaseClient<Database>,
+  companyId: string
+) {
+  const [devices, mappings, locations, ingest] = await Promise.all([
+    client
+      .from("pulseDevice")
+      .select(
+        "id, deviceKey, name, locationId, piecesPerPulse, expectedCycleSeconds, idleAfterSeconds, offlineAfterSeconds, debounceMs, bucketSeconds, active, lastSeenAt, lastPulseAt, lastCounter, rssi, firmwareVersion, queueDepth, currentState, currentStateAt"
+      )
+      .eq("companyId", companyId)
+      .order("name"),
+    client
+      .from("workCenterDevice")
+      .select("externalDeviceId, workCenter(name)")
+      .eq("companyId", companyId)
+      .eq("integration", "pulse"),
+    client
+      .from("location")
+      .select("id, name")
+      .eq("companyId", companyId)
+      .order("name"),
+    getCarbonServiceRole()
+      .from("pulseIngestStatus")
+      .select("heartbeatAt, version")
+      .eq("id", "ingest")
+      .maybeSingle()
+  ]);
+
+  for (const result of [devices, mappings, locations, ingest]) {
+    if (result.error) {
+      logger.error("Failed to load Pulse device data", {
+        companyId,
+        error: result.error
+      });
+    }
+  }
+
+  const workCenterByKey = new Map(
+    (mappings.data ?? []).map((mapping) => [
+      mapping.externalDeviceId,
+      mapping.workCenter?.name ?? null
+    ])
+  );
+
+  return {
+    devices: (devices.data ?? []).map((device) => ({
+      ...device,
+      workCenterName: workCenterByKey.get(device.deviceKey) ?? null,
+      mapped: workCenterByKey.has(device.deviceKey)
+    })),
+    locations: locations.data ?? [],
+    ingestHeartbeatAt: ingest.data?.heartbeatAt ?? null,
+    error: devices.error ? "Could not load the Pulse devices" : null
+  };
+}
+
 const INTEGRATION_CACHE_TTL = 3600;
 const PIECE_HEALTHY_CACHE_TTL = 300;
 

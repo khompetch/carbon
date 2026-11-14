@@ -21,6 +21,7 @@ export const Pulse = defineIntegration({
   active: true,
   category: "Machine Monitoring",
   providerRole: "oee" as const,
+  registersDevices: true,
   logo: Logo,
   setupInstructions: SetupInstructions,
   description:
@@ -51,9 +52,9 @@ export const Pulse = defineIntegration({
 function SetupInstructions() {
   return (
     <p className="text-sm text-muted-foreground">
-      Run the Pulse ingest service and the MQTT broker beside Carbon, and
-      register each device by its key. Then open the Devices tab and map each
-      device to the work center it measures.
+      Run the Pulse ingest service and the MQTT broker beside Carbon. Register
+      each device by its key on the Pulse Devices tab. Then open the Devices tab
+      and map each device to the work center it measures.
     </p>
   );
 }
