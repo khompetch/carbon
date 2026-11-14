@@ -221,6 +221,63 @@ services:
       - inngest-data:/data
     restart: unless-stopped
 
+  # ─────────────────────────── Pulse machine monitor ──────────────────────────
+  # Profile `pulse` (COMPOSE_PROFILES=pulse), off by default. Pulse devices
+  # count machine cycles and publish over MQTT to an on-site gateway, which
+  # bridges them to `mosquitto` here. `pulse-ingest` stores the counts and the
+  # inferred machine states, and wakes the OEE sync in Inngest. The Pulse
+  # integration is commercial: it needs CARBON_EDITION=enterprise.
+  #
+  # Neither service gets a Dokploy domain: MQTT is not HTTP. `mosquitto`
+  # publishes 1883 on MQTT_PUBLISH_ADDRESS only (default 127.0.0.1, so not at
+  # all from outside). Set it to the VPS's WireGuard address so only the
+  # gateway's tunnel reaches it. See README "Pulse machine monitor".
+  mosquitto:
+    image: eclipse-mosquitto:2.0.20
+    profiles: [pulse]
+    entrypoint: ["/etc/mosquitto-carbon/docker-entrypoint.sh"]
+    environment:
+      MQTT_INGEST_PASSWORD: ${MQTT_INGEST_PASSWORD:-}
+      MQTT_GATEWAY_PASSWORD: ${MQTT_GATEWAY_PASSWORD:-}
+    ports:
+      - "${MQTT_PUBLISH_ADDRESS:-127.0.0.1}:${MQTT_PUBLISH_PORT:-1883}:1883"
+    volumes:
+      - ./mosquitto:/etc/mosquitto-carbon:ro
+      # QoS 1 messages queued for a stopped ingest service survive a restart.
+      - mosquitto-data:/mosquitto/data
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 1883"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # One instance only: two subscribers would both write every message.
+  pulse-ingest:
+    image: ${CARBON_IMAGE_PULSE_INGEST:-carbon-pulse-ingest:local}
+    profiles: [pulse]
+    build:
+      context: ../../..
+      dockerfile: contrib/deploying/dokploy/pulse-ingest.Dockerfile
+    environment:
+      TZ: UTC
+      # Direct, not through Supavisor: a small long-lived pool (4).
+      SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres?sslmode=disable
+      MQTT_URL: mqtt://mosquitto:1883
+      MQTT_USERNAME: pulse-ingest
+      MQTT_PASSWORD: ${MQTT_INGEST_PASSWORD:-}
+      INNGEST_BASE_URL: http://inngest:8288
+      INNGEST_EVENT_KEY: ${INNGEST_EVENT_KEY}
+    depends_on:
+      # The pulse tables come from the migrations.
+      migrate:
+        condition: service_completed_successfully
+      mosquitto:
+        condition: service_healthy
+      inngest:
+        condition: service_started
+    restart: unless-stopped
+
   # ──────────────────────────── Supabase (self-hosted) ─────────────────────────
   # Refuses to let Postgres start on a data volume from another major version.
   # Postgres 17 cannot open a Postgres 15 data directory: it exits, and with
@@ -581,3 +638,4 @@ volumes:
   storage:
   redis-data:
   inngest-data:
+  mosquitto-data:

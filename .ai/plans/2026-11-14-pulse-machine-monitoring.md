@@ -50,13 +50,14 @@ same way, then show OEE from its data.
       authz manifest rules, retention crons
       (`20261114131742_pulse-machine-monitor.sql`, `20261114134325_pulse-machine-monitor-rls.sql`)
 - [x] `pnpm db:migrate` + `pnpm run generate:types` (needs the local stack)
-- [ ] Ingest runtime: MQTT client, Kysely writes, `carbon/oee-device-sync`
+- [x] Ingest runtime: MQTT client, Kysely writes, `carbon/oee-device-sync`
       events to Inngest, heartbeat row
 - [x] Provider: `OeeProviderId` gains `pulse`; the registry factory takes
       `{ companyId, serviceClient }`; `packages/ee/src/pulse/{config,provider,hooks.server}`
-- [ ] ERP: Pulse Devices tab (`PulseDevices.ee.tsx`)
-- [ ] Compose: `mosquitto` + `pulse-ingest` services, `pulse-ingest.Dockerfile`,
+- [x] ERP: Pulse Devices tab (`PulseDevices.ee.tsx`)
+- [x] Compose: `mosquitto` + `pulse-ingest` services, `pulse-ingest.Dockerfile`,
       `.env.example`, `CARBON_EDITION=enterprise`, deployment rule + README
+- [ ] Docs: `oee-provider.md`, `packages/ee/AGENTS.md`, the spec
 - [ ] Accept: badge shows Running, Idle and Offline for one mapped machine;
       healthcheck fails when ingest stops
 
@@ -108,3 +109,13 @@ pnpm db:check:datasets && pnpm db:check:backups
   daemon and no `.env`, so no migration could be applied and no types
   generated. `@carbon/config` had to be built once (`pnpm --filter
   @carbon/config build`) before vitest could load its shared config.
+- 2026-11-14: The Pulse Devices tab shows for an OEE descriptor with
+  `registersDevices: true`, not for the id `pulse`. The writes are in
+  `@carbon/ee/pulse/devices.server`, because the API reads `pulseDevice` only.
+- 2026-11-14: The broker and the ingest service are in the compose profile
+  `pulse`. The broker publishes 1883 on `MQTT_PUBLISH_ADDRESS` only (default
+  `127.0.0.1`). A local smoke test passed: anonymous refused, the ACL drops an
+  off-namespace topic, and the built ingest image connects and starts.
+- 2026-11-14: On Windows, `turbo run typecheck --filter=erp` fails at
+  `generate:mcp`, because cmd.exe cannot run `NODE_OPTIONS=… cmd`. Run the
+  script and `tsc --noEmit` in `apps/erp` through Git Bash instead.
