@@ -57550,6 +57550,370 @@ export type Database = {
           }
         ]
       }
+      pulseCount: {
+        Row: {
+          bootId: string
+          companyId: string
+          counter: number
+          estimated: boolean
+          id: string
+          periodEnd: string
+          periodStart: string
+          pulseDeviceId: string
+          pulses: number
+          rebased: boolean
+          receivedAt: string
+          seq: number
+        }
+        Insert: {
+          bootId: string
+          companyId: string
+          counter: number
+          estimated?: boolean
+          id?: string
+          periodEnd: string
+          periodStart: string
+          pulseDeviceId: string
+          pulses: number
+          rebased?: boolean
+          receivedAt?: string
+          seq: number
+        }
+        Update: {
+          bootId?: string
+          companyId?: string
+          counter?: number
+          estimated?: boolean
+          id?: string
+          periodEnd?: string
+          periodStart?: string
+          pulseDeviceId?: string
+          pulses?: number
+          rebased?: boolean
+          receivedAt?: string
+          seq?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pulseCount_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseCount_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "company"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseCount_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "customFieldTables"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "pulseCount_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "integrations"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "pulseCount_pulseDeviceId_fkey"
+            columns: ["pulseDeviceId", "companyId"]
+            isOneToOne: false
+            referencedRelation: "pulseDevice"
+            referencedColumns: ["id", "companyId"]
+          }
+        ]
+      }
+      pulseDevice: {
+        Row: {
+          active: boolean
+          aliveSince: string | null
+          bootId: string | null
+          bucketSeconds: number
+          companyId: string
+          createdAt: string
+          createdBy: string
+          currentState: Database["public"]["Enums"]["machineState"] | null
+          currentStateAt: string | null
+          debounceMs: number
+          deviceKey: string
+          expectedCycleSeconds: number | null
+          firmwareVersion: string | null
+          heartbeatCounter: number | null
+          id: string
+          idleAfterSeconds: number | null
+          lastCounter: number | null
+          lastPulseAt: string | null
+          lastSeenAt: string | null
+          lastSeq: number | null
+          locationId: string | null
+          name: string
+          offlineAfterSeconds: number
+          piecesPerPulse: number
+          queueDepth: number | null
+          rssi: number | null
+          updatedAt: string | null
+          updatedBy: string | null
+        }
+        Insert: {
+          active?: boolean
+          aliveSince?: string | null
+          bootId?: string | null
+          bucketSeconds?: number
+          companyId: string
+          createdAt?: string
+          createdBy: string
+          currentState?: Database["public"]["Enums"]["machineState"] | null
+          currentStateAt?: string | null
+          debounceMs?: number
+          deviceKey: string
+          expectedCycleSeconds?: number | null
+          firmwareVersion?: string | null
+          heartbeatCounter?: number | null
+          id?: string
+          idleAfterSeconds?: number | null
+          lastCounter?: number | null
+          lastPulseAt?: string | null
+          lastSeenAt?: string | null
+          lastSeq?: number | null
+          locationId?: string | null
+          name: string
+          offlineAfterSeconds?: number
+          piecesPerPulse?: number
+          queueDepth?: number | null
+          rssi?: number | null
+          updatedAt?: string | null
+          updatedBy?: string | null
+        }
+        Update: {
+          active?: boolean
+          aliveSince?: string | null
+          bootId?: string | null
+          bucketSeconds?: number
+          companyId?: string
+          createdAt?: string
+          createdBy?: string
+          currentState?: Database["public"]["Enums"]["machineState"] | null
+          currentStateAt?: string | null
+          debounceMs?: number
+          deviceKey?: string
+          expectedCycleSeconds?: number | null
+          firmwareVersion?: string | null
+          heartbeatCounter?: number | null
+          id?: string
+          idleAfterSeconds?: number | null
+          lastCounter?: number | null
+          lastPulseAt?: string | null
+          lastSeenAt?: string | null
+          lastSeq?: number | null
+          locationId?: string | null
+          name?: string
+          offlineAfterSeconds?: number
+          piecesPerPulse?: number
+          queueDepth?: number | null
+          rssi?: number | null
+          updatedAt?: string | null
+          updatedBy?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pulseDevice_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "company"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "customFieldTables"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "pulseDevice_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "integrations"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "pulseDevice_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "pulseDevice_locationId_fkey"
+            columns: ["locationId", "companyId"]
+            isOneToOne: false
+            referencedRelation: "location"
+            referencedColumns: ["id", "companyId"]
+          },
+          {
+            foreignKeyName: "pulseDevice_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
+          }
+        ]
+      }
+      pulseIngestStatus: {
+        Row: {
+          heartbeatAt: string
+          id: string
+          version: string | null
+        }
+        Insert: {
+          heartbeatAt: string
+          id?: string
+          version?: string | null
+        }
+        Update: {
+          heartbeatAt?: string
+          id?: string
+          version?: string | null
+        }
+        Relationships: []
+      }
+      pulseStateChange: {
+        Row: {
+          changedAt: string
+          companyId: string
+          createdAt: string
+          id: string
+          pulseDeviceId: string
+          reason: string
+          state: Database["public"]["Enums"]["machineState"]
+        }
+        Insert: {
+          changedAt: string
+          companyId: string
+          createdAt?: string
+          id?: string
+          pulseDeviceId: string
+          reason: string
+          state: Database["public"]["Enums"]["machineState"]
+        }
+        Update: {
+          changedAt?: string
+          companyId?: string
+          createdAt?: string
+          id?: string
+          pulseDeviceId?: string
+          reason?: string
+          state?: Database["public"]["Enums"]["machineState"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pulseStateChange_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseStateChange_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "company"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseStateChange_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "customFieldTables"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "pulseStateChange_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "integrations"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "pulseStateChange_pulseDeviceId_fkey"
+            columns: ["pulseDeviceId", "companyId"]
+            isOneToOne: false
+            referencedRelation: "pulseDevice"
+            referencedColumns: ["id", "companyId"]
+          }
+        ]
+      }
       purchaseInvoice: {
         Row: {
           assignee: string | null

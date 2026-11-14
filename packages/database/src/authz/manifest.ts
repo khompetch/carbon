@@ -1324,6 +1324,13 @@ export const manifest = {
   productionEvent: company("production", { read: "production_view" }),
   productionQuantity: company("production"),
   project: projectTable("id"),
+  // Pulse machine monitor: the ingest service and the provider write these
+  // over a direct connection, so the API only reads them (as workCenterDevice).
+  pulseCount: policies({ select: inCompany("companyId", "employee") }),
+  pulseDevice: policies({ select: inCompany("companyId", "employee") }),
+  // One row for the whole server: no company to scope it to.
+  pulseIngestStatus: serviceOnly(),
+  pulseStateChange: policies({ select: inCompany("companyId", "employee") }),
   projectBaseline: company("projects", { update: false, delete: false }),
   projectChangeRequest: company("projects"),
   projectChangeRequestComment: company("projects", {
