@@ -98,7 +98,13 @@ export async function getOeeProvider(
       integration.data.secretRef
     )) as Record<string, unknown>;
 
-    return { data: createOeeProvider(integrationId, metadata), error: null };
+    return {
+      data: createOeeProvider(integrationId, metadata, {
+        companyId,
+        serviceClient
+      }),
+      error: null
+    };
   } catch (error) {
     return fail(error);
   }

@@ -11,6 +11,7 @@ import { Mount } from "./mount/config";
 import { Onshape, OnshapeGovernment } from "./onshape/config";
 import { OnshapeV2 } from "./onshape/config-v2";
 import { PaperlessParts } from "./paperless-parts/config";
+import { Pulse } from "./pulse/config";
 import { QuickBooks } from "./quickbooks/config";
 // import { Radan } from "./radan/config";
 import { Ramp } from "./ramp/config";
@@ -84,6 +85,7 @@ export const integrations = [
   OnshapeGovernment,
   OnshapeV2,
   PaperlessParts,
+  Pulse,
   QuickBooks,
   Ramp,
   Rillet,
@@ -354,6 +356,7 @@ export {
 } from "./onshape/panel/status";
 // TODO: export as @carbon/ee/paperless
 export { PaperlessPartsClient } from "./paperless-parts/lib/client";
+export { Pulse } from "./pulse/config";
 export { QuickBooks } from "./quickbooks/config";
 export { Ramp } from "./ramp/config";
 export { Rillet } from "./rillet/config";
