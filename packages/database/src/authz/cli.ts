@@ -66,12 +66,22 @@ async function main() {
       "..",
       ".."
     );
+    // On Windows pnpm is a .cmd shim, which only a shell can run. The name is
+    // checked first, so the shell gets only fixed words and a plain name.
+    if (!/^[A-Za-z0-9][A-Za-z0-9_-]*$/.test(name)) {
+      throw new Error(
+        `authz migration: the name may hold only letters, digits, "-" and "_", got "${name}"`
+      );
+    }
     const created = execFileSync(
       "pnpm",
       ["exec", "supabase", "migration", "new", name],
-      { cwd: root, encoding: "utf8" }
+      { cwd: root, encoding: "utf8", shell: process.platform === "win32" }
     );
-    const file = /supabase\/migrations\/\S+\.sql/.exec(created)?.[0];
+    // The CLI prints the path with "\" on Windows.
+    const file = /supabase[\\/]migrations[\\/]\S+\.sql/
+      .exec(created)?.[0]
+      ?.replaceAll("\\", "/");
     if (!file)
       throw new Error(
         `authz migration: could not find the new file in: ${created}`
