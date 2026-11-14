@@ -577,10 +577,19 @@ export function sharedComposeEnv(
     /^(PATH|HOME|USER|TMPDIR|LANG|LC_[A-Z]+|DOCKER_[A-Z_]+|SSH_AUTH_SOCK)$/;
   return Object.fromEntries(
     Object.entries(env).filter(
-      (e): e is [string, string] => keep.test(e[0]) && e[1] !== undefined
+      (e): e is [string, string] =>
+        (keep.test(e[0]) || WINDOWS_DOCKER_ENV.test(e[0])) && e[1] !== undefined
     )
   );
 }
+
+// On Windows the docker CLI finds its plugins (compose among them) under
+// %ProgramFiles% and %USERPROFILE%, and Windows programs need the system
+// variables to start. Without them `docker compose` is "unknown command", and
+// docker then reads `-f` as its own flag. Windows names have no fixed case
+// (`Path`, `ProgramFiles`), and none of them is a name `.env.local` holds.
+const WINDOWS_DOCKER_ENV =
+  /^(Path|PATHEXT|ProgramFiles|ProgramFiles\(x86\)|ProgramW6432|ProgramData|USERPROFILE|APPDATA|LOCALAPPDATA|SystemRoot|SystemDrive|windir|ComSpec|TEMP|TMP|HOMEDRIVE|HOMEPATH)$/i;
 
 const sharedExec = () => ({ extendEnv: false, env: sharedComposeEnv() });
 
