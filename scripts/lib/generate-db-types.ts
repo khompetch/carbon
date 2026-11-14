@@ -5,6 +5,7 @@
 import { spawnSync } from "node:child_process";
 import {
   closeSync,
+  existsSync,
   mkdtempSync,
   openSync,
   readFileSync,
@@ -167,6 +168,20 @@ function describeFailure(result: {
   return `\n${lines.length > 12 ? "…\n" : ""}${tail}`;
 }
 
+/**
+ * The Supabase CLI to run. On Windows, `node_modules/.bin` holds only `.cmd`
+ * shims, which `spawnSync` cannot run without a shell (ENOENT), so run the
+ * binary the `supabase` package installs.
+ */
+export function supabaseCli(
+  platform: NodeJS.Platform = process.platform,
+  exists: (path: string) => boolean = existsSync
+): string {
+  if (platform !== "win32") return "supabase";
+  const binary = resolve("node_modules/supabase/bin/supabase.exe");
+  return exists(binary) ? binary : "supabase";
+}
+
 export function generateDatabaseTypes(databaseUrl: string | undefined): void {
   const dbUrl = validateDatabaseUrl(databaseUrl);
   const target = resolve("packages/database/src/types.ts");
@@ -179,7 +194,7 @@ export function generateDatabaseTypes(databaseUrl: string | undefined): void {
       // File-backed stdout avoids truncating large schemas or a maxBuffer cap.
       // Do not inherit stderr: CLI failures can echo the credential-bearing URL.
       const result = spawnSync(
-        "supabase",
+        supabaseCli(),
         [
           "gen",
           "types",
