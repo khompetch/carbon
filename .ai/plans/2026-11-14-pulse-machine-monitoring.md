@@ -45,13 +45,14 @@ same way, then show OEE from its data.
 - [x] `apps/pulse-ingest` pure core: MQTT contract (`protocol.ts`), bucket
       times (`time.ts`), lost buckets (`gaps.ts`), state inference
       (`state.ts`), with tests
-- [ ] Migration: `pulseDevice`, `pulseCount`, `pulseStateChange`,
+- [x] Migration: `pulseDevice`, `pulseCount`, `pulseStateChange`,
       `pulseIngestStatus`, `integration('pulse')` with `providerRole = 'oee'`,
       authz manifest rules, retention crons
-- [ ] `pnpm db:migrate` + `pnpm run generate:types` (needs the local stack)
+      (`20261114131742_pulse-machine-monitor.sql`, `20261114134325_pulse-machine-monitor-rls.sql`)
+- [x] `pnpm db:migrate` + `pnpm run generate:types` (needs the local stack)
 - [ ] Ingest runtime: MQTT client, Kysely writes, `carbon/oee-device-sync`
       events to Inngest, heartbeat row
-- [ ] Provider: `OeeProviderId` gains `pulse`; the registry factory takes
+- [x] Provider: `OeeProviderId` gains `pulse`; the registry factory takes
       `{ companyId, serviceClient }`; `packages/ee/src/pulse/{config,provider,hooks.server}`
 - [ ] ERP: Pulse Devices tab (`PulseDevices.ee.tsx`)
 - [ ] Compose: `mosquitto` + `pulse-ingest` services, `pulse-ingest.Dockerfile`,
@@ -94,6 +95,14 @@ pnpm db:check:datasets && pnpm db:check:backups
 ```
 
 ## Run notes
+
+- 2026-11-14: The local stack runs on Windows after 4 fixes in `crbn` and the
+  scripts (docker compose plugin env, env file links, the Supabase CLI path,
+  LF shell scripts) and 1 in `authz migration`. This checkout now uses
+  `core.autocrlf=input`, because CRLF copies of the migrations broke the authz
+  generator's text comparison.
+- 2026-11-14: `authz migration` names its file with a UTC timestamp. The table
+  migration must sort before it, so its timestamp is earlier.
 
 - 2026-11-14: Phase 1 core written first because the machine had no Docker
   daemon and no `.env`, so no migration could be applied and no types
