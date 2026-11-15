@@ -632,6 +632,10 @@ msgstr "{0} समस्याएं — प्रकाशित नहीं"
 msgid "{0} Processes"
 msgstr "{0} प्रक्रियाएं"
 
+#. placeholder {0}: device.queueDepth
+msgid "{0} queued"
+msgstr "{0} कतार में"
+
 #. placeholder {0}: quantityFormatter(line.quantityReceived)
 #. placeholder {1}: quantityFormatter(line.quantityCredited)
 msgid "{0} received · {1} credited"
@@ -1284,6 +1288,9 @@ msgstr "{stale} पृष्ठ लोड होने के बाद से �
 
 msgid "{state} · synced {syncedAgo}"
 msgstr "{state} · {syncedAgo} सिंक हुआ"
+
+msgid "{state} since {since}"
+msgstr "{since} से {state}"
 
 msgid "{statusTotal, plural, one {# issue in total} other {# issues in total}}"
 msgstr "{statusTotal, plural, one {कुल # गैर-अनुरूपता} other {कुल # गैर-अनुरूपताएँ}}"
@@ -3916,6 +3923,9 @@ msgstr "आपकी कंपनी के लिए एक निर्या�
 
 msgid "An https request Carbon sends to a system of yours when a workflow reaches that step, carrying whatever headers and body you configured."
 msgstr "एक HTTPS अनुरोध जो कार्बन आपके सिस्टम को भेजता है जब एक वर्कफ़्लो उस चरण तक पहुंचता है, आपके द्वारा कॉन्फ़िगर किए गए किसी भी हेडर और बॉडी को ले जाता है।"
+
+msgid "An inactive device is ignored by the ingest service."
+msgstr "निष्क्रिय डिवाइस को इनजेस्ट सेवा द्वारा अनदेखा किया जाता है।"
 
 msgid "An inactive group's members are planned on their own"
 msgstr "निष्क्रिय समूह के सदस्य अपने आप पर योजनाबद्ध हैं"
@@ -9768,6 +9778,9 @@ msgstr "परियोजना WIP को नामे करें और प
 msgid "Debits"
 msgstr "नामे"
 
+msgid "Debounce (ms)"
+msgstr "डिबाउंस (ms)"
+
 msgid "Decide what an operator sees if they try to issue a batch or serial that's already expired."
 msgstr "तय करें कि यदि कोई ऑपरेटर एक बैच या सीरियल जारी करने का प्रयास करता है जो पहले से ही समाप्त हो गया है तो वह क्या देखता है।"
 
@@ -10024,8 +10037,8 @@ msgid "Delete"
 msgstr "हटाएं"
 
 #. placeholder {0}: deleting.name
+#. placeholder {0}: device.name
 #. placeholder {0}: monthLabel(deleting.periodStart)
-#. placeholder {0}: row.account?.number ?? ""
 msgid "Delete {0}"
 msgstr "{0} हटाएं"
 
@@ -10702,6 +10715,9 @@ msgstr "डेवलपर"
 
 msgid "Device"
 msgstr "डिवाइस"
+
+msgid "Device key"
+msgstr "डिवाइस कुंजी"
 
 msgid "Devices"
 msgstr "डिवाइस"
@@ -11495,6 +11511,7 @@ msgstr "आर्थिक ऑपरेटर पंजीकरण और प�
 msgid "Edit"
 msgstr "संपादित करें"
 
+#. placeholder {0}: device.name
 #. placeholder {0}: operation.description
 #. placeholder {0}: process.name
 msgid "Edit {0}"
@@ -11804,6 +11821,9 @@ msgstr "परियोजना संपादित करें"
 msgid "Edit Properties"
 msgstr "गुण संपादित करें"
 
+msgid "Edit Pulse device"
+msgstr "Pulse डिवाइस संपादित करें"
+
 msgid "Edit purchase order line type"
 msgstr "क्रय आदेश लाइन प्रकार संपादित करें"
 
@@ -12068,6 +12088,9 @@ msgstr "खाली सूची"
 
 msgid "Empty work centers"
 msgstr "खाली वर्क सेंटर"
+
+msgid "Empty: 3 standard cycles, at least 30"
+msgstr "खाली: 3 मानक चक्र, कम से कम 30"
 
 msgid "Enable"
 msgstr "सक्षम करें"
@@ -13868,6 +13891,9 @@ msgstr "एक बैच के लिए। एक सीरीज 1 के र
 msgid "for anything. They'll pull in the right person."
 msgstr "किसी भी चीज़ के लिए। वे सही व्यक्ति को शामिल करेंगे।"
 
+msgid "For example press-01"
+msgstr "उदाहरण के लिए press-01"
+
 msgid "For example Site or Ordered by"
 msgstr "उदाहरण के लिए साइट या ऑर्डर देने वाला"
 
@@ -14605,6 +14631,9 @@ msgstr "हेडर"
 msgid "Heading {level}"
 msgstr "शीर्षक {level}"
 
+msgid "Health"
+msgstr "स्वास्थ्य"
+
 msgid "Healthy"
 msgstr "स्वस्थ"
 
@@ -15050,6 +15079,9 @@ msgstr "आइडेंटिटी प्रदाता (IdP)"
 
 msgid "Idle"
 msgstr "निष्क्रिय"
+
+msgid "Idle after (seconds)"
+msgstr "खाली रहने के बाद (सेकंड)"
 
 msgid "IdP Metadata URL"
 msgstr "IdP मेटाडेटा URL"
@@ -18770,6 +18802,9 @@ msgstr "नेटवर्क त्रुटि"
 msgid "Never"
 msgstr "कभी नहीं"
 
+msgid "Never reported"
+msgstr "कभी रिपोर्ट नहीं की गई"
+
 msgid "New"
 msgstr "नया"
 
@@ -18865,6 +18900,9 @@ msgstr "नया मांग पूर्वानुमान"
 
 msgid "New Department"
 msgstr "नया विभाग"
+
+msgid "New device"
+msgstr "नया डिवाइस"
 
 msgid "New Dimension"
 msgstr "नया आयाम"
@@ -19043,6 +19081,9 @@ msgstr "नया प्रोजेक्ट अनुबंध"
 
 msgid "New Project Stock Transfer"
 msgstr "नया परियोजना स्टॉक स्थानांतरण"
+
+msgid "New Pulse device"
+msgstr "नया Pulse डिवाइस"
 
 msgid "New purchase order"
 msgstr "नया क्रय आदेश"
@@ -19595,6 +19636,9 @@ msgstr "कोई डिवाइस नहीं मिला"
 
 msgid "No devices match your search"
 msgstr "आपकी खोज से कोई डिवाइस मेल नहीं खाता"
+
+msgid "No devices registered"
+msgstr "कोई डिवाइस पंजीकृत नहीं है"
 
 msgid "No differences."
 msgstr "कोई अंतर नहीं।"
@@ -20224,6 +20268,9 @@ msgstr "अभी कोई स्लाइड नहीं"
 msgid "No sorts applied to this view"
 msgstr "इस दृश्य पर कोई सॉर्ट लागू नहीं किया गया"
 
+msgid "No state yet"
+msgstr "अभी तक कोई स्थिति नहीं"
+
 msgid "No statement for this period"
 msgstr "इस अवधि के लिए कोई विवरण नहीं"
 
@@ -20790,6 +20837,9 @@ msgstr "अधिकारी"
 
 msgid "Offline"
 msgstr "ऑफलाइन"
+
+msgid "Offline after (seconds)"
+msgstr "ऑफ़लाइन होने के बाद (सेकंड)"
 
 msgid "Offset Absorbed Overhead"
 msgstr "ऑफसेट अवशोषित उपरिव्यय"
@@ -22480,6 +22530,9 @@ msgstr ""
 msgid "Picking offers tracked entities earliest-expiry-first, so the soonest-to-expire stock leaves first by default."
 msgstr "पिकिंग सबसे पहले समाप्त होने वाली ट्रैक की गई वस्तुओं को प्राथमिकता देता है, इसलिए डिफ़ॉल्ट रूप से सबसे जल्द समाप्त होने वाला स्टॉक पहले निकलता है।"
 
+msgid "Pieces per pulse"
+msgstr "प्रति पल्स पीस"
+
 msgid "Pieces per run. Leave empty for no limit."
 msgstr "प्रति रन पीसेस। कोई सीमा नहीं के लिए खाली छोड़ें।"
 
@@ -23515,6 +23568,9 @@ msgstr "इन्वेंटरी से लें"
 
 msgid "Pull, map, and load your data"
 msgstr "अपना डेटा खींचें, मैप करें, और लोड करें"
+
+msgid "Pulse Devices"
+msgstr "Pulse डिवाइस"
 
 msgid "Purchase"
 msgstr "क्रय"
@@ -24633,6 +24689,9 @@ msgstr "Carbon से पहले बेचा गया एक इकाई �
 
 msgid "Register Existing Asset"
 msgstr "पंजीकृत"
+
+msgid "Register the cycle sensors on your machines, then map each one to a work center."
+msgstr "अपनी मशीनों पर साइकिल सेंसर पंजीकृत करें, फिर प्रत्येक सेंसर को एक वर्क सेंटर से जोड़ें।"
 
 msgid "Registered"
 msgstr "पंजीकृत"
@@ -26485,6 +26544,9 @@ msgstr "{count} खाता मैपिंग सहेजे गए"
 msgid "Saved account mapping"
 msgstr "खाता मैपिंग सहेजा गया"
 
+msgid "Saved device"
+msgstr "सहेजा गया डिवाइस"
+
 msgid "Saved device mapping"
 msgstr "डिवाइस मैपिंग सहेजा गया"
 
@@ -26934,6 +26996,9 @@ msgstr "हर वर्क सेंटर का लाइव क्षमत�
 msgid "See all {0}"
 msgstr "सभी {0} देखें"
 
+msgid "Seen {lastSeen}"
+msgstr "{lastSeen} को देखा गया"
+
 msgid "Segment"
 msgstr "खंड"
 
@@ -27283,6 +27348,9 @@ msgstr "त्रुटि भेजें"
 
 msgid "Send Estimate {serviceJobId}"
 msgstr "अनुमान भेजें {serviceJobId}"
+
+msgid "Send every (seconds)"
+msgstr "हर (सेकंड) में भेजें"
 
 msgid "Send Invite"
 msgstr "आमंत्रण भेजें"
@@ -28589,6 +28657,9 @@ msgstr "मानक क्लाउड कार्बन आपकी कं�
 
 msgid "Standard Cost Variances"
 msgstr "मानक लागत विचलन"
+
+msgid "Standard cycle (seconds)"
+msgstr "मानक चक्र (सेकंड)"
 
 msgid "Standard factor"
 msgstr "मानक कारक"
@@ -30408,6 +30479,12 @@ msgstr "आस्थगित राजस्व डिफ़ॉल्ट खा
 msgid "The department this one rolls up under for reporting and headcount hierarchies; leave empty for a top-level department."
 msgstr "विभाग जिसके अंतर्गत यह रिपोर्टिंग और हेडकाउंट पदानुक्रमों के लिए रोल अप करता है; शीर्ष स्तरीय विभाग के लिए खाली छोड़ें।"
 
+msgid "The device key is the device's MQTT username. It cannot change after the device is registered."
+msgstr "डिवाइस कुंजी डिवाइस का MQTT उपयोगकर्ता नाम है। डिवाइस पंजीकृत होने के बाद इसे बदला नहीं जा सकता।"
+
+msgid "The device's counts and state changes are deleted too. The sensor stops reporting to Carbon."
+msgstr "डिवाइस की गिनती और स्थिति परिवर्तन भी हटा दिए जाएँगे। सेंसर Carbon को रिपोर्ट करना बंद कर देगा।"
+
 msgid "The device's site is in {siteTimezone}; Carbon uses {locationTimezone}"
 msgstr "डिवाइस की साइट {siteTimezone} में है; Carbon {locationTimezone} का उपयोग करता है"
 
@@ -31037,6 +31114,16 @@ msgstr "परियोजना का स्टॉक केवल एक ह�
 
 msgid "The provider offers no dimension targets. Enable the feature in the provider first (e.g. tracking categories, class tracking, or fields)."
 msgstr "प्रदाता कोई आयाम लक्ष्य प्रदान नहीं करता है। पहले प्रदाता में सुविधा सक्षम करें (जैसे ट्रैकिंग श्रेणियां, कक्षा ट्रैकिंग, या फ़ील्ड)।"
+
+msgid "The Pulse ingest service has never reported"
+msgstr "Pulse इनजेस्ट सेवा ने कभी रिपोर्ट नहीं की है"
+
+msgid "The Pulse ingest service is running"
+msgstr "Pulse इनजेस्ट सेवा चल रही है"
+
+#. placeholder {0}: formatTimeAgo(heartbeatAt)
+msgid "The Pulse ingest service last reported {0}"
+msgstr "Pulse इनजेस्ट सेवा ने आखिरी बार {0} रिपोर्ट किया"
 
 #. placeholder {0}: formatter.format(invoicedOption)
 msgid "The purchase option is already invoiced at {0}. Exercise it at that price, or delete the invoice first."
@@ -31674,6 +31761,10 @@ msgstr "इस विभाग के पास {locationName} पर कोई 
 
 msgid "This department has no work centers at this location. Pick another department or location."
 msgstr "इस विभाग के पास इस स्थान पर कोई वर्क सेंटर नहीं है। किसी अन्य विभाग या स्थान को चुनें।"
+
+#. placeholder {0}: deleting.workCenterName ?? ""
+msgid "This device is mapped to {0}. Unmap it on the Devices tab first."
+msgstr "यह डिवाइस {0} से जुड़ा है। पहले डिवाइस टैब पर इसका जुड़ाव हटाएँ।"
 
 msgid "This download link is invalid or has been tampered with."
 msgstr "यह डाउनलोड लिंक अमान्य है या इसके साथ छेड़छाड़ की गई है।"

@@ -632,6 +632,10 @@ msgstr "{0} problems — not published"
 msgid "{0} Processes"
 msgstr "{0} Processes"
 
+#. placeholder {0}: device.queueDepth
+msgid "{0} queued"
+msgstr "{0} queued"
+
 #. placeholder {0}: quantityFormatter(line.quantityReceived)
 #. placeholder {1}: quantityFormatter(line.quantityCredited)
 msgid "{0} received · {1} credited"
@@ -1284,6 +1288,9 @@ msgstr "{stale} changed since the page loaded"
 
 msgid "{state} · synced {syncedAgo}"
 msgstr "{state} · synced {syncedAgo}"
+
+msgid "{state} since {since}"
+msgstr "{state} since {since}"
 
 msgid "{statusTotal, plural, one {# issue in total} other {# issues in total}}"
 msgstr "{statusTotal, plural, one {# issue in total} other {# issues in total}}"
@@ -3916,6 +3923,9 @@ msgstr "An export is already running for your company. Try again when it ends."
 
 msgid "An https request Carbon sends to a system of yours when a workflow reaches that step, carrying whatever headers and body you configured."
 msgstr "An https request Carbon sends to a system of yours when a workflow reaches that step, carrying whatever headers and body you configured."
+
+msgid "An inactive device is ignored by the ingest service."
+msgstr "An inactive device is ignored by the ingest service."
 
 msgid "An inactive group's members are planned on their own"
 msgstr "An inactive group's members are planned on their own"
@@ -9768,6 +9778,9 @@ msgstr "Debit Project WIP and credit each pool's applied account"
 msgid "Debits"
 msgstr "Debits"
 
+msgid "Debounce (ms)"
+msgstr "Debounce (ms)"
+
 msgid "Decide what an operator sees if they try to issue a batch or serial that's already expired."
 msgstr "Decide what an operator sees if they try to issue a batch or serial that's already expired."
 
@@ -10024,8 +10037,8 @@ msgid "Delete"
 msgstr "Delete"
 
 #. placeholder {0}: deleting.name
+#. placeholder {0}: device.name
 #. placeholder {0}: monthLabel(deleting.periodStart)
-#. placeholder {0}: row.account?.number ?? ""
 msgid "Delete {0}"
 msgstr "Delete {0}"
 
@@ -10702,6 +10715,9 @@ msgstr "Developer"
 
 msgid "Device"
 msgstr "Device"
+
+msgid "Device key"
+msgstr "Device key"
 
 msgid "Devices"
 msgstr "Devices"
@@ -11495,6 +11511,7 @@ msgstr "Economic Operators Registration and Identification number; required for 
 msgid "Edit"
 msgstr "Edit"
 
+#. placeholder {0}: device.name
 #. placeholder {0}: operation.description
 #. placeholder {0}: process.name
 msgid "Edit {0}"
@@ -11804,6 +11821,9 @@ msgstr "Edit Project"
 msgid "Edit Properties"
 msgstr "Edit Properties"
 
+msgid "Edit Pulse device"
+msgstr "Edit Pulse device"
+
 msgid "Edit purchase order line type"
 msgstr "Edit purchase order line type"
 
@@ -12068,6 +12088,9 @@ msgstr "Empty list"
 
 msgid "Empty work centers"
 msgstr "Empty work centers"
+
+msgid "Empty: 3 standard cycles, at least 30"
+msgstr "Empty: 3 standard cycles, at least 30"
 
 msgid "Enable"
 msgstr "Enable"
@@ -13868,6 +13891,9 @@ msgstr "For a batch. A serial counts as 1."
 msgid "for anything. They'll pull in the right person."
 msgstr "for anything. They'll pull in the right person."
 
+msgid "For example press-01"
+msgstr "For example press-01"
+
 msgid "For example Site or Ordered by"
 msgstr "For example Site or Ordered by"
 
@@ -14605,6 +14631,9 @@ msgstr "Headers"
 msgid "Heading {level}"
 msgstr "Heading {level}"
 
+msgid "Health"
+msgstr "Health"
+
 msgid "Healthy"
 msgstr "Healthy"
 
@@ -15050,6 +15079,9 @@ msgstr "Identity provider (IdP)"
 
 msgid "Idle"
 msgstr "Idle"
+
+msgid "Idle after (seconds)"
+msgstr "Idle after (seconds)"
 
 msgid "IdP Metadata URL"
 msgstr "IdP Metadata URL"
@@ -18770,6 +18802,9 @@ msgstr "Network error"
 msgid "Never"
 msgstr "Never"
 
+msgid "Never reported"
+msgstr "Never reported"
+
 msgid "New"
 msgstr "New"
 
@@ -18865,6 +18900,9 @@ msgstr "New Demand Forecast"
 
 msgid "New Department"
 msgstr "New Department"
+
+msgid "New device"
+msgstr "New device"
 
 msgid "New Dimension"
 msgstr "New Dimension"
@@ -19043,6 +19081,9 @@ msgstr "New Project Contract"
 
 msgid "New Project Stock Transfer"
 msgstr "New Project Stock Transfer"
+
+msgid "New Pulse device"
+msgstr "New Pulse device"
 
 msgid "New purchase order"
 msgstr "New purchase order"
@@ -19595,6 +19636,9 @@ msgstr "No devices found"
 
 msgid "No devices match your search"
 msgstr "No devices match your search"
+
+msgid "No devices registered"
+msgstr "No devices registered"
 
 msgid "No differences."
 msgstr "No differences."
@@ -20224,6 +20268,9 @@ msgstr "No slides yet"
 msgid "No sorts applied to this view"
 msgstr "No sorts applied to this view"
 
+msgid "No state yet"
+msgstr "No state yet"
+
 msgid "No statement for this period"
 msgstr "No statement for this period"
 
@@ -20790,6 +20837,9 @@ msgstr "Officer"
 
 msgid "Offline"
 msgstr "Offline"
+
+msgid "Offline after (seconds)"
+msgstr "Offline after (seconds)"
 
 msgid "Offset Absorbed Overhead"
 msgstr "Offset Absorbed Overhead"
@@ -22480,6 +22530,9 @@ msgstr "Picking lists on release enabled"
 msgid "Picking offers tracked entities earliest-expiry-first, so the soonest-to-expire stock leaves first by default."
 msgstr "Picking offers tracked entities earliest-expiry-first, so the soonest-to-expire stock leaves first by default."
 
+msgid "Pieces per pulse"
+msgstr "Pieces per pulse"
+
 msgid "Pieces per run. Leave empty for no limit."
 msgstr "Pieces per run. Leave empty for no limit."
 
@@ -23515,6 +23568,9 @@ msgstr "Pull from Inventory"
 
 msgid "Pull, map, and load your data"
 msgstr "Pull, map, and load your data"
+
+msgid "Pulse Devices"
+msgstr "Pulse Devices"
 
 msgid "Purchase"
 msgstr "Purchase"
@@ -24633,6 +24689,9 @@ msgstr "Register a unit sold before Carbon. A unit Carbon ships becomes an asset
 
 msgid "Register Existing Asset"
 msgstr "Register Existing Asset"
+
+msgid "Register the cycle sensors on your machines, then map each one to a work center."
+msgstr "Register the cycle sensors on your machines, then map each one to a work center."
 
 msgid "Registered"
 msgstr "Registered"
@@ -26485,6 +26544,9 @@ msgstr "Saved {count} account mappings"
 msgid "Saved account mapping"
 msgstr "Saved account mapping"
 
+msgid "Saved device"
+msgstr "Saved device"
+
 msgid "Saved device mapping"
 msgstr "Saved device mapping"
 
@@ -26934,6 +26996,9 @@ msgstr "See a live capacity forecast of every work center — when each job is p
 msgid "See all {0}"
 msgstr "See all {0}"
 
+msgid "Seen {lastSeen}"
+msgstr "Seen {lastSeen}"
+
 msgid "Segment"
 msgstr "Segment"
 
@@ -27283,6 +27348,9 @@ msgstr "Send error"
 
 msgid "Send Estimate {serviceJobId}"
 msgstr "Send Estimate {serviceJobId}"
+
+msgid "Send every (seconds)"
+msgstr "Send every (seconds)"
 
 msgid "Send Invite"
 msgstr "Send Invite"
@@ -28589,6 +28657,9 @@ msgstr "Standard cloud Carbon fits how your company runs"
 
 msgid "Standard Cost Variances"
 msgstr "Standard Cost Variances"
+
+msgid "Standard cycle (seconds)"
+msgstr "Standard cycle (seconds)"
 
 msgid "Standard factor"
 msgstr "Standard factor"
@@ -30408,6 +30479,12 @@ msgstr "The Deferred Revenue default account is empty."
 msgid "The department this one rolls up under for reporting and headcount hierarchies; leave empty for a top-level department."
 msgstr "The department this one rolls up under for reporting and headcount hierarchies; leave empty for a top-level department."
 
+msgid "The device key is the device's MQTT username. It cannot change after the device is registered."
+msgstr "The device key is the device's MQTT username. It cannot change after the device is registered."
+
+msgid "The device's counts and state changes are deleted too. The sensor stops reporting to Carbon."
+msgstr "The device's counts and state changes are deleted too. The sensor stops reporting to Carbon."
+
 msgid "The device's site is in {siteTimezone}; Carbon uses {locationTimezone}"
 msgstr "The device's site is in {siteTimezone}; Carbon uses {locationTimezone}"
 
@@ -31037,6 +31114,16 @@ msgstr "The project's stock moves only to projects of the same customer"
 
 msgid "The provider offers no dimension targets. Enable the feature in the provider first (e.g. tracking categories, class tracking, or fields)."
 msgstr "The provider offers no dimension targets. Enable the feature in the provider first (e.g. tracking categories, class tracking, or fields)."
+
+msgid "The Pulse ingest service has never reported"
+msgstr "The Pulse ingest service has never reported"
+
+msgid "The Pulse ingest service is running"
+msgstr "The Pulse ingest service is running"
+
+#. placeholder {0}: formatTimeAgo(heartbeatAt)
+msgid "The Pulse ingest service last reported {0}"
+msgstr "The Pulse ingest service last reported {0}"
 
 #. placeholder {0}: formatter.format(invoicedOption)
 msgid "The purchase option is already invoiced at {0}. Exercise it at that price, or delete the invoice first."
@@ -31674,6 +31761,10 @@ msgstr "This department has no work centers at {locationName}. Pick another depa
 
 msgid "This department has no work centers at this location. Pick another department or location."
 msgstr "This department has no work centers at this location. Pick another department or location."
+
+#. placeholder {0}: deleting.workCenterName ?? ""
+msgid "This device is mapped to {0}. Unmap it on the Devices tab first."
+msgstr "This device is mapped to {0}. Unmap it on the Devices tab first."
 
 msgid "This download link is invalid or has been tampered with."
 msgstr "This download link is invalid or has been tampered with."

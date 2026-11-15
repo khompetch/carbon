@@ -632,6 +632,10 @@ msgstr "{0} sorun — yayınlanmadı"
 msgid "{0} Processes"
 msgstr "{0} Süreçler"
 
+#. placeholder {0}: device.queueDepth
+msgid "{0} queued"
+msgstr "{0} kuyrukta"
+
 #. placeholder {0}: quantityFormatter(line.quantityReceived)
 #. placeholder {1}: quantityFormatter(line.quantityCredited)
 msgid "{0} received · {1} credited"
@@ -1284,6 +1288,9 @@ msgstr "{stale} sayfa yüklendikten sonra değişti"
 
 msgid "{state} · synced {syncedAgo}"
 msgstr "{state} · {syncedAgo} eşitlendi"
+
+msgid "{state} since {since}"
+msgstr "{since} tarihinden beri {state}"
 
 msgid "{statusTotal, plural, one {# issue in total} other {# issues in total}}"
 msgstr "{statusTotal, plural, one {# uygunsuzluk toplamda} other {# uygunsuzluk toplamda}}"
@@ -3916,6 +3923,9 @@ msgstr "Şirketiniz için zaten bir dışa aktarma çalışıyor. Bittiğinde ye
 
 msgid "An https request Carbon sends to a system of yours when a workflow reaches that step, carrying whatever headers and body you configured."
 msgstr "Bir iş akışı bu adıma ulaştığında Carbon'un sisteminize gönderdiği bir https isteği, yapılandırdığınız başlıkları ve gövdeyi taşır."
+
+msgid "An inactive device is ignored by the ingest service."
+msgstr "Pasif bir cihaz, veri alma servisi tarafından yok sayılır."
 
 msgid "An inactive group's members are planned on their own"
 msgstr "Pasif bir grubun üyeleri kendi başlarına planlanır"
@@ -9768,6 +9778,9 @@ msgstr "Proje Yarı mamulü Borç yaz ve her havuzun uygulanmış hesabını Ala
 msgid "Debits"
 msgstr "Borçlar"
 
+msgid "Debounce (ms)"
+msgstr "Debounce (ms)"
+
 msgid "Decide what an operator sees if they try to issue a batch or serial that's already expired."
 msgstr "Süresi dolmuş bir Parti veya seri için Malzeme çıkışı yapmaya çalışan Operatörün göreceğini belirleyin."
 
@@ -10024,8 +10037,8 @@ msgid "Delete"
 msgstr "Sil"
 
 #. placeholder {0}: deleting.name
+#. placeholder {0}: device.name
 #. placeholder {0}: monthLabel(deleting.periodStart)
-#. placeholder {0}: row.account?.number ?? ""
 msgid "Delete {0}"
 msgstr "{0} Sil"
 
@@ -10702,6 +10715,9 @@ msgstr "Geliştirici"
 
 msgid "Device"
 msgstr "Cihaz"
+
+msgid "Device key"
+msgstr "Cihaz anahtarı"
 
 msgid "Devices"
 msgstr "Cihazlar"
@@ -11495,6 +11511,7 @@ msgstr "Ekonomik Operatörlerin Kayıt ve Kimlik Numarası; AB/İngiltere'de gü
 msgid "Edit"
 msgstr "Düzenle"
 
+#. placeholder {0}: device.name
 #. placeholder {0}: operation.description
 #. placeholder {0}: process.name
 msgid "Edit {0}"
@@ -11804,6 +11821,9 @@ msgstr "Projeyi Düzenle"
 msgid "Edit Properties"
 msgstr "Özellikleri düzenle"
 
+msgid "Edit Pulse device"
+msgstr "Pulse cihazını düzenle"
+
 msgid "Edit purchase order line type"
 msgstr "Satın alma siparişi satır türünü düzenle"
 
@@ -12068,6 +12088,9 @@ msgstr "Boş liste"
 
 msgid "Empty work centers"
 msgstr "Boş iş merkezleri"
+
+msgid "Empty: 3 standard cycles, at least 30"
+msgstr "Boş: 3 standart çevrim, en az 30"
 
 msgid "Enable"
 msgstr "Etkinleştir"
@@ -13868,6 +13891,9 @@ msgstr "Bir parti için. Bir seri 1 olarak sayılır."
 msgid "for anything. They'll pull in the right person."
 msgstr "herhangi bir şey için. Doğru kişiyi çekerler."
 
+msgid "For example press-01"
+msgstr "Örneğin press-01"
+
 msgid "For example Site or Ordered by"
 msgstr "Örneğin Tesis veya Sıralama ölçütü"
 
@@ -14605,6 +14631,9 @@ msgstr "Başlıklar"
 msgid "Heading {level}"
 msgstr "Başlık {level}"
 
+msgid "Health"
+msgstr "Sağlık"
+
 msgid "Healthy"
 msgstr "Sağlıklı"
 
@@ -15050,6 +15079,9 @@ msgstr "Kimlik Sağlayıcı (IdP)"
 
 msgid "Idle"
 msgstr "Boş"
+
+msgid "Idle after (seconds)"
+msgstr "Boşta kalma süresi (saniye)"
 
 msgid "IdP Metadata URL"
 msgstr "IdP Meta Veri URL'si"
@@ -18770,6 +18802,9 @@ msgstr "Ağ hatası"
 msgid "Never"
 msgstr "Asla"
 
+msgid "Never reported"
+msgstr "Hiç rapor edilmedi"
+
 msgid "New"
 msgstr "Yeni"
 
@@ -18865,6 +18900,9 @@ msgstr "Yeni Talep Tahmini"
 
 msgid "New Department"
 msgstr "Yeni Departman"
+
+msgid "New device"
+msgstr "Yeni cihaz"
 
 msgid "New Dimension"
 msgstr "Yeni Boyut"
@@ -19043,6 +19081,9 @@ msgstr "Yeni Proje Sözleşmesi"
 
 msgid "New Project Stock Transfer"
 msgstr "Yeni Proje Stok Transferi"
+
+msgid "New Pulse device"
+msgstr "Yeni Pulse cihazı"
 
 msgid "New purchase order"
 msgstr "Yeni satın alma siparişi"
@@ -19595,6 +19636,9 @@ msgstr "Cihaz bulunamadı"
 
 msgid "No devices match your search"
 msgstr "Aramanızla eşleşen cihaz yok"
+
+msgid "No devices registered"
+msgstr "Kayıtlı cihaz yok"
 
 msgid "No differences."
 msgstr "Farklılık yok."
@@ -20224,6 +20268,9 @@ msgstr "Henüz slayt yok"
 msgid "No sorts applied to this view"
 msgstr "Bu görünüme herhangi bir sıralama uygulanmadı"
 
+msgid "No state yet"
+msgstr "Henüz durum yok"
+
 msgid "No statement for this period"
 msgstr "Bu dönem için ekstre yok"
 
@@ -20790,6 +20837,9 @@ msgstr "Memur"
 
 msgid "Offline"
 msgstr "Çevrimdışı"
+
+msgid "Offline after (seconds)"
+msgstr "Çevrimdışı sayılma süresi (saniye)"
 
 msgid "Offset Absorbed Overhead"
 msgstr "Emilen Genel Üretim Giderlerini Dengeleme"
@@ -22480,6 +22530,9 @@ msgstr ""
 msgid "Picking offers tracked entities earliest-expiry-first, so the soonest-to-expire stock leaves first by default."
 msgstr "Toplama izlenen varlıkları en yakın son kullanma tarihine göre sunar, bu nedenle en yakında sona erecek stok varsayılan olarak ilk olarak çıkar."
 
+msgid "Pieces per pulse"
+msgstr "Sinyal başına parça"
+
 msgid "Pieces per run. Leave empty for no limit."
 msgstr "Çalışma başına parça. Sınır olmadığında boş bırakın."
 
@@ -23515,6 +23568,9 @@ msgstr "Stoktan kullan"
 
 msgid "Pull, map, and load your data"
 msgstr "Verilerinizi çekin, eşleyin ve yükleyin"
+
+msgid "Pulse Devices"
+msgstr "Pulse cihazları"
 
 msgid "Purchase"
 msgstr "Satın Alma"
@@ -24633,6 +24689,9 @@ msgstr "Carbon'dan önce satılan bir birimi kaydedin. Carbon'un gönderdiği bi
 
 msgid "Register Existing Asset"
 msgstr "Kayıtlı"
+
+msgid "Register the cycle sensors on your machines, then map each one to a work center."
+msgstr "Makinelerinizdeki çevrim sensörlerini kaydedin, ardından her birini bir iş merkezine eşleyin."
 
 msgid "Registered"
 msgstr "Kaydedildi"
@@ -26485,6 +26544,9 @@ msgstr "Kaydedilen {count} muhasebe hesabı eşlemesi"
 msgid "Saved account mapping"
 msgstr "Kaydedilen muhasebe hesabı eşlemesi"
 
+msgid "Saved device"
+msgstr "Kaydedilmiş cihaz"
+
 msgid "Saved device mapping"
 msgstr "Kaydedilen cihaz eşlemesi"
 
@@ -26934,6 +26996,9 @@ msgstr "Her iş merkezi'nin canlı kapasite tahminini görebilirsiniz — her i�
 msgid "See all {0}"
 msgstr "{0} hepsini gör"
 
+msgid "Seen {lastSeen}"
+msgstr "Son görülme: {lastSeen}"
+
 msgid "Segment"
 msgstr "Bölüm"
 
@@ -27283,6 +27348,9 @@ msgstr "Gönderme Hatası"
 
 msgid "Send Estimate {serviceJobId}"
 msgstr "Tahmini Gönder {serviceJobId}"
+
+msgid "Send every (seconds)"
+msgstr "Gönderme aralığı (saniye)"
 
 msgid "Send Invite"
 msgstr "Davet Gönder"
@@ -28589,6 +28657,9 @@ msgstr "Standart bulut Carbon, şirketinizin nasıl çalıştığına uygun"
 
 msgid "Standard Cost Variances"
 msgstr "Standart Maliyet Sapmaları"
+
+msgid "Standard cycle (seconds)"
+msgstr "Standart çevrim (saniye)"
 
 msgid "Standard factor"
 msgstr "Standart faktör"
@@ -30408,6 +30479,12 @@ msgstr "Ertelenmiş Hasılat varsayılan hesabı boş."
 msgid "The department this one rolls up under for reporting and headcount hierarchies; leave empty for a top-level department."
 msgstr "Bu departmanın raporlama ve personel sayısı hiyerarşisinde bağlı olduğu departman; üst seviye bir departman için boş bırakın."
 
+msgid "The device key is the device's MQTT username. It cannot change after the device is registered."
+msgstr "Cihaz anahtarı, cihazın MQTT kullanıcı adıdır. Cihaz kaydedildikten sonra değiştirilemez."
+
+msgid "The device's counts and state changes are deleted too. The sensor stops reporting to Carbon."
+msgstr "Cihazın sayımları ve durum değişiklikleri de silinir. Sensör Carbon'a veri göndermeyi durdurur."
+
 msgid "The device's site is in {siteTimezone}; Carbon uses {locationTimezone}"
 msgstr "Cihazın sahası {siteTimezone} saat diliminde; Carbon {locationTimezone} kullanıyor"
 
@@ -31037,6 +31114,16 @@ msgstr "Projenin stoku sadece aynı müşterinin projelerine hareket eder"
 
 msgid "The provider offers no dimension targets. Enable the feature in the provider first (e.g. tracking categories, class tracking, or fields)."
 msgstr "Sağlayıcı boyut hedefleri sunmaz. Önce sağlayıcıda özelliği etkinleştirin (örneğin, izleme kategorileri, sınıf izleme veya alanlar)."
+
+msgid "The Pulse ingest service has never reported"
+msgstr "Pulse veri alma servisi hiç rapor vermedi"
+
+msgid "The Pulse ingest service is running"
+msgstr "Pulse veri alma servisi çalışıyor"
+
+#. placeholder {0}: formatTimeAgo(heartbeatAt)
+msgid "The Pulse ingest service last reported {0}"
+msgstr "Pulse veri alma servisi en son {0} rapor verdi"
 
 #. placeholder {0}: formatter.format(invoicedOption)
 msgid "The purchase option is already invoiced at {0}. Exercise it at that price, or delete the invoice first."
@@ -31674,6 +31761,10 @@ msgstr "Bu departmanın {locationName} konumunda iş merkezi yok. Başka bir dep
 
 msgid "This department has no work centers at this location. Pick another department or location."
 msgstr "Bu departmanın bu konumda iş merkezi yok. Başka bir departman veya lokasyon seçin."
+
+#. placeholder {0}: deleting.workCenterName ?? ""
+msgid "This device is mapped to {0}. Unmap it on the Devices tab first."
+msgstr "Bu cihaz {0} ile eşleştirilmiş. Önce Cihazlar sekmesinden eşleştirmeyi kaldırın."
 
 msgid "This download link is invalid or has been tampered with."
 msgstr "Bu indirme bağlantısı geçersiz veya değiştirilmiş."

@@ -632,6 +632,10 @@ msgstr "{0} problèmes — non publié"
 msgid "{0} Processes"
 msgstr "{0} Processus"
 
+#. placeholder {0}: device.queueDepth
+msgid "{0} queued"
+msgstr "{0} en file d'attente"
+
 #. placeholder {0}: quantityFormatter(line.quantityReceived)
 #. placeholder {1}: quantityFormatter(line.quantityCredited)
 msgid "{0} received · {1} credited"
@@ -1284,6 +1288,9 @@ msgstr "{stale} a changé depuis le chargement de la page"
 
 msgid "{state} · synced {syncedAgo}"
 msgstr "{state} · synchronisé {syncedAgo}"
+
+msgid "{state} since {since}"
+msgstr "{state} depuis {since}"
 
 msgid "{statusTotal, plural, one {# issue in total} other {# issues in total}}"
 msgstr "{statusTotal, plural, one {# non-conformité au total} other {# non-conformités au total}}"
@@ -3916,6 +3923,9 @@ msgstr "Une exportation est déjà en cours pour votre société. Réessayez qua
 
 msgid "An https request Carbon sends to a system of yours when a workflow reaches that step, carrying whatever headers and body you configured."
 msgstr "Une requête https que Carbon envoie à l'un de vos systèmes lorsqu'un flux de travail atteint cette étape, portant tous les en-têtes et le corps que vous avez configurés."
+
+msgid "An inactive device is ignored by the ingest service."
+msgstr "Un appareil inactif est ignoré par le service d'ingestion."
 
 msgid "An inactive group's members are planned on their own"
 msgstr "Les membres d'un groupe inactif sont planifiés indépendamment"
@@ -9768,6 +9778,9 @@ msgstr "Débiter le En-cours du projet et créditer le compte appliqué de chaqu
 msgid "Debits"
 msgstr "Débits"
 
+msgid "Debounce (ms)"
+msgstr "Anti-rebond (ms)"
+
 msgid "Decide what an operator sees if they try to issue a batch or serial that's already expired."
 msgstr "Décidez ce qu'un opérateur voit s'il essaie d'émettre un lot ou un numéro de série qui a déjà expiré."
 
@@ -10024,8 +10037,8 @@ msgid "Delete"
 msgstr "Supprimer"
 
 #. placeholder {0}: deleting.name
+#. placeholder {0}: device.name
 #. placeholder {0}: monthLabel(deleting.periodStart)
-#. placeholder {0}: row.account?.number ?? ""
 msgid "Delete {0}"
 msgstr "Supprimer {0}"
 
@@ -10702,6 +10715,9 @@ msgstr "Développeur"
 
 msgid "Device"
 msgstr "Appareil"
+
+msgid "Device key"
+msgstr "Clé de l'appareil"
 
 msgid "Devices"
 msgstr "Dispositifs"
@@ -11495,6 +11511,7 @@ msgstr "Numéro d'Enregistrement et d'Identification des Opérateurs Économique
 msgid "Edit"
 msgstr "Modifier"
 
+#. placeholder {0}: device.name
 #. placeholder {0}: operation.description
 #. placeholder {0}: process.name
 msgid "Edit {0}"
@@ -11804,6 +11821,9 @@ msgstr "Modifier le projet"
 msgid "Edit Properties"
 msgstr "Modifier les propriétés"
 
+msgid "Edit Pulse device"
+msgstr "Modifier l'appareil Pulse"
+
 msgid "Edit purchase order line type"
 msgstr "Modifier le type de ligne de bon de commande"
 
@@ -12068,6 +12088,9 @@ msgstr "Liste vide"
 
 msgid "Empty work centers"
 msgstr "Postes de travail vides"
+
+msgid "Empty: 3 standard cycles, at least 30"
+msgstr "Vide : 3 cycles standard, au moins 30"
 
 msgid "Enable"
 msgstr "Activer"
@@ -13868,6 +13891,9 @@ msgstr "Pour un lot de production. Un numéro de série compte comme 1."
 msgid "for anything. They'll pull in the right person."
 msgstr "pour n'importe quoi. Ils vont faire intervenir la bonne personne."
 
+msgid "For example press-01"
+msgstr "Par exemple press-01"
+
 msgid "For example Site or Ordered by"
 msgstr "Par exemple Site ou Commandé par"
 
@@ -14605,6 +14631,9 @@ msgstr "En-têtes"
 msgid "Heading {level}"
 msgstr "Titre {level}"
 
+msgid "Health"
+msgstr "Santé"
+
 msgid "Healthy"
 msgstr "Sain"
 
@@ -15050,6 +15079,9 @@ msgstr "Fournisseur d'identité (IdP)"
 
 msgid "Idle"
 msgstr "Disponible"
+
+msgid "Idle after (seconds)"
+msgstr "Au repos après (secondes)"
 
 msgid "IdP Metadata URL"
 msgstr "URL des métadonnées IdP"
@@ -18770,6 +18802,9 @@ msgstr "Erreur réseau"
 msgid "Never"
 msgstr "Jamais"
 
+msgid "Never reported"
+msgstr "Jamais signalé"
+
 msgid "New"
 msgstr "Nouveau"
 
@@ -18865,6 +18900,9 @@ msgstr "Nouvelle prévision de besoins"
 
 msgid "New Department"
 msgstr "Nouveau Département"
+
+msgid "New device"
+msgstr "Nouvel appareil"
 
 msgid "New Dimension"
 msgstr "Nouvel axe analytique"
@@ -19043,6 +19081,9 @@ msgstr "Nouveau contrat de projet"
 
 msgid "New Project Stock Transfer"
 msgstr "Nouveau transfert de stock de projet"
+
+msgid "New Pulse device"
+msgstr "Nouvel appareil Pulse"
 
 msgid "New purchase order"
 msgstr "Nouveau bon de commande"
@@ -19595,6 +19636,9 @@ msgstr "Aucun dispositif trouvé"
 
 msgid "No devices match your search"
 msgstr "Aucun appareil ne correspond à votre recherche"
+
+msgid "No devices registered"
+msgstr "Aucun appareil enregistré"
 
 msgid "No differences."
 msgstr "Aucune différence."
@@ -20224,6 +20268,9 @@ msgstr "Aucune diapositive pour le moment"
 msgid "No sorts applied to this view"
 msgstr "Aucun tri appliqué à cette vue"
 
+msgid "No state yet"
+msgstr "Aucun état pour le moment"
+
 msgid "No statement for this period"
 msgstr "Aucune déclaration pour cette période"
 
@@ -20790,6 +20837,9 @@ msgstr "Officier"
 
 msgid "Offline"
 msgstr "Hors ligne"
+
+msgid "Offline after (seconds)"
+msgstr "Hors ligne après (secondes)"
 
 msgid "Offset Absorbed Overhead"
 msgstr "Décalage de frais généraux absorbés"
@@ -22480,6 +22530,9 @@ msgstr ""
 msgid "Picking offers tracked entities earliest-expiry-first, so the soonest-to-expire stock leaves first by default."
 msgstr "Le prélèvement propose d'abord les articles suivis ayant la péremption la plus proche, donc le stock arrivant à expiration le plus tôt quitte en premier par défaut."
 
+msgid "Pieces per pulse"
+msgstr "Pièces par impulsion"
+
 msgid "Pieces per run. Leave empty for no limit."
 msgstr "Pièces par passage. Laissez vide pour pas de limite."
 
@@ -23515,6 +23568,9 @@ msgstr "Prélever du stock"
 
 msgid "Pull, map, and load your data"
 msgstr "Extraire, mapper et charger vos données"
+
+msgid "Pulse Devices"
+msgstr "Appareils Pulse"
 
 msgid "Purchase"
 msgstr "Achat"
@@ -24633,6 +24689,9 @@ msgstr "Enregistrer une unité vendue avant Carbon. Une unité que Carbon expéd
 
 msgid "Register Existing Asset"
 msgstr "Enregistré"
+
+msgid "Register the cycle sensors on your machines, then map each one to a work center."
+msgstr "Enregistrez les capteurs de cycle de vos machines, puis associez chacun à un poste de travail."
 
 msgid "Registered"
 msgstr "Enregistré"
@@ -26485,6 +26544,9 @@ msgstr "Enregistrés {count} mappages de comptes"
 msgid "Saved account mapping"
 msgstr "Mappage de compte enregistré"
 
+msgid "Saved device"
+msgstr "Appareil enregistré"
+
 msgid "Saved device mapping"
 msgstr "Mappage d'appareil enregistré"
 
@@ -26934,6 +26996,9 @@ msgstr "Consultez une prévision de capacité en direct pour chaque poste de tra
 msgid "See all {0}"
 msgstr "Voir tout {0}"
 
+msgid "Seen {lastSeen}"
+msgstr "Vu {lastSeen}"
+
 msgid "Segment"
 msgstr "Segment"
 
@@ -27283,6 +27348,9 @@ msgstr "Erreur d'envoi"
 
 msgid "Send Estimate {serviceJobId}"
 msgstr "Envoyer Devis {serviceJobId}"
+
+msgid "Send every (seconds)"
+msgstr "Envoi toutes les (secondes)"
 
 msgid "Send Invite"
 msgstr "Envoyer une invitation"
@@ -28589,6 +28657,9 @@ msgstr "Le Carbon cloud standard correspond à la façon dont votre société fo
 
 msgid "Standard Cost Variances"
 msgstr "Écarts de coûts standards"
+
+msgid "Standard cycle (seconds)"
+msgstr "Cycle standard (secondes)"
 
 msgid "Standard factor"
 msgstr "Facteur standard"
@@ -30408,6 +30479,12 @@ msgstr "Le compte par défaut du Revenu Différé est vide."
 msgid "The department this one rolls up under for reporting and headcount hierarchies; leave empty for a top-level department."
 msgstr "Le département sous lequel celui-ci se cumule pour la déclaration et les hiérarchies de dénombrement; laisser vide pour un département au niveau supérieur."
 
+msgid "The device key is the device's MQTT username. It cannot change after the device is registered."
+msgstr "La clé de l'appareil correspond au nom d'utilisateur MQTT de l'appareil. Elle ne peut pas être modifiée une fois l'appareil enregistré."
+
+msgid "The device's counts and state changes are deleted too. The sensor stops reporting to Carbon."
+msgstr "Les compteurs et les changements d'état de l'appareil sont également supprimés. Le capteur cesse de transmettre des données à Carbon."
+
 msgid "The device's site is in {siteTimezone}; Carbon uses {locationTimezone}"
 msgstr "Le site de l'appareil est en {siteTimezone} ; Carbon utilise {locationTimezone}"
 
@@ -31037,6 +31114,16 @@ msgstr "Le stock du projet ne passe qu'aux projets du même client"
 
 msgid "The provider offers no dimension targets. Enable the feature in the provider first (e.g. tracking categories, class tracking, or fields)."
 msgstr "Le fournisseur n'offre pas de cibles de dimension. Activez d'abord la fonctionnalité chez le fournisseur (par exemple, catégories de suivi, suivi des classes ou champs)."
+
+msgid "The Pulse ingest service has never reported"
+msgstr "Le service d'ingestion Pulse n'a jamais signalé son activité"
+
+msgid "The Pulse ingest service is running"
+msgstr "Le service d'ingestion Pulse est en cours d'exécution"
+
+#. placeholder {0}: formatTimeAgo(heartbeatAt)
+msgid "The Pulse ingest service last reported {0}"
+msgstr "Le service d'ingestion Pulse a signalé son activité pour la dernière fois {0}"
 
 #. placeholder {0}: formatter.format(invoicedOption)
 msgid "The purchase option is already invoiced at {0}. Exercise it at that price, or delete the invoice first."
@@ -31674,6 +31761,10 @@ msgstr "Ce département n'a pas de poste de travail au site {locationName}. Choi
 
 msgid "This department has no work centers at this location. Pick another department or location."
 msgstr "Ce département n'a pas de poste de travail à ce site. Choisissez un autre département ou un autre site."
+
+#. placeholder {0}: deleting.workCenterName ?? ""
+msgid "This device is mapped to {0}. Unmap it on the Devices tab first."
+msgstr "Cet appareil est associé à {0}. Dissociez-le d'abord dans l'onglet Appareils."
 
 msgid "This download link is invalid or has been tampered with."
 msgstr "Ce lien de téléchargement est invalide ou a été modifié."

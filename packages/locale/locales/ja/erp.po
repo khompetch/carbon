@@ -632,6 +632,10 @@ msgstr "{0}個の問題 — 公開済ではありません"
 msgid "{0} Processes"
 msgstr "{0}個のプロセス"
 
+#. placeholder {0}: device.queueDepth
+msgid "{0} queued"
+msgstr "{0} 件キュー待ち"
+
 #. placeholder {0}: quantityFormatter(line.quantityReceived)
 #. placeholder {1}: quantityFormatter(line.quantityCredited)
 msgid "{0} received · {1} credited"
@@ -1284,6 +1288,9 @@ msgstr "{stale} はページが読み込まれてから変更されました"
 
 msgid "{state} · synced {syncedAgo}"
 msgstr "{state} · {syncedAgo} に同期"
+
+msgid "{state} since {since}"
+msgstr "{since} から {state}"
 
 msgid "{statusTotal, plural, one {# issue in total} other {# issues in total}}"
 msgstr "{statusTotal, plural, other {合計 # 件の不適合}}"
@@ -3916,6 +3923,9 @@ msgstr "あなたの会社ではエクスポートがすでに実行中です。
 
 msgid "An https request Carbon sends to a system of yours when a workflow reaches that step, carrying whatever headers and body you configured."
 msgstr "ワークフローがそのステップに到達したときに、Carbonがあなたのシステムに送信するHTTPSリクエスト。設定したヘッダーと本文が含まれます。"
+
+msgid "An inactive device is ignored by the ingest service."
+msgstr "無効なデバイスは取り込みサービスによって無視されます。"
 
 msgid "An inactive group's members are planned on their own"
 msgstr "非アクティブなグループのメンバーは自身で計画されます"
@@ -9768,6 +9778,9 @@ msgstr "プロジェクト仕掛品を借方計上し、各プールの適用勘
 msgid "Debits"
 msgstr "借方"
 
+msgid "Debounce (ms)"
+msgstr "デバウンス (ms)"
+
 msgid "Decide what an operator sees if they try to issue a batch or serial that's already expired."
 msgstr "作業者が既に期限切れのバッチまたはシリアルを出庫しようとした場合に何が表示されるかを決定します。"
 
@@ -10024,8 +10037,8 @@ msgid "Delete"
 msgstr "削除"
 
 #. placeholder {0}: deleting.name
+#. placeholder {0}: device.name
 #. placeholder {0}: monthLabel(deleting.periodStart)
-#. placeholder {0}: row.account?.number ?? ""
 msgid "Delete {0}"
 msgstr "{0} を削除"
 
@@ -10702,6 +10715,9 @@ msgstr "開発者"
 
 msgid "Device"
 msgstr "デバイス"
+
+msgid "Device key"
+msgstr "デバイスキー"
 
 msgid "Devices"
 msgstr "デバイス"
@@ -11495,6 +11511,7 @@ msgstr "経済事業者登録・識別番号。EU/UK関税国境を越える商�
 msgid "Edit"
 msgstr "編集"
 
+#. placeholder {0}: device.name
 #. placeholder {0}: operation.description
 #. placeholder {0}: process.name
 msgid "Edit {0}"
@@ -11804,6 +11821,9 @@ msgstr "プロジェクトを編集"
 msgid "Edit Properties"
 msgstr "プロパティを編集"
 
+msgid "Edit Pulse device"
+msgstr "Pulse デバイスを編集"
+
 msgid "Edit purchase order line type"
 msgstr "発注書明細タイプを編集"
 
@@ -12068,6 +12088,9 @@ msgstr "空のリスト"
 
 msgid "Empty work centers"
 msgstr "作業区がありません"
+
+msgid "Empty: 3 standard cycles, at least 30"
+msgstr "空欄の場合: 標準サイクル 3 回分、ただし最低 30"
 
 msgid "Enable"
 msgstr "有効にする"
@@ -13868,6 +13891,9 @@ msgstr "バッチの場合。シリアルは 1 としてカウント。"
 msgid "for anything. They'll pull in the right person."
 msgstr "何でも構いません。彼らが適切な人を連れてきます。"
 
+msgid "For example press-01"
+msgstr "例: press-01"
+
 msgid "For example Site or Ordered by"
 msgstr "例：拠点、発注者"
 
@@ -14605,6 +14631,9 @@ msgstr "ヘッダー"
 msgid "Heading {level}"
 msgstr "見出し {level}"
 
+msgid "Health"
+msgstr "ヘルス"
+
 msgid "Healthy"
 msgstr "正常"
 
@@ -15050,6 +15079,9 @@ msgstr "IDプロバイダー（IdP）"
 
 msgid "Idle"
 msgstr "待機中"
+
+msgid "Idle after (seconds)"
+msgstr "アイドル判定までの時間（秒）"
 
 msgid "IdP Metadata URL"
 msgstr "IdP メタデータURL"
@@ -18770,6 +18802,9 @@ msgstr "ネットワークエラー"
 msgid "Never"
 msgstr "なし"
 
+msgid "Never reported"
+msgstr "未報告"
+
 msgid "New"
 msgstr "新規"
 
@@ -18865,6 +18900,9 @@ msgstr "新しい所要量予測"
 
 msgid "New Department"
 msgstr "新しい部門"
+
+msgid "New device"
+msgstr "新規デバイス"
 
 msgid "New Dimension"
 msgstr "新しいディメンション"
@@ -19043,6 +19081,9 @@ msgstr "新規プロジェクト契約"
 
 msgid "New Project Stock Transfer"
 msgstr "新しいプロジェクト在庫転送"
+
+msgid "New Pulse device"
+msgstr "新しい Pulse デバイス"
 
 msgid "New purchase order"
 msgstr "新しい発注書"
@@ -19595,6 +19636,9 @@ msgstr "デバイスが見つかりません"
 
 msgid "No devices match your search"
 msgstr "検索に一致するデバイスはありません"
+
+msgid "No devices registered"
+msgstr "登録されているデバイスはありません"
 
 msgid "No differences."
 msgstr "違いはありません。"
@@ -20224,6 +20268,9 @@ msgstr "まだスライドがない"
 msgid "No sorts applied to this view"
 msgstr "このビューに適用されたソートはありません"
 
+msgid "No state yet"
+msgstr "状態はまだありません"
+
 msgid "No statement for this period"
 msgstr "この期間の明細書がありません"
 
@@ -20790,6 +20837,9 @@ msgstr "役員"
 
 msgid "Offline"
 msgstr "オフライン"
+
+msgid "Offline after (seconds)"
+msgstr "オフライン判定までの時間（秒）"
 
 msgid "Offset Absorbed Overhead"
 msgstr "相殺吸収間接費"
@@ -22480,6 +22530,9 @@ msgstr ""
 msgid "Picking offers tracked entities earliest-expiry-first, so the soonest-to-expire stock leaves first by default."
 msgstr "ピッキングは追跡対象品目を使用期限が最も近い順に提供するため、期限切れが最も近い在庫がデフォルトで最初に出荷されます。"
 
+msgid "Pieces per pulse"
+msgstr "1 パルスあたりの個数"
+
 msgid "Pieces per run. Leave empty for no limit."
 msgstr "ラン当たりの個数。制限なしの場合は空白のままにしてください。"
 
@@ -23515,6 +23568,9 @@ msgstr "在庫から引当"
 
 msgid "Pull, map, and load your data"
 msgstr "データをプル、マップ、ロードする"
+
+msgid "Pulse Devices"
+msgstr "Pulse デバイス"
 
 msgid "Purchase"
 msgstr "購入"
@@ -24633,6 +24689,9 @@ msgstr "Carbon導入前に販売された単位を登録します。Carbonが出
 
 msgid "Register Existing Asset"
 msgstr "登録済み"
+
+msgid "Register the cycle sensors on your machines, then map each one to a work center."
+msgstr "機械にサイクルセンサーを登録し、それぞれを作業区に割り当ててください。"
 
 msgid "Registered"
 msgstr "登録済"
@@ -26485,6 +26544,9 @@ msgstr "{count}個の勘定科目マッピングを保存しました"
 msgid "Saved account mapping"
 msgstr "アカウントマッピングを保存しました"
 
+msgid "Saved device"
+msgstr "保存済みデバイス"
+
 msgid "Saved device mapping"
 msgstr "デバイスマッピングを保存しました"
 
@@ -26934,6 +26996,9 @@ msgstr "ショップ全体の各作業区のリアルタイム キャパシテ�
 msgid "See all {0}"
 msgstr "すべての{0}を表示"
 
+msgid "Seen {lastSeen}"
+msgstr "最終確認 {lastSeen}"
+
 msgid "Segment"
 msgstr "セグメント"
 
@@ -27283,6 +27348,9 @@ msgstr "送信エラー"
 
 msgid "Send Estimate {serviceJobId}"
 msgstr "見積を送信 {serviceJobId}"
+
+msgid "Send every (seconds)"
+msgstr "送信間隔（秒）"
 
 msgid "Send Invite"
 msgstr "招待を送信"
@@ -28589,6 +28657,9 @@ msgstr "標準クラウドCarbonはあなたの会社の運営方法に適合し
 
 msgid "Standard Cost Variances"
 msgstr "標準原価差異"
+
+msgid "Standard cycle (seconds)"
+msgstr "標準サイクル（秒）"
 
 msgid "Standard factor"
 msgstr "標準係数"
@@ -30408,6 +30479,12 @@ msgstr "繰延売上高のデフォルトアカウントが空です。"
 msgid "The department this one rolls up under for reporting and headcount hierarchies; leave empty for a top-level department."
 msgstr "レポートとヘッドカウント階層のために、このロールアップが行われるセクション。トップレベル部門の場合は空白のままにしてください。"
 
+msgid "The device key is the device's MQTT username. It cannot change after the device is registered."
+msgstr "デバイスキーはデバイスの MQTT ユーザー名です。登録後は変更できません。"
+
+msgid "The device's counts and state changes are deleted too. The sensor stops reporting to Carbon."
+msgstr "デバイスのカウントと状態変化の履歴も削除されます。センサーは Carbon への報告を停止します。"
+
 msgid "The device's site is in {siteTimezone}; Carbon uses {locationTimezone}"
 msgstr "デバイスのサイトは {siteTimezone} にあります。Carbon は {locationTimezone} を使用します"
 
@@ -31037,6 +31114,16 @@ msgstr "プロジェクトの在庫は同じ得意先のプロジェクトにの
 
 msgid "The provider offers no dimension targets. Enable the feature in the provider first (e.g. tracking categories, class tracking, or fields)."
 msgstr "プロバイダーはディメンションターゲットを提供していません。最初にプロバイダーで機能を有効にしてください(例:追跡カテゴリ、クラス追跡、またはフィールド)。"
+
+msgid "The Pulse ingest service has never reported"
+msgstr "Pulse 取り込みサービスからの報告はまだありません"
+
+msgid "The Pulse ingest service is running"
+msgstr "Pulse 取り込みサービスは稼働中です"
+
+#. placeholder {0}: formatTimeAgo(heartbeatAt)
+msgid "The Pulse ingest service last reported {0}"
+msgstr "Pulse 取り込みサービスの最終報告: {0}"
 
 #. placeholder {0}: formatter.format(invoicedOption)
 msgid "The purchase option is already invoiced at {0}. Exercise it at that price, or delete the invoice first."
@@ -31674,6 +31761,10 @@ msgstr "この部門は{locationName}に作業区がありません。別の部�
 
 msgid "This department has no work centers at this location. Pick another department or location."
 msgstr "この部門はこの拠点に作業区がありません。別の部門または拠点を選択してください。"
+
+#. placeholder {0}: deleting.workCenterName ?? ""
+msgid "This device is mapped to {0}. Unmap it on the Devices tab first."
+msgstr "このデバイスは {0} に割り当てられています。先に「デバイス」タブで割り当てを解除してください。"
 
 msgid "This download link is invalid or has been tampered with."
 msgstr "このダウンロードリンクは無効であるか、改ざんされています。"

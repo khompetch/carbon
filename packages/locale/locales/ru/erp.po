@@ -632,6 +632,10 @@ msgstr "{0} проблем — не опубликовано"
 msgid "{0} Processes"
 msgstr "{0} Процессов"
 
+#. placeholder {0}: device.queueDepth
+msgid "{0} queued"
+msgstr "{0} в очереди"
+
 #. placeholder {0}: quantityFormatter(line.quantityReceived)
 #. placeholder {1}: quantityFormatter(line.quantityCredited)
 msgid "{0} received · {1} credited"
@@ -1284,6 +1288,9 @@ msgstr "{stale} изменилось с момента загрузки стра
 
 msgid "{state} · synced {syncedAgo}"
 msgstr "{state} · синхронизировано {syncedAgo}"
+
+msgid "{state} since {since}"
+msgstr "{state} с {since}"
 
 msgid "{statusTotal, plural, one {# issue in total} other {# issues in total}}"
 msgstr "{statusTotal, plural, one {# несоответствие всего} few {# несоответствия всего} many {# несоответствий всего} other {# несоответствия всего}}"
@@ -3916,6 +3923,9 @@ msgstr "Экспорт уже выполняется для вашей орга�
 
 msgid "An https request Carbon sends to a system of yours when a workflow reaches that step, carrying whatever headers and body you configured."
 msgstr "HTTPS-запрос, который Carbon отправляет в вашу систему, когда рабочий процесс достигает этого шага, с любыми заголовками и телом, которые вы настроили."
+
+msgid "An inactive device is ignored by the ingest service."
+msgstr "Неактивное устройство игнорируется сервисом приёма данных."
 
 msgid "An inactive group's members are planned on their own"
 msgstr "Члены неактивной группы планируются самостоятельно"
@@ -9768,6 +9778,9 @@ msgstr "Дебет проекта НЗП и кредит счета примен
 msgid "Debits"
 msgstr "Дебеты"
 
+msgid "Debounce (ms)"
+msgstr "Задержка антидребезга (мс)"
+
 msgid "Decide what an operator sees if they try to issue a batch or serial that's already expired."
 msgstr "Решите, что видит оператор при попытке выдать партию или серийный номер, срок действия которого уже истек."
 
@@ -10024,8 +10037,8 @@ msgid "Delete"
 msgstr "Удалить"
 
 #. placeholder {0}: deleting.name
+#. placeholder {0}: device.name
 #. placeholder {0}: monthLabel(deleting.periodStart)
-#. placeholder {0}: row.account?.number ?? ""
 msgid "Delete {0}"
 msgstr "Удалить {0}"
 
@@ -10702,6 +10715,9 @@ msgstr "Разработчик"
 
 msgid "Device"
 msgstr "Устройство"
+
+msgid "Device key"
+msgstr "Ключ устройства"
 
 msgid "Devices"
 msgstr "Устройства"
@@ -11495,6 +11511,7 @@ msgstr "Номер регистрации и идентификации экон
 msgid "Edit"
 msgstr "Изменить"
 
+#. placeholder {0}: device.name
 #. placeholder {0}: operation.description
 #. placeholder {0}: process.name
 msgid "Edit {0}"
@@ -11804,6 +11821,9 @@ msgstr "Изменить проект"
 msgid "Edit Properties"
 msgstr "Изменить свойства"
 
+msgid "Edit Pulse device"
+msgstr "Изменить устройство Pulse"
+
 msgid "Edit purchase order line type"
 msgstr "Изменить тип строки заказа поставщику"
 
@@ -12068,6 +12088,9 @@ msgstr "Пустой список"
 
 msgid "Empty work centers"
 msgstr "Пустые рабочие центры"
+
+msgid "Empty: 3 standard cycles, at least 30"
+msgstr "Пусто: 3 стандартных цикла, не менее 30"
 
 msgid "Enable"
 msgstr "Включить"
@@ -13868,6 +13891,9 @@ msgstr "Для серии. Серийный номер считается за 1
 msgid "for anything. They'll pull in the right person."
 msgstr "для чего угодно. Они привлекут нужного человека."
 
+msgid "For example press-01"
+msgstr "Например, press-01"
+
 msgid "For example Site or Ordered by"
 msgstr "Например, Площадка или Заказал"
 
@@ -14605,6 +14631,9 @@ msgstr "Заголовки"
 msgid "Heading {level}"
 msgstr "Заголовок {level}"
 
+msgid "Health"
+msgstr "Работоспособность"
+
 msgid "Healthy"
 msgstr "Здоровый"
 
@@ -15050,6 +15079,9 @@ msgstr "Поставщик удостоверений (IdP)"
 
 msgid "Idle"
 msgstr "Ожидание"
+
+msgid "Idle after (seconds)"
+msgstr "Простой через (секунды)"
 
 msgid "IdP Metadata URL"
 msgstr "URL метаданных IdP"
@@ -18770,6 +18802,9 @@ msgstr "Ошибка сети"
 msgid "Never"
 msgstr "Никогда"
 
+msgid "Never reported"
+msgstr "Данные ещё не поступали"
+
 msgid "New"
 msgstr "Новый"
 
@@ -18865,6 +18900,9 @@ msgstr "Новый прогноз потребности"
 
 msgid "New Department"
 msgstr "Новый отдел"
+
+msgid "New device"
+msgstr "Новое устройство"
 
 msgid "New Dimension"
 msgstr "Новое измерение"
@@ -19043,6 +19081,9 @@ msgstr "Новый контракт проекта"
 
 msgid "New Project Stock Transfer"
 msgstr "Новое перемещение запасов проекта"
+
+msgid "New Pulse device"
+msgstr "Новое устройство Pulse"
 
 msgid "New purchase order"
 msgstr "Новый заказ поставщику"
@@ -19595,6 +19636,9 @@ msgstr "Устройства не найдены"
 
 msgid "No devices match your search"
 msgstr "Нет устройств, соответствующих поиску"
+
+msgid "No devices registered"
+msgstr "Зарегистрированных устройств нет"
 
 msgid "No differences."
 msgstr "Нет различий."
@@ -20224,6 +20268,9 @@ msgstr "Слайдов еще нет"
 msgid "No sorts applied to this view"
 msgstr "Сортировка не применена к этому представлению"
 
+msgid "No state yet"
+msgstr "Состояние пока не определено"
+
 msgid "No statement for this period"
 msgstr "Нет отчета за этот период"
 
@@ -20790,6 +20837,9 @@ msgstr "Офицер"
 
 msgid "Offline"
 msgstr "Отключено"
+
+msgid "Offline after (seconds)"
+msgstr "Офлайн через (секунды)"
 
 msgid "Offset Absorbed Overhead"
 msgstr "Смещение поглощенных накладных расходов"
@@ -22480,6 +22530,9 @@ msgstr ""
 msgid "Picking offers tracked entities earliest-expiry-first, so the soonest-to-expire stock leaves first by default."
 msgstr "Отбор предлагает отслеживаемые товары в первую очередь с наиболее ранним сроком истечения, поэтому запас с ближайшим сроком истечения уходит первым по умолчанию."
 
+msgid "Pieces per pulse"
+msgstr "Деталей на импульс"
+
 msgid "Pieces per run. Leave empty for no limit."
 msgstr "Шт на цикл. Оставьте пусто без ограничений."
 
@@ -23515,6 +23568,9 @@ msgstr "Со склада"
 
 msgid "Pull, map, and load your data"
 msgstr "Извлеките, сопоставьте и загрузите ваши данные"
+
+msgid "Pulse Devices"
+msgstr "Устройства Pulse"
 
 msgid "Purchase"
 msgstr "Покупка"
@@ -24633,6 +24689,9 @@ msgstr "Зарегистрировать единицу, проданную до
 
 msgid "Register Existing Asset"
 msgstr "Зарегистрирован"
+
+msgid "Register the cycle sensors on your machines, then map each one to a work center."
+msgstr "Зарегистрируйте датчики цикла на станках, затем привяжите каждый к рабочему центру."
 
 msgid "Registered"
 msgstr "Зарегистрировано"
@@ -26485,6 +26544,9 @@ msgstr "Сохранено {count} сопоставлений счетов"
 msgid "Saved account mapping"
 msgstr "Сохранено сопоставление счета"
 
+msgid "Saved device"
+msgstr "Сохранённое устройство"
+
 msgid "Saved device mapping"
 msgstr "Сохранено сопоставление устройства"
 
@@ -26934,6 +26996,9 @@ msgstr "Просмотр динамического прогноза мощно�
 msgid "See all {0}"
 msgstr "Посмотреть все {0}"
 
+msgid "Seen {lastSeen}"
+msgstr "Последний сигнал: {lastSeen}"
+
 msgid "Segment"
 msgstr "Сегмент"
 
@@ -27283,6 +27348,9 @@ msgstr "Ошибка отправки"
 
 msgid "Send Estimate {serviceJobId}"
 msgstr "Отправить смету {serviceJobId}"
+
+msgid "Send every (seconds)"
+msgstr "Отправлять каждые (секунды)"
 
 msgid "Send Invite"
 msgstr "Отправить приглашение"
@@ -28589,6 +28657,9 @@ msgstr "Стандартное облако Carbon соответствует т
 
 msgid "Standard Cost Variances"
 msgstr "Отклонения нормативной себестоимости"
+
+msgid "Standard cycle (seconds)"
+msgstr "Стандартный цикл (секунды)"
 
 msgid "Standard factor"
 msgstr "Стандартный коэффициент"
@@ -30408,6 +30479,12 @@ msgstr "Счет отложенной выручки по умолчанию п�
 msgid "The department this one rolls up under for reporting and headcount hierarchies; leave empty for a top-level department."
 msgstr "Отдел, под который это накапливается для отчетности и иерархий подсчета; оставить пусто для отдела верхнего уровня."
 
+msgid "The device key is the device's MQTT username. It cannot change after the device is registered."
+msgstr "Ключ устройства — это имя пользователя устройства в MQTT. Его нельзя изменить после регистрации устройства."
+
+msgid "The device's counts and state changes are deleted too. The sensor stops reporting to Carbon."
+msgstr "Счётчики и изменения состояния устройства также будут удалены. Датчик перестанет передавать данные в Carbon."
+
 msgid "The device's site is in {siteTimezone}; Carbon uses {locationTimezone}"
 msgstr "Площадка устройства находится в {siteTimezone}; Carbon использует {locationTimezone}"
 
@@ -31037,6 +31114,16 @@ msgstr "Запас проекта перемещается только на п�
 
 msgid "The provider offers no dimension targets. Enable the feature in the provider first (e.g. tracking categories, class tracking, or fields)."
 msgstr "Поставщик не предлагает целевые показатели по измерениям. Сначала включите функцию у поставщика (например, категории отслеживания, отслеживание класса или поля)."
+
+msgid "The Pulse ingest service has never reported"
+msgstr "Сервис приёма данных Pulse ещё не передавал данные"
+
+msgid "The Pulse ingest service is running"
+msgstr "Сервис приёма данных Pulse работает"
+
+#. placeholder {0}: formatTimeAgo(heartbeatAt)
+msgid "The Pulse ingest service last reported {0}"
+msgstr "Сервис приёма данных Pulse последний раз сообщал о себе {0}"
 
 #. placeholder {0}: formatter.format(invoicedOption)
 msgid "The purchase option is already invoiced at {0}. Exercise it at that price, or delete the invoice first."
@@ -31674,6 +31761,10 @@ msgstr "Этот отдел не имеет рабочих центров на {
 
 msgid "This department has no work centers at this location. Pick another department or location."
 msgstr "Этот отдел не имеет рабочих центров на этой площадке. Выберите другой отдел или площадку."
+
+#. placeholder {0}: deleting.workCenterName ?? ""
+msgid "This device is mapped to {0}. Unmap it on the Devices tab first."
+msgstr "Это устройство привязано к {0}. Сначала отвяжите его на вкладке «Устройства»."
 
 msgid "This download link is invalid or has been tampered with."
 msgstr "Эта ссылка для скачивания недействительна или была повреждена."
