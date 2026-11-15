@@ -26,6 +26,8 @@ export type PulseDeviceSettings = {
   offlineAfterSeconds: number;
   debounceMs: number;
   bucketSeconds: number;
+  /** Send each pulse at once instead of every `bucketSeconds`. */
+  sendEachPulse: boolean;
   active: boolean;
 };
 

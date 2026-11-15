@@ -13900,6 +13900,9 @@ msgstr "Örneğin Tesis veya Sıralama ölçütü"
 msgid "For Form 6765 Section E"
 msgstr "Form 6765 Bölüm E için"
 
+msgid "For machines with a long cycle. Each cycle reaches Carbon within a second, instead of every few seconds."
+msgstr "Uzun çevrim süreli makineler için. Her çevrim, birkaç saniyede bir yerine bir saniye içinde Carbon'a ulaşır."
+
 msgid "Force delete"
 msgstr ""
 
@@ -27342,6 +27345,9 @@ msgstr "Gönder"
 
 msgid "Send all to"
 msgstr "Tümünü şuraya gönder"
+
+msgid "Send each pulse immediately"
+msgstr "Her darbeyi hemen gönder"
 
 msgid "Send error"
 msgstr "Gönderme Hatası"

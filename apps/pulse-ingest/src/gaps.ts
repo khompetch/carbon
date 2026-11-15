@@ -8,31 +8,54 @@
  * than the bucket's own pulses since the last bucket the server stored, the
  * difference is pulses whose buckets never arrived. They are stored as one
  * estimated bucket, so the count stays right even though their time is not
- * known exactly.
+ * known exactly. Log scrap presses have their own lifetime counter
+ * (`scrapTotal`) and are recovered the same way.
  */
 
-export type LastBucket = { boot: string; seq: number; counter: number };
+export type LastBucket = {
+  boot: string;
+  seq: number;
+  counter: number;
+  /** Null when the stored bucket predates the Log scrap counter. */
+  scrapCounter: number | null;
+};
 
 export type GapResult =
   /** Already stored, or older than what is stored: write nothing. */
   | { kind: "stale" }
-  /** Store the bucket; `missing` pulses were lost before it. */
-  | { kind: "store"; missing: number };
+  /** Store the bucket; `missing` pulses and `missingScrap` presses were lost before it. */
+  | { kind: "store"; missing: number; missingScrap: number };
+
+/**
+ * What a lifetime counter says was lost. A counter below the stored one is a
+ * device that lost its counter (new hardware, erased storage): nothing can be
+ * inferred, so counting starts again from it.
+ */
+function lost(previous: number | null, total: number, inBucket: number) {
+  if (previous === null || total < previous) return 0;
+  return Math.max(0, total - inBucket - previous);
+}
 
 export function detectGap(
   last: LastBucket | null,
-  bucket: { boot: string; seq: number; n: number; total: number }
+  bucket: {
+    boot: string;
+    seq: number;
+    n: number;
+    total: number;
+    scrap: number;
+    scrapTotal: number;
+  }
 ): GapResult {
-  if (!last) return { kind: "store", missing: 0 };
+  if (!last) return { kind: "store", missing: 0, missingScrap: 0 };
 
   if (bucket.boot === last.boot && bucket.seq <= last.seq) {
     return { kind: "stale" };
   }
 
-  // A counter below the stored one is a device that lost its counter (new
-  // hardware, erased storage). Nothing can be inferred: start again from it.
-  if (bucket.total < last.counter) return { kind: "store", missing: 0 };
-
-  const missing = bucket.total - bucket.n - last.counter;
-  return { kind: "store", missing: Math.max(0, missing) };
+  return {
+    kind: "store",
+    missing: lost(last.counter, bucket.total, bucket.n),
+    missingScrap: lost(last.scrapCounter, bucket.scrapTotal, bucket.scrap)
+  };
 }

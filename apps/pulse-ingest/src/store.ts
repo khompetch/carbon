@@ -21,9 +21,11 @@ export type DeviceRow = {
   offlineAfterSeconds: number;
   debounceMs: number;
   bucketSeconds: number;
+  sendEachPulse: boolean;
   lastSeenAt: number | null;
   lastPulseAt: number | null;
   lastCounter: number | null;
+  lastScrapCounter: number | null;
   lastSeq: number | null;
   bootId: string | null;
   currentState: InferredState | null;
@@ -70,9 +72,11 @@ export async function loadDevices(
       "d.offlineAfterSeconds",
       "d.debounceMs",
       "d.bucketSeconds",
+      "d.sendEachPulse",
       "d.lastSeenAt",
       "d.lastPulseAt",
       "d.lastCounter",
+      "d.lastScrapCounter",
       "d.lastSeq",
       "d.bootId",
       "d.currentState",
@@ -93,9 +97,11 @@ export async function loadDevices(
     offlineAfterSeconds: row.offlineAfterSeconds,
     debounceMs: row.debounceMs,
     bucketSeconds: row.bucketSeconds,
+    sendEachPulse: row.sendEachPulse,
     lastSeenAt: ms(row.lastSeenAt),
     lastPulseAt: ms(row.lastPulseAt),
     lastCounter: num(row.lastCounter),
+    lastScrapCounter: num(row.lastScrapCounter),
     lastSeq: num(row.lastSeq),
     bootId: row.bootId,
     currentState:
@@ -116,10 +122,14 @@ export type BucketWrite = {
   periodEnd: number;
   pulses: number;
   counter: number;
+  /** Log scrap presses in the bucket, and the lifetime press counter after it. */
+  scrapPulses: number;
+  scrapCounter: number;
   rebased: boolean;
   receivedAt: number;
-  /** Pulses of buckets that never arrived, stored as one estimated row. */
+  /** Pulses and presses of buckets that never arrived, stored as one estimated row. */
   missing: number;
+  missingScrap: number;
 };
 
 /**
@@ -143,6 +153,8 @@ export async function storeBucket(
         periodEnd: iso(bucket.periodEnd),
         pulses: bucket.pulses,
         counter: bucket.counter,
+        scrapPulses: bucket.scrapPulses,
+        scrapCounter: bucket.scrapCounter,
         rebased: bucket.rebased,
         receivedAt: iso(bucket.receivedAt)
       })
@@ -161,7 +173,7 @@ export async function storeBucket(
       .executeTakeFirst();
     if (!inserted) return false;
 
-    if (bucket.missing > 0) {
+    if (bucket.missing + bucket.missingScrap > 0) {
       // When the lost pulses happened is unknown: they are dated at the start
       // of the bucket that revealed them.
       await trx
@@ -175,6 +187,8 @@ export async function storeBucket(
           periodEnd: iso(bucket.periodStart),
           pulses: bucket.missing,
           counter: bucket.counter - bucket.pulses,
+          scrapPulses: bucket.missingScrap,
+          scrapCounter: bucket.scrapCounter - bucket.scrapPulses,
           estimated: true,
           rebased: bucket.rebased,
           receivedAt: iso(bucket.receivedAt)
@@ -197,6 +211,7 @@ export async function storeBucket(
       .updateTable("pulseDevice")
       .set({
         lastCounter: bucket.counter,
+        lastScrapCounter: bucket.scrapCounter,
         lastSeq: bucket.seq,
         bootId: bucket.bootId
       })

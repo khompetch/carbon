@@ -65,6 +65,7 @@ export type PulseDeviceRow = {
   offlineAfterSeconds: number;
   debounceMs: number;
   bucketSeconds: number;
+  sendEachPulse: boolean;
   active: boolean;
   lastSeenAt: string | null;
   lastPulseAt: string | null;
@@ -101,6 +102,7 @@ const newDeviceValues: FormValues = {
   offlineAfterSeconds: 300,
   debounceMs: 20,
   bucketSeconds: 5,
+  sendEachPulse: false,
   active: true
 };
 
@@ -163,6 +165,7 @@ const mockDevices: PulseDeviceRow[] = [
     offlineAfterSeconds: 300,
     debounceMs: 20,
     bucketSeconds: 5,
+    sendEachPulse: false,
     active: true,
     lastSeenAt: null,
     lastPulseAt: null,
@@ -360,6 +363,7 @@ function toFormValues(device: PulseDeviceRow): FormValues {
     offlineAfterSeconds: device.offlineAfterSeconds,
     debounceMs: device.debounceMs,
     bucketSeconds: device.bucketSeconds,
+    sendEachPulse: device.sendEachPulse,
     active: device.active
   };
 }
@@ -480,6 +484,10 @@ function PulseDeviceFormBody({
 }) {
   const { t } = useLingui();
   const isEditing = initialValues.id !== undefined;
+  // The user's own choice in this form, not a copy of loaded data.
+  const [sendEachPulse, setSendEachPulse] = useState(
+    initialValues.sendEachPulse
+  );
   const fetcher = useAction({
     onSuccess: () => {
       toast.success(t`Saved device`);
@@ -556,8 +564,15 @@ function PulseDeviceFormBody({
               name="bucketSeconds"
               label={t`Send every (seconds)`}
               minValue={1}
+              isReadOnly={sendEachPulse}
             />
           </div>
+          <BooleanField
+            name="sendEachPulse"
+            label={t`Send each pulse immediately`}
+            description={t`For machines with a long cycle. Each cycle reaches Carbon within a second, instead of every few seconds.`}
+            onChange={setSendEachPulse}
+          />
           <BooleanField
             name="active"
             label={t`Active`}

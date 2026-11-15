@@ -57563,6 +57563,8 @@ export type Database = {
           pulses: number
           rebased: boolean
           receivedAt: string
+          scrapCounter: number
+          scrapPulses: number
           seq: number
         }
         Insert: {
@@ -57577,6 +57579,8 @@ export type Database = {
           pulses: number
           rebased?: boolean
           receivedAt?: string
+          scrapCounter?: number
+          scrapPulses?: number
           seq: number
         }
         Update: {
@@ -57591,6 +57595,8 @@ export type Database = {
           pulses?: number
           rebased?: boolean
           receivedAt?: string
+          scrapCounter?: number
+          scrapPulses?: number
           seq?: number
         }
         Relationships: [
@@ -57651,6 +57657,7 @@ export type Database = {
           idleAfterSeconds: number | null
           lastCounter: number | null
           lastPulseAt: string | null
+          lastScrapCounter: number | null
           lastSeenAt: string | null
           lastSeq: number | null
           locationId: string | null
@@ -57659,6 +57666,7 @@ export type Database = {
           piecesPerPulse: number
           queueDepth: number | null
           rssi: number | null
+          sendEachPulse: boolean
           updatedAt: string | null
           updatedBy: string | null
         }
@@ -57681,6 +57689,7 @@ export type Database = {
           idleAfterSeconds?: number | null
           lastCounter?: number | null
           lastPulseAt?: string | null
+          lastScrapCounter?: number | null
           lastSeenAt?: string | null
           lastSeq?: number | null
           locationId?: string | null
@@ -57689,6 +57698,7 @@ export type Database = {
           piecesPerPulse?: number
           queueDepth?: number | null
           rssi?: number | null
+          sendEachPulse?: boolean
           updatedAt?: string | null
           updatedBy?: string | null
         }
@@ -57711,6 +57721,7 @@ export type Database = {
           idleAfterSeconds?: number | null
           lastCounter?: number | null
           lastPulseAt?: string | null
+          lastScrapCounter?: number | null
           lastSeenAt?: string | null
           lastSeq?: number | null
           locationId?: string | null
@@ -57719,6 +57730,7 @@ export type Database = {
           piecesPerPulse?: number
           queueDepth?: number | null
           rssi?: number | null
+          sendEachPulse?: boolean
           updatedAt?: string | null
           updatedBy?: string | null
         }

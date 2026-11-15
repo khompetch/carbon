@@ -705,6 +705,7 @@ export const pulseDeviceUpsertValidator = z.object({
   offlineAfterSeconds: zfd.numeric(z.number().int().positive()),
   debounceMs: zfd.numeric(z.number().int().min(0)),
   bucketSeconds: zfd.numeric(z.number().int().positive()),
+  sendEachPulse: zfd.checkbox(),
   active: zfd.checkbox()
 });
 

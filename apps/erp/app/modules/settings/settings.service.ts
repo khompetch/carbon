@@ -2379,7 +2379,7 @@ export async function getPulseDevicesTabData(
     client
       .from("pulseDevice")
       .select(
-        "id, deviceKey, name, locationId, piecesPerPulse, expectedCycleSeconds, idleAfterSeconds, offlineAfterSeconds, debounceMs, bucketSeconds, active, lastSeenAt, lastPulseAt, lastCounter, rssi, firmwareVersion, queueDepth, currentState, currentStateAt"
+        "id, deviceKey, name, locationId, piecesPerPulse, expectedCycleSeconds, idleAfterSeconds, offlineAfterSeconds, debounceMs, bucketSeconds, sendEachPulse, active, lastSeenAt, lastPulseAt, lastCounter, rssi, firmwareVersion, queueDepth, currentState, currentStateAt"
       )
       .eq("companyId", companyId)
       .order("name"),

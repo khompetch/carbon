@@ -94,7 +94,8 @@ function publishConfig(device: DeviceRow) {
     debounceMs: device.debounceMs,
     minWidthMs: Math.min(device.debounceMs, 5),
     bucketSeconds: device.bucketSeconds,
-    heartbeatSeconds: 30
+    heartbeatSeconds: 30,
+    sendEachPulse: device.sendEachPulse
   };
   client.publish(topicFor(device.deviceKey, "config"), JSON.stringify(payload), {
     qos: 1,
@@ -111,7 +112,8 @@ async function reloadDevices() {
       worker.refresh(row);
       if (
         before.debounceMs !== row.debounceMs ||
-        before.bucketSeconds !== row.bucketSeconds
+        before.bucketSeconds !== row.bucketSeconds ||
+        before.sendEachPulse !== row.sendEachPulse
       ) {
         publishConfig(row);
       }

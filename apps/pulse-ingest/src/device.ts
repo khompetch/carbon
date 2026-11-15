@@ -48,7 +48,12 @@ export class DeviceWorker {
     };
     this.last =
       row.bootId !== null && row.lastSeq !== null && row.lastCounter !== null
-        ? { boot: row.bootId, seq: row.lastSeq, counter: row.lastCounter }
+        ? {
+            boot: row.bootId,
+            seq: row.lastSeq,
+            counter: row.lastCounter,
+            scrapCounter: row.lastScrapCounter
+          }
         : null;
   }
 
@@ -97,7 +102,9 @@ export class DeviceWorker {
         boot: payload.boot,
         seq: payload.seq,
         n: payload.n,
-        total: payload.total
+        total: payload.total,
+        scrap: payload.scrap,
+        scrapTotal: payload.scrapTotal
       });
       if (gap.kind === "stale") return;
 
@@ -125,16 +132,31 @@ export class DeviceWorker {
         periodEnd: times.periodEnd,
         pulses: payload.n,
         counter: payload.total,
+        scrapPulses: payload.scrap,
+        scrapCounter: payload.scrapTotal,
         rebased: times.rebased,
         receivedAt,
-        missing: gap.missing
+        missing: gap.missing,
+        missingScrap: gap.missingScrap
       });
       this.last = {
         boot: payload.boot,
         seq: payload.seq,
-        counter: payload.total
+        counter: payload.total,
+        scrapCounter: payload.scrapTotal
       };
       if (!stored) return;
+
+      if (payload.n + gap.missing === 0) {
+        // Only Log scrap presses: the machine did not cycle, so the state does
+        // not become Running. The message still proves the device is alive.
+        this.tracking = onHeartbeat(this.tracking, {
+          receivedAt,
+          counter: payload.total
+        });
+        await this.save([]);
+        return;
+      }
 
       const step = onPulses(this.tracking, this.timing, {
         periodStart: times.periodStart,

@@ -13900,6 +13900,9 @@ msgstr "उदाहरण के लिए साइट या ऑर्डर 
 msgid "For Form 6765 Section E"
 msgstr "फॉर्म 6765 खंड E के लिए"
 
+msgid "For machines with a long cycle. Each cycle reaches Carbon within a second, instead of every few seconds."
+msgstr "लंबे साइकिल वाली मशीनों के लिए। हर साइकिल कुछ सेकंड में नहीं, बल्कि एक सेकंड के भीतर Carbon तक पहुँचती है।"
+
 msgid "Force delete"
 msgstr ""
 
@@ -27342,6 +27345,9 @@ msgstr "भेजें"
 
 msgid "Send all to"
 msgstr "सभी को भेजें"
+
+msgid "Send each pulse immediately"
+msgstr "हर पल्स तुरंत भेजें"
 
 msgid "Send error"
 msgstr "त्रुटि भेजें"

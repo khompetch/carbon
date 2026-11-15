@@ -13900,6 +13900,9 @@ msgstr "Например, Площадка или Заказал"
 msgid "For Form 6765 Section E"
 msgstr "Для формы 6765 раздел E"
 
+msgid "For machines with a long cycle. Each cycle reaches Carbon within a second, instead of every few seconds."
+msgstr "Для станков с длинным циклом. Каждый цикл доходит до Carbon в течение секунды, а не раз в несколько секунд."
+
 msgid "Force delete"
 msgstr ""
 
@@ -27342,6 +27345,9 @@ msgstr "Отправить"
 
 msgid "Send all to"
 msgstr "Отправить все в"
+
+msgid "Send each pulse immediately"
+msgstr "Отправлять каждый импульс сразу"
 
 msgid "Send error"
 msgstr "Ошибка отправки"

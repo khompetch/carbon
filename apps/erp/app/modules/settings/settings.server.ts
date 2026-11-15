@@ -2938,6 +2938,7 @@ export const savePulseDevice = defineServiceFn({
     offlineAfterSeconds: z.number().int().positive(),
     debounceMs: z.number().int().min(0),
     bucketSeconds: z.number().int().positive(),
+    sendEachPulse: z.boolean(),
     active: z.boolean()
   }),
   permission: { update: "settings" },

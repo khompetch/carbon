@@ -13900,6 +13900,9 @@ msgstr "Par exemple Site ou Commandé par"
 msgid "For Form 6765 Section E"
 msgstr "Pour la section E du formulaire 6765"
 
+msgid "For machines with a long cycle. Each cycle reaches Carbon within a second, instead of every few seconds."
+msgstr "Pour les machines à cycle long. Chaque cycle parvient à Carbon en moins d'une seconde, au lieu de toutes les quelques secondes."
+
 msgid "Force delete"
 msgstr ""
 
@@ -27342,6 +27345,9 @@ msgstr "Envoyer"
 
 msgid "Send all to"
 msgstr "Tout envoyer vers"
+
+msgid "Send each pulse immediately"
+msgstr "Envoyer chaque impulsion immédiatement"
 
 msgid "Send error"
 msgstr "Erreur d'envoi"

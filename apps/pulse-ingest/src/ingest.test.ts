@@ -52,11 +52,24 @@ describe("payloads", () => {
   };
 
   it("parses a count message from text or bytes", () => {
+    // A device without the Log scrap switch sends no scrap fields.
+    const parsed = { ...count, scrap: 0, scrapTotal: 0 };
     expect(parsePayload(countPayloadSchema, JSON.stringify(count))).toEqual(
-      count
+      parsed
     );
     const bytes = new TextEncoder().encode(JSON.stringify(count));
-    expect(parsePayload(countPayloadSchema, bytes)).toEqual(count);
+    expect(parsePayload(countPayloadSchema, bytes)).toEqual(parsed);
+  });
+
+  it("accepts a bucket with only Log scrap presses, or one instant pulse", () => {
+    const scrapOnly = { ...count, n: 0, scrap: 1, scrapTotal: 12 };
+    expect(
+      parsePayload(countPayloadSchema, JSON.stringify(scrapOnly))
+    ).toEqual(scrapOnly);
+    const instant = { ...count, t0: NOW, t1: NOW, n: 1 };
+    expect(
+      parsePayload(countPayloadSchema, JSON.stringify(instant))
+    ).toEqual({ ...instant, scrap: 0, scrapTotal: 0 });
   });
 
   it("returns null for a malformed message", () => {
@@ -206,51 +219,74 @@ describe("nextAnchor", () => {
 });
 
 describe("detectGap", () => {
-  const last = { boot: "a", seq: 10, counter: 100 };
+  const last = { boot: "a", seq: 10, counter: 100, scrapCounter: 4 };
+  const bucket = (overrides: Partial<Parameters<typeof detectGap>[1]>) => ({
+    boot: "a",
+    seq: 11,
+    n: 4,
+    total: 104,
+    scrap: 0,
+    scrapTotal: 4,
+    ...overrides
+  });
 
   it("stores the first bucket of a device", () => {
-    expect(detectGap(null, { boot: "a", seq: 1, n: 3, total: 3 })).toEqual({
-      kind: "store",
-      missing: 0
-    });
+    expect(
+      detectGap(null, bucket({ seq: 1, n: 3, total: 3, scrapTotal: 0 }))
+    ).toEqual({ kind: "store", missing: 0, missingScrap: 0 });
   });
 
   it("stores the next bucket with nothing missing", () => {
-    expect(detectGap(last, { boot: "a", seq: 11, n: 4, total: 104 })).toEqual({
+    expect(detectGap(last, bucket({}))).toEqual({
       kind: "store",
-      missing: 0
+      missing: 0,
+      missingScrap: 0
     });
   });
 
   it("drops a bucket it already has", () => {
-    expect(detectGap(last, { boot: "a", seq: 10, n: 4, total: 100 })).toEqual({
+    expect(detectGap(last, bucket({ seq: 10, total: 100 }))).toEqual({
       kind: "stale"
     });
-    expect(detectGap(last, { boot: "a", seq: 7, n: 2, total: 90 })).toEqual({
+    expect(detectGap(last, bucket({ seq: 7, n: 2, total: 90 }))).toEqual({
       kind: "stale"
     });
   });
 
   it("counts the pulses of buckets that never arrived", () => {
     // seq 11 and 12 were lost: 9 pulses the counter saw and no bucket carried.
-    expect(detectGap(last, { boot: "a", seq: 13, n: 4, total: 113 })).toEqual({
+    expect(detectGap(last, bucket({ seq: 13, total: 113 }))).toEqual({
       kind: "store",
-      missing: 9
+      missing: 9,
+      missingScrap: 0
     });
+  });
+
+  it("counts the Log scrap presses of buckets that never arrived", () => {
+    // 2 presses in this bucket; the counter moved by 5, so 3 were lost.
+    expect(
+      detectGap(last, bucket({ seq: 13, n: 0, total: 100, scrap: 2, scrapTotal: 9 }))
+    ).toEqual({ kind: "store", missing: 0, missingScrap: 3 });
   });
 
   it("counts pulses lost across a restart", () => {
     // The device restarted: seq starts again, the lifetime counter does not.
-    expect(detectGap(last, { boot: "b", seq: 1, n: 2, total: 107 })).toEqual({
+    expect(detectGap(last, bucket({ boot: "b", seq: 1, n: 2, total: 107 }))).toEqual({
       kind: "store",
-      missing: 5
+      missing: 5,
+      missingScrap: 0
     });
   });
 
-  it("infers nothing when the device lost its lifetime counter", () => {
-    expect(detectGap(last, { boot: "b", seq: 1, n: 2, total: 2 })).toEqual({
-      kind: "store",
-      missing: 0
-    });
+  it("infers nothing when the device lost its lifetime counters", () => {
+    expect(
+      detectGap(last, bucket({ boot: "b", seq: 1, n: 2, total: 2, scrapTotal: 0 }))
+    ).toEqual({ kind: "store", missing: 0, missingScrap: 0 });
+  });
+
+  it("infers no lost presses when the stored bucket had no press counter", () => {
+    expect(
+      detectGap({ ...last, scrapCounter: null }, bucket({ scrap: 1, scrapTotal: 50 }))
+    ).toEqual({ kind: "store", missing: 0, missingScrap: 0 });
   });
 });

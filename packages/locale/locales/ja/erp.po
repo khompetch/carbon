@@ -13900,6 +13900,9 @@ msgstr "例：拠点、発注者"
 msgid "For Form 6765 Section E"
 msgstr "フォーム6765セクションE用"
 
+msgid "For machines with a long cycle. Each cycle reaches Carbon within a second, instead of every few seconds."
+msgstr "サイクルの長い機械向けです。各サイクルは数秒ごとではなく、1秒以内に Carbon へ届きます。"
+
 msgid "Force delete"
 msgstr ""
 
@@ -27342,6 +27345,9 @@ msgstr "送信"
 
 msgid "Send all to"
 msgstr "すべてを次へ移動"
+
+msgid "Send each pulse immediately"
+msgstr "パルスをそのつど即時送信"
 
 msgid "Send error"
 msgstr "送信エラー"

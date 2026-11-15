@@ -13900,6 +13900,9 @@ msgstr "예: 사이트 또는 주문자"
 msgid "For Form 6765 Section E"
 msgstr "양식 6765 섹션 E용"
 
+msgid "For machines with a long cycle. Each cycle reaches Carbon within a second, instead of every few seconds."
+msgstr "사이클이 긴 기계용입니다. 각 사이클이 몇 초마다 한 번씩이 아니라 1초 이내에 Carbon으로 전송됩니다."
+
 msgid "Force delete"
 msgstr ""
 
@@ -27342,6 +27345,9 @@ msgstr "전송"
 
 msgid "Send all to"
 msgstr "모두 다음으로 보내기"
+
+msgid "Send each pulse immediately"
+msgstr "각 펄스를 즉시 전송"
 
 msgid "Send error"
 msgstr "전송 오류"

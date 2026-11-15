@@ -7,11 +7,21 @@ import { z } from "zod";
 /**
  * The MQTT contract between a Pulse device and the ingest service, version 1.
  *
- *   carbon/pulse/v1/{deviceKey}/count   device → server, QoS 1, only when n > 0
+ *   carbon/pulse/v1/{deviceKey}/count   device → server, QoS 1, when n + scrap > 0
  *   carbon/pulse/v1/{deviceKey}/status  device → server, QoS 1, the heartbeat
  *   carbon/pulse/v1/{deviceKey}/boot    device → server, QoS 1, once per power-up
  *   carbon/pulse/v1/{deviceKey}/online  retained; Last Will "0", "1" on connect
  *   carbon/pulse/v1/{deviceKey}/config  server → device, retained
+ *
+ * A device has 2 inputs: the cycle sensor (one pulse per machine cycle) and
+ * the Log scrap push switch (one press per bad stroke). It sends a `count`
+ * bucket:
+ *
+ * - every `bucketSeconds`, for the pulses of that period (the default);
+ * - at once for each pulse, when the config sets `sendEachPulse` (machines
+ *   with a long cycle). Pulses less than `SEND_EACH_PULSE_MIN_GAP_MS` apart
+ *   still share one bucket;
+ * - at once for a Log scrap press, in both modes.
  *
  * Every instant is epoch milliseconds. `m` values are the device's monotonic
  * clock, which keeps counting when the wall clock is not synchronized.
@@ -32,23 +42,37 @@ export type PulseChannel = (typeof PULSE_CHANNELS)[number];
 const epochMs = z.number().int().nonnegative();
 const counter = z.number().int().nonnegative();
 
-/** Pulses counted in one bucket. `seq` only increases within one `boot`. */
-export const countPayloadSchema = z.object({
-  v: z.literal(1),
-  boot: z.string().min(1).max(64),
-  seq: z.number().int().nonnegative(),
-  /** Bucket start and end on the device's wall clock. */
-  t0: epochMs,
-  t1: epochMs,
-  /** Monotonic clock at the bucket end. */
-  m1: epochMs,
-  /** Pulses in this bucket. */
-  n: z.number().int().positive(),
-  /** Lifetime pulse counter after this bucket. */
-  total: counter,
-  /** False until the device has synchronized its wall clock. */
-  tsOk: z.boolean()
-});
+/** In send-each-pulse mode, pulses closer than this share one bucket. */
+export const SEND_EACH_PULSE_MIN_GAP_MS = 200;
+
+/**
+ * Pulses and Log scrap presses counted in one bucket. `seq` only increases
+ * within one `boot`. A device without the push switch never sends `scrap`.
+ */
+export const countPayloadSchema = z
+  .object({
+    v: z.literal(1),
+    boot: z.string().min(1).max(64),
+    seq: z.number().int().nonnegative(),
+    /** Bucket start and end on the device's wall clock. Equal for one pulse. */
+    t0: epochMs,
+    t1: epochMs,
+    /** Monotonic clock at the bucket end. */
+    m1: epochMs,
+    /** Sensor pulses in this bucket. */
+    n: z.number().int().nonnegative(),
+    /** Lifetime pulse counter after this bucket. */
+    total: counter,
+    /** Log scrap presses in this bucket. */
+    scrap: z.number().int().nonnegative().default(0),
+    /** Lifetime Log scrap press counter after this bucket. */
+    scrapTotal: counter.default(0),
+    /** False until the device has synchronized its wall clock. */
+    tsOk: z.boolean()
+  })
+  .refine((bucket) => bucket.n + bucket.scrap > 0, {
+    message: "A bucket holds at least one pulse or Log scrap press"
+  });
 
 export type CountPayload = z.infer<typeof countPayloadSchema>;
 
@@ -85,6 +109,8 @@ export type ConfigPayload = {
   minWidthMs: number;
   bucketSeconds: number;
   heartbeatSeconds: number;
+  /** Send each pulse at once instead of every `bucketSeconds`. */
+  sendEachPulse: boolean;
 };
 
 /**

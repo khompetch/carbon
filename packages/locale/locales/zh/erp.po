@@ -13900,6 +13900,9 @@ msgstr "例如：站点或下单人"
 msgid "For Form 6765 Section E"
 msgstr "表格 6765 E 部分"
 
+msgid "For machines with a long cycle. Each cycle reaches Carbon within a second, instead of every few seconds."
+msgstr "适用于周期较长的机器。每个周期将在一秒内发送到 Carbon，而不是每隔几秒才发送一次。"
+
 msgid "Force delete"
 msgstr ""
 
@@ -27342,6 +27345,9 @@ msgstr "发送"
 
 msgid "Send all to"
 msgstr "全部发送至"
+
+msgid "Send each pulse immediately"
+msgstr "立即发送每个脉冲"
 
 msgid "Send error"
 msgstr "发送错误"
