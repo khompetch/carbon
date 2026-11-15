@@ -2,6 +2,8 @@
 paths:
   - packages/ee/src/oee/**
   - packages/ee/src/sense/**
+  - packages/ee/src/pulse/**
+  - apps/pulse-ingest/**
   - packages/jobs/src/inngest/functions/integrations/oee-*.ts
   - apps/erp/app/routes/api+/webhook.sense.$companyId.ts
   - packages/database/src/machine-time.ts
@@ -11,9 +13,11 @@ paths:
 
 An OEE provider reports when each machine runs. Carbon records that run time
 as Machine `productionEvent` rows on the operation loaded on the work center.
-Sense is the only provider today. Spec:
-`.ai/specs/2026-10-12-oee-provider-integration.md`. Where the spec and the
-code differ, the code wins.
+Two providers exist: Sense (a remote API) and Pulse (Carbon's own cycle
+sensors, see "Pulse adapter"). Specs:
+`.ai/specs/2026-10-12-oee-provider-integration.md` and
+`.ai/specs/2026-11-14-pulse-machine-monitoring.md`. Where a spec and the code
+differ, the code wins.
 
 The descriptor `Sense` (`packages/ee/src/sense/config.tsx`) declares
 `providerRole: "oee"` and category "Machine Monitoring". The sweep finds OEE
@@ -531,6 +535,63 @@ engine only reads rows after `appliedThrough`, so neither is ever read again.
   `listStateChanges` pages by time. After a full page (500 events), it asks
   again from the last event's `created_at` and drops the event ids it has
   already seen. It stops on a short page or a page with no new event.
+
+## Pulse adapter
+
+Pulse is Carbon's own machine monitor. An ESP32 counts one pulse per machine
+cycle and publishes over MQTT to Mosquitto. The ingest service
+`apps/pulse-ingest` stores the counts and infers the state. The provider
+reads that state from Postgres. Everything after the provider (engine, sync,
+device mapping, Unattributed Time, the MES badge) is the same as for Sense.
+
+| File | Role |
+|---|---|
+| `apps/pulse-ingest/src/protocol.ts` | The MQTT contract v1: `carbon/pulse/v1/{deviceKey}/{count,status,boot,online,config}`, zod payloads, `parseTopic`. A device key is the MQTT username and a topic segment (`^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$`) |
+| `apps/pulse-ingest/src/state.ts` | Pure state inference (see below). Pinned by `state.test.ts` |
+| `apps/pulse-ingest/src/time.ts`, `gaps.ts` | Bucket times from the device clocks; lost buckets worked out from the lifetime counter (an `estimated` `pulseCount` row). Pinned by `ingest.test.ts` |
+| `apps/pulse-ingest/src/store.ts`, `device.ts`, `main.ts` | Kysely writes, the per-device tracker, and the MQTT runtime. `main.ts` sends `carbon/oee-device-sync` to Inngest for a mapped device whose state changed, publishes each device's retained `config`, and writes the `pulseIngestStatus` heartbeat. Run ONE instance: two would both write |
+| `packages/ee/src/pulse/provider.ts` | `createPulseProvider({ companyId, serviceClient })`: `validate` (the ingest heartbeat, `ingestHealth`), `listDevices` (active `pulseDevice` rows), `listStateChanges` (`pulseStateChange` rows, plus a synthetic Offline from `silentDeviceChange` when the device is silent and ingest has not recorded it). Pinned by `provider.test.ts` |
+| `packages/ee/src/pulse/devices.server.ts` | `savePulseDevice`, `deletePulseDevice`: the ERP writes. The provider only reads |
+| `packages/ee/src/pulse/hooks.server.ts` | `pulseHealthcheck`, and `pulseOnUninstall` (same as `senseOnUninstall`) |
+| `packages/ee/src/pulse/config.tsx` | The descriptor: `providerRole: "oee"`, `registersDevices: true`, `minimumStateSeconds` |
+| `apps/erp/app/modules/settings/ui/Integrations/PulseDevices.ee.tsx` | The Pulse Devices tab. It shows for an OEE descriptor with `registersDevices: true`, not for the id `pulse` |
+| `contrib/deploying/dokploy/` | `mosquitto/` (conf, ACL, entrypoint) and `pulse-ingest.Dockerfile`, in the compose profile `pulse`. The broker publishes 1883 on `MQTT_PUBLISH_ADDRESS` only (default `127.0.0.1`) |
+
+Tables (migrations `20261114131742_pulse-machine-monitor.sql` and
+`20261114134325_pulse-machine-monitor-rls.sql`):
+
+- `pulseDevice`: configuration (`piecesPerPulse`, `expectedCycleSeconds`,
+  `idleAfterSeconds`, `offlineAfterSeconds`, `debounceMs`, `bucketSeconds`),
+  health, and the inferred state, so a restarted ingest service resumes from
+  it. `deviceKey` is unique across companies, because it is the MQTT topic.
+- `pulseCount`: one row per bucket. `(bootId, seq)` is the device's message
+  id, so a repeated MQTT delivery inserts nothing.
+- `pulseStateChange`: the inferred changes the provider returns.
+- `pulseIngestStatus`: one row (`id = 'ingest'`), the service heartbeat.
+- The cron `pulse-history-retention` purges old counts and state changes.
+
+State inference (`state.ts`):
+
+- Running: pulses arrive.
+- Idle: the heartbeat arrives and its counter did not move for `idleAfter`
+  (`idleAfterSeconds`, else 3 × `expectedCycleSeconds`, never under 30 s). A
+  device that comes back waits `ALIVE_SETTLE_MS` before Idle, so its buffered
+  buckets can make it Running first.
+- Offline: no message for `offlineAfterSeconds` (default 300). No run time is
+  invented.
+- Down is never inferred. It comes from a maintenance dispatch.
+
+Pulse has no remote account. The integration is healthy while
+`pulseIngestStatus.heartbeatAt` is newer than `INGEST_HEARTBEAT_MAX_AGE_MS`
+(2 minutes).
+
+Local check without hardware: start Mosquitto from the compose profile
+`pulse`, run `pnpm --filter pulse-ingest start` against the local database,
+register a device key in the Pulse Devices tab, and publish `count` and
+`status` messages for it. To drive the sync without Inngest, call
+`syncOeeDevice` with `createPulseProvider` in a loop, the way `oee-sync` does.
+A run on 2026-11-14 with 2 simulated devices gave Running, Idle and Offline
+changes and Machine events on the mapped work centers.
 
 ## The Sense webhook
 

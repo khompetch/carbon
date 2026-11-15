@@ -57,7 +57,8 @@ same way, then show OEE from its data.
 - [x] ERP: Pulse Devices tab (`PulseDevices.ee.tsx`)
 - [x] Compose: `mosquitto` + `pulse-ingest` services, `pulse-ingest.Dockerfile`,
       `.env.example`, `CARBON_EDITION=enterprise`, deployment rule + README
-- [ ] Docs: `oee-provider.md`, `packages/ee/AGENTS.md`, the spec
+- [x] Docs: `oee-provider.md`, `packages/ee/AGENTS.md`, the spec
+- [x] Lingui: the Pulse Devices strings extracted and translated (12 locales)
 - [ ] Accept: badge shows Running, Idle and Offline for one mapped machine;
       healthcheck fails when ingest stops
 
@@ -119,3 +120,10 @@ pnpm db:check:datasets && pnpm db:check:backups
 - 2026-11-14: On Windows, `turbo run typecheck --filter=erp` fails at
   `generate:mcp`, because cmd.exe cannot run `NODE_OPTIONS=… cmd`. Run the
   script and `tsc --noEmit` in `apps/erp` through Git Bash instead.
+- 2026-11-14: A simulated run with 2 devices (`sim-cnc`, `sim-tig`) passed
+  the state part of the Phase 1 acceptance: Running, Idle, Running, Offline,
+  and Machine events on the mapped work centers. The sync was driven by a
+  throwaway vitest driver, not Inngest. The real-device check is still open.
+- 2026-11-15: The translate run filled only the 29 new Pulse strings. The
+  catalogs still hold empty `msgstr` from before this branch; they are out of
+  scope here.
