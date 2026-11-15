@@ -9,7 +9,8 @@
     "lint": "biome lint --write ",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "start": "tsx src/main.ts"
+    "start": "tsx src/main.ts",
+    "simulate": "tsx src/simulator/server.ts"
   },
   "dependencies": {
     "@carbon/database": "workspace:*",

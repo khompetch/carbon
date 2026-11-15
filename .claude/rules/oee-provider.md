@@ -546,7 +546,8 @@ device mapping, Unattributed Time, the MES badge) is the same as for Sense.
 
 | File | Role |
 |---|---|
-| `apps/pulse-ingest/src/protocol.ts` | The MQTT contract v1: `carbon/pulse/v1/{deviceKey}/{count,status,boot,online,config}`, zod payloads, `parseTopic`. A device key is the MQTT username and a topic segment (`^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$`) |
+| `apps/pulse-ingest/src/protocol.ts` | The MQTT contract v1: `carbon/pulse/v1/{deviceKey}/{count,status,boot,online,config}`, zod payloads, `parseTopic`, and the send rules (below). A device key is the MQTT username and a topic segment (`^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$`) |
+| `apps/pulse-ingest/src/simulator/` | A local development tool, not deployed: `device.ts` (`SimDevice`, the firmware's counting and sending rules, pure; pinned by `device.test.ts`), `server.ts` and `page.html` (a web page at `http://127.0.0.1:4810` that drives simulated devices over MQTT). Run with `pnpm --filter pulse-ingest simulate` |
 | `apps/pulse-ingest/src/state.ts` | Pure state inference (see below). Pinned by `state.test.ts` |
 | `apps/pulse-ingest/src/time.ts`, `gaps.ts` | Bucket times from the device clocks; lost buckets worked out from the lifetime counter (an `estimated` `pulseCount` row). Pinned by `ingest.test.ts` |
 | `apps/pulse-ingest/src/store.ts`, `device.ts`, `main.ts` | Kysely writes, the per-device tracker, and the MQTT runtime. `main.ts` sends `carbon/oee-device-sync` to Inngest for a mapped device whose state changed, publishes each device's retained `config`, and writes the `pulseIngestStatus` heartbeat. Run ONE instance: two would both write |
@@ -565,10 +566,33 @@ Tables (migrations `20261114131742_pulse-machine-monitor.sql` and
   health, and the inferred state, so a restarted ingest service resumes from
   it. `deviceKey` is unique across companies, because it is the MQTT topic.
 - `pulseCount`: one row per bucket. `(bootId, seq)` is the device's message
-  id, so a repeated MQTT delivery inserts nothing.
+  id, so a repeated MQTT delivery inserts nothing. `pulses` are sensor pulses,
+  `scrapPulses` are Log scrap presses; a row can hold presses and no pulses
+  (migration `20261115143849_pulse-scrap-and-send-mode.sql`).
 - `pulseStateChange`: the inferred changes the provider returns.
 - `pulseIngestStatus`: one row (`id = 'ingest'`), the service heartbeat.
 - The cron `pulse-history-retention` purges old counts and state changes.
+
+Inputs and sending. A device has 2 inputs: the cycle sensor and a Log scrap
+push switch (one press = one bad stroke = `piecesPerPulse` pieces; the name
+matches the MES action). A `count` bucket carries `n` / `total` for pulses
+and `scrap` / `scrapTotal` for presses; a device without the switch omits the
+scrap fields.
+
+- By default the device sends a bucket every `bucketSeconds` (5), only when
+  something was counted.
+- `pulseDevice.sendEachPulse` (the Pulse Devices tab) sends each pulse at
+  once (`n = 1`, `t0 = t1`), for machines with a long cycle. Pulses closer
+  than `SEND_EACH_PULSE_MIN_GAP_MS` (200) share a bucket. Ingest publishes it
+  in the retained `config`.
+- A Log scrap press is sent at once in both modes.
+- Lost presses are recovered from `scrapTotal` the same way as lost pulses
+  (`detectGap`, an `estimated` row).
+- A bucket with presses and no pulses does not make the machine Running; it
+  only proves the device is alive (`onHeartbeat`).
+
+The counts are stored only. Posting them as Log completed and Log scrap on
+the loaded operation is Phase 3 of the plan.
 
 State inference (`state.ts`):
 
@@ -585,13 +609,22 @@ Pulse has no remote account. The integration is healthy while
 `pulseIngestStatus.heartbeatAt` is newer than `INGEST_HEARTBEAT_MAX_AGE_MS`
 (2 minutes).
 
-Local check without hardware: start Mosquitto from the compose profile
-`pulse`, run `pnpm --filter pulse-ingest start` against the local database,
-register a device key in the Pulse Devices tab, and publish `count` and
-`status` messages for it. To drive the sync without Inngest, call
-`syncOeeDevice` with `createPulseProvider` in a loop, the way `oee-sync` does.
-A run on 2026-11-14 with 2 simulated devices gave Running, Idle and Offline
-changes and Machine events on the mapped work centers.
+Local check without hardware:
+
+1. Start Mosquitto from the compose profile `pulse`.
+2. Register a device key in the Pulse Devices tab.
+3. Run `pnpm --filter pulse-ingest start` (`SUPABASE_DB_URL`, `MQTT_URL`,
+   `MQTT_USERNAME=pulse-ingest`, `MQTT_PASSWORD`, `INNGEST_EVENT_KEY`).
+4. Run `pnpm --filter pulse-ingest simulate` (`MQTT_GATEWAY_PASSWORD`, and
+   `SUPABASE_DB_URL` to list the registered devices and show what Carbon
+   inferred). It connects as `pulse-gateway`, like the on-site gateway.
+5. Open `http://127.0.0.1:4810`. Each card powers a device on or unplugs it,
+   runs the machine at a cycle time, sends sensor pulses and Log scrap
+   presses, drops and restores the network, reboots, loses or repeats a
+   bucket, and runs with an unsynchronized clock.
+
+Ingest wakes the OEE sync through Inngest; without a local Inngest it only
+logs "could not reach Inngest", and the pulse tables still fill.
 
 ## The Sense webhook
 

@@ -59,6 +59,13 @@ same way, then show OEE from its data.
       `.env.example`, `CARBON_EDITION=enterprise`, deployment rule + README
 - [x] Docs: `oee-provider.md`, `packages/ee/AGENTS.md`, the spec
 - [x] Lingui: the Pulse Devices strings extracted and translated (12 locales)
+- [x] Log scrap push switch and send-each-pulse mode: MQTT `scrap` /
+      `scrapTotal`, `config.sendEachPulse`, migration
+      `20261115143849_pulse-scrap-and-send-mode.sql`, ingest, Pulse Devices
+      switch
+- [x] Device simulator: `apps/pulse-ingest/src/simulator/`
+      (`pnpm --filter pulse-ingest simulate`), checked end to end on
+      2026-11-15
 - [ ] Accept: badge shows Running, Idle and Offline for one mapped machine;
       healthcheck fails when ingest stops
 
@@ -70,7 +77,13 @@ same way, then show OEE from its data.
 - [ ] Migration: `productionQuantity.source`, `workCenterDevice.countMode` and
       `countedThrough`, `machineCountPosting`, `unattributedMachineCount`,
       the two purge functions redefined
-- [ ] `planMachineCounts` (`packages/ee/src/oee/counts.ts`) with tests
+- [ ] Decide the tracking label (one per piece or per container, which
+      printer) and how sensor completions make serial or batch units
+- [ ] `planMachineCounts` (`packages/ee/src/oee/counts.ts`) with tests:
+      Log completed = (pulses − scrapPulses) × piecesPerPulse, Log scrap =
+      scrapPulses × piecesPerPulse
+- [ ] Post at once for a device with `sendEachPulse`, and print the label
+      (`autoPrintOperationLabel`)
 - [ ] Count step after `syncOeeDevice` (`oee-sync-device-counts.ts`)
 - [ ] MES Auto mode: `complete.tsx` refusal + override, `scrap.tsx` reclassify
 - [ ] ERP: Unattributed Counts page
@@ -127,3 +140,9 @@ pnpm db:check:datasets && pnpm db:check:backups
 - 2026-11-15: The translate run filled only the 29 new Pulse strings. The
   catalogs still hold empty `msgstr` from before this branch; they are out of
   scope here.
+- 2026-11-15: The device gets a Log scrap push switch (no Log completed
+  button: the sensor is the completion count) and a send-each-pulse mode for
+  long cycles, because the user wants a tracking label printed from each
+  sensor Log completed. A simulator page replaces the throwaway sync driver.
+  On Windows, `pnpm db:migrate` fails in cmd.exe; run
+  `bash packages/dev/bin/crbn migrate`.

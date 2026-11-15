@@ -56,6 +56,8 @@ every commercial feature in `FEATURE_PLANS`, not only INTEGRATIONS.
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
 | Signal | One pulse per machine cycle from a proximity or photo sensor. `piecesPerPulse` per device | Cheapest sensor that works on every press. Multi-up tools set pieces per pulse |
+| Scrap input | One Log scrap push switch on the device. One press = one bad stroke = `piecesPerPulse` pieces. No Log completed button | The sensor already counts every stroke, so Log completed = sensor pieces − scrap pieces. An OK button duplicates the sensor, and an operator forgets to press it. The name matches the MES action |
+| Send mode | Every `bucketSeconds` (default 5) by default. `sendEachPulse` sends each pulse at once. A Log scrap press is always sent at once | A bucket keeps the message rate fixed at any machine speed. A machine with a long cycle needs each completion fast, because a Log completed can print a tracking label (Phase 3) |
 | Where ingest runs | Its own compose service, not in the ERP | One long-lived MQTT client. ERP replicas would make duplicate subscribers, and an ERP deploy would drop the session |
 | Ingest license | AGPL. It imports no `@carbon/ee` code | The ingest only stores data. The commercial engine stays behind the provider |
 | State | Inferred. Running when pulses arrive; Idle when the heartbeat shows a counter that did not move; Offline when the device is silent | A pulse sensor has no state signal. A heartbeat is needed to tell "stopped" from "unreachable" |
@@ -84,6 +86,9 @@ Phase 1 (built, migrations `20261114131742_pulse-machine-monitor.sql` and
   `counter`, `estimated`, `rebased`, `receivedAt`.
 - `pulseStateChange`: `state` (`machineState`), `changedAt`, `reason`.
 - `pulseIngestStatus`: one row, `id = 'ingest'`, `heartbeatAt`, `version`.
+- Migration `20261115143849_pulse-scrap-and-send-mode.sql`:
+  `pulseCount.scrapPulses` and `scrapCounter` (a row holds pulses, presses
+  or both), `pulseDevice.lastScrapCounter` and `sendEachPulse`.
 - `integration` row `pulse` with `providerRole = 'oee'`.
 - Cron `pulse-history-retention`.
 - The ERP and the provider read these tables. Only ingest and the ee device
@@ -103,13 +108,15 @@ Phase 3 (planned):
 
 | Topic | Direction | Payload |
 |---|---|---|
-| `carbon/pulse/v1/{key}/count` | device → server, QoS 1, only when n > 0 | `v, boot, seq, t0, t1, m1, n, total, tsOk` |
+| `carbon/pulse/v1/{key}/count` | device → server, QoS 1, only when n + scrap > 0 | `v, boot, seq, t0, t1, m1, n, total, scrap, scrapTotal, tsOk`; `scrap` and `scrapTotal` default to 0 |
 | `…/status` | device → server, the heartbeat | `v, boot, ts, m, total, rssi, heap, fw, queue, tsOk` |
 | `…/boot` | device → server, once per power-up | `boot, fw, reset, totalAtBoot` |
 | `…/online` | retained, Last Will `"0"` | `"1"` / `"0"` |
-| `…/config` | server → device, retained | `debounceMs, minWidthMs, bucketSeconds, heartbeatSeconds` |
+| `…/config` | server → device, retained | `debounceMs, minWidthMs, bucketSeconds, heartbeatSeconds, sendEachPulse` |
 
-`seq` only increases inside one `boot`. `total` is the lifetime counter. When
+`seq` only increases inside one `boot`. `total` and `scrapTotal` are the
+lifetime counters. In send-each-pulse mode, `t0 = t1` for one pulse, and
+pulses less than 200 ms apart share one bucket. When
 the device clock is not synchronized (`tsOk: false`), ingest works out the
 time from the monotonic clock `m`.
 
@@ -122,12 +129,23 @@ time from the monotonic clock `m`.
   (`createPulseProvider`), `hooks.server.ts` (`pulseHealthcheck`,
   `pulseOnUninstall`), `devices.server.ts` (`savePulseDevice`,
   `deletePulseDevice`, both with `requireEntitlement("INTEGRATIONS")`).
+- `apps/pulse-ingest/src/simulator/`: a local web page that simulates
+  devices over MQTT (`pnpm --filter pulse-ingest simulate`). It is a
+  development tool and is not deployed.
 - `apps/pulse-ingest`: `protocol.ts`, `time.ts`, `gaps.ts`, `state.ts`
   (pure), `store.ts`, `device.ts`, `main.ts` (runtime).
 - Phase 3: `planMachineCounts` (`packages/ee/src/oee/counts.ts`, pure) and a
   count step after `syncOeeDevice` (`oee-sync-device-counts.ts`). It posts
   `productionQuantity` the same way MES `complete.tsx` does (dry run, insert,
-  then the idempotent `issue` posting), as user `system`.
+  then the idempotent `issue` posting), as user `system`. Log completed is
+  `(pulses − scrapPulses) × piecesPerPulse`; Log scrap is
+  `scrapPulses × piecesPerPulse`.
+- Phase 3 must also print the tracking label of a sensor Log completed
+  (`autoPrintOperationLabel`). That label prints only for serial or batch
+  units, so Phase 3 must complete tracked units from the sensor, not send
+  them to the queue. A device with `sendEachPulse` must post at once, not on
+  the next sync. Open questions: one label per piece or per container, and
+  where the label prints.
 
 ## Closest Sibling
 
@@ -164,6 +182,13 @@ Phase 1:
       + 10 s, Idle with no pulses, and Offline when the device is unplugged,
       both with ingest running and with ingest stopped.
 - [ ] The integration healthcheck fails when ingest stops.
+- [x] With the simulator (local run, 2026-11-15): a Log scrap press writes
+      `scrapPulses` at once and the state stays Idle; buckets buffered
+      while the network is down arrive in order with no duplicate; a lost
+      bucket becomes one estimated row; a repeated bucket adds nothing; a
+      reboot keeps the counter; an unsynchronized clock gives a rebased row
+      dated now; with `sendEachPulse` one pulse reaches `pulseCount` in
+      less than 1 s.
 
 Phase 2:
 
