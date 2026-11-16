@@ -4971,3 +4971,13 @@ redirects (purchase orders, and the other records with a `/details` index).
 **Rule:** Before a script that calls the local Supabase API over portless, wake the stack (one request to the ERP URL), then run it with `NODE_EXTRA_CA_CERTS=$HOME/.portless/ca.pem`.
 
 **Applies to:** `pnpm db:seed:dev`, and any `tsx` script that calls `SUPABASE_URL` on a portless stack.
+
+## A MES service file reaches the browser, so it never imports a `.server` module
+
+**Context:** Pulse Phase 3 moved the label print and the first/last operation reads from the MES to `@carbon/printing/operation-label.server` (2026-11-16). `apps/mes/app/services/operations.service.ts` re-exported the two reads from there.
+
+**Problem:** MES components import `~/services/operations.service` by design (`EndShift`, `useOperation`, `BatchOverview`). Vite refused the module with "Server-only module referenced by client" (a 500 on `/app/services/operations.service.ts`), so no MES page hydrated. Every page rendered, but no button worked. The console showed no error, and the typecheck, Biome and the tests passed.
+
+**Rule:** A file under `apps/mes/app/services/` that is not `*.server.ts` imports only browser-safe modules. Put a helper that both a server path and a MES service need in a module without `.server` in its name (`@carbon/printing/operation-routing`). After a change to a MES service, open one MES operation page and click a button.
+
+**Applies to:** `apps/mes/app/services/*.service.ts`, and any package export that a MES service file imports.

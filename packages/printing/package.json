@@ -26,6 +26,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./operation-label.server": "./src/operation-label.server.ts",
+    "./operation-routing": "./src/operation-routing.ts",
     "./printing.server": "./src/printing.server.ts",
     "./ui": "./src/ui/index.ts"
   },

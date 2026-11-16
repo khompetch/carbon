@@ -319,7 +319,7 @@ export async function getJobOperationDependencies(
 export {
   isFirstOperationOfMakeMethod,
   isLastOperationOfMakeMethod
-} from "@carbon/printing/operation-label.server";
+} from "@carbon/printing/operation-routing";
 
 const REQUIRED_SCAN_CHECK_FAILED = "Could not check the scanned parts";
 

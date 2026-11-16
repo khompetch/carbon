@@ -13,12 +13,16 @@ a ProxyBox HTTP endpoint. There is no Trigger.dev here.
 
 ## Packages
 
-- **`@carbon/printing`** (`packages/printing/`) — isomorphic core + server + UI. Four exports:
+- **`@carbon/printing`** (`packages/printing/`) — isomorphic core + server + UI. Five exports:
   - `.` (`src/index.ts`) — registry, validators, assignment helpers, DB service fns, types
   - `./printing.server` (`src/printing.server.ts`) — `getCachedPrinterConfig`,
     `invalidatePrinterCache`, `sendToProxyBox`, `renderWithBinderyPress`
-  - `./operation-label.server` (`src/operation-label.server.ts`) — `printOperationLabel`,
-    `isFirstOperationOfMakeMethod`, `isLastOperationOfMakeMethod` (moved from the MES)
+  - `./operation-label.server` (`src/operation-label.server.ts`) — `printOperationLabel` (moved
+    from the MES)
+  - `./operation-routing` (`src/operation-routing.ts`) — `isFirstOperationOfMakeMethod`,
+    `isLastOperationOfMakeMethod`. Browser-safe: the MES `operations.service.ts`, which MES
+    components also import, re-exports them. A `.server` import there stops every MES page from
+    hydrating (Vite refuses a server-only module in the client graph)
   - `./ui` (`src/ui/index.ts`) — `PrintingProvider`/`usePrinting`, `PrintButton`, `LabelDownloadModal`
 - **`@carbon/documents`** (`packages/documents/`) — actual renderers. PDFs via `@react-pdf/renderer`
   React components (`pdf/ProductLabelPDF`, `pdf/StorageUnitLabelPDF`, `pdf/KanbanLabelPDF`, plus
