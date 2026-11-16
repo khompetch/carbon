@@ -642,13 +642,20 @@ Spec: `.ai/specs/2026-11-14-pulse-machine-monitoring.md` (Phase 3).
 | File | Role |
 |---|---|
 | `packages/ee/src/oee/counts.ts` | `planMachineCounts`, pure: each bucket goes to the load that covers the middle of its period; blocked, unloaded, closed-operation and serial-without-`sendEachPulse` buckets go to the queue. Per operation, Log completed = (pulses − presses) × `piecesPerPulse`, in-batch Log scrap = min(pulses, presses) × `piecesPerPulse`, and presses beyond the batch are `reclassify` scrap. A serial operation gets one posting per piece. Pinned by `counts.test.ts` |
-| `packages/jobs/.../integrations/oee-sync-device-counts.ts` | `countOeeDevice`, the count step: run by `syncDevices` after each device's state sync. Under `lockWorkCenterDevice`, it reads the `pulseCount` rows received after `countedThrough` and up to now − `SETTLE_SECONDS` (10), plans them, writes `machineCountPosting` (`Pending`) and `unattributedMachineCount` rows, and moves the cursor. Then it posts and prints. Pinned by `oee-sync-device-counts.database.test.ts` |
+| `packages/jobs/.../integrations/oee-sync-device-counts.ts` | `countOeeDevice`, the count step: run by `syncDevices` after each device's state sync. Under `lockWorkCenterDevice`, it reads the `pulseCount` rows received after `countedThrough` and up to now − `SETTLE_SECONDS` (3), plans them, writes `machineCountPosting` (`Pending`) and `unattributedMachineCount` rows, and moves the cursor. Then it posts and prints. Pinned by `oee-sync-device-counts.database.test.ts` |
 | `packages/ee/src/oee/counts.server.ts` | `postMachineCounts`, the poster: each `Pending` row of the work center posts through the `issue` posting the MES uses (`jobOperationDryRun` + a `productionQuantity` insert + `jobOperation` for an untracked operation, `jobOperationBatchComplete`, `jobOperationSerialComplete`, `jobOperationScrap`) as user `system`, and returns the labels to print. `splitAtTarget` and `batchLabelCount` are pinned by `counts-target.test.ts` |
 | `packages/database/src/machine-counts.ts` | `lowerSensorProduction`, `removeSerialSensorCompletion`, `restoreSensorProduction`: lower (or undo lowering) the newest sensor Production of an operation; a batch lot's quantity follows. Shared by the poster and MES `scrap.tsx`. Pinned by `machine-counts.test.ts` |
 | `packages/printing/src/operation-label.server.ts` | `printOperationLabel`, moved from the MES: the count step and the Unattributed Counts assign print the label exactly as the MES Log completed does |
 
 Rules the poster keeps:
 
+- One poster per work center at a time. The count step and the Unattributed
+  Counts assign both call `postMachineCounts`, which holds a transaction
+  advisory lock (`machineCountPost:<companyId>:<workCenterId>`) on its own
+  connection while the postings run on others. A second poster waits, then
+  reads the rows the first left `Pending`, so no row posts twice.
+- An over-target split (the `OverTarget` row and the posting row's smaller
+  quantity) is one transaction.
 - The cursor is `receivedAt`, not the bucket's period. Ingest writes one
   device's rows in order, so a bucket replayed after a network drop (old
   period, new `receivedAt`) is still read.
@@ -677,6 +684,13 @@ Rules the poster keeps:
 
 The MES (Auto mode): `complete.tsx` refuses a manual Log completed on a work
 center in Auto unless a user with `production` delete overrides it with a note;
+`end.$operationId.tsx` (the QR end scan) refuses the same way;
+`batch.$batchId.complete.tsx` refuses a batch completion with a completed
+quantity above 0 (a batch completed with 0 still finishes its members, and a
+resume of a `Completing` batch is not refused); `inspection-lot.$id.complete-passed.tsx`
+and `inspection-lot.$id.disposition.tsx` refuse in Auto
+(`SENSOR_COUNTS_INSPECTION_REFUSAL`). All read `getWorkCenterCountMode`
+(`operations.service.ts`) for the operation's own work center.
 `scrap.tsx` offers "Counted by the sensor" (not serial), which lowers the
 sensor's Production by the scrapped pieces before it posts the Scrap.
 

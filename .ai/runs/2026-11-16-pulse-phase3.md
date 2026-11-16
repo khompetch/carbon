@@ -79,6 +79,25 @@ Other findings:
 - The actions menu of an Unattributed Counts row was named by a raw ISO time.
   The table now names it by the work center and the start time.
 
+## Fixes after the self-review
+
+The branch self-review found 4 defects. All 4 are fixed:
+
+| # | Defect | Fix |
+|---|---|---|
+| 1 | An Unattributed Counts assign and a running count step could both read one row as `Pending` and post it twice | `postMachineCounts` holds a transaction advisory lock per work center while it posts |
+| 2 | An over-target split wrote the `OverTarget` row and the smaller posting quantity in two statements | Both writes are one transaction |
+| 3 | MES batch completion on a work center in Auto counted the pieces a second time | The route refuses a completed quantity above 0 |
+| 4 | MES inspection lot completion and disposition on a work center in Auto counted the pieces a second time | Both routes refuse in Auto |
+
+Checks after the fixes:
+
+- Biome passes on the changed files.
+- The ee and jobs typechecks pass. The MES typecheck shows only the `vitest.config.ts` error.
+- The OEE tests pass (64), the count step tests pass (5) and the MES tests pass (155).
+- Live run: J000002 (untracked, target 1) was loaded on the CNC Mill, and 1 stroke (2 pieces) was sent. The poster posted 1 and sent 1 to `OverTarget`, and the operation went Done.
+- Not run: a concurrent assign and count step, and the batch and inspection refusals in the browser. The demo data has no active batch and no inspection operation on a work center in Auto.
+
 ## Open
 
 - `pnpm-lock.yaml`: the Phase 1 commit that added `apps/pulse-ingest` also
