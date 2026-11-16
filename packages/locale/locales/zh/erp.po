@@ -632,6 +632,10 @@ msgstr "{0}个问题——未发布"
 msgid "{0} Processes"
 msgstr "{0} 个流程"
 
+#. placeholder {0}: device.queueDepth
+msgid "{0} queued"
+msgstr "{0} 排队中"
+
 #. placeholder {0}: quantityFormatter(line.quantityReceived)
 #. placeholder {1}: quantityFormatter(line.quantityCredited)
 msgid "{0} received · {1} credited"
@@ -1284,6 +1288,9 @@ msgstr "自加载页面以来已更改 {stale}"
 
 msgid "{state} · synced {syncedAgo}"
 msgstr "{state} · {syncedAgo} 已同步"
+
+msgid "{state} since {since}"
+msgstr "{state}，自 {since}起"
 
 msgid "{statusTotal, plural, one {# issue in total} other {# issues in total}}"
 msgstr "{statusTotal, plural, other {共 # 个不合格项}}"
@@ -3917,6 +3924,9 @@ msgstr "您的公司已经有导出操作正在进行。请在操作结束后重
 msgid "An https request Carbon sends to a system of yours when a workflow reaches that step, carrying whatever headers and body you configured."
 msgstr "当工作流到达该步骤时，Carbon向您的系统发送的HTTPS请求，携带您配置的任何标头和请求体。"
 
+msgid "An inactive device is ignored by the ingest service."
+msgstr "已停用的设备会被采集服务忽略。"
+
 msgid "An inactive group's members are planned on their own"
 msgstr "已停用的小组成员被单独计划"
 
@@ -5111,6 +5121,9 @@ msgstr "分配生产批次"
 msgid "Assign Batch"
 msgstr "分配生产批次"
 
+msgid "Assign machine pieces that no operation could take to the right job, or dismiss them."
+msgstr "将机器计数中无任何工序可接收的件数分配到正确的工单，或将其忽略。"
+
 msgid "Assign machine run time that no loaded operation claimed to the right job, or dismiss it."
 msgstr "将未被加载工序认领的机器工时分配给正确的工单，或将其放弃。"
 
@@ -5284,6 +5297,9 @@ msgstr "授权被拒绝。请尝试重新连接。"
 
 msgid "Authorized overtime on top of the shift"
 msgstr "班次之外的授权加班"
+
+msgid "Auto"
+msgstr "自动"
 
 msgid "Auto apply"
 msgstr "自动应用"
@@ -5572,6 +5588,9 @@ msgstr "生产批次容量"
 
 msgid "Batch is not available"
 msgstr "生产批次不可用"
+
+msgid "Batch items only. Empty: one label when the lot starts."
+msgstr "仅适用于批次管理物料。留空：批次开始时打印一张标签。"
 
 msgid "Batch items require a sales order"
 msgstr "生产批次物料需要销售订单"
@@ -8705,6 +8724,9 @@ msgstr "盘点ID"
 msgid "Count items"
 msgstr "计数物料"
 
+msgid "Count mode"
+msgstr "计数模式"
+
 msgid "Counted {total}."
 msgstr "已计数 {total} 个。"
 
@@ -8716,6 +8738,9 @@ msgstr "交易对手"
 
 msgid "Counterparty"
 msgstr "交易对手"
+
+msgid "Counting for {deviceName}"
+msgstr "{deviceName} 计数中"
 
 msgid "Counting…"
 msgstr "统计中…"
@@ -9768,6 +9793,9 @@ msgstr "借记项目在制品并贷记每个费池的已应用账户"
 msgid "Debits"
 msgstr "借方"
 
+msgid "Debounce (ms)"
+msgstr "防抖（毫秒）"
+
 msgid "Decide what an operator sees if they try to issue a batch or serial that's already expired."
 msgstr "决定操作员在尝试发放已过期的批次或序列号时看到的内容。"
 
@@ -10024,8 +10052,8 @@ msgid "Delete"
 msgstr "删除"
 
 #. placeholder {0}: deleting.name
+#. placeholder {0}: device.name
 #. placeholder {0}: monthLabel(deleting.periodStart)
-#. placeholder {0}: row.account?.number ?? ""
 msgid "Delete {0}"
 msgstr "删除 {0}"
 
@@ -10702,6 +10730,9 @@ msgstr "开发人员"
 
 msgid "Device"
 msgstr "设备"
+
+msgid "Device key"
+msgstr "设备标识"
 
 msgid "Devices"
 msgstr "设备"
@@ -11495,6 +11526,7 @@ msgstr "经济营运人注册和识别号；对于在欧盟/英国海关边界�
 msgid "Edit"
 msgstr "编辑"
 
+#. placeholder {0}: device.name
 #. placeholder {0}: operation.description
 #. placeholder {0}: process.name
 msgid "Edit {0}"
@@ -11804,6 +11836,9 @@ msgstr "编辑项目"
 msgid "Edit Properties"
 msgstr "编辑属性"
 
+msgid "Edit Pulse device"
+msgstr "编辑 Pulse 设备"
+
 msgid "Edit purchase order line type"
 msgstr "编辑采购订单行类型"
 
@@ -12068,6 +12103,9 @@ msgstr "空列表"
 
 msgid "Empty work centers"
 msgstr "空的工作中心"
+
+msgid "Empty: 3 standard cycles, at least 30"
+msgstr "留空：3 个标准周期，且不少于 30"
 
 msgid "Enable"
 msgstr "启用"
@@ -13868,11 +13906,17 @@ msgstr "对于生产批次。序列号计为1。"
 msgid "for anything. They'll pull in the right person."
 msgstr "用于任何事项。他们会调配合适的人员。"
 
+msgid "For example press-01"
+msgstr "例如 press-01"
+
 msgid "For example Site or Ordered by"
 msgstr "例如：站点或下单人"
 
 msgid "For Form 6765 Section E"
 msgstr "表格 6765 E 部分"
+
+msgid "For machines with a long cycle. Each cycle reaches Carbon within a second, instead of every few seconds."
+msgstr "适用于周期较长的机器。每个周期将在一秒内发送到 Carbon，而不是每隔几秒才发送一次。"
 
 msgid "Force delete"
 msgstr ""
@@ -14605,6 +14649,9 @@ msgstr "标头"
 msgid "Heading {level}"
 msgstr "标题{level}"
 
+msgid "Health"
+msgstr "健康状态"
+
 msgid "Healthy"
 msgstr "健康"
 
@@ -15051,6 +15098,9 @@ msgstr "身份提供商 (IdP)"
 msgid "Idle"
 msgstr "空闲"
 
+msgid "Idle after (seconds)"
+msgstr "空闲超时（秒）"
+
 msgid "IdP Metadata URL"
 msgstr "IdP 元数据 URL"
 
@@ -15187,6 +15237,9 @@ msgstr "在打开的菜单中"
 
 msgid "in arrears"
 msgstr "后付"
+
+msgid "In Auto, the sensor logs completed and scrap quantities on the operation loaded on this work center."
+msgstr "在自动模式下，传感器会记录此工作中心所加载工序的完成数量和报废数量。"
 
 msgid "In DCAA mode, an Exempt employee's week over the standard weekly hours posts at standard hours ÷ hours worked, so the week's cost spreads over every hour."
 msgstr "在 DCAA 模式下，豁免员工的周超过标准每周小时数时，以标准小时 ÷ 工作小时过账，因此该周的成本分配到每小时。"
@@ -16321,6 +16374,9 @@ msgstr "工单工序"
 msgid "Job Operations"
 msgstr "工单工序"
 
+msgid "Job or operation"
+msgstr "工单或工序"
+
 msgid "Job Priority"
 msgstr "工作优先级"
 
@@ -17350,6 +17406,9 @@ msgstr "已锁定：此记录无法再更改。"
 
 msgid "Locking makes the period read-only for operational documents (receipts, shipments, invoices) while still allowing accounting adjustments like depreciation and disposals. A period must be locked before it can be closed."
 msgstr "锁定使该期间对运营凭证（收货、发货、发票）为只读，同时仍允许会计调整（如折旧和处置）。期间必须先锁定才能关闭。"
+
+msgid "Log completed from the sensor"
+msgstr "从传感器记录完成数量"
 
 msgid "Log nonconformances and drive a CAPA"
 msgstr "记录不合格并推动 CAPA"
@@ -18770,6 +18829,9 @@ msgstr "网络错误"
 msgid "Never"
 msgstr "永不"
 
+msgid "Never reported"
+msgstr "从未上报"
+
 msgid "New"
 msgstr "新建"
 
@@ -18865,6 +18927,9 @@ msgstr "新需求预测"
 
 msgid "New Department"
 msgstr "新部门"
+
+msgid "New device"
+msgstr "新设备"
 
 msgid "New Dimension"
 msgstr "新维度"
@@ -19043,6 +19108,9 @@ msgstr "新建项目合同"
 
 msgid "New Project Stock Transfer"
 msgstr "新项目库存调拨"
+
+msgid "New Pulse device"
+msgstr "新建 Pulse 设备"
 
 msgid "New purchase order"
 msgstr "新采购订单"
@@ -19596,6 +19664,9 @@ msgstr "未找到设备"
 msgid "No devices match your search"
 msgstr "没有与搜索匹配的设备"
 
+msgid "No devices registered"
+msgstr "尚未登记设备"
+
 msgid "No differences."
 msgstr "没有区别。"
 
@@ -19935,6 +20006,9 @@ msgstr "没有未结销售订单行"
 msgid "No open work has a target date."
 msgstr "没有未结工作设置了目标日期。"
 
+msgid "No operation loaded"
+msgstr "未加载工序"
+
 msgid "No operations"
 msgstr "无工序"
 
@@ -20185,6 +20259,9 @@ msgstr "无日程行。"
 msgid "No scheduled work in this window"
 msgstr "此时间窗内无排程工作"
 
+msgid "No scrap reason set"
+msgstr "未设置报废原因"
+
 msgid "No serial"
 msgstr "没有序列号"
 
@@ -20223,6 +20300,9 @@ msgstr "还没有幻灯片"
 
 msgid "No sorts applied to this view"
 msgstr "此查看未应用任何排序"
+
+msgid "No state yet"
+msgstr "尚无状态"
 
 msgid "No statement for this period"
 msgstr "此期间没有报表"
@@ -20790,6 +20870,9 @@ msgstr "主管"
 
 msgid "Offline"
 msgstr "离线"
+
+msgid "Offline after (seconds)"
+msgstr "离线超时（秒）"
 
 msgid "Offset Absorbed Overhead"
 msgstr "抵消吸收的制造费用"
@@ -21367,6 +21450,9 @@ msgstr "工序生产批次"
 msgid "Operation created"
 msgstr "工序已创建"
 
+msgid "Operation done or canceled"
+msgstr "工序已完成或已取消"
+
 msgid "Operation lead time"
 msgstr "操作提前期"
 
@@ -21666,6 +21752,9 @@ msgstr "未清结"
 
 msgid "Over estimate first"
 msgstr "优先显示超额估计"
+
+msgid "Over the target quantity"
+msgstr "超过目标数量"
 
 msgid "Over-applied by"
 msgstr "超额应用"
@@ -22480,6 +22569,9 @@ msgstr ""
 msgid "Picking offers tracked entities earliest-expiry-first, so the soonest-to-expire stock leaves first by default."
 msgstr "拣货按最早有效期优先的方式处理可追踪实体，以便最即将过期的库存首先出库。"
 
+msgid "Pieces per pulse"
+msgstr "每个脉冲的件数"
+
 msgid "Pieces per run. Leave empty for no limit."
 msgstr "每批的件数。留空表示无限制。"
 
@@ -23039,6 +23131,9 @@ msgstr "打印 {0} 个看板"
 msgid "Print {0} Labels"
 msgstr "打印 {0} 个标签"
 
+msgid "Print a label every N pieces"
+msgstr "每 N 件打印一个标签"
+
 msgid "Print batch list"
 msgstr "打印生产批次列表"
 
@@ -23515,6 +23610,9 @@ msgstr "从库存领用"
 
 msgid "Pull, map, and load your data"
 msgstr "拉取、映射和加载您的数据"
+
+msgid "Pulse Devices"
+msgstr "Pulse 设备"
 
 msgid "Purchase"
 msgstr "采购"
@@ -24604,6 +24702,9 @@ msgstr "退还预付款："
 msgid "Refund to Customer"
 msgstr "向客户退款"
 
+msgid "Refused"
+msgstr "已拒绝"
+
 msgid "Regenerate"
 msgstr "重新生成"
 
@@ -24633,6 +24734,9 @@ msgstr "登记Carbon之前销售的单位。Carbon发运的单位在发运时成
 
 msgid "Register Existing Asset"
 msgstr "已注册"
+
+msgid "Register the cycle sensors on your machines, then map each one to a work center."
+msgstr "在机器上登记周期传感器，然后将每个传感器映射到一个工作中心。"
 
 msgid "Registered"
 msgstr "已登记"
@@ -26485,6 +26589,12 @@ msgstr "已保存 {count} 个账户映射"
 msgid "Saved account mapping"
 msgstr "已保存账户映射"
 
+msgid "Saved counting settings"
+msgstr "计数设置已保存"
+
+msgid "Saved device"
+msgstr "已保存的设备"
+
 msgid "Saved device mapping"
 msgstr "已保存设备映射"
 
@@ -26682,6 +26792,9 @@ msgstr "报废原因"
 
 msgid "Scrap Reason"
 msgstr "报废原因"
+
+msgid "Scrap reason for the Log scrap button"
+msgstr "“记录报废”按钮的报废原因"
 
 msgid "scrap reasons"
 msgstr "报废原因"
@@ -26933,6 +27046,9 @@ msgstr "查看每个工作中心的实时产能预测 — 每个工单预计在�
 #. placeholder {0}: lines.length
 msgid "See all {0}"
 msgstr "查看全部 {0}"
+
+msgid "Seen {lastSeen}"
+msgstr "最后在线 {lastSeen}"
 
 msgid "Segment"
 msgstr "分段"
@@ -27278,11 +27394,17 @@ msgstr "发送"
 msgid "Send all to"
 msgstr "全部发送至"
 
+msgid "Send each pulse immediately"
+msgstr "立即发送每个脉冲"
+
 msgid "Send error"
 msgstr "发送错误"
 
 msgid "Send Estimate {serviceJobId}"
 msgstr "发送估价 {serviceJobId}"
+
+msgid "Send every (seconds)"
+msgstr "上报间隔（秒）"
 
 msgid "Send Invite"
 msgstr "发送邀请"
@@ -27361,6 +27483,9 @@ msgstr "序列号 / 批次"
 
 msgid "Serial / Batch Number"
 msgstr "序列号 / 批号"
+
+msgid "Serial item needs Send each pulse immediately"
+msgstr "序列号物料需要启用“立即发送每个脉冲”"
 
 msgid "Serial items require a sales order"
 msgstr "序列号物料需要销售订单"
@@ -28589,6 +28714,9 @@ msgstr "标准云 Carbon 适合你的公司运营方式"
 
 msgid "Standard Cost Variances"
 msgstr "标准成本差异"
+
+msgid "Standard cycle (seconds)"
+msgstr "标准周期（秒）"
 
 msgid "Standard factor"
 msgstr "标准系数"
@@ -30408,6 +30536,12 @@ msgstr "递延收入默认账户为空。"
 msgid "The department this one rolls up under for reporting and headcount hierarchies; leave empty for a top-level department."
 msgstr "该部门汇总用于报告和人员数量层级的部门；对于顶级部门，请留空。"
 
+msgid "The device key is the device's MQTT username. It cannot change after the device is registered."
+msgstr "设备标识即设备的 MQTT 用户名，设备登记后不可更改。"
+
+msgid "The device's counts and state changes are deleted too. The sensor stops reporting to Carbon."
+msgstr "该设备的计数和状态变更记录也会一并删除。传感器将停止向 Carbon 上报数据。"
+
 msgid "The device's site is in {siteTimezone}; Carbon uses {locationTimezone}"
 msgstr "设备所在站点位于 {siteTimezone}；Carbon 使用 {locationTimezone}"
 
@@ -31037,6 +31171,16 @@ msgstr "该项目的库存仅移动到同一客户的项目"
 
 msgid "The provider offers no dimension targets. Enable the feature in the provider first (e.g. tracking categories, class tracking, or fields)."
 msgstr "提供商不提供维度目标。首先在提供商中启用该功能（例如跟踪类别、类跟踪或字段）。"
+
+msgid "The Pulse ingest service has never reported"
+msgstr "Pulse 采集服务从未上报"
+
+msgid "The Pulse ingest service is running"
+msgstr "Pulse 采集服务正在运行"
+
+#. placeholder {0}: formatTimeAgo(heartbeatAt)
+msgid "The Pulse ingest service last reported {0}"
+msgstr "Pulse 采集服务最后上报于 {0}"
 
 #. placeholder {0}: formatter.format(invoicedOption)
 msgid "The purchase option is already invoiced at {0}. Exercise it at that price, or delete the invoice first."
@@ -31674,6 +31818,10 @@ msgstr "此部门在 {locationName} 没有工作中心。选择另一个部门�
 
 msgid "This department has no work centers at this location. Pick another department or location."
 msgstr "此部门在此地点没有工作中心。选择另一个部门或地点。"
+
+#. placeholder {0}: deleting.workCenterName ?? ""
+msgid "This device is mapped to {0}. Unmap it on the Devices tab first."
+msgstr "该设备已映射到 {0}。请先在“设备”标签页中取消映射。"
 
 msgid "This download link is invalid or has been tampered with."
 msgstr "此下载链接无效或已被篡改。"
@@ -32927,6 +33075,9 @@ msgstr "未分配库存"
 msgid "Unassigned stock for projects"
 msgstr "项目未分配库存"
 
+msgid "Unattributed Counts"
+msgstr "未分配的计数"
+
 msgid "unattributed machine time entries"
 msgstr "未分配的机器工时条目"
 
@@ -33909,6 +34060,9 @@ msgstr "查看列表"
 msgid "View Lists"
 msgstr "查看列表"
 
+msgid "View Machine Count"
+msgstr "查看机器计数"
+
 msgid "View Machine Time"
 msgstr "查看机器工时"
 
@@ -34727,6 +34881,9 @@ msgstr "发送哪种类型的请求：GET 读取内容，POST 创建，PUT 和 P
 
 msgid "Which manufacturing event starts the shelf-life clock — for example, fill, seal, or final QC."
 msgstr "哪个制造事件启动保质期时钟 — 例如填充、密封或最终QC。"
+
+msgid "Which operation made these pieces?"
+msgstr "哪道工序生产了这些件数？"
 
 msgid "Which operation was this?"
 msgstr "这是哪个工序?"

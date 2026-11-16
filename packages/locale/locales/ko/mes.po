@@ -819,6 +819,9 @@ msgstr ""
 msgid "Could not look up this label. Try again."
 msgstr ""
 
+msgid "Counted by the sensor"
+msgstr "센서가 카운트함"
+
 msgid "Country code"
 msgstr "국가 코드"
 
@@ -2104,6 +2107,9 @@ msgstr "전체 결과"
 msgid "Overdue PMs?"
 msgstr "기한 초과된 PM이 있나요?"
 
+msgid "Override (supervisor)"
+msgstr "재정의(관리자)"
+
 msgid "Parameters"
 msgstr "파라미터"
 
@@ -3226,6 +3232,9 @@ msgstr "이 유닛은 영구적으로 스크랩되고 대체 유닛이 생성됩
 
 msgid "This week"
 msgstr "이번 주"
+
+msgid "This work center logs completed quantities from its sensor."
+msgstr "이 작업장은 센서에서 완료 수량을 기록합니다."
 
 msgid "Thumbnail"
 msgstr "썸네일"

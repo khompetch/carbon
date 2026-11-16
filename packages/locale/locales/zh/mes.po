@@ -819,6 +819,9 @@ msgstr ""
 msgid "Could not look up this label. Try again."
 msgstr ""
 
+msgid "Counted by the sensor"
+msgstr "由传感器计数"
+
 msgid "Country code"
 msgstr "国家代码"
 
@@ -2104,6 +2107,9 @@ msgstr "总体结果"
 msgid "Overdue PMs?"
 msgstr "已逾期的PM？"
 
+msgid "Override (supervisor)"
+msgstr "覆盖（主管）"
+
 msgid "Parameters"
 msgstr "参数"
 
@@ -3226,6 +3232,9 @@ msgstr "此单元将被永久报废，并将创建替换单元。"
 
 msgid "This week"
 msgstr "本周"
+
+msgid "This work center logs completed quantities from its sensor."
+msgstr "该工作中心从其传感器记录完成数量。"
 
 msgid "Thumbnail"
 msgstr "缩略图"

@@ -37197,6 +37197,231 @@ export type Database = {
           }
         ]
       }
+      machineCountPosting: {
+        Row: {
+          attempts: number
+          companyId: string
+          createdAt: string
+          createdBy: string
+          id: string
+          jobOperationId: string
+          lastError: string | null
+          periodEnd: string
+          periodStart: string
+          productionQuantityId: string | null
+          quantity: number
+          reclassify: boolean
+          status: Database["public"]["Enums"]["machineCountPostingStatus"]
+          trackedEntityId: string | null
+          type: Database["public"]["Enums"]["productionQuantityType"]
+          updatedAt: string | null
+          updatedBy: string | null
+          workCenterId: string
+        }
+        Insert: {
+          attempts?: number
+          companyId: string
+          createdAt?: string
+          createdBy: string
+          id?: string
+          jobOperationId: string
+          lastError?: string | null
+          periodEnd: string
+          periodStart: string
+          productionQuantityId?: string | null
+          quantity: number
+          reclassify?: boolean
+          status?: Database["public"]["Enums"]["machineCountPostingStatus"]
+          trackedEntityId?: string | null
+          type: Database["public"]["Enums"]["productionQuantityType"]
+          updatedAt?: string | null
+          updatedBy?: string | null
+          workCenterId: string
+        }
+        Update: {
+          attempts?: number
+          companyId?: string
+          createdAt?: string
+          createdBy?: string
+          id?: string
+          jobOperationId?: string
+          lastError?: string | null
+          periodEnd?: string
+          periodStart?: string
+          productionQuantityId?: string | null
+          quantity?: number
+          reclassify?: boolean
+          status?: Database["public"]["Enums"]["machineCountPostingStatus"]
+          trackedEntityId?: string | null
+          type?: Database["public"]["Enums"]["productionQuantityType"]
+          updatedAt?: string | null
+          updatedBy?: string | null
+          workCenterId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "machineCountPosting_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "company"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "customFieldTables"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "integrations"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_jobOperationId_fkey"
+            columns: ["jobOperationId"]
+            isOneToOne: false
+            referencedRelation: "jobOperation"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_jobOperationId_fkey"
+            columns: ["jobOperationId"]
+            isOneToOne: false
+            referencedRelation: "jobOperationQueueTime"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_jobOperationId_fkey"
+            columns: ["jobOperationId"]
+            isOneToOne: false
+            referencedRelation: "jobOperationsWithDependencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_jobOperationId_fkey"
+            columns: ["jobOperationId"]
+            isOneToOne: false
+            referencedRelation: "jobOperationsWithMakeMethods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_productionQuantityId_fkey"
+            columns: ["productionQuantityId"]
+            isOneToOne: false
+            referencedRelation: "productionQuantity"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_trackedEntityId_fkey"
+            columns: ["trackedEntityId"]
+            isOneToOne: false
+            referencedRelation: "trackedEntity"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_workCenterId_fkey"
+            columns: ["workCenterId", "companyId"]
+            isOneToOne: false
+            referencedRelation: "workCenter"
+            referencedColumns: ["id", "companyId"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_workCenterId_fkey"
+            columns: ["workCenterId", "companyId"]
+            isOneToOne: false
+            referencedRelation: "workCenters"
+            referencedColumns: ["id", "companyId"]
+          },
+          {
+            foreignKeyName: "machineCountPosting_workCenterId_fkey"
+            columns: ["workCenterId", "companyId"]
+            isOneToOne: false
+            referencedRelation: "workCentersWithBlockingStatus"
+            referencedColumns: ["id", "companyId"]
+          }
+        ]
+      }
       machineStateChange: {
         Row: {
           changedAt: string
@@ -57547,6 +57772,382 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "userDefaults"
             referencedColumns: ["userId"]
+          }
+        ]
+      }
+      pulseCount: {
+        Row: {
+          bootId: string
+          companyId: string
+          counter: number
+          estimated: boolean
+          id: string
+          periodEnd: string
+          periodStart: string
+          pulseDeviceId: string
+          pulses: number
+          rebased: boolean
+          receivedAt: string
+          scrapCounter: number
+          scrapPulses: number
+          seq: number
+        }
+        Insert: {
+          bootId: string
+          companyId: string
+          counter: number
+          estimated?: boolean
+          id?: string
+          periodEnd: string
+          periodStart: string
+          pulseDeviceId: string
+          pulses: number
+          rebased?: boolean
+          receivedAt?: string
+          scrapCounter?: number
+          scrapPulses?: number
+          seq: number
+        }
+        Update: {
+          bootId?: string
+          companyId?: string
+          counter?: number
+          estimated?: boolean
+          id?: string
+          periodEnd?: string
+          periodStart?: string
+          pulseDeviceId?: string
+          pulses?: number
+          rebased?: boolean
+          receivedAt?: string
+          scrapCounter?: number
+          scrapPulses?: number
+          seq?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pulseCount_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseCount_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "company"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseCount_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "customFieldTables"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "pulseCount_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "integrations"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "pulseCount_pulseDeviceId_fkey"
+            columns: ["pulseDeviceId", "companyId"]
+            isOneToOne: false
+            referencedRelation: "pulseDevice"
+            referencedColumns: ["id", "companyId"]
+          }
+        ]
+      }
+      pulseDevice: {
+        Row: {
+          active: boolean
+          aliveSince: string | null
+          bootId: string | null
+          bucketSeconds: number
+          companyId: string
+          createdAt: string
+          createdBy: string
+          currentState: Database["public"]["Enums"]["machineState"] | null
+          currentStateAt: string | null
+          debounceMs: number
+          deviceKey: string
+          expectedCycleSeconds: number | null
+          firmwareVersion: string | null
+          heartbeatCounter: number | null
+          id: string
+          idleAfterSeconds: number | null
+          lastCounter: number | null
+          lastPulseAt: string | null
+          lastScrapCounter: number | null
+          lastSeenAt: string | null
+          lastSeq: number | null
+          locationId: string | null
+          name: string
+          offlineAfterSeconds: number
+          piecesPerPulse: number
+          queueDepth: number | null
+          rssi: number | null
+          sendEachPulse: boolean
+          updatedAt: string | null
+          updatedBy: string | null
+        }
+        Insert: {
+          active?: boolean
+          aliveSince?: string | null
+          bootId?: string | null
+          bucketSeconds?: number
+          companyId: string
+          createdAt?: string
+          createdBy: string
+          currentState?: Database["public"]["Enums"]["machineState"] | null
+          currentStateAt?: string | null
+          debounceMs?: number
+          deviceKey: string
+          expectedCycleSeconds?: number | null
+          firmwareVersion?: string | null
+          heartbeatCounter?: number | null
+          id?: string
+          idleAfterSeconds?: number | null
+          lastCounter?: number | null
+          lastPulseAt?: string | null
+          lastScrapCounter?: number | null
+          lastSeenAt?: string | null
+          lastSeq?: number | null
+          locationId?: string | null
+          name: string
+          offlineAfterSeconds?: number
+          piecesPerPulse?: number
+          queueDepth?: number | null
+          rssi?: number | null
+          sendEachPulse?: boolean
+          updatedAt?: string | null
+          updatedBy?: string | null
+        }
+        Update: {
+          active?: boolean
+          aliveSince?: string | null
+          bootId?: string | null
+          bucketSeconds?: number
+          companyId?: string
+          createdAt?: string
+          createdBy?: string
+          currentState?: Database["public"]["Enums"]["machineState"] | null
+          currentStateAt?: string | null
+          debounceMs?: number
+          deviceKey?: string
+          expectedCycleSeconds?: number | null
+          firmwareVersion?: string | null
+          heartbeatCounter?: number | null
+          id?: string
+          idleAfterSeconds?: number | null
+          lastCounter?: number | null
+          lastPulseAt?: string | null
+          lastScrapCounter?: number | null
+          lastSeenAt?: string | null
+          lastSeq?: number | null
+          locationId?: string | null
+          name?: string
+          offlineAfterSeconds?: number
+          piecesPerPulse?: number
+          queueDepth?: number | null
+          rssi?: number | null
+          sendEachPulse?: boolean
+          updatedAt?: string | null
+          updatedBy?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pulseDevice_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "company"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "customFieldTables"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "pulseDevice_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "integrations"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "pulseDevice_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "pulseDevice_locationId_fkey"
+            columns: ["locationId", "companyId"]
+            isOneToOne: false
+            referencedRelation: "location"
+            referencedColumns: ["id", "companyId"]
+          },
+          {
+            foreignKeyName: "pulseDevice_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseDevice_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
+          }
+        ]
+      }
+      pulseIngestStatus: {
+        Row: {
+          heartbeatAt: string
+          id: string
+          version: string | null
+        }
+        Insert: {
+          heartbeatAt: string
+          id?: string
+          version?: string | null
+        }
+        Update: {
+          heartbeatAt?: string
+          id?: string
+          version?: string | null
+        }
+        Relationships: []
+      }
+      pulseStateChange: {
+        Row: {
+          changedAt: string
+          companyId: string
+          createdAt: string
+          id: string
+          pulseDeviceId: string
+          reason: string
+          state: Database["public"]["Enums"]["machineState"]
+        }
+        Insert: {
+          changedAt: string
+          companyId: string
+          createdAt?: string
+          id?: string
+          pulseDeviceId: string
+          reason: string
+          state: Database["public"]["Enums"]["machineState"]
+        }
+        Update: {
+          changedAt?: string
+          companyId?: string
+          createdAt?: string
+          id?: string
+          pulseDeviceId?: string
+          reason?: string
+          state?: Database["public"]["Enums"]["machineState"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pulseStateChange_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseStateChange_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "company"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pulseStateChange_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "customFieldTables"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "pulseStateChange_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "integrations"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "pulseStateChange_pulseDeviceId_fkey"
+            columns: ["pulseDeviceId", "companyId"]
+            isOneToOne: false
+            referencedRelation: "pulseDevice"
+            referencedColumns: ["id", "companyId"]
           }
         ]
       }
@@ -84663,6 +85264,205 @@ export type Database = {
           }
         ]
       }
+      unattributedMachineCount: {
+        Row: {
+          companyId: string
+          createdAt: string
+          createdBy: string
+          detail: string | null
+          id: string
+          jobOperationId: string | null
+          periodEnd: string
+          periodStart: string
+          quantity: number
+          reason: Database["public"]["Enums"]["unattributedMachineCountReason"]
+          scrapQuantity: number
+          updatedAt: string | null
+          updatedBy: string | null
+          workCenterId: string
+        }
+        Insert: {
+          companyId: string
+          createdAt?: string
+          createdBy: string
+          detail?: string | null
+          id?: string
+          jobOperationId?: string | null
+          periodEnd: string
+          periodStart: string
+          quantity?: number
+          reason: Database["public"]["Enums"]["unattributedMachineCountReason"]
+          scrapQuantity?: number
+          updatedAt?: string | null
+          updatedBy?: string | null
+          workCenterId: string
+        }
+        Update: {
+          companyId?: string
+          createdAt?: string
+          createdBy?: string
+          detail?: string | null
+          id?: string
+          jobOperationId?: string | null
+          periodEnd?: string
+          periodStart?: string
+          quantity?: number
+          reason?: Database["public"]["Enums"]["unattributedMachineCountReason"]
+          scrapQuantity?: number
+          updatedAt?: string | null
+          updatedBy?: string | null
+          workCenterId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "unattributedMachineCount_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "company"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "customFieldTables"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "integrations"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_jobOperationId_fkey"
+            columns: ["jobOperationId"]
+            isOneToOne: false
+            referencedRelation: "jobOperation"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_jobOperationId_fkey"
+            columns: ["jobOperationId"]
+            isOneToOne: false
+            referencedRelation: "jobOperationQueueTime"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_jobOperationId_fkey"
+            columns: ["jobOperationId"]
+            isOneToOne: false
+            referencedRelation: "jobOperationsWithDependencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_jobOperationId_fkey"
+            columns: ["jobOperationId"]
+            isOneToOne: false
+            referencedRelation: "jobOperationsWithMakeMethods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_workCenterId_fkey"
+            columns: ["workCenterId", "companyId"]
+            isOneToOne: false
+            referencedRelation: "workCenter"
+            referencedColumns: ["id", "companyId"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_workCenterId_fkey"
+            columns: ["workCenterId", "companyId"]
+            isOneToOne: false
+            referencedRelation: "workCenters"
+            referencedColumns: ["id", "companyId"]
+          },
+          {
+            foreignKeyName: "unattributedMachineCount_workCenterId_fkey"
+            columns: ["workCenterId", "companyId"]
+            isOneToOne: false
+            referencedRelation: "workCentersWithBlockingStatus"
+            referencedColumns: ["id", "companyId"]
+          }
+        ]
+      }
       unattributedMachineTime: {
         Row: {
           companyId: string
@@ -86610,6 +87410,8 @@ export type Database = {
         Row: {
           appliedThrough: string | null
           companyId: string
+          countedThrough: string | null
+          countMode: Database["public"]["Enums"]["machineCountMode"]
           createdAt: string
           createdBy: string
           currentState: Database["public"]["Enums"]["machineState"] | null
@@ -86619,10 +87421,12 @@ export type Database = {
           externalSiteId: string | null
           id: string
           integration: string
+          labelEveryQuantity: number | null
           lastEventAt: string
           lastManualChangeAt: string | null
           lastSyncedAt: string | null
           lastSyncError: string | null
+          scrapReasonId: string | null
           siteTimezone: string | null
           unplannedPressAt: string | null
           updatedAt: string | null
@@ -86632,6 +87436,8 @@ export type Database = {
         Insert: {
           appliedThrough?: string | null
           companyId: string
+          countedThrough?: string | null
+          countMode?: Database["public"]["Enums"]["machineCountMode"]
           createdAt?: string
           createdBy: string
           currentState?: Database["public"]["Enums"]["machineState"] | null
@@ -86641,10 +87447,12 @@ export type Database = {
           externalSiteId?: string | null
           id?: string
           integration: string
+          labelEveryQuantity?: number | null
           lastEventAt?: string
           lastManualChangeAt?: string | null
           lastSyncedAt?: string | null
           lastSyncError?: string | null
+          scrapReasonId?: string | null
           siteTimezone?: string | null
           unplannedPressAt?: string | null
           updatedAt?: string | null
@@ -86654,6 +87462,8 @@ export type Database = {
         Update: {
           appliedThrough?: string | null
           companyId?: string
+          countedThrough?: string | null
+          countMode?: Database["public"]["Enums"]["machineCountMode"]
           createdAt?: string
           createdBy?: string
           currentState?: Database["public"]["Enums"]["machineState"] | null
@@ -86663,10 +87473,12 @@ export type Database = {
           externalSiteId?: string | null
           id?: string
           integration?: string
+          labelEveryQuantity?: number | null
           lastEventAt?: string
           lastManualChangeAt?: string | null
           lastSyncedAt?: string | null
           lastSyncError?: string | null
+          scrapReasonId?: string | null
           siteTimezone?: string | null
           unplannedPressAt?: string | null
           updatedAt?: string | null
@@ -86749,6 +87561,13 @@ export type Database = {
             columns: ["integration"]
             isOneToOne: false
             referencedRelation: "integrations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workCenterDevice_scrapReasonId_fkey"
+            columns: ["scrapReasonId"]
+            isOneToOne: false
+            referencedRelation: "scrapReason"
             referencedColumns: ["id"]
           },
           {
@@ -111723,6 +112542,8 @@ export type Database = {
         | "Cancelled"
       lesseeClassification: "Operating" | "Finance" | "Short-Term"
       lessorClassification: "Rental" | "Sale" | "Financing"
+      machineCountMode: "Off" | "Auto"
+      machineCountPostingStatus: "Pending" | "Posted"
       machineState: "Running" | "Idle" | "Down" | "Offline"
       macrsConvention: "Half-Year" | "Mid-Quarter"
       macrsPropertyClass: "3" | "5" | "7" | "10" | "15" | "20" | "27.5" | "39"
@@ -112240,6 +113061,14 @@ export type Database = {
         | "Numerical"
       trainingStatus: "Draft" | "Active" | "Archived"
       trainingType: "Mandatory" | "Optional"
+      unattributedMachineCountReason:
+        | "NoLoad"
+        | "Blocked"
+        | "OperationClosed"
+        | "OverTarget"
+        | "SerialNeedsSendEachPulse"
+        | "NoScrapReason"
+        | "Refused"
       warehouseTransferStatus:
         | "Draft"
         | "To Ship and Receive"

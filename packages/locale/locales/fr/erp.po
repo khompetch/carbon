@@ -632,6 +632,10 @@ msgstr "{0} problèmes — non publié"
 msgid "{0} Processes"
 msgstr "{0} Processus"
 
+#. placeholder {0}: device.queueDepth
+msgid "{0} queued"
+msgstr "{0} en file d'attente"
+
 #. placeholder {0}: quantityFormatter(line.quantityReceived)
 #. placeholder {1}: quantityFormatter(line.quantityCredited)
 msgid "{0} received · {1} credited"
@@ -1284,6 +1288,9 @@ msgstr "{stale} a changé depuis le chargement de la page"
 
 msgid "{state} · synced {syncedAgo}"
 msgstr "{state} · synchronisé {syncedAgo}"
+
+msgid "{state} since {since}"
+msgstr "{state} depuis {since}"
 
 msgid "{statusTotal, plural, one {# issue in total} other {# issues in total}}"
 msgstr "{statusTotal, plural, one {# non-conformité au total} other {# non-conformités au total}}"
@@ -3917,6 +3924,9 @@ msgstr "Une exportation est déjà en cours pour votre société. Réessayez qua
 msgid "An https request Carbon sends to a system of yours when a workflow reaches that step, carrying whatever headers and body you configured."
 msgstr "Une requête https que Carbon envoie à l'un de vos systèmes lorsqu'un flux de travail atteint cette étape, portant tous les en-têtes et le corps que vous avez configurés."
 
+msgid "An inactive device is ignored by the ingest service."
+msgstr "Un appareil inactif est ignoré par le service d'ingestion."
+
 msgid "An inactive group's members are planned on their own"
 msgstr "Les membres d'un groupe inactif sont planifiés indépendamment"
 
@@ -5111,6 +5121,9 @@ msgstr "Attribuer un lot de production"
 msgid "Assign Batch"
 msgstr "Attribuer un lot de production"
 
+msgid "Assign machine pieces that no operation could take to the right job, or dismiss them."
+msgstr "Affectez à l'ordre de fabrication concerné les pièces comptées par la machine qu'aucune opération n'a pu prendre, ou ignorez-les."
+
 msgid "Assign machine run time that no loaded operation claimed to the right job, or dismiss it."
 msgstr "Attribuer au bon ordre de fabrication le temps machine qu'aucune opération chargée n'a revendiqué, ou le rejeter."
 
@@ -5284,6 +5297,9 @@ msgstr "L'autorisation a été refusée. Essayez de vous reconnecter."
 
 msgid "Authorized overtime on top of the shift"
 msgstr "Heures supplémentaires autorisées en plus de l'Équipe"
+
+msgid "Auto"
+msgstr "Auto"
 
 msgid "Auto apply"
 msgstr "Appliquer automatiquement"
@@ -5572,6 +5588,9 @@ msgstr "Capacité du lot de production"
 
 msgid "Batch is not available"
 msgstr "Le lot de production n'est pas disponible"
+
+msgid "Batch items only. Empty: one label when the lot starts."
+msgstr "Articles en lot de production uniquement. Vide : une étiquette au démarrage du lot."
 
 msgid "Batch items require a sales order"
 msgstr "Les articles en lot nécessitent une commande client"
@@ -8705,6 +8724,9 @@ msgstr "ID de comptage"
 msgid "Count items"
 msgstr "Compter les articles"
 
+msgid "Count mode"
+msgstr "Mode de comptage"
+
 msgid "Counted {total}."
 msgstr "Total compté : {total}."
 
@@ -8716,6 +8738,9 @@ msgstr "Contreparties"
 
 msgid "Counterparty"
 msgstr "Contrepartie"
+
+msgid "Counting for {deviceName}"
+msgstr "Comptage pour {deviceName}"
 
 msgid "Counting…"
 msgstr "Comptage…"
@@ -9768,6 +9793,9 @@ msgstr "Débiter le En-cours du projet et créditer le compte appliqué de chaqu
 msgid "Debits"
 msgstr "Débits"
 
+msgid "Debounce (ms)"
+msgstr "Anti-rebond (ms)"
+
 msgid "Decide what an operator sees if they try to issue a batch or serial that's already expired."
 msgstr "Décidez ce qu'un opérateur voit s'il essaie d'émettre un lot ou un numéro de série qui a déjà expiré."
 
@@ -10024,8 +10052,8 @@ msgid "Delete"
 msgstr "Supprimer"
 
 #. placeholder {0}: deleting.name
+#. placeholder {0}: device.name
 #. placeholder {0}: monthLabel(deleting.periodStart)
-#. placeholder {0}: row.account?.number ?? ""
 msgid "Delete {0}"
 msgstr "Supprimer {0}"
 
@@ -10702,6 +10730,9 @@ msgstr "Développeur"
 
 msgid "Device"
 msgstr "Appareil"
+
+msgid "Device key"
+msgstr "Clé de l'appareil"
 
 msgid "Devices"
 msgstr "Dispositifs"
@@ -11495,6 +11526,7 @@ msgstr "Numéro d'Enregistrement et d'Identification des Opérateurs Économique
 msgid "Edit"
 msgstr "Modifier"
 
+#. placeholder {0}: device.name
 #. placeholder {0}: operation.description
 #. placeholder {0}: process.name
 msgid "Edit {0}"
@@ -11804,6 +11836,9 @@ msgstr "Modifier le projet"
 msgid "Edit Properties"
 msgstr "Modifier les propriétés"
 
+msgid "Edit Pulse device"
+msgstr "Modifier l'appareil Pulse"
+
 msgid "Edit purchase order line type"
 msgstr "Modifier le type de ligne de bon de commande"
 
@@ -12068,6 +12103,9 @@ msgstr "Liste vide"
 
 msgid "Empty work centers"
 msgstr "Postes de travail vides"
+
+msgid "Empty: 3 standard cycles, at least 30"
+msgstr "Vide : 3 cycles standard, au moins 30"
 
 msgid "Enable"
 msgstr "Activer"
@@ -13868,11 +13906,17 @@ msgstr "Pour un lot de production. Un numéro de série compte comme 1."
 msgid "for anything. They'll pull in the right person."
 msgstr "pour n'importe quoi. Ils vont faire intervenir la bonne personne."
 
+msgid "For example press-01"
+msgstr "Par exemple press-01"
+
 msgid "For example Site or Ordered by"
 msgstr "Par exemple Site ou Commandé par"
 
 msgid "For Form 6765 Section E"
 msgstr "Pour la section E du formulaire 6765"
+
+msgid "For machines with a long cycle. Each cycle reaches Carbon within a second, instead of every few seconds."
+msgstr "Pour les machines à cycle long. Chaque cycle parvient à Carbon en moins d'une seconde, au lieu de toutes les quelques secondes."
 
 msgid "Force delete"
 msgstr ""
@@ -14605,6 +14649,9 @@ msgstr "En-têtes"
 msgid "Heading {level}"
 msgstr "Titre {level}"
 
+msgid "Health"
+msgstr "Santé"
+
 msgid "Healthy"
 msgstr "Sain"
 
@@ -15051,6 +15098,9 @@ msgstr "Fournisseur d'identité (IdP)"
 msgid "Idle"
 msgstr "Disponible"
 
+msgid "Idle after (seconds)"
+msgstr "Au repos après (secondes)"
+
 msgid "IdP Metadata URL"
 msgstr "URL des métadonnées IdP"
 
@@ -15187,6 +15237,9 @@ msgstr "Dans un menu ouvert"
 
 msgid "in arrears"
 msgstr "en retard"
+
+msgid "In Auto, the sensor logs completed and scrap quantities on the operation loaded on this work center."
+msgstr "En mode Auto, le capteur enregistre les quantités terminées et les rebuts de l'opération chargée sur ce poste de travail."
 
 msgid "In DCAA mode, an Exempt employee's week over the standard weekly hours posts at standard hours ÷ hours worked, so the week's cost spreads over every hour."
 msgstr "En mode DCAA, la semaine d'un Employé exempté dépassant les heures hebdomadaires standard est comptabilisée à heures standards ÷ heures travaillées, de sorte que le coût de la semaine se répartit sur chaque heure."
@@ -16321,6 +16374,9 @@ msgstr "opérations d'OF"
 msgid "Job Operations"
 msgstr "Opérations d'OF"
 
+msgid "Job or operation"
+msgstr "Ordre de fabrication ou opération"
+
 msgid "Job Priority"
 msgstr "Priorité du travail"
 
@@ -17350,6 +17406,9 @@ msgstr "Verrouillé : cet enregistrement ne peut plus être modifié."
 
 msgid "Locking makes the period read-only for operational documents (receipts, shipments, invoices) while still allowing accounting adjustments like depreciation and disposals. A period must be locked before it can be closed."
 msgstr "Le verrouillage rend la période en lecture seule pour les documents opérationnels (réceptions, expéditions, factures) tout en permettant les ajustements comptables comme l'amortissement et les cessions. Une période doit être verrouillée avant de pouvoir être clôturée."
+
+msgid "Log completed from the sensor"
+msgstr "Enregistrer les quantités terminées depuis le capteur"
 
 msgid "Log nonconformances and drive a CAPA"
 msgstr "Enregistrer les non-conformités et piloter une CAPA"
@@ -18770,6 +18829,9 @@ msgstr "Erreur réseau"
 msgid "Never"
 msgstr "Jamais"
 
+msgid "Never reported"
+msgstr "Jamais signalé"
+
 msgid "New"
 msgstr "Nouveau"
 
@@ -18865,6 +18927,9 @@ msgstr "Nouvelle prévision de besoins"
 
 msgid "New Department"
 msgstr "Nouveau Département"
+
+msgid "New device"
+msgstr "Nouvel appareil"
 
 msgid "New Dimension"
 msgstr "Nouvel axe analytique"
@@ -19043,6 +19108,9 @@ msgstr "Nouveau contrat de projet"
 
 msgid "New Project Stock Transfer"
 msgstr "Nouveau transfert de stock de projet"
+
+msgid "New Pulse device"
+msgstr "Nouvel appareil Pulse"
 
 msgid "New purchase order"
 msgstr "Nouveau bon de commande"
@@ -19596,6 +19664,9 @@ msgstr "Aucun dispositif trouvé"
 msgid "No devices match your search"
 msgstr "Aucun appareil ne correspond à votre recherche"
 
+msgid "No devices registered"
+msgstr "Aucun appareil enregistré"
+
 msgid "No differences."
 msgstr "Aucune différence."
 
@@ -19935,6 +20006,9 @@ msgstr "Aucune ligne de commande client ouverte"
 msgid "No open work has a target date."
 msgstr "Aucun travail ouvert n'a de date cible."
 
+msgid "No operation loaded"
+msgstr "Aucune opération chargée"
+
 msgid "No operations"
 msgstr "Aucune opération"
 
@@ -20185,6 +20259,9 @@ msgstr "Aucune ligne d'échéancier."
 msgid "No scheduled work in this window"
 msgstr "Aucun travail prévu dans cette fenêtre"
 
+msgid "No scrap reason set"
+msgstr "Aucun motif de rebut défini"
+
 msgid "No serial"
 msgstr "Aucun numéro de série"
 
@@ -20223,6 +20300,9 @@ msgstr "Aucune diapositive pour le moment"
 
 msgid "No sorts applied to this view"
 msgstr "Aucun tri appliqué à cette vue"
+
+msgid "No state yet"
+msgstr "Aucun état pour le moment"
 
 msgid "No statement for this period"
 msgstr "Aucune déclaration pour cette période"
@@ -20790,6 +20870,9 @@ msgstr "Officier"
 
 msgid "Offline"
 msgstr "Hors ligne"
+
+msgid "Offline after (seconds)"
+msgstr "Hors ligne après (secondes)"
 
 msgid "Offset Absorbed Overhead"
 msgstr "Décalage de frais généraux absorbés"
@@ -21367,6 +21450,9 @@ msgstr "Lots de production d'opérations"
 msgid "Operation created"
 msgstr "Opération créée"
 
+msgid "Operation done or canceled"
+msgstr "Opération terminée ou annulée"
+
 msgid "Operation lead time"
 msgstr "Délai d'approvisionnement de l'opération"
 
@@ -21666,6 +21752,9 @@ msgstr "En attente"
 
 msgid "Over estimate first"
 msgstr "Dépassement en premier"
+
+msgid "Over the target quantity"
+msgstr "Au-delà de la quantité cible"
 
 msgid "Over-applied by"
 msgstr "Appliqué en excédent de"
@@ -22480,6 +22569,9 @@ msgstr ""
 msgid "Picking offers tracked entities earliest-expiry-first, so the soonest-to-expire stock leaves first by default."
 msgstr "Le prélèvement propose d'abord les articles suivis ayant la péremption la plus proche, donc le stock arrivant à expiration le plus tôt quitte en premier par défaut."
 
+msgid "Pieces per pulse"
+msgstr "Pièces par impulsion"
+
 msgid "Pieces per run. Leave empty for no limit."
 msgstr "Pièces par passage. Laissez vide pour pas de limite."
 
@@ -23039,6 +23131,9 @@ msgstr "Imprimer {0} kanbans"
 msgid "Print {0} Labels"
 msgstr "Imprimer {0} étiquettes"
 
+msgid "Print a label every N pieces"
+msgstr "Imprimer une étiquette toutes les N pièces"
+
 msgid "Print batch list"
 msgstr "Imprimer la liste des lots de production"
 
@@ -23515,6 +23610,9 @@ msgstr "Prélever du stock"
 
 msgid "Pull, map, and load your data"
 msgstr "Extraire, mapper et charger vos données"
+
+msgid "Pulse Devices"
+msgstr "Appareils Pulse"
 
 msgid "Purchase"
 msgstr "Achat"
@@ -24604,6 +24702,9 @@ msgstr "Rembourser l’acompte pour"
 msgid "Refund to Customer"
 msgstr "Remboursement au client"
 
+msgid "Refused"
+msgstr "Refusé"
+
 msgid "Regenerate"
 msgstr "Régénérer"
 
@@ -24633,6 +24734,9 @@ msgstr "Enregistrer une unité vendue avant Carbon. Une unité que Carbon expéd
 
 msgid "Register Existing Asset"
 msgstr "Enregistré"
+
+msgid "Register the cycle sensors on your machines, then map each one to a work center."
+msgstr "Enregistrez les capteurs de cycle de vos machines, puis associez chacun à un poste de travail."
 
 msgid "Registered"
 msgstr "Enregistré"
@@ -26485,6 +26589,12 @@ msgstr "Enregistrés {count} mappages de comptes"
 msgid "Saved account mapping"
 msgstr "Mappage de compte enregistré"
 
+msgid "Saved counting settings"
+msgstr "Paramètres de comptage enregistrés"
+
+msgid "Saved device"
+msgstr "Appareil enregistré"
+
 msgid "Saved device mapping"
 msgstr "Mappage d'appareil enregistré"
 
@@ -26682,6 +26792,9 @@ msgstr "Motif de rebut"
 
 msgid "Scrap Reason"
 msgstr "Motif de rebut"
+
+msgid "Scrap reason for the Log scrap button"
+msgstr "Motif de rebut pour le bouton Enregistrer le rebut"
 
 msgid "scrap reasons"
 msgstr "Motifs de rebut"
@@ -26933,6 +27046,9 @@ msgstr "Consultez une prévision de capacité en direct pour chaque poste de tra
 #. placeholder {0}: lines.length
 msgid "See all {0}"
 msgstr "Voir tout {0}"
+
+msgid "Seen {lastSeen}"
+msgstr "Vu {lastSeen}"
 
 msgid "Segment"
 msgstr "Segment"
@@ -27278,11 +27394,17 @@ msgstr "Envoyer"
 msgid "Send all to"
 msgstr "Tout envoyer vers"
 
+msgid "Send each pulse immediately"
+msgstr "Envoyer chaque impulsion immédiatement"
+
 msgid "Send error"
 msgstr "Erreur d'envoi"
 
 msgid "Send Estimate {serviceJobId}"
 msgstr "Envoyer Devis {serviceJobId}"
+
+msgid "Send every (seconds)"
+msgstr "Envoi toutes les (secondes)"
 
 msgid "Send Invite"
 msgstr "Envoyer une invitation"
@@ -27361,6 +27483,9 @@ msgstr "Numéro de série / Lot"
 
 msgid "Serial / Batch Number"
 msgstr "Numéro de série / lot"
+
+msgid "Serial item needs Send each pulse immediately"
+msgstr "Un article à numéro de série requiert « Envoyer chaque impulsion immédiatement »"
 
 msgid "Serial items require a sales order"
 msgstr "Les articles en série nécessitent une commande client"
@@ -28589,6 +28714,9 @@ msgstr "Le Carbon cloud standard correspond à la façon dont votre société fo
 
 msgid "Standard Cost Variances"
 msgstr "Écarts de coûts standards"
+
+msgid "Standard cycle (seconds)"
+msgstr "Cycle standard (secondes)"
 
 msgid "Standard factor"
 msgstr "Facteur standard"
@@ -30408,6 +30536,12 @@ msgstr "Le compte par défaut du Revenu Différé est vide."
 msgid "The department this one rolls up under for reporting and headcount hierarchies; leave empty for a top-level department."
 msgstr "Le département sous lequel celui-ci se cumule pour la déclaration et les hiérarchies de dénombrement; laisser vide pour un département au niveau supérieur."
 
+msgid "The device key is the device's MQTT username. It cannot change after the device is registered."
+msgstr "La clé de l'appareil correspond au nom d'utilisateur MQTT de l'appareil. Elle ne peut pas être modifiée une fois l'appareil enregistré."
+
+msgid "The device's counts and state changes are deleted too. The sensor stops reporting to Carbon."
+msgstr "Les compteurs et les changements d'état de l'appareil sont également supprimés. Le capteur cesse de transmettre des données à Carbon."
+
 msgid "The device's site is in {siteTimezone}; Carbon uses {locationTimezone}"
 msgstr "Le site de l'appareil est en {siteTimezone} ; Carbon utilise {locationTimezone}"
 
@@ -31037,6 +31171,16 @@ msgstr "Le stock du projet ne passe qu'aux projets du même client"
 
 msgid "The provider offers no dimension targets. Enable the feature in the provider first (e.g. tracking categories, class tracking, or fields)."
 msgstr "Le fournisseur n'offre pas de cibles de dimension. Activez d'abord la fonctionnalité chez le fournisseur (par exemple, catégories de suivi, suivi des classes ou champs)."
+
+msgid "The Pulse ingest service has never reported"
+msgstr "Le service d'ingestion Pulse n'a jamais signalé son activité"
+
+msgid "The Pulse ingest service is running"
+msgstr "Le service d'ingestion Pulse est en cours d'exécution"
+
+#. placeholder {0}: formatTimeAgo(heartbeatAt)
+msgid "The Pulse ingest service last reported {0}"
+msgstr "Le service d'ingestion Pulse a signalé son activité pour la dernière fois {0}"
 
 #. placeholder {0}: formatter.format(invoicedOption)
 msgid "The purchase option is already invoiced at {0}. Exercise it at that price, or delete the invoice first."
@@ -31674,6 +31818,10 @@ msgstr "Ce département n'a pas de poste de travail au site {locationName}. Choi
 
 msgid "This department has no work centers at this location. Pick another department or location."
 msgstr "Ce département n'a pas de poste de travail à ce site. Choisissez un autre département ou un autre site."
+
+#. placeholder {0}: deleting.workCenterName ?? ""
+msgid "This device is mapped to {0}. Unmap it on the Devices tab first."
+msgstr "Cet appareil est associé à {0}. Dissociez-le d'abord dans l'onglet Appareils."
 
 msgid "This download link is invalid or has been tampered with."
 msgstr "Ce lien de téléchargement est invalide ou a été modifié."
@@ -32927,6 +33075,9 @@ msgstr "Stock non attribué"
 msgid "Unassigned stock for projects"
 msgstr "Stock non attribué pour les projets"
 
+msgid "Unattributed Counts"
+msgstr "Comptages non attribués"
+
 msgid "unattributed machine time entries"
 msgstr "Entrées de temps machine non attribuées"
 
@@ -33909,6 +34060,9 @@ msgstr "Afficher la liste"
 msgid "View Lists"
 msgstr "Afficher les listes"
 
+msgid "View Machine Count"
+msgstr "Afficher le comptage machine"
+
 msgid "View Machine Time"
 msgstr "Afficher le temps machine"
 
@@ -34727,6 +34881,9 @@ msgstr "Quel type de requête envoyer : GET lit quelque chose, POST crée, PUT e
 
 msgid "Which manufacturing event starts the shelf-life clock — for example, fill, seal, or final QC."
 msgstr "Quel événement de production démarre l'horloge de durée de vie — par exemple, remplissage, scellage, ou QC final."
+
+msgid "Which operation made these pieces?"
+msgstr "Quelle opération a produit ces pièces ?"
 
 msgid "Which operation was this?"
 msgstr "De quelle opération s'agissait-il ?"

@@ -8,6 +8,7 @@ import {
   LuChartBarBig,
   LuChartLine,
   LuCirclePlay,
+  LuHash,
   LuLayers,
   LuListChecks,
   LuListTodo,
@@ -28,7 +29,7 @@ import { path } from "~/utils/path";
 export default function useProductionSubmodules() {
   const { t } = useLingui();
   const permissions = usePermissions();
-  // Unattributed Time only exists once an OEE provider is reporting machines.
+  // Unattributed Time and Counts only exist once an OEE provider is reporting machines.
   const integrations = useIntegrations();
   const oeeIntegrationIds = new Set<string>(getIntegrationIdsByRole("oee"));
   const hasOeeProvider = integrations.list.some(
@@ -60,6 +61,12 @@ export default function useProductionSubmodules() {
                 name: t`Unattributed Time`,
                 to: path.to.unattributedMachineTimes,
                 icon: <LuTimerOff />,
+                role: "employee" as const
+              },
+              {
+                name: t`Unattributed Counts`,
+                to: path.to.unattributedMachineCounts,
+                icon: <LuHash />,
                 role: "employee" as const
               }
             ]

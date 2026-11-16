@@ -19,11 +19,17 @@
  */
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { OeeProviderUnavailableError } from "@carbon/ee/oee";
-import { getOeeProvider, postEndedMachineEvents } from "@carbon/ee/oee.server";
+import {
+  getOeeProvider,
+  postEndedMachineEvents,
+  postMachineCounts
+} from "@carbon/ee/oee.server";
+import { printOperationLabel } from "@carbon/printing/operation-label.server";
 import { parseAbsolute } from "@internationalized/date";
 import { getJobDatabaseClient } from "../../../db";
 import { inngest } from "../../client";
 import { syncOeeDevice } from "./oee-sync-device";
+import { countOeeDevice } from "./oee-sync-device-counts";
 
 const MAX_ERROR_LENGTH = 500;
 
@@ -108,6 +114,29 @@ async function syncDevices({
         userId: "system",
         productionEventIds: endedEventIds
       });
+      // A device in count mode Auto posts Log completed and Log scrap, and
+      // prints the labels of the units it completes.
+      const counted = await countOeeDevice({
+        db,
+        device,
+        postCounts: postMachineCounts,
+        printLabel: (label) =>
+          printOperationLabel({
+            serviceRole: getCarbonServiceRole(),
+            trackedEntityId: label.trackedEntityId,
+            jobOperationId: label.jobOperationId,
+            jobMakeMethodId: label.jobMakeMethodId,
+            workCenterId: label.workCenterId,
+            companyId: label.companyId,
+            userId: "system"
+          })
+      });
+      if (counted?.recheckAt) {
+        rechecks.push({
+          externalDeviceId: device.externalDeviceId,
+          at: counted.recheckAt
+        });
+      }
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       console.error(

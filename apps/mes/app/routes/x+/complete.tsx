@@ -18,6 +18,7 @@ import {
   abilityBlockRefusal,
   finishJobOperation,
   getRequiredScanShortfall,
+  getWorkCenterCountMode,
   insertProductionQuantity,
   insertProductionQuantityIfCurrent
 } from "~/services/operations.service";
@@ -81,6 +82,30 @@ export async function action({ request }: ActionFunctionArgs) {
       {},
       await flash(request, { ...error(null, refusal), flash: "error" })
     );
+  }
+
+  // A work center whose sensor counts (countMode Auto) logs completed
+  // quantities itself; a manual count would count the pieces twice. A
+  // supervisor may override with a note.
+  if (jobOperation.data.workCenterId) {
+    const countMode = await getWorkCenterCountMode(serviceRole, {
+      workCenterId: jobOperation.data.workCenterId,
+      companyId
+    });
+    if (countMode === "Auto") {
+      const countRefusal = !validation.data.override
+        ? "This work center logs completed quantities from its sensor."
+        : !hasPermission(permissions, "production", "delete", companyId) ||
+            !validation.data.notes?.trim()
+          ? "An override needs the supervisor permission and a note."
+          : null;
+      if (countRefusal) {
+        return data(
+          {},
+          await flash(request, { ...error(null, countRefusal), flash: "error" })
+        );
+      }
+    }
   }
 
   // The production event ids ride along into the productionQuantity row and
@@ -304,6 +329,8 @@ export async function action({ request }: ActionFunctionArgs) {
       // biome-ignore lint/correctness/noUnusedVariables: not a productionQuantity column
       trackingType,
       expectedQuantityComplete,
+      // Not a productionQuantity column.
+      override: _override,
       ...d
     } = validation.data;
 

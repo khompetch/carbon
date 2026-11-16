@@ -20,11 +20,13 @@ Two deliberate differences from the Swarm recipe:
   is therefore **no `__SECRET__` placeholder substitution** — `bin/run.sh` is a
   bare `exec "$@"`.
 - **No bundled reverse proxy.** Dokploy's own Traefik terminates TLS and maps
-  domains; there is no Caddy service and nothing publishes ports.
+  domains; there is no Caddy service, and nothing publishes ports except the
+  Pulse broker (profile `pulse`, see below).
 
 ## Files (all under `contrib/deploying/dokploy/`)
-- `docker-compose.yml` — 17 services: `migrate`, `erp`, `mes`, `redis`,
-  `inngest`, `pg-version-check`, `postgres` (17), `supavisor`, `gotrue`,
+- `docker-compose.yml` — 19 services: `migrate`, `erp`, `mes`, `redis`,
+  `inngest`, `mosquitto` + `pulse-ingest` (profile `pulse`, off by default),
+  `pg-version-check`, `postgres` (17), `supavisor`, `gotrue`,
   `postgrest`, `realtime`, `storage`, `imgproxy`, `meta` + `studio` (profile
   `studio`, off by default), `edge-runtime`, `gateway` (Envoy). Unlike the
   Swarm file this IS `docker compose up`-able: it uses `build:`, `depends_on`,
@@ -41,6 +43,15 @@ Two deliberate differences from the Swarm recipe:
   Build context is the repo root. No `run.sh` shim (the root `.dockerignore`
   excludes `contrib/` from the build context; a Dockerfile sets ENTRYPOINT
   directly).
+- `pulse-ingest.Dockerfile` — the Pulse ingest service (`apps/pulse-ingest`).
+  Build context is the repo root. It installs `pulse-ingest` with `--prod
+  --ignore-scripts` and runs `node --import tsx src/main.ts` as `node`: the
+  service imports only types from `@carbon/database`, so nothing is built.
+- `mosquitto/` — the Pulse broker: `mosquitto.conf`, `acl`, and
+  `docker-entrypoint.sh`, which writes the password file from
+  `MQTT_INGEST_PASSWORD` / `MQTT_GATEWAY_PASSWORD` on every start (under
+  `umask 077`: Mosquitto 2.0.18+ warns on a world-readable file).
+  Bind-mounted `./mosquitto:/etc/mosquitto-carbon:ro`.
 - `bin/run.sh` — neutral `exec "$@"` ENTRYPOINT shim. Pins the same entrypoint
   position the Swarm recipe uses so the proven CMD arrays copy over verbatim.
   It substitutes nothing.
@@ -179,7 +190,18 @@ OAuth blocks — irrelevant to `migration up`), the real result
   pointing both at the app image is the `Command "supabase" not found` failure.
   Override them to run two Carbon stacks on one host or to pull prebuilt
   registry images.
-- **Volumes**: `pgdata`, `pgconfig`, `storage`, `redis-data`, `inngest-data`. A backup is
+- **Pulse (profile `pulse`)**: the one exception to "nothing publishes
+  ports". `mosquitto` publishes 1883 on `MQTT_PUBLISH_ADDRESS` (default
+  `127.0.0.1`), which the operator sets to the VPS's WireGuard address so only
+  the on-site gateway's bridge reaches it; the listener has no TLS. Two broker
+  accounts only, `pulse-ingest` and `pulse-gateway` (ACL in `mosquitto/acl`);
+  devices sign in to the gateway, never to the VPS. `pulse-ingest` gates on
+  `migrate` (the pulse tables), `mosquitto` healthy and `inngest`, connects to
+  `postgres` directly (a pool of 4), and must run as one instance. The Pulse
+  integration needs `CARBON_EDITION=enterprise`, which `.env.example` now sets.
+- **Volumes**: `pgdata`, `pgconfig`, `storage`, `redis-data`, `inngest-data`,
+  `mosquitto-data` (QoS 1 messages queued for a stopped ingest service; no
+  backup needed). A backup is
   the PAIRED `db.sql.gz` + `storage.tar.gz` (`STORAGE_BACKEND: file` puts
   uploads on the volume, metadata in Postgres) — restore both or neither.
 - **First admin**: no bootstrap script. Logging in at `/login` with an unknown
@@ -201,6 +223,7 @@ docker compose config | grep '\${'     # must be empty — no unresolved vars
 `$$POSTGRES_PASSWORD` in `migrate`'s command is correct, not a double-escape.
 Also confirm `migrate` still resolves `target: bootstrap` and that its
 `image:` differs from `erp`'s, and that `COMPOSE_PROFILES=studio docker compose
-config --services` adds `meta` + `studio`. `docker compose config` needs a
+config --services` adds `meta` + `studio`, and `COMPOSE_PROFILES=pulse`
+adds `mosquitto` + `pulse-ingest`. `docker compose config` needs a
 `.env` beside the file (`env_file: .env`) — make a throwaway one from
 `.env.example` and delete it.

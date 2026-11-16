@@ -314,61 +314,12 @@ export async function getJobOperationDependencies(
     .eq("jobId", jobId);
 }
 
-/**
- * Is this the first operation of its make method's routing? A serial unit only
- * earns a printed label when it is completed at its first operation, so this
- * decides both the label auto-print and how the operation views pick units.
- *
- * "First" means no jobOperationDependency whose predecessor shares this op's
- * jobMakeMethodId. Cross make-method (subassembly) dependencies are ignored: a
- * parent-assembly op still has no printed label just because a subassembly
- * finished first. `order` is only a display/sort field, not a precedence signal.
- *
- * Fails closed: an errored lookup reads as "not first" — no auto-select, no
- * label — which is the safe default when we can't confirm there's no predecessor.
- */
-export async function isFirstOperationOfMakeMethod(
-  client: SupabaseClient<Database>,
-  operationId: string,
-  jobMakeMethodId: string
-): Promise<boolean> {
-  const priorDependency = await client
-    .from("jobOperationDependency")
-    .select(
-      "dependsOn:jobOperation!jobOperationDependency_dependsOnId_fk!inner(jobMakeMethodId)"
-    )
-    .eq("operationId", operationId)
-    .eq("dependsOn.jobMakeMethodId", jobMakeMethodId)
-    .limit(1)
-    .maybeSingle();
-  return !priorDependency.error && !priorDependency.data;
-}
-
-/**
- * Is this the last operation of its make method's routing? Mirrors
- * isFirstOperationOfMakeMethod: "last" means no operation of the same make
- * method depends on this one.
- *
- * Fails closed: an errored lookup reads as "not last".
- */
-export async function isLastOperationOfMakeMethod(
-  client: SupabaseClient<Database>,
-  companyId: string,
-  operationId: string,
-  jobMakeMethodId: string
-): Promise<boolean> {
-  const nextDependency = await client
-    .from("jobOperationDependency")
-    .select(
-      "operation:jobOperation!jobOperationDependency_operationId_fk!inner(jobMakeMethodId)"
-    )
-    .eq("dependsOnId", operationId)
-    .eq("companyId", companyId)
-    .eq("operation.jobMakeMethodId", jobMakeMethodId)
-    .limit(1)
-    .maybeSingle();
-  return !nextDependency.error && !nextDependency.data;
-}
+// First/last operation of a make method's routing: shared with the label
+// auto-print in `@carbon/printing`.
+export {
+  isFirstOperationOfMakeMethod,
+  isLastOperationOfMakeMethod
+} from "@carbon/printing/operation-routing";
 
 const REQUIRED_SCAN_CHECK_FAILED = "Could not check the scanned parts";
 
@@ -3162,6 +3113,40 @@ export async function insertReworkQuantity(
     .select("*");
 }
 
+/**
+ * The refusal of an inspection lot completion or disposition on a work center
+ * whose sensor counts: its postings would count the pieces a second time.
+ */
+export const SENSOR_COUNTS_INSPECTION_REFUSAL =
+  "This work center logs completed quantities from its sensor. Set its count mode to Off to complete or disposition an inspection lot here.";
+
+/**
+ * How the work center's sensor counts: "Auto" when its mapped device posts
+ * Production itself. No device, or a failed read, is "Off".
+ */
+export async function getWorkCenterCountMode(
+  client: SupabaseClient<Database>,
+  args: { workCenterId: string; companyId: string }
+): Promise<"Off" | "Auto"> {
+  const { data, error } = await client
+    .from("workCenterDevice")
+    .select("countMode")
+    .eq("workCenterId", args.workCenterId)
+    .eq("companyId", args.companyId)
+    .maybeSingle();
+
+  if (error) {
+    log.error("Failed to read the work center count mode", {
+      companyId: args.companyId,
+      workCenterId: args.workCenterId,
+      error
+    });
+    return "Off";
+  }
+
+  return data?.countMode === "Auto" ? "Auto" : "Off";
+}
+
 // The tracked entity is recorded by the issue path, not on productionQuantity.
 function withoutTracking<
   T extends { trackedEntityId?: unknown; trackingType?: unknown }
@@ -3268,7 +3253,7 @@ export async function insertProductionQuantityIfCurrent(
 
 export async function insertScrapQuantity(
   client: SupabaseClient<Database>,
-  data: z.infer<typeof scrapQuantityValidator> & {
+  data: Omit<z.infer<typeof scrapQuantityValidator>, "countedBySensor"> & {
     companyId: string;
     createdBy: string;
     inspectionId?: string;

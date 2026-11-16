@@ -2,7 +2,7 @@
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
-import { existsSync, rmSync, symlinkSync } from "fs";
+import { copyFileSync, existsSync, linkSync, rmSync, symlinkSync } from "fs";
 import { join } from "path";
 
 const ROOT_ENV_PATH = join(process.cwd(), ".env");
@@ -26,8 +26,23 @@ const PACKAGE_FOLDERS = ["database", "jobs", "kv"];
 function createSymlink(targetPath: string, sourcePath: string) {
   // force: also a dangling link (a moved worktree's), which existsSync misses.
   rmSync(targetPath, { force: true });
-  symlinkSync(sourcePath, targetPath);
-  console.log(`Created symlink at ${targetPath}`);
+  try {
+    symlinkSync(sourcePath, targetPath);
+    console.log(`Created symlink at ${targetPath}`);
+  } catch (error) {
+    // Windows lets only an elevated process, or one with Developer Mode on,
+    // make a symlink. A hard link needs no privilege and stays the same file
+    // while the root file is written in place; a copy is the last resort.
+    // `crbn up` runs this after it writes .env.local, so either is current.
+    if ((error as NodeJS.ErrnoException).code !== "EPERM") throw error;
+    try {
+      linkSync(sourcePath, targetPath);
+      console.log(`Created hard link at ${targetPath} (symlinks not permitted)`);
+    } catch {
+      copyFileSync(sourcePath, targetPath);
+      console.log(`Copied to ${targetPath} (links not permitted)`);
+    }
+  }
 }
 
 function linkBoth(targetDir: string) {

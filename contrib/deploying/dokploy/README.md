@@ -36,6 +36,8 @@ services from `docker-compose.yml` and set `SUPABASE_URL`/`SUPABASE_ANON_KEY`/
 | `postgres/01-roles.sh`, `02-performance.sh`, `03-pooler.sh` | Role passwords, tuning, and what Supavisor needs (`_supabase` database, `pgbouncer` role). Run once, on first init of an empty `pgdata` volume. |
 | `scripts/gen-supabase-keys.sh` | Generates the Supabase JWT key trio (openssl only). |
 | `scripts/backup.sh` | Nightly-able backup: Postgres dump + storage volume archive. |
+| `pulse-ingest.Dockerfile` | The Pulse ingest service (`apps/pulse-ingest`), profile `pulse`. |
+| `mosquitto/` | The Pulse MQTT broker's config, ACL and entrypoint, profile `pulse`. |
 
 ## 1. Generate secrets
 
@@ -281,6 +283,92 @@ realtime schemas, which their services create on boot. The rows still load.
 
 Test a restore at least once (e.g. into a scratch Dokploy project) — an
 untested backup is not a backup.
+
+## 10. Pulse machine monitor (optional)
+
+Pulse records machine time from cycle sensors. A device on each machine
+counts one pulse per cycle and publishes the counts over MQTT. Two services
+run it here, both in the compose profile `pulse`:
+
+| Service | Does |
+|---|---|
+| `mosquitto` | The MQTT broker. Only two accounts: `pulse-ingest` and `pulse-gateway`. |
+| `pulse-ingest` | Stores the counts and the machine states in Postgres, and wakes the OEE sync in Inngest. Run one instance only. |
+
+```
+devices ──MQTT (factory LAN)──▶ gateway (Mosquitto) ──bridge over WireGuard──▶ mosquitto ─▶ pulse-ingest ─▶ Postgres
+```
+
+The devices never connect to the VPS. Each one signs in to the on-site
+gateway, which bridges the `carbon/pulse/v1/#` topics to this broker.
+
+### Turn it on
+
+1. Set `CARBON_EDITION=enterprise`. The Pulse integration is commercial; see
+   the comment in `.env.example` for what else this turns on.
+2. Set `COMPOSE_PROFILES=pulse` (or `studio,pulse`).
+3. Generate `MQTT_INGEST_PASSWORD` and `MQTT_GATEWAY_PASSWORD`
+   (`openssl rand -hex 24` each).
+4. Set `MQTT_PUBLISH_ADDRESS` to the VPS's WireGuard address (for example
+   `10.8.0.1`). The default `127.0.0.1` keeps the broker off every network.
+   Never use `0.0.0.0`: the listener has no TLS.
+5. Redeploy. Do not map a Dokploy domain to either service: MQTT is not HTTP.
+6. In Carbon, open Settings → Integrations → Pulse and install it.
+7. On the **Pulse Devices** tab, register each device by its key.
+8. On the **Devices** tab, map each device to its work center.
+
+The migrations create the Pulse tables, so `pulse-ingest` waits for
+`migrate`, like `erp` and `mes`. It reads the device list again every 60
+seconds, so a device registered in Carbon starts to count within a minute.
+
+### The on-site gateway
+
+The gateway is a small Linux machine in the factory (a Raspberry Pi is
+enough) with Mosquitto and a WireGuard tunnel to the VPS. Its broker holds
+one account per device and keeps the messages on disk while the tunnel is
+down. A minimal `/etc/mosquitto/conf.d/carbon.conf`:
+
+```conf
+listener 1883
+allow_anonymous false
+password_file /etc/mosquitto/passwd
+acl_file /etc/mosquitto/acl
+persistence true
+
+connection carbon
+address 10.8.0.1:1883
+remote_username pulse-gateway
+remote_password <MQTT_GATEWAY_PASSWORD>
+cleansession false
+topic carbon/pulse/v1/# both 1
+```
+
+And `/etc/mosquitto/acl`, so each device writes only its own topics (its
+username is its device key):
+
+```conf
+pattern readwrite carbon/pulse/v1/%u/#
+```
+
+Add a device with `mosquitto_passwd /etc/mosquitto/passwd <device-key>`.
+
+### Verify
+
+```bash
+docker compose logs pulse-ingest | tail   # "connected to the broker", then "started"
+docker compose logs mosquitto | tail      # the gateway's bridge connects as pulse-gateway
+```
+
+In Carbon, the Pulse Devices tab shows "The Pulse ingest service is running",
+and each device's last message. If `pulse-ingest` stops, the Pulse
+integration reads unhealthy within 2 minutes. Its machines go Offline
+once their "Offline after" time passes.
+
+### Backups
+
+The counts and states live in Postgres, so `scripts/backup.sh` covers them.
+The `mosquitto-data` volume holds only messages not yet stored, and needs no
+backup.
 
 ## Upgrading
 

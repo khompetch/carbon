@@ -948,6 +948,348 @@ export default {
         tags: ["earnedValuePeriod"]
       }
     },
+    "/pulseDevice": {
+      get: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.deviceKey"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.name"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.locationId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.piecesPerPulse"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.expectedCycleSeconds"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.idleAfterSeconds"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.offlineAfterSeconds"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.debounceMs"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.bucketSeconds"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.active"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.lastSeenAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.lastPulseAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.lastCounter"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.lastSeq"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.bootId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.rssi"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.firmwareVersion"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.queueDepth"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.currentState"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.currentStateAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.aliveSince"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.heartbeatCounter"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.createdBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.createdAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.updatedBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.updatedAt"
+          },
+          {
+            $ref: "#/parameters/select"
+          },
+          {
+            $ref: "#/parameters/order"
+          },
+          {
+            $ref: "#/parameters/range"
+          },
+          {
+            $ref: "#/parameters/rangeUnit"
+          },
+          {
+            $ref: "#/parameters/offset"
+          },
+          {
+            $ref: "#/parameters/limit"
+          },
+          {
+            $ref: "#/parameters/preferCount"
+          }
+        ],
+        responses: {
+          "200": {
+            description: "OK",
+            schema: {
+              items: {
+                $ref: "#/definitions/pulseDevice"
+              },
+              type: "array"
+            }
+          },
+          "206": {
+            description: "Partial Content"
+          }
+        },
+        tags: ["pulseDevice"]
+      },
+      post: {
+        parameters: [
+          {
+            $ref: "#/parameters/body.pulseDevice"
+          },
+          {
+            $ref: "#/parameters/select"
+          },
+          {
+            $ref: "#/parameters/preferPost"
+          }
+        ],
+        responses: {
+          "201": {
+            description: "Created"
+          }
+        },
+        tags: ["pulseDevice"]
+      },
+      delete: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.deviceKey"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.name"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.locationId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.piecesPerPulse"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.expectedCycleSeconds"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.idleAfterSeconds"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.offlineAfterSeconds"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.debounceMs"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.bucketSeconds"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.active"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.lastSeenAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.lastPulseAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.lastCounter"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.lastSeq"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.bootId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.rssi"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.firmwareVersion"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.queueDepth"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.currentState"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.currentStateAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.aliveSince"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.heartbeatCounter"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.createdBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.createdAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.updatedBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.updatedAt"
+          },
+          {
+            $ref: "#/parameters/preferReturn"
+          }
+        ],
+        responses: {
+          "204": {
+            description: "No Content"
+          }
+        },
+        tags: ["pulseDevice"]
+      },
+      patch: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.deviceKey"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.name"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.locationId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.piecesPerPulse"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.expectedCycleSeconds"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.idleAfterSeconds"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.offlineAfterSeconds"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.debounceMs"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.bucketSeconds"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.active"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.lastSeenAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.lastPulseAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.lastCounter"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.lastSeq"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.bootId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.rssi"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.firmwareVersion"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.queueDepth"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.currentState"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.currentStateAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.aliveSince"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.heartbeatCounter"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.createdBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.createdAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.updatedBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseDevice.updatedAt"
+          },
+          {
+            $ref: "#/parameters/body.pulseDevice"
+          },
+          {
+            $ref: "#/parameters/preferReturn"
+          }
+        ],
+        responses: {
+          "204": {
+            description: "No Content"
+          }
+        },
+        tags: ["pulseDevice"]
+      }
+    },
     "/payrollPeriodTotal": {
       get: {
         parameters: [
@@ -21219,6 +21561,159 @@ export default {
         tags: ["gaugeCalibrationRecords"]
       }
     },
+    "/pulseStateChange": {
+      get: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.pulseDeviceId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.state"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.changedAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.reason"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.createdAt"
+          },
+          {
+            $ref: "#/parameters/select"
+          },
+          {
+            $ref: "#/parameters/order"
+          },
+          {
+            $ref: "#/parameters/range"
+          },
+          {
+            $ref: "#/parameters/rangeUnit"
+          },
+          {
+            $ref: "#/parameters/offset"
+          },
+          {
+            $ref: "#/parameters/limit"
+          },
+          {
+            $ref: "#/parameters/preferCount"
+          }
+        ],
+        responses: {
+          "200": {
+            description: "OK",
+            schema: {
+              items: {
+                $ref: "#/definitions/pulseStateChange"
+              },
+              type: "array"
+            }
+          },
+          "206": {
+            description: "Partial Content"
+          }
+        },
+        tags: ["pulseStateChange"]
+      },
+      post: {
+        parameters: [
+          {
+            $ref: "#/parameters/body.pulseStateChange"
+          },
+          {
+            $ref: "#/parameters/select"
+          },
+          {
+            $ref: "#/parameters/preferPost"
+          }
+        ],
+        responses: {
+          "201": {
+            description: "Created"
+          }
+        },
+        tags: ["pulseStateChange"]
+      },
+      delete: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.pulseDeviceId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.state"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.changedAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.reason"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.createdAt"
+          },
+          {
+            $ref: "#/parameters/preferReturn"
+          }
+        ],
+        responses: {
+          "204": {
+            description: "No Content"
+          }
+        },
+        tags: ["pulseStateChange"]
+      },
+      patch: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.pulseDeviceId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.state"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.changedAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.reason"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseStateChange.createdAt"
+          },
+          {
+            $ref: "#/parameters/body.pulseStateChange"
+          },
+          {
+            $ref: "#/parameters/preferReturn"
+          }
+        ],
+        responses: {
+          "204": {
+            description: "No Content"
+          }
+        },
+        tags: ["pulseStateChange"]
+      }
+    },
     "/methodMaterial": {
       get: {
         parameters: [
@@ -23242,6 +23737,204 @@ export default {
           }
         },
         tags: ["openPurchaseOrderLines"]
+      }
+    },
+    "/pulseCount": {
+      get: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.pulseDeviceId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.bootId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.seq"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.periodStart"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.periodEnd"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.pulses"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.counter"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.estimated"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.rebased"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.receivedAt"
+          },
+          {
+            $ref: "#/parameters/select"
+          },
+          {
+            $ref: "#/parameters/order"
+          },
+          {
+            $ref: "#/parameters/range"
+          },
+          {
+            $ref: "#/parameters/rangeUnit"
+          },
+          {
+            $ref: "#/parameters/offset"
+          },
+          {
+            $ref: "#/parameters/limit"
+          },
+          {
+            $ref: "#/parameters/preferCount"
+          }
+        ],
+        responses: {
+          "200": {
+            description: "OK",
+            schema: {
+              items: {
+                $ref: "#/definitions/pulseCount"
+              },
+              type: "array"
+            }
+          },
+          "206": {
+            description: "Partial Content"
+          }
+        },
+        tags: ["pulseCount"]
+      },
+      post: {
+        parameters: [
+          {
+            $ref: "#/parameters/body.pulseCount"
+          },
+          {
+            $ref: "#/parameters/select"
+          },
+          {
+            $ref: "#/parameters/preferPost"
+          }
+        ],
+        responses: {
+          "201": {
+            description: "Created"
+          }
+        },
+        tags: ["pulseCount"]
+      },
+      delete: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.pulseDeviceId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.bootId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.seq"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.periodStart"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.periodEnd"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.pulses"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.counter"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.estimated"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.rebased"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.receivedAt"
+          },
+          {
+            $ref: "#/parameters/preferReturn"
+          }
+        ],
+        responses: {
+          "204": {
+            description: "No Content"
+          }
+        },
+        tags: ["pulseCount"]
+      },
+      patch: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.pulseDeviceId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.bootId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.seq"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.periodStart"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.periodEnd"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.pulses"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.counter"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.estimated"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.rebased"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseCount.receivedAt"
+          },
+          {
+            $ref: "#/parameters/body.pulseCount"
+          },
+          {
+            $ref: "#/parameters/preferReturn"
+          }
+        ],
+        responses: {
+          "204": {
+            description: "No Content"
+          }
+        },
+        tags: ["pulseCount"]
       }
     },
     "/jobOperationBatch": {
@@ -115053,6 +115746,123 @@ export default {
         tags: ["pickingListLineTrackedEntity"]
       }
     },
+    "/pulseIngestStatus": {
+      get: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.pulseIngestStatus.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseIngestStatus.heartbeatAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseIngestStatus.version"
+          },
+          {
+            $ref: "#/parameters/select"
+          },
+          {
+            $ref: "#/parameters/order"
+          },
+          {
+            $ref: "#/parameters/range"
+          },
+          {
+            $ref: "#/parameters/rangeUnit"
+          },
+          {
+            $ref: "#/parameters/offset"
+          },
+          {
+            $ref: "#/parameters/limit"
+          },
+          {
+            $ref: "#/parameters/preferCount"
+          }
+        ],
+        responses: {
+          "200": {
+            description: "OK",
+            schema: {
+              items: {
+                $ref: "#/definitions/pulseIngestStatus"
+              },
+              type: "array"
+            }
+          },
+          "206": {
+            description: "Partial Content"
+          }
+        },
+        tags: ["pulseIngestStatus"]
+      },
+      post: {
+        parameters: [
+          {
+            $ref: "#/parameters/body.pulseIngestStatus"
+          },
+          {
+            $ref: "#/parameters/select"
+          },
+          {
+            $ref: "#/parameters/preferPost"
+          }
+        ],
+        responses: {
+          "201": {
+            description: "Created"
+          }
+        },
+        tags: ["pulseIngestStatus"]
+      },
+      delete: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.pulseIngestStatus.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseIngestStatus.heartbeatAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseIngestStatus.version"
+          },
+          {
+            $ref: "#/parameters/preferReturn"
+          }
+        ],
+        responses: {
+          "204": {
+            description: "No Content"
+          }
+        },
+        tags: ["pulseIngestStatus"]
+      },
+      patch: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.pulseIngestStatus.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseIngestStatus.heartbeatAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pulseIngestStatus.version"
+          },
+          {
+            $ref: "#/parameters/body.pulseIngestStatus"
+          },
+          {
+            $ref: "#/parameters/preferReturn"
+          }
+        ],
+        responses: {
+          "204": {
+            description: "No Content"
+          }
+        },
+        tags: ["pulseIngestStatus"]
+      }
+    },
     "/supplierProcess": {
       get: {
         parameters: [
@@ -140181,6 +140991,151 @@ export default {
       },
       type: "object"
     },
+    pulseDevice: {
+      required: [
+        "id",
+        "companyId",
+        "deviceKey",
+        "name",
+        "piecesPerPulse",
+        "offlineAfterSeconds",
+        "debounceMs",
+        "bucketSeconds",
+        "active",
+        "createdBy",
+        "createdAt"
+      ],
+      properties: {
+        id: {
+          default: "public.id('pdv'::text)",
+          description: "Note:\nThis is a Primary Key.<pk/>",
+          format: "text",
+          type: "string"
+        },
+        companyId: {
+          description:
+            "Note:\nThis is a Primary Key.<pk/>\nThis is a Foreign Key to `company.id`.<fk table='company' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        deviceKey: {
+          format: "text",
+          type: "string"
+        },
+        name: {
+          format: "text",
+          type: "string"
+        },
+        locationId: {
+          format: "text",
+          type: "string"
+        },
+        piecesPerPulse: {
+          default: 1,
+          format: "numeric",
+          type: "number"
+        },
+        expectedCycleSeconds: {
+          format: "numeric",
+          type: "number"
+        },
+        idleAfterSeconds: {
+          format: "integer",
+          type: "integer"
+        },
+        offlineAfterSeconds: {
+          default: 300,
+          format: "integer",
+          type: "integer"
+        },
+        debounceMs: {
+          default: 20,
+          format: "integer",
+          type: "integer"
+        },
+        bucketSeconds: {
+          default: 5,
+          format: "integer",
+          type: "integer"
+        },
+        active: {
+          default: true,
+          format: "boolean",
+          type: "boolean"
+        },
+        lastSeenAt: {
+          format: "timestamp with time zone",
+          type: "string"
+        },
+        lastPulseAt: {
+          format: "timestamp with time zone",
+          type: "string"
+        },
+        lastCounter: {
+          format: "bigint",
+          type: "integer"
+        },
+        lastSeq: {
+          format: "bigint",
+          type: "integer"
+        },
+        bootId: {
+          format: "text",
+          type: "string"
+        },
+        rssi: {
+          format: "integer",
+          type: "integer"
+        },
+        firmwareVersion: {
+          format: "text",
+          type: "string"
+        },
+        queueDepth: {
+          format: "integer",
+          type: "integer"
+        },
+        currentState: {
+          enum: ["Running", "Idle", "Down", "Offline"],
+          format: 'public."machineState"',
+          type: "string"
+        },
+        currentStateAt: {
+          format: "timestamp with time zone",
+          type: "string"
+        },
+        aliveSince: {
+          format: "timestamp with time zone",
+          type: "string"
+        },
+        heartbeatCounter: {
+          format: "bigint",
+          type: "integer"
+        },
+        createdBy: {
+          description:
+            "Note:\nThis is a Foreign Key to `user.id`.<fk table='user' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        createdAt: {
+          default: "now()",
+          format: "timestamp with time zone",
+          type: "string"
+        },
+        updatedBy: {
+          description:
+            "Note:\nThis is a Foreign Key to `user.id`.<fk table='user' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        updatedAt: {
+          format: "timestamp with time zone",
+          type: "string"
+        }
+      },
+      type: "object"
+    },
     payrollPeriodTotal: {
       required: [
         "id",
@@ -149381,6 +150336,54 @@ export default {
       },
       type: "object"
     },
+    pulseStateChange: {
+      required: [
+        "id",
+        "companyId",
+        "pulseDeviceId",
+        "state",
+        "changedAt",
+        "reason",
+        "createdAt"
+      ],
+      properties: {
+        id: {
+          default: "public.id('psc'::text)",
+          description: "Note:\nThis is a Primary Key.<pk/>",
+          format: "text",
+          type: "string"
+        },
+        companyId: {
+          description:
+            "Note:\nThis is a Primary Key.<pk/>\nThis is a Foreign Key to `company.id`.<fk table='company' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        pulseDeviceId: {
+          format: "text",
+          type: "string"
+        },
+        state: {
+          enum: ["Running", "Idle", "Down", "Offline"],
+          format: 'public."machineState"',
+          type: "string"
+        },
+        changedAt: {
+          format: "timestamp with time zone",
+          type: "string"
+        },
+        reason: {
+          format: "text",
+          type: "string"
+        },
+        createdAt: {
+          default: "now()",
+          format: "timestamp with time zone",
+          type: "string"
+        }
+      },
+      type: "object"
+    },
     methodMaterial: {
       required: [
         "id",
@@ -150438,6 +151441,80 @@ export default {
         },
         planningGroupId: {
           format: "text",
+          type: "string"
+        }
+      },
+      type: "object"
+    },
+    pulseCount: {
+      required: [
+        "id",
+        "companyId",
+        "pulseDeviceId",
+        "bootId",
+        "seq",
+        "periodStart",
+        "periodEnd",
+        "pulses",
+        "counter",
+        "estimated",
+        "rebased",
+        "receivedAt"
+      ],
+      properties: {
+        id: {
+          default: "public.id('pct'::text)",
+          description: "Note:\nThis is a Primary Key.<pk/>",
+          format: "text",
+          type: "string"
+        },
+        companyId: {
+          description:
+            "Note:\nThis is a Primary Key.<pk/>\nThis is a Foreign Key to `company.id`.<fk table='company' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        pulseDeviceId: {
+          format: "text",
+          type: "string"
+        },
+        bootId: {
+          format: "text",
+          type: "string"
+        },
+        seq: {
+          format: "bigint",
+          type: "integer"
+        },
+        periodStart: {
+          format: "timestamp with time zone",
+          type: "string"
+        },
+        periodEnd: {
+          format: "timestamp with time zone",
+          type: "string"
+        },
+        pulses: {
+          format: "integer",
+          type: "integer"
+        },
+        counter: {
+          format: "bigint",
+          type: "integer"
+        },
+        estimated: {
+          default: false,
+          format: "boolean",
+          type: "boolean"
+        },
+        rebased: {
+          default: false,
+          format: "boolean",
+          type: "boolean"
+        },
+        receivedAt: {
+          default: "now()",
+          format: "timestamp with time zone",
           type: "string"
         }
       },
@@ -194294,6 +195371,26 @@ export default {
       },
       type: "object"
     },
+    pulseIngestStatus: {
+      required: ["id", "heartbeatAt"],
+      properties: {
+        id: {
+          default: "ingest",
+          description: "Note:\nThis is a Primary Key.<pk/>",
+          format: "text",
+          type: "string"
+        },
+        heartbeatAt: {
+          format: "timestamp with time zone",
+          type: "string"
+        },
+        version: {
+          format: "text",
+          type: "string"
+        }
+      },
+      type: "object"
+    },
     supplierProcess: {
       required: [
         "id",
@@ -198146,6 +199243,183 @@ export default {
       type: "string"
     },
     "rowFilter.earnedValuePeriod.updatedAt": {
+      name: "updatedAt",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "body.pulseDevice": {
+      name: "pulseDevice",
+      description: "pulseDevice",
+      required: false,
+      in: "body",
+      schema: {
+        $ref: "#/definitions/pulseDevice"
+      }
+    },
+    "rowFilter.pulseDevice.id": {
+      name: "id",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.companyId": {
+      name: "companyId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.deviceKey": {
+      name: "deviceKey",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.name": {
+      name: "name",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.locationId": {
+      name: "locationId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.piecesPerPulse": {
+      name: "piecesPerPulse",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.expectedCycleSeconds": {
+      name: "expectedCycleSeconds",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.idleAfterSeconds": {
+      name: "idleAfterSeconds",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.offlineAfterSeconds": {
+      name: "offlineAfterSeconds",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.debounceMs": {
+      name: "debounceMs",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.bucketSeconds": {
+      name: "bucketSeconds",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.active": {
+      name: "active",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.lastSeenAt": {
+      name: "lastSeenAt",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.lastPulseAt": {
+      name: "lastPulseAt",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.lastCounter": {
+      name: "lastCounter",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.lastSeq": {
+      name: "lastSeq",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.bootId": {
+      name: "bootId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.rssi": {
+      name: "rssi",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.firmwareVersion": {
+      name: "firmwareVersion",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.queueDepth": {
+      name: "queueDepth",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.currentState": {
+      name: "currentState",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.currentStateAt": {
+      name: "currentStateAt",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.aliveSince": {
+      name: "aliveSince",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.heartbeatCounter": {
+      name: "heartbeatCounter",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.createdBy": {
+      name: "createdBy",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.createdAt": {
+      name: "createdAt",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.updatedBy": {
+      name: "updatedBy",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseDevice.updatedAt": {
       name: "updatedAt",
       required: false,
       in: "query",
@@ -208464,6 +209738,57 @@ export default {
       in: "query",
       type: "string"
     },
+    "body.pulseStateChange": {
+      name: "pulseStateChange",
+      description: "pulseStateChange",
+      required: false,
+      in: "body",
+      schema: {
+        $ref: "#/definitions/pulseStateChange"
+      }
+    },
+    "rowFilter.pulseStateChange.id": {
+      name: "id",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseStateChange.companyId": {
+      name: "companyId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseStateChange.pulseDeviceId": {
+      name: "pulseDeviceId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseStateChange.state": {
+      name: "state",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseStateChange.changedAt": {
+      name: "changedAt",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseStateChange.reason": {
+      name: "reason",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseStateChange.createdAt": {
+      name: "createdAt",
+      required: false,
+      in: "query",
+      type: "string"
+    },
     "body.methodMaterial": {
       name: "methodMaterial",
       description: "methodMaterial",
@@ -209683,6 +211008,87 @@ export default {
     },
     "rowFilter.openPurchaseOrderLines.planningGroupId": {
       name: "planningGroupId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "body.pulseCount": {
+      name: "pulseCount",
+      description: "pulseCount",
+      required: false,
+      in: "body",
+      schema: {
+        $ref: "#/definitions/pulseCount"
+      }
+    },
+    "rowFilter.pulseCount.id": {
+      name: "id",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseCount.companyId": {
+      name: "companyId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseCount.pulseDeviceId": {
+      name: "pulseDeviceId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseCount.bootId": {
+      name: "bootId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseCount.seq": {
+      name: "seq",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseCount.periodStart": {
+      name: "periodStart",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseCount.periodEnd": {
+      name: "periodEnd",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseCount.pulses": {
+      name: "pulses",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseCount.counter": {
+      name: "counter",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseCount.estimated": {
+      name: "estimated",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseCount.rebased": {
+      name: "rebased",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseCount.receivedAt": {
+      name: "receivedAt",
       required: false,
       in: "query",
       type: "string"
@@ -258530,6 +259936,33 @@ export default {
     },
     "rowFilter.pickingListLineTrackedEntity.companyId": {
       name: "companyId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "body.pulseIngestStatus": {
+      name: "pulseIngestStatus",
+      description: "pulseIngestStatus",
+      required: false,
+      in: "body",
+      schema: {
+        $ref: "#/definitions/pulseIngestStatus"
+      }
+    },
+    "rowFilter.pulseIngestStatus.id": {
+      name: "id",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseIngestStatus.heartbeatAt": {
+      name: "heartbeatAt",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pulseIngestStatus.version": {
+      name: "version",
       required: false,
       in: "query",
       type: "string"

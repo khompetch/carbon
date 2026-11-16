@@ -240,6 +240,10 @@ type JobOperationProps = {
   isFirstOperation: boolean;
   isFirstOpenOperation?: boolean;
   requireTrackedMaterialsIssued?: boolean;
+  /** Auto: the work center's sensor logs completed quantities itself. */
+  countMode?: "Off" | "Auto";
+  /** The user may log completed quantities by hand in Auto mode. */
+  canOverrideCount?: boolean;
   workCenter: Promise<
     PostgrestSingleResponse<{
       name: string;
@@ -278,6 +282,8 @@ export const JobOperation = ({
   isFirstOperation,
   isFirstOpenOperation = false,
   requireTrackedMaterialsIssued = false,
+  countMode = "Off",
+  canOverrideCount = false,
   workCenter
 }: JobOperationProps) => {
   const { t } = useLingui();
@@ -3061,6 +3067,7 @@ export const JobOperation = ({
           key={`scrap-${scrapModal.openCount}`}
           open={scrapModal.isOpen}
           type="scrap"
+          countMode={countMode}
           laborProductionEvent={laborProductionEvent}
           machineProductionEvent={machineProductionEvent}
           operation={operation}
@@ -3086,6 +3093,8 @@ export const JobOperation = ({
                 <QuantityModal
                   open={completeModal.isOpen}
                   type="complete"
+                  countMode={countMode}
+                  canOverrideCount={canOverrideCount}
                   laborProductionEvent={laborProductionEvent}
                   machineProductionEvent={machineProductionEvent}
                   materials={resolvedMaterials.materials}

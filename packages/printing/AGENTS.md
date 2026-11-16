@@ -4,7 +4,7 @@ Print job system — printer routing, label generation queue, ProxyBox delivery,
 
 ## Always
 
-- **Three exports**: `.` (registry, validators, assignments, DB services, types), `./printing.server` (cache, ProxyBox delivery, BinderyPress rendering), `./ui` (PrintingProvider, PrintButton, LabelDownloadModal).
+- **Five exports**: `.` (registry, validators, assignments, DB services, types), `./printing.server` (cache, ProxyBox delivery, BinderyPress rendering), `./operation-label.server` (`printOperationLabel`, shared by the MES and the OEE count step), `./operation-routing` (the browser-safe first/last operation reads; the MES operation service, which MES components import, re-exports them), `./ui` (PrintingProvider, PrintButton, LabelDownloadModal).
 - **Invalidate Redis cache after printer changes** — call `invalidatePrinterCache(companyId)` after any `printerRoute` upsert/delete or assignment update. Cache key: `printing:{companyId}:{locationId}:{context}`.
 - **Follow the enqueue pattern**: `trigger("print-job", { sourceDocument, sourceDocumentId, companyId, userId, locationId?, workCenterId? })` from `@carbon/lib`. Both manual and auto-print paths use the same Inngest task.
 - **Wrap auto-print in try/catch** — check `getCachedPrinterConfig(...).autoPrint`, never let print failures block the parent business operation.

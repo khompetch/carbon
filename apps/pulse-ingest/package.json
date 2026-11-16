@@ -1,0 +1,30 @@
+{
+  "name": "pulse-ingest",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf .turbo node_modules",
+    "lint": "biome lint --write ",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "start": "tsx src/main.ts",
+    "simulate": "tsx src/simulator/server.ts"
+  },
+  "dependencies": {
+    "@carbon/database": "workspace:*",
+    "@internationalized/date": "catalog:",
+    "kysely": "catalog:",
+    "mqtt": "catalog:",
+    "pg": "8.20.0",
+    "tsx": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@carbon/config": "workspace:*",
+    "@types/pg": "8.15.6",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

@@ -12,6 +12,8 @@
 import type { Kysely, KyselyDatabase } from "@carbon/database/client";
 import { lockWorkCenterDevice } from "@carbon/database/machine-time";
 import {
+  type BlockPeriod,
+  type LoadPeriod,
   type MachineState,
   machineTimeRefusal,
   type OeeProvider,
@@ -43,9 +45,13 @@ export type OeeSyncDevice = {
  * Normalize every instant to an ISO string before it is compared or passed on
  * (`.claude/rules/numeric-precision.md` → "Runtime type decoding").
  */
-function toInstant(value: Date | string): string;
-function toInstant(value: Date | string | null | undefined): string | null;
-function toInstant(value: Date | string | null | undefined): string | null {
+export function toInstant(value: Date | string): string;
+export function toInstant(
+  value: Date | string | null | undefined
+): string | null;
+export function toInstant(
+  value: Date | string | null | undefined
+): string | null {
   if (value === null || value === undefined) return null;
   return value instanceof Date
     ? value.toISOString()
@@ -60,6 +66,117 @@ const compareInstants = (a: string, b: string) =>
 
 /** The later of two ISO instants. */
 const later = (a: string, b: string) => (compareInstants(a, b) >= 0 ? a : b);
+
+type WorkCenterScope = { workCenterId: string; companyId: string };
+
+/**
+ * The work center's loads from `from` on: time and counts go to the
+ * operation loaded when the machine ran, not the current one. Shared by the
+ * sync and the count step.
+ */
+export async function readLoads(
+  trx: Kysely<KyselyDatabase>,
+  device: WorkCenterScope,
+  from: string
+): Promise<LoadPeriod[]> {
+  const rows = await trx
+    .selectFrom("workCenterLoad")
+    .leftJoin("jobOperation", (join) =>
+      join
+        .onRef("jobOperation.id", "=", "workCenterLoad.jobOperationId")
+        .onRef("jobOperation.companyId", "=", "workCenterLoad.companyId")
+    )
+    .leftJoin("job", (join) =>
+      join
+        .onRef("job.id", "=", "jobOperation.jobId")
+        .onRef("job.companyId", "=", "jobOperation.companyId")
+    )
+    .select([
+      "workCenterLoad.jobOperationId",
+      "workCenterLoad.loadedAt",
+      "workCenterLoad.unloadedAt",
+      "jobOperation.status as operationStatus",
+      "job.status as jobStatus"
+    ])
+    .where("workCenterLoad.workCenterId", "=", device.workCenterId)
+    .where("workCenterLoad.companyId", "=", device.companyId)
+    .where((eb) =>
+      eb.or([
+        eb("workCenterLoad.unloadedAt", "is", null),
+        eb("workCenterLoad.unloadedAt", ">", from)
+      ])
+    )
+    .orderBy("workCenterLoad.loadedAt", "asc")
+    .execute();
+  return rows.map((row) => ({
+    jobOperationId: row.jobOperationId,
+    from: toInstant(row.loadedAt),
+    to: toInstant(row.unloadedAt),
+    assignable:
+      row.operationStatus !== null &&
+      machineTimeRefusal(row.operationStatus, row.jobStatus) === null
+  }));
+}
+
+/**
+ * When maintenance blocked the work center, from `from` on. A Down dispatch
+ * blocks from the moment it is reported (the MES ends every event on the work
+ * center when one is created) until it is Completed or Cancelled; a Planned
+ * one blocks from its actual start. Broader than the view
+ * "workCentersWithBlockingStatus", which counts In Progress only.
+ */
+export async function readBlocks(
+  trx: Kysely<KyselyDatabase>,
+  device: WorkCenterScope,
+  from: string
+): Promise<BlockPeriod[]> {
+  const rows = await trx
+    .selectFrom("maintenanceDispatch")
+    .select([
+      sql<
+        Date | string
+      >`CASE WHEN "oeeImpact" = 'Down' THEN "createdAt" ELSE COALESCE("actualStartTime", "updatedAt", "createdAt") END`.as(
+        "blockedFrom"
+      ),
+      sql<
+        Date | string | null
+      >`CASE WHEN "status" IN ('Open', 'Assigned', 'In Progress') THEN NULL ELSE COALESCE("completedAt", "actualEndTime", "updatedAt", "createdAt") END`.as(
+        "blockedTo"
+      )
+    ])
+    .where("workCenterId", "=", device.workCenterId)
+    .where("companyId", "=", device.companyId)
+    .where((eb) =>
+      eb.or([
+        eb.and([
+          eb("oeeImpact", "=", "Down"),
+          eb("status", "in", ["Open", "Assigned", "In Progress"])
+        ]),
+        eb.and([
+          eb("oeeImpact", "=", "Planned"),
+          eb("status", "=", "In Progress")
+        ]),
+        eb.and([
+          eb("oeeImpact", "in", ["Down", "Planned"]),
+          eb("status", "in", ["Completed", "Cancelled"]),
+          eb.or([
+            eb("oeeImpact", "=", "Down"),
+            eb("actualStartTime", "is not", null)
+          ]),
+          eb(
+            sql`COALESCE("completedAt", "actualEndTime", "updatedAt", "createdAt")`,
+            ">",
+            from
+          )
+        ])
+      ])
+    )
+    .execute();
+  return rows.map((row) => ({
+    from: toInstant(row.blockedFrom),
+    to: toInstant(row.blockedTo)
+  }));
+}
 
 export async function syncOeeDevice({
   db,
@@ -215,85 +332,9 @@ export async function syncOeeDevice({
       .filter((instant): instant is string => instant !== null)
       .reduce((a, b) => (compareInstants(a, b) <= 0 ? a : b), now);
 
-    const [loadRows, blockRows, recordedRows] = await Promise.all([
-      // The work center's loads: time goes to the operation loaded when it
-      // ran, not the current one.
-      trx
-        .selectFrom("workCenterLoad")
-        .leftJoin("jobOperation", (join) =>
-          join
-            .onRef("jobOperation.id", "=", "workCenterLoad.jobOperationId")
-            .onRef("jobOperation.companyId", "=", "workCenterLoad.companyId")
-        )
-        .leftJoin("job", (join) =>
-          join
-            .onRef("job.id", "=", "jobOperation.jobId")
-            .onRef("job.companyId", "=", "jobOperation.companyId")
-        )
-        .select([
-          "workCenterLoad.jobOperationId",
-          "workCenterLoad.loadedAt",
-          "workCenterLoad.unloadedAt",
-          "jobOperation.status as operationStatus",
-          "job.status as jobStatus"
-        ])
-        .where("workCenterLoad.workCenterId", "=", device.workCenterId)
-        .where("workCenterLoad.companyId", "=", device.companyId)
-        .where((eb) =>
-          eb.or([
-            eb("workCenterLoad.unloadedAt", "is", null),
-            eb("workCenterLoad.unloadedAt", ">", windowFrom)
-          ])
-        )
-        .orderBy("workCenterLoad.loadedAt", "asc")
-        .execute(),
-      // When maintenance blocked the work center. A Down dispatch blocks from
-      // the moment it is reported (the MES ends every event on the work
-      // center when one is created) until it is Completed or Cancelled; a
-      // Planned one blocks from its actual start. Broader than the view
-      // "workCentersWithBlockingStatus", which counts In Progress only.
-      trx
-        .selectFrom("maintenanceDispatch")
-        .select([
-          sql<
-            Date | string
-          >`CASE WHEN "oeeImpact" = 'Down' THEN "createdAt" ELSE COALESCE("actualStartTime", "updatedAt", "createdAt") END`.as(
-            "blockedFrom"
-          ),
-          sql<
-            Date | string | null
-          >`CASE WHEN "status" IN ('Open', 'Assigned', 'In Progress') THEN NULL ELSE COALESCE("completedAt", "actualEndTime", "updatedAt", "createdAt") END`.as(
-            "blockedTo"
-          )
-        ])
-        .where("workCenterId", "=", device.workCenterId)
-        .where("companyId", "=", device.companyId)
-        .where((eb) =>
-          eb.or([
-            eb.and([
-              eb("oeeImpact", "=", "Down"),
-              eb("status", "in", ["Open", "Assigned", "In Progress"])
-            ]),
-            eb.and([
-              eb("oeeImpact", "=", "Planned"),
-              eb("status", "=", "In Progress")
-            ]),
-            eb.and([
-              eb("oeeImpact", "in", ["Down", "Planned"]),
-              eb("status", "in", ["Completed", "Cancelled"]),
-              eb.or([
-                eb("oeeImpact", "=", "Down"),
-                eb("actualStartTime", "is not", null)
-              ]),
-              eb(
-                sql`COALESCE("completedAt", "actualEndTime", "updatedAt", "createdAt")`,
-                ">",
-                windowFrom
-              )
-            ])
-          ])
-        )
-        .execute(),
+    const [loads, blocks, recordedRows] = await Promise.all([
+      readLoads(trx, device, windowFrom),
+      readBlocks(trx, device, windowFrom),
       // Time already recorded on the work center in the window: a late run
       // or the time after a press is recorded less what these hold, and a
       // late stop trims the queue rows among them.
@@ -337,18 +378,8 @@ export async function syncOeeDevice({
       currentStateAt,
       lastManualChangeAt,
       firstUnplannedPressAt,
-      loads: loadRows.map((row) => ({
-        jobOperationId: row.jobOperationId,
-        from: toInstant(row.loadedAt),
-        to: toInstant(row.unloadedAt),
-        assignable:
-          row.operationStatus !== null &&
-          machineTimeRefusal(row.operationStatus, row.jobStatus) === null
-      })),
-      blocks: blockRows.map((row) => ({
-        from: toInstant(row.blockedFrom),
-        to: toInstant(row.blockedTo)
-      })),
+      loads,
+      blocks,
       openMachineEvent: openEvent
         ? {
             id: openEvent.id,

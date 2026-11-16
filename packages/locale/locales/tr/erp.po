@@ -632,6 +632,10 @@ msgstr "{0} sorun — yayınlanmadı"
 msgid "{0} Processes"
 msgstr "{0} Süreçler"
 
+#. placeholder {0}: device.queueDepth
+msgid "{0} queued"
+msgstr "{0} kuyrukta"
+
 #. placeholder {0}: quantityFormatter(line.quantityReceived)
 #. placeholder {1}: quantityFormatter(line.quantityCredited)
 msgid "{0} received · {1} credited"
@@ -1284,6 +1288,9 @@ msgstr "{stale} sayfa yüklendikten sonra değişti"
 
 msgid "{state} · synced {syncedAgo}"
 msgstr "{state} · {syncedAgo} eşitlendi"
+
+msgid "{state} since {since}"
+msgstr "{since} tarihinden beri {state}"
 
 msgid "{statusTotal, plural, one {# issue in total} other {# issues in total}}"
 msgstr "{statusTotal, plural, one {# uygunsuzluk toplamda} other {# uygunsuzluk toplamda}}"
@@ -3917,6 +3924,9 @@ msgstr "Şirketiniz için zaten bir dışa aktarma çalışıyor. Bittiğinde ye
 msgid "An https request Carbon sends to a system of yours when a workflow reaches that step, carrying whatever headers and body you configured."
 msgstr "Bir iş akışı bu adıma ulaştığında Carbon'un sisteminize gönderdiği bir https isteği, yapılandırdığınız başlıkları ve gövdeyi taşır."
 
+msgid "An inactive device is ignored by the ingest service."
+msgstr "Pasif bir cihaz, veri alma servisi tarafından yok sayılır."
+
 msgid "An inactive group's members are planned on their own"
 msgstr "Pasif bir grubun üyeleri kendi başlarına planlanır"
 
@@ -5111,6 +5121,9 @@ msgstr "Bir parti ata"
 msgid "Assign Batch"
 msgstr "Parti ata"
 
+msgid "Assign machine pieces that no operation could take to the right job, or dismiss them."
+msgstr "Hiçbir operasyonun alamadığı makine sayımı parçaları doğru iş emrine atayın veya yok sayın."
+
 msgid "Assign machine run time that no loaded operation claimed to the right job, or dismiss it."
 msgstr "Yüklü bir operasyonun talep etmediği makine süresini doğru işe atayın veya göz ardı edin."
 
@@ -5284,6 +5297,9 @@ msgstr "Yetkilendirme reddedildi. Tekrar bağlanmayı deneyin."
 
 msgid "Authorized overtime on top of the shift"
 msgstr "Vardiyayı çok aşan yetkili fazla mesai"
+
+msgid "Auto"
+msgstr "Otomatik"
 
 msgid "Auto apply"
 msgstr "Otomatik uygula"
@@ -5572,6 +5588,9 @@ msgstr "Parti Kapasitesi"
 
 msgid "Batch is not available"
 msgstr "Parti kullanılamaz"
+
+msgid "Batch items only. Empty: one label when the lot starts."
+msgstr "Yalnızca parti takipli stoklar. Boşsa: parti başladığında bir etiket."
 
 msgid "Batch items require a sales order"
 msgstr "Parti toplu ürünler için satış siparişi gereklidir"
@@ -8705,6 +8724,9 @@ msgstr "Sayım Kimliği"
 msgid "Count items"
 msgstr "Öğeleri say"
 
+msgid "Count mode"
+msgstr "Sayım modu"
+
 msgid "Counted {total}."
 msgstr "{total} sayıldı."
 
@@ -8716,6 +8738,9 @@ msgstr "Muhasebeleştirilecek Taraflar"
 
 msgid "Counterparty"
 msgstr "Karşı Taraf"
+
+msgid "Counting for {deviceName}"
+msgstr "{deviceName} için sayım"
 
 msgid "Counting…"
 msgstr "Sayılıyor…"
@@ -9768,6 +9793,9 @@ msgstr "Proje Yarı mamulü Borç yaz ve her havuzun uygulanmış hesabını Ala
 msgid "Debits"
 msgstr "Borçlar"
 
+msgid "Debounce (ms)"
+msgstr "Debounce (ms)"
+
 msgid "Decide what an operator sees if they try to issue a batch or serial that's already expired."
 msgstr "Süresi dolmuş bir Parti veya seri için Malzeme çıkışı yapmaya çalışan Operatörün göreceğini belirleyin."
 
@@ -10024,8 +10052,8 @@ msgid "Delete"
 msgstr "Sil"
 
 #. placeholder {0}: deleting.name
+#. placeholder {0}: device.name
 #. placeholder {0}: monthLabel(deleting.periodStart)
-#. placeholder {0}: row.account?.number ?? ""
 msgid "Delete {0}"
 msgstr "{0} Sil"
 
@@ -10702,6 +10730,9 @@ msgstr "Geliştirici"
 
 msgid "Device"
 msgstr "Cihaz"
+
+msgid "Device key"
+msgstr "Cihaz anahtarı"
 
 msgid "Devices"
 msgstr "Cihazlar"
@@ -11495,6 +11526,7 @@ msgstr "Ekonomik Operatörlerin Kayıt ve Kimlik Numarası; AB/İngiltere'de gü
 msgid "Edit"
 msgstr "Düzenle"
 
+#. placeholder {0}: device.name
 #. placeholder {0}: operation.description
 #. placeholder {0}: process.name
 msgid "Edit {0}"
@@ -11804,6 +11836,9 @@ msgstr "Projeyi Düzenle"
 msgid "Edit Properties"
 msgstr "Özellikleri düzenle"
 
+msgid "Edit Pulse device"
+msgstr "Pulse cihazını düzenle"
+
 msgid "Edit purchase order line type"
 msgstr "Satın alma siparişi satır türünü düzenle"
 
@@ -12068,6 +12103,9 @@ msgstr "Boş liste"
 
 msgid "Empty work centers"
 msgstr "Boş iş merkezleri"
+
+msgid "Empty: 3 standard cycles, at least 30"
+msgstr "Boş: 3 standart çevrim, en az 30"
 
 msgid "Enable"
 msgstr "Etkinleştir"
@@ -13868,11 +13906,17 @@ msgstr "Bir parti için. Bir seri 1 olarak sayılır."
 msgid "for anything. They'll pull in the right person."
 msgstr "herhangi bir şey için. Doğru kişiyi çekerler."
 
+msgid "For example press-01"
+msgstr "Örneğin press-01"
+
 msgid "For example Site or Ordered by"
 msgstr "Örneğin Tesis veya Sıralama ölçütü"
 
 msgid "For Form 6765 Section E"
 msgstr "Form 6765 Bölüm E için"
+
+msgid "For machines with a long cycle. Each cycle reaches Carbon within a second, instead of every few seconds."
+msgstr "Uzun çevrim süreli makineler için. Her çevrim, birkaç saniyede bir yerine bir saniye içinde Carbon'a ulaşır."
 
 msgid "Force delete"
 msgstr ""
@@ -14605,6 +14649,9 @@ msgstr "Başlıklar"
 msgid "Heading {level}"
 msgstr "Başlık {level}"
 
+msgid "Health"
+msgstr "Sağlık"
+
 msgid "Healthy"
 msgstr "Sağlıklı"
 
@@ -15051,6 +15098,9 @@ msgstr "Kimlik Sağlayıcı (IdP)"
 msgid "Idle"
 msgstr "Boş"
 
+msgid "Idle after (seconds)"
+msgstr "Boşta kalma süresi (saniye)"
+
 msgid "IdP Metadata URL"
 msgstr "IdP Meta Veri URL'si"
 
@@ -15187,6 +15237,9 @@ msgstr "Açık bir menüde"
 
 msgid "in arrears"
 msgstr "vadeli"
+
+msgid "In Auto, the sensor logs completed and scrap quantities on the operation loaded on this work center."
+msgstr "Otomatik modda sensör, bu iş merkezine yüklü operasyon için tamamlanan ve fire miktarlarını kaydeder."
 
 msgid "In DCAA mode, an Exempt employee's week over the standard weekly hours posts at standard hours ÷ hours worked, so the week's cost spreads over every hour."
 msgstr "DCAA modunda, muaf bir çalışanın standart haftalık saatleri aşan haftası, standart saatler ÷ çalışılan saatlerde gönderilir, böylece haftanın maliyeti her saate yayılır."
@@ -16321,6 +16374,9 @@ msgstr "İş emri operasyonları"
 msgid "Job Operations"
 msgstr "İş emri operasyonları"
 
+msgid "Job or operation"
+msgstr "İş emri veya operasyon"
+
 msgid "Job Priority"
 msgstr "İş Önceliği"
 
@@ -17350,6 +17406,9 @@ msgstr "Kilitli: Bu kayıt artık değiştirilemez."
 
 msgid "Locking makes the period read-only for operational documents (receipts, shipments, invoices) while still allowing accounting adjustments like depreciation and disposals. A period must be locked before it can be closed."
 msgstr "Dönemin kilitlenmesi, işletme belgelerine (makbuzlar, sevkiyatlar, faturalar) yönelik olarak salt okunur hale getirirken, amortisman ve elden çıkarma gibi muhasebe düzeltmelerine izin vermeye devam eder. Dönem kapatılmadan önce kilitlenmesi gerekir."
+
+msgid "Log completed from the sensor"
+msgstr "Sensörden tamamlananı kaydet"
 
 msgid "Log nonconformances and drive a CAPA"
 msgstr "Uygunsuzlukları kaydedin ve CAPA başlatın"
@@ -18770,6 +18829,9 @@ msgstr "Ağ hatası"
 msgid "Never"
 msgstr "Asla"
 
+msgid "Never reported"
+msgstr "Hiç rapor edilmedi"
+
 msgid "New"
 msgstr "Yeni"
 
@@ -18865,6 +18927,9 @@ msgstr "Yeni Talep Tahmini"
 
 msgid "New Department"
 msgstr "Yeni Departman"
+
+msgid "New device"
+msgstr "Yeni cihaz"
 
 msgid "New Dimension"
 msgstr "Yeni Boyut"
@@ -19043,6 +19108,9 @@ msgstr "Yeni Proje Sözleşmesi"
 
 msgid "New Project Stock Transfer"
 msgstr "Yeni Proje Stok Transferi"
+
+msgid "New Pulse device"
+msgstr "Yeni Pulse cihazı"
 
 msgid "New purchase order"
 msgstr "Yeni satın alma siparişi"
@@ -19596,6 +19664,9 @@ msgstr "Cihaz bulunamadı"
 msgid "No devices match your search"
 msgstr "Aramanızla eşleşen cihaz yok"
 
+msgid "No devices registered"
+msgstr "Kayıtlı cihaz yok"
+
 msgid "No differences."
 msgstr "Farklılık yok."
 
@@ -19935,6 +20006,9 @@ msgstr "Açık satış sipariş satırı yok"
 msgid "No open work has a target date."
 msgstr "Hiçbir açık işin hedef tarihi yoktur."
 
+msgid "No operation loaded"
+msgstr "Yüklü operasyon yok"
+
 msgid "No operations"
 msgstr "Operasyonlar yok"
 
@@ -20185,6 +20259,9 @@ msgstr "Çizelge satırı yok."
 msgid "No scheduled work in this window"
 msgstr "Bu zaman penceresinde planlanmış iş yok"
 
+msgid "No scrap reason set"
+msgstr "Fire nedeni ayarlanmamış"
+
 msgid "No serial"
 msgstr "Seri no yok"
 
@@ -20223,6 +20300,9 @@ msgstr "Henüz slayt yok"
 
 msgid "No sorts applied to this view"
 msgstr "Bu görünüme herhangi bir sıralama uygulanmadı"
+
+msgid "No state yet"
+msgstr "Henüz durum yok"
 
 msgid "No statement for this period"
 msgstr "Bu dönem için ekstre yok"
@@ -20790,6 +20870,9 @@ msgstr "Memur"
 
 msgid "Offline"
 msgstr "Çevrimdışı"
+
+msgid "Offline after (seconds)"
+msgstr "Çevrimdışı sayılma süresi (saniye)"
 
 msgid "Offset Absorbed Overhead"
 msgstr "Emilen Genel Üretim Giderlerini Dengeleme"
@@ -21367,6 +21450,9 @@ msgstr "Operasyon partileri"
 msgid "Operation created"
 msgstr "Operasyon oluşturuldu"
 
+msgid "Operation done or canceled"
+msgstr "Operasyon bitti veya iptal edildi"
+
 msgid "Operation lead time"
 msgstr "Operasyon tedarik süresi"
 
@@ -21666,6 +21752,9 @@ msgstr "Ödenmemiş"
 
 msgid "Over estimate first"
 msgstr "Önce Tahminini Aşma"
+
+msgid "Over the target quantity"
+msgstr "Hedef miktarın üzerinde"
 
 msgid "Over-applied by"
 msgstr "Fazla uygulandı"
@@ -22480,6 +22569,9 @@ msgstr ""
 msgid "Picking offers tracked entities earliest-expiry-first, so the soonest-to-expire stock leaves first by default."
 msgstr "Toplama izlenen varlıkları en yakın son kullanma tarihine göre sunar, bu nedenle en yakında sona erecek stok varsayılan olarak ilk olarak çıkar."
 
+msgid "Pieces per pulse"
+msgstr "Sinyal başına parça"
+
 msgid "Pieces per run. Leave empty for no limit."
 msgstr "Çalışma başına parça. Sınır olmadığında boş bırakın."
 
@@ -23039,6 +23131,9 @@ msgstr "{0} Kanban Yazdır"
 msgid "Print {0} Labels"
 msgstr "{0} Etiket Yazdır"
 
+msgid "Print a label every N pieces"
+msgstr "Her N parçada bir etiket yazdır"
+
 msgid "Print batch list"
 msgstr "Parti Listesini Yazdır"
 
@@ -23515,6 +23610,9 @@ msgstr "Stoktan kullan"
 
 msgid "Pull, map, and load your data"
 msgstr "Verilerinizi çekin, eşleyin ve yükleyin"
+
+msgid "Pulse Devices"
+msgstr "Pulse cihazları"
 
 msgid "Purchase"
 msgstr "Satın Alma"
@@ -24604,6 +24702,9 @@ msgstr "Şunun için avans iadesi:"
 msgid "Refund to Customer"
 msgstr "Müşteriye İade"
 
+msgid "Refused"
+msgstr "Reddedildi"
+
 msgid "Regenerate"
 msgstr "Yeniden oluştur"
 
@@ -24633,6 +24734,9 @@ msgstr "Carbon'dan önce satılan bir birimi kaydedin. Carbon'un gönderdiği bi
 
 msgid "Register Existing Asset"
 msgstr "Kayıtlı"
+
+msgid "Register the cycle sensors on your machines, then map each one to a work center."
+msgstr "Makinelerinizdeki çevrim sensörlerini kaydedin, ardından her birini bir iş merkezine eşleyin."
 
 msgid "Registered"
 msgstr "Kaydedildi"
@@ -26485,6 +26589,12 @@ msgstr "Kaydedilen {count} muhasebe hesabı eşlemesi"
 msgid "Saved account mapping"
 msgstr "Kaydedilen muhasebe hesabı eşlemesi"
 
+msgid "Saved counting settings"
+msgstr "Kaydedilen sayım ayarları"
+
+msgid "Saved device"
+msgstr "Kaydedilmiş cihaz"
+
 msgid "Saved device mapping"
 msgstr "Kaydedilen cihaz eşlemesi"
 
@@ -26682,6 +26792,9 @@ msgstr "Fire nedeni"
 
 msgid "Scrap Reason"
 msgstr "Fire Nedeni"
+
+msgid "Scrap reason for the Log scrap button"
+msgstr "Fire kaydet düğmesi için fire nedeni"
 
 msgid "scrap reasons"
 msgstr "Fire nedenleri"
@@ -26933,6 +27046,9 @@ msgstr "Her iş merkezi'nin canlı kapasite tahminini görebilirsiniz — her i�
 #. placeholder {0}: lines.length
 msgid "See all {0}"
 msgstr "{0} hepsini gör"
+
+msgid "Seen {lastSeen}"
+msgstr "Son görülme: {lastSeen}"
 
 msgid "Segment"
 msgstr "Bölüm"
@@ -27278,11 +27394,17 @@ msgstr "Gönder"
 msgid "Send all to"
 msgstr "Tümünü şuraya gönder"
 
+msgid "Send each pulse immediately"
+msgstr "Her darbeyi hemen gönder"
+
 msgid "Send error"
 msgstr "Gönderme Hatası"
 
 msgid "Send Estimate {serviceJobId}"
 msgstr "Tahmini Gönder {serviceJobId}"
+
+msgid "Send every (seconds)"
+msgstr "Gönderme aralığı (saniye)"
 
 msgid "Send Invite"
 msgstr "Davet Gönder"
@@ -27361,6 +27483,9 @@ msgstr "Seri / Parti"
 
 msgid "Serial / Batch Number"
 msgstr "Seri / Parti Numarası"
+
+msgid "Serial item needs Send each pulse immediately"
+msgstr "Seri takipli stok, “Her darbeyi hemen gönder” ayarını gerektirir"
 
 msgid "Serial items require a sales order"
 msgstr "Seri ürünler satış siparişi gerektirir"
@@ -28589,6 +28714,9 @@ msgstr "Standart bulut Carbon, şirketinizin nasıl çalıştığına uygun"
 
 msgid "Standard Cost Variances"
 msgstr "Standart Maliyet Sapmaları"
+
+msgid "Standard cycle (seconds)"
+msgstr "Standart çevrim (saniye)"
 
 msgid "Standard factor"
 msgstr "Standart faktör"
@@ -30408,6 +30536,12 @@ msgstr "Ertelenmiş Hasılat varsayılan hesabı boş."
 msgid "The department this one rolls up under for reporting and headcount hierarchies; leave empty for a top-level department."
 msgstr "Bu departmanın raporlama ve personel sayısı hiyerarşisinde bağlı olduğu departman; üst seviye bir departman için boş bırakın."
 
+msgid "The device key is the device's MQTT username. It cannot change after the device is registered."
+msgstr "Cihaz anahtarı, cihazın MQTT kullanıcı adıdır. Cihaz kaydedildikten sonra değiştirilemez."
+
+msgid "The device's counts and state changes are deleted too. The sensor stops reporting to Carbon."
+msgstr "Cihazın sayımları ve durum değişiklikleri de silinir. Sensör Carbon'a veri göndermeyi durdurur."
+
 msgid "The device's site is in {siteTimezone}; Carbon uses {locationTimezone}"
 msgstr "Cihazın sahası {siteTimezone} saat diliminde; Carbon {locationTimezone} kullanıyor"
 
@@ -31037,6 +31171,16 @@ msgstr "Projenin stoku sadece aynı müşterinin projelerine hareket eder"
 
 msgid "The provider offers no dimension targets. Enable the feature in the provider first (e.g. tracking categories, class tracking, or fields)."
 msgstr "Sağlayıcı boyut hedefleri sunmaz. Önce sağlayıcıda özelliği etkinleştirin (örneğin, izleme kategorileri, sınıf izleme veya alanlar)."
+
+msgid "The Pulse ingest service has never reported"
+msgstr "Pulse veri alma servisi hiç rapor vermedi"
+
+msgid "The Pulse ingest service is running"
+msgstr "Pulse veri alma servisi çalışıyor"
+
+#. placeholder {0}: formatTimeAgo(heartbeatAt)
+msgid "The Pulse ingest service last reported {0}"
+msgstr "Pulse veri alma servisi en son {0} rapor verdi"
 
 #. placeholder {0}: formatter.format(invoicedOption)
 msgid "The purchase option is already invoiced at {0}. Exercise it at that price, or delete the invoice first."
@@ -31674,6 +31818,10 @@ msgstr "Bu departmanın {locationName} konumunda iş merkezi yok. Başka bir dep
 
 msgid "This department has no work centers at this location. Pick another department or location."
 msgstr "Bu departmanın bu konumda iş merkezi yok. Başka bir departman veya lokasyon seçin."
+
+#. placeholder {0}: deleting.workCenterName ?? ""
+msgid "This device is mapped to {0}. Unmap it on the Devices tab first."
+msgstr "Bu cihaz {0} ile eşleştirilmiş. Önce Cihazlar sekmesinden eşleştirmeyi kaldırın."
 
 msgid "This download link is invalid or has been tampered with."
 msgstr "Bu indirme bağlantısı geçersiz veya değiştirilmiş."
@@ -32927,6 +33075,9 @@ msgstr "Atanmamış Stok"
 msgid "Unassigned stock for projects"
 msgstr "Projeler için Atanmamış Stok"
 
+msgid "Unattributed Counts"
+msgstr "Atanmamış sayımlar"
+
 msgid "unattributed machine time entries"
 msgstr "atfedilmemiş makine süresi girdileri"
 
@@ -33909,6 +34060,9 @@ msgstr "Listeyi Görüntüle"
 msgid "View Lists"
 msgstr "Listeleri Görüntüle"
 
+msgid "View Machine Count"
+msgstr "Makine sayımını görüntüle"
+
 msgid "View Machine Time"
 msgstr "Makine Süresini Görüntüle"
 
@@ -34727,6 +34881,9 @@ msgstr "Gönderilecek isteğin türü: GET bir şey okur, POST oluşturur, PUT v
 
 msgid "Which manufacturing event starts the shelf-life clock — for example, fill, seal, or final QC."
 msgstr "Hangi üretim olayı raf ömrü saatini başlatır — örneğin, doldurma, mühürleme veya nihai QC."
+
+msgid "Which operation made these pieces?"
+msgstr "Bu parçaları hangi operasyon üretti?"
 
 msgid "Which operation was this?"
 msgstr "Bu hangi operasyondu?"

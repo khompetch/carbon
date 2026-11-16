@@ -3,5 +3,6 @@
 // (packages/ee/LICENSE). Not AGPL. Running, modifying, or copying it beyond those terms requires a commercial license.
 
 export * from "./assignable";
+export * from "./counts";
 export * from "./engine";
 export * from "./types";

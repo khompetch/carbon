@@ -288,6 +288,10 @@ import {
   resolveOperationSupplier
 } from "./ui/Jobs/job-release-logic";
 import {
+  type MachineCountListFilters,
+  machineCountQueueKeyset
+} from "./ui/MachineCounts/machine-count-filters.ee";
+import {
   type MachineTimeListFilters,
   machineTimeQueueKeyset
 } from "./ui/MachineTime/machine-time-filters.ee";
@@ -8078,6 +8082,142 @@ export async function getMachineTimeAssignTarget(
     .eq("id", args.jobOperationId)
     .eq("companyId", args.companyId)
     .maybeSingle();
+}
+
+// The filters the Unattributed Counts list and its review queue share. The
+// query must embed `workCenter!inner(name, locationId)`: the search and the
+// location filter read the work center. `workCenterId` is NOT NULL, so the
+// inner join drops no row. No date filters: the table has no view with the
+// period's days in the location's timezone.
+type MachineCountFilterableQuery<Q> = {
+  ilike(column: string, pattern: string): Q;
+  in(column: string, values: readonly string[]): Q;
+};
+
+export function applyMachineCountListFilters<
+  Q extends MachineCountFilterableQuery<Q>
+>(query: Q, filters: MachineCountListFilters): Q {
+  let filtered = query;
+  if (filters.search) {
+    filtered = filtered.ilike("workCenter.name", `%${filters.search}%`);
+  }
+  if (filters.workCenterIds.length > 0) {
+    filtered = filtered.in("workCenterId", filters.workCenterIds);
+  }
+  if (filters.locationIds.length > 0) {
+    filtered = filtered.in("workCenter.locationId", filters.locationIds);
+  }
+  if (filters.reasons.length > 0) {
+    filtered = filtered.in("reason", filters.reasons);
+  }
+  return filtered;
+}
+
+export const UNATTRIBUTED_MACHINE_COUNTS_PAGING: Paging = {
+  defaultSorts: [
+    { column: "periodStart", ascending: false },
+    { column: "id", ascending: false }
+  ]
+};
+
+// Machine pieces no operation could take, newest period first, then `id`:
+// the review queue walks the same order.
+export async function getUnattributedMachineCounts(
+  client: SupabaseClient<Database>,
+  companyId: string,
+  args: {
+    filters: MachineCountListFilters;
+    limit: number;
+    cursor?: Cursor | null;
+  }
+) {
+  let query = applyMachineCountListFilters(
+    client
+      .from("unattributedMachineCount")
+      .select(
+        "*, workCenter!inner(name, locationId, location(name, timezone))",
+        {
+          count: listCount(args)
+        }
+      )
+      .eq("companyId", companyId),
+    args.filters
+  );
+
+  // No `filters` and no `sorts`: the filters above replace the generic ones,
+  // and the list allows no column sort.
+  query = setGenericQueryFilters(
+    query,
+    // Always cursor mode: `limit + 1` rows, even for the first page.
+    { limit: args.limit, cursor: args.cursor ?? null },
+    UNATTRIBUTED_MACHINE_COUNTS_PAGING
+  );
+
+  return query;
+}
+
+export async function getUnattributedMachineCount(
+  client: SupabaseClient<Database>,
+  id: string,
+  companyId: string
+) {
+  return client
+    .from("unattributedMachineCount")
+    .select("*, workCenter!inner(name, locationId)")
+    .eq("id", id)
+    .eq("companyId", companyId)
+    .maybeSingle();
+}
+
+// Where a row sits in the queue, in the list's order (newest period start
+// first, then `id`) and under the list's search and filters: its position,
+// the total, and its neighbours above and below.
+export async function getUnattributedMachineCountNeighbors(
+  client: SupabaseClient<Database>,
+  args: {
+    companyId: string;
+    id: string;
+    periodStart: string;
+    filters: MachineCountListFilters;
+  }
+) {
+  const keyset = machineCountQueueKeyset(args);
+  const queue = (options?: { count: "exact"; head: true }) =>
+    applyMachineCountListFilters(
+      client
+        .from("unattributedMachineCount")
+        .select("id, workCenter!inner(name, locationId)", options)
+        .eq("companyId", args.companyId),
+      args.filters
+    );
+
+  const [total, above, previous, next] = await Promise.all([
+    queue({ count: "exact", head: true }),
+    queue({ count: "exact", head: true }).or(keyset.above),
+    queue()
+      .or(keyset.above)
+      .order("periodStart", { ascending: true })
+      .order("id", { ascending: true })
+      .limit(1),
+    queue()
+      .or(keyset.below)
+      .order("periodStart", { ascending: false })
+      .order("id", { ascending: false })
+      .limit(1)
+  ]);
+
+  const error = total.error ?? above.error ?? previous.error ?? next.error;
+  if (error) return { data: null, error };
+
+  return {
+    data: {
+      position: (above.count ?? 0) + 1,
+      total: total.count ?? 0,
+      previousId: previous.data?.[0]?.id ?? null,
+      nextId: next.data?.[0]?.id ?? null
+    },
+    error: null
+  };
 }
 
 // Every production event on the work center that overlaps the window (the

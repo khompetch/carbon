@@ -5,12 +5,18 @@
 import { CarbonError, defineServiceFn } from "@carbon/api/service-fn.server";
 import { paged, payload, run, unwrap } from "@carbon/api/service-tools.server";
 import { fetchAllByIds, type Json } from "@carbon/database";
+import { EntitlementError } from "@carbon/ee/entitlements.server";
+import {
+  assignUnattributedMachineCount as assignUnattributedMachineCountRow,
+  dismissUnattributedMachineCount as dismissUnattributedMachineCountRow
+} from "@carbon/ee/oee.server";
 import { ASSEMBLER_SERVICE_API_KEY, ASSEMBLER_SERVICE_URL } from "@carbon/env";
 import { batchTrigger, trigger } from "@carbon/jobs";
 import { trackWorkEvent } from "@carbon/lib/telemetry";
 import { raiseMoment } from "@carbon/lib/workflows";
 import { getLogger } from "@carbon/logger";
 import { runLocationSchedule } from "@carbon/planning";
+import { printOperationLabel } from "@carbon/printing/operation-label.server";
 import {
   async,
   chunkArray,
@@ -11061,5 +11067,105 @@ export const createJobDocumentUploadUrl = defineServiceFn({
         payload(ctx, input).forUpsert() as never
       )
     );
+  }
+});
+
+/**
+ * Assign an unattributed machine count to an operation.
+ *
+ * @remarks
+ * Posts the row's pieces and scrap on the operation, deletes the row, then
+ * prints a label for each unit the pieces complete. A locked job or a Done
+ * or Canceled operation refuses the assignment.
+ */
+export const assignUnattributedMachineCount = defineServiceFn({
+  input: z.object({
+    unattributedMachineCountId: z.string().min(1),
+    jobOperationId: z.string().min(1)
+  }),
+  permission: { update: "production" },
+  async run(ctx, input) {
+    const target = await service.getMachineTimeAssignTarget(
+      ctx.asCaller.supabase,
+      { jobOperationId: input.jobOperationId, companyId: ctx.company.id }
+    );
+    if (target.error) {
+      return ctx.error("internal", "Failed to get operation", target.error);
+    }
+    if (!target.data) return ctx.error("notFound", "Operation not found");
+
+    try {
+      const assignment = await assignUnattributedMachineCountRow(
+        ctx.asCaller.supabase,
+        ctx.asSystem.pg,
+        {
+          companyId: ctx.company.id,
+          userId: ctx.auditUserId,
+          unattributedMachineCountId: input.unattributedMachineCountId,
+          jobOperationId: input.jobOperationId
+        }
+      );
+      if (assignment.error || !assignment.data) {
+        return ctx.error(
+          "rule",
+          assignment.error ?? "Failed to assign machine count"
+        );
+      }
+
+      // Never throws: a failed print is logged and the assignment stands.
+      await Promise.all(
+        assignment.data.labels.map((label) =>
+          printOperationLabel({
+            serviceRole: ctx.asSystem.supabase,
+            trackedEntityId: label.trackedEntityId,
+            jobOperationId: label.jobOperationId,
+            jobMakeMethodId: label.jobMakeMethodId,
+            workCenterId: label.workCenterId,
+            companyId: ctx.company.id,
+            userId: ctx.auditUserId
+          })
+        )
+      );
+
+      return {
+        jobId: target.data.job.jobId,
+        labelCount: assignment.data.labels.length
+      };
+    } catch (err) {
+      if (err instanceof EntitlementError) {
+        return ctx.error("entitlement", err.message);
+      }
+      throw err;
+    }
+  }
+});
+
+/**
+ * Dismiss an unattributed machine count.
+ *
+ * @remarks
+ * Deletes the row. Its pieces post nowhere.
+ */
+export const dismissUnattributedMachineCount = defineServiceFn({
+  input: z.object({ unattributedMachineCountId: z.string().min(1) }),
+  permission: { update: "production" },
+  async run(ctx, input) {
+    try {
+      const dismissal = await dismissUnattributedMachineCountRow(
+        ctx.asCaller.supabase,
+        ctx.asSystem.pg,
+        {
+          companyId: ctx.company.id,
+          unattributedMachineCountId: input.unattributedMachineCountId
+        }
+      );
+      if (dismissal.error) return ctx.error("rule", dismissal.error);
+      return null;
+    } catch (err) {
+      if (err instanceof EntitlementError) {
+        return ctx.error("entitlement", err.message);
+      }
+      throw err;
+    }
   }
 });

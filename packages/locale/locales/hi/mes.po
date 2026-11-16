@@ -819,6 +819,9 @@ msgstr ""
 msgid "Could not look up this label. Try again."
 msgstr ""
 
+msgid "Counted by the sensor"
+msgstr "सेंसर द्वारा गिना गया"
+
 msgid "Country code"
 msgstr "देश कोड"
 
@@ -2104,6 +2107,9 @@ msgstr "समग्र परिणाम"
 msgid "Overdue PMs?"
 msgstr "अतिदेय PMs?"
 
+msgid "Override (supervisor)"
+msgstr "ओवरराइड (सुपरवाइज़र)"
+
 msgid "Parameters"
 msgstr "पैरामीटर"
 
@@ -3226,6 +3232,9 @@ msgstr "इस इकाई को स्थायी रूप से स्क
 
 msgid "This week"
 msgstr "इस सप्ताह"
+
+msgid "This work center logs completed quantities from its sensor."
+msgstr "यह वर्क सेंटर अपने सेंसर से पूर्ण मात्रा लॉग करता है।"
 
 msgid "Thumbnail"
 msgstr "थंबनेल"
