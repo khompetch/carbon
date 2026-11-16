@@ -51,6 +51,7 @@ import {
 import type { OeeDevice } from "@carbon/ee/oee";
 import {
   deleteWorkCenterDevice,
+  updateWorkCenterDeviceCounting,
   upsertWorkCenterDevice
 } from "@carbon/ee/oee.server";
 import { ONSHAPE_V2_INTEGRATION_ID } from "@carbon/ee/onshape";
@@ -2914,6 +2915,57 @@ export const saveOeeDeviceMapping = defineServiceFn({
       );
     }
     return { externalDeviceId, workCenterId: workCenterId ?? null };
+  }
+});
+
+/**
+ * Change the counting settings of a device mapping.
+ *
+ * @remarks
+ * In count mode Auto the sensor posts Log completed and Log scrap on the
+ * operation loaded on the work center; turning it on starts counting now.
+ * The scrap reason is the one the device's Log scrap push switch posts with.
+ * A batch item's lot label prints again every `labelEveryQuantity` pieces.
+ * Only a provider whose devices count parts takes count mode Auto. OEE
+ * integrations are a commercial feature.
+ */
+export const saveOeeDeviceCounting = defineServiceFn({
+  input: z.object({
+    workCenterDeviceId: z.string().min(1),
+    countMode: z.enum(["Off", "Auto"]),
+    scrapReasonId: z.string().optional(),
+    labelEveryQuantity: z.number().positive().optional()
+  }),
+  permission: { update: "settings" },
+  async run(ctx, input) {
+    let result: { error: string | null };
+    try {
+      result = await updateWorkCenterDeviceCounting(
+        ctx.asCaller.supabase,
+        ctx.asSystem.pg,
+        {
+          companyId: ctx.company.id,
+          userId: ctx.auditUserId,
+          workCenterDeviceId: input.workCenterDeviceId,
+          countMode: input.countMode,
+          scrapReasonId: input.scrapReasonId ?? null,
+          labelEveryQuantity: input.labelEveryQuantity ?? null
+        }
+      );
+    } catch (err) {
+      if (!(err instanceof EntitlementError)) throw err;
+      return ctx.error(
+        "entitlement",
+        `Failed to save counting settings: ${err.message}`
+      );
+    }
+    if (result.error) {
+      return ctx.error(
+        "rule",
+        `Failed to save counting settings: ${result.error}`
+      );
+    }
+    return { workCenterDeviceId: input.workCenterDeviceId };
   }
 });
 

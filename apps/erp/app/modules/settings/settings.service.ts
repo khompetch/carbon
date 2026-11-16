@@ -2290,7 +2290,8 @@ export async function listOeeDevices(
 export async function getOeeDevicesTabData(
   client: SupabaseClient<Database>,
   companyId: string,
-  integrationId: string
+  integrationId: string,
+  options: { providesCounts: boolean } = { providesCounts: false }
 ) {
   // The provider read runs alongside the mappings. Mappings come before the
   // work centers: the work center list must include an inactive work center a
@@ -2300,7 +2301,7 @@ export async function getOeeDevicesTabData(
     client
       .from("workCenterDevice")
       .select(
-        "externalDeviceId, deviceName, externalSiteId, siteTimezone, workCenterId, currentState, lastSyncedAt, lastSyncError"
+        "id, externalDeviceId, deviceName, externalSiteId, siteTimezone, workCenterId, currentState, lastSyncedAt, lastSyncError, countMode, scrapReasonId, labelEveryQuantity"
       )
       .eq("companyId", companyId)
       .eq("integration", integrationId)
@@ -2312,7 +2313,7 @@ export async function getOeeDevicesTabData(
     .select("id, name, location(timezone)")
     .eq("companyId", companyId);
 
-  const [takenWorkCenters, workCenters] = await Promise.all([
+  const [takenWorkCenters, workCenters, scrapReasons] = await Promise.all([
     client
       .from("workCenterDevice")
       .select("workCenterId, deviceName, integration")
@@ -2321,10 +2322,23 @@ export async function getOeeDevicesTabData(
     (mappedIds.length > 0
       ? workCentersQuery.or(`active.eq.true,id.in.(${mappedIds.join(",")})`)
       : workCentersQuery.eq("active", true)
-    ).order("name")
+    ).order("name"),
+    // The Log scrap push switch posts with one of these (counting settings).
+    options.providesCounts
+      ? client
+          .from("scrapReason")
+          .select("id, name")
+          .eq("companyId", companyId)
+          .order("name")
+      : Promise.resolve({ data: [], error: null })
   ]);
 
-  for (const result of [mappings, takenWorkCenters, workCenters]) {
+  for (const result of [
+    mappings,
+    takenWorkCenters,
+    workCenters,
+    scrapReasons
+  ]) {
     if (result.error) {
       logger.error("Failed to load OEE device mapping data", {
         companyId,
@@ -2345,6 +2359,8 @@ export async function getOeeDevicesTabData(
       // the tab falls back to the company's.
       locationTimezone: workCenter.location?.timezone || null
     })),
+    providesCounts: options.providesCounts,
+    scrapReasons: scrapReasons.data ?? [],
     error: providerError
   };
 }

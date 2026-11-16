@@ -112,6 +112,7 @@ import {
   pulseDeviceUpsertValidator,
   syncEnabledValidator,
   syncOperationTransitionValidator,
+  workCenterDeviceCountingValidator,
   workCenterDeviceUpsertValidator
 } from "~/modules/settings/settings.models";
 import {
@@ -594,7 +595,11 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   // here and awaited at the end, so it runs alongside the reads below.
   const devicesPromise =
     providerRole === "oee" && integrationData.data.active
-      ? getOeeDevicesTabData(client, companyId, integrationId)
+      ? getOeeDevicesTabData(client, companyId, integrationId, {
+          providesCounts: Boolean(
+            (integration as { providesCounts?: boolean }).providesCounts
+          )
+        })
       : Promise.resolve(null);
 
   // A provider whose devices live in Carbon also gets the Pulse Devices tab.
@@ -1213,6 +1218,20 @@ export async function action(args: ActionFunctionArgs) {
         externalDeviceId: input.data.externalDeviceId,
         deviceName: input.data.deviceName,
         workCenterId: input.data.workCenterId
+      });
+    }
+    case "update-work-center-device-counting": {
+      const input = await validator(workCenterDeviceCountingValidator).request(
+        args,
+        params
+      );
+      if ("invalid" in input) return input.invalid;
+      const api = await carbon(args.request);
+      return api.settings.saveOeeDeviceCounting({
+        workCenterDeviceId: input.data.workCenterDeviceId,
+        countMode: input.data.countMode,
+        scrapReasonId: input.data.scrapReasonId,
+        labelEveryQuantity: input.data.labelEveryQuantity
       });
     }
     case "upsert-pulse-device": {

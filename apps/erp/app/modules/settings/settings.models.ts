@@ -680,6 +680,20 @@ export const workCenterDeviceUpsertValidator = z.object({
   workCenterId: zfd.text(z.string().optional())
 });
 
+/** The counting settings of a device mapping (count mode, scrap reason, labels). */
+export const workCenterDeviceCountingValidator = z.object({
+  intent: z.literal("update-work-center-device-counting"),
+  workCenterDeviceId: z.string().min(1),
+  countMode: z.enum(["Off", "Auto"]),
+  scrapReasonId: zfd.text(z.string().optional()),
+  labelEveryQuantity: zfd.numeric(
+    z
+      .number()
+      .positive({ message: "Enter a number of pieces above 0" })
+      .optional()
+  )
+});
+
 /**
  * Register a Pulse device or change its settings (Pulse Devices tab). The
  * key is the device's MQTT username and topic segment; it cannot change after

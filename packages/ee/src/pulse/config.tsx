@@ -22,6 +22,7 @@ export const Pulse = defineIntegration({
   category: "Machine Monitoring",
   providerRole: "oee" as const,
   registersDevices: true,
+  providesCounts: true,
   logo: Logo,
   setupInstructions: SetupInstructions,
   description:
