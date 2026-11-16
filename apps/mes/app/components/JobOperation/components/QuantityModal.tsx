@@ -27,7 +27,7 @@ import {
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useNumberFormatter } from "@react-aria/i18n";
 import { type RefObject, useRef, useState } from "react";
-import { LuTriangleAlert } from "react-icons/lu";
+import { LuInfo, LuTriangleAlert } from "react-icons/lu";
 import {
   finishValidator,
   nonScrapQuantityValidator,
@@ -53,6 +53,8 @@ const QUANTITY_FORMAT_OPTIONS: Intl.NumberFormatOptions = {
 
 export function QuantityModal({
   allStepsRecorded = true,
+  canOverrideCount = false,
+  countMode = "Off",
   isFirstOpenOperation = false,
   laborProductionEvent,
   machineProductionEvent,
@@ -70,6 +72,11 @@ export function QuantityModal({
   onClose
 }: {
   allStepsRecorded?: boolean;
+  // A supervisor (production delete) may log completed quantities by hand
+  // while the sensor counts them.
+  canOverrideCount?: boolean;
+  // Auto: the work center's sensor logs completed quantities itself.
+  countMode?: "Off" | "Auto";
   // The operation is the last of its make method, so it also consumes the
   // tracked materials that have no operation.
   isFirstOpenOperation?: boolean;
@@ -113,6 +120,12 @@ export function QuantityModal({
   });
   const [quantity, setQuantity] = useState(parentIsSerial ? 1 : 0);
   const [confirmedUnissued, setConfirmedUnissued] = useState(false);
+  const [override, setOverride] = useState(false);
+  // Scrap on a sensor-counted work center: the scrapped pieces were counted
+  // as Production, so the sensor's Production is lowered by default.
+  const [countedBySensor, setCountedBySensor] = useState(countMode === "Auto");
+  const sensorCountsCompletion = countMode === "Auto" && type === "complete";
+  const blockedBySensor = sensorCountsCompletion && !override;
   const submitted = useRef(false);
   const isSubmitting = fetcher.state !== "idle";
   // `operation` is live-patched via realtime; after submit it already includes what we
@@ -243,7 +256,41 @@ export function QuantityModal({
             <Hidden name="laborProductionEventId" />
             <Hidden name="machineProductionEventId" />
             <OriginInput />
+            {sensorCountsCompletion && override && (
+              <input type="hidden" name="override" value="on" />
+            )}
+            {type === "scrap" &&
+              countMode === "Auto" &&
+              !parentIsSerial &&
+              countedBySensor && (
+                <input type="hidden" name="countedBySensor" value="on" />
+              )}
             <VStack spacing={2}>
+              {sensorCountsCompletion && (
+                <Alert variant="info">
+                  <LuInfo className="h-4 w-4" />
+                  <AlertTitle>
+                    <Trans>
+                      This work center logs completed quantities from its
+                      sensor.
+                    </Trans>
+                  </AlertTitle>
+                  {canOverrideCount && (
+                    <label className="col-start-2 flex items-center gap-2 mt-2 cursor-pointer">
+                      <Checkbox
+                        isChecked={override}
+                        onCheckedChange={(checked) =>
+                          setOverride(checked === true)
+                        }
+                        className="bg-primary"
+                      />
+                      <span className="text-sm">
+                        <Trans>Override (supervisor)</Trans>
+                      </span>
+                    </label>
+                  )}
+                </Alert>
+              )}
               {hasUnissuedTrackedMaterials && blockedByUnissued && (
                 <Alert variant="destructive">
                   <LuTriangleAlert className="h-4 w-4" />
@@ -397,9 +444,30 @@ export function QuantityModal({
                     size="lg"
                   />
                   <TextArea label={t`Notes`} name="notes" size="lg" />
+                  {countMode === "Auto" && !parentIsSerial && (
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <Checkbox
+                        isChecked={countedBySensor}
+                        onCheckedChange={(checked) =>
+                          setCountedBySensor(checked === true)
+                        }
+                      />
+                      <span className="text-sm">
+                        <Trans>Counted by the sensor</Trans>
+                      </span>
+                    </label>
+                  )}
                 </>
               ) : (
                 <>
+                  {sensorCountsCompletion && override && (
+                    <TextArea
+                      label={t`Notes`}
+                      name="notes"
+                      size="lg"
+                      isRequired
+                    />
+                  )}
                   <NumberControlled
                     name="totalQuantity"
                     label={t`Total Quantity`}
@@ -433,6 +501,7 @@ export function QuantityModal({
               isLoading={isSubmitting}
               disabled={
                 isSubmitting ||
+                blockedBySensor ||
                 (type === "complete" &&
                   hasUnissuedTrackedMaterials &&
                   (blockedByUnissued || !confirmedUnissued))

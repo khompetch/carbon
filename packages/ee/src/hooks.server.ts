@@ -26,6 +26,7 @@ import {
   ONSHAPE_INTEGRATION_ID
 } from "./onshape/lib/connection";
 import { ONSHAPE_V2_INTEGRATION_ID } from "./onshape/lib/integration-id";
+import { pulseHealthcheck, pulseOnUninstall } from "./pulse/hooks.server";
 import {
   quickbooksOnInstall,
   quickbooksOnUninstall
@@ -138,6 +139,10 @@ const serverHooks: Record<string, IntegrationServerHooks> = {
   // convergence as onInstall: a settings save on an existing install
   // self-heals the company's `${provider}-sync` subscription rows whenever
   // REQUIRED_SYNC_SUBSCRIPTIONS grows.
+  pulse: {
+    onHealthcheck: pulseHealthcheck,
+    onUninstall: pulseOnUninstall
+  },
   quickbooks: {
     onInstall: quickbooksOnInstall,
     onUpdate: quickbooksOnInstall,

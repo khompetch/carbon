@@ -1,7 +1,10 @@
 {
   "name": "@carbon/printing",
   "dependencies": {
+    "@carbon/database": "workspace:*",
     "@carbon/kv": "workspace:*",
+    "@carbon/lib": "workspace:*",
+    "@carbon/logger": "workspace:*",
     "@carbon/react": "workspace:*",
     "@carbon/utils": "workspace:*",
     "zod": "catalog:",
@@ -9,11 +12,10 @@
   },
   "devDependencies": {
     "@carbon/config": "workspace:*",
-    "@carbon/database": "workspace:*",
     "@supabase/supabase-js": "catalog:",
+    "typescript": "catalog:",
     "@types/node": "20.19.39",
-    "@types/react": "catalog:",
-    "typescript": "catalog:"
+    "@types/react": "catalog:"
   },
   "peerDependencies": {
     "@lingui/react": "catalog:",
@@ -23,6 +25,8 @@
   },
   "exports": {
     ".": "./src/index.ts",
+    "./operation-label.server": "./src/operation-label.server.ts",
+    "./operation-routing": "./src/operation-routing.ts",
     "./printing.server": "./src/printing.server.ts",
     "./ui": "./src/ui/index.ts"
   },

@@ -680,6 +680,54 @@ export const workCenterDeviceUpsertValidator = z.object({
   workCenterId: zfd.text(z.string().optional())
 });
 
+/** The counting settings of a device mapping (count mode, scrap reason, labels). */
+export const workCenterDeviceCountingValidator = z.object({
+  intent: z.literal("update-work-center-device-counting"),
+  workCenterDeviceId: z.string().min(1),
+  countMode: z.enum(["Off", "Auto"]),
+  scrapReasonId: zfd.text(z.string().optional()),
+  labelEveryQuantity: zfd.numeric(
+    z
+      .number()
+      .positive({ message: "Enter a number of pieces above 0" })
+      .optional()
+  )
+});
+
+/**
+ * Register a Pulse device or change its settings (Pulse Devices tab). The
+ * key is the device's MQTT username and topic segment; it cannot change after
+ * the device is registered. Same pattern as `pulseDevice_deviceKey_check`.
+ */
+export const pulseDeviceUpsertValidator = z.object({
+  intent: z.literal("upsert-pulse-device"),
+  id: zfd.text(z.string().optional()),
+  deviceKey: z
+    .string()
+    .trim()
+    .regex(/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/, {
+      message:
+        "Use letters, digits, - and _ only, starting with a letter or a digit"
+    }),
+  name: z.string().trim().min(1, { message: "Name is required" }),
+  locationId: zfd.text(z.string().optional()),
+  piecesPerPulse: zfd.numeric(
+    z.number().positive({ message: "Pieces per pulse must be more than 0" })
+  ),
+  expectedCycleSeconds: zfd.numeric(z.number().positive().optional()),
+  idleAfterSeconds: zfd.numeric(z.number().int().positive().optional()),
+  offlineAfterSeconds: zfd.numeric(z.number().int().positive()),
+  debounceMs: zfd.numeric(z.number().int().min(0)),
+  bucketSeconds: zfd.numeric(z.number().int().positive()),
+  sendEachPulse: zfd.checkbox(),
+  active: zfd.checkbox()
+});
+
+export const pulseDeviceDeleteValidator = z.object({
+  intent: z.literal("delete-pulse-device"),
+  id: z.string().min(1)
+});
+
 /**
  * One account mapping (Carbon account.id → provider account id).
  * externalCode / externalName are captured from the selected provider

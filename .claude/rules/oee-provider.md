@@ -2,6 +2,10 @@
 paths:
   - packages/ee/src/oee/**
   - packages/ee/src/sense/**
+  - packages/ee/src/pulse/**
+  - apps/pulse-ingest/**
+  - packages/database/src/machine-counts.ts
+  - packages/printing/src/operation-label.server.ts
   - packages/jobs/src/inngest/functions/integrations/oee-*.ts
   - apps/erp/app/routes/api+/webhook.sense.$companyId.ts
   - packages/database/src/machine-time.ts
@@ -11,9 +15,11 @@ paths:
 
 An OEE provider reports when each machine runs. Carbon records that run time
 as Machine `productionEvent` rows on the operation loaded on the work center.
-Sense is the only provider today. Spec:
-`.ai/specs/2026-10-12-oee-provider-integration.md`. Where the spec and the
-code differ, the code wins.
+Two providers exist: Sense (a remote API) and Pulse (Carbon's own cycle
+sensors, see "Pulse adapter"). Specs:
+`.ai/specs/2026-10-12-oee-provider-integration.md` and
+`.ai/specs/2026-11-14-pulse-machine-monitoring.md`. Where a spec and the code
+differ, the code wins.
 
 The descriptor `Sense` (`packages/ee/src/sense/config.tsx`) declares
 `providerRole: "oee"` and category "Machine Monitoring". The sweep finds OEE
@@ -531,6 +537,170 @@ engine only reads rows after `appliedThrough`, so neither is ever read again.
   `listStateChanges` pages by time. After a full page (500 events), it asks
   again from the last event's `created_at` and drops the event ids it has
   already seen. It stops on a short page or a page with no new event.
+
+## Pulse adapter
+
+Pulse is Carbon's own machine monitor. An ESP32 counts one pulse per machine
+cycle and publishes over MQTT to Mosquitto. The ingest service
+`apps/pulse-ingest` stores the counts and infers the state. The provider
+reads that state from Postgres. Everything after the provider (engine, sync,
+device mapping, Unattributed Time, the MES badge) is the same as for Sense.
+
+| File | Role |
+|---|---|
+| `apps/pulse-ingest/src/protocol.ts` | The MQTT contract v1: `carbon/pulse/v1/{deviceKey}/{count,status,boot,online,config}`, zod payloads, `parseTopic`, and the send rules (below). A device key is the MQTT username and a topic segment (`^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$`) |
+| `apps/pulse-ingest/src/simulator/` | A local development tool, not deployed: `device.ts` (`SimDevice`, the firmware's counting and sending rules, pure; pinned by `device.test.ts`), `server.ts` and `page.html` (a web page at `http://127.0.0.1:4810` that drives simulated devices over MQTT). Run with `pnpm --filter pulse-ingest simulate` |
+| `apps/pulse-ingest/src/state.ts` | Pure state inference (see below). Pinned by `state.test.ts` |
+| `apps/pulse-ingest/src/time.ts`, `gaps.ts` | Bucket times from the device clocks; lost buckets worked out from the lifetime counter (an `estimated` `pulseCount` row). Pinned by `ingest.test.ts` |
+| `apps/pulse-ingest/src/store.ts`, `device.ts`, `main.ts` | Kysely writes, the per-device tracker, and the MQTT runtime. `main.ts` sends `carbon/oee-device-sync` to Inngest for a mapped device whose state changed, publishes each device's retained `config`, and writes the `pulseIngestStatus` heartbeat. Run ONE instance: two would both write |
+| `packages/ee/src/pulse/provider.ts` | `createPulseProvider({ companyId, serviceClient })`: `validate` (the ingest heartbeat, `ingestHealth`), `listDevices` (active `pulseDevice` rows), `listStateChanges` (`pulseStateChange` rows, plus a synthetic Offline from `silentDeviceChange` when the device is silent and ingest has not recorded it). Pinned by `provider.test.ts` |
+| `packages/ee/src/pulse/devices.server.ts` | `savePulseDevice`, `deletePulseDevice`: the ERP writes. The provider only reads |
+| `packages/ee/src/pulse/hooks.server.ts` | `pulseHealthcheck`, and `pulseOnUninstall` (same as `senseOnUninstall`) |
+| `packages/ee/src/pulse/config.tsx` | The descriptor: `providerRole: "oee"`, `registersDevices: true`, `minimumStateSeconds` |
+| `apps/erp/app/modules/settings/ui/Integrations/PulseDevices.ee.tsx` | The Pulse Devices tab. It shows for an OEE descriptor with `registersDevices: true`, not for the id `pulse` |
+| `contrib/deploying/dokploy/` | `mosquitto/` (conf, ACL, entrypoint) and `pulse-ingest.Dockerfile`, in the compose profile `pulse`. The broker publishes 1883 on `MQTT_PUBLISH_ADDRESS` only (default `127.0.0.1`) |
+
+Tables (migrations `20261114131742_pulse-machine-monitor.sql` and
+`20261114134325_pulse-machine-monitor-rls.sql`):
+
+- `pulseDevice`: configuration (`piecesPerPulse`, `expectedCycleSeconds`,
+  `idleAfterSeconds`, `offlineAfterSeconds`, `debounceMs`, `bucketSeconds`),
+  health, and the inferred state, so a restarted ingest service resumes from
+  it. `deviceKey` is unique across companies, because it is the MQTT topic.
+- `pulseCount`: one row per bucket. `(bootId, seq)` is the device's message
+  id, so a repeated MQTT delivery inserts nothing. `pulses` are sensor pulses,
+  `scrapPulses` are Log scrap presses; a row can hold presses and no pulses
+  (migration `20261115143849_pulse-scrap-and-send-mode.sql`).
+- `pulseStateChange`: the inferred changes the provider returns.
+- `pulseIngestStatus`: one row (`id = 'ingest'`), the service heartbeat.
+- The cron `pulse-history-retention` purges old counts and state changes.
+
+Inputs and sending. A device has 2 inputs: the cycle sensor and a Log scrap
+push switch (one press = one bad stroke = `piecesPerPulse` pieces; the name
+matches the MES action). A `count` bucket carries `n` / `total` for pulses
+and `scrap` / `scrapTotal` for presses; a device without the switch omits the
+scrap fields.
+
+- By default the device sends a bucket every `bucketSeconds` (5), only when
+  something was counted.
+- `pulseDevice.sendEachPulse` (the Pulse Devices tab) sends each pulse at
+  once (`n = 1`, `t0 = t1`), for machines with a long cycle. Pulses closer
+  than `SEND_EACH_PULSE_MIN_GAP_MS` (200) share a bucket. Ingest publishes it
+  in the retained `config`.
+- A Log scrap press is sent at once in both modes.
+- Lost presses are recovered from `scrapTotal` the same way as lost pulses
+  (`detectGap`, an `estimated` row).
+- A bucket with presses and no pulses does not make the machine Running; it
+  only proves the device is alive (`onHeartbeat`).
+
+A mapping in count mode Auto posts these counts: see "Machine counts".
+Ingest wakes the sync for a stored bucket of such a device (`wake.ts`): once
+per bucket with `sendEachPulse`, else at most once a minute.
+
+State inference (`state.ts`):
+
+- Running: pulses arrive.
+- Idle: the heartbeat arrives and its counter did not move for `idleAfter`
+  (`idleAfterSeconds`, else 3 × `expectedCycleSeconds`, never under 30 s). A
+  device that comes back waits `ALIVE_SETTLE_MS` before Idle, so its buffered
+  buckets can make it Running first.
+- Offline: no message for `offlineAfterSeconds` (default 300). No run time is
+  invented.
+- Down is never inferred. It comes from a maintenance dispatch.
+
+Pulse has no remote account. The integration is healthy while
+`pulseIngestStatus.heartbeatAt` is newer than `INGEST_HEARTBEAT_MAX_AGE_MS`
+(2 minutes).
+
+Local check without hardware:
+
+1. Start Mosquitto from the compose profile `pulse`.
+2. Register a device key in the Pulse Devices tab.
+3. Run `pnpm --filter pulse-ingest start` (`SUPABASE_DB_URL`, `MQTT_URL`,
+   `MQTT_USERNAME=pulse-ingest`, `MQTT_PASSWORD`, `INNGEST_EVENT_KEY`).
+4. Run `pnpm --filter pulse-ingest simulate` (`MQTT_GATEWAY_PASSWORD`, and
+   `SUPABASE_DB_URL` to list the registered devices and show what Carbon
+   inferred). It connects as `pulse-gateway`, like the on-site gateway.
+5. Open `http://127.0.0.1:4810`. Each card powers a device on or unplugs it,
+   runs the machine at a cycle time, sends sensor pulses and Log scrap
+   presses, drops and restores the network, reboots, loses or repeats a
+   bucket, and runs with an unsynchronized clock.
+
+Ingest wakes the OEE sync through Inngest; without a local Inngest it only
+logs "could not reach Inngest", and the pulse tables still fill.
+
+## Machine counts
+
+A device mapping of a provider whose descriptor has `providesCounts` (Pulse)
+can count parts. Its settings are on the mapping (`workCenterDevice`):
+`countMode` (`Off` | `Auto`), `scrapReasonId` (the Log scrap push switch's
+reason) and `labelEveryQuantity`. They are edited with the Counting button on
+the Devices tab (`saveOeeDeviceCounting` → `updateWorkCenterDeviceCounting`).
+Turning Auto on sets `countedThrough` to now, so earlier buckets never post.
+Spec: `.ai/specs/2026-11-14-pulse-machine-monitoring.md` (Phase 3).
+
+| File | Role |
+|---|---|
+| `packages/ee/src/oee/counts.ts` | `planMachineCounts`, pure: each bucket goes to the load that covers the middle of its period; blocked, unloaded, closed-operation and serial-without-`sendEachPulse` buckets go to the queue. Per operation, Log completed = (pulses − presses) × `piecesPerPulse`, in-batch Log scrap = min(pulses, presses) × `piecesPerPulse`, and presses beyond the batch are `reclassify` scrap. A serial operation gets one posting per piece. Pinned by `counts.test.ts` |
+| `packages/jobs/.../integrations/oee-sync-device-counts.ts` | `countOeeDevice`, the count step: run by `syncDevices` after each device's state sync. Under `lockWorkCenterDevice`, it reads the `pulseCount` rows received after `countedThrough` and up to now − `SETTLE_SECONDS` (3), plans them, writes `machineCountPosting` (`Pending`) and `unattributedMachineCount` rows, and moves the cursor. Then it posts and prints. Pinned by `oee-sync-device-counts.database.test.ts` |
+| `packages/ee/src/oee/counts.server.ts` | `postMachineCounts`, the poster: each `Pending` row of the work center posts through the `issue` posting the MES uses (`jobOperationDryRun` + a `productionQuantity` insert + `jobOperation` for an untracked operation, `jobOperationBatchComplete`, `jobOperationSerialComplete`, `jobOperationScrap`) as user `system`, and returns the labels to print. `splitAtTarget` and `batchLabelCount` are pinned by `counts-target.test.ts` |
+| `packages/database/src/machine-counts.ts` | `lowerSensorProduction`, `removeSerialSensorCompletion`, `restoreSensorProduction`: lower (or undo lowering) the newest sensor Production of an operation; a batch lot's quantity follows. Shared by the poster and MES `scrap.tsx`. Pinned by `machine-counts.test.ts` |
+| `packages/printing/src/operation-label.server.ts` | `printOperationLabel`, moved from the MES: the count step and the Unattributed Counts assign print the label exactly as the MES Log completed does |
+
+Rules the poster keeps:
+
+- One poster per work center at a time. The count step and the Unattributed
+  Counts assign both call `postMachineCounts`, which holds a transaction
+  advisory lock (`machineCountPost:<companyId>:<workCenterId>`) on its own
+  connection while the postings run on others. A second poster waits, then
+  reads the rows the first left `Pending`, so no row posts twice.
+- An over-target split (the `OverTarget` row and the posting row's smaller
+  quantity) is one transaction.
+- The cursor is `receivedAt`, not the bucket's period. Ingest writes one
+  device's rows in order, so a bucket replayed after a network drop (old
+  period, new `receivedAt`) is still read.
+- Every `productionQuantity` row it makes carries `notes = "Pulse sensor <machineCountPosting.id>"`.
+  A retry finds an earlier attempt's row by the note and does not post again.
+  `machineCountPosting.productionQuantityId` links the two, and is how a
+  sensor row is told from an operator's (no column on `productionQuantity`).
+- A refusal (a posting error below 500) moves the row to Unattributed Counts
+  with the refusal's words (`Refused`). Any other error is retried on the next
+  sync; after `MAX_ATTEMPTS` (5) the row goes to the queue.
+- Over the target, it posts up to `targetQuantity − (quantityComplete +
+  quantityReworked)`; the rest is `OverTarget`.
+- A Log scrap that lowers posted Production lowers it FIRST, then posts the
+  Scrap. The backflush issues for complete + scrapped units, so the other
+  order issues material twice for one piece. A failed Scrap restores it.
+- Serial: only on a device with `sendEachPulse`. A reclassify press scraps the
+  unit of the newest stroke (its sensor Production row is deleted first) and
+  the scrap posting spawns the replacement.
+- Batch: the lot is the make method's first tracked entity. A label prints
+  each time the lot passes a multiple of `labelEveryQuantity`, else once on
+  the first sensor completion. The print job's 30 s auto-dedupe per unit
+  drops a second label of the same lot within 30 s.
+- A label prints only where `printOperationLabel` decides (first operation,
+  or last top-level operation with `printLabelOnCompletion`), on the work
+  center's printer config.
+
+The MES (Auto mode): `complete.tsx` refuses a manual Log completed on a work
+center in Auto unless a user with `production` delete overrides it with a note;
+`end.$operationId.tsx` (the QR end scan) refuses the same way;
+`batch.$batchId.complete.tsx` refuses a batch completion with a completed
+quantity above 0 (a batch completed with 0 still finishes its members, and a
+resume of a `Completing` batch is not refused); `inspection-lot.$id.complete-passed.tsx`
+and `inspection-lot.$id.disposition.tsx` refuse in Auto
+(`SENSOR_COUNTS_INSPECTION_REFUSAL`). All read `getWorkCenterCountMode`
+(`operations.service.ts`) for the operation's own work center.
+`scrap.tsx` offers "Counted by the sensor" (not serial), which lowers the
+sensor's Production by the scrapped pieces before it posts the Scrap.
+
+Production → "Unattributed Counts" (`x+/production+/machine-counts*.tsx`,
+`modules/production/ui/MachineCounts/`) lists `unattributedMachineCount`. Assign
+(`assignUnattributedMachineCount`) turns a row into pending postings of the
+chosen operation and posts them; Dismiss deletes it. Retention:
+`util.purge_machine_counts()` (cron `machine-count-retention`) drops Posted
+rows and queued counts after 90 days, and `util.purge_work_center_loads()`
+keeps a load while a device in Auto has not counted past it.
 
 ## The Sense webhook
 

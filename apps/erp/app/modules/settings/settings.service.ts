@@ -2290,7 +2290,8 @@ export async function listOeeDevices(
 export async function getOeeDevicesTabData(
   client: SupabaseClient<Database>,
   companyId: string,
-  integrationId: string
+  integrationId: string,
+  options: { providesCounts: boolean } = { providesCounts: false }
 ) {
   // The provider read runs alongside the mappings. Mappings come before the
   // work centers: the work center list must include an inactive work center a
@@ -2300,7 +2301,7 @@ export async function getOeeDevicesTabData(
     client
       .from("workCenterDevice")
       .select(
-        "externalDeviceId, deviceName, externalSiteId, siteTimezone, workCenterId, currentState, lastSyncedAt, lastSyncError"
+        "id, externalDeviceId, deviceName, externalSiteId, siteTimezone, workCenterId, currentState, lastSyncedAt, lastSyncError, countMode, scrapReasonId, labelEveryQuantity"
       )
       .eq("companyId", companyId)
       .eq("integration", integrationId)
@@ -2312,7 +2313,7 @@ export async function getOeeDevicesTabData(
     .select("id, name, location(timezone)")
     .eq("companyId", companyId);
 
-  const [takenWorkCenters, workCenters] = await Promise.all([
+  const [takenWorkCenters, workCenters, scrapReasons] = await Promise.all([
     client
       .from("workCenterDevice")
       .select("workCenterId, deviceName, integration")
@@ -2321,10 +2322,23 @@ export async function getOeeDevicesTabData(
     (mappedIds.length > 0
       ? workCentersQuery.or(`active.eq.true,id.in.(${mappedIds.join(",")})`)
       : workCentersQuery.eq("active", true)
-    ).order("name")
+    ).order("name"),
+    // The Log scrap push switch posts with one of these (counting settings).
+    options.providesCounts
+      ? client
+          .from("scrapReason")
+          .select("id, name")
+          .eq("companyId", companyId)
+          .order("name")
+      : Promise.resolve({ data: [], error: null })
   ]);
 
-  for (const result of [mappings, takenWorkCenters, workCenters]) {
+  for (const result of [
+    mappings,
+    takenWorkCenters,
+    workCenters,
+    scrapReasons
+  ]) {
     if (result.error) {
       logger.error("Failed to load OEE device mapping data", {
         companyId,
@@ -2345,7 +2359,88 @@ export async function getOeeDevicesTabData(
       // the tab falls back to the company's.
       locationTimezone: workCenter.location?.timezone || null
     })),
+    providesCounts: options.providesCounts,
+    scrapReasons: scrapReasons.data ?? [],
     error: providerError
+  };
+}
+
+/** Drop an OEE integration's cached device list, after its devices change. */
+export async function clearOeeDevicesCache(
+  companyId: string,
+  integrationId: string
+): Promise<void> {
+  try {
+    await redis.del(oeeDevicesCacheKey(companyId, integrationId));
+  } catch (error) {
+    logger.error("Failed to clear the OEE device cache", {
+      companyId,
+      integrationId,
+      error
+    });
+  }
+}
+
+/**
+ * Data for the Pulse Devices tab: the company's registered devices with
+ * their health, the work center each is mapped to, the locations a device
+ * can sit at, and the ingest service's last heartbeat. The heartbeat row is
+ * service-only (one row for the whole server), so the service role reads it.
+ */
+export async function getPulseDevicesTabData(
+  client: SupabaseClient<Database>,
+  companyId: string
+) {
+  const [devices, mappings, locations, ingest] = await Promise.all([
+    client
+      .from("pulseDevice")
+      .select(
+        "id, deviceKey, name, locationId, piecesPerPulse, expectedCycleSeconds, idleAfterSeconds, offlineAfterSeconds, debounceMs, bucketSeconds, sendEachPulse, active, lastSeenAt, lastPulseAt, lastCounter, rssi, firmwareVersion, queueDepth, currentState, currentStateAt"
+      )
+      .eq("companyId", companyId)
+      .order("name"),
+    client
+      .from("workCenterDevice")
+      .select("externalDeviceId, workCenter(name)")
+      .eq("companyId", companyId)
+      .eq("integration", "pulse"),
+    client
+      .from("location")
+      .select("id, name")
+      .eq("companyId", companyId)
+      .order("name"),
+    getCarbonServiceRole()
+      .from("pulseIngestStatus")
+      .select("heartbeatAt, version")
+      .eq("id", "ingest")
+      .maybeSingle()
+  ]);
+
+  for (const result of [devices, mappings, locations, ingest]) {
+    if (result.error) {
+      logger.error("Failed to load Pulse device data", {
+        companyId,
+        error: result.error
+      });
+    }
+  }
+
+  const workCenterByKey = new Map(
+    (mappings.data ?? []).map((mapping) => [
+      mapping.externalDeviceId,
+      mapping.workCenter?.name ?? null
+    ])
+  );
+
+  return {
+    devices: (devices.data ?? []).map((device) => ({
+      ...device,
+      workCenterName: workCenterByKey.get(device.deviceKey) ?? null,
+      mapped: workCenterByKey.has(device.deviceKey)
+    })),
+    locations: locations.data ?? [],
+    ingestHeartbeatAt: ingest.data?.heartbeatAt ?? null,
+    error: devices.error ? "Could not load the Pulse devices" : null
   };
 }
 

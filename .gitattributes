@@ -4,3 +4,8 @@
 # conflicting; run `pnpm lingui:extract && pnpm lingui:clean` afterward to
 # dedupe, re-sort, and prune the result.
 packages/locale/locales/**/*.po merge=union
+
+# Shell scripts run inside Linux containers (bind-mounted entrypoints, init
+# scripts). A CRLF checkout (core.autocrlf=true on Windows) breaks them:
+# `sh` reads `set -eu` as an illegal option and the container restarts.
+*.sh text eol=lf

@@ -337,6 +337,24 @@ describe("sharedComposeEnv", () => {
       SSH_AUTH_SOCK: "/tmp/agent.sock"
     });
   });
+
+  it("keeps what the docker CLI needs on Windows to find its compose plugin", () => {
+    // Windows spells these names in mixed case, and not always the same way.
+    const windows = {
+      Path: "C:\\Program Files\\Docker\\Docker\\resources\\bin",
+      ProgramFiles: "C:\\Program Files",
+      ProgramW6432: "C:\\Program Files",
+      "ProgramFiles(x86)": "C:\\Program Files (x86)",
+      ProgramData: "C:\\ProgramData",
+      USERPROFILE: "C:\\Users\\x",
+      LOCALAPPDATA: "C:\\Users\\x\\AppData\\Local",
+      SystemRoot: "C:\\WINDOWS",
+      SYSTEMROOT: "C:\\WINDOWS"
+    };
+    expect(
+      sharedComposeEnv({ ...windows, PG_MAX_CONNECTIONS: "100" })
+    ).toEqual(windows);
+  });
 });
 
 describe("redisDatabasesNeeded", () => {

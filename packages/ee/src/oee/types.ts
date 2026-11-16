@@ -5,7 +5,7 @@
 /** Mirrors the `machineState` database enum. */
 export type MachineState = "Running" | "Idle" | "Down" | "Offline";
 
-export type OeeProviderId = "sense";
+export type OeeProviderId = "sense" | "pulse";
 
 /**
  * A run or a stop shorter than this many seconds is ignored, unless the

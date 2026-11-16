@@ -18,6 +18,7 @@ import {
   getNextIncompleteSerialEntity,
   getRequiredScanShortfall,
   getTrackedEntitiesForOperation,
+  getWorkCenterCountMode,
   insertProductionQuantity,
   isFirstOperationOfMakeMethod,
   isSerialEntityIncompleteForOperation
@@ -92,6 +93,27 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return redirect(
       path.to.operation(operationId),
       await flash(request, error(null, abilityRefusal))
+    );
+  }
+
+  // A sensor-counted work center logs its own completions: a scan would
+  // count the pieces twice. Complete them in the MES with an override instead.
+  if (
+    jobOperation.data?.workCenterId &&
+    (await getWorkCenterCountMode(serviceRole, {
+      workCenterId: jobOperation.data.workCenterId,
+      companyId
+    })) === "Auto"
+  ) {
+    return redirect(
+      path.to.operation(operationId),
+      await flash(
+        request,
+        error(
+          null,
+          "This work center logs completed quantities from its sensor."
+        )
+      )
     );
   }
 

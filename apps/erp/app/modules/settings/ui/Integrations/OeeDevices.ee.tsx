@@ -2,14 +2,25 @@
 // Carbon Enterprise file, licensed only under the Carbon Commercial License
 // (packages/ee/LICENSE). Not AGPL. Running, modifying, or copying it beyond those terms requires a commercial license.
 
+import { ValidatedForm } from "@carbon/form";
 import { useAction } from "@carbon/query";
 import {
+  Button,
   Combobox,
   cn,
   DrawerBody,
+  HStack,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalDescription,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
   Table,
   Tbody,
   Td,
@@ -19,16 +30,25 @@ import {
   TooltipContent,
   TooltipTrigger,
   Tr,
-  toast
+  toast,
+  VStack
 } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { ReactNode } from "react";
 import { Fragment, useMemo, useState } from "react";
-import { LuSearch, LuTriangleAlert } from "react-icons/lu";
+import { LuSearch, LuSettings2, LuTriangleAlert } from "react-icons/lu";
+import type { z } from "zod";
+import {
+  Hidden,
+  Number as NumberField,
+  Select,
+  Submit
+} from "~/components/Form";
 import RulesUpgradeOverlay from "~/components/RulesUpgradeOverlay";
 import { useDateFormatter, usePermissions } from "~/hooks";
 import { useCompanyTimeZone } from "~/hooks/useCompanyTimeZone";
 import { usePlanGate } from "~/hooks/usePlanGate";
+import { workCenterDeviceCountingValidator } from "~/modules/settings/settings.models";
 
 /**
  * Local structural mirrors of @carbon/ee/oee's OeeDevice and the
@@ -49,6 +69,7 @@ export type OeeDeviceRow = {
 };
 
 export type OeeDeviceMappingRow = {
+  id: string;
   externalDeviceId: string;
   deviceName: string;
   externalSiteId: string | null;
@@ -57,7 +78,12 @@ export type OeeDeviceMappingRow = {
   currentState: "Running" | "Idle" | "Down" | "Offline" | null;
   lastSyncedAt: string | null;
   lastSyncError: string | null;
+  countMode: "Off" | "Auto";
+  scrapReasonId: string | null;
+  labelEveryQuantity: number | null;
 };
+
+export type OeeScrapReasonRow = { id: string; name: string };
 
 export type OeeTakenWorkCenterRow = {
   workCenterId: string;
@@ -80,6 +106,9 @@ type OeeDevicesProps = {
   /** Work centers another OEE integration already holds. */
   takenWorkCenters: OeeTakenWorkCenterRow[];
   workCenters: OeeWorkCenterRow[];
+  /** The provider's devices count parts: a mapping gets counting settings. */
+  providesCounts: boolean;
+  scrapReasons: OeeScrapReasonRow[];
   /** The provider's device list failed to load. */
   error: string | null;
 };
@@ -90,6 +119,8 @@ export function OeeDevices({
   mappings,
   takenWorkCenters,
   workCenters,
+  providesCounts,
+  scrapReasons,
   error
 }: OeeDevicesProps) {
   const { t } = useLingui();
@@ -107,6 +138,8 @@ export function OeeDevices({
               mappings={[]}
               takenWorkCenters={[]}
               workCenters={[]}
+              providesCounts={false}
+              scrapReasons={[]}
               canUpdate={false}
             />
           }
@@ -132,6 +165,8 @@ export function OeeDevices({
             mappings={mappings}
             takenWorkCenters={takenWorkCenters}
             workCenters={workCenters}
+            providesCounts={providesCounts}
+            scrapReasons={scrapReasons}
             canUpdate={permissions.can("update", "settings")}
           />
         </>
@@ -177,16 +212,21 @@ function OeeDeviceList({
   mappings,
   takenWorkCenters,
   workCenters,
+  providesCounts,
+  scrapReasons,
   canUpdate
 }: {
   devices: OeeDeviceRow[];
   mappings: OeeDeviceMappingRow[];
   takenWorkCenters: OeeTakenWorkCenterRow[];
   workCenters: OeeWorkCenterRow[];
+  providesCounts: boolean;
+  scrapReasons: OeeScrapReasonRow[];
   canUpdate: boolean;
 }) {
   const { t } = useLingui();
   const [search, setSearch] = useState("");
+  const [counting, setCounting] = useState<OeeDeviceMappingRow | null>(null);
 
   const mappedByDeviceId = useMemo(
     () =>
@@ -343,6 +383,11 @@ function OeeDeviceList({
                       workCenterOptions={workCenterOptions}
                       deviceIdByWorkCenterId={deviceIdByWorkCenterId}
                       canUpdate={canUpdate}
+                      onCounting={
+                        providesCounts && mapping
+                          ? () => setCounting(mapping)
+                          : undefined
+                      }
                     />
                   );
                 })}
@@ -351,7 +396,117 @@ function OeeDeviceList({
           </Tbody>
         </Table>
       )}
+
+      {counting && (
+        <CountingForm
+          mapping={counting}
+          scrapReasons={scrapReasons}
+          canUpdate={canUpdate}
+          onClose={() => setCounting(null)}
+        />
+      )}
     </div>
+  );
+}
+
+type CountingValues = z.infer<typeof workCenterDeviceCountingValidator>;
+
+/** The counting settings of one mapping (intent update-work-center-device-counting). */
+function CountingForm({
+  mapping,
+  scrapReasons,
+  canUpdate,
+  onClose
+}: {
+  mapping: OeeDeviceMappingRow;
+  scrapReasons: OeeScrapReasonRow[];
+  canUpdate: boolean;
+  onClose: () => void;
+}) {
+  const { t } = useLingui();
+  const fetcher = useAction({
+    onSuccess: () => {
+      toast.success(t`Saved counting settings`);
+      onClose();
+    }
+  });
+  const deviceName = mapping.deviceName;
+  const defaultValues: CountingValues = {
+    intent: "update-work-center-device-counting",
+    workCenterDeviceId: mapping.id,
+    countMode: mapping.countMode,
+    scrapReasonId: mapping.scrapReasonId ?? undefined,
+    labelEveryQuantity: mapping.labelEveryQuantity ?? undefined
+  };
+
+  return (
+    <Modal
+      open
+      onOpenChange={(next) => {
+        if (!next) onClose();
+      }}
+    >
+      <ModalContent>
+        <ValidatedForm
+          validator={workCenterDeviceCountingValidator}
+          method="post"
+          defaultValues={defaultValues}
+          fetcher={fetcher}
+          className="flex h-full flex-col"
+        >
+          <ModalHeader>
+            <ModalTitle>
+              <Trans>Counting for {deviceName}</Trans>
+            </ModalTitle>
+            <ModalDescription>
+              <Trans>
+                In Auto, the sensor logs completed and scrap quantities on the
+                operation loaded on this work center.
+              </Trans>
+            </ModalDescription>
+          </ModalHeader>
+          <ModalBody>
+            <Hidden name="intent" />
+            <Hidden name="workCenterDeviceId" />
+            <VStack spacing={4}>
+              <Select
+                name="countMode"
+                label={t`Count mode`}
+                options={[
+                  { value: "Off", label: t`Off` },
+                  { value: "Auto", label: t`Auto` }
+                ]}
+              />
+              <Select
+                name="scrapReasonId"
+                label={t`Scrap reason for the Log scrap button`}
+                isOptional
+                options={scrapReasons.map((reason) => ({
+                  value: reason.id,
+                  label: reason.name
+                }))}
+              />
+              <NumberField
+                name="labelEveryQuantity"
+                label={t`Print a label every N pieces`}
+                helperText={t`Batch items only. Empty: one label when the lot starts.`}
+                minValue={1}
+              />
+            </VStack>
+          </ModalBody>
+          <ModalFooter>
+            <HStack>
+              <Button variant="secondary" onClick={onClose}>
+                <Trans>Cancel</Trans>
+              </Button>
+              <Submit isDisabled={!canUpdate}>
+                <Trans>Save</Trans>
+              </Submit>
+            </HStack>
+          </ModalFooter>
+        </ValidatedForm>
+      </ModalContent>
+    </Modal>
   );
 }
 
@@ -365,7 +520,8 @@ function OeeDeviceTableRow({
   workCenterById,
   workCenterOptions,
   deviceIdByWorkCenterId,
-  canUpdate
+  canUpdate,
+  onCounting
 }: {
   device: OeeDeviceRow;
   mapping: OeeDeviceMappingRow | null;
@@ -374,6 +530,8 @@ function OeeDeviceTableRow({
   /** This integration's mappings: work center → the device it holds. */
   deviceIdByWorkCenterId: Map<string, string>;
   canUpdate: boolean;
+  /** Opens the counting settings; absent when the provider does not count. */
+  onCounting?: () => void;
 }) {
   const { t } = useLingui();
   const companyTimeZone = useCompanyTimeZone();
@@ -429,6 +587,11 @@ function OeeDeviceTableRow({
           <DeviceStatusDot mapping={mapping} />
           <div className="flex min-w-0 flex-col">
             <span className="truncate text-sm font-medium">{device.name}</span>
+            {mapping?.countMode === "Auto" && (
+              <span className="truncate text-xs text-muted-foreground">
+                <Trans>Log completed from the sensor</Trans>
+              </span>
+            )}
             {(machine || device.calibrated === false) && (
               <span className="truncate text-xs text-muted-foreground">
                 {machine}
@@ -455,6 +618,15 @@ function OeeDeviceTableRow({
                 </Trans>
               </TooltipContent>
             </Tooltip>
+          )}
+          {onCounting && (
+            <IconButton
+              size="sm"
+              variant="ghost"
+              icon={<LuSettings2 />}
+              aria-label={t`Counting for ${deviceName}`}
+              onClick={onCounting}
+            />
           )}
           <div className="w-[200px] shrink-0">
             <Combobox

@@ -1080,6 +1080,9 @@ export const manifest = {
     insert: owner("userId")
   }),
   location: company("resources"),
+  // Written only by the OEE count step and the entitlement-gated
+  // @carbon/ee/oee.server functions, over Kysely: read-only through the API.
+  machineCountPosting: policies({ select: inCompany("companyId", "employee") }),
   // Written only by the OEE sync and the entitlement-gated @carbon/ee/oee.server
   // functions, over Kysely and under the device lock: read-only through the API.
   machineStateChange: policies({ select: inCompany("companyId", "employee") }),
@@ -1324,6 +1327,13 @@ export const manifest = {
   productionEvent: company("production", { read: "production_view" }),
   productionQuantity: company("production"),
   project: projectTable("id"),
+  // Pulse machine monitor: the ingest service and the provider write these
+  // over a direct connection, so the API only reads them (as workCenterDevice).
+  pulseCount: policies({ select: inCompany("companyId", "employee") }),
+  pulseDevice: policies({ select: inCompany("companyId", "employee") }),
+  // One row for the whole server: no company to scope it to.
+  pulseIngestStatus: serviceOnly(),
+  pulseStateChange: policies({ select: inCompany("companyId", "employee") }),
   projectBaseline: company("projects", { update: false, delete: false }),
   projectChangeRequest: company("projects"),
   projectChangeRequestComment: company("projects", {
@@ -1975,6 +1985,11 @@ export const manifest = {
     delete: inCompany("companyId", "resources_delete")
   }),
   trainingQuestion: company("people"),
+  // Written only by the OEE count step and the entitlement-gated
+  // @carbon/ee/oee.server functions, over Kysely: read-only through the API.
+  unattributedMachineCount: policies({
+    select: inCompany("companyId", "employee")
+  }),
   // Written only by the OEE sync and the entitlement-gated @carbon/ee/oee.server
   // functions, over Kysely and under the device lock: read-only through the API.
   unattributedMachineTime: policies({

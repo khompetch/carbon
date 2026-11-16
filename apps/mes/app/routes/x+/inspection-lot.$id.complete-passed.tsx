@@ -12,7 +12,9 @@ import type { ActionFunctionArgs } from "react-router";
 import { inspectionCompletePassedValidator } from "~/services/models";
 import {
   abilityBlockRefusal,
-  returnPickedRemainders
+  getWorkCenterCountMode,
+  returnPickedRemainders,
+  SENSOR_COUNTS_INSPECTION_REFUSAL
 } from "~/services/operations.service";
 import {
   checkRequiredScans,
@@ -102,6 +104,17 @@ export async function action({ request, params }: ActionFunctionArgs) {
   }
   if (["Passed", "Failed", "Partial"].includes(state.inspection.status)) {
     return fail(null, "Inspection is closed — the disposition already ran");
+  }
+  // A work center whose sensor counts (countMode Auto) logs completed
+  // quantities itself: completing the passed units here would count them twice.
+  if (
+    state.operation.workCenterId &&
+    (await getWorkCenterCountMode(serviceRole, {
+      workCenterId: state.operation.workCenterId,
+      companyId
+    })) === "Auto"
+  ) {
+    return fail(null, SENSOR_COUNTS_INSPECTION_REFUSAL);
   }
 
   if (state.requiresSerialTracking) {

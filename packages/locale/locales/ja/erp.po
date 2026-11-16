@@ -632,6 +632,10 @@ msgstr "{0}個の問題 — 公開済ではありません"
 msgid "{0} Processes"
 msgstr "{0}個のプロセス"
 
+#. placeholder {0}: device.queueDepth
+msgid "{0} queued"
+msgstr "{0} 件キュー待ち"
+
 #. placeholder {0}: quantityFormatter(line.quantityReceived)
 #. placeholder {1}: quantityFormatter(line.quantityCredited)
 msgid "{0} received · {1} credited"
@@ -1284,6 +1288,9 @@ msgstr "{stale} はページが読み込まれてから変更されました"
 
 msgid "{state} · synced {syncedAgo}"
 msgstr "{state} · {syncedAgo} に同期"
+
+msgid "{state} since {since}"
+msgstr "{since} から {state}"
 
 msgid "{statusTotal, plural, one {# issue in total} other {# issues in total}}"
 msgstr "{statusTotal, plural, other {合計 # 件の不適合}}"
@@ -3917,6 +3924,9 @@ msgstr "あなたの会社ではエクスポートがすでに実行中です。
 msgid "An https request Carbon sends to a system of yours when a workflow reaches that step, carrying whatever headers and body you configured."
 msgstr "ワークフローがそのステップに到達したときに、Carbonがあなたのシステムに送信するHTTPSリクエスト。設定したヘッダーと本文が含まれます。"
 
+msgid "An inactive device is ignored by the ingest service."
+msgstr "無効なデバイスは取り込みサービスによって無視されます。"
+
 msgid "An inactive group's members are planned on their own"
 msgstr "非アクティブなグループのメンバーは自身で計画されます"
 
@@ -5111,6 +5121,9 @@ msgstr "バッチを割り当て"
 msgid "Assign Batch"
 msgstr "バッチを割り当て"
 
+msgid "Assign machine pieces that no operation could take to the right job, or dismiss them."
+msgstr "工程で処理できなかった機械カウントの個数を、適切な製造指図に割り当てるか、破棄してください。"
+
 msgid "Assign machine run time that no loaded operation claimed to the right job, or dismiss it."
 msgstr "読み込まれた工程に割り当てられていない機械加工時間を正しい製造指図に割り当てるか、却下してください。"
 
@@ -5284,6 +5297,9 @@ msgstr "認可が拒否されました。もう一度接続してみてくださ
 
 msgid "Authorized overtime on top of the shift"
 msgstr "シフトを超えた認可残業"
+
+msgid "Auto"
+msgstr "自動"
 
 msgid "Auto apply"
 msgstr "自動適用"
@@ -5572,6 +5588,9 @@ msgstr "バッチ容量"
 
 msgid "Batch is not available"
 msgstr "バッチは利用可能ではありません"
+
+msgid "Batch items only. Empty: one label when the lot starts."
+msgstr "バッチ管理品目のみ。空欄: バッチ開始時にラベル1枚。"
 
 msgid "Batch items require a sales order"
 msgstr "バッチ品目は受注が必要です"
@@ -8705,6 +8724,9 @@ msgstr "カウントID"
 msgid "Count items"
 msgstr "品目をカウント"
 
+msgid "Count mode"
+msgstr "カウントモード"
+
 msgid "Counted {total}."
 msgstr "{total} 件をカウントしました。"
 
@@ -8716,6 +8738,9 @@ msgstr "取引先"
 
 msgid "Counterparty"
 msgstr "相手先"
+
+msgid "Counting for {deviceName}"
+msgstr "{deviceName} のカウント中"
 
 msgid "Counting…"
 msgstr "集計中…"
@@ -9768,6 +9793,9 @@ msgstr "プロジェクト仕掛品を借方計上し、各プールの適用勘
 msgid "Debits"
 msgstr "借方"
 
+msgid "Debounce (ms)"
+msgstr "デバウンス (ms)"
+
 msgid "Decide what an operator sees if they try to issue a batch or serial that's already expired."
 msgstr "作業者が既に期限切れのバッチまたはシリアルを出庫しようとした場合に何が表示されるかを決定します。"
 
@@ -10024,8 +10052,8 @@ msgid "Delete"
 msgstr "削除"
 
 #. placeholder {0}: deleting.name
+#. placeholder {0}: device.name
 #. placeholder {0}: monthLabel(deleting.periodStart)
-#. placeholder {0}: row.account?.number ?? ""
 msgid "Delete {0}"
 msgstr "{0} を削除"
 
@@ -10702,6 +10730,9 @@ msgstr "開発者"
 
 msgid "Device"
 msgstr "デバイス"
+
+msgid "Device key"
+msgstr "デバイスキー"
 
 msgid "Devices"
 msgstr "デバイス"
@@ -11495,6 +11526,7 @@ msgstr "経済事業者登録・識別番号。EU/UK関税国境を越える商�
 msgid "Edit"
 msgstr "編集"
 
+#. placeholder {0}: device.name
 #. placeholder {0}: operation.description
 #. placeholder {0}: process.name
 msgid "Edit {0}"
@@ -11804,6 +11836,9 @@ msgstr "プロジェクトを編集"
 msgid "Edit Properties"
 msgstr "プロパティを編集"
 
+msgid "Edit Pulse device"
+msgstr "Pulse デバイスを編集"
+
 msgid "Edit purchase order line type"
 msgstr "発注書明細タイプを編集"
 
@@ -12068,6 +12103,9 @@ msgstr "空のリスト"
 
 msgid "Empty work centers"
 msgstr "作業区がありません"
+
+msgid "Empty: 3 standard cycles, at least 30"
+msgstr "空欄の場合: 標準サイクル 3 回分、ただし最低 30"
 
 msgid "Enable"
 msgstr "有効にする"
@@ -13868,11 +13906,17 @@ msgstr "バッチの場合。シリアルは 1 としてカウント。"
 msgid "for anything. They'll pull in the right person."
 msgstr "何でも構いません。彼らが適切な人を連れてきます。"
 
+msgid "For example press-01"
+msgstr "例: press-01"
+
 msgid "For example Site or Ordered by"
 msgstr "例：拠点、発注者"
 
 msgid "For Form 6765 Section E"
 msgstr "フォーム6765セクションE用"
+
+msgid "For machines with a long cycle. Each cycle reaches Carbon within a second, instead of every few seconds."
+msgstr "サイクルの長い機械向けです。各サイクルは数秒ごとではなく、1秒以内に Carbon へ届きます。"
 
 msgid "Force delete"
 msgstr ""
@@ -14605,6 +14649,9 @@ msgstr "ヘッダー"
 msgid "Heading {level}"
 msgstr "見出し {level}"
 
+msgid "Health"
+msgstr "ヘルス"
+
 msgid "Healthy"
 msgstr "正常"
 
@@ -15051,6 +15098,9 @@ msgstr "IDプロバイダー（IdP）"
 msgid "Idle"
 msgstr "待機中"
 
+msgid "Idle after (seconds)"
+msgstr "アイドル判定までの時間（秒）"
+
 msgid "IdP Metadata URL"
 msgstr "IdP メタデータURL"
 
@@ -15187,6 +15237,9 @@ msgstr "開いているメニュー内"
 
 msgid "in arrears"
 msgstr "後払い"
+
+msgid "In Auto, the sensor logs completed and scrap quantities on the operation loaded on this work center."
+msgstr "自動モードでは、センサーがこの作業区に読み込まれた工程の完了数とスクラップ数を記録します。"
 
 msgid "In DCAA mode, an Exempt employee's week over the standard weekly hours posts at standard hours ÷ hours worked, so the week's cost spreads over every hour."
 msgstr "DCAA モードでは、適格外従業員の標準週間時間を超える週は標準時間 ÷ 実際の時間で転記され、週の原価はすべての時間に分散されます。"
@@ -16321,6 +16374,9 @@ msgstr "製造指図工程"
 msgid "Job Operations"
 msgstr "指図工程"
 
+msgid "Job or operation"
+msgstr "製造指図または工程"
+
 msgid "Job Priority"
 msgstr "ジョブ優先度"
 
@@ -17350,6 +17406,9 @@ msgstr "ロック中: このレコードは変更できなくなりました。"
 
 msgid "Locking makes the period read-only for operational documents (receipts, shipments, invoices) while still allowing accounting adjustments like depreciation and disposals. A period must be locked before it can be closed."
 msgstr "ロック中にすると期間が営業文書（入荷、出荷、請求書）に対して読み取り専用になりますが、減価償却や除却などの会計調整は引き続き許可されます。期間はクローズ済になる前にロック中にする必要があります。"
+
+msgid "Log completed from the sensor"
+msgstr "センサーから完了数を記録"
 
 msgid "Log nonconformances and drive a CAPA"
 msgstr "不適合を記録し、CAPAを推進する"
@@ -18770,6 +18829,9 @@ msgstr "ネットワークエラー"
 msgid "Never"
 msgstr "なし"
 
+msgid "Never reported"
+msgstr "未報告"
+
 msgid "New"
 msgstr "新規"
 
@@ -18865,6 +18927,9 @@ msgstr "新しい所要量予測"
 
 msgid "New Department"
 msgstr "新しい部門"
+
+msgid "New device"
+msgstr "新規デバイス"
 
 msgid "New Dimension"
 msgstr "新しいディメンション"
@@ -19043,6 +19108,9 @@ msgstr "新規プロジェクト契約"
 
 msgid "New Project Stock Transfer"
 msgstr "新しいプロジェクト在庫転送"
+
+msgid "New Pulse device"
+msgstr "新しい Pulse デバイス"
 
 msgid "New purchase order"
 msgstr "新しい発注書"
@@ -19596,6 +19664,9 @@ msgstr "デバイスが見つかりません"
 msgid "No devices match your search"
 msgstr "検索に一致するデバイスはありません"
 
+msgid "No devices registered"
+msgstr "登録されているデバイスはありません"
+
 msgid "No differences."
 msgstr "違いはありません。"
 
@@ -19935,6 +20006,9 @@ msgstr "オープン受注明細がありません"
 msgid "No open work has a target date."
 msgstr "オープン作業に目標日がありません"
 
+msgid "No operation loaded"
+msgstr "工程が読み込まれていません"
+
 msgid "No operations"
 msgstr "工程なし"
 
@@ -20185,6 +20259,9 @@ msgstr "スケジュール明細がありません。"
 msgid "No scheduled work in this window"
 msgstr "このウィンドウにはスケジュール済みの作業がありません"
 
+msgid "No scrap reason set"
+msgstr "スクラップ理由が設定されていません"
+
 msgid "No serial"
 msgstr "シリアルがありません"
 
@@ -20223,6 +20300,9 @@ msgstr "まだスライドがない"
 
 msgid "No sorts applied to this view"
 msgstr "このビューに適用されたソートはありません"
+
+msgid "No state yet"
+msgstr "状態はまだありません"
 
 msgid "No statement for this period"
 msgstr "この期間の明細書がありません"
@@ -20790,6 +20870,9 @@ msgstr "役員"
 
 msgid "Offline"
 msgstr "オフライン"
+
+msgid "Offline after (seconds)"
+msgstr "オフライン判定までの時間（秒）"
 
 msgid "Offset Absorbed Overhead"
 msgstr "相殺吸収間接費"
@@ -21367,6 +21450,9 @@ msgstr "工程バッチ"
 msgid "Operation created"
 msgstr "工程が作成されました"
 
+msgid "Operation done or canceled"
+msgstr "工程が完了またはキャンセル済み"
+
 msgid "Operation lead time"
 msgstr "工程リードタイム"
 
@@ -21666,6 +21752,9 @@ msgstr "未払い"
 
 msgid "Over estimate first"
 msgstr "見積もりを優先"
+
+msgid "Over the target quantity"
+msgstr "目標数量を超過"
 
 msgid "Over-applied by"
 msgstr "超過適用額"
@@ -22480,6 +22569,9 @@ msgstr ""
 msgid "Picking offers tracked entities earliest-expiry-first, so the soonest-to-expire stock leaves first by default."
 msgstr "ピッキングは追跡対象品目を使用期限が最も近い順に提供するため、期限切れが最も近い在庫がデフォルトで最初に出荷されます。"
 
+msgid "Pieces per pulse"
+msgstr "1 パルスあたりの個数"
+
 msgid "Pieces per run. Leave empty for no limit."
 msgstr "ラン当たりの個数。制限なしの場合は空白のままにしてください。"
 
@@ -23039,6 +23131,9 @@ msgstr "{0}件のかんばんを印刷"
 msgid "Print {0} Labels"
 msgstr "{0}個のラベルを印刷"
 
+msgid "Print a label every N pieces"
+msgstr "N 個ごとにラベルを印刷"
+
 msgid "Print batch list"
 msgstr "バッチリストを印刷"
 
@@ -23515,6 +23610,9 @@ msgstr "在庫から引当"
 
 msgid "Pull, map, and load your data"
 msgstr "データをプル、マップ、ロードする"
+
+msgid "Pulse Devices"
+msgstr "Pulse デバイス"
 
 msgid "Purchase"
 msgstr "購入"
@@ -24604,6 +24702,9 @@ msgstr "前払金の返金："
 msgid "Refund to Customer"
 msgstr "得意先への返金"
 
+msgid "Refused"
+msgstr "拒否"
+
 msgid "Regenerate"
 msgstr "再生成"
 
@@ -24633,6 +24734,9 @@ msgstr "Carbon導入前に販売された単位を登録します。Carbonが出
 
 msgid "Register Existing Asset"
 msgstr "登録済み"
+
+msgid "Register the cycle sensors on your machines, then map each one to a work center."
+msgstr "機械にサイクルセンサーを登録し、それぞれを作業区に割り当ててください。"
 
 msgid "Registered"
 msgstr "登録済"
@@ -26485,6 +26589,12 @@ msgstr "{count}個の勘定科目マッピングを保存しました"
 msgid "Saved account mapping"
 msgstr "アカウントマッピングを保存しました"
 
+msgid "Saved counting settings"
+msgstr "カウント設定を保存しました"
+
+msgid "Saved device"
+msgstr "保存済みデバイス"
+
 msgid "Saved device mapping"
 msgstr "デバイスマッピングを保存しました"
 
@@ -26682,6 +26792,9 @@ msgstr "不良理由"
 
 msgid "Scrap Reason"
 msgstr "不良理由"
+
+msgid "Scrap reason for the Log scrap button"
+msgstr "「スクラップを記録」ボタンのスクラップ理由"
 
 msgid "scrap reasons"
 msgstr "不良理由"
@@ -26933,6 +27046,9 @@ msgstr "ショップ全体の各作業区のリアルタイム キャパシテ�
 #. placeholder {0}: lines.length
 msgid "See all {0}"
 msgstr "すべての{0}を表示"
+
+msgid "Seen {lastSeen}"
+msgstr "最終確認 {lastSeen}"
 
 msgid "Segment"
 msgstr "セグメント"
@@ -27278,11 +27394,17 @@ msgstr "送信"
 msgid "Send all to"
 msgstr "すべてを次へ移動"
 
+msgid "Send each pulse immediately"
+msgstr "パルスをそのつど即時送信"
+
 msgid "Send error"
 msgstr "送信エラー"
 
 msgid "Send Estimate {serviceJobId}"
 msgstr "見積を送信 {serviceJobId}"
+
+msgid "Send every (seconds)"
+msgstr "送信間隔（秒）"
 
 msgid "Send Invite"
 msgstr "招待を送信"
@@ -27361,6 +27483,9 @@ msgstr "シリアル / バッチ"
 
 msgid "Serial / Batch Number"
 msgstr "シリアル / バッチ番号"
+
+msgid "Serial item needs Send each pulse immediately"
+msgstr "シリアル品目には「パルスごとに即時送信」が必要です"
 
 msgid "Serial items require a sales order"
 msgstr "シリアル品目は受注が必要です"
@@ -28589,6 +28714,9 @@ msgstr "標準クラウドCarbonはあなたの会社の運営方法に適合し
 
 msgid "Standard Cost Variances"
 msgstr "標準原価差異"
+
+msgid "Standard cycle (seconds)"
+msgstr "標準サイクル（秒）"
 
 msgid "Standard factor"
 msgstr "標準係数"
@@ -30408,6 +30536,12 @@ msgstr "繰延売上高のデフォルトアカウントが空です。"
 msgid "The department this one rolls up under for reporting and headcount hierarchies; leave empty for a top-level department."
 msgstr "レポートとヘッドカウント階層のために、このロールアップが行われるセクション。トップレベル部門の場合は空白のままにしてください。"
 
+msgid "The device key is the device's MQTT username. It cannot change after the device is registered."
+msgstr "デバイスキーはデバイスの MQTT ユーザー名です。登録後は変更できません。"
+
+msgid "The device's counts and state changes are deleted too. The sensor stops reporting to Carbon."
+msgstr "デバイスのカウントと状態変化の履歴も削除されます。センサーは Carbon への報告を停止します。"
+
 msgid "The device's site is in {siteTimezone}; Carbon uses {locationTimezone}"
 msgstr "デバイスのサイトは {siteTimezone} にあります。Carbon は {locationTimezone} を使用します"
 
@@ -31037,6 +31171,16 @@ msgstr "プロジェクトの在庫は同じ得意先のプロジェクトにの
 
 msgid "The provider offers no dimension targets. Enable the feature in the provider first (e.g. tracking categories, class tracking, or fields)."
 msgstr "プロバイダーはディメンションターゲットを提供していません。最初にプロバイダーで機能を有効にしてください(例:追跡カテゴリ、クラス追跡、またはフィールド)。"
+
+msgid "The Pulse ingest service has never reported"
+msgstr "Pulse 取り込みサービスからの報告はまだありません"
+
+msgid "The Pulse ingest service is running"
+msgstr "Pulse 取り込みサービスは稼働中です"
+
+#. placeholder {0}: formatTimeAgo(heartbeatAt)
+msgid "The Pulse ingest service last reported {0}"
+msgstr "Pulse 取り込みサービスの最終報告: {0}"
 
 #. placeholder {0}: formatter.format(invoicedOption)
 msgid "The purchase option is already invoiced at {0}. Exercise it at that price, or delete the invoice first."
@@ -31674,6 +31818,10 @@ msgstr "この部門は{locationName}に作業区がありません。別の部�
 
 msgid "This department has no work centers at this location. Pick another department or location."
 msgstr "この部門はこの拠点に作業区がありません。別の部門または拠点を選択してください。"
+
+#. placeholder {0}: deleting.workCenterName ?? ""
+msgid "This device is mapped to {0}. Unmap it on the Devices tab first."
+msgstr "このデバイスは {0} に割り当てられています。先に「デバイス」タブで割り当てを解除してください。"
 
 msgid "This download link is invalid or has been tampered with."
 msgstr "このダウンロードリンクは無効であるか、改ざんされています。"
@@ -32927,6 +33075,9 @@ msgstr "未割り当て在庫"
 msgid "Unassigned stock for projects"
 msgstr "プロジェクト用未割り当て在庫"
 
+msgid "Unattributed Counts"
+msgstr "未割り当てのカウント"
+
 msgid "unattributed machine time entries"
 msgstr "属性なし機械時間エントリ"
 
@@ -33909,6 +34060,9 @@ msgstr "リストを表示"
 msgid "View Lists"
 msgstr "リストを表示"
 
+msgid "View Machine Count"
+msgstr "機械カウントを表示"
+
 msgid "View Machine Time"
 msgstr "機械時間を表示"
 
@@ -34727,6 +34881,9 @@ msgstr "送信するリクエストの種類を選択します：GETは何かを
 
 msgid "Which manufacturing event starts the shelf-life clock — for example, fill, seal, or final QC."
 msgstr "どの製造イベントが保存期間時計を開始するか — たとえば、塗りつぶし、シール、または最終QC。"
+
+msgid "Which operation made these pieces?"
+msgstr "どの工程でこの数量が生産されましたか？"
 
 msgid "Which operation was this?"
 msgstr "これはどの工程でしたか?"

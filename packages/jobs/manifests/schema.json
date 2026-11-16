@@ -1,11 +1,11 @@
 {
   "kind": "carbon-company-backup",
   "version": 1,
-  "schemaVersion": "20261113015550",
+  "schemaVersion": "20261114134325",
   "sourceCompanyId": "schema-baseline",
   "sourceCompanyGroupId": null,
   "sourceCompanyName": null,
-  "exportedAt": "2026-11-13T02:08:25.351Z",
+  "exportedAt": "2026-11-14T13:50:03.502Z",
   "exportedBy": "schema-baseline",
   "label": "schema baseline",
   "includeStorage": "none",
@@ -778,12 +778,20 @@
     {
       "name": "documentFavorite",
       "rows": 0,
-      "columns": ["documentId", "userId"]
+      "columns": [
+        "documentId",
+        "userId"
+      ]
     },
     {
       "name": "documentLabel",
       "rows": 0,
-      "columns": ["documentId", "userId", "label", "companyId"]
+      "columns": [
+        "documentId",
+        "userId",
+        "label",
+        "companyId"
+      ]
     },
     {
       "name": "documentSection",
@@ -848,7 +856,12 @@
     {
       "name": "employee",
       "rows": 0,
-      "columns": ["id", "companyId", "employeeTypeId", "active"]
+      "columns": [
+        "id",
+        "companyId",
+        "employeeTypeId",
+        "active"
+      ]
     },
     {
       "name": "employeeTypePermission",
@@ -963,7 +976,12 @@
     {
       "name": "fiscalYearSettings",
       "rows": 0,
-      "columns": ["companyId", "startMonth", "taxStartMonth", "updatedBy"]
+      "columns": [
+        "companyId",
+        "startMonth",
+        "taxStartMonth",
+        "updatedBy"
+      ]
     },
     {
       "name": "fixedAssetClass",
@@ -1450,7 +1468,13 @@
     {
       "name": "materialDimension",
       "rows": 0,
-      "columns": ["id", "materialFormId", "name", "isMetric", "companyId"]
+      "columns": [
+        "id",
+        "materialFormId",
+        "name",
+        "isMetric",
+        "companyId"
+      ]
     },
     {
       "name": "materialSubstance",
@@ -1471,12 +1495,22 @@
     {
       "name": "materialFinish",
       "rows": 0,
-      "columns": ["id", "name", "materialSubstanceId", "companyId"]
+      "columns": [
+        "id",
+        "name",
+        "materialSubstanceId",
+        "companyId"
+      ]
     },
     {
       "name": "materialGrade",
       "rows": 0,
-      "columns": ["id", "materialSubstanceId", "name", "companyId"]
+      "columns": [
+        "id",
+        "materialSubstanceId",
+        "name",
+        "companyId"
+      ]
     },
     {
       "name": "materialType",
@@ -1515,7 +1549,12 @@
     {
       "name": "membership",
       "rows": 0,
-      "columns": ["id", "groupId", "memberGroupId", "memberUserId"]
+      "columns": [
+        "id",
+        "groupId",
+        "memberGroupId",
+        "memberUserId"
+      ]
     },
     {
       "name": "modelUpload",
@@ -2099,7 +2138,11 @@
     {
       "name": "searchIndexRegistry",
       "rows": 0,
-      "columns": ["companyId", "createdAt", "lastRebuiltAt"]
+      "columns": [
+        "companyId",
+        "createdAt",
+        "lastRebuiltAt"
+      ]
     },
     {
       "name": "sequence",
@@ -2567,7 +2610,11 @@
     {
       "name": "userToCompany",
       "rows": 0,
-      "columns": ["userId", "companyId", "role"]
+      "columns": [
+        "userId",
+        "companyId",
+        "role"
+      ]
     },
     {
       "name": "assemblyComponentMapping",
@@ -3339,7 +3386,12 @@
     {
       "name": "customerAccount",
       "rows": 0,
-      "columns": ["id", "customerId", "companyId", "active"]
+      "columns": [
+        "id",
+        "customerId",
+        "companyId",
+        "active"
+      ]
     },
     {
       "name": "customerBankAccount",
@@ -3745,7 +3797,12 @@
     {
       "name": "employeeShift",
       "rows": 0,
-      "columns": ["id", "employeeId", "shiftId", "companyId"]
+      "columns": [
+        "id",
+        "employeeId",
+        "shiftId",
+        "companyId"
+      ]
     },
     {
       "name": "enforcementRuleWorkCenterAssignment",
@@ -3979,7 +4036,10 @@
     {
       "name": "jobFavorite",
       "rows": 0,
-      "columns": ["jobId", "userId"]
+      "columns": [
+        "jobId",
+        "userId"
+      ]
     },
     {
       "name": "jobOperationNote",
@@ -4066,7 +4126,10 @@
     {
       "name": "jobOperationToolStep",
       "rows": 0,
-      "columns": ["jobOperationToolId", "jobOperationStepId"]
+      "columns": [
+        "jobOperationToolId",
+        "jobOperationStepId"
+      ]
     },
     {
       "name": "jobOperationTrackedEntity",
@@ -4277,6 +4340,71 @@
       ]
     },
     {
+      "name": "pulseDevice",
+      "rows": 0,
+      "columns": [
+        "id",
+        "companyId",
+        "deviceKey",
+        "name",
+        "locationId",
+        "piecesPerPulse",
+        "expectedCycleSeconds",
+        "idleAfterSeconds",
+        "offlineAfterSeconds",
+        "debounceMs",
+        "bucketSeconds",
+        "active",
+        "lastSeenAt",
+        "lastPulseAt",
+        "lastCounter",
+        "lastSeq",
+        "bootId",
+        "rssi",
+        "firmwareVersion",
+        "queueDepth",
+        "currentState",
+        "currentStateAt",
+        "aliveSince",
+        "heartbeatCounter",
+        "createdBy",
+        "createdAt",
+        "updatedBy",
+        "updatedAt"
+      ]
+    },
+    {
+      "name": "pulseCount",
+      "rows": 0,
+      "columns": [
+        "id",
+        "companyId",
+        "pulseDeviceId",
+        "bootId",
+        "seq",
+        "periodStart",
+        "periodEnd",
+        "pulses",
+        "counter",
+        "estimated",
+        "rebased",
+        "receivedAt"
+      ]
+    },
+    {
+      "name": "pulseStateChange",
+      "rows": 0,
+      "columns": [
+        "id",
+        "companyId",
+        "pulseDeviceId",
+        "state",
+        "changedAt",
+        "reason",
+        "createdAt"
+      ]
+    },
+    {
       "name": "purchasingRfq",
       "rows": 0,
       "columns": [
@@ -4302,7 +4430,10 @@
     {
       "name": "purchasingRfqFavorite",
       "rows": 0,
-      "columns": ["rfqId", "userId"]
+      "columns": [
+        "rfqId",
+        "userId"
+      ]
     },
     {
       "name": "purchasingRfqLine",
@@ -4371,7 +4502,10 @@
     {
       "name": "quoteFavorite",
       "rows": 0,
-      "columns": ["quoteId", "userId"]
+      "columns": [
+        "quoteId",
+        "userId"
+      ]
     },
     {
       "name": "quoteLine",
@@ -4556,7 +4690,10 @@
     {
       "name": "salesOrderFavorite",
       "rows": 0,
-      "columns": ["salesOrderId", "userId"]
+      "columns": [
+        "salesOrderId",
+        "userId"
+      ]
     },
     {
       "name": "salesOrderPayment",
@@ -4692,7 +4829,10 @@
     {
       "name": "salesRfqFavorite",
       "rows": 0,
-      "columns": ["rfqId", "userId"]
+      "columns": [
+        "rfqId",
+        "userId"
+      ]
     },
     {
       "name": "salesRfqLine",
@@ -5890,7 +6030,11 @@
     {
       "name": "methodMaterialStep",
       "rows": 0,
-      "columns": ["methodMaterialId", "methodOperationStepId", "quantity"]
+      "columns": [
+        "methodMaterialId",
+        "methodOperationStepId",
+        "quantity"
+      ]
     },
     {
       "name": "methodOperation",
@@ -6004,7 +6148,10 @@
     {
       "name": "methodOperationToolStep",
       "rows": 0,
-      "columns": ["methodOperationToolId", "methodOperationStepId"]
+      "columns": [
+        "methodOperationToolId",
+        "methodOperationStepId"
+      ]
     },
     {
       "name": "nonConformanceActionProcess",
@@ -6087,7 +6234,11 @@
     {
       "name": "jobMaterialStep",
       "rows": 0,
-      "columns": ["jobMaterialId", "jobOperationStepId", "quantity"]
+      "columns": [
+        "jobMaterialId",
+        "jobOperationStepId",
+        "quantity"
+      ]
     },
     {
       "name": "nonConformancePurchaseReturnOrderLine",
@@ -7414,7 +7565,13 @@
     {
       "name": "purchaseInvoiceStatusHistory",
       "rows": 0,
-      "columns": ["id", "invoiceId", "createdAt", "status", "companyId"]
+      "columns": [
+        "id",
+        "invoiceId",
+        "createdAt",
+        "status",
+        "companyId"
+      ]
     },
     {
       "name": "purchaseOrderDelivery",
@@ -7447,7 +7604,10 @@
     {
       "name": "purchaseOrderFavorite",
       "rows": 0,
-      "columns": ["purchaseOrderId", "userId"]
+      "columns": [
+        "purchaseOrderId",
+        "userId"
+      ]
     },
     {
       "name": "purchaseOrderForceDeleteRequest",
@@ -7702,12 +7862,20 @@
     {
       "name": "purchasingRfqToPurchaseOrder",
       "rows": 0,
-      "columns": ["purchasingRfqId", "purchaseOrderId", "companyId"]
+      "columns": [
+        "purchasingRfqId",
+        "purchaseOrderId",
+        "companyId"
+      ]
     },
     {
       "name": "purchasingRfqToSupplierQuote",
       "rows": 0,
-      "columns": ["purchasingRfqId", "supplierQuoteId", "companyId"]
+      "columns": [
+        "purchasingRfqId",
+        "supplierQuoteId",
+        "companyId"
+      ]
     },
     {
       "name": "quoteMakeMethod",
@@ -7762,7 +7930,11 @@
     {
       "name": "quoteMaterialStep",
       "rows": 0,
-      "columns": ["quoteMaterialId", "quoteOperationStepId", "quantity"]
+      "columns": [
+        "quoteMaterialId",
+        "quoteOperationStepId",
+        "quantity"
+      ]
     },
     {
       "name": "quoteOperation",
@@ -7879,7 +8051,10 @@
     {
       "name": "quoteOperationToolStep",
       "rows": 0,
-      "columns": ["quoteOperationToolId", "quoteOperationStepId"]
+      "columns": [
+        "quoteOperationToolId",
+        "quoteOperationStepId"
+      ]
     },
     {
       "name": "receiptFixedAssetLine",
@@ -8490,7 +8665,12 @@
     {
       "name": "supplierAccount",
       "rows": 0,
-      "columns": ["id", "supplierId", "companyId", "active"]
+      "columns": [
+        "id",
+        "supplierId",
+        "companyId",
+        "active"
+      ]
     },
     {
       "name": "supplierBankAccount",
@@ -8522,7 +8702,11 @@
     {
       "name": "supplierInteraction",
       "rows": 0,
-      "columns": ["id", "companyId", "supplierId"]
+      "columns": [
+        "id",
+        "companyId",
+        "supplierId"
+      ]
     },
     {
       "name": "receipt",
@@ -9130,7 +9314,10 @@
     {
       "name": "supplierQuoteFavorite",
       "rows": 0,
-      "columns": ["supplierQuoteId", "userId"]
+      "columns": [
+        "supplierQuoteId",
+        "userId"
+      ]
     },
     {
       "name": "supplierQuoteLine",

@@ -1,0 +1,236 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pulse Simulator</title>
+<style>
+  :root {
+    --bg: #f6f6f7; --card: #fff; --fg: #18181b; --muted: #71717a; --line: #e4e4e7;
+    --accent: #2563eb; --ok: #10b981; --idle: #f59e0b; --bad: #ef4444; --off: #a1a1aa;
+    --btn: #f4f4f5; --btn-hover: #e4e4e7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #09090b; --card: #18181b; --fg: #fafafa; --muted: #a1a1aa; --line: #27272a;
+      --btn: #27272a; --btn-hover: #3f3f46;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  header { padding: 20px 24px 8px; display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline; justify-content: space-between; }
+  h1 { font-size: 18px; margin: 0; }
+  .meta { color: var(--muted); font-size: 12px; }
+  main { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 16px; padding: 12px 24px 32px; }
+  @media (max-width: 480px) { main { grid-template-columns: 1fr; padding: 12px 16px; } header { padding: 16px; } }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .title { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
+  .name { font-weight: 600; }
+  .key { font-family: ui-monospace, monospace; font-size: 12px; color: var(--muted); }
+  .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--btn); white-space: nowrap; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--off); }
+  .Running { background: var(--ok); } .Idle { background: var(--idle); } .Down { background: var(--bad); } .Offline { background: var(--off); }
+  .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 16px; font-size: 12px; }
+  .stats div { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px dashed var(--line); padding: 2px 0; }
+  .stats span:first-child { color: var(--muted); }
+  .stats span:last-child { font-variant-numeric: tabular-nums; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .group { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .group > label.caption { width: 100%; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  button { font: inherit; font-size: 13px; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--btn); color: var(--fg); cursor: pointer; }
+  button:hover:not(:disabled) { background: var(--btn-hover); }
+  button:disabled { opacity: .45; cursor: default; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button.danger { color: var(--bad); }
+  button.big { font-size: 14px; padding: 10px 14px; font-weight: 600; }
+  input[type=number] { width: 64px; font: inherit; font-size: 13px; padding: 5px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--card); color: var(--fg); }
+  .inline { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--muted); }
+  .log { font-family: ui-monospace, monospace; font-size: 11px; max-height: 140px; overflow: auto; border-top: 1px solid var(--line); padding-top: 8px; color: var(--muted); }
+  .log div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .warn { color: var(--idle); font-size: 12px; }
+  form.add { display: flex; gap: 6px; }
+  form.add input { width: 160px; font: inherit; font-size: 13px; padding: 5px 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--card); color: var(--fg); }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Pulse Simulator</h1>
+    <div class="meta" id="meta">Loading…</div>
+  </div>
+  <form class="add" id="add">
+    <input name="key" placeholder="device key, e.g. press-01" required pattern="[A-Za-z0-9][A-Za-z0-9_\-]{0,63}" />
+    <button type="submit">Add device</button>
+  </form>
+</header>
+<main id="devices"></main>
+<script>
+  const $devices = document.getElementById("devices");
+  const $meta = document.getElementById("meta");
+  const time = new Intl.DateTimeFormat(undefined, { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  const ago = (iso) => {
+    if (!iso) return "—";
+    const s = Math.round((Date.now() - Date.parse(iso)) / 1000);
+    return s < 60 ? `${s} s ago` : s < 3600 ? `${Math.round(s / 60)} min ago` : time.format(Date.parse(iso));
+  };
+  const esc = (v) => String(v ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+  // Field values typed by the user survive the 1-second refresh.
+  const inputs = {};
+  const val = (key, name, fallback) => inputs[`${key}:${name}`] ?? fallback;
+
+  async function post(key, action, body = {}) {
+    const res = await fetch(`/api/devices/${encodeURIComponent(key)}/${action}`, {
+      method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body)
+    });
+    if (!res.ok) alert((await res.json()).error ?? res.statusText);
+    else render(await res.json());
+  }
+
+  function card(d) {
+    const s = d.device;
+    const c = d.carbon;
+    const k = d.deviceKey;
+    const on = s?.powered;
+    const state = c?.currentState;
+    const linkText = !s || !on ? "Off" : !s.networkUp ? "Network down" : s.connected ? "Online" : "Connecting…";
+    const sendEach = s?.settings.sendEachPulse;
+    return `
+    <section class="card">
+      <div class="title">
+        <div>
+          <div class="name">${esc(c?.name ?? k)}</div>
+          <div class="key">${esc(k)}${d.registered ? "" : " · not registered in Carbon"}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+          <span class="badge" title="State Carbon inferred"><span class="dot ${esc(state)}"></span>Carbon: ${esc(state ?? "no state")}</span>
+          <span class="badge" title="Device link"><span class="dot ${on && s.networkUp && s.connected ? "Running" : on ? "Idle" : ""}"></span>${linkText}</span>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div><span>Device total</span><span>${s ? s.total : "—"}</span></div>
+        <div><span>Carbon counter</span><span>${c?.lastCounter ?? "—"}</span></div>
+        <div><span>Device scrap total</span><span>${s ? s.scrapTotal : "—"}</span></div>
+        <div><span>Carbon scrap counter</span><span>${c?.lastScrapCounter ?? "—"}</span></div>
+        <div><span>Counting now</span><span>${s ? `${s.pending.n} pulse · ${s.pending.scrap} scrap` : "—"}</span></div>
+        <div><span>Carbon state since</span><span>${ago(c?.currentStateAt)}</span></div>
+        <div><span>Boot · seq</span><span title="${esc(s?.boot)}">${s?.boot ? `${esc(s.boot.slice(-6))} · ${s.seq}` : "—"}</span></div>
+        <div><span>Last seen by Carbon</span><span>${ago(c?.lastSeenAt)}</span></div>
+        <div><span>Queued · lost</span><span>${s ? `${s.queue} · ${s.lost}` : "—"}</span></div>
+        <div><span>Pieces per pulse</span><span>${c?.piecesPerPulse ?? "—"}</span></div>
+      </div>
+
+      <div class="group">
+        <label class="caption">Power</label>
+        <button class="${on ? "" : "primary"}" data-a="power-on" ${on ? "disabled" : ""}>Power on</button>
+        <button class="danger" data-a="unplug" ${on ? "" : "disabled"}>Unplug</button>
+      </div>
+
+      <div class="group">
+        <label class="caption">Machine</label>
+        <span class="inline">cycle <input type="number" min="0.2" step="0.5" data-f="cycleSeconds" value="${esc(val(k, "cycleSeconds", s?.run?.cycleSeconds ?? 5))}" /> s</span>
+        <span class="inline">jitter <input type="number" min="0" max="90" data-f="jitterPercent" value="${esc(val(k, "jitterPercent", s?.run?.jitterPercent ?? 10))}" /> %</span>
+        <button class="${s?.run ? "" : "primary"}" data-a="run" ${on ? "" : "disabled"}>${s?.run ? "Update run" : "Run"}</button>
+        <button data-a="stop" ${on && s?.run ? "" : "disabled"}>Stop</button>
+      </div>
+
+      <div class="group">
+        <label class="caption">Quantity</label>
+        <button class="big" data-a="pulse" ${on ? "" : "disabled"} title="One machine cycle passes the sensor">Sensor pulse (Log completed)</button>
+        <button class="big danger" data-a="scrap" ${on ? "" : "disabled"} title="The Log scrap push switch on the device">Log scrap</button>
+        <span class="inline"><input type="number" min="1" data-f="count" value="${esc(val(k, "count", 10))}" /></span>
+        <button data-a="pulses" ${on ? "" : "disabled"}>+N pulses</button>
+      </div>
+
+      <div class="group">
+        <label class="caption">Sending</label>
+        <label class="inline"><input type="checkbox" data-s="sendEachPulse" ${sendEach ? "checked" : ""} ${s ? "" : "disabled"} /> Send each pulse immediately</label>
+        <span class="inline">every <input type="number" min="1" data-f="bucketSeconds" value="${esc(val(k, "bucketSeconds", s?.settings.bucketSeconds ?? 5))}" ${sendEach ? "disabled" : ""} /> s</span>
+        <button data-a="settings" ${s ? "" : "disabled"}>Apply</button>
+        ${s && (s.overrides.sendEachPulse !== undefined || s.overrides.bucketSeconds !== undefined) ? `<button data-a="clear-settings">Use Carbon's config</button>` : ""}
+      </div>
+
+      <div class="group">
+        <label class="caption">Network</label>
+        <button data-a="drop-network" ${s?.networkUp !== false ? "" : "disabled"}>Drop network</button>
+        <button data-a="restore-network" ${s?.networkUp === false ? "" : "disabled"}>Restore${s?.queue ? ` (send ${s.queue})` : ""}</button>
+      </div>
+
+      <div class="group">
+        <label class="caption">Faults</label>
+        <button data-a="reboot" ${on ? "" : "disabled"}>Reboot</button>
+        <button data-a="drop-next" ${on ? "" : "disabled"}>Lose next bucket</button>
+        <button data-a="duplicate" ${on && s?.networkUp ? "" : "disabled"}>Send last bucket again</button>
+        <label class="inline"><input type="checkbox" data-c="clock" ${s && !s.tsOk ? "checked" : ""} ${s ? "" : "disabled"} /> Clock not synced</label>
+        <button class="danger" data-a="factory-reset" ${s ? "" : "disabled"}>Factory reset</button>
+        ${d.registered ? "" : `<button class="danger" data-a="remove">Remove</button>`}
+      </div>
+
+      ${s && !d.registered ? `<div class="warn">Ingest ignores a device key that is not registered in Settings → Integrations → Pulse.</div>` : ""}
+      <div class="log">${(s?.log ?? []).map((l) => `<div>${time.format(l.at)} ${esc(l.text)}</div>`).join("") || "No messages yet"}</div>
+    </section>`;
+  }
+
+  let last = null;
+  function render(data) {
+    last = data;
+    $meta.textContent = `Broker ${data.broker} · Database ${data.database ?? "not configured (set SUPABASE_DB_URL)"}`;
+    // Do not replace a number field while it is being typed in.
+    if (document.activeElement?.matches?.("#devices input[type=number]")) return;
+    $devices.innerHTML = data.devices.length
+      ? data.devices.map(card).join("")
+      : `<p class="meta">No devices. Register one in Carbon (Settings → Integrations → Pulse), or add a key above.</p>`;
+    $devices.querySelectorAll("section.card").forEach((el, i) => (el.dataset.key = data.devices[i].deviceKey));
+  }
+
+  $devices.addEventListener("input", (e) => {
+    const f = e.target.dataset.f;
+    const key = e.target.closest("section")?.dataset.key;
+    if (f && key) inputs[`${key}:${f}`] = e.target.value;
+  });
+
+  $devices.addEventListener("change", (e) => {
+    const key = e.target.closest("section")?.dataset.key;
+    if (!key) return;
+    if (e.target.dataset.c === "clock") post(key, "clock", { synced: !e.target.checked });
+    if (e.target.dataset.s === "sendEachPulse") {
+      const bucket = e.target.closest("section").querySelector("[data-f=bucketSeconds]");
+      post(key, "settings", { sendEachPulse: e.target.checked, bucketSeconds: bucket?.value });
+    }
+  });
+
+  $devices.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-a]");
+    if (!btn) return;
+    const section = btn.closest("section");
+    const key = section.dataset.key;
+    const field = (name) => section.querySelector(`[data-f=${name}]`)?.value;
+    const a = btn.dataset.a;
+    if (a === "run") return post(key, "run", { cycleSeconds: field("cycleSeconds"), jitterPercent: field("jitterPercent") });
+    if (a === "pulses") return post(key, "pulse", { count: field("count") });
+    if (a === "settings") return post(key, "settings", {
+      sendEachPulse: section.querySelector("[data-s=sendEachPulse]").checked,
+      bucketSeconds: field("bucketSeconds")
+    });
+    if (a === "clear-settings") { delete inputs[`${key}:bucketSeconds`]; return post(key, "settings", {}); }
+    if (a === "factory-reset" && !confirm("Set the device's lifetime counters to 0?")) return;
+    post(key, a);
+  });
+
+  document.getElementById("add").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const key = e.target.key.value.trim();
+    e.target.reset();
+    post(key, "settings", {});
+  });
+
+  async function refresh() {
+    try { render(await (await fetch("/api/state")).json()); }
+    catch { $meta.textContent = "The simulator server is not running."; }
+  }
+  refresh();
+  setInterval(refresh, 1000);
+</script>
+</body>
+</html>

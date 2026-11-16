@@ -64,6 +64,7 @@
     "./ramp/entities": "./src/ramp/entities/index.ts",
     "./ramp/hooks.server": "./src/ramp/hooks.server.ts",
     "./rillet/hooks.server": "./src/rillet/hooks.server.ts",
+    "./pulse/devices.server": "./src/pulse/devices.server.ts",
     "./sense/hooks.server": "./src/sense/hooks.server.ts",
     "./sense/webhook": "./src/sense/webhook.ts",
     "./sense/webhook.server": "./src/sense/webhook.server.ts",

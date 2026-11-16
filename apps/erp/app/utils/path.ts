@@ -2914,6 +2914,9 @@ export const path = {
     trialBalance: `${x}/reports/trial-balance`,
     trialBalanceLedger: (id: string) =>
       generatePath(`${x}/reports/trial-balance/${id}`),
+    unattributedMachineCount: (id: string) =>
+      generatePath(`${x}/production/machine-counts/${id}`),
+    unattributedMachineCounts: `${x}/production/machine-counts`,
     unattributedMachineTime: (id: string) =>
       generatePath(`${x}/production/machine-time/${id}`),
     unattributedMachineTimes: `${x}/production/machine-time`,

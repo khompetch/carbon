@@ -13,10 +13,16 @@ a ProxyBox HTTP endpoint. There is no Trigger.dev here.
 
 ## Packages
 
-- **`@carbon/printing`** (`packages/printing/`) — isomorphic core + server + UI. Three exports:
+- **`@carbon/printing`** (`packages/printing/`) — isomorphic core + server + UI. Five exports:
   - `.` (`src/index.ts`) — registry, validators, assignment helpers, DB service fns, types
   - `./printing.server` (`src/printing.server.ts`) — `getCachedPrinterConfig`,
     `invalidatePrinterCache`, `sendToProxyBox`, `renderWithBinderyPress`
+  - `./operation-label.server` (`src/operation-label.server.ts`) — `printOperationLabel` (moved
+    from the MES)
+  - `./operation-routing` (`src/operation-routing.ts`) — `isFirstOperationOfMakeMethod`,
+    `isLastOperationOfMakeMethod`. Browser-safe: the MES `operations.service.ts`, which MES
+    components also import, re-exports them. A `.server` import there stops every MES page from
+    hydrating (Vite refuses a server-only module in the client graph)
   - `./ui` (`src/ui/index.ts`) — `PrintingProvider`/`usePrinting`, `PrintButton`, `LabelDownloadModal`
 - **`@carbon/documents`** (`packages/documents/`) — actual renderers. PDFs via `@react-pdf/renderer`
   React components (`pdf/ProductLabelPDF`, `pdf/StorageUnitLabelPDF`, `pdf/KanbanLabelPDF`, plus
@@ -152,7 +158,8 @@ wrapped in try/catch that never blocks the parent op, then `trigger("print-job",
   `autoPrint` in `inventory.service.ts`; Stock-transfer split, from the line pick operations (Split + Entity reprint) —
   all in `apps/erp/app/modules/inventory/inventory.server.ts`.
 - **MES operation labels.** `autoPrintOperationLabel` (`apps/mes/app/services/printing.server.ts`,
-  workCenter context) runs on every MES path that completes a serial or batch unit: the Complete form
+  workCenter context; a thin wrapper over `printOperationLabel` in `@carbon/printing/operation-label.server`,
+  which the OEE count step and Unattributed Counts assign call for the units the sensor completes) runs on every MES path that completes a serial or batch unit: the Complete form
   (`x+/complete.tsx`), the QR / kanban Complete scan (`x+/end.$operationId.tsx`), and inspection lots
   (`postSerialCompletions` / `postBulkCompletion` in `services/quality.server.ts`). A new path that
   completes a tracked unit must call it too, or that path mints serials with no label.

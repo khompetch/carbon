@@ -819,6 +819,9 @@ msgstr ""
 msgid "Could not look up this label. Try again."
 msgstr ""
 
+msgid "Counted by the sensor"
+msgstr "Vom Sensor gezählt"
+
 msgid "Country code"
 msgstr "Ländervorwahl"
 
@@ -2104,6 +2107,9 @@ msgstr "Gesamtergebnis"
 msgid "Overdue PMs?"
 msgstr "Überfällige Wartungen?"
 
+msgid "Override (supervisor)"
+msgstr "Übersteuerung (Vorgesetzter)"
+
 msgid "Parameters"
 msgstr "Parameter"
 
@@ -3226,6 +3232,9 @@ msgstr "Diese Einheit wird endgültig verschrottet und es wird eine Ersatzeinhei
 
 msgid "This week"
 msgstr "Diese Woche"
+
+msgid "This work center logs completed quantities from its sensor."
+msgstr "Dieser Arbeitsplatz erfasst die Gutmengen vom Sensor."
 
 msgid "Thumbnail"
 msgstr "Vorschaubild"

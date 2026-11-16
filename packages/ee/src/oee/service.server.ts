@@ -9,12 +9,14 @@ import { endSensorMachineTime } from "@carbon/database/machine-time";
 import { getLogger } from "@carbon/logger";
 import { datetime } from "@carbon/utils";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { sql } from "kysely";
 import { EntitlementError, requireEntitlement } from "../entitlements.server";
 import { integrations } from "../index";
 import { resolveIntegrationSecrets } from "../integrations/secrets";
 import { companyHasFeature } from "../plan.server";
 import { ensureSenseWebhook } from "../sense/webhook.server";
 import { machineTimeRefusal } from "./assignable";
+import { type MachineCountLabel, postMachineCounts } from "./counts.server";
 import { createOeeProvider, isOeeProviderId } from "./registry";
 import type { OeeProvider, OeeProviderId } from "./types";
 
@@ -98,7 +100,13 @@ export async function getOeeProvider(
       integration.data.secretRef
     )) as Record<string, unknown>;
 
-    return { data: createOeeProvider(integrationId, metadata), error: null };
+    return {
+      data: createOeeProvider(integrationId, metadata, {
+        companyId,
+        serviceClient
+      }),
+      error: null
+    };
   } catch (error) {
     return fail(error);
   }
@@ -255,6 +263,80 @@ export async function upsertWorkCenterDevice(
       productionEventIds: endedEventIds
     });
     return result;
+  } catch (error) {
+    return fail(error);
+  }
+}
+
+/**
+ * The counting settings of a device mapping. In count mode Auto the sensor
+ * posts Log completed and Log scrap on the operation loaded on the work
+ * center; only a provider whose descriptor has `providesCounts` can count.
+ * Turning Auto on starts counting now: buckets received before are never
+ * posted (`countedThrough`).
+ */
+export async function updateWorkCenterDeviceCounting(
+  client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
+  args: {
+    companyId: string;
+    userId: string;
+    workCenterDeviceId: string;
+    countMode: "Off" | "Auto";
+    scrapReasonId: string | null;
+    labelEveryQuantity: number | null;
+  }
+): Promise<Result<{ id: string }>> {
+  await requireEntitlement(client, args.companyId, "INTEGRATIONS");
+  try {
+    return await db.transaction().execute(async (trx) => {
+      const device = await trx
+        .selectFrom("workCenterDevice")
+        .select(["id", "integration", "countMode"])
+        .where("id", "=", args.workCenterDeviceId)
+        .where("companyId", "=", args.companyId)
+        .forUpdate()
+        .executeTakeFirst();
+      if (!device) return { data: null, error: "Device mapping not found" };
+
+      const descriptor = integrations.find(
+        (entry) => entry.id === device.integration
+      ) as { name: string; providesCounts?: boolean } | undefined;
+      if (args.countMode === "Auto" && !descriptor?.providesCounts) {
+        return {
+          data: null,
+          error: `${descriptor?.name ?? device.integration} does not count parts`
+        };
+      }
+
+      // Kysely skips RLS, and the id comes from the form.
+      if (args.scrapReasonId) {
+        const reason = await trx
+          .selectFrom("scrapReason")
+          .select("id")
+          .where("id", "=", args.scrapReasonId)
+          .where("companyId", "=", args.companyId)
+          .executeTakeFirst();
+        if (!reason) return { data: null, error: "Scrap reason not found" };
+      }
+
+      const startsCounting =
+        args.countMode === "Auto" && device.countMode !== "Auto";
+      await trx
+        .updateTable("workCenterDevice")
+        .set({
+          countMode: args.countMode,
+          scrapReasonId: args.scrapReasonId,
+          labelEveryQuantity: args.labelEveryQuantity,
+          ...(startsCounting ? { countedThrough: sql`now()` } : {}),
+          updatedBy: args.userId,
+          updatedAt: datetime.timestamp()
+        })
+        .where("id", "=", device.id)
+        .where("companyId", "=", args.companyId)
+        .execute();
+      return { data: { id: device.id }, error: null };
+    });
   } catch (error) {
     return fail(error);
   }
@@ -430,3 +512,156 @@ export async function dismissUnattributedMachineTime(
     return fail(error);
   }
 }
+
+/**
+ * Assign unattributed counts to an operation: they become pending postings
+ * of that operation (Log completed, and Log scrap when the row has scrap),
+ * then post the way the sensor's own counts do. Returns the units whose label
+ * to print; the caller prints them.
+ */
+export async function assignUnattributedMachineCount(
+  client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
+  args: {
+    companyId: string;
+    userId: string;
+    unattributedMachineCountId: string;
+    jobOperationId: string;
+  }
+): Promise<Result<{ labels: MachineCountLabel[] }>> {
+  await requireEntitlement(client, args.companyId, "INTEGRATIONS");
+  try {
+    const result = await db.transaction().execute(async (trx) => {
+      const row = await trx
+        .selectFrom("unattributedMachineCount")
+        .select([
+          "workCenterId",
+          "periodStart",
+          "periodEnd",
+          "quantity",
+          "scrapQuantity"
+        ])
+        .where("id", "=", args.unattributedMachineCountId)
+        .where("companyId", "=", args.companyId)
+        .forUpdate()
+        .executeTakeFirst();
+      if (!row) return { data: null, error: "Machine count not found" };
+
+      // Checked under row locks, in this transaction, as machine time is.
+      const operation = await trx
+        .selectFrom("jobOperation")
+        .innerJoin("job", (join) =>
+          join
+            .onRef("job.id", "=", "jobOperation.jobId")
+            .onRef("job.companyId", "=", "jobOperation.companyId")
+        )
+        .select(["jobOperation.status", "job.status as jobStatus"])
+        .where("jobOperation.id", "=", args.jobOperationId)
+        .where("jobOperation.companyId", "=", args.companyId)
+        .forUpdate()
+        .executeTakeFirst();
+      if (!operation) return { data: null, error: "Operation not found" };
+      const refusal = machineTimeRefusal(operation.status, operation.jobStatus);
+      if (refusal === "Locked") {
+        return {
+          data: null,
+          error: "Cannot modify a locked job. Reopen it first."
+        };
+      }
+      if (refusal) return { data: null, error: `The operation is ${refusal}` };
+
+      const posting = {
+        companyId: args.companyId,
+        workCenterId: row.workCenterId,
+        jobOperationId: args.jobOperationId,
+        reclassify: false,
+        periodStart: row.periodStart,
+        periodEnd: row.periodEnd,
+        createdBy: args.userId
+      };
+      const postings = [
+        ...(Number(row.quantity) > 0
+          ? [
+              {
+                ...posting,
+                type: "Production" as const,
+                quantity: row.quantity
+              }
+            ]
+          : []),
+        ...(Number(row.scrapQuantity) > 0
+          ? [
+              {
+                ...posting,
+                type: "Scrap" as const,
+                quantity: row.scrapQuantity
+              }
+            ]
+          : [])
+      ];
+      if (postings.length > 0) {
+        await trx.insertInto("machineCountPosting").values(postings).execute();
+      }
+      await trx
+        .deleteFrom("unattributedMachineCount")
+        .where("id", "=", args.unattributedMachineCountId)
+        .where("companyId", "=", args.companyId)
+        .execute();
+
+      const device = await trx
+        .selectFrom("workCenterDevice")
+        .select(["scrapReasonId", "labelEveryQuantity"])
+        .where("workCenterId", "=", row.workCenterId)
+        .where("companyId", "=", args.companyId)
+        .executeTakeFirst();
+      return {
+        data: {
+          workCenterId: row.workCenterId,
+          scrapReasonId: device?.scrapReasonId ?? null,
+          labelEveryQuantity:
+            device?.labelEveryQuantity == null
+              ? null
+              : Number(device.labelEveryQuantity)
+        },
+        error: null
+      };
+    });
+    if (!result.data) return { data: null, error: result.error };
+
+    const { labels } = await postMachineCounts(db, {
+      companyId: args.companyId,
+      ...result.data
+    });
+    return { data: { labels }, error: null };
+  } catch (error) {
+    return fail(error);
+  }
+}
+
+/** Dismiss unattributed counts: they were not job pieces, so the row is deleted. */
+export async function dismissUnattributedMachineCount(
+  client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
+  args: { companyId: string; unattributedMachineCountId: string }
+): Promise<Result<null>> {
+  await requireEntitlement(client, args.companyId, "INTEGRATIONS");
+  try {
+    const deleted = await db
+      .deleteFrom("unattributedMachineCount")
+      .where("id", "=", args.unattributedMachineCountId)
+      .where("companyId", "=", args.companyId)
+      .returning("id")
+      .executeTakeFirst();
+    if (!deleted) return { data: null, error: "Machine count not found" };
+    return { data: null, error: null };
+  } catch (error) {
+    return fail(error);
+  }
+}
+
+export {
+  batchLabelCount,
+  type MachineCountLabel,
+  postMachineCounts,
+  splitAtTarget
+} from "./counts.server";

@@ -1,0 +1,14 @@
+# Topic access for the Pulse broker. Contract: apps/pulse-ingest/src/protocol.ts.
+
+# The ingest service reads what devices send and writes each device's
+# retained config.
+user pulse-ingest
+topic read carbon/pulse/v1/+/count
+topic read carbon/pulse/v1/+/status
+topic read carbon/pulse/v1/+/boot
+topic read carbon/pulse/v1/+/online
+topic write carbon/pulse/v1/+/config
+
+# The on-site gateway bridges the whole Pulse namespace both ways.
+user pulse-gateway
+topic readwrite carbon/pulse/v1/#

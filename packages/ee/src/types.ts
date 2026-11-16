@@ -235,6 +235,17 @@ export type IntegrationConfig = {
    * anything.
    */
   providerRole?: "accounting" | "spend" | "oee";
+  /**
+   * An OEE provider whose devices are registered in Carbon (`pulseDevice`)
+   * instead of in a provider account. Its drawer gets a tab to register and
+   * configure them and to watch their health, beside the Devices tab.
+   */
+  registersDevices?: boolean;
+  /**
+   * An OEE provider whose devices count parts. A device mapping of it can be
+   * set to count mode Auto, so the sensor posts Log completed and Log scrap.
+   */
+  providesCounts?: boolean;
   /** Logo component for the integration. Consumers pass only `className`, so an
    * SVG component and a piece's CDN `<img>` (`pieceLogo`) both satisfy it. */
   logo: React.FC<{ className?: string }>;

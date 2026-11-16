@@ -257,12 +257,18 @@ export const nonScrapQuantityValidator = baseQuantityValidator;
 
 // The completed quantity the page showed; the route skips a stale completion.
 export const completeQuantityValidator = nonScrapQuantityValidator.extend({
-  expectedQuantityComplete: zfd.numeric(z.number().min(0).optional())
+  expectedQuantityComplete: zfd.numeric(z.number().min(0).optional()),
+  // A supervisor logs completed quantities by hand on a work center whose
+  // sensor counts them (countMode Auto). Needs production delete and a note.
+  override: zfd.checkbox()
 });
 
 export const scrapQuantityValidator = baseQuantityValidator.extend({
   scrapReasonId: zfd.text(z.string()),
-  notes: zfd.text(z.string().optional())
+  notes: zfd.text(z.string().optional()),
+  // The scrapped pieces are among those the sensor counted as Production:
+  // lower the sensor's Production by the same quantity first.
+  countedBySensor: zfd.checkbox()
 });
 
 // Scrapping an already-made/staged BOM entity from the Materials section.
