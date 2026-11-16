@@ -2,7 +2,7 @@
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
-import { error } from "@carbon/auth";
+import { error, hasPermission } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { flash } from "@carbon/auth/session.server";
@@ -35,6 +35,7 @@ import {
   getThumbnailPathByItemId,
   getTrackedEntitiesForOperation,
   getWorkCenter,
+  getWorkCenterCountMode,
   isFirstOpenOperationOfMakeMethod,
   isFirstOperationOfMakeMethod,
   isSerialEntityIncompleteForOperation
@@ -107,7 +108,10 @@ export const meta: MetaFunction<typeof loader> = ({ data }) =>
   );
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const { userId, companyId } = await requirePermissions(request, {});
+  const { userId, companyId, permissions } = await requirePermissions(
+    request,
+    {}
+  );
 
   const { operationId } = params;
   if (!operationId) throw new Error("Operation ID is required");
@@ -197,7 +201,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     companySettings,
     abilityWarning,
     isFirstOperation,
-    isFirstOpenOperation
+    isFirstOpenOperation,
+    countMode
   ] = await Promise.all([
     getProductionEventsForJobOperation(serviceRole, {
       operationId,
@@ -252,7 +257,13 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
           operationId,
           jobMakeMethodId
         )
-      : false
+      : false,
+    operationPromise.then((result) => {
+      const workCenterId = result.data?.[0]?.workCenterId;
+      return workCenterId
+        ? getWorkCenterCountMode(serviceRole, { workCenterId, companyId })
+        : ("Off" as const);
+    })
   ]);
 
   if (job.error) {
@@ -476,7 +487,17 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
       }>
     >,
     thumbnailPath,
-    correctionName
+    correctionName,
+    // Auto: the work center's sensor logs completed quantities itself.
+    countMode,
+    // A supervisor (production delete) may log completed quantities by hand
+    // in Auto mode, with a note.
+    canOverrideCount: hasPermission(
+      permissions,
+      "production",
+      "delete",
+      companyId
+    )
   };
 }
 
@@ -506,7 +527,9 @@ export default function OperationRoute() {
     isFirstOpenOperation,
     requireTrackedMaterialsIssued,
     workCenter,
-    nonConformanceActions
+    nonConformanceActions,
+    countMode,
+    canOverrideCount
   } = useLoaderData<typeof loader>();
 
   return (
@@ -536,6 +559,8 @@ export default function OperationRoute() {
       thumbnailPath={thumbnailPath}
       correctionName={correctionName}
       workCenter={workCenter}
+      countMode={countMode}
+      canOverrideCount={canOverrideCount}
     />
   );
 }

@@ -3114,6 +3114,33 @@ export async function insertReworkQuantity(
 }
 
 // The tracked entity is recorded by the issue path, not on productionQuantity.
+/**
+ * How the work center's sensor counts: "Auto" when its mapped device posts
+ * Production itself. No device, or a failed read, is "Off".
+ */
+export async function getWorkCenterCountMode(
+  client: SupabaseClient<Database>,
+  args: { workCenterId: string; companyId: string }
+): Promise<"Off" | "Auto"> {
+  const { data, error } = await client
+    .from("workCenterDevice")
+    .select("countMode")
+    .eq("workCenterId", args.workCenterId)
+    .eq("companyId", args.companyId)
+    .maybeSingle();
+
+  if (error) {
+    log.error("Failed to read the work center count mode", {
+      companyId: args.companyId,
+      workCenterId: args.workCenterId,
+      error
+    });
+    return "Off";
+  }
+
+  return data?.countMode === "Auto" ? "Auto" : "Off";
+}
+
 function withoutTracking<
   T extends { trackedEntityId?: unknown; trackingType?: unknown }
 >(data: T): Omit<T, "trackedEntityId" | "trackingType"> {
@@ -3219,7 +3246,7 @@ export async function insertProductionQuantityIfCurrent(
 
 export async function insertScrapQuantity(
   client: SupabaseClient<Database>,
-  data: z.infer<typeof scrapQuantityValidator> & {
+  data: Omit<z.infer<typeof scrapQuantityValidator>, "countedBySensor"> & {
     companyId: string;
     createdBy: string;
     inspectionId?: string;
