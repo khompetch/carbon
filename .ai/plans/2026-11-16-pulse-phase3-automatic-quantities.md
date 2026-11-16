@@ -43,15 +43,15 @@ These refine the spec. Task 16 writes them into the spec.
 | Retention | Only `util.purge_work_center_loads()` changes in this phase. `util.purge_machine_state_changes()` waits for Phase 4 | Phase 3 needs old loads for late buckets; the 400-day OEE history is a Phase 4 need |
 
 ## Progress
-- [ ] Task 1: Migration — counting columns and the two count tables
-- [ ] Task 2: Regenerate types and add the authz rules
-- [ ] Task 3: Move the operation label print to `@carbon/printing`
-- [ ] Task 4: `planMachineCounts`, the pure planner, with tests
-- [ ] Task 5: `@carbon/database/machine-counts` — lower and restore sensor Production
-- [ ] Task 6: `postMachineCounts`, the poster
-- [ ] Task 7: The count step in the OEE sync
-- [ ] Task 8: Ingest wakes the sync for counts
-- [ ] Task 9: The counting settings on the ERP device mapping
+- [x] Task 1: Migration — counting columns and the two count tables
+- [x] Task 2: Regenerate types and add the authz rules
+- [x] Task 3: Move the operation label print to `@carbon/printing`
+- [x] Task 4: `planMachineCounts`, the pure planner, with tests
+- [x] Task 5: `@carbon/database/machine-counts` — lower and restore sensor Production
+- [x] Task 6: `postMachineCounts`, the poster
+- [x] Task 7: The count step in the OEE sync
+- [x] Task 8: Ingest wakes the sync for counts
+- [x] Task 9: The counting settings on the ERP device mapping
 - [ ] Task 10: Unattributed Counts — service functions
 - [ ] Task 11: Unattributed Counts — ERP pages
 - [ ] Task 12: MES — refuse a manual Log completed in Auto mode
