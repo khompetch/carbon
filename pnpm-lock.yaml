@@ -3446,9 +3446,18 @@ importers:
 
   packages/printing:
     dependencies:
+      '@carbon/database':
+        specifier: workspace:*
+        version: link:../database
       '@carbon/kv':
         specifier: workspace:*
         version: link:../kv
+      '@carbon/lib':
+        specifier: workspace:*
+        version: link:../lib
+      '@carbon/logger':
+        specifier: workspace:*
+        version: link:../logger
       '@carbon/react':
         specifier: workspace:*
         version: link:../react
@@ -3477,9 +3486,6 @@ importers:
       '@carbon/config':
         specifier: workspace:*
         version: link:../config
-      '@carbon/database':
-        specifier: workspace:*
-        version: link:../database
       '@supabase/supabase-js':
         specifier: 'catalog:'
         version: 2.117.2(@opentelemetry/api@1.9.0)
