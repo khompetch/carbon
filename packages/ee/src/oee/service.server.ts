@@ -16,6 +16,7 @@ import { resolveIntegrationSecrets } from "../integrations/secrets";
 import { companyHasFeature } from "../plan.server";
 import { ensureSenseWebhook } from "../sense/webhook.server";
 import { machineTimeRefusal } from "./assignable";
+import { type MachineCountLabel, postMachineCounts } from "./counts.server";
 import { createOeeProvider, isOeeProviderId } from "./registry";
 import type { OeeProvider, OeeProviderId } from "./types";
 
@@ -506,6 +507,152 @@ export async function dismissUnattributedMachineTime(
         error: "Machine time not found, or the machine is still running"
       };
     }
+    return { data: null, error: null };
+  } catch (error) {
+    return fail(error);
+  }
+}
+
+/**
+ * Assign unattributed counts to an operation: they become pending postings
+ * of that operation (Log completed, and Log scrap when the row has scrap),
+ * then post the way the sensor's own counts do. Returns the units whose label
+ * to print; the caller prints them.
+ */
+export async function assignUnattributedMachineCount(
+  client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
+  args: {
+    companyId: string;
+    userId: string;
+    unattributedMachineCountId: string;
+    jobOperationId: string;
+  }
+): Promise<Result<{ labels: MachineCountLabel[] }>> {
+  await requireEntitlement(client, args.companyId, "INTEGRATIONS");
+  try {
+    const result = await db.transaction().execute(async (trx) => {
+      const row = await trx
+        .selectFrom("unattributedMachineCount")
+        .select([
+          "workCenterId",
+          "periodStart",
+          "periodEnd",
+          "quantity",
+          "scrapQuantity"
+        ])
+        .where("id", "=", args.unattributedMachineCountId)
+        .where("companyId", "=", args.companyId)
+        .forUpdate()
+        .executeTakeFirst();
+      if (!row) return { data: null, error: "Machine count not found" };
+
+      // Checked under row locks, in this transaction, as machine time is.
+      const operation = await trx
+        .selectFrom("jobOperation")
+        .innerJoin("job", (join) =>
+          join
+            .onRef("job.id", "=", "jobOperation.jobId")
+            .onRef("job.companyId", "=", "jobOperation.companyId")
+        )
+        .select(["jobOperation.status", "job.status as jobStatus"])
+        .where("jobOperation.id", "=", args.jobOperationId)
+        .where("jobOperation.companyId", "=", args.companyId)
+        .forUpdate()
+        .executeTakeFirst();
+      if (!operation) return { data: null, error: "Operation not found" };
+      const refusal = machineTimeRefusal(operation.status, operation.jobStatus);
+      if (refusal === "Locked") {
+        return {
+          data: null,
+          error: "Cannot modify a locked job. Reopen it first."
+        };
+      }
+      if (refusal) return { data: null, error: `The operation is ${refusal}` };
+
+      const posting = {
+        companyId: args.companyId,
+        workCenterId: row.workCenterId,
+        jobOperationId: args.jobOperationId,
+        reclassify: false,
+        periodStart: row.periodStart,
+        periodEnd: row.periodEnd,
+        createdBy: args.userId
+      };
+      const postings = [
+        ...(Number(row.quantity) > 0
+          ? [
+              {
+                ...posting,
+                type: "Production" as const,
+                quantity: row.quantity
+              }
+            ]
+          : []),
+        ...(Number(row.scrapQuantity) > 0
+          ? [
+              {
+                ...posting,
+                type: "Scrap" as const,
+                quantity: row.scrapQuantity
+              }
+            ]
+          : [])
+      ];
+      if (postings.length > 0) {
+        await trx.insertInto("machineCountPosting").values(postings).execute();
+      }
+      await trx
+        .deleteFrom("unattributedMachineCount")
+        .where("id", "=", args.unattributedMachineCountId)
+        .where("companyId", "=", args.companyId)
+        .execute();
+
+      const device = await trx
+        .selectFrom("workCenterDevice")
+        .select(["scrapReasonId", "labelEveryQuantity"])
+        .where("workCenterId", "=", row.workCenterId)
+        .where("companyId", "=", args.companyId)
+        .executeTakeFirst();
+      return {
+        data: {
+          workCenterId: row.workCenterId,
+          scrapReasonId: device?.scrapReasonId ?? null,
+          labelEveryQuantity:
+            device?.labelEveryQuantity == null
+              ? null
+              : Number(device.labelEveryQuantity)
+        },
+        error: null
+      };
+    });
+    if (!result.data) return { data: null, error: result.error };
+
+    const { labels } = await postMachineCounts(db, {
+      companyId: args.companyId,
+      ...result.data
+    });
+    return { data: { labels }, error: null };
+  } catch (error) {
+    return fail(error);
+  }
+}
+
+/** Dismiss unattributed counts: they were not job pieces, so the row is deleted. */
+export async function dismissUnattributedMachineCount(
+  client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
+  args: { companyId: string; unattributedMachineCountId: string }
+): Promise<Result<null>> {
+  await requireEntitlement(client, args.companyId, "INTEGRATIONS");
+  try {
+    const deleted = await db
+      .deleteFrom("unattributedMachineCount")
+      .where("id", "=", args.unattributedMachineCountId)
+      .where("companyId", "=", args.companyId)
+      .returning("id")
+      .executeTakeFirst();
+    if (!deleted) return { data: null, error: "Machine count not found" };
     return { data: null, error: null };
   } catch (error) {
     return fail(error);
