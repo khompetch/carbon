@@ -77,8 +77,9 @@ same way, then show OEE from its data.
 - [ ] Migration: `productionQuantity.source`, `workCenterDevice.countMode` and
       `countedThrough`, `machineCountPosting`, `unattributedMachineCount`,
       the two purge functions redefined
-- [ ] Decide the tracking label (one per piece or per container, which
-      printer) and how sensor completions make serial or batch units
+- [x] Decide the tracking label: see the spec, "API / Service Changes"
+      (decided 2026-11-16)
+- [ ] Migration: `workCenterDevice.labelEveryQuantity` (batch label per N pieces)
 - [ ] `planMachineCounts` (`packages/ee/src/oee/counts.ts`) with tests:
       Log completed = (pulses − scrapPulses) × piecesPerPulse, Log scrap =
       scrapPulses × piecesPerPulse

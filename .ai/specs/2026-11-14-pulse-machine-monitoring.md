@@ -140,12 +140,17 @@ time from the monotonic clock `m`.
   then the idempotent `issue` posting), as user `system`. Log completed is
   `(pulses − scrapPulses) × piecesPerPulse`; Log scrap is
   `scrapPulses × piecesPerPulse`.
-- Phase 3 must also print the tracking label of a sensor Log completed
-  (`autoPrintOperationLabel`). That label prints only for serial or batch
-  units, so Phase 3 must complete tracked units from the sensor, not send
-  them to the queue. A device with `sendEachPulse` must post at once, not on
-  the next sync. Open questions: one label per piece or per container, and
-  where the label prints.
+- Phase 3 also prints the tracking label of a sensor Log completed. The
+  decisions (2026-11-16):
+
+  | Topic | Decision |
+  |---|---|
+  | Path | The sensor calls the same postings as the MES Log completed (`jobOperationSerialComplete`, `jobOperationBatchComplete`), then `autoPrintOperationLabel`. Its rules stay: a label prints at the first operation, or at the last top-level operation when the item's serial sequence has `printLabelOnCompletion` |
+  | Printer | The existing printer config: the work center's assignment, else the location default, with its auto-print switch. No new setting |
+  | Serial | One unit and one label per piece: one stroke completes `piecesPerPulse` units. Allowed only on a device with `sendEachPulse`, because each unit is a heavy transaction; on another device the counts go to the Unattributed Counts queue |
+  | Serial scrap | A Log scrap press scraps the units of the most recent stroke on the operation. Carbon spawns the replacements as the MES does. The printed label goes to scrap with the part. Check that the scrap posting accepts a unit that is already complete |
+  | Batch | A job has one lot, and every completion adds to it. A new mapping setting, "Print a label every N pieces", prints the lot label again each time the lot passes a multiple of N (one label per container, same batch number). Empty: one label when the lot starts |
+  | Duplicates | Each posting is keyed to its `pulseCount` rows, so a retry neither completes nor prints twice |
 
 ## Closest Sibling
 
