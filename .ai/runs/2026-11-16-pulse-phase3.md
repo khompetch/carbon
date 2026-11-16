@@ -100,6 +100,12 @@ Checks after the fixes:
 
 ## Open
 
+- The QR end scan (`end.$operationId.tsx`) on a work center in Auto refuses
+  the whole scan, so it cannot finish an operation that is below its target.
+  The operator must use Finish on the operation page. The shop floor does not
+  use the QR scan yet, so the fix waits. The proposed fix is to finish the
+  operation without a quantity, only when `completeAllOnScan` is on.
+
 - `pnpm-lock.yaml`: the Phase 1 commit that added `apps/pulse-ingest` also
   moved esbuild 0.27.7 → 0.28.2 in other importers. Two Vite copies then sit
   in `node_modules`, and the ERP and MES typechecks report a `vitest.config.ts`
