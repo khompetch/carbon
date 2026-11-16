@@ -283,6 +283,9 @@ const MachineCountTable = memo(
         // id), so the list offers no sort.
         sort={null}
         renderContextMenu={renderContextMenu}
+        getRowLabel={(row) =>
+          `${row.workCenter?.name ?? ""} ${instant(row.periodStart, row)}`.trim()
+        }
         title={t`Unattributed Counts`}
         primaryAction={
           firstId ? (
