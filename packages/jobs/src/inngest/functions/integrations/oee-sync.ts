@@ -116,7 +116,7 @@ async function syncDevices({
       });
       // A device in count mode Auto posts Log completed and Log scrap, and
       // prints the labels of the units it completes.
-      await countOeeDevice({
+      const counted = await countOeeDevice({
         db,
         device,
         postCounts: postMachineCounts,
@@ -131,6 +131,12 @@ async function syncDevices({
             userId: "system"
           })
       });
+      if (counted?.recheckAt) {
+        rechecks.push({
+          externalDeviceId: device.externalDeviceId,
+          at: counted.recheckAt
+        });
+      }
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       console.error(

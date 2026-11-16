@@ -281,6 +281,22 @@ describe.skipIf(!hasLocalDatabase)(
       });
     });
 
+    it("leaves a bucket received in the settle window and asks for a recheck", async () => {
+      await seed();
+      await bucket("09:00:00", "09:00:05", 3, 0, "09:00:06");
+      // Received just now: inside the settle window.
+      await client.query(
+        `UPDATE "pulseCount" SET "receivedAt" = now() WHERE "companyId" = $1 AND seq = $2`,
+        [companyId, seq]
+      );
+
+      const result = await count();
+
+      expect(result?.plan.postings).toEqual([]);
+      expect(result?.recheckAt).not.toBeNull();
+      expect((await rows()).postings).toEqual([]);
+    });
+
     it("does nothing for a device in count mode Off", async () => {
       await seed({ countMode: "Off" });
       await bucket("09:00:00", "09:00:05", 3, 0, "09:00:06");

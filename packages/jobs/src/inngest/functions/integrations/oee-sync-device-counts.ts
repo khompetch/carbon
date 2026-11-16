@@ -10,6 +10,7 @@ import {
   planMachineCounts
 } from "@carbon/ee/oee";
 import type { MachineCountLabel } from "@carbon/ee/oee.server";
+import { parseAbsolute } from "@internationalized/date";
 import { sql } from "kysely";
 import { readBlocks, readLoads, toInstant } from "./oee-sync-device";
 
@@ -23,11 +24,12 @@ import { readBlocks, readLoads, toInstant } from "./oee-sync-device";
  * The cursor is `receivedAt`, not the bucket's period: the ingest service
  * writes one device's buckets in order, and a bucket replayed after a network
  * drop has an old period but a new `receivedAt`, so it is still read. Buckets
- * received in the last `SETTLE_SECONDS` wait for the next run, so a bucket
- * still committing is never skipped.
+ * received in the last `SETTLE_SECONDS` wait, so a bucket still committing is
+ * never skipped; the step then asks for a recheck just after they settle
+ * (`recheckAt`), because ingest wakes the sync only once per bucket.
  */
 
-export const SETTLE_SECONDS = 10;
+export const SETTLE_SECONDS = 3;
 
 export type CountDeviceScope = { workCenterId: string; companyId: string };
 
@@ -55,7 +57,12 @@ export async function countOeeDevice({
   device: CountDeviceScope;
   postCounts: PostCounts;
   printLabel: PrintLabel;
-}): Promise<{ plan: MachineCountPlan; labels: number } | null> {
+}): Promise<{
+  plan: MachineCountPlan;
+  labels: number;
+  /** When to run again for buckets too new to read this time. */
+  recheckAt: string | null;
+} | null> {
   const planned = await db.transaction().execute(async (trx) => {
     const locked = await lockWorkCenterDevice(trx, device);
     if (
@@ -93,6 +100,21 @@ export async function countOeeDevice({
         toInstant(locked.countedThrough)
       );
     }
+    // Buckets already committed but inside the settle window: read next time.
+    const { newest } = await trx
+      .selectFrom("pulseCount")
+      .select((eb) => eb.fn.max("receivedAt").as("newest"))
+      .where("companyId", "=", device.companyId)
+      .where("pulseDeviceId", "=", pulseDevice.id)
+      .where("receivedAt", ">", toInstant(cutoff))
+      .executeTakeFirstOrThrow();
+    const recheckAt =
+      newest === null
+        ? null
+        : parseAbsolute(toInstant(newest as Date | string), "UTC")
+            .add({ seconds: SETTLE_SECONDS + 1 })
+            .toAbsoluteString();
+
     const buckets = (
       await bucketQuery.orderBy("periodStart").orderBy("id").execute()
     ).map((row) => ({
@@ -191,6 +213,7 @@ export async function countOeeDevice({
 
     return {
       plan,
+      recheckAt,
       scrapReasonId: locked.scrapReasonId,
       labelEveryQuantity:
         locked.labelEveryQuantity === null
@@ -211,5 +234,9 @@ export async function countOeeDevice({
   for (const label of labels) {
     await printLabel({ ...label, companyId: device.companyId });
   }
-  return { plan: planned.plan, labels: labels.length };
+  return {
+    plan: planned.plan,
+    labels: labels.length,
+    recheckAt: planned.recheckAt
+  };
 }
