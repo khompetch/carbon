@@ -4,6 +4,8 @@ paths:
   - packages/ee/src/sense/**
   - packages/ee/src/pulse/**
   - apps/pulse-ingest/**
+  - packages/database/src/machine-counts.ts
+  - packages/printing/src/operation-label.server.ts
   - packages/jobs/src/inngest/functions/integrations/oee-*.ts
   - apps/erp/app/routes/api+/webhook.sense.$companyId.ts
   - packages/database/src/machine-time.ts
@@ -591,8 +593,9 @@ scrap fields.
 - A bucket with presses and no pulses does not make the machine Running; it
   only proves the device is alive (`onHeartbeat`).
 
-The counts are stored only. Posting them as Log completed and Log scrap on
-the loaded operation is Phase 3 of the plan.
+A mapping in count mode Auto posts these counts: see "Machine counts".
+Ingest wakes the sync for a stored bucket of such a device (`wake.ts`): once
+per bucket with `sendEachPulse`, else at most once a minute.
 
 State inference (`state.ts`):
 
@@ -625,6 +628,65 @@ Local check without hardware:
 
 Ingest wakes the OEE sync through Inngest; without a local Inngest it only
 logs "could not reach Inngest", and the pulse tables still fill.
+
+## Machine counts
+
+A device mapping of a provider whose descriptor has `providesCounts` (Pulse)
+can count parts. Its settings are on the mapping (`workCenterDevice`):
+`countMode` (`Off` | `Auto`), `scrapReasonId` (the Log scrap push switch's
+reason) and `labelEveryQuantity`. They are edited with the Counting button on
+the Devices tab (`saveOeeDeviceCounting` → `updateWorkCenterDeviceCounting`).
+Turning Auto on sets `countedThrough` to now, so earlier buckets never post.
+Spec: `.ai/specs/2026-11-14-pulse-machine-monitoring.md` (Phase 3).
+
+| File | Role |
+|---|---|
+| `packages/ee/src/oee/counts.ts` | `planMachineCounts`, pure: each bucket goes to the load that covers the middle of its period; blocked, unloaded, closed-operation and serial-without-`sendEachPulse` buckets go to the queue. Per operation, Log completed = (pulses − presses) × `piecesPerPulse`, in-batch Log scrap = min(pulses, presses) × `piecesPerPulse`, and presses beyond the batch are `reclassify` scrap. A serial operation gets one posting per piece. Pinned by `counts.test.ts` |
+| `packages/jobs/.../integrations/oee-sync-device-counts.ts` | `countOeeDevice`, the count step: run by `syncDevices` after each device's state sync. Under `lockWorkCenterDevice`, it reads the `pulseCount` rows received after `countedThrough` and up to now − `SETTLE_SECONDS` (10), plans them, writes `machineCountPosting` (`Pending`) and `unattributedMachineCount` rows, and moves the cursor. Then it posts and prints. Pinned by `oee-sync-device-counts.database.test.ts` |
+| `packages/ee/src/oee/counts.server.ts` | `postMachineCounts`, the poster: each `Pending` row of the work center posts through the `issue` posting the MES uses (`jobOperationDryRun` + a `productionQuantity` insert + `jobOperation` for an untracked operation, `jobOperationBatchComplete`, `jobOperationSerialComplete`, `jobOperationScrap`) as user `system`, and returns the labels to print. `splitAtTarget` and `batchLabelCount` are pinned by `counts-target.test.ts` |
+| `packages/database/src/machine-counts.ts` | `lowerSensorProduction`, `removeSerialSensorCompletion`, `restoreSensorProduction`: lower (or undo lowering) the newest sensor Production of an operation; a batch lot's quantity follows. Shared by the poster and MES `scrap.tsx`. Pinned by `machine-counts.test.ts` |
+| `packages/printing/src/operation-label.server.ts` | `printOperationLabel`, moved from the MES: the count step and the Unattributed Counts assign print the label exactly as the MES Log completed does |
+
+Rules the poster keeps:
+
+- The cursor is `receivedAt`, not the bucket's period. Ingest writes one
+  device's rows in order, so a bucket replayed after a network drop (old
+  period, new `receivedAt`) is still read.
+- Every `productionQuantity` row it makes carries `notes = "Pulse sensor <machineCountPosting.id>"`.
+  A retry finds an earlier attempt's row by the note and does not post again.
+  `machineCountPosting.productionQuantityId` links the two, and is how a
+  sensor row is told from an operator's (no column on `productionQuantity`).
+- A refusal (a posting error below 500) moves the row to Unattributed Counts
+  with the refusal's words (`Refused`). Any other error is retried on the next
+  sync; after `MAX_ATTEMPTS` (5) the row goes to the queue.
+- Over the target, it posts up to `targetQuantity − (quantityComplete +
+  quantityReworked)`; the rest is `OverTarget`.
+- A Log scrap that lowers posted Production lowers it FIRST, then posts the
+  Scrap. The backflush issues for complete + scrapped units, so the other
+  order issues material twice for one piece. A failed Scrap restores it.
+- Serial: only on a device with `sendEachPulse`. A reclassify press scraps the
+  unit of the newest stroke (its sensor Production row is deleted first) and
+  the scrap posting spawns the replacement.
+- Batch: the lot is the make method's first tracked entity. A label prints
+  each time the lot passes a multiple of `labelEveryQuantity`, else once on
+  the first sensor completion. The print job's 30 s auto-dedupe per unit
+  drops a second label of the same lot within 30 s.
+- A label prints only where `printOperationLabel` decides (first operation,
+  or last top-level operation with `printLabelOnCompletion`), on the work
+  center's printer config.
+
+The MES (Auto mode): `complete.tsx` refuses a manual Log completed on a work
+center in Auto unless a user with `production` delete overrides it with a note;
+`scrap.tsx` offers "Counted by the sensor" (not serial), which lowers the
+sensor's Production by the scrapped pieces before it posts the Scrap.
+
+Production → "Unattributed Counts" (`x+/production+/machine-counts*.tsx`,
+`modules/production/ui/MachineCounts/`) lists `unattributedMachineCount`. Assign
+(`assignUnattributedMachineCount`) turns a row into pending postings of the
+chosen operation and posts them; Dismiss deletes it. Retention:
+`util.purge_machine_counts()` (cron `machine-count-retention`) drops Posted
+rows and queued counts after 90 days, and `util.purge_work_center_loads()`
+keeps a load while a device in Auto has not counted past it.
 
 ## The Sense webhook
 

@@ -94,15 +94,31 @@ Phase 1 (built, migrations `20261114131742_pulse-machine-monitor.sql` and
 - The ERP and the provider read these tables. Only ingest and the ee device
   writes change them.
 
-Phase 3 (planned):
+Phase 3 (migration `20261116031305_pulse-machine-counts.sql`):
 
-- `productionQuantity.source` (`Operator` | `Sensor`, default `Operator`).
-- `workCenterDevice.countMode` (`Off` | `Auto`, default `Off`) and
-  `countedThrough`.
-- `machineCountPosting`: what the count step posted, per bucket range.
-- `unattributedMachineCount`: counts with no operation that can take them.
-- `util.purge_work_center_loads()` keeps loads the count step has not read.
-  `util.purge_machine_state_changes()` keeps about 400 days for OEE history.
+- `workCenterDevice.countMode` (`Off` | `Auto`, default `Off`),
+  `countedThrough` (a `receivedAt` cursor), `scrapReasonId` (the Log scrap
+  push switch's reason) and `labelEveryQuantity`.
+- `machineCountPosting`: one row per `productionQuantity` row the sensor
+  makes (`Pending`, then `Posted` with `productionQuantityId`).
+  `productionQuantity` gets no new column: this link tells a sensor row from
+  an operator's.
+- `unattributedMachineCount`: counts no operation could take, with a reason.
+- `util.purge_work_center_loads()` keeps a load while a device in Auto has not
+  counted past it. `util.purge_machine_counts()` drops Posted rows and queued
+  counts after 90 days. The 400-day `machineStateChange` history waits for
+  Phase 4.
+
+Decisions made while planning Phase 3 (plan
+`.ai/plans/2026-11-16-pulse-phase3-automatic-quantities.md`):
+
+| Topic | Decision | Why |
+|---|---|---|
+| Cursor | `countedThrough` is a `receivedAt` cursor, read up to now − 10 s | Ingest writes one device's rows in order; a replayed bucket has an old period but a new `receivedAt` |
+| Switching to Auto | Sets `countedThrough = now()` | Counts from before the switch never post |
+| Scrap after its stroke posted | Lower the newest sensor Production first, then post the Scrap | The backflush issues for complete + scrapped units; the other order issues material twice |
+| Over the target | Post up to the target; the rest is `OverTarget` in the queue | The operation closes at its target |
+| Idempotency | `notes = "Pulse sensor <machineCountPosting.id>"` on the `productionQuantity` row | The `issue` posting runs in its own transaction; a retry must find what it already posted |
 
 ## MQTT contract (v1)
 

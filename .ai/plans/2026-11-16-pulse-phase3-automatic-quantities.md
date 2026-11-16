@@ -52,13 +52,13 @@ These refine the spec. Task 16 writes them into the spec.
 - [x] Task 7: The count step in the OEE sync
 - [x] Task 8: Ingest wakes the sync for counts
 - [x] Task 9: The counting settings on the ERP device mapping
-- [ ] Task 10: Unattributed Counts — service functions
-- [ ] Task 11: Unattributed Counts — ERP pages
-- [ ] Task 12: MES — refuse a manual Log completed in Auto mode
-- [ ] Task 13: MES — "Counted by the sensor" on Log scrap
-- [ ] Task 14: Translations
-- [ ] Task 15: Scoped gates
-- [ ] Task 16: Docs
+- [x] Task 10: Unattributed Counts — service functions
+- [x] Task 11: Unattributed Counts — ERP pages
+- [x] Task 12: MES — refuse a manual Log completed in Auto mode
+- [x] Task 13: MES — "Counted by the sensor" on Log scrap
+- [x] Task 14: Translations
+- [x] Task 15: Scoped gates
+- [x] Task 16: Docs
 - [ ] Task 17: End-to-end check with the simulator and the browser
 
 ## Dependencies
@@ -715,3 +715,25 @@ git diff --stat .ai .claude packages/ee/AGENTS.md packages/database/AGENTS.md ap
 | 10 | Send last bucket again; Drop network and Restore | No extra posting |
 
 **Verify:** every row of the table holds. Record the results in `.ai/runs/2026-11-16-pulse-phase3.md`.
+
+## Run notes
+
+- 2026-11-16: Tasks 1 and 2 were committed together: the migration alone
+  fails the authz sync until the manifest has the two tables' rules.
+- 2026-11-16: `planMachineCounts` keeps its own `contains` on epoch
+  milliseconds instead of exporting the engine's, to avoid building an ISO
+  string from a `Date` (the date rule).
+- 2026-11-16: The QR / kanban Complete scan (`end.$operationId.tsx`) also
+  refuses on a work center in Auto, so the rule holds on every server path.
+- 2026-11-16: Unattributed Counts has no date filters (the table has no
+  location-day view); it filters on work center, location and reason.
+- 2026-11-16: Gates. Pass: pulse-ingest, the ee and jobs tests of this
+  work, `machine-counts.test.ts`, every scoped typecheck including the ERP,
+  license headers, datasets, backups. Fail on code this branch does not
+  touch: `authz/sync.test.ts` (local `must be owner of function
+  assert_company_access`), `purge-company.integration.test.ts` (a dangling
+  `jobFavorite(jobId) -> job`), two Ramp staging integration tests and
+  `pegging/peg-writer.write.test.ts`.
+- 2026-11-16: On Windows, `pnpm install` fails in the root postinstall
+  (cmd.exe), and it rewrote unrelated `pnpm-lock.yaml` entries; only the
+  `packages/printing` importer hunks were committed.
