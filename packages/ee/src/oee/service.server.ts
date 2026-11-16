@@ -9,6 +9,7 @@ import { endSensorMachineTime } from "@carbon/database/machine-time";
 import { getLogger } from "@carbon/logger";
 import { datetime } from "@carbon/utils";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { sql } from "kysely";
 import { EntitlementError, requireEntitlement } from "../entitlements.server";
 import { integrations } from "../index";
 import { resolveIntegrationSecrets } from "../integrations/secrets";
@@ -266,6 +267,80 @@ export async function upsertWorkCenterDevice(
   }
 }
 
+/**
+ * The counting settings of a device mapping. In count mode Auto the sensor
+ * posts Log completed and Log scrap on the operation loaded on the work
+ * center; only a provider whose descriptor has `providesCounts` can count.
+ * Turning Auto on starts counting now: buckets received before are never
+ * posted (`countedThrough`).
+ */
+export async function updateWorkCenterDeviceCounting(
+  client: SupabaseClient<Database>,
+  db: Kysely<KyselyDatabase>,
+  args: {
+    companyId: string;
+    userId: string;
+    workCenterDeviceId: string;
+    countMode: "Off" | "Auto";
+    scrapReasonId: string | null;
+    labelEveryQuantity: number | null;
+  }
+): Promise<Result<{ id: string }>> {
+  await requireEntitlement(client, args.companyId, "INTEGRATIONS");
+  try {
+    return await db.transaction().execute(async (trx) => {
+      const device = await trx
+        .selectFrom("workCenterDevice")
+        .select(["id", "integration", "countMode"])
+        .where("id", "=", args.workCenterDeviceId)
+        .where("companyId", "=", args.companyId)
+        .forUpdate()
+        .executeTakeFirst();
+      if (!device) return { data: null, error: "Device mapping not found" };
+
+      const descriptor = integrations.find(
+        (entry) => entry.id === device.integration
+      ) as { name: string; providesCounts?: boolean } | undefined;
+      if (args.countMode === "Auto" && !descriptor?.providesCounts) {
+        return {
+          data: null,
+          error: `${descriptor?.name ?? device.integration} does not count parts`
+        };
+      }
+
+      // Kysely skips RLS, and the id comes from the form.
+      if (args.scrapReasonId) {
+        const reason = await trx
+          .selectFrom("scrapReason")
+          .select("id")
+          .where("id", "=", args.scrapReasonId)
+          .where("companyId", "=", args.companyId)
+          .executeTakeFirst();
+        if (!reason) return { data: null, error: "Scrap reason not found" };
+      }
+
+      const startsCounting =
+        args.countMode === "Auto" && device.countMode !== "Auto";
+      await trx
+        .updateTable("workCenterDevice")
+        .set({
+          countMode: args.countMode,
+          scrapReasonId: args.scrapReasonId,
+          labelEveryQuantity: args.labelEveryQuantity,
+          ...(startsCounting ? { countedThrough: sql`now()` } : {}),
+          updatedBy: args.userId,
+          updatedAt: datetime.timestamp()
+        })
+        .where("id", "=", device.id)
+        .where("companyId", "=", args.companyId)
+        .execute();
+      return { data: { id: device.id }, error: null };
+    });
+  } catch (error) {
+    return fail(error);
+  }
+}
+
 export async function deleteWorkCenterDevice(
   client: SupabaseClient<Database>,
   db: Kysely<KyselyDatabase>,
@@ -436,3 +511,10 @@ export async function dismissUnattributedMachineTime(
     return fail(error);
   }
 }
+
+export {
+  batchLabelCount,
+  type MachineCountLabel,
+  postMachineCounts,
+  splitAtTarget
+} from "./counts.server";
