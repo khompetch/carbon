@@ -1080,6 +1080,9 @@ export const manifest = {
     insert: owner("userId")
   }),
   location: company("resources"),
+  // Written only by the OEE count step and the entitlement-gated
+  // @carbon/ee/oee.server functions, over Kysely: read-only through the API.
+  machineCountPosting: policies({ select: inCompany("companyId", "employee") }),
   // Written only by the OEE sync and the entitlement-gated @carbon/ee/oee.server
   // functions, over Kysely and under the device lock: read-only through the API.
   machineStateChange: policies({ select: inCompany("companyId", "employee") }),
@@ -1982,6 +1985,11 @@ export const manifest = {
     delete: inCompany("companyId", "resources_delete")
   }),
   trainingQuestion: company("people"),
+  // Written only by the OEE count step and the entitlement-gated
+  // @carbon/ee/oee.server functions, over Kysely: read-only through the API.
+  unattributedMachineCount: policies({
+    select: inCompany("companyId", "employee")
+  }),
   // Written only by the OEE sync and the entitlement-gated @carbon/ee/oee.server
   // functions, over Kysely and under the device lock: read-only through the API.
   unattributedMachineTime: policies({
