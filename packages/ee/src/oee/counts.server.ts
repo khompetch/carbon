@@ -114,14 +114,37 @@ const note = (row: { id: string }) => `Pulse sensor ${row.id}`;
 const iso = (value: Date | string) =>
   value instanceof Date ? value.toISOString() : value;
 
+type PostMachineCountsArgs = {
+  companyId: string;
+  workCenterId: string;
+  scrapReasonId: string | null;
+  labelEveryQuantity: number | null;
+};
+
+/**
+ * Posts one work center's pending counts, one poster at a time. The OEE sync
+ * and an Unattributed Counts assign both post a work center's rows, and
+ * without this lock both could read one row as `Pending` and post it twice.
+ * The transaction advisory lock is held on its own connection while the
+ * postings run on others, so no posting waits on it. A second poster waits,
+ * then reads the rows the first one left `Pending`.
+ */
 export async function postMachineCounts(
   db: Kysely<KyselyDatabase>,
-  args: {
-    companyId: string;
-    workCenterId: string;
-    scrapReasonId: string | null;
-    labelEveryQuantity: number | null;
-  }
+  args: PostMachineCountsArgs
+): Promise<{ labels: MachineCountLabel[] }> {
+  const key = `machineCountPost:${args.companyId}:${args.workCenterId}`;
+  return db.transaction().execute(async (trx) => {
+    await sql`SELECT pg_advisory_xact_lock(hashtextextended(${key}, 0))`.execute(
+      trx
+    );
+    return postPendingCounts(db, args);
+  });
+}
+
+async function postPendingCounts(
+  db: Kysely<KyselyDatabase>,
+  args: PostMachineCountsArgs
 ): Promise<{ labels: MachineCountLabel[] }> {
   const { companyId } = args;
   const handles = { db, companyId, userId: "system" };
@@ -195,16 +218,6 @@ export async function postMachineCounts(
         .where("companyId", "=", companyId)
         .execute();
     });
-  };
-
-  /** Shrinks a row to the pieces it posts (the rest went to the queue). */
-  const shrink = async (row: PendingRow, quantity: number) => {
-    await db
-      .updateTable("machineCountPosting")
-      .set({ quantity, updatedBy: "system", updatedAt: sql`now()` })
-      .where("id", "=", row.id)
-      .where("companyId", "=", companyId)
-      .execute();
   };
 
   const findPosted = async (row: PendingRow) =>
@@ -382,22 +395,35 @@ export async function postMachineCounts(
           continue;
         }
         if (over > 0) {
-          // The pieces past the target are queued; the row keeps the rest.
-          await db
-            .insertInto("unattributedMachineCount")
-            .values({
-              companyId,
-              workCenterId: row.workCenterId,
-              periodStart: row.periodStart,
-              periodEnd: row.periodEnd,
-              quantity: over,
-              scrapQuantity: 0,
-              reason: "OverTarget",
-              jobOperationId: row.jobOperationId,
-              createdBy: "system"
-            })
-            .execute();
-          await shrink(row, post);
+          // The pieces past the target are queued and the row keeps the
+          // rest, in one transaction: a split left half done would hold the
+          // same pieces in the queue and in the row.
+          await db.transaction().execute(async (trx) => {
+            await trx
+              .insertInto("unattributedMachineCount")
+              .values({
+                companyId,
+                workCenterId: row.workCenterId,
+                periodStart: row.periodStart,
+                periodEnd: row.periodEnd,
+                quantity: over,
+                scrapQuantity: 0,
+                reason: "OverTarget",
+                jobOperationId: row.jobOperationId,
+                createdBy: "system"
+              })
+              .execute();
+            await trx
+              .updateTable("machineCountPosting")
+              .set({
+                quantity: post,
+                updatedBy: "system",
+                updatedAt: sql`now()`
+              })
+              .where("id", "=", row.id)
+              .where("companyId", "=", companyId)
+              .execute();
+          });
           row.quantity = post;
         }
         await postProduction(row, operation);
