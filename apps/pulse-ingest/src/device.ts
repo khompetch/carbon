@@ -20,6 +20,7 @@ import {
   storeTracking
 } from "./store";
 import { type MonotonicAnchor, nextAnchor, resolveBucketTimes } from "./time";
+import { type WakeReason, wakesForCounts } from "./wake";
 
 /**
  * One device's live state in the ingest service. Every message and tick of a
@@ -35,7 +36,7 @@ export class DeviceWorker {
   constructor(
     private row: DeviceRow,
     private readonly db: Kysely<KyselyDatabase>,
-    private readonly onChanged: (device: DeviceRow) => void
+    private readonly wake: (device: DeviceRow, reason: WakeReason) => void
   ) {
     this.tracking = {
       state: row.currentState,
@@ -93,7 +94,7 @@ export class DeviceWorker {
 
   private async save(changes: StateChange[], extra?: Partial<DeviceHealth>) {
     await storeTracking(this.db, this.row, this.health(extra), changes);
-    if (changes.length > 0) this.onChanged(this.row);
+    if (changes.length > 0) this.wake(this.row, { kind: "state" });
   }
 
   count(payload: CountPayload, receivedAt: number): Promise<void> {
@@ -146,6 +147,13 @@ export class DeviceWorker {
         scrapCounter: payload.scrapTotal
       };
       if (!stored) return;
+      if (wakesForCounts(this.row)) {
+        this.wake(this.row, {
+          kind: "count",
+          boot: payload.boot,
+          seq: payload.seq
+        });
+      }
 
       if (payload.n + gap.missing === 0) {
         // Only Log scrap presses: the machine did not cycle, so the state does

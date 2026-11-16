@@ -20,6 +20,7 @@ import {
   topicFor
 } from "./protocol";
 import { type DeviceRow, loadDevices, writeIngestHeartbeat } from "./store";
+import { syncEventId, type WakeReason } from "./wake";
 
 /**
  * The Pulse ingest service: one long-lived MQTT subscriber. It stores what
@@ -43,9 +44,8 @@ const log = (message: string, context: Record<string, unknown> = {}) =>
   console.log(JSON.stringify({ service: "pulse-ingest", message, ...context }));
 
 /** Sends `carbon/oee-device-sync` straight to Inngest for a mapped device. */
-async function wakeSync(device: DeviceRow) {
+async function wakeSync(device: DeviceRow, reason: WakeReason) {
   if (!device.mapped) return;
-  const minute = Math.floor(Date.now() / 60_000);
   const url = `${config.INNGEST_BASE_URL}/e/${config.INNGEST_EVENT_KEY}`;
   try {
     const response = await fetch(url, {
@@ -53,8 +53,8 @@ async function wakeSync(device: DeviceRow) {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         name: "carbon/oee-device-sync",
-        // One event per device per minute: Inngest drops the repeats.
-        id: `pulse:${device.id}:${minute}`,
+        // Inngest drops a repeated id: see `syncEventId`.
+        id: syncEventId(device, reason, Date.now()),
         data: {
           companyId: device.companyId,
           integrationId: "pulse",

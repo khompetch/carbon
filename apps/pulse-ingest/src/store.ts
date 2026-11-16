@@ -34,6 +34,8 @@ export type DeviceRow = {
   heartbeatCounter: number | null;
   /** True when a work center maps the device to the `pulse` integration. */
   mapped: boolean;
+  /** The mapping's count mode; null when the device is not mapped. */
+  countMode: "Off" | "Auto" | null;
 };
 
 /** Kysely hands `timestamptz` over as a JS `Date`; this is epoch ms. */
@@ -83,7 +85,8 @@ export async function loadDevices(
       "d.currentStateAt",
       "d.aliveSince",
       "d.heartbeatCounter",
-      "w.id as workCenterDeviceId"
+      "w.id as workCenterDeviceId",
+      "w.countMode"
     ])
     .where("d.active", "=", true)
     .execute();
@@ -111,7 +114,8 @@ export async function loadDevices(
     currentStateAt: ms(row.currentStateAt),
     aliveSince: ms(row.aliveSince),
     heartbeatCounter: num(row.heartbeatCounter),
-    mapped: row.workCenterDeviceId !== null
+    mapped: row.workCenterDeviceId !== null,
+    countMode: row.countMode ?? null
   }));
 }
 
