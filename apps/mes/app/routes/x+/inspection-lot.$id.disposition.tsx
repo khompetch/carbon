@@ -19,7 +19,9 @@ import {
 import {
   abilityBlockRefusal,
   finishJobOperation,
-  insertScrapQuantity
+  getWorkCenterCountMode,
+  insertScrapQuantity,
+  SENSOR_COUNTS_INSPECTION_REFUSAL
 } from "~/services/operations.service";
 import {
   checkRequiredScans,
@@ -113,6 +115,18 @@ export async function action({ request, params }: ActionFunctionArgs) {
   });
   if (refusal) {
     return fail(null, refusal);
+  }
+  // A work center whose sensor counts (countMode Auto) logs completed and
+  // scrapped quantities itself: the postings below would count the pieces and
+  // backflush their material twice.
+  if (
+    state.operation.workCenterId &&
+    (await getWorkCenterCountMode(serviceRole, {
+      workCenterId: state.operation.workCenterId,
+      companyId
+    })) === "Auto"
+  ) {
+    return fail(null, SENSOR_COUNTS_INSPECTION_REFUSAL);
   }
 
   const inspectedCount = state.samples.filter(

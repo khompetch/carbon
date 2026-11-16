@@ -3113,7 +3113,13 @@ export async function insertReworkQuantity(
     .select("*");
 }
 
-// The tracked entity is recorded by the issue path, not on productionQuantity.
+/**
+ * The refusal of an inspection lot completion or disposition on a work center
+ * whose sensor counts: its postings would count the pieces a second time.
+ */
+export const SENSOR_COUNTS_INSPECTION_REFUSAL =
+  "This work center logs completed quantities from its sensor. Set its count mode to Off to complete or disposition an inspection lot here.";
+
 /**
  * How the work center's sensor counts: "Auto" when its mapped device posts
  * Production itself. No device, or a failed read, is "Off".
@@ -3141,6 +3147,7 @@ export async function getWorkCenterCountMode(
   return data?.countMode === "Auto" ? "Auto" : "Off";
 }
 
+// The tracked entity is recorded by the issue path, not on productionQuantity.
 function withoutTracking<
   T extends { trackedEntityId?: unknown; trackingType?: unknown }
 >(data: T): Omit<T, "trackedEntityId" | "trackingType"> {

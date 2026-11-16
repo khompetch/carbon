@@ -16,6 +16,7 @@ import {
   abilityBlockRefusal,
   getBatchRequiredScanShortfall,
   getJobOperationBatch,
+  getWorkCenterCountMode,
   type JobOperationBatch
 } from "~/services/operations.service";
 
@@ -132,6 +133,34 @@ export async function action({ request, params }: ActionFunctionArgs) {
     : null;
   if (abilityRefusal) {
     return data({}, await flash(request, error(null, abilityRefusal)));
+  }
+
+  // A work center whose sensor counts (countMode Auto) logs completed
+  // quantities itself: a completed quantity here would count the pieces
+  // twice. A batch completed with 0 still finishes its members. A resume of a
+  // 'Completing' batch records nothing new, so it is not refused.
+  if (
+    planned.data.status !== "Completing" &&
+    planned.data.status !== "Completed" &&
+    planned.data.workCenterId &&
+    validation.data.members.some(
+      (m) => m.excluded !== "true" && (m.quantity ?? 0) > 0
+    ) &&
+    (await getWorkCenterCountMode(serviceRole, {
+      workCenterId: planned.data.workCenterId,
+      companyId
+    })) === "Auto"
+  ) {
+    return data(
+      {},
+      await flash(
+        request,
+        error(
+          null,
+          "This work center logs completed quantities from its sensor. Enter 0 completed for each member, or set its count mode to Off."
+        )
+      )
+    );
   }
 
   // Required scans: refuse the whole batch, naming each member that is short,
