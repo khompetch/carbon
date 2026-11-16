@@ -819,6 +819,9 @@ msgstr "Could not load the line feed"
 msgid "Could not look up this label. Try again."
 msgstr "Could not look up this label. Try again."
 
+msgid "Counted by the sensor"
+msgstr "Counted by the sensor"
+
 msgid "Country code"
 msgstr "Country code"
 
@@ -2104,6 +2107,9 @@ msgstr "Overall result"
 msgid "Overdue PMs?"
 msgstr "Overdue PMs?"
 
+msgid "Override (supervisor)"
+msgstr "Override (supervisor)"
+
 msgid "Parameters"
 msgstr "Parameters"
 
@@ -3226,6 +3232,9 @@ msgstr "This unit will be permanently scrapped and a replacement unit will be cr
 
 msgid "This week"
 msgstr "This week"
+
+msgid "This work center logs completed quantities from its sensor."
+msgstr "This work center logs completed quantities from its sensor."
 
 msgid "Thumbnail"
 msgstr "Thumbnail"

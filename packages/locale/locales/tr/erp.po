@@ -5121,6 +5121,9 @@ msgstr "Bir parti ata"
 msgid "Assign Batch"
 msgstr "Parti ata"
 
+msgid "Assign machine pieces that no operation could take to the right job, or dismiss them."
+msgstr "Hiçbir operasyonun alamadığı makine sayımı parçaları doğru iş emrine atayın veya yok sayın."
+
 msgid "Assign machine run time that no loaded operation claimed to the right job, or dismiss it."
 msgstr "Yüklü bir operasyonun talep etmediği makine süresini doğru işe atayın veya göz ardı edin."
 
@@ -5294,6 +5297,9 @@ msgstr "Yetkilendirme reddedildi. Tekrar bağlanmayı deneyin."
 
 msgid "Authorized overtime on top of the shift"
 msgstr "Vardiyayı çok aşan yetkili fazla mesai"
+
+msgid "Auto"
+msgstr "Otomatik"
 
 msgid "Auto apply"
 msgstr "Otomatik uygula"
@@ -5582,6 +5588,9 @@ msgstr "Parti Kapasitesi"
 
 msgid "Batch is not available"
 msgstr "Parti kullanılamaz"
+
+msgid "Batch items only. Empty: one label when the lot starts."
+msgstr "Yalnızca parti takipli stoklar. Boşsa: parti başladığında bir etiket."
 
 msgid "Batch items require a sales order"
 msgstr "Parti toplu ürünler için satış siparişi gereklidir"
@@ -8715,6 +8724,9 @@ msgstr "Sayım Kimliği"
 msgid "Count items"
 msgstr "Öğeleri say"
 
+msgid "Count mode"
+msgstr "Sayım modu"
+
 msgid "Counted {total}."
 msgstr "{total} sayıldı."
 
@@ -8726,6 +8738,9 @@ msgstr "Muhasebeleştirilecek Taraflar"
 
 msgid "Counterparty"
 msgstr "Karşı Taraf"
+
+msgid "Counting for {deviceName}"
+msgstr "{deviceName} için sayım"
 
 msgid "Counting…"
 msgstr "Sayılıyor…"
@@ -15223,6 +15238,9 @@ msgstr "Açık bir menüde"
 msgid "in arrears"
 msgstr "vadeli"
 
+msgid "In Auto, the sensor logs completed and scrap quantities on the operation loaded on this work center."
+msgstr "Otomatik modda sensör, bu iş merkezine yüklü operasyon için tamamlanan ve fire miktarlarını kaydeder."
+
 msgid "In DCAA mode, an Exempt employee's week over the standard weekly hours posts at standard hours ÷ hours worked, so the week's cost spreads over every hour."
 msgstr "DCAA modunda, muaf bir çalışanın standart haftalık saatleri aşan haftası, standart saatler ÷ çalışılan saatlerde gönderilir, böylece haftanın maliyeti her saate yayılır."
 
@@ -16356,6 +16374,9 @@ msgstr "İş emri operasyonları"
 msgid "Job Operations"
 msgstr "İş emri operasyonları"
 
+msgid "Job or operation"
+msgstr "İş emri veya operasyon"
+
 msgid "Job Priority"
 msgstr "İş Önceliği"
 
@@ -17385,6 +17406,9 @@ msgstr "Kilitli: Bu kayıt artık değiştirilemez."
 
 msgid "Locking makes the period read-only for operational documents (receipts, shipments, invoices) while still allowing accounting adjustments like depreciation and disposals. A period must be locked before it can be closed."
 msgstr "Dönemin kilitlenmesi, işletme belgelerine (makbuzlar, sevkiyatlar, faturalar) yönelik olarak salt okunur hale getirirken, amortisman ve elden çıkarma gibi muhasebe düzeltmelerine izin vermeye devam eder. Dönem kapatılmadan önce kilitlenmesi gerekir."
+
+msgid "Log completed from the sensor"
+msgstr "Sensörden tamamlananı kaydet"
 
 msgid "Log nonconformances and drive a CAPA"
 msgstr "Uygunsuzlukları kaydedin ve CAPA başlatın"
@@ -19982,6 +20006,9 @@ msgstr "Açık satış sipariş satırı yok"
 msgid "No open work has a target date."
 msgstr "Hiçbir açık işin hedef tarihi yoktur."
 
+msgid "No operation loaded"
+msgstr "Yüklü operasyon yok"
+
 msgid "No operations"
 msgstr "Operasyonlar yok"
 
@@ -20231,6 +20258,9 @@ msgstr "Çizelge satırı yok."
 
 msgid "No scheduled work in this window"
 msgstr "Bu zaman penceresinde planlanmış iş yok"
+
+msgid "No scrap reason set"
+msgstr "Fire nedeni ayarlanmamış"
 
 msgid "No serial"
 msgstr "Seri no yok"
@@ -21420,6 +21450,9 @@ msgstr "Operasyon partileri"
 msgid "Operation created"
 msgstr "Operasyon oluşturuldu"
 
+msgid "Operation done or canceled"
+msgstr "Operasyon bitti veya iptal edildi"
+
 msgid "Operation lead time"
 msgstr "Operasyon tedarik süresi"
 
@@ -21719,6 +21752,9 @@ msgstr "Ödenmemiş"
 
 msgid "Over estimate first"
 msgstr "Önce Tahminini Aşma"
+
+msgid "Over the target quantity"
+msgstr "Hedef miktarın üzerinde"
 
 msgid "Over-applied by"
 msgstr "Fazla uygulandı"
@@ -23094,6 +23130,9 @@ msgstr "{0} Kanban Yazdır"
 #. placeholder {0}: selectedIds.size
 msgid "Print {0} Labels"
 msgstr "{0} Etiket Yazdır"
+
+msgid "Print a label every N pieces"
+msgstr "Her N parçada bir etiket yazdır"
 
 msgid "Print batch list"
 msgstr "Parti Listesini Yazdır"
@@ -24662,6 +24701,9 @@ msgstr "Şunun için avans iadesi:"
 
 msgid "Refund to Customer"
 msgstr "Müşteriye İade"
+
+msgid "Refused"
+msgstr "Reddedildi"
 
 msgid "Regenerate"
 msgstr "Yeniden oluştur"
@@ -26547,6 +26589,9 @@ msgstr "Kaydedilen {count} muhasebe hesabı eşlemesi"
 msgid "Saved account mapping"
 msgstr "Kaydedilen muhasebe hesabı eşlemesi"
 
+msgid "Saved counting settings"
+msgstr "Kaydedilen sayım ayarları"
+
 msgid "Saved device"
 msgstr "Kaydedilmiş cihaz"
 
@@ -26747,6 +26792,9 @@ msgstr "Fire nedeni"
 
 msgid "Scrap Reason"
 msgstr "Fire Nedeni"
+
+msgid "Scrap reason for the Log scrap button"
+msgstr "Fire kaydet düğmesi için fire nedeni"
 
 msgid "scrap reasons"
 msgstr "Fire nedenleri"
@@ -27435,6 +27483,9 @@ msgstr "Seri / Parti"
 
 msgid "Serial / Batch Number"
 msgstr "Seri / Parti Numarası"
+
+msgid "Serial item needs Send each pulse immediately"
+msgstr "Seri takipli stok, “Her darbeyi hemen gönder” ayarını gerektirir"
 
 msgid "Serial items require a sales order"
 msgstr "Seri ürünler satış siparişi gerektirir"
@@ -33024,6 +33075,9 @@ msgstr "Atanmamış Stok"
 msgid "Unassigned stock for projects"
 msgstr "Projeler için Atanmamış Stok"
 
+msgid "Unattributed Counts"
+msgstr "Atanmamış sayımlar"
+
 msgid "unattributed machine time entries"
 msgstr "atfedilmemiş makine süresi girdileri"
 
@@ -34006,6 +34060,9 @@ msgstr "Listeyi Görüntüle"
 msgid "View Lists"
 msgstr "Listeleri Görüntüle"
 
+msgid "View Machine Count"
+msgstr "Makine sayımını görüntüle"
+
 msgid "View Machine Time"
 msgstr "Makine Süresini Görüntüle"
 
@@ -34824,6 +34881,9 @@ msgstr "Gönderilecek isteğin türü: GET bir şey okur, POST oluşturur, PUT v
 
 msgid "Which manufacturing event starts the shelf-life clock — for example, fill, seal, or final QC."
 msgstr "Hangi üretim olayı raf ömrü saatini başlatır — örneğin, doldurma, mühürleme veya nihai QC."
+
+msgid "Which operation made these pieces?"
+msgstr "Bu parçaları hangi operasyon üretti?"
 
 msgid "Which operation was this?"
 msgstr "Bu hangi operasyondu?"

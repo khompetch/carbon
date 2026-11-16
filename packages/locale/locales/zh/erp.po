@@ -5121,6 +5121,9 @@ msgstr "分配生产批次"
 msgid "Assign Batch"
 msgstr "分配生产批次"
 
+msgid "Assign machine pieces that no operation could take to the right job, or dismiss them."
+msgstr "将机器计数中无任何工序可接收的件数分配到正确的工单，或将其忽略。"
+
 msgid "Assign machine run time that no loaded operation claimed to the right job, or dismiss it."
 msgstr "将未被加载工序认领的机器工时分配给正确的工单，或将其放弃。"
 
@@ -5294,6 +5297,9 @@ msgstr "授权被拒绝。请尝试重新连接。"
 
 msgid "Authorized overtime on top of the shift"
 msgstr "班次之外的授权加班"
+
+msgid "Auto"
+msgstr "自动"
 
 msgid "Auto apply"
 msgstr "自动应用"
@@ -5582,6 +5588,9 @@ msgstr "生产批次容量"
 
 msgid "Batch is not available"
 msgstr "生产批次不可用"
+
+msgid "Batch items only. Empty: one label when the lot starts."
+msgstr "仅适用于批次管理物料。留空：批次开始时打印一张标签。"
 
 msgid "Batch items require a sales order"
 msgstr "生产批次物料需要销售订单"
@@ -8715,6 +8724,9 @@ msgstr "盘点ID"
 msgid "Count items"
 msgstr "计数物料"
 
+msgid "Count mode"
+msgstr "计数模式"
+
 msgid "Counted {total}."
 msgstr "已计数 {total} 个。"
 
@@ -8726,6 +8738,9 @@ msgstr "交易对手"
 
 msgid "Counterparty"
 msgstr "交易对手"
+
+msgid "Counting for {deviceName}"
+msgstr "{deviceName} 计数中"
 
 msgid "Counting…"
 msgstr "统计中…"
@@ -15223,6 +15238,9 @@ msgstr "在打开的菜单中"
 msgid "in arrears"
 msgstr "后付"
 
+msgid "In Auto, the sensor logs completed and scrap quantities on the operation loaded on this work center."
+msgstr "在自动模式下，传感器会记录此工作中心所加载工序的完成数量和报废数量。"
+
 msgid "In DCAA mode, an Exempt employee's week over the standard weekly hours posts at standard hours ÷ hours worked, so the week's cost spreads over every hour."
 msgstr "在 DCAA 模式下，豁免员工的周超过标准每周小时数时，以标准小时 ÷ 工作小时过账，因此该周的成本分配到每小时。"
 
@@ -16356,6 +16374,9 @@ msgstr "工单工序"
 msgid "Job Operations"
 msgstr "工单工序"
 
+msgid "Job or operation"
+msgstr "工单或工序"
+
 msgid "Job Priority"
 msgstr "工作优先级"
 
@@ -17385,6 +17406,9 @@ msgstr "已锁定：此记录无法再更改。"
 
 msgid "Locking makes the period read-only for operational documents (receipts, shipments, invoices) while still allowing accounting adjustments like depreciation and disposals. A period must be locked before it can be closed."
 msgstr "锁定使该期间对运营凭证（收货、发货、发票）为只读，同时仍允许会计调整（如折旧和处置）。期间必须先锁定才能关闭。"
+
+msgid "Log completed from the sensor"
+msgstr "从传感器记录完成数量"
 
 msgid "Log nonconformances and drive a CAPA"
 msgstr "记录不合格并推动 CAPA"
@@ -19982,6 +20006,9 @@ msgstr "没有未结销售订单行"
 msgid "No open work has a target date."
 msgstr "没有未结工作设置了目标日期。"
 
+msgid "No operation loaded"
+msgstr "未加载工序"
+
 msgid "No operations"
 msgstr "无工序"
 
@@ -20231,6 +20258,9 @@ msgstr "无日程行。"
 
 msgid "No scheduled work in this window"
 msgstr "此时间窗内无排程工作"
+
+msgid "No scrap reason set"
+msgstr "未设置报废原因"
 
 msgid "No serial"
 msgstr "没有序列号"
@@ -21420,6 +21450,9 @@ msgstr "工序生产批次"
 msgid "Operation created"
 msgstr "工序已创建"
 
+msgid "Operation done or canceled"
+msgstr "工序已完成或已取消"
+
 msgid "Operation lead time"
 msgstr "操作提前期"
 
@@ -21719,6 +21752,9 @@ msgstr "未清结"
 
 msgid "Over estimate first"
 msgstr "优先显示超额估计"
+
+msgid "Over the target quantity"
+msgstr "超过目标数量"
 
 msgid "Over-applied by"
 msgstr "超额应用"
@@ -23094,6 +23130,9 @@ msgstr "打印 {0} 个看板"
 #. placeholder {0}: selectedIds.size
 msgid "Print {0} Labels"
 msgstr "打印 {0} 个标签"
+
+msgid "Print a label every N pieces"
+msgstr "每 N 件打印一个标签"
 
 msgid "Print batch list"
 msgstr "打印生产批次列表"
@@ -24662,6 +24701,9 @@ msgstr "退还预付款："
 
 msgid "Refund to Customer"
 msgstr "向客户退款"
+
+msgid "Refused"
+msgstr "已拒绝"
 
 msgid "Regenerate"
 msgstr "重新生成"
@@ -26547,6 +26589,9 @@ msgstr "已保存 {count} 个账户映射"
 msgid "Saved account mapping"
 msgstr "已保存账户映射"
 
+msgid "Saved counting settings"
+msgstr "计数设置已保存"
+
 msgid "Saved device"
 msgstr "已保存的设备"
 
@@ -26747,6 +26792,9 @@ msgstr "报废原因"
 
 msgid "Scrap Reason"
 msgstr "报废原因"
+
+msgid "Scrap reason for the Log scrap button"
+msgstr "“记录报废”按钮的报废原因"
 
 msgid "scrap reasons"
 msgstr "报废原因"
@@ -27435,6 +27483,9 @@ msgstr "序列号 / 批次"
 
 msgid "Serial / Batch Number"
 msgstr "序列号 / 批号"
+
+msgid "Serial item needs Send each pulse immediately"
+msgstr "序列号物料需要启用“立即发送每个脉冲”"
 
 msgid "Serial items require a sales order"
 msgstr "序列号物料需要销售订单"
@@ -33024,6 +33075,9 @@ msgstr "未分配库存"
 msgid "Unassigned stock for projects"
 msgstr "项目未分配库存"
 
+msgid "Unattributed Counts"
+msgstr "未分配的计数"
+
 msgid "unattributed machine time entries"
 msgstr "未分配的机器工时条目"
 
@@ -34006,6 +34060,9 @@ msgstr "查看列表"
 msgid "View Lists"
 msgstr "查看列表"
 
+msgid "View Machine Count"
+msgstr "查看机器计数"
+
 msgid "View Machine Time"
 msgstr "查看机器工时"
 
@@ -34824,6 +34881,9 @@ msgstr "发送哪种类型的请求：GET 读取内容，POST 创建，PUT 和 P
 
 msgid "Which manufacturing event starts the shelf-life clock — for example, fill, seal, or final QC."
 msgstr "哪个制造事件启动保质期时钟 — 例如填充、密封或最终QC。"
+
+msgid "Which operation made these pieces?"
+msgstr "哪道工序生产了这些件数？"
 
 msgid "Which operation was this?"
 msgstr "这是哪个工序?"

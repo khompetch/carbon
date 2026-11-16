@@ -5121,6 +5121,9 @@ msgstr "Assign a Batch"
 msgid "Assign Batch"
 msgstr "Assign Batch"
 
+msgid "Assign machine pieces that no operation could take to the right job, or dismiss them."
+msgstr "Assign machine pieces that no operation could take to the right job, or dismiss them."
+
 msgid "Assign machine run time that no loaded operation claimed to the right job, or dismiss it."
 msgstr "Assign machine run time that no loaded operation claimed to the right job, or dismiss it."
 
@@ -5294,6 +5297,9 @@ msgstr "Authorization was refused. Try connecting again."
 
 msgid "Authorized overtime on top of the shift"
 msgstr "Authorized overtime on top of the shift"
+
+msgid "Auto"
+msgstr "Auto"
 
 msgid "Auto apply"
 msgstr "Auto apply"
@@ -5582,6 +5588,9 @@ msgstr "Batch Capacity"
 
 msgid "Batch is not available"
 msgstr "Batch is not available"
+
+msgid "Batch items only. Empty: one label when the lot starts."
+msgstr "Batch items only. Empty: one label when the lot starts."
 
 msgid "Batch items require a sales order"
 msgstr "Batch items require a sales order"
@@ -8715,6 +8724,9 @@ msgstr "Count ID"
 msgid "Count items"
 msgstr "Count items"
 
+msgid "Count mode"
+msgstr "Count mode"
+
 msgid "Counted {total}."
 msgstr "Counted {total}."
 
@@ -8726,6 +8738,9 @@ msgstr "Counterparties"
 
 msgid "Counterparty"
 msgstr "Counterparty"
+
+msgid "Counting for {deviceName}"
+msgstr "Counting for {deviceName}"
 
 msgid "Counting…"
 msgstr "Counting…"
@@ -15223,6 +15238,9 @@ msgstr "In an open menu"
 msgid "in arrears"
 msgstr "in arrears"
 
+msgid "In Auto, the sensor logs completed and scrap quantities on the operation loaded on this work center."
+msgstr "In Auto, the sensor logs completed and scrap quantities on the operation loaded on this work center."
+
 msgid "In DCAA mode, an Exempt employee's week over the standard weekly hours posts at standard hours ÷ hours worked, so the week's cost spreads over every hour."
 msgstr "In DCAA mode, an Exempt employee's week over the standard weekly hours posts at standard hours ÷ hours worked, so the week's cost spreads over every hour."
 
@@ -16356,6 +16374,9 @@ msgstr "job operations"
 msgid "Job Operations"
 msgstr "Job Operations"
 
+msgid "Job or operation"
+msgstr "Job or operation"
+
 msgid "Job Priority"
 msgstr "Job Priority"
 
@@ -17385,6 +17406,9 @@ msgstr "Locked: this record can no longer change."
 
 msgid "Locking makes the period read-only for operational documents (receipts, shipments, invoices) while still allowing accounting adjustments like depreciation and disposals. A period must be locked before it can be closed."
 msgstr "Locking makes the period read-only for operational documents (receipts, shipments, invoices) while still allowing accounting adjustments like depreciation and disposals. A period must be locked before it can be closed."
+
+msgid "Log completed from the sensor"
+msgstr "Log completed from the sensor"
 
 msgid "Log nonconformances and drive a CAPA"
 msgstr "Log nonconformances and drive a CAPA"
@@ -19982,6 +20006,9 @@ msgstr "No open sales order lines"
 msgid "No open work has a target date."
 msgstr "No open work has a target date."
 
+msgid "No operation loaded"
+msgstr "No operation loaded"
+
 msgid "No operations"
 msgstr "No operations"
 
@@ -20231,6 +20258,9 @@ msgstr "No schedule lines."
 
 msgid "No scheduled work in this window"
 msgstr "No scheduled work in this window"
+
+msgid "No scrap reason set"
+msgstr "No scrap reason set"
 
 msgid "No serial"
 msgstr "No serial"
@@ -21420,6 +21450,9 @@ msgstr "operation batches"
 msgid "Operation created"
 msgstr "Operation created"
 
+msgid "Operation done or canceled"
+msgstr "Operation done or canceled"
+
 msgid "Operation lead time"
 msgstr "Operation lead time"
 
@@ -21719,6 +21752,9 @@ msgstr "Outstanding"
 
 msgid "Over estimate first"
 msgstr "Over estimate first"
+
+msgid "Over the target quantity"
+msgstr "Over the target quantity"
 
 msgid "Over-applied by"
 msgstr "Over-applied by"
@@ -23094,6 +23130,9 @@ msgstr "Print {0} Kanbans"
 #. placeholder {0}: selectedIds.size
 msgid "Print {0} Labels"
 msgstr "Print {0} Labels"
+
+msgid "Print a label every N pieces"
+msgstr "Print a label every N pieces"
 
 msgid "Print batch list"
 msgstr "Print batch list"
@@ -24662,6 +24701,9 @@ msgstr "Refund prepayment for"
 
 msgid "Refund to Customer"
 msgstr "Refund to Customer"
+
+msgid "Refused"
+msgstr "Refused"
 
 msgid "Regenerate"
 msgstr "Regenerate"
@@ -26547,6 +26589,9 @@ msgstr "Saved {count} account mappings"
 msgid "Saved account mapping"
 msgstr "Saved account mapping"
 
+msgid "Saved counting settings"
+msgstr "Saved counting settings"
+
 msgid "Saved device"
 msgstr "Saved device"
 
@@ -26747,6 +26792,9 @@ msgstr "scrap reason"
 
 msgid "Scrap Reason"
 msgstr "Scrap Reason"
+
+msgid "Scrap reason for the Log scrap button"
+msgstr "Scrap reason for the Log scrap button"
 
 msgid "scrap reasons"
 msgstr "scrap reasons"
@@ -27435,6 +27483,9 @@ msgstr "Serial / Batch"
 
 msgid "Serial / Batch Number"
 msgstr "Serial / Batch Number"
+
+msgid "Serial item needs Send each pulse immediately"
+msgstr "Serial item needs Send each pulse immediately"
 
 msgid "Serial items require a sales order"
 msgstr "Serial items require a sales order"
@@ -33024,6 +33075,9 @@ msgstr "Unassigned stock"
 msgid "Unassigned stock for projects"
 msgstr "Unassigned stock for projects"
 
+msgid "Unattributed Counts"
+msgstr "Unattributed Counts"
+
 msgid "unattributed machine time entries"
 msgstr "unattributed machine time entries"
 
@@ -34006,6 +34060,9 @@ msgstr "View list"
 msgid "View Lists"
 msgstr "View Lists"
 
+msgid "View Machine Count"
+msgstr "View Machine Count"
+
 msgid "View Machine Time"
 msgstr "View Machine Time"
 
@@ -34824,6 +34881,9 @@ msgstr "Which kind of request to send: GET reads something, POST creates, PUT an
 
 msgid "Which manufacturing event starts the shelf-life clock — for example, fill, seal, or final QC."
 msgstr "Which manufacturing event starts the shelf-life clock — for example, fill, seal, or final QC."
+
+msgid "Which operation made these pieces?"
+msgstr "Which operation made these pieces?"
 
 msgid "Which operation was this?"
 msgstr "Which operation was this?"

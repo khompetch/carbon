@@ -5121,6 +5121,9 @@ msgstr "एक बैच असाइन करें"
 msgid "Assign Batch"
 msgstr "बैच असाइन करें"
 
+msgid "Assign machine pieces that no operation could take to the right job, or dismiss them."
+msgstr "जिन मशीन-गिनती के पीस को कोई ऑपरेशन नहीं ले सका, उन्हें सही जॉब में असाइन करें, या खारिज करें।"
+
 msgid "Assign machine run time that no loaded operation claimed to the right job, or dismiss it."
 msgstr "असाइन करें मशीन रन समय जो किसी लोड किए गए ऑपरेशन ने क्लेम नहीं किया, सही जॉब को, या इसे खारिज करें।"
 
@@ -5294,6 +5297,9 @@ msgstr "प्राधिकरण को अस्वीकार कर द�
 
 msgid "Authorized overtime on top of the shift"
 msgstr "शिफ्ट के अतिरिक्त अधिकृत ओवरटाइम"
+
+msgid "Auto"
+msgstr "ऑटो"
 
 msgid "Auto apply"
 msgstr "स्वचालित रूप से लागू करें"
@@ -5582,6 +5588,9 @@ msgstr "बैच क्षमता"
 
 msgid "Batch is not available"
 msgstr "बैच उपलब्ध नहीं है"
+
+msgid "Batch items only. Empty: one label when the lot starts."
+msgstr "केवल बैच आइटम। खाली: बैच शुरू होने पर एक लेबल।"
 
 msgid "Batch items require a sales order"
 msgstr "बैच आइटम को विक्रय आदेश की आवश्यकता है"
@@ -8715,6 +8724,9 @@ msgstr "गणना आईडी"
 msgid "Count items"
 msgstr "आइटम गिनें"
 
+msgid "Count mode"
+msgstr "काउंट मोड"
+
 msgid "Counted {total}."
 msgstr "{total} गिने गए।"
 
@@ -8726,6 +8738,9 @@ msgstr "प्रतिपक्ष"
 
 msgid "Counterparty"
 msgstr "प्रतिपक्ष"
+
+msgid "Counting for {deviceName}"
+msgstr "{deviceName} के लिए काउंटिंग"
 
 msgid "Counting…"
 msgstr "गिनती हो रही है…"
@@ -15223,6 +15238,9 @@ msgstr "एक खुले मेनू में"
 msgid "in arrears"
 msgstr "बकाया में"
 
+msgid "In Auto, the sensor logs completed and scrap quantities on the operation loaded on this work center."
+msgstr "ऑटो में, सेंसर इस वर्क सेंटर पर लोड किए गए ऑपरेशन की पूर्ण और स्क्रैप मात्रा दर्ज करता है।"
+
 msgid "In DCAA mode, an Exempt employee's week over the standard weekly hours posts at standard hours ÷ hours worked, so the week's cost spreads over every hour."
 msgstr "DCAA मोड में, एक छूट प्राप्त कर्मचारी का सप्ताह मानक साप्ताहिक घंटों से अधिक मानक घंटों ÷ घंटे काम किए गए पर पोस्ट होता है, इसलिए सप्ताह की लागत हर घंटे में फैलती है।"
 
@@ -16356,6 +16374,9 @@ msgstr "जॉब ऑपरेशन"
 msgid "Job Operations"
 msgstr "जॉब ऑपरेशन"
 
+msgid "Job or operation"
+msgstr "जॉब या ऑपरेशन"
+
 msgid "Job Priority"
 msgstr "नौकरी प्राथमिकता"
 
@@ -17385,6 +17406,9 @@ msgstr "लॉक किया गया: इस रिकॉर्ड को �
 
 msgid "Locking makes the period read-only for operational documents (receipts, shipments, invoices) while still allowing accounting adjustments like depreciation and disposals. A period must be locked before it can be closed."
 msgstr "लॉक करने से अवधि ऑपरेशनल दस्तावेज़ (प्राप्ति, शिपमेंट, चालान) के लिए केवल पढ़ने योग्य बन जाती है, जबकि अभी भी लेखांकन समायोजन जैसे मूल्यह्रास और निपटान की अनुमति है। अवधि को बंद किए जाने से पहले लॉक किया जाना चाहिए।"
+
+msgid "Log completed from the sensor"
+msgstr "सेंसर से पूर्ण मात्रा लॉग करें"
 
 msgid "Log nonconformances and drive a CAPA"
 msgstr "गैर-अनुरूपताओं को लॉग करें और CAPA चलाएं"
@@ -19982,6 +20006,9 @@ msgstr "कोई खुली विक्रय आदेश पंक्त�
 msgid "No open work has a target date."
 msgstr "कोई भी खुला काम लक्ष्य तारीख नहीं है।"
 
+msgid "No operation loaded"
+msgstr "कोई ऑपरेशन लोड नहीं है"
+
 msgid "No operations"
 msgstr "कोई ऑपरेशन नहीं"
 
@@ -20231,6 +20258,9 @@ msgstr "कोई शेड्यूल पंक्तियां नहीं
 
 msgid "No scheduled work in this window"
 msgstr "इस विंडो में कोई शेड्यूल किया हुआ काम नहीं"
+
+msgid "No scrap reason set"
+msgstr "स्क्रैप कारण सेट नहीं है"
 
 msgid "No serial"
 msgstr "कोई सीरियल नहीं"
@@ -21420,6 +21450,9 @@ msgstr "ऑपरेशन बैच"
 msgid "Operation created"
 msgstr "ऑपरेशन बनाया गया"
 
+msgid "Operation done or canceled"
+msgstr "ऑपरेशन पूर्ण या रद्द"
+
 msgid "Operation lead time"
 msgstr "ऑपरेशन लीड टाइम"
 
@@ -21719,6 +21752,9 @@ msgstr "बकाया"
 
 msgid "Over estimate first"
 msgstr "पहले ओवर अनुमान करें"
+
+msgid "Over the target quantity"
+msgstr "लक्ष्य मात्रा से अधिक"
 
 msgid "Over-applied by"
 msgstr "अत्यधिक लागू किया गया"
@@ -23094,6 +23130,9 @@ msgstr "{0} कानबान प्रिंट करें"
 #. placeholder {0}: selectedIds.size
 msgid "Print {0} Labels"
 msgstr "{0} लेबल प्रिंट करें"
+
+msgid "Print a label every N pieces"
+msgstr "हर N पीस पर एक लेबल प्रिंट करें"
 
 msgid "Print batch list"
 msgstr "बैच सूची प्रिंट करें"
@@ -24662,6 +24701,9 @@ msgstr "के लिए अग्रिम भुगतान की वाप�
 
 msgid "Refund to Customer"
 msgstr "ग्राहक को धनवापसी"
+
+msgid "Refused"
+msgstr "अस्वीकृत"
 
 msgid "Regenerate"
 msgstr "पुनर्जीवित करें"
@@ -26547,6 +26589,9 @@ msgstr "{count} खाता मैपिंग सहेजे गए"
 msgid "Saved account mapping"
 msgstr "खाता मैपिंग सहेजा गया"
 
+msgid "Saved counting settings"
+msgstr "सहेजी गई काउंटिंग सेटिंग्स"
+
 msgid "Saved device"
 msgstr "सहेजा गया डिवाइस"
 
@@ -26747,6 +26792,9 @@ msgstr "स्क्रैप कारण"
 
 msgid "Scrap Reason"
 msgstr "स्क्रैप कारण"
+
+msgid "Scrap reason for the Log scrap button"
+msgstr "'स्क्रैप लॉग करें' बटन के लिए स्क्रैप कारण"
 
 msgid "scrap reasons"
 msgstr "स्क्रैप कारण"
@@ -27435,6 +27483,9 @@ msgstr "सीरियल / बैच"
 
 msgid "Serial / Batch Number"
 msgstr "सीरियल / बैच नंबर"
+
+msgid "Serial item needs Send each pulse immediately"
+msgstr "सीरियल आइटम को 'हर पल्स तुरंत भेजें' की आवश्यकता है"
 
 msgid "Serial items require a sales order"
 msgstr "सीरियल आइटम को विक्रय आदेश की आवश्यकता है"
@@ -33024,6 +33075,9 @@ msgstr "असंबद्ध स्टॉक"
 msgid "Unassigned stock for projects"
 msgstr "परियोजनाओं के लिए असंबद्ध स्टॉक"
 
+msgid "Unattributed Counts"
+msgstr "असाइन न किए गए काउंट"
+
 msgid "unattributed machine time entries"
 msgstr "अनिर्दिष्ट मशीन समय प्रविष्टियाँ"
 
@@ -34006,6 +34060,9 @@ msgstr "सूची देखें"
 msgid "View Lists"
 msgstr "सूचियाँ देखें"
 
+msgid "View Machine Count"
+msgstr "मशीन काउंट देखें"
+
 msgid "View Machine Time"
 msgstr "मशीन समय देखें"
 
@@ -34824,6 +34881,9 @@ msgstr "किस प्रकार का अनुरोध भेजना �
 
 msgid "Which manufacturing event starts the shelf-life clock — for example, fill, seal, or final QC."
 msgstr "कौन सी विनिर्माण घटना शेल्फ-जीवन घड़ी शुरू करती है — उदाहरण के लिए, भरना, सील करना, या अंतिम क्यूसी।"
+
+msgid "Which operation made these pieces?"
+msgstr "इन पीस को किस ऑपरेशन ने बनाया?"
 
 msgid "Which operation was this?"
 msgstr "यह कौन-सा ऑपरेशन था?"

@@ -5121,6 +5121,9 @@ msgstr "Назначить серию"
 msgid "Assign Batch"
 msgstr "Назначить серию"
 
+msgid "Assign machine pieces that no operation could take to the right job, or dismiss them."
+msgstr "Назначьте подходящему производственному заказу пересчитанные станком детали, которые не смогла принять ни одна операция, или отклоните их."
+
 msgid "Assign machine run time that no loaded operation claimed to the right job, or dismiss it."
 msgstr "Назначьте машинное время обработки, которое ни одна загруженная операция не требовала, правильному производственному заказу, или отклоните его."
 
@@ -5294,6 +5297,9 @@ msgstr "Авторизация отклонена. Попробуйте подк
 
 msgid "Authorized overtime on top of the shift"
 msgstr "Разрешена переработка поверх смены"
+
+msgid "Auto"
+msgstr "Авто"
 
 msgid "Auto apply"
 msgstr "Автоматически применить"
@@ -5582,6 +5588,9 @@ msgstr "Вместимость серии"
 
 msgid "Batch is not available"
 msgstr "Серия недоступна"
+
+msgid "Batch items only. Empty: one label when the lot starts."
+msgstr "Только для позиций с партиями. Пусто: одна этикетка при запуске партии."
 
 msgid "Batch items require a sales order"
 msgstr "Позиции, производимые сериями, требуют заказ покупателя"
@@ -8715,6 +8724,9 @@ msgstr "ID подсчета"
 msgid "Count items"
 msgstr "Подсчет элементов"
 
+msgid "Count mode"
+msgstr "Режим подсчёта"
+
 msgid "Counted {total}."
 msgstr "Подсчитано: {total}."
 
@@ -8726,6 +8738,9 @@ msgstr "Контрагенты"
 
 msgid "Counterparty"
 msgstr "Контрагент"
+
+msgid "Counting for {deviceName}"
+msgstr "Подсчёт для {deviceName}"
 
 msgid "Counting…"
 msgstr "Подсчёт…"
@@ -15223,6 +15238,9 @@ msgstr "В открытом меню"
 msgid "in arrears"
 msgstr "в конце периода"
 
+msgid "In Auto, the sensor logs completed and scrap quantities on the operation loaded on this work center."
+msgstr "В режиме «Авто» датчик фиксирует выполненное количество и брак по операции, загруженной на этом рабочем центре."
+
 msgid "In DCAA mode, an Exempt employee's week over the standard weekly hours posts at standard hours ÷ hours worked, so the week's cost spreads over every hour."
 msgstr "В режиме DCAA неделя освобожденного сотрудника сверх стандартных еженедельных часов проводится по формуле стандартные часы ÷ отработанные часы, поэтому себестоимость недели распределяется на каждый час."
 
@@ -16356,6 +16374,9 @@ msgstr "операции производственного заказа"
 msgid "Job Operations"
 msgstr "Операции заказа"
 
+msgid "Job or operation"
+msgstr "Производственный заказ или операция"
+
 msgid "Job Priority"
 msgstr "Приоритет работы"
 
@@ -17385,6 +17406,9 @@ msgstr "Заблокировано: эту запись больше нельз�
 
 msgid "Locking makes the period read-only for operational documents (receipts, shipments, invoices) while still allowing accounting adjustments like depreciation and disposals. A period must be locked before it can be closed."
 msgstr "Блокировка делает период доступным только для чтения для операционных документов (поступления, отгрузки, счета-фактуры), но всё ещё позволяет учетные корректировки, такие как амортизация и выбытие. Период должен быть заблокирован перед тем, как его можно закрыть."
+
+msgid "Log completed from the sensor"
+msgstr "Записать выполненное с датчика"
 
 msgid "Log nonconformances and drive a CAPA"
 msgstr "Регистрируйте несоответствия и инициируйте CAPA"
@@ -19982,6 +20006,9 @@ msgstr "Нет открытых строк заказов покупателя"
 msgid "No open work has a target date."
 msgstr "Ни одна открытая работа не имеет целевой даты."
 
+msgid "No operation loaded"
+msgstr "Операция не загружена"
+
 msgid "No operations"
 msgstr "Нет операций"
 
@@ -20231,6 +20258,9 @@ msgstr "Нет строк графика."
 
 msgid "No scheduled work in this window"
 msgstr "Нет запланированной работы в этом окне"
+
+msgid "No scrap reason set"
+msgstr "Причина брака не задана"
 
 msgid "No serial"
 msgstr "Нет серийного номера"
@@ -21420,6 +21450,9 @@ msgstr "серии операций"
 msgid "Operation created"
 msgstr "Операция создана"
 
+msgid "Operation done or canceled"
+msgstr "Операция завершена или отменена"
+
 msgid "Operation lead time"
 msgstr "Срок поставки операции"
 
@@ -21719,6 +21752,9 @@ msgstr "Неоплаченные"
 
 msgid "Over estimate first"
 msgstr "Превышение сметы сначала"
+
+msgid "Over the target quantity"
+msgstr "Сверх целевого количества"
 
 msgid "Over-applied by"
 msgstr "Переприменено на"
@@ -23094,6 +23130,9 @@ msgstr "Печать {0} канбанов"
 #. placeholder {0}: selectedIds.size
 msgid "Print {0} Labels"
 msgstr "Печать {0} этикеток"
+
+msgid "Print a label every N pieces"
+msgstr "Печатать этикетку каждые N деталей"
 
 msgid "Print batch list"
 msgstr "Печать списка серий"
@@ -24662,6 +24701,9 @@ msgstr "Возврат предоплаты для"
 
 msgid "Refund to Customer"
 msgstr "Возврат Покупателю"
+
+msgid "Refused"
+msgstr "Отказано"
 
 msgid "Regenerate"
 msgstr "Пересчитать"
@@ -26547,6 +26589,9 @@ msgstr "Сохранено {count} сопоставлений счетов"
 msgid "Saved account mapping"
 msgstr "Сохранено сопоставление счета"
 
+msgid "Saved counting settings"
+msgstr "Настройки подсчёта сохранены"
+
 msgid "Saved device"
 msgstr "Сохранённое устройство"
 
@@ -26747,6 +26792,9 @@ msgstr "Причина брака"
 
 msgid "Scrap Reason"
 msgstr "Причина брака"
+
+msgid "Scrap reason for the Log scrap button"
+msgstr "Причина брака для кнопки «Записать брак»"
 
 msgid "scrap reasons"
 msgstr "Причины брака"
@@ -27435,6 +27483,9 @@ msgstr "Серийный номер / Партия"
 
 msgid "Serial / Batch Number"
 msgstr "Серийный номер / номер партии"
+
+msgid "Serial item needs Send each pulse immediately"
+msgstr "Серийной позиции требуется «Отправлять каждый импульс сразу»"
 
 msgid "Serial items require a sales order"
 msgstr "Для серийных номенклатур требуется заказ покупателя"
@@ -33024,6 +33075,9 @@ msgstr "Неназначенный запас"
 msgid "Unassigned stock for projects"
 msgstr "Неназначенный запас для проектов"
 
+msgid "Unattributed Counts"
+msgstr "Нераспределённые подсчёты"
+
 msgid "unattributed machine time entries"
 msgstr "неатрибутированные записи машинного времени"
 
@@ -34006,6 +34060,9 @@ msgstr "Просмотреть список"
 msgid "View Lists"
 msgstr "Просмотр списков"
 
+msgid "View Machine Count"
+msgstr "Показать подсчёт станка"
+
 msgid "View Machine Time"
 msgstr "Просмотр машинного времени"
 
@@ -34824,6 +34881,9 @@ msgstr "Какой вид запроса отправить: GET читает ч
 
 msgid "Which manufacturing event starts the shelf-life clock — for example, fill, seal, or final QC."
 msgstr "Какое производственное событие запускает часы срока хранения — например, заполнение, уплотнение или окончательный контроль качества."
+
+msgid "Which operation made these pieces?"
+msgstr "Какая операция выпустила эти детали?"
 
 msgid "Which operation was this?"
 msgstr "Какая это была операция?"

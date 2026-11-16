@@ -5121,6 +5121,9 @@ msgstr "Assegna un lotto di produzione"
 msgid "Assign Batch"
 msgstr "Assegna lotto di produzione"
 
+msgid "Assign machine pieces that no operation could take to the right job, or dismiss them."
+msgstr "Assegna al giusto ordine di produzione i pezzi contati dalla macchina che nessuna operazione ha potuto prendere, oppure ignorali."
+
 msgid "Assign machine run time that no loaded operation claimed to the right job, or dismiss it."
 msgstr "Assegna il tempo macchina che nessuna operazione caricata ha rivendicato all'ordine di produzione corretto, oppure scartalo."
 
@@ -5294,6 +5297,9 @@ msgstr "L'autorizzazione è stata rifiutata. Prova a connetterti di nuovo."
 
 msgid "Authorized overtime on top of the shift"
 msgstr "Straordinario autorizzato oltre il turno"
+
+msgid "Auto"
+msgstr "Auto"
 
 msgid "Auto apply"
 msgstr "Applica automaticamente"
@@ -5582,6 +5588,9 @@ msgstr "Capacità del Lotto"
 
 msgid "Batch is not available"
 msgstr "Il lotto di produzione non è disponibile"
+
+msgid "Batch items only. Empty: one label when the lot starts."
+msgstr "Solo articoli a lotto di produzione. Vuoto: un'etichetta all'avvio del lotto."
 
 msgid "Batch items require a sales order"
 msgstr "Gli articoli in lotto richiedono un ordine di vendita"
@@ -8715,6 +8724,9 @@ msgstr "ID Conteggio"
 msgid "Count items"
 msgstr "Conta articoli"
 
+msgid "Count mode"
+msgstr "Modalità di conteggio"
+
 msgid "Counted {total}."
 msgstr "Contati {total}."
 
@@ -8726,6 +8738,9 @@ msgstr "Controparte"
 
 msgid "Counterparty"
 msgstr "Controparte"
+
+msgid "Counting for {deviceName}"
+msgstr "Conteggio per {deviceName}"
 
 msgid "Counting…"
 msgstr "Conteggio…"
@@ -15223,6 +15238,9 @@ msgstr "In un menu aperto"
 msgid "in arrears"
 msgstr "in arretrato"
 
+msgid "In Auto, the sensor logs completed and scrap quantities on the operation loaded on this work center."
+msgstr "In Auto, il sensore registra le quantità completate e gli scarti sull'operazione caricata su questo centro di lavoro."
+
 msgid "In DCAA mode, an Exempt employee's week over the standard weekly hours posts at standard hours ÷ hours worked, so the week's cost spreads over every hour."
 msgstr "In modalità DCAA, la settimana di un dipendente esente oltre le ore settimanali standard viene registrata a ore standard ÷ ore lavorate, quindi il costo della settimana si distribuisce su ogni ora."
 
@@ -16356,6 +16374,9 @@ msgstr "operazioni dell'ordine"
 msgid "Job Operations"
 msgstr "Operazioni dell'ordine"
 
+msgid "Job or operation"
+msgstr "Ordine di produzione o operazione"
+
 msgid "Job Priority"
 msgstr "Priorità del lavoro"
 
@@ -17385,6 +17406,9 @@ msgstr "Bloccato: questo record non può più essere modificato."
 
 msgid "Locking makes the period read-only for operational documents (receipts, shipments, invoices) while still allowing accounting adjustments like depreciation and disposals. A period must be locked before it can be closed."
 msgstr "Il blocco rende il periodo di sola lettura per i documenti operativi (entrate merci, spedizioni, fatture) consentendo ancora rettifiche contabili come ammortamenti e dismissioni. Un periodo deve essere bloccato prima di poter essere chiuso."
+
+msgid "Log completed from the sensor"
+msgstr "Registra completati dal sensore"
 
 msgid "Log nonconformances and drive a CAPA"
 msgstr "Registra non conformità e avvia una CAPA"
@@ -19982,6 +20006,9 @@ msgstr "Nessuna riga di ordine di vendita aperta"
 msgid "No open work has a target date."
 msgstr "Nessun lavoro aperto ha una data target."
 
+msgid "No operation loaded"
+msgstr "Nessuna operazione caricata"
+
 msgid "No operations"
 msgstr "Nessuna operazione"
 
@@ -20231,6 +20258,9 @@ msgstr "Nessuna riga di scadenzario."
 
 msgid "No scheduled work in this window"
 msgstr "Nessun lavoro programmato in questo intervallo"
+
+msgid "No scrap reason set"
+msgstr "Nessuna causale di scarto impostata"
 
 msgid "No serial"
 msgstr "Nessun numero seriale"
@@ -21420,6 +21450,9 @@ msgstr "lotti di operazione"
 msgid "Operation created"
 msgstr "Operazione creata"
 
+msgid "Operation done or canceled"
+msgstr "Operazione completata o annullata"
+
 msgid "Operation lead time"
 msgstr "Lead time dell'operazione"
 
@@ -21719,6 +21752,9 @@ msgstr "In sospeso"
 
 msgid "Over estimate first"
 msgstr "Sovrastima prima"
+
+msgid "Over the target quantity"
+msgstr "Oltre la quantità obiettivo"
 
 msgid "Over-applied by"
 msgstr "Applicato in eccesso di"
@@ -23094,6 +23130,9 @@ msgstr "Stampa {0} kanban"
 #. placeholder {0}: selectedIds.size
 msgid "Print {0} Labels"
 msgstr "Stampa {0} Etichette"
+
+msgid "Print a label every N pieces"
+msgstr "Stampa un'etichetta ogni N pezzi"
 
 msgid "Print batch list"
 msgstr "Stampa elenco lotto di produzione"
@@ -24662,6 +24701,9 @@ msgstr "Rimborsa acconto per"
 
 msgid "Refund to Customer"
 msgstr "Rimborso a Cliente"
+
+msgid "Refused"
+msgstr "Rifiutato"
 
 msgid "Regenerate"
 msgstr "Rigenera"
@@ -26547,6 +26589,9 @@ msgstr "Salvati {count} mapping di account"
 msgid "Saved account mapping"
 msgstr "Salvato mapping di account"
 
+msgid "Saved counting settings"
+msgstr "Impostazioni di conteggio salvate"
+
 msgid "Saved device"
 msgstr "Dispositivo salvato"
 
@@ -26747,6 +26792,9 @@ msgstr "causale di scarto"
 
 msgid "Scrap Reason"
 msgstr "Causale di scarto"
+
+msgid "Scrap reason for the Log scrap button"
+msgstr "Causale di scarto per il pulsante Registra scarto"
 
 msgid "scrap reasons"
 msgstr "causali di scarto"
@@ -27435,6 +27483,9 @@ msgstr "Seriale / Lotto"
 
 msgid "Serial / Batch Number"
 msgstr "Numero di Serie / Lotto"
+
+msgid "Serial item needs Send each pulse immediately"
+msgstr "Un articolo seriale richiede «Invia ogni impulso immediatamente»"
 
 msgid "Serial items require a sales order"
 msgstr "Gli articoli seriali richiedono un ordine di vendita"
@@ -33024,6 +33075,9 @@ msgstr "Giacenza non assegnata"
 msgid "Unassigned stock for projects"
 msgstr "Giacenza non assegnata per progetti"
 
+msgid "Unattributed Counts"
+msgstr "Conteggi non attribuiti"
+
 msgid "unattributed machine time entries"
 msgstr "voci di tempo macchina non attribuite"
 
@@ -34006,6 +34060,9 @@ msgstr "Visualizza elenco"
 msgid "View Lists"
 msgstr "Visualizza Elenchi"
 
+msgid "View Machine Count"
+msgstr "Visualizza conteggio macchina"
+
 msgid "View Machine Time"
 msgstr "Visualizza tempo macchina"
 
@@ -34824,6 +34881,9 @@ msgstr "Quale tipo di richiesta inviare: GET legge qualcosa, POST crea, PUT e PA
 
 msgid "Which manufacturing event starts the shelf-life clock — for example, fill, seal, or final QC."
 msgstr "Quale evento di produzione avvia l'orologio della vita di magazzino — ad esempio, riempimento, sigillatura o QC finale."
+
+msgid "Which operation made these pieces?"
+msgstr "Quale operazione ha prodotto questi pezzi?"
 
 msgid "Which operation was this?"
 msgstr "Di quale operazione si trattava?"

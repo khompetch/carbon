@@ -5121,6 +5121,9 @@ msgstr "배치 할당"
 msgid "Assign Batch"
 msgstr "배치 할당"
 
+msgid "Assign machine pieces that no operation could take to the right job, or dismiss them."
+msgstr "어떤 공정도 가져가지 못한 기계 카운트 수량을 올바른 작업 지시에 할당하거나 무시하세요."
+
 msgid "Assign machine run time that no loaded operation claimed to the right job, or dismiss it."
 msgstr "로드된 공정이 청구하지 않은 기계 시간을 올바른 작업 지시에 할당하거나 거부하세요."
 
@@ -5294,6 +5297,9 @@ msgstr "인증이 거부되었습니다. 다시 연결해보세요."
 
 msgid "Authorized overtime on top of the shift"
 msgstr "교대조 위의 허가된 초과근무"
+
+msgid "Auto"
+msgstr "자동"
 
 msgid "Auto apply"
 msgstr "자동 적용"
@@ -5582,6 +5588,9 @@ msgstr "배치 용량"
 
 msgid "Batch is not available"
 msgstr "배치가 가용하지 않습니다"
+
+msgid "Batch items only. Empty: one label when the lot starts."
+msgstr "배치 품목 전용. 비워두면: 배치 시작 시 라벨 1장."
 
 msgid "Batch items require a sales order"
 msgstr "배치 품목은 수주가 필요합니다"
@@ -8715,6 +8724,9 @@ msgstr "실사 ID"
 msgid "Count items"
 msgstr "품목 수 계산"
 
+msgid "Count mode"
+msgstr "카운트 모드"
+
 msgid "Counted {total}."
 msgstr "{total}개를 셌습니다."
 
@@ -8726,6 +8738,9 @@ msgstr "거래처"
 
 msgid "Counterparty"
 msgstr "거래처"
+
+msgid "Counting for {deviceName}"
+msgstr "{deviceName} 카운트 중"
 
 msgid "Counting…"
 msgstr "집계 중…"
@@ -15223,6 +15238,9 @@ msgstr "열린 메뉴에서"
 msgid "in arrears"
 msgstr "연체로"
 
+msgid "In Auto, the sensor logs completed and scrap quantities on the operation loaded on this work center."
+msgstr "자동 모드에서는 센서가 이 작업장에 로드된 공정의 완료 수량과 스크랩 수량을 기록합니다."
+
 msgid "In DCAA mode, an Exempt employee's week over the standard weekly hours posts at standard hours ÷ hours worked, so the week's cost spreads over every hour."
 msgstr "DCAA 모드에서, 면제 직원의 표준 매주 시간을 초과한 주는 표준 시간 ÷ 근무 시간으로 전기되므로 주의 원가가 모든 시간에 걸쳐 분산됩니다."
 
@@ -16356,6 +16374,9 @@ msgstr "작업 지시 공정"
 msgid "Job Operations"
 msgstr "작업 지시 공정"
 
+msgid "Job or operation"
+msgstr "작업 지시 또는 공정"
+
 msgid "Job Priority"
 msgstr "작업 우선순위"
 
@@ -17385,6 +17406,9 @@ msgstr "잠김: 이 레코드는 더 이상 변경할 수 없습니다."
 
 msgid "Locking makes the period read-only for operational documents (receipts, shipments, invoices) while still allowing accounting adjustments like depreciation and disposals. A period must be locked before it can be closed."
 msgstr "잠금은 기간을 운영 문서(입고, 출하, 송장)에 대해 읽기 전용으로 만들지만 감가상각 및 처분과 같은 회계 조정을 허용합니다. 기간을 마감하기 전에 잠금해야 합니다."
+
+msgid "Log completed from the sensor"
+msgstr "센서에서 완료 기록"
 
 msgid "Log nonconformances and drive a CAPA"
 msgstr "부적합을 기록하고 CAPA를 진행하세요"
@@ -19982,6 +20006,9 @@ msgstr "미결 수주 라인이 없습니다."
 msgid "No open work has a target date."
 msgstr "미결 작업에 대상 날짜가 없습니다."
 
+msgid "No operation loaded"
+msgstr "로드된 공정이 없습니다"
+
 msgid "No operations"
 msgstr "공정 없음"
 
@@ -20231,6 +20258,9 @@ msgstr "일정 라인이 없습니다."
 
 msgid "No scheduled work in this window"
 msgstr "이 시간대에 스케줄된 작업이 없습니다"
+
+msgid "No scrap reason set"
+msgstr "스크랩 사유가 설정되지 않았습니다"
 
 msgid "No serial"
 msgstr "일련번호 없음"
@@ -21420,6 +21450,9 @@ msgstr "공정 배치"
 msgid "Operation created"
 msgstr "공정 생성"
 
+msgid "Operation done or canceled"
+msgstr "공정 완료 또는 취소됨"
+
 msgid "Operation lead time"
 msgstr "공정 리드타임"
 
@@ -21719,6 +21752,9 @@ msgstr "미해결"
 
 msgid "Over estimate first"
 msgstr "먼저 초과 추정"
+
+msgid "Over the target quantity"
+msgstr "목표 수량 초과"
 
 msgid "Over-applied by"
 msgstr "초과 적용액"
@@ -23094,6 +23130,9 @@ msgstr "칸반 {0}개 인쇄"
 #. placeholder {0}: selectedIds.size
 msgid "Print {0} Labels"
 msgstr "{0} 라벨 인쇄"
+
+msgid "Print a label every N pieces"
+msgstr "N개마다 라벨 인쇄"
 
 msgid "Print batch list"
 msgstr "배치 목록 인쇄"
@@ -24662,6 +24701,9 @@ msgstr "선급금 환불:"
 
 msgid "Refund to Customer"
 msgstr "고객 환불"
+
+msgid "Refused"
+msgstr "거부됨"
 
 msgid "Regenerate"
 msgstr "재생성"
@@ -26547,6 +26589,9 @@ msgstr "{count}개 계정 매핑 저장됨"
 msgid "Saved account mapping"
 msgstr "계정 매핑 저장됨"
 
+msgid "Saved counting settings"
+msgstr "저장된 카운트 설정"
+
 msgid "Saved device"
 msgstr "저장된 장치"
 
@@ -26747,6 +26792,9 @@ msgstr "스크랩 사유"
 
 msgid "Scrap Reason"
 msgstr "스크랩 사유"
+
+msgid "Scrap reason for the Log scrap button"
+msgstr "'스크랩 기록' 버튼의 스크랩 사유"
 
 msgid "scrap reasons"
 msgstr "스크랩 사유"
@@ -27435,6 +27483,9 @@ msgstr "일련번호/배치"
 
 msgid "Serial / Batch Number"
 msgstr "일련번호/배치 번호"
+
+msgid "Serial item needs Send each pulse immediately"
+msgstr "시리얼 품목은 '펄스마다 즉시 전송'이 필요합니다"
 
 msgid "Serial items require a sales order"
 msgstr "일련번호 품목은 수주가 필요합니다."
@@ -33024,6 +33075,9 @@ msgstr "미지정 재고"
 msgid "Unassigned stock for projects"
 msgstr "프로젝트용 미지정 재고"
 
+msgid "Unattributed Counts"
+msgstr "미할당 카운트"
+
 msgid "unattributed machine time entries"
 msgstr "미할당 기계 시간 항목"
 
@@ -34006,6 +34060,9 @@ msgstr "목록 보기"
 msgid "View Lists"
 msgstr "목록 보기"
 
+msgid "View Machine Count"
+msgstr "기계 카운트 보기"
+
 msgid "View Machine Time"
 msgstr "기계 시간 보기"
 
@@ -34824,6 +34881,9 @@ msgstr "전송할 요청의 종류: GET은 무언가를 읽고, POST는 생성�
 
 msgid "Which manufacturing event starts the shelf-life clock — for example, fill, seal, or final QC."
 msgstr "유효기간 계산이 시작되는 제조 이벤트 — 예를 들어 충전, 밀봉, 또는 최종 품질검사."
+
+msgid "Which operation made these pieces?"
+msgstr "어느 공정에서 이 수량을 생산했습니까?"
 
 msgid "Which operation was this?"
 msgstr "어떤 공정이었나요?"

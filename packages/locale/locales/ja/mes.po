@@ -819,6 +819,9 @@ msgstr ""
 msgid "Could not look up this label. Try again."
 msgstr ""
 
+msgid "Counted by the sensor"
+msgstr "センサーによるカウント"
+
 msgid "Country code"
 msgstr "国番号"
 
@@ -2104,6 +2107,9 @@ msgstr "全体的な結果"
 msgid "Overdue PMs?"
 msgstr "期限超過のPM?"
 
+msgid "Override (supervisor)"
+msgstr "上書き（管理者）"
+
 msgid "Parameters"
 msgstr "パラメーター"
 
@@ -3226,6 +3232,9 @@ msgstr "このユニットは永久にスクラップされ、代替ユニット
 
 msgid "This week"
 msgstr "今週"
+
+msgid "This work center logs completed quantities from its sensor."
+msgstr "この作業区はセンサーから完了数を記録します。"
 
 msgid "Thumbnail"
 msgstr "サムネイル"

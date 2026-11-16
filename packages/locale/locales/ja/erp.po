@@ -5121,6 +5121,9 @@ msgstr "バッチを割り当て"
 msgid "Assign Batch"
 msgstr "バッチを割り当て"
 
+msgid "Assign machine pieces that no operation could take to the right job, or dismiss them."
+msgstr "工程で処理できなかった機械カウントの個数を、適切な製造指図に割り当てるか、破棄してください。"
+
 msgid "Assign machine run time that no loaded operation claimed to the right job, or dismiss it."
 msgstr "読み込まれた工程に割り当てられていない機械加工時間を正しい製造指図に割り当てるか、却下してください。"
 
@@ -5294,6 +5297,9 @@ msgstr "認可が拒否されました。もう一度接続してみてくださ
 
 msgid "Authorized overtime on top of the shift"
 msgstr "シフトを超えた認可残業"
+
+msgid "Auto"
+msgstr "自動"
 
 msgid "Auto apply"
 msgstr "自動適用"
@@ -5582,6 +5588,9 @@ msgstr "バッチ容量"
 
 msgid "Batch is not available"
 msgstr "バッチは利用可能ではありません"
+
+msgid "Batch items only. Empty: one label when the lot starts."
+msgstr "バッチ管理品目のみ。空欄: バッチ開始時にラベル1枚。"
 
 msgid "Batch items require a sales order"
 msgstr "バッチ品目は受注が必要です"
@@ -8715,6 +8724,9 @@ msgstr "カウントID"
 msgid "Count items"
 msgstr "品目をカウント"
 
+msgid "Count mode"
+msgstr "カウントモード"
+
 msgid "Counted {total}."
 msgstr "{total} 件をカウントしました。"
 
@@ -8726,6 +8738,9 @@ msgstr "取引先"
 
 msgid "Counterparty"
 msgstr "相手先"
+
+msgid "Counting for {deviceName}"
+msgstr "{deviceName} のカウント中"
 
 msgid "Counting…"
 msgstr "集計中…"
@@ -15223,6 +15238,9 @@ msgstr "開いているメニュー内"
 msgid "in arrears"
 msgstr "後払い"
 
+msgid "In Auto, the sensor logs completed and scrap quantities on the operation loaded on this work center."
+msgstr "自動モードでは、センサーがこの作業区に読み込まれた工程の完了数とスクラップ数を記録します。"
+
 msgid "In DCAA mode, an Exempt employee's week over the standard weekly hours posts at standard hours ÷ hours worked, so the week's cost spreads over every hour."
 msgstr "DCAA モードでは、適格外従業員の標準週間時間を超える週は標準時間 ÷ 実際の時間で転記され、週の原価はすべての時間に分散されます。"
 
@@ -16356,6 +16374,9 @@ msgstr "製造指図工程"
 msgid "Job Operations"
 msgstr "指図工程"
 
+msgid "Job or operation"
+msgstr "製造指図または工程"
+
 msgid "Job Priority"
 msgstr "ジョブ優先度"
 
@@ -17385,6 +17406,9 @@ msgstr "ロック中: このレコードは変更できなくなりました。"
 
 msgid "Locking makes the period read-only for operational documents (receipts, shipments, invoices) while still allowing accounting adjustments like depreciation and disposals. A period must be locked before it can be closed."
 msgstr "ロック中にすると期間が営業文書（入荷、出荷、請求書）に対して読み取り専用になりますが、減価償却や除却などの会計調整は引き続き許可されます。期間はクローズ済になる前にロック中にする必要があります。"
+
+msgid "Log completed from the sensor"
+msgstr "センサーから完了数を記録"
 
 msgid "Log nonconformances and drive a CAPA"
 msgstr "不適合を記録し、CAPAを推進する"
@@ -19982,6 +20006,9 @@ msgstr "オープン受注明細がありません"
 msgid "No open work has a target date."
 msgstr "オープン作業に目標日がありません"
 
+msgid "No operation loaded"
+msgstr "工程が読み込まれていません"
+
 msgid "No operations"
 msgstr "工程なし"
 
@@ -20231,6 +20258,9 @@ msgstr "スケジュール明細がありません。"
 
 msgid "No scheduled work in this window"
 msgstr "このウィンドウにはスケジュール済みの作業がありません"
+
+msgid "No scrap reason set"
+msgstr "スクラップ理由が設定されていません"
 
 msgid "No serial"
 msgstr "シリアルがありません"
@@ -21420,6 +21450,9 @@ msgstr "工程バッチ"
 msgid "Operation created"
 msgstr "工程が作成されました"
 
+msgid "Operation done or canceled"
+msgstr "工程が完了またはキャンセル済み"
+
 msgid "Operation lead time"
 msgstr "工程リードタイム"
 
@@ -21719,6 +21752,9 @@ msgstr "未払い"
 
 msgid "Over estimate first"
 msgstr "見積もりを優先"
+
+msgid "Over the target quantity"
+msgstr "目標数量を超過"
 
 msgid "Over-applied by"
 msgstr "超過適用額"
@@ -23094,6 +23130,9 @@ msgstr "{0}件のかんばんを印刷"
 #. placeholder {0}: selectedIds.size
 msgid "Print {0} Labels"
 msgstr "{0}個のラベルを印刷"
+
+msgid "Print a label every N pieces"
+msgstr "N 個ごとにラベルを印刷"
 
 msgid "Print batch list"
 msgstr "バッチリストを印刷"
@@ -24662,6 +24701,9 @@ msgstr "前払金の返金："
 
 msgid "Refund to Customer"
 msgstr "得意先への返金"
+
+msgid "Refused"
+msgstr "拒否"
 
 msgid "Regenerate"
 msgstr "再生成"
@@ -26547,6 +26589,9 @@ msgstr "{count}個の勘定科目マッピングを保存しました"
 msgid "Saved account mapping"
 msgstr "アカウントマッピングを保存しました"
 
+msgid "Saved counting settings"
+msgstr "カウント設定を保存しました"
+
 msgid "Saved device"
 msgstr "保存済みデバイス"
 
@@ -26747,6 +26792,9 @@ msgstr "不良理由"
 
 msgid "Scrap Reason"
 msgstr "不良理由"
+
+msgid "Scrap reason for the Log scrap button"
+msgstr "「スクラップを記録」ボタンのスクラップ理由"
 
 msgid "scrap reasons"
 msgstr "不良理由"
@@ -27435,6 +27483,9 @@ msgstr "シリアル / バッチ"
 
 msgid "Serial / Batch Number"
 msgstr "シリアル / バッチ番号"
+
+msgid "Serial item needs Send each pulse immediately"
+msgstr "シリアル品目には「パルスごとに即時送信」が必要です"
 
 msgid "Serial items require a sales order"
 msgstr "シリアル品目は受注が必要です"
@@ -33024,6 +33075,9 @@ msgstr "未割り当て在庫"
 msgid "Unassigned stock for projects"
 msgstr "プロジェクト用未割り当て在庫"
 
+msgid "Unattributed Counts"
+msgstr "未割り当てのカウント"
+
 msgid "unattributed machine time entries"
 msgstr "属性なし機械時間エントリ"
 
@@ -34006,6 +34060,9 @@ msgstr "リストを表示"
 msgid "View Lists"
 msgstr "リストを表示"
 
+msgid "View Machine Count"
+msgstr "機械カウントを表示"
+
 msgid "View Machine Time"
 msgstr "機械時間を表示"
 
@@ -34824,6 +34881,9 @@ msgstr "送信するリクエストの種類を選択します：GETは何かを
 
 msgid "Which manufacturing event starts the shelf-life clock — for example, fill, seal, or final QC."
 msgstr "どの製造イベントが保存期間時計を開始するか — たとえば、塗りつぶし、シール、または最終QC。"
+
+msgid "Which operation made these pieces?"
+msgstr "どの工程でこの数量が生産されましたか？"
 
 msgid "Which operation was this?"
 msgstr "これはどの工程でしたか?"
