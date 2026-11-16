@@ -59,7 +59,7 @@ These refine the spec. Task 16 writes them into the spec.
 - [x] Task 14: Translations
 - [x] Task 15: Scoped gates
 - [x] Task 16: Docs
-- [ ] Task 17: End-to-end check with the simulator and the browser
+- [x] Task 17: End-to-end check with the simulator and the browser
 
 ## Dependencies
 - Task 2 needs Task 1. Every later task needs Task 2 (types).
