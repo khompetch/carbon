@@ -187,8 +187,9 @@ Sense (`packages/ee/src/sense/`). `pulse/config.tsx`, `provider.ts` and
 - Phase 3: Production → "Unattributed Counts", copied from Unattributed Time.
   MES `complete.tsx` and `scrap.tsx` changes for Auto mode.
 - Phase 4: Production → OEE (ERP) and `display+/$workCenterId.oee.tsx` (MES).
-  The OEE math goes in a pure `@carbon/planning/oee` subpath that both apps
-  use. Separate spec: `.ai/specs/2026-11-14-oee-dashboard.md`.
+  The OEE math is in the pure `@carbon/planning/oee` subpath that both apps
+  use, and the reads are in `@carbon/planning/oee/load.server`. Separate
+  spec: `.ai/specs/2026-11-14-oee-dashboard.md` (built 2026-11-17).
 
 ## Acceptance Criteria
 

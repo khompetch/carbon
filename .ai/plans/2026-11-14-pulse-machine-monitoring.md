@@ -90,10 +90,10 @@ same way, then show OEE from its data.
 - [ ] ERP: Unattributed Counts page
 
 ### Phase 4 — OEE screens
-- [ ] `@carbon/planning/oee` pure subpath; window helpers moved out of
-      `production.service.ts`
-- [ ] ERP Production → OEE (`x+/production+/oee.tsx`, `api+/production.oee.ts`)
-- [ ] MES `display+/$workCenterId.oee.tsx`
+- [x] `@carbon/planning/oee` pure subpath; window helpers moved out of
+      `production.service.ts` (plan `.ai/plans/2026-11-17-oee-dashboard.md`)
+- [x] ERP Production → OEE (`x+/production+/oee.tsx`, `api+/production.oee.ts`)
+- [x] MES `display+/$workCenterId.oee.tsx`
 
 ### Phase 5 — optional
 - [ ] OTA, database-backed broker auth, Confirm count mode
