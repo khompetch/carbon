@@ -60,6 +60,7 @@
     "./serial-number-timing": "./src/serial-number-timing.ts",
     "./stock-transfer": "./src/stock-transfer.ts",
     "./travelers": "./src/travelers.ts",
+    "./receipt-batch-numbers": "./src/receipt-batch-numbers.ts",
     "./receipt-serials": "./src/receipt-serials.ts",
     "./storage-objects": "./src/storage-objects.ts",
     "./seed-data": "./src/seed-data.ts",
@@ -106,6 +107,7 @@
   "sideEffects": false,
   "version": "0.0.0",
   "dependencies": {
+    "@carbon/logger": "workspace:*",
     "@internationalized/date": "catalog:",
     "@jitl/quickjs-singlefile-browser-release-sync": "0.32.0",
     "@supabase/supabase-js": "catalog:",

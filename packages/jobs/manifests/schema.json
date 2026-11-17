@@ -1,11 +1,11 @@
 {
   "kind": "carbon-company-backup",
   "version": 1,
-  "schemaVersion": "20261114134325",
+  "schemaVersion": "20261117091847",
   "sourceCompanyId": "schema-baseline",
   "sourceCompanyGroupId": null,
   "sourceCompanyName": null,
-  "exportedAt": "2026-11-14T13:50:03.502Z",
+  "exportedAt": "2026-11-17T01:33:58.458Z",
   "exportedBy": "schema-baseline",
   "label": "schema baseline",
   "includeStorage": "none",
@@ -518,7 +518,9 @@
         "requirePromisedDateToFinalizePurchaseOrder",
         "travelerLabels",
         "requireTrackedMaterialsIssued",
-        "autoPickingListOnRelease"
+        "autoPickingListOnRelease",
+        "deliveryDateControl",
+        "receiptBatchNumbersFromPurchaseOrder"
       ]
     },
     {
@@ -1401,6 +1403,21 @@
         "valueId",
         "companyId",
         "createdAt"
+      ]
+    },
+    {
+      "name": "labelTemplate",
+      "rows": 0,
+      "columns": [
+        "id",
+        "companyId",
+        "labelType",
+        "mediaSizeId",
+        "templateId",
+        "createdBy",
+        "createdAt",
+        "updatedBy",
+        "updatedAt"
       ]
     },
     {
@@ -3992,7 +4009,8 @@
         "minimumReserveQuantity",
         "responsibleEmployee",
         "planningHorizonDays",
-        "allowCommonSupplyForProjects"
+        "allowCommonSupplyForProjects",
+        "deliveryDateControl"
       ]
     },
     {
@@ -4333,10 +4351,9 @@
         "format",
         "mediaSizeId",
         "printerUrl",
-        "apiKey",
         "createdAt",
         "updatedAt",
-        "templateId"
+        "hasApiKey"
       ]
     },
     {
@@ -4370,7 +4387,9 @@
         "createdBy",
         "createdAt",
         "updatedBy",
-        "updatedAt"
+        "updatedAt",
+        "lastScrapCounter",
+        "sendEachPulse"
       ]
     },
     {
@@ -4388,7 +4407,9 @@
         "counter",
         "estimated",
         "rebased",
-        "receivedAt"
+        "receivedAt",
+        "scrapPulses",
+        "scrapCounter"
       ]
     },
     {
@@ -5345,7 +5366,8 @@
         "workCenterId",
         "isWorkCenterDefault",
         "nettable",
-        "effectiveNettable"
+        "effectiveNettable",
+        "kitRack"
       ]
     },
     {
@@ -5478,7 +5500,11 @@
         "createdAt",
         "updatedBy",
         "updatedAt",
-        "unplannedPressAt"
+        "unplannedPressAt",
+        "countMode",
+        "countedThrough",
+        "scrapReasonId",
+        "labelEveryQuantity"
       ]
     },
     {
@@ -6418,6 +6444,30 @@
       ]
     },
     {
+      "name": "machineCountPosting",
+      "rows": 0,
+      "columns": [
+        "id",
+        "companyId",
+        "workCenterId",
+        "jobOperationId",
+        "type",
+        "quantity",
+        "reclassify",
+        "periodStart",
+        "periodEnd",
+        "status",
+        "trackedEntityId",
+        "productionQuantityId",
+        "attempts",
+        "lastError",
+        "createdBy",
+        "createdAt",
+        "updatedBy",
+        "updatedAt"
+      ]
+    },
+    {
       "name": "project",
       "rows": 0,
       "columns": [
@@ -7264,6 +7314,26 @@
         "jobId",
         "jobOperationId",
         "productionEventId"
+      ]
+    },
+    {
+      "name": "unattributedMachineCount",
+      "rows": 0,
+      "columns": [
+        "id",
+        "companyId",
+        "workCenterId",
+        "periodStart",
+        "periodEnd",
+        "quantity",
+        "scrapQuantity",
+        "reason",
+        "detail",
+        "jobOperationId",
+        "createdBy",
+        "createdAt",
+        "updatedBy",
+        "updatedAt"
       ]
     },
     {
@@ -8284,7 +8354,14 @@
         "configuration",
         "serviceStartDate",
         "serviceEndDate",
-        "salesReturnOrderLineId"
+        "salesReturnOrderLineId",
+        "requestedDate",
+        "deliveryDateStatus",
+        "deliveryDateConstraint",
+        "earliestDeliveryDate",
+        "deliveryDateCheckedAt",
+        "deliveryDateOverriddenBy",
+        "deliveryDateOverriddenAt"
       ]
     },
     {
