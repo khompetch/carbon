@@ -424,6 +424,11 @@ msgstr "{0}는 {finish}에 완료됨"
 msgid "{0} for {name}"
 msgstr "{0} {name}의"
 
+#. placeholder {0}: formatQuantity( totals.parts.totalPieces - Math.min(totals.parts.badPieces, totals.parts.totalPieces) )
+#. placeholder {1}: formatQuantity(totals.parts.totalPieces)
+msgid "{0} good of {1} pieces"
+msgstr "{1}개 중 양품 {0}개"
+
 #. placeholder {0}: formatHours(dayTotals[index] ?? 0)
 #. placeholder {0}: formatHours(hours)
 #. placeholder {0}: formatQuantity(hours)
@@ -667,6 +672,11 @@ msgstr "{0}은(는) 원장이 다음에 의해 보유되고 있다고 보고합�
 #. placeholder {0}: run.rows.toLocaleString()
 msgid "{0} rows"
 msgstr "{0} 행"
+
+#. placeholder {0}: formatTime(totals.parts.runMs)
+#. placeholder {1}: formatTime(totals.parts.plannedMs)
+msgid "{0} run of {1} planned"
+msgstr "계획 {1} 중 가공 {0}"
 
 #. placeholder {0}: member.quantityScrapped
 msgid "{0} scrapped"
@@ -1122,6 +1132,9 @@ msgstr "{memberCount, plural, one {# 단계} other {# 단계}}"
 
 msgid "{methodsMissingPullFrom, plural, one {# active method has materials with no Pull From} other {# active methods have materials with no Pull From}}"
 msgstr "{methodsMissingPullFrom, plural, one {# 개의 활성 방법이 출처가 없는 자재를 포함합니다} other {# 개의 활성 방법이 출처가 없는 자재를 포함합니다}}"
+
+msgid "{metricLabel} by day"
+msgstr "일별 {metricLabel}"
 
 msgid "{mismatchCount} months with mismatched totals"
 msgstr "총액이 일치하지 않는 {mismatchCount}개월"
@@ -2417,6 +2430,10 @@ msgstr "승인하려면 서명이 선택사항입니다"
 
 msgid "A signature is required to approve"
 msgstr "승인하려면 서명이 필수입니다"
+
+#. placeholder {0}: percent.format(totals.ratios.standardCoverage)
+msgid "A standard covers {0} of run time"
+msgstr "표준이 가공 시간의 {0}를 포함"
 
 msgid "A step needs a name."
 msgstr "단계에 이름이 필요합니다."
@@ -3748,6 +3765,9 @@ msgstr "모든 유형"
 
 msgid "All users"
 msgstr "모든 사용자"
+
+msgid "All work centers"
+msgstr "모든 작업장"
 
 msgid "All Work Centers"
 msgstr "모든 작업장"
@@ -5418,6 +5438,9 @@ msgstr "자동화 보류 사유"
 
 msgid "Availability"
 msgstr "가용성"
+
+msgid "Availability × Performance × Quality"
+msgstr "가용성 × 성능 × 품질"
 
 msgid "available"
 msgstr "가용"
@@ -14634,6 +14657,10 @@ msgstr "좋은 오후입니다, {name}님."
 msgid "Good evening, {name}."
 msgstr "{name}님, 좋은 저녁입니다."
 
+#. placeholder {0}: percent.format(OEE_GOOD)
+msgid "Good from {0}"
+msgstr "{0} 이상 양호"
+
 msgid "Good morning, {name}."
 msgstr "{name}님, 좋은 아침입니다."
 
@@ -21026,9 +21053,6 @@ msgstr "채번 규칙"
 
 msgid "OEE"
 msgstr "OEE"
-
-msgid "OEE by day"
-msgstr "일별 OEE"
 
 msgid "OEE Impact"
 msgstr "OEE 영향"

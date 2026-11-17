@@ -7,7 +7,8 @@ import {
   addOeeParts,
   computeOeeParts,
   type OeeWorkCenterInput,
-  oeeRatios
+  oeeRatios,
+  oeeTone
 } from "./oee.ts";
 
 const HOUR = 3_600_000;
@@ -166,5 +167,17 @@ describe("addOeeParts", () => {
     expect(quietOee).toBeCloseTo(0.5, 6);
     expect(rolledUp).toBeCloseTo(8.5 / 9, 6);
     expect(rolledUp).not.toBeCloseTo((busyOee + quietOee) / 2, 3);
+  });
+});
+
+describe("oeeTone", () => {
+  it.each([
+    [null, "neutral"],
+    [0.85, "good"],
+    [0.8499, "warn"],
+    [0.6, "warn"],
+    [0.5999, "danger"]
+  ] as const)("reads %s as %s", (value, tone) => {
+    expect(oeeTone(value)).toBe(tone);
   });
 });

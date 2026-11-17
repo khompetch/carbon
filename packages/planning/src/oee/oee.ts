@@ -160,3 +160,18 @@ export function oeeRatios(parts: OeeParts): OeeRatios {
     standardCoverage: ratio(parts.runWithStandardMs, parts.runMs)
   };
 }
+
+/** OEE at or above this is good (the common world-class mark). */
+export const OEE_GOOD = 0.85;
+/** OEE below this is an alert. */
+export const OEE_LOW = 0.6;
+
+export type OeeTone = "neutral" | "good" | "warn" | "danger";
+
+/** How an OEE value reads against `OEE_GOOD` and `OEE_LOW`. */
+export function oeeTone(value: number | null | undefined): OeeTone {
+  if (value === null || value === undefined) return "neutral";
+  if (value >= OEE_GOOD) return "good";
+  if (value >= OEE_LOW) return "warn";
+  return "danger";
+}

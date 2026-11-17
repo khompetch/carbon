@@ -7,6 +7,7 @@ import { requirePermissions } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { getCompanyTimeZone, getLocationTimeZone } from "@carbon/database";
 import { getLogger } from "@carbon/logger";
+import { OEE_LOW, oeeTone } from "@carbon/planning/oee";
 import {
   formatDurationMilliseconds,
   PROGRESS_FORMAT,
@@ -17,21 +18,12 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { useLocale } from "@react-aria/i18n";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { useLoaderData } from "react-router";
-import {
-  type AnswerTone,
-  DisplayFrame,
-  Scoreboard,
-  ScoreboardRow
-} from "~/components/Display";
+import { DisplayFrame, Scoreboard, ScoreboardRow } from "~/components/Display";
 import { getOeeDisplayData } from "~/services/display.server";
 import { getDisplayWorkCenter } from "~/services/display.service";
 import { recordMeta } from "~/utils/meta";
 
 const logger = getLogger("mes", "display");
-
-/** OEE at or above this is good; below the second it is an alert. */
-const GOOD_OEE = 0.85;
-const LOW_OEE = 0.6;
 
 export const meta: MetaFunction<typeof loader> = ({ data }) =>
   recordMeta(data?.workCenter?.name, "OEE Display");
@@ -93,7 +85,7 @@ export default function OeeDisplayRoute() {
     ms ? formatDurationMilliseconds(ms) : "—";
 
   const value = ratios?.oee ?? null;
-  const isLow = value !== null && value < LOW_OEE;
+  const isLow = value !== null && value < OEE_LOW;
   const good = parts
     ? parts.totalPieces - Math.min(parts.badPieces, parts.totalPieces)
     : 0;
@@ -103,7 +95,7 @@ export default function OeeDisplayRoute() {
       workCenterName={workCenter.name}
       title={<Trans>OEE</Trans>}
       status={isLow ? "alert" : "ok"}
-      alertLabel={t`OEE is below ${percent.format(LOW_OEE)}`}
+      alertLabel={t`OEE is below ${percent.format(OEE_LOW)}`}
       okLabel={
         oee ? (
           <Trans>
@@ -154,11 +146,4 @@ export default function OeeDisplayRoute() {
       </Scoreboard>
     </DisplayFrame>
   );
-}
-
-function oeeTone(value: number | null): AnswerTone {
-  if (value === null) return "neutral";
-  if (value >= GOOD_OEE) return "good";
-  if (value >= LOW_OEE) return "warn";
-  return "danger";
 }

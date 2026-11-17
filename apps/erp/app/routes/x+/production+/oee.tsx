@@ -3,15 +3,23 @@
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { requirePermissions } from "@carbon/auth/auth.server";
+import { OEE_GOOD, type OeeTone, oeeTone } from "@carbon/planning/oee";
 import { useLoaderQuery } from "@carbon/query";
 import {
   Badge,
+  Button,
   Card,
   CardContent,
   CardHeader,
   CardTitle,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
   HStack,
   Loading,
+  Progress,
   Select,
   SelectContent,
   SelectItem,
@@ -20,6 +28,7 @@ import {
   Table,
   Tbody,
   Td,
+  Tfoot,
   Th,
   Thead,
   Tr
@@ -30,7 +39,7 @@ import {
   ChartTooltip,
   ChartTooltipContent
 } from "@carbon/react/Chart";
-import { formatDurationMilliseconds } from "@carbon/utils";
+import { formatDate, formatDurationMilliseconds } from "@carbon/utils";
 import {
   type CalendarDate,
   getLocalTimeZone,
@@ -40,14 +49,28 @@ import {
 } from "@internationalized/date";
 import { msg } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
+import { useLocale } from "@react-aria/i18n";
 import type { DateRange } from "@react-types/datepicker";
 import { useMemo } from "react";
-import { LuActivity, LuCheck, LuGauge, LuTimer } from "react-icons/lu";
+import {
+  LuActivity,
+  LuCheck,
+  LuChevronDown,
+  LuGauge,
+  LuTimer
+} from "react-icons/lu";
 import type { LoaderFunctionArgs } from "react-router";
 import { useLoaderData, useSearchParams } from "react-router";
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ReferenceLine,
+  XAxis,
+  YAxis
+} from "recharts";
 import { DateSelect, Empty, MetricCard } from "~/components";
-import { usePercentFormatter } from "~/hooks";
+import { usePercentFormatter, useQuantityFormatter } from "~/hooks";
 import { getLocationsList } from "~/modules/resources/resources.service";
 import { getUserDefaults } from "~/modules/users/users.service";
 import type { OeeResponse } from "~/routes/api+/production.oee";
@@ -59,12 +82,17 @@ export const handle: Handle = {
   to: path.to.productionOee
 };
 
-const chartConfig = {
-  oee: {
-    color: "hsl(var(--primary))",
-    label: "OEE"
-  }
-} satisfies ChartConfig;
+/** The ratios the chart can show, in menu order. */
+const METRICS = ["oee", "availability", "performance", "quality"] as const;
+type Metric = (typeof METRICS)[number];
+
+/** The bar fill of each OEE tone (hue only for meaning). */
+const TONE_FILL: Record<OeeTone, string> = {
+  good: "bg-emerald-500",
+  warn: "bg-yellow-500",
+  danger: "bg-red-500",
+  neutral: "bg-foreground/70"
+};
 
 /** The day counts of the period options; 92 days is the API's limit. */
 const PERIOD_DAYS: Record<string, number> = { week: 7, month: 30, quarter: 90 };
@@ -93,16 +121,30 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function ProductionOeeRoute() {
   const { t } = useLingui();
+  const { locale } = useLocale();
   const { locations, defaultLocationId } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
   const percent = usePercentFormatter("progress");
+  const formatQuantity = useQuantityFormatter();
 
   const locationId = searchParams.get("locationId") ?? defaultLocationId;
   const interval = searchParams.get("interval") ?? "week";
+  const metric = readMetric(searchParams.get("metric"));
   const range = useMemo(
     () => readRange(searchParams, interval, today(getLocalTimeZone())),
     [searchParams, interval]
   );
+
+  const metricLabels: Record<Metric, string> = {
+    oee: t`OEE`,
+    availability: t`Availability`,
+    performance: t`Performance`,
+    quality: t`Quality`
+  };
+  const metricLabel = metricLabels[metric];
+  const chartConfig = {
+    value: { color: "hsl(var(--primary))", label: metricLabel }
+  } satisfies ChartConfig;
 
   const update = (values: Record<string, string>) => {
     setSearchParams(
@@ -150,17 +192,42 @@ export default function ProductionOeeRoute() {
   const formatRatio = (value: number | null | undefined) =>
     value === null || value === undefined ? "—" : percent.format(value);
   const formatTime = (ms: number) =>
-    ms > 0 ? formatDurationMilliseconds(ms) : "—";
+    ms > 0 ? formatDurationMilliseconds(ms, { style: "short" }) : "—";
+  const formatDay = (day: string) =>
+    formatDate(day, { month: "short", day: "numeric" }, locale);
 
   const chartData = (data?.days ?? []).map((day) => ({
     day: day.day,
-    oee: day.ratios.oee
+    value: day.ratios[metric]
   }));
-  const hasPlannedTime = (data?.totals?.parts.plannedMs ?? 0) > 0;
+  const totals = data?.totals;
+  const hasPlannedTime = (totals?.parts.plannedMs ?? 0) > 0;
   const tooLong = range.end.compare(range.start) + 1 > 92;
 
+  // The context line under each metric: what the ratio was divided from.
+  const descriptions = totals
+    ? {
+        oee: t`Availability × Performance × Quality`,
+        availability:
+          totals.parts.plannedMs > 0
+            ? t`${formatTime(totals.parts.runMs)} run of ${formatTime(totals.parts.plannedMs)} planned`
+            : undefined,
+        performance:
+          totals.ratios.standardCoverage === null
+            ? undefined
+            : t`A standard covers ${percent.format(totals.ratios.standardCoverage)} of run time`,
+        quality:
+          totals.parts.totalPieces > 0
+            ? t`${formatQuantity(
+                totals.parts.totalPieces -
+                  Math.min(totals.parts.badPieces, totals.parts.totalPieces)
+              )} good of ${formatQuantity(totals.parts.totalPieces)} pieces`
+            : undefined
+      }
+    : null;
+
   return (
-    <div className="flex flex-col gap-4 w-full p-4 h-[calc(100dvh-var(--header-height))] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-muted-foreground bg-card">
+    <div className="@container flex flex-col gap-4 w-full p-4 h-[calc(100dvh-var(--header-height))] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-muted-foreground bg-card">
       <h1 className="sr-only">
         <Trans>OEE</Trans>
       </h1>
@@ -193,30 +260,30 @@ export default function ProductionOeeRoute() {
         />
       </HStack>
 
-      <div className="grid w-full gap-4 grid-cols-2 lg:grid-cols-4">
+      <div className="grid w-full gap-4 grid-cols-2 @4xl:grid-cols-4 max-md:gap-3">
         <MetricCard
           icon={<LuGauge />}
           title={<Trans>OEE</Trans>}
-          value={isLoading ? "…" : formatRatio(data?.totals?.ratios.oee)}
+          value={isLoading ? "…" : formatRatio(totals?.ratios.oee)}
+          description={isLoading ? undefined : descriptions?.oee}
         />
         <MetricCard
           icon={<LuTimer />}
           title={<Trans>Availability</Trans>}
-          value={
-            isLoading ? "…" : formatRatio(data?.totals?.ratios.availability)
-          }
+          value={isLoading ? "…" : formatRatio(totals?.ratios.availability)}
+          description={isLoading ? undefined : descriptions?.availability}
         />
         <MetricCard
           icon={<LuActivity />}
           title={<Trans>Performance</Trans>}
-          value={
-            isLoading ? "…" : formatRatio(data?.totals?.ratios.performance)
-          }
+          value={isLoading ? "…" : formatRatio(totals?.ratios.performance)}
+          description={isLoading ? undefined : descriptions?.performance}
         />
         <MetricCard
           icon={<LuCheck />}
           title={<Trans>Quality</Trans>}
-          value={isLoading ? "…" : formatRatio(data?.totals?.ratios.quality)}
+          value={isLoading ? "…" : formatRatio(totals?.ratios.quality)}
+          description={isLoading ? undefined : descriptions?.quality}
         />
       </div>
 
@@ -245,19 +312,39 @@ export default function ProductionOeeRoute() {
       ) : (
         <>
           <Card>
-            <CardHeader>
-              <CardTitle>
-                <Trans>OEE by day</Trans>
-              </CardTitle>
+            <CardHeader className="flex-row items-center gap-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="secondary"
+                    rightIcon={<LuChevronDown />}
+                    className="hover:bg-background/80"
+                  >
+                    <Trans>{metricLabel} by day</Trans>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent side="bottom" align="start">
+                  <DropdownMenuRadioGroup
+                    value={metric}
+                    onValueChange={(value) => update({ metric: value })}
+                  >
+                    {METRICS.map((key) => (
+                      <DropdownMenuRadioItem key={key} value={key}>
+                        {metricLabels[key]}
+                      </DropdownMenuRadioItem>
+                    ))}
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </CardHeader>
             <CardContent>
               <Loading isLoading={isLoading} className="w-full">
                 <ChartContainer
                   config={chartConfig}
-                  aria-label={t`OEE by day`}
+                  aria-label={t`${metricLabel} by day`}
                   className="h-[280px] w-full"
                 >
-                  <LineChart accessibilityLayer data={chartData}>
+                  <BarChart accessibilityLayer data={chartData}>
                     <CartesianGrid vertical={false} />
                     <YAxis
                       domain={[0, "auto"]}
@@ -271,27 +358,50 @@ export default function ProductionOeeRoute() {
                       tickLine={false}
                       axisLine={false}
                       tickMargin={8}
-                      minTickGap={32}
+                      minTickGap={16}
+                      tickFormatter={(value: string) => formatDay(value)}
                     />
                     <ChartTooltip
                       cursor={false}
                       content={
                         <ChartTooltipContent
+                          labelFormatter={(value) =>
+                            formatDate(
+                              String(value),
+                              {
+                                weekday: "short",
+                                month: "short",
+                                day: "numeric"
+                              },
+                              locale
+                            )
+                          }
                           formatter={(value) =>
                             formatRatio(value as number | null)
                           }
                         />
                       }
                     />
-                    <Line
-                      dataKey="oee"
-                      type="linear"
-                      stroke="var(--color-oee)"
-                      strokeWidth={2}
-                      dot={{ fill: "var(--color-oee)", r: 3 }}
-                      connectNulls
+                    {metric === "oee" && (
+                      <ReferenceLine
+                        y={OEE_GOOD}
+                        stroke="hsl(var(--muted-foreground))"
+                        strokeDasharray="4 4"
+                        label={{
+                          value: t`Good from ${percent.format(OEE_GOOD)}`,
+                          position: "insideTopLeft",
+                          fill: "hsl(var(--muted-foreground))",
+                          fontSize: 11
+                        }}
+                      />
+                    )}
+                    <Bar
+                      dataKey="value"
+                      fill="var(--color-value)"
+                      radius={2}
+                      maxBarSize={48}
                     />
-                  </LineChart>
+                  </BarChart>
                 </ChartContainer>
               </Loading>
             </CardContent>
@@ -314,6 +424,18 @@ export default function ProductionOeeRoute() {
                       <Th>
                         <Trans>Source</Trans>
                       </Th>
+                      <Th className="whitespace-nowrap">
+                        <Trans>OEE</Trans>
+                      </Th>
+                      <Th className="text-right whitespace-nowrap">
+                        <Trans>Availability</Trans>
+                      </Th>
+                      <Th className="text-right whitespace-nowrap">
+                        <Trans>Performance</Trans>
+                      </Th>
+                      <Th className="text-right whitespace-nowrap">
+                        <Trans>Quality</Trans>
+                      </Th>
                       <Th className="text-right whitespace-nowrap">
                         <Trans>Planned time</Trans>
                       </Th>
@@ -324,26 +446,16 @@ export default function ProductionOeeRoute() {
                         <Trans>Run outside shifts</Trans>
                       </Th>
                       <Th className="text-right whitespace-nowrap">
-                        <Trans>Availability</Trans>
-                      </Th>
-                      <Th className="text-right whitespace-nowrap">
-                        <Trans>Performance</Trans>
-                      </Th>
-                      <Th className="text-right whitespace-nowrap">
                         <Trans>Standard coverage</Trans>
-                      </Th>
-                      <Th className="text-right whitespace-nowrap">
-                        <Trans>Quality</Trans>
-                      </Th>
-                      <Th className="text-right whitespace-nowrap">
-                        <Trans>OEE</Trans>
                       </Th>
                     </Tr>
                   </Thead>
                   <Tbody>
                     {(data?.workCenters ?? []).map((row) => (
                       <Tr key={row.id}>
-                        <Td className="whitespace-nowrap">{row.name}</Td>
+                        <Td className="whitespace-nowrap font-medium">
+                          {row.name}
+                        </Td>
                         <Td>
                           <Badge
                             variant={row.source === "Sensor" ? "blue" : "gray"}
@@ -351,33 +463,42 @@ export default function ProductionOeeRoute() {
                             {row.source === "Sensor" ? t`Sensor` : t`Operator`}
                           </Badge>
                         </Td>
-                        <Td className="text-right tabular-nums whitespace-nowrap">
-                          {formatTime(row.parts.plannedMs)}
+                        <Td>
+                          <OeeMeter
+                            value={row.ratios.oee}
+                            label={formatRatio(row.ratios.oee)}
+                          />
                         </Td>
-                        <Td className="text-right tabular-nums whitespace-nowrap">
-                          {formatTime(row.parts.runMs)}
-                        </Td>
-                        <Td className="text-right tabular-nums whitespace-nowrap">
-                          {formatTime(row.parts.runOutsideMs)}
-                        </Td>
-                        <Td className="text-right tabular-nums whitespace-nowrap">
-                          {formatRatio(row.ratios.availability)}
-                        </Td>
-                        <Td className="text-right tabular-nums whitespace-nowrap">
-                          {formatRatio(row.ratios.performance)}
-                        </Td>
-                        <Td className="text-right tabular-nums whitespace-nowrap">
-                          {formatRatio(row.ratios.standardCoverage)}
-                        </Td>
-                        <Td className="text-right tabular-nums whitespace-nowrap">
-                          {formatRatio(row.ratios.quality)}
-                        </Td>
-                        <Td className="text-right tabular-nums whitespace-nowrap font-medium">
-                          {formatRatio(row.ratios.oee)}
-                        </Td>
+                        <RatioCells
+                          parts={row.parts}
+                          ratios={row.ratios}
+                          formatRatio={formatRatio}
+                          formatTime={formatTime}
+                        />
                       </Tr>
                     ))}
                   </Tbody>
+                  {totals && (data?.workCenters.length ?? 0) > 1 && (
+                    <Tfoot className="border-t border-border">
+                      <Tr>
+                        <Td className="whitespace-nowrap" colSpan={2}>
+                          <Trans>All work centers</Trans>
+                        </Td>
+                        <Td>
+                          <OeeMeter
+                            value={totals.ratios.oee}
+                            label={formatRatio(totals.ratios.oee)}
+                          />
+                        </Td>
+                        <RatioCells
+                          parts={totals.parts}
+                          ratios={totals.ratios}
+                          formatRatio={formatRatio}
+                          formatTime={formatTime}
+                        />
+                      </Tr>
+                    </Tfoot>
+                  )}
                 </Table>
               </Loading>
             </CardContent>
@@ -386,6 +507,62 @@ export default function ProductionOeeRoute() {
       )}
     </div>
   );
+}
+
+type OeeTotals = NonNullable<OeeResponse["totals"]>;
+
+/** The ratio and time cells of one table row, after the OEE meter. */
+function RatioCells({
+  parts,
+  ratios,
+  formatRatio,
+  formatTime
+}: OeeTotals & {
+  formatRatio: (value: number | null) => string;
+  formatTime: (ms: number) => string;
+}) {
+  const cell = "text-right tabular-nums whitespace-nowrap";
+  return (
+    <>
+      <Td className={cell}>{formatRatio(ratios.availability)}</Td>
+      <Td className={cell}>{formatRatio(ratios.performance)}</Td>
+      <Td className={cell}>{formatRatio(ratios.quality)}</Td>
+      <Td className={cell}>{formatTime(parts.plannedMs)}</Td>
+      <Td className={cell}>{formatTime(parts.runMs)}</Td>
+      <Td className={cell}>{formatTime(parts.runOutsideMs)}</Td>
+      <Td className={cell}>{formatRatio(ratios.standardCoverage)}</Td>
+    </>
+  );
+}
+
+/** OEE as a short bar, colored by how it reads against the good mark. */
+function OeeMeter({ value, label }: { value: number | null; label: string }) {
+  const { t } = useLingui();
+  // No OEE (no planned time, no standard or no pieces): no bar to draw.
+  if (value === null) {
+    return (
+      <div className="flex w-36 justify-end text-sm text-muted-foreground">
+        {label}
+      </div>
+    );
+  }
+  return (
+    <div className="flex w-36 items-center gap-2">
+      <Progress
+        value={Math.min(value * 100, 100)}
+        aria-label={t`OEE`}
+        className="h-1.5 min-w-0 flex-1"
+        indicatorClassName={TONE_FILL[oeeTone(value)]}
+      />
+      <span className="min-w-12 shrink-0 text-right text-sm font-medium tabular-nums">
+        {label}
+      </span>
+    </div>
+  );
+}
+
+function readMetric(value: string | null): Metric {
+  return METRICS.find((metric) => metric === value) ?? "oee";
 }
 
 /** The date range of the URL: a preset ending today, or a custom range. */
