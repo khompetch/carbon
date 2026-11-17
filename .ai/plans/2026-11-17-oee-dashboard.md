@@ -27,7 +27,7 @@ the note.
 - [x] Task 3: `standards.ts` (ideal seconds per piece)
 - [x] Task 4: `intervals.ts` (run intervals and window math)
 - [ ] Task 5: `oee.ts` (parts and ratios)
-- [ ] Task 6: `periods.ts` (current shift and local days)
+- [x] Task 6: `periods.ts` (current shift and local days)
 - [ ] Task 7: `load.server.ts` (the shared reader)
 - [ ] Task 8: ERP API route `api+/production.oee.ts`
 - [ ] Task 9: ERP page Production → OEE and its nav item
