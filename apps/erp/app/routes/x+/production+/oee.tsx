@@ -100,7 +100,7 @@ export default function ProductionOeeRoute() {
   const locationId = searchParams.get("locationId") ?? defaultLocationId;
   const interval = searchParams.get("interval") ?? "week";
   const range = useMemo(
-    () => readRange(searchParams, interval),
+    () => readRange(searchParams, interval, today(getLocalTimeZone())),
     [searchParams, interval]
   );
 
@@ -391,9 +391,9 @@ export default function ProductionOeeRoute() {
 /** The date range of the URL: a preset ending today, or a custom range. */
 function readRange(
   searchParams: URLSearchParams,
-  interval: string
+  interval: string,
+  end: CalendarDate
 ): { start: CalendarDate; end: CalendarDate } {
-  const end = today(getLocalTimeZone());
   const days = PERIOD_DAYS[interval];
   if (days) return { start: end.subtract({ days: days - 1 }), end };
   try {

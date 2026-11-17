@@ -7,7 +7,11 @@ import { requirePermissions } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { getCompanyTimeZone, getLocationTimeZone } from "@carbon/database";
 import { getLogger } from "@carbon/logger";
-import { formatDurationMilliseconds } from "@carbon/utils";
+import {
+  formatDurationMilliseconds,
+  PERCENT_FORMAT,
+  SCALE_FORMAT
+} from "@carbon/utils";
 import { now } from "@internationalized/date";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useLocale } from "@react-aria/i18n";
@@ -73,11 +77,8 @@ export default function OeeDisplayRoute() {
   const { locale } = useLocale();
   const { workCenter, timeZone, oee } = useLoaderData<typeof loader>();
 
-  const percent = new Intl.NumberFormat(locale, {
-    style: "percent",
-    maximumFractionDigits: 1
-  });
-  const pieces = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
+  const percent = new Intl.NumberFormat(locale, PERCENT_FORMAT);
+  const pieces = new Intl.NumberFormat(locale, SCALE_FORMAT);
   const time = new Intl.DateTimeFormat(locale, {
     hour: "2-digit",
     minute: "2-digit",
