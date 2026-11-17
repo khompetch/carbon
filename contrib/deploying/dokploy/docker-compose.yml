@@ -278,6 +278,43 @@ services:
         condition: service_started
     restart: unless-stopped
 
+  # The Pulse device simulator's web page (apps/pulse-ingest/src/simulator),
+  # profile `pulse-sim`, used with `pulse`. Same image as pulse-ingest. Its
+  # counts are real: it drives only device keys that start with
+  # SIMULATOR_DEVICE_PREFIX, and the page asks for SIMULATOR_PASSWORD. Map a
+  # Dokploy domain to it on port 4810. See README "Pulse simulator".
+  pulse-simulator:
+    image: ${CARBON_IMAGE_PULSE_INGEST:-carbon-pulse-ingest:local}
+    profiles: [pulse-sim]
+    build:
+      context: ../../..
+      dockerfile: contrib/deploying/dokploy/pulse-ingest.Dockerfile
+    command: ["node", "--import", "tsx", "src/simulator/server.ts"]
+    environment:
+      TZ: UTC
+      SIMULATOR_HOST: 0.0.0.0
+      SIMULATOR_PORT: "4810"
+      SIMULATOR_USERNAME: ${SIMULATOR_USERNAME:-pulse}
+      # Required: the service exits at start without it.
+      SIMULATOR_PASSWORD: ${SIMULATOR_PASSWORD:-}
+      SIMULATOR_DEVICE_PREFIX: ${SIMULATOR_DEVICE_PREFIX:-sim-}
+      # Signs in like the on-site gateway, whose ACL covers every device topic.
+      MQTT_URL: mqtt://mosquitto:1883
+      MQTT_USERNAME: pulse-gateway
+      MQTT_PASSWORD: ${MQTT_GATEWAY_PASSWORD:-}
+      # Read-only use: lists the registered sim- devices and their state.
+      SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres?sslmode=disable
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4810/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
   # ──────────────────────────── Supabase (self-hosted) ─────────────────────────
   # Refuses to let Postgres start on a data volume from another major version.
   # Postgres 17 cannot open a Postgres 15 data directory: it exits, and with
