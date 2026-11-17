@@ -2,6 +2,7 @@
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
+import { createHash, timingSafeEqual } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import mqtt, { type MqttClient } from "mqtt";
@@ -20,8 +21,14 @@ import { type SimMessage, SimDevice, type SimSettings } from "./device";
  *   MQTT_PASSWORD          default MQTT_GATEWAY_PASSWORD
  *   SUPABASE_DB_URL        optional: list the registered devices and show what Carbon inferred
  *   SIMULATOR_PORT         default 4810
+ *   SIMULATOR_HOST         default 127.0.0.1; 0.0.0.0 in a container behind a proxy
+ *   SIMULATOR_USERNAME     default pulse; with SIMULATOR_PASSWORD, the page asks for both
+ *   SIMULATOR_PASSWORD     required when SIMULATOR_HOST is not a loopback address
+ *   SIMULATOR_DEVICE_PREFIX optional, e.g. sim-: only keys with it are shown and driven
  *
- * Never run it against a production broker: its messages are real counts.
+ * Its messages are real counts. On a production broker (the Dokploy profile
+ * `pulse-sim`), set SIMULATOR_DEVICE_PREFIX so it can never speak for a real
+ * machine's device key.
  */
 
 const MQTT_URL = process.env.MQTT_URL ?? "mqtt://127.0.0.1:1883";
@@ -30,6 +37,32 @@ const MQTT_PASSWORD =
   process.env.MQTT_PASSWORD ?? process.env.MQTT_GATEWAY_PASSWORD;
 const PORT = Number(process.env.SIMULATOR_PORT ?? "4810");
 const DB_URL = process.env.SUPABASE_DB_URL;
+const HOST = process.env.SIMULATOR_HOST ?? "127.0.0.1";
+const AUTH_USERNAME = process.env.SIMULATOR_USERNAME ?? "pulse";
+const AUTH_PASSWORD = process.env.SIMULATOR_PASSWORD ?? "";
+const DEVICE_PREFIX = process.env.SIMULATOR_DEVICE_PREFIX ?? "";
+
+const LOOPBACK_HOSTS = new Set(["127.0.0.1", "::1", "localhost"]);
+if (!LOOPBACK_HOSTS.has(HOST) && !AUTH_PASSWORD) {
+  console.error(
+    `SIMULATOR_HOST is ${HOST}: set SIMULATOR_PASSWORD, or anyone who reaches the page can send counts.`
+  );
+  process.exit(1);
+}
+
+const digest = (value: string) => createHash("sha256").update(value).digest();
+const expectedCredentials = digest(`${AUTH_USERNAME}:${AUTH_PASSWORD}`);
+
+/** HTTP Basic auth. Hashing first makes the comparison constant-time for any length. */
+function authorized(request: IncomingMessage): boolean {
+  if (!AUTH_PASSWORD) return true;
+  const header = request.headers.authorization ?? "";
+  if (!header.startsWith("Basic ")) return false;
+  const given = Buffer.from(header.slice(6), "base64").toString("utf8");
+  return timingSafeEqual(digest(given), expectedCredentials);
+}
+
+const allowedKey = (deviceKey: string) => deviceKey.startsWith(DEVICE_PREFIX);
 
 const DEFAULT_SETTINGS: SimSettings = {
   bucketSeconds: 5,
@@ -251,6 +284,7 @@ function state() {
   return {
     broker: MQTT_URL,
     database: DB_URL ? (dbError ?? "connected") : null,
+    devicePrefix: DEVICE_PREFIX || null,
     devices: [...keys].sort().map((key) => {
       const entry = entries.get(key);
       const sim = entry?.sim;
@@ -300,6 +334,16 @@ const page = readFileSync(new URL("./page.html", import.meta.url), "utf8");
 const server = createServer(async (request, response) => {
   try {
     const url = new URL(request.url ?? "/", "http://localhost");
+    if (request.method === "GET" && url.pathname === "/health") {
+      return send(response, 200, { status: "ok" });
+    }
+    if (!authorized(request)) {
+      response.writeHead(401, {
+        "www-authenticate": 'Basic realm="Pulse Simulator", charset="UTF-8"',
+        "cache-control": "no-store"
+      });
+      return response.end("Sign in to use the Pulse simulator.");
+    }
     if (request.method === "GET" && url.pathname === "/") {
       return send(response, 200, page, "text/html; charset=utf-8");
     }
@@ -311,6 +355,11 @@ const server = createServer(async (request, response) => {
       const deviceKey = decodeURIComponent(match[1]!);
       if (!isDeviceKey(deviceKey)) {
         return send(response, 400, { error: "Invalid device key" });
+      }
+      if (!allowedKey(deviceKey)) {
+        return send(response, 403, {
+          error: `This simulator drives only device keys that start with ${DEVICE_PREFIX}`
+        });
       }
       const error = act(getEntry(deviceKey), match[2]!, await readBody(request));
       return error
@@ -338,7 +387,10 @@ if (DB_URL) {
                 "lastCounter"::float AS "lastCounter",
                 "lastScrapCounter"::float AS "lastScrapCounter",
                 "sendEachPulse", "bucketSeconds"
-           FROM "pulseDevice" WHERE active ORDER BY name`
+           FROM "pulseDevice"
+          WHERE active AND starts_with("deviceKey", $1)
+          ORDER BY name`,
+        [DEVICE_PREFIX]
       );
       carbon = new Map(rows.map(({ deviceKey, ...row }) => [deviceKey, row]));
       dbError = null;
@@ -350,8 +402,9 @@ if (DB_URL) {
   setInterval(poll, 2000);
 }
 
-server.listen(PORT, "127.0.0.1", () => {
-  console.log(`Pulse simulator: http://127.0.0.1:${PORT}  (broker ${MQTT_URL})`);
+server.listen(PORT, HOST, () => {
+  console.log(`Pulse simulator: http://${HOST}:${PORT}  (broker ${MQTT_URL})`);
+  if (DEVICE_PREFIX) console.log(`Drives only device keys that start with ${DEVICE_PREFIX}`);
   if (!MQTT_PASSWORD) {
     console.log("MQTT_PASSWORD / MQTT_GATEWAY_PASSWORD is not set: the broker will refuse the devices.");
   }

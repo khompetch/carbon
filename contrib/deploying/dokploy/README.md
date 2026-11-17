@@ -36,7 +36,7 @@ services from `docker-compose.yml` and set `SUPABASE_URL`/`SUPABASE_ANON_KEY`/
 | `postgres/01-roles.sh`, `02-performance.sh`, `03-pooler.sh` | Role passwords, tuning, and what Supavisor needs (`_supabase` database, `pgbouncer` role). Run once, on first init of an empty `pgdata` volume. |
 | `scripts/gen-supabase-keys.sh` | Generates the Supabase JWT key trio (openssl only). |
 | `scripts/backup.sh` | Nightly-able backup: Postgres dump + storage volume archive. |
-| `pulse-ingest.Dockerfile` | The Pulse ingest service (`apps/pulse-ingest`), profile `pulse`. |
+| `pulse-ingest.Dockerfile` | The Pulse ingest service (`apps/pulse-ingest`), profile `pulse`. The same image serves `pulse-simulator`, profile `pulse-sim`. |
 | `mosquitto/` | The Pulse MQTT broker's config, ACL and entrypoint, profile `pulse`. |
 
 ## 1. Generate secrets
@@ -363,6 +363,45 @@ In Carbon, the Pulse Devices tab shows "The Pulse ingest service is running",
 and each device's last message. If `pulse-ingest` stops, the Pulse
 integration reads unhealthy within 2 minutes. Its machines go Offline
 once their "Offline after" time passes.
+
+### Pulse simulator (optional)
+
+The service `pulse-simulator` (profile `pulse-sim`) serves the device
+simulator's web page, so you can test Pulse without hardware. Each card on
+the page acts as one device: it powers on, runs at a cycle time, sends
+pulses and Log scrap presses, and drops the network.
+
+Its counts are real. They post Production and Scrap on the operation loaded
+on the mapped work center, the same as a real sensor. Two settings limit
+what it can do:
+
+- It drives only device keys that start with `SIMULATOR_DEVICE_PREFIX`
+  (default `sim-`), and it lists only those devices. So it can never send
+  counts for a real machine's key. Do not give a real device a `sim-` key.
+- The page asks for `SIMULATOR_USERNAME` (default `pulse`) and
+  `SIMULATOR_PASSWORD`. Without a password the service exits at start.
+
+To turn it on:
+
+1. Generate `SIMULATOR_PASSWORD` (`openssl rand -hex 16`).
+2. Set `COMPOSE_PROFILES=pulse,pulse-sim` (keep `studio` if you use it).
+3. Redeploy.
+4. In the **Domains** tab, add a domain for `pulse-simulator`, internal
+   port `4810`, with HTTPS. Basic auth sends the password in every request,
+   so never serve the page over plain HTTP.
+5. In Carbon, register a device with a `sim-` key (for example `sim-press-01`)
+   on the **Pulse Devices** tab, and map it to a test work center. Use a work
+   center with count mode Off unless you want the counts posted.
+6. Open the domain, sign in, and add a device card with the same key.
+
+```bash
+docker compose logs pulse-simulator | tail   # "Pulse simulator: http://0.0.0.0:4810"
+```
+
+It signs in to the broker as `pulse-gateway`, like the on-site gateway. To
+turn it off, remove `pulse-sim` from `COMPOSE_PROFILES`, delete its domain,
+and redeploy. Registered `sim-` devices go Offline after their "Offline
+after" time; delete them on the Pulse Devices tab.
 
 ### Backups
 
