@@ -551,6 +551,11 @@ shifts"). Availability = run ÷ planned, Performance = Σ ideal × pieces ÷ run
 time with a standard, Quality = good ÷ total. Parts are summed before any
 ratio; a ratio with a 0 denominator is null.
 
+`OEE_GOOD` (0.85), `OEE_LOW` (0.6) and `oeeTone` (`oee.ts`) are the one
+reading of an OEE value: the MES board's answer tone and alert, the ERP
+table's OEE bar color (green / yellow / red) and the ERP chart's dashed
+"Good from 85%" line all use them.
+
 - **ERP** — Production → OEE (`x+/production+/oee.tsx`), nav item in
   `useProductionSubmodules` behind the same `oee` integration test as
   Unattributed Time. Data from `api+/production.oee.ts` (`view: production`,

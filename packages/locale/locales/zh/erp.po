@@ -424,6 +424,11 @@ msgstr "{0} 于 {finish} 完成"
 msgid "{0} for {name}"
 msgstr "{0} 用于 {name}"
 
+#. placeholder {0}: formatQuantity( totals.parts.totalPieces - Math.min(totals.parts.badPieces, totals.parts.totalPieces) )
+#. placeholder {1}: formatQuantity(totals.parts.totalPieces)
+msgid "{0} good of {1} pieces"
+msgstr "{1} 件中 {0} 件良品"
+
 #. placeholder {0}: formatHours(dayTotals[index] ?? 0)
 #. placeholder {0}: formatHours(hours)
 #. placeholder {0}: formatQuantity(hours)
@@ -667,6 +672,11 @@ msgstr "{0}报告账本由以下机构持有"
 #. placeholder {0}: run.rows.toLocaleString()
 msgid "{0} rows"
 msgstr "{0} 行"
+
+#. placeholder {0}: formatTime(totals.parts.runMs)
+#. placeholder {1}: formatTime(totals.parts.plannedMs)
+msgid "{0} run of {1} planned"
+msgstr "计划 {1}，加工 {0}"
 
 #. placeholder {0}: member.quantityScrapped
 msgid "{0} scrapped"
@@ -1122,6 +1132,9 @@ msgstr "{memberCount, plural, one {# 步骤} other {# 步骤}}"
 
 msgid "{methodsMissingPullFrom, plural, one {# active method has materials with no Pull From} other {# active methods have materials with no Pull From}}"
 msgstr "{methodsMissingPullFrom, plural, one {# 个启用的方法有物料没有拉取来源} other {# 个启用的方法有物料没有拉取来源}}"
+
+msgid "{metricLabel} by day"
+msgstr "按日{metricLabel}"
 
 msgid "{mismatchCount} months with mismatched totals"
 msgstr "{mismatchCount}个月的总计不匹配"
@@ -2417,6 +2430,10 @@ msgstr "签名对于审批是可选的"
 
 msgid "A signature is required to approve"
 msgstr "签名对于审批是必需的"
+
+#. placeholder {0}: percent.format(totals.ratios.standardCoverage)
+msgid "A standard covers {0} of run time"
+msgstr "标准覆盖 {0} 的加工时间"
 
 msgid "A step needs a name."
 msgstr "步骤需要一个名称。"
@@ -3748,6 +3765,9 @@ msgstr "所有类型"
 
 msgid "All users"
 msgstr "所有用户"
+
+msgid "All work centers"
+msgstr "所有工作中心"
 
 msgid "All Work Centers"
 msgstr "所有工作中心"
@@ -5418,6 +5438,9 @@ msgstr "自动暂停原因"
 
 msgid "Availability"
 msgstr "可用性"
+
+msgid "Availability × Performance × Quality"
+msgstr "可用性 × 绩效 × 质量"
 
 msgid "available"
 msgstr "可用"
@@ -14634,6 +14657,10 @@ msgstr "下午好，{name}。"
 msgid "Good evening, {name}."
 msgstr "晚上好，{name}。"
 
+#. placeholder {0}: percent.format(OEE_GOOD)
+msgid "Good from {0}"
+msgstr "{0} 及以上为良好"
+
 msgid "Good morning, {name}."
 msgstr "早上好，{name}。"
 
@@ -21026,9 +21053,6 @@ msgstr "编号规则"
 
 msgid "OEE"
 msgstr "OEE"
-
-msgid "OEE by day"
-msgstr "按日OEE"
 
 msgid "OEE Impact"
 msgstr "OEE 影响"

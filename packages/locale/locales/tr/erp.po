@@ -424,6 +424,11 @@ msgstr "{0} {finish} tarihinde tamamlanır"
 msgid "{0} for {name}"
 msgstr "{0} için {name}"
 
+#. placeholder {0}: formatQuantity( totals.parts.totalPieces - Math.min(totals.parts.badPieces, totals.parts.totalPieces) )
+#. placeholder {1}: formatQuantity(totals.parts.totalPieces)
+msgid "{0} good of {1} pieces"
+msgstr "{1} parçadan {0} sağlam"
+
 #. placeholder {0}: formatHours(dayTotals[index] ?? 0)
 #. placeholder {0}: formatHours(hours)
 #. placeholder {0}: formatQuantity(hours)
@@ -667,6 +672,11 @@ msgstr "{0} muhasebe defterinin şu kişi tarafından tutulduğunu bildiriyor"
 #. placeholder {0}: run.rows.toLocaleString()
 msgid "{0} rows"
 msgstr "{0} satır"
+
+#. placeholder {0}: formatTime(totals.parts.runMs)
+#. placeholder {1}: formatTime(totals.parts.plannedMs)
+msgid "{0} run of {1} planned"
+msgstr "{1} planlanandan {0} işleme"
 
 #. placeholder {0}: member.quantityScrapped
 msgid "{0} scrapped"
@@ -1122,6 +1132,9 @@ msgstr "{memberCount, plural, one {# adım} other {# adım}}"
 
 msgid "{methodsMissingPullFrom, plural, one {# active method has materials with no Pull From} other {# active methods have materials with no Pull From}}"
 msgstr "{methodsMissingPullFrom, plural, one {# aktif yöntemin çekme kaynağı olmayan malzemeleri var} other {# aktif yöntemlerin çekme kaynağı olmayan malzemeleri var}}"
+
+msgid "{metricLabel} by day"
+msgstr "Güne göre {metricLabel}"
 
 msgid "{mismatchCount} months with mismatched totals"
 msgstr "{mismatchCount} ay tutarları uyuşmazlığı"
@@ -2417,6 +2430,10 @@ msgstr "Onay için imza isteğe bağlıdır"
 
 msgid "A signature is required to approve"
 msgstr "Onay için imza gereklidir"
+
+#. placeholder {0}: percent.format(totals.ratios.standardCoverage)
+msgid "A standard covers {0} of run time"
+msgstr "Bir standart işleme süresinin {0} kadarını kapsıyor"
 
 msgid "A step needs a name."
 msgstr "Bir adım bir ada ihtiyaç duyuyor."
@@ -3748,6 +3765,9 @@ msgstr "Tüm Türler"
 
 msgid "All users"
 msgstr "Tüm kullanıcılar"
+
+msgid "All work centers"
+msgstr "Tüm iş merkezleri"
 
 msgid "All Work Centers"
 msgstr "Tüm İş Merkezleri"
@@ -5418,6 +5438,9 @@ msgstr "Otomasyon bekleme nedeni"
 
 msgid "Availability"
 msgstr "Kullanılabilirlik"
+
+msgid "Availability × Performance × Quality"
+msgstr "Kullanılabilirlik × Performans × Kalite"
 
 msgid "available"
 msgstr "kullanılabilir"
@@ -14634,6 +14657,10 @@ msgstr "İyi öğleden sonralar, {name}."
 msgid "Good evening, {name}."
 msgstr "İyi akşamlar, {name}."
 
+#. placeholder {0}: percent.format(OEE_GOOD)
+msgid "Good from {0}"
+msgstr "{0} ve üzeri iyi"
+
 msgid "Good morning, {name}."
 msgstr "Günaydın, {name}."
 
@@ -21026,9 +21053,6 @@ msgstr "Numaralandırma Sırası"
 
 msgid "OEE"
 msgstr "OEE"
-
-msgid "OEE by day"
-msgstr "Güne göre OEE"
 
 msgid "OEE Impact"
 msgstr "OEE Etkisi"
