@@ -29,7 +29,7 @@ the note.
 - [x] Task 5: `oee.ts` (parts and ratios)
 - [x] Task 6: `periods.ts` (current shift and local days)
 - [x] Task 7: `load.server.ts` (the shared reader)
-- [ ] Task 8: ERP API route `api+/production.oee.ts`
+- [x] Task 8: ERP API route `api+/production.oee.ts`
 - [ ] Task 9: ERP page Production → OEE and its nav item
 - [ ] Task 10: MES OEE board
 - [ ] Task 11: Translations
