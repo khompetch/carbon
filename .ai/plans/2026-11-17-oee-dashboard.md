@@ -24,7 +24,7 @@ the note.
 - [x] Task 0: Make the branch, copy the plan, correct the spec
 - [x] Task 1: Migration: 400-day history and 2 indexes
 - [x] Task 2: Move the window helpers to `@carbon/planning`
-- [ ] Task 3: `standards.ts` (ideal seconds per piece)
+- [x] Task 3: `standards.ts` (ideal seconds per piece)
 - [ ] Task 4: `intervals.ts` (run intervals and window math)
 - [ ] Task 5: `oee.ts` (parts and ratios)
 - [ ] Task 6: `periods.ts` (current shift and local days)
