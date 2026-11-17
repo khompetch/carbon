@@ -142,6 +142,25 @@ Exact errors and causes:
 - Unattributed time appears after a Pause press while the machine runs: expected. The machine ran, and a supervisor decides whose time it was.
 </AgentContext>
 
+## OEE
+
+OEE (Overall Equipment Effectiveness) shows how much of a machine's planned time made good parts at full speed. Carbon computes it from the same data as machine time: the run time, the shifts and the pieces posted.
+
+| Figure | How Carbon computes it |
+|---|---|
+| Planned time | The work center's shifts, minus holidays and in-progress or finished Planned maintenance, plus any run time outside those shifts |
+| Availability | Run time ÷ planned time. A Down maintenance dispatch counts as lost time |
+| Performance | Ideal time for the pieces made ÷ run time. The ideal time per piece is the operation's machine time; for a Pulse device without one, its expected cycle ÷ pieces per pulse |
+| Quality | Good pieces ÷ all pieces. Scrap and rework are not good |
+| OEE | Availability × Performance × Quality |
+
+Carbon adds up the times and pieces before it divides, so a busy machine weighs more than a quiet one.
+
+- **Production → OEE** shows the four figures, OEE by day and a row per work center for one location and up to 92 days. It appears once an OEE provider is installed. **Source** tells you where the run time came from: **Sensor** (an OEE device) or **Operator** (Machine presses in the MES). **Run outside shifts** is run time that no shift planned. **Standard coverage** is the share of run time with an ideal time; run time without one is left out of Performance.
+- **MES → Display → OEE** shows the current shift on a work center's screen and refreshes every 30 seconds. Between shifts it shows the shift that ended last; a work center that runs all day shows today.
+
+Carbon keeps a year of machine state history, so the OEE of an earlier month stays available after a device is unmapped or mapped again.
+
 ## Related
 
 <Cards>

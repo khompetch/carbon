@@ -1252,6 +1252,9 @@ importers:
       '@carbon/notifications':
         specifier: workspace:*
         version: link:../../packages/notifications
+      '@carbon/planning':
+        specifier: workspace:*
+        version: link:../../packages/planning
       '@carbon/printing':
         specifier: workspace:*
         version: link:../../packages/printing

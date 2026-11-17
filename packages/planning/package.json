@@ -5,7 +5,10 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./work-center-windows": "./src/scheduling/work-center-windows.ts",
+    "./oee": "./src/oee/index.ts",
+    "./oee/load.server": "./src/oee/load.server.ts"
   },
   "scripts": {
     "clean": "rimraf .turbo node_modules",
