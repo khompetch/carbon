@@ -424,6 +424,11 @@ msgstr "{0}は{finish}に完了する"
 msgid "{0} for {name}"
 msgstr "{0}（{name}）"
 
+#. placeholder {0}: formatQuantity( totals.parts.totalPieces - Math.min(totals.parts.badPieces, totals.parts.totalPieces) )
+#. placeholder {1}: formatQuantity(totals.parts.totalPieces)
+msgid "{0} good of {1} pieces"
+msgstr "{1}個中{0}個が良品"
+
 #. placeholder {0}: formatHours(dayTotals[index] ?? 0)
 #. placeholder {0}: formatHours(hours)
 #. placeholder {0}: formatQuantity(hours)
@@ -667,6 +672,11 @@ msgstr "{0}は台帳が以下に保持されていると報告しています"
 #. placeholder {0}: run.rows.toLocaleString()
 msgid "{0} rows"
 msgstr "{0} 行"
+
+#. placeholder {0}: formatTime(totals.parts.runMs)
+#. placeholder {1}: formatTime(totals.parts.plannedMs)
+msgid "{0} run of {1} planned"
+msgstr "予定{1}中、加工{0}"
 
 #. placeholder {0}: member.quantityScrapped
 msgid "{0} scrapped"
@@ -1122,6 +1132,9 @@ msgstr "{memberCount, plural, one {# ステップ} other {# ステップ}}"
 
 msgid "{methodsMissingPullFrom, plural, one {# active method has materials with no Pull From} other {# active methods have materials with no Pull From}}"
 msgstr "{methodsMissingPullFrom, plural, one {#個の有効な製法に引き出し元がない材料があります} other {#個の有効な製法に引き出し元がない材料があります}}"
+
+msgid "{metricLabel} by day"
+msgstr "日別{metricLabel}"
 
 msgid "{mismatchCount} months with mismatched totals"
 msgstr "{mismatchCount}ヶ月の合計が一致していません"
@@ -2417,6 +2430,10 @@ msgstr "承認に署名はオプションです"
 
 msgid "A signature is required to approve"
 msgstr "承認には署名が必要です"
+
+#. placeholder {0}: percent.format(totals.ratios.standardCoverage)
+msgid "A standard covers {0} of run time"
+msgstr "標準が加工時間の{0}をカバー"
 
 msgid "A step needs a name."
 msgstr "ステップには名前が必要です。"
@@ -3748,6 +3765,9 @@ msgstr "すべてのタイプ"
 
 msgid "All users"
 msgstr "すべてのユーザー"
+
+msgid "All work centers"
+msgstr "すべての作業区"
 
 msgid "All Work Centers"
 msgstr "すべての作業区"
@@ -5418,6 +5438,9 @@ msgstr "自動化保留理由"
 
 msgid "Availability"
 msgstr "利用可能性"
+
+msgid "Availability × Performance × Quality"
+msgstr "利用可能性 × 実績 × 品質"
 
 msgid "available"
 msgstr "利用可能"
@@ -14634,6 +14657,10 @@ msgstr "こんにちは、{name}。"
 msgid "Good evening, {name}."
 msgstr "こんばんは、{name}さん。"
 
+#. placeholder {0}: percent.format(OEE_GOOD)
+msgid "Good from {0}"
+msgstr "{0}以上で良好"
+
 msgid "Good morning, {name}."
 msgstr "おはようございます、{name}さん。"
 
@@ -21026,9 +21053,6 @@ msgstr "採番"
 
 msgid "OEE"
 msgstr "OEE"
-
-msgid "OEE by day"
-msgstr "日別OEE"
 
 msgid "OEE Impact"
 msgstr "OEE影響"

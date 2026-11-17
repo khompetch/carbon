@@ -424,6 +424,11 @@ msgstr "{0} termine {finish}"
 msgid "{0} for {name}"
 msgstr "{0} pour {name}"
 
+#. placeholder {0}: formatQuantity( totals.parts.totalPieces - Math.min(totals.parts.badPieces, totals.parts.totalPieces) )
+#. placeholder {1}: formatQuantity(totals.parts.totalPieces)
+msgid "{0} good of {1} pieces"
+msgstr "{0} bonnes sur {1} pièces"
+
 #. placeholder {0}: formatHours(dayTotals[index] ?? 0)
 #. placeholder {0}: formatHours(hours)
 #. placeholder {0}: formatQuantity(hours)
@@ -667,6 +672,11 @@ msgstr "{0} rapporte que le grand livre est détenu par"
 #. placeholder {0}: run.rows.toLocaleString()
 msgid "{0} rows"
 msgstr "{0} lignes"
+
+#. placeholder {0}: formatTime(totals.parts.runMs)
+#. placeholder {1}: formatTime(totals.parts.plannedMs)
+msgid "{0} run of {1} planned"
+msgstr "{0} de production sur {1} planifiés"
 
 #. placeholder {0}: member.quantityScrapped
 msgid "{0} scrapped"
@@ -1122,6 +1132,9 @@ msgstr "{memberCount, plural, one {# étape} other {# étapes}}"
 
 msgid "{methodsMissingPullFrom, plural, one {# active method has materials with no Pull From} other {# active methods have materials with no Pull From}}"
 msgstr "{methodsMissingPullFrom, plural, one {# méthode active a des matériaux sans Prélèvement depuis} other {# méthodes actives ont des matériaux sans Prélèvement depuis}}"
+
+msgid "{metricLabel} by day"
+msgstr "{metricLabel} par jour"
 
 msgid "{mismatchCount} months with mismatched totals"
 msgstr "{mismatchCount} mois avec des totaux non concordants"
@@ -2417,6 +2430,10 @@ msgstr "Une signature est facultative pour approuver"
 
 msgid "A signature is required to approve"
 msgstr "Une signature est requise pour approuver"
+
+#. placeholder {0}: percent.format(totals.ratios.standardCoverage)
+msgid "A standard covers {0} of run time"
+msgstr "Un standard couvre {0} du temps de production"
 
 msgid "A step needs a name."
 msgstr "Une étape doit avoir un nom."
@@ -3748,6 +3765,9 @@ msgstr "Tous les types"
 
 msgid "All users"
 msgstr "Tous les utilisateurs"
+
+msgid "All work centers"
+msgstr "Tous les postes de travail"
 
 msgid "All Work Centers"
 msgstr "Tous les Postes de travail"
@@ -5418,6 +5438,9 @@ msgstr "Raison de la mise en attente par l'automatisation"
 
 msgid "Availability"
 msgstr "Disponibilité"
+
+msgid "Availability × Performance × Quality"
+msgstr "Disponibilité × Performance × Qualité"
 
 msgid "available"
 msgstr "disponible"
@@ -14634,6 +14657,10 @@ msgstr "Bon après-midi, {name}."
 msgid "Good evening, {name}."
 msgstr "Bonsoir, {name}."
 
+#. placeholder {0}: percent.format(OEE_GOOD)
+msgid "Good from {0}"
+msgstr "Bon à partir de {0}"
+
 msgid "Good morning, {name}."
 msgstr "Bonjour, {name}."
 
@@ -21026,9 +21053,6 @@ msgstr "Séquence de numérotation"
 
 msgid "OEE"
 msgstr "TRS"
-
-msgid "OEE by day"
-msgstr "TRS par jour"
 
 msgid "OEE Impact"
 msgstr "Impact OEE"

@@ -2118,7 +2118,7 @@ msgstr "TRS"
 msgid "OEE Impact"
 msgstr "Impact TRS"
 
-#. placeholder {0}: percent.format(LOW_OEE)
+#. placeholder {0}: percent.format(OEE_LOW)
 msgid "OEE is below {0}"
 msgstr "Le TRS est inférieur à {0}"
 

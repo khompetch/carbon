@@ -424,6 +424,11 @@ msgstr "{0} {finish} को समाप्त होता है"
 msgid "{0} for {name}"
 msgstr "{0} के लिए {name}"
 
+#. placeholder {0}: formatQuantity( totals.parts.totalPieces - Math.min(totals.parts.badPieces, totals.parts.totalPieces) )
+#. placeholder {1}: formatQuantity(totals.parts.totalPieces)
+msgid "{0} good of {1} pieces"
+msgstr "{1} पीस में से {0} अच्छे"
+
 #. placeholder {0}: formatHours(dayTotals[index] ?? 0)
 #. placeholder {0}: formatHours(hours)
 #. placeholder {0}: formatQuantity(hours)
@@ -667,6 +672,11 @@ msgstr "{0} रिपोर्ट करता है कि लेजर द्
 #. placeholder {0}: run.rows.toLocaleString()
 msgid "{0} rows"
 msgstr "{0} पंक्तियाँ"
+
+#. placeholder {0}: formatTime(totals.parts.runMs)
+#. placeholder {1}: formatTime(totals.parts.plannedMs)
+msgid "{0} run of {1} planned"
+msgstr "{1} योजनाबद्ध में से {0} रन"
 
 #. placeholder {0}: member.quantityScrapped
 msgid "{0} scrapped"
@@ -1122,6 +1132,9 @@ msgstr "{memberCount, plural, one {# चरण} other {# चरण}}"
 
 msgid "{methodsMissingPullFrom, plural, one {# active method has materials with no Pull From} other {# active methods have materials with no Pull From}}"
 msgstr "{methodsMissingPullFrom, plural, one {# सक्रिय विधि में Pull From के बिना सामग्री है} other {# सक्रिय विधि में Pull From के बिना सामग्री हैं}}"
+
+msgid "{metricLabel} by day"
+msgstr "दिन के अनुसार {metricLabel}"
 
 msgid "{mismatchCount} months with mismatched totals"
 msgstr "{mismatchCount} महीने बेमेल कुल के साथ"
@@ -2417,6 +2430,10 @@ msgstr "अनुमोदित करने के लिए एक हस्�
 
 msgid "A signature is required to approve"
 msgstr "अनुमोदित करने के लिए एक हस्ताक्षर आवश्यक है"
+
+#. placeholder {0}: percent.format(totals.ratios.standardCoverage)
+msgid "A standard covers {0} of run time"
+msgstr "एक मानक रन समय के {0} को कवर करता है"
 
 msgid "A step needs a name."
 msgstr "एक चरण को एक नाम की आवश्यकता है।"
@@ -3748,6 +3765,9 @@ msgstr "सभी प्रकार"
 
 msgid "All users"
 msgstr "सभी उपयोगकर्ता"
+
+msgid "All work centers"
+msgstr "सभी वर्क सेंटर"
 
 msgid "All Work Centers"
 msgstr "सभी वर्क सेंटर"
@@ -5418,6 +5438,9 @@ msgstr "स्वचालन होल्ड कारण"
 
 msgid "Availability"
 msgstr "उपलब्धता"
+
+msgid "Availability × Performance × Quality"
+msgstr "उपलब्धता × प्रदर्शन × गुणवत्ता"
 
 msgid "available"
 msgstr "उपलब्ध"
@@ -14634,6 +14657,10 @@ msgstr "दोपहर बखेर, {name}।"
 msgid "Good evening, {name}."
 msgstr "शाम की शुभकामनाएं, {name}।"
 
+#. placeholder {0}: percent.format(OEE_GOOD)
+msgid "Good from {0}"
+msgstr "{0} से अच्छा"
+
 msgid "Good morning, {name}."
 msgstr "सुबह की शुभकामनाएं, {name}।"
 
@@ -21026,9 +21053,6 @@ msgstr "संख्या अनुक्रम"
 
 msgid "OEE"
 msgstr "OEE"
-
-msgid "OEE by day"
-msgstr "दिन के अनुसार OEE"
 
 msgid "OEE Impact"
 msgstr "OEE प्रभाव"

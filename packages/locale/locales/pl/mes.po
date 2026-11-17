@@ -2118,7 +2118,7 @@ msgstr "OEE"
 msgid "OEE Impact"
 msgstr "Wpływ na OEE"
 
-#. placeholder {0}: percent.format(LOW_OEE)
+#. placeholder {0}: percent.format(OEE_LOW)
 msgid "OEE is below {0}"
 msgstr "OEE poniżej {0}"
 
