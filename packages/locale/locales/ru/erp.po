@@ -276,7 +276,7 @@ msgstr "{0, plural, one {Файл не содержит {columns} столбца
 
 #. placeholder {0}: check.leadTimeDays
 msgid "{0, plural, one {The lead time is # day.} other {The lead time is # days.}}"
-msgstr ""
+msgstr "{0, plural, one {Срок поставки: # день.} other {Срок поставки: # дн.}}"
 
 #. placeholder {0}: componentNodeIds.length
 msgid "{0, plural, one {The planner treats this component as one rigid body — one step in the instructions. Re-run the plan to apply.} other {The planner treats these # components as one rigid body — one step in the instructions. Re-run the plan to apply.}}"
@@ -591,7 +591,7 @@ msgstr "{0} из {whole} готово"
 #. placeholder {2}: m.lineUnitOfMeasureCode
 #. placeholder {3}: m.stockUnitOfMeasureCode ?? "–"
 msgid "{0} on {1}: line in {2}, stocked in {3}"
-msgstr ""
+msgstr "{0} в {1}: строка в {2}, складской учёт в {3}"
 
 #. placeholder {0}: formatClocked(timecardTotal)
 msgid "{0} on your timecards"
@@ -681,7 +681,7 @@ msgstr "{0} выбрано"
 #. placeholder {0}: short.length
 #. placeholder {1}: formatQuantity(data.targetQuantity)
 msgid "{0} short for {1}"
-msgstr ""
+msgstr "Не хватает {0} из {1}"
 
 #. placeholder {0}: suggestions.length
 msgid "{0} suggested batches"
@@ -2494,7 +2494,7 @@ msgid "A unit is treated as a sale when any of these is true, and as a rental ot
 msgstr "Единица рассматривается как продажа, если выполнено одно из этих условий, в противном случае — как аренда."
 
 msgid "a user"
-msgstr ""
+msgstr "пользователь"
 
 msgid "A user keeps a sales order date that can't be met"
 msgstr "Пользователь сохраняет дату заказа покупателя, которую невозможно выдержать"
@@ -5416,6 +5416,9 @@ msgstr "Автоматически запустить задание при ск
 msgid "Automation hold reason"
 msgstr "Причина удержания автоматизацией"
 
+msgid "Availability"
+msgstr "Доступность"
+
 msgid "available"
 msgstr "доступно"
 
@@ -5659,10 +5662,10 @@ msgid "Batch number is required"
 msgstr "Номер серии необходим"
 
 msgid "Batch numbers are entered by hand"
-msgstr ""
+msgstr "Номера серий вводятся вручную"
 
 msgid "Batch numbers are generated"
-msgstr ""
+msgstr "Номера серий формируются автоматически"
 
 msgid "Batch or Serial Number"
 msgstr "Номер партии или серийный номер"
@@ -6173,7 +6176,7 @@ msgid "Build tailored, role-based training materials"
 msgstr "Создавайте адаптированные материалы обучения на основе ролей"
 
 msgid "Buildable Quantity"
-msgstr ""
+msgstr "Количество для сборки"
 
 msgid "Builds"
 msgstr "Сборки"
@@ -6385,7 +6388,7 @@ msgid "Camera"
 msgstr "Камера"
 
 msgid "Can Make Now"
-msgstr ""
+msgstr "Можно изготовить сейчас"
 
 msgid "Can't be restored"
 msgstr "Невозможно восстановить"
@@ -6978,7 +6981,7 @@ msgid "Check operations on the left to build the batch."
 msgstr "Отметьте операции слева, чтобы создать пакет."
 
 msgid "Check Quantity"
-msgstr ""
+msgstr "Проверить количество"
 
 msgid "Check the item ledger for any items with a negative on-hand quantity as of period end — usually a missing receipt or an out-of-order posting that distorts inventory value and cost of goods sold. Mark it done once reviewed, or skip with a reason."
 msgstr "Проверьте реестр номенклатуры на наличие номенклатур с отрицательным количеством на складе на конец периода — обычно это недостающее поступление или неправильно проведённая операция, которая искажает стоимость запасов и себестоимость продаж. Отметьте как выполненное после проверки или пропустите с указанием причины."
@@ -6999,13 +7002,13 @@ msgid "Checking the batch's jobs..."
 msgstr "Проверка производственных заказов серии..."
 
 msgid "Checking the delivery date"
-msgstr ""
+msgstr "Проверка даты поставки"
 
 msgid "Checking the delivery date…"
 msgstr "Проверяем дату поставки…"
 
 msgid "Checking the shop's schedule…"
-msgstr ""
+msgstr "Проверка графика цеха…"
 
 msgid "Checking the Stripe customer link…"
 msgstr "Проверка связи с клиентом Stripe…"
@@ -7693,7 +7696,7 @@ msgid "Completion time by job"
 msgstr "Время завершения по производственным заказам"
 
 msgid "Component"
-msgstr ""
+msgstr "Компонент"
 
 #. placeholder {0}: group.name
 msgid "Component details: {0}"
@@ -8747,10 +8750,10 @@ msgid "Could not save"
 msgstr "Не удалось сохранить"
 
 msgid "Couldn't calculate the buildable quantity"
-msgstr ""
+msgstr "Не удалось рассчитать количество для сборки"
 
 msgid "Couldn't check the delivery date. You can still save."
-msgstr ""
+msgstr "Не удалось проверить дату поставки. Вы всё равно можете сохранить."
 
 msgid "Couldn't check whether {appName} is connected."
 msgstr "Не удалось проверить, подключено ли приложение {appName}."
@@ -12288,7 +12291,7 @@ msgid "Enable to configure tax-specific depreciation methods on asset classes (e
 msgstr "Включите, чтобы настроить налоговые методы амортизации для классов основных средств (например, MACRS, ускоренная)."
 
 msgid "Enable to fill in each purchase order receipt's batch numbers instead of typing them."
-msgstr ""
+msgstr "Включите, чтобы номера серий в каждом поступлении по заказу поставщику заполнялись автоматически вместо ручного ввода."
 
 msgid "Enable to generate IDs and descriptions for raw materials."
 msgstr "Включите для создания идентификаторов и описаний для сырья."
@@ -13844,7 +13847,7 @@ msgid "Finished Goods (default)"
 msgstr "Готовая продукция (по умолчанию)"
 
 msgid "Finished Goods Available"
-msgstr ""
+msgstr "Доступная готовая продукция"
 
 msgid "finishes"
 msgstr "Дополнительное вычитание в первый год, произведённое до начала обычного графика МАКРС."
@@ -14183,7 +14186,7 @@ msgid "From and To can't be the same storage unit"
 msgstr "«Откуда» и «Куда» не могут быть одной и той же единицей хранения."
 
 msgid "From available component stock"
-msgstr ""
+msgstr "Из доступного запаса компонентов"
 
 msgid "From customer"
 msgstr "От покупателя"
@@ -14376,7 +14379,7 @@ msgid "Generate and send customer invoices"
 msgstr "Создавать и отправлять счета-фактуры покупателей"
 
 msgid "Generate Batch Numbers from the Purchase Order"
-msgstr ""
+msgstr "Формировать номера серий по заказу поставщику"
 
 msgid "Generate Billable Items"
 msgstr "Создать товары, подлежащие выставлению счета"
@@ -14896,7 +14899,7 @@ msgid "Hold, release, write off or reprice items in <0>Projects → Approvals</0
 msgstr "Удерживайте, запускайте, списывайте или переоценивайте элементы в <0>Проекты → Утверждения</0> на вкладке Выставление счетов."
 
 msgid "Holds built kits. An item whose default storage unit is a kit rack is a kit on the line feed. A kit rack cannot be lineside."
-msgstr ""
+msgstr "Хранит собранные комплекты. Номенклатура, основная единица хранения которой — стойка комплектов, является комплектом на линейной подаче. Стойка комплектов не может храниться как прилинейный запас."
 
 msgid "Holiday"
 msgstr "Праздник"
@@ -15279,7 +15282,7 @@ msgid "If something is off track"
 msgstr "Если что-то идет не по плану"
 
 msgid "If stock committed to open orders were used"
-msgstr ""
+msgstr "Если бы использовался запас, зарезервированный под открытые заказы"
 
 msgid "If you wish to change the part numbers, please click Cancel and manually assign the parts for each line item before converting."
 msgstr "Если вы хотите изменить номера деталей, нажмите Отмена и вручную назначьте детали для каждого элемента строки перед преобразованием."
@@ -16685,7 +16688,7 @@ msgid "Kit"
 msgstr "Комплект"
 
 msgid "Kit rack"
-msgstr ""
+msgstr "Стойка комплектов"
 
 msgid "label"
 msgstr "метка"
@@ -17216,7 +17219,7 @@ msgid "Likelihood"
 msgstr "Вероятность"
 
 msgid "Limits To"
-msgstr ""
+msgstr "Ограничено до"
 
 msgid "Line"
 msgstr "Строка"
@@ -17746,7 +17749,7 @@ msgid "MACRS Property Class"
 msgstr "Класс имущества MACRS"
 
 msgid "Made"
-msgstr ""
+msgstr "Изготовлено"
 
 msgid "Magic link"
 msgstr "Волшебная ссылка"
@@ -19295,7 +19298,7 @@ msgid "New purchase order"
 msgstr "Новый заказ поставщику"
 
 msgid "New purchase order receipts fill in batch numbers. Receivers can still change them before posting."
-msgstr ""
+msgstr "Новые поступления по заказу поставщику автоматически заполняют номера серий. Принимающий сотрудник может изменить их до проведения."
 
 msgid "New Quality Document"
 msgstr "Новый документ качества"
@@ -20288,6 +20291,9 @@ msgstr "Запланированные счета-фактуры не удаля
 msgid "No planned or recorded time."
 msgstr "Нет запланированного или записанного времени."
 
+msgid "No planned time in this range"
+msgstr "В этом диапазоне нет запланированного времени"
+
 msgid "No planning data"
 msgstr "Нет данных планирования"
 
@@ -20901,7 +20907,7 @@ msgstr "Ничего не требуется. Счета-фактуры созд
 
 #. placeholder {0}: formatQuantity(data.targetQuantity)
 msgid "Nothing is short for {0}"
-msgstr ""
+msgstr "Для {0} нехватки нет"
 
 msgid "Nothing is synced until you turn sync on."
 msgstr "Ничего не синхронизируется, пока вы не включите синхронизацию."
@@ -20992,7 +20998,7 @@ msgid "Number"
 msgstr "Число"
 
 msgid "Number each batch received against a purchase order with the purchase order and the day it was received, such as PO000123-20261116. A second delivery on the same day gets -2."
-msgstr ""
+msgstr "Каждой серии, поступившей по заказу поставщику, присваивается номер из номера заказа и даты поступления, например PO000123-20261116. Вторая поставка в тот же день получает суффикс -2."
 
 msgid "Number of inventory units per purchase unit"
 msgstr "Количество единиц запасов на единицу закупки"
@@ -21018,8 +21024,17 @@ msgstr "Нумеровать недели от текущей недели"
 msgid "Numbering sequence"
 msgstr "Нумерационная последовательность"
 
+msgid "OEE"
+msgstr "OEE"
+
+msgid "OEE by day"
+msgstr "OEE по дням"
+
 msgid "OEE Impact"
 msgstr "Влияние OEE"
+
+msgid "OEE needs shifts on the work centers, or machine run time."
+msgstr "Для OEE нужны смены на рабочих центрах или время работы станков."
 
 msgid "OEM (original equipment manufacturer)"
 msgstr "OEM (производитель оригинального оборудования)"
@@ -21117,7 +21132,7 @@ msgstr "На складе"
 #. placeholder {0}: formatQuantity(data?.quantityOnHand ?? 0)
 #. placeholder {1}: formatQuantity(data?.quantityCommitted ?? 0)
 msgid "On hand {0}, committed {1}"
-msgstr ""
+msgstr "На складе {0}, зарезервировано {1}"
 
 msgid "On hand {before} to {after}"
 msgstr "На складе: с {before} до {after}"
@@ -21142,7 +21157,7 @@ msgid "On order"
 msgstr "Заказано"
 
 msgid "On Order"
-msgstr ""
+msgstr "Заказано"
 
 msgid "On Production Demand"
 msgstr "На производственную потребность"
@@ -22685,6 +22700,9 @@ msgstr "Выберите свойство"
 
 msgid "Pick a property first"
 msgstr "Сначала выберите свойство"
+
+msgid "Pick a range of 92 days or less."
+msgstr "Выберите период не более 92 дней."
 
 msgid "Pick a record type…"
 msgstr "Выберите тип записи…"
@@ -24241,7 +24259,7 @@ msgid "Quantity shipped"
 msgstr "Количество отправлено"
 
 msgid "Quantity to check"
-msgstr ""
+msgstr "Количество для проверки"
 
 msgid "Quantity to credit for line {lineNumber}"
 msgstr "Количество к кредитованию по строке {lineNumber}"
@@ -24601,10 +24619,10 @@ msgid "Receipt"
 msgstr "Квитанция"
 
 msgid "Receipt batch numbers are now entered by hand"
-msgstr ""
+msgstr "Номера серий поступлений теперь вводятся вручную"
 
 msgid "Receipt batch numbers are now generated"
-msgstr ""
+msgstr "Номера серий поступлений теперь формируются автоматически"
 
 msgid "Receipt ID"
 msgstr "ID квитанции"
@@ -25136,7 +25154,7 @@ msgid "Reload the page to try again."
 msgstr "Перезагрузите страницу и попробуйте снова."
 
 msgid "Reload the page to try again. If it keeps failing, check this item's bill of materials."
-msgstr ""
+msgstr "Перезагрузите страницу и попробуйте снова. Если ошибка повторяется, проверьте спецификацию этой номенклатуры."
 
 msgid "Remaining"
 msgstr "Остаток"
@@ -25207,7 +25225,7 @@ msgid "Remove {name}"
 msgstr "Убрать {name}"
 
 msgid "Remove API key"
-msgstr ""
+msgstr "Убрать API-ключ"
 
 msgid "Remove Asset"
 msgstr "Убрать основное средство"
@@ -26486,6 +26504,9 @@ msgstr "Выполнить закрытие конца месяца и стан�
 msgid "Run MRP"
 msgstr "Запустить MRP"
 
+msgid "Run outside shifts"
+msgstr "Работа вне смен"
+
 msgid "Run payment batches and track aging"
 msgstr "Запускать пакеты платежей и отслеживать просрочку"
 
@@ -26509,6 +26530,9 @@ msgstr "Запустите период для его расчета."
 
 msgid "Run this workflow now?"
 msgstr "Запустить этот рабочий процесс сейчас?"
+
+msgid "Run time"
+msgstr "Время обработки"
 
 msgid "Run True-Up"
 msgstr "Запустить выравнивание"
@@ -26869,7 +26893,7 @@ msgid "Saved Views"
 msgstr "Сохраненные представления"
 
 msgid "Saved. Leave blank to keep it"
-msgstr ""
+msgstr "Сохранено. Оставьте поле пустым, чтобы не менять значение"
 
 #. placeholder {0}: bulkProgress.done
 #. placeholder {1}: bulkProgress.total
@@ -27342,6 +27366,9 @@ msgstr "Выберите утверждающего по умолчанию"
 msgid "Select a document"
 msgstr "Выберите документ"
 
+msgid "Select a location"
+msgstr "Выберите площадку"
+
 msgid "Select a new owner"
 msgstr "Выбрать нового ответственного"
 
@@ -27696,6 +27723,9 @@ msgstr "Отправка счета-фактуры"
 
 msgid "Sends this document for approval before it can go active."
 msgstr "Отправляет этот документ на утверждение перед тем, как он сможет стать активным."
+
+msgid "Sensor"
+msgstr "Датчик"
 
 msgid "Sent"
 msgstr "Отправлено"
@@ -28966,6 +28996,9 @@ msgstr "Стандартное облако Carbon соответствует т
 
 msgid "Standard Cost Variances"
 msgstr "Отклонения нормативной себестоимости"
+
+msgid "Standard coverage"
+msgstr "Покрытие по нормам"
 
 msgid "Standard cycle (seconds)"
 msgstr "Стандартный цикл (секунды)"
@@ -30506,7 +30539,7 @@ msgid "The batch runs at its most urgent member's time — the others are pulled
 msgstr "Партия выполняется по самому срочному элементу — остальные сдвигаются раньше"
 
 msgid "The bill of materials contains itself"
-msgstr ""
+msgstr "Спецификация содержит саму себя"
 
 msgid "The bill rate is locked: the estimate was sent to the customer."
 msgstr "Почасовая ставка заблокирована: смета была отправлена клиенту."
@@ -30819,7 +30852,7 @@ msgid "The document could not be opened."
 msgstr "Не удалось открыть документ."
 
 msgid "The earliest delivery date is {earliest}."
-msgstr ""
+msgstr "Самая ранняя дата поставки: {earliest}."
 
 msgid "The early hours, {name}."
 msgstr "Ранние часы, {name}."
@@ -31492,6 +31525,9 @@ msgstr "Коммерческое предложение будет скопир�
 msgid "The Ramp connection expired"
 msgstr "Срок действия подключения Ramp истек"
 
+msgid "The range is too long"
+msgstr "Диапазон слишком длинный"
+
 msgid "The rate applies from this period to the end of the year"
 msgstr "Ставка применяется с этого периода до конца года"
 
@@ -31611,7 +31647,7 @@ msgid "The shelves and bins where stock physically sits"
 msgstr "Полки и ячейки, где физически располагается запас."
 
 msgid "The shop cannot finish this by {promised}."
-msgstr ""
+msgstr "Цех не успеет выполнить это к {promised}."
 
 msgid "The shop supplies and consumables you keep on hand"
 msgstr "Расходные материалы и товары, которые вы держите под рукой"
@@ -31944,7 +31980,7 @@ msgid "These are the record's own notes. Changing them here changes them on the 
 msgstr "Это собственные примечания записи. Изменение здесь также изменит их в записи."
 
 msgid "These bill of materials lines use a different unit than their item is stocked in, so they can't be compared with stock. Correct the line or the item's unit of measure."
-msgstr ""
+msgstr "Строки спецификации используют единицу измерения, отличную от единицы, в которой номенклатура хранится на складе, поэтому их нельзя сравнить с запасом. Исправьте строку или единицу измерения номенклатуры."
 
 msgid "These custom fields will only be available for entities with the same tags"
 msgstr "Эти пользовательские поля будут доступны только для объектов с одинаковыми тегами"
@@ -31965,7 +32001,7 @@ msgid "These have no serial number, so a transfer can't pick them. Give each one
 msgstr "У них нет серийного номера, поэтому перемещение не может их отобрать. Присвойте каждому серийный номер, чтобы переместить его."
 
 msgid "These items are on, or below, a loop in the bill of materials, so it can't be exploded. Remove the line that makes an item a component of itself."
-msgstr ""
+msgstr "Номенклатура находится в цикле спецификации или ниже него, поэтому спецификацию нельзя раскрыть. Уберите строку, которая делает позицию компонентом самой себя."
 
 msgid "These items still have material to pick. Finishing now marks the list Partial."
 msgstr "У этих товаров все еще есть материал для комплектации. Завершение сейчас отметит список как Частичный."
@@ -32524,7 +32560,7 @@ msgid "Through {0}"
 msgstr "До {0}"
 
 msgid "Through every level of the bill of materials at this location. Subassemblies in stock are used before they are built, except on Make to Order lines, and required quantities include each item's scrap."
-msgstr ""
+msgstr "Через все уровни спецификации на этой площадке. Подсборки, имеющиеся в запасе, используются до их изготовления, за исключением строк с производством под заказ, а потребное количество включает брак каждой номенклатуры."
 
 msgid "Thumbnail"
 msgstr "Миниатюра"
@@ -33508,7 +33544,7 @@ msgid "Units"
 msgstr "Единицы"
 
 msgid "Units don't match"
-msgstr ""
+msgstr "Единицы не совпадают"
 
 msgid "Units of base currency per one unit of this currency; used to translate amounts on posting."
 msgstr "Единицы базовой валюты за одну единицу этой валюты; используется для преобразования сумм при проведении"
@@ -33812,7 +33848,7 @@ msgid "Updated task status"
 msgstr "Обновлен статус задачи"
 
 msgid "Updating…"
-msgstr ""
+msgstr "Обновление…"
 
 msgid "Upgrade"
 msgstr "Обновить"
@@ -34076,7 +34112,7 @@ msgid "Uses sub-assembly {0} · {1}"
 msgstr "Использует подсборку {0} · {1}"
 
 msgid "Using All On Hand"
-msgstr ""
+msgstr "Весь запас используется"
 
 msgid "VAC"
 msgstr "VAC"

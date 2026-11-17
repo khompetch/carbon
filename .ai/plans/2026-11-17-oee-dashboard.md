@@ -32,7 +32,7 @@ the note.
 - [x] Task 8: ERP API route `api+/production.oee.ts`
 - [x] Task 9: ERP page Production → OEE and its nav item
 - [x] Task 10: MES OEE board
-- [ ] Task 11: Translations
+- [x] Task 11: Translations
 - [ ] Task 12: Docs, rule and AGENTS.md
 - [ ] Task 13: Validation gates
 - [ ] Task 14: Browser verification
@@ -569,3 +569,4 @@ ls .ai/playbooks/ | grep -i oee
 - 2026-11-17, Tasks 8–9: one ERP typecheck (exit 0) covers both tasks, so the ~10 GB check ran once.
 - 2026-11-17, Task 10: `pnpm install` also swapped the `esbuild` peer (0.27.7 ↔ 0.28.2) of `vite` and `@lingui/vite-plugin` between the ERP and MES importers. The escape hatch fired. The user chose to keep only the 3 `@carbon/planning` lines in the `apps/mes` importer; `pnpm install --frozen-lockfile --ignore-scripts` accepts the file. MES lists `@carbon/*` under `devDependencies`, so the new entry goes there.
 - 2026-11-17, Task 10: `getOeeDisplayData` lives in `apps/mes/app/services/display.server.ts`, not `display.service.ts`: a component (`ActiveWorkPanel`) imports `display.service.ts`, and a MES service file never imports a `.server` module (`.ai/lessons.md`).
+- 2026-11-17, Task 11: `/translate` filled 1,344 strings (112 per locale; the new OEE strings plus earlier upstream gaps). `linguito check` exits 0. `check-glossary.mjs` exits 0 with advisory hits only.

@@ -5416,6 +5416,9 @@ msgstr "Automatically start the job when the kanban is scanned"
 msgid "Automation hold reason"
 msgstr "Automation hold reason"
 
+msgid "Availability"
+msgstr "Availability"
+
 msgid "available"
 msgstr "available"
 
@@ -20288,6 +20291,9 @@ msgstr "No planned invoices are removed."
 msgid "No planned or recorded time."
 msgstr "No planned or recorded time."
 
+msgid "No planned time in this range"
+msgstr "No planned time in this range"
+
 msgid "No planning data"
 msgstr "No planning data"
 
@@ -21018,8 +21024,17 @@ msgstr "Number weeks from the present week"
 msgid "Numbering sequence"
 msgstr "Numbering sequence"
 
+msgid "OEE"
+msgstr "OEE"
+
+msgid "OEE by day"
+msgstr "OEE by day"
+
 msgid "OEE Impact"
 msgstr "OEE Impact"
+
+msgid "OEE needs shifts on the work centers, or machine run time."
+msgstr "OEE needs shifts on the work centers, or machine run time."
 
 msgid "OEM (original equipment manufacturer)"
 msgstr "OEM (original equipment manufacturer)"
@@ -22685,6 +22700,9 @@ msgstr "Pick a property"
 
 msgid "Pick a property first"
 msgstr "Pick a property first"
+
+msgid "Pick a range of 92 days or less."
+msgstr "Pick a range of 92 days or less."
 
 msgid "Pick a record type…"
 msgstr "Pick a record type…"
@@ -26486,6 +26504,9 @@ msgstr "Run month-end close and standard reconciliations"
 msgid "Run MRP"
 msgstr "Run MRP"
 
+msgid "Run outside shifts"
+msgstr "Run outside shifts"
+
 msgid "Run payment batches and track aging"
 msgstr "Run payment batches and track aging"
 
@@ -26509,6 +26530,9 @@ msgstr "Run the period to compute it."
 
 msgid "Run this workflow now?"
 msgstr "Run this workflow now?"
+
+msgid "Run time"
+msgstr "Run time"
 
 msgid "Run True-Up"
 msgstr "Run True-Up"
@@ -27342,6 +27366,9 @@ msgstr "Select a default approver"
 msgid "Select a document"
 msgstr "Select a document"
 
+msgid "Select a location"
+msgstr "Select a location"
+
 msgid "Select a new owner"
 msgstr "Select a new owner"
 
@@ -27696,6 +27723,9 @@ msgstr "Sending invoice"
 
 msgid "Sends this document for approval before it can go active."
 msgstr "Sends this document for approval before it can go active."
+
+msgid "Sensor"
+msgstr "Sensor"
 
 msgid "Sent"
 msgstr "Sent"
@@ -28966,6 +28996,9 @@ msgstr "Standard cloud Carbon fits how your company runs"
 
 msgid "Standard Cost Variances"
 msgstr "Standard Cost Variances"
+
+msgid "Standard coverage"
+msgstr "Standard coverage"
 
 msgid "Standard cycle (seconds)"
 msgstr "Standard cycle (seconds)"
@@ -31491,6 +31524,9 @@ msgstr "The quote will be copied with a revision suffix"
 
 msgid "The Ramp connection expired"
 msgstr "The Ramp connection expired"
+
+msgid "The range is too long"
+msgstr "The range is too long"
 
 msgid "The rate applies from this period to the end of the year"
 msgstr "The rate applies from this period to the end of the year"
