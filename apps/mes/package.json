@@ -22,6 +22,7 @@
     "@carbon/locale": "workspace:*",
     "@carbon/logger": "workspace:*",
     "@carbon/notifications": "workspace:*",
+    "@carbon/planning": "workspace:*",
     "@carbon/printing": "workspace:*",
     "@carbon/query": "workspace:*",
     "@carbon/react": "workspace:*",

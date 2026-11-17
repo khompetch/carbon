@@ -31,7 +31,7 @@ the note.
 - [x] Task 7: `load.server.ts` (the shared reader)
 - [x] Task 8: ERP API route `api+/production.oee.ts`
 - [x] Task 9: ERP page Production → OEE and its nav item
-- [ ] Task 10: MES OEE board
+- [x] Task 10: MES OEE board
 - [ ] Task 11: Translations
 - [ ] Task 12: Docs, rule and AGENTS.md
 - [ ] Task 13: Validation gates
@@ -567,3 +567,5 @@ ls .ai/playbooks/ | grep -i oee
 - 2026-11-17, Task 7: Deviations from the task text: the reader also returns `alwaysOn` (the MES needs it), reads the standards of the operations that hold counts, and uses the device's `currentState` when no change falls in the 7-day lookback (no query per work center).
 - 2026-11-17, Task 7: `@carbon/checks` `run.test.ts` fails here because Windows paths use backslashes, so every baselined line reads as new. No listed line is in `packages/planning/src/oee/` or `work-center-windows.ts`.
 - 2026-11-17, Tasks 8–9: one ERP typecheck (exit 0) covers both tasks, so the ~10 GB check ran once.
+- 2026-11-17, Task 10: `pnpm install` also swapped the `esbuild` peer (0.27.7 ↔ 0.28.2) of `vite` and `@lingui/vite-plugin` between the ERP and MES importers. The escape hatch fired. The user chose to keep only the 3 `@carbon/planning` lines in the `apps/mes` importer; `pnpm install --frozen-lockfile --ignore-scripts` accepts the file. MES lists `@carbon/*` under `devDependencies`, so the new entry goes there.
+- 2026-11-17, Task 10: `getOeeDisplayData` lives in `apps/mes/app/services/display.server.ts`, not `display.service.ts`: a component (`ActiveWorkPanel`) imports `display.service.ts`, and a MES service file never imports a `.server` module (`.ai/lessons.md`).
