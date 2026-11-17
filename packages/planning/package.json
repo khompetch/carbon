@@ -7,7 +7,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./work-center-windows": "./src/scheduling/work-center-windows.ts",
-    "./oee": "./src/oee/index.ts"
+    "./oee": "./src/oee/index.ts",
+    "./oee/load.server": "./src/oee/load.server.ts"
   },
   "scripts": {
     "clean": "rimraf .turbo node_modules",

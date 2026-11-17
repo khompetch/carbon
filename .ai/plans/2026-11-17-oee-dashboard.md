@@ -28,7 +28,7 @@ the note.
 - [x] Task 4: `intervals.ts` (run intervals and window math)
 - [x] Task 5: `oee.ts` (parts and ratios)
 - [x] Task 6: `periods.ts` (current shift and local days)
-- [ ] Task 7: `load.server.ts` (the shared reader)
+- [x] Task 7: `load.server.ts` (the shared reader)
 - [ ] Task 8: ERP API route `api+/production.oee.ts`
 - [ ] Task 9: ERP page Production → OEE and its nav item
 - [ ] Task 10: MES OEE board
@@ -563,3 +563,6 @@ ls .ai/playbooks/ | grep -i oee
 - 2026-11-17, Task 1: `check:workflow-catalog` fails in cmd.exe at `generate:mcp`. Run `scripts/generate-mcp.ts` and `scripts/check-workflow-catalog.ts` with `pnpm exec tsx` in Git Bash instead.
 - 2026-11-17, Task 2: ERP vitest takes a test path only through a local config that turns the backslashes in `include` into slashes: `apps/erp/vitest.win.local.config.ts` (never committed). With it, `capacity-buckets.test.ts` and `forecast.test.ts` pass (23 tests).
 - 2026-11-17, Task 2: `src/mrp/plan-company.test.ts` (golden snapshot) fails in `@carbon/planning` on `develop` too. It is not caused by this work.
+- 2026-11-17, Task 7: A scratch vitest run of `loadOeeWorkCenters` against `wt_carbon` (`sim-cnc`, `sim-tig`) read every table with no error: source Sensor, run intervals, owners, counts and the device ideal (3 s). tsx cannot load `@carbon/database` here, so the scratch ran through vitest, then was deleted.
+- 2026-11-17, Task 7: Deviations from the task text: the reader also returns `alwaysOn` (the MES needs it), reads the standards of the operations that hold counts, and uses the device's `currentState` when no change falls in the 7-day lookback (no query per work center).
+- 2026-11-17, Task 7: `@carbon/checks` `run.test.ts` fails here because Windows paths use backslashes, so every baselined line reads as new. No listed line is in `packages/planning/src/oee/` or `work-center-windows.ts`.
