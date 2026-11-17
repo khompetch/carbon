@@ -30,7 +30,7 @@ the note.
 - [x] Task 6: `periods.ts` (current shift and local days)
 - [x] Task 7: `load.server.ts` (the shared reader)
 - [x] Task 8: ERP API route `api+/production.oee.ts`
-- [ ] Task 9: ERP page Production → OEE and its nav item
+- [x] Task 9: ERP page Production → OEE and its nav item
 - [ ] Task 10: MES OEE board
 - [ ] Task 11: Translations
 - [ ] Task 12: Docs, rule and AGENTS.md
@@ -566,3 +566,4 @@ ls .ai/playbooks/ | grep -i oee
 - 2026-11-17, Task 7: A scratch vitest run of `loadOeeWorkCenters` against `wt_carbon` (`sim-cnc`, `sim-tig`) read every table with no error: source Sensor, run intervals, owners, counts and the device ideal (3 s). tsx cannot load `@carbon/database` here, so the scratch ran through vitest, then was deleted.
 - 2026-11-17, Task 7: Deviations from the task text: the reader also returns `alwaysOn` (the MES needs it), reads the standards of the operations that hold counts, and uses the device's `currentState` when no change falls in the 7-day lookback (no query per work center).
 - 2026-11-17, Task 7: `@carbon/checks` `run.test.ts` fails here because Windows paths use backslashes, so every baselined line reads as new. No listed line is in `packages/planning/src/oee/` or `work-center-windows.ts`.
+- 2026-11-17, Tasks 8–9: one ERP typecheck (exit 0) covers both tasks, so the ~10 GB check ran once.
