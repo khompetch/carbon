@@ -26,6 +26,8 @@ Two deliberate differences from the Swarm recipe:
 ## Files (all under `contrib/deploying/dokploy/`)
 - `docker-compose.yml` — 19 services: `migrate`, `erp`, `mes`, `redis`,
   `inngest`, `mosquitto` + `pulse-ingest` (profile `pulse`, off by default),
+  `pulse-simulator` (profile `pulse-sim`, same image, the simulator page on
+  4810 behind its own Basic auth, drives only `SIMULATOR_DEVICE_PREFIX` keys),
   `pg-version-check`, `postgres` (17), `supavisor`, `gotrue`,
   `postgrest`, `realtime`, `storage`, `imgproxy`, `meta` + `studio` (profile
   `studio`, off by default), `edge-runtime`, `gateway` (Envoy). Unlike the
@@ -178,7 +180,8 @@ OAuth blocks — irrelevant to `migration up`), the real result
 - **Healthchecks use `127.0.0.1`, never `localhost`**; `studio` additionally
   needs `HOSTNAME=0.0.0.0` (Next.js standalone binds `$HOSTNAME`, which Docker
   sets to the container id) plus a healthcheck override with a `start_period`.
-- **Domains**: `erp` (3000), `mes` (3000), `gateway` (8000) get Dokploy domains.
+- **Domains**: `erp` (3000), `mes` (3000), `gateway` (8000) get Dokploy domains,
+  and `pulse-simulator` (4810, HTTPS only) when its profile is on.
   `studio`, `meta`, `imgproxy`, `supavisor` are never mapped.
 - **Email** is SMTP: the apps get `SMTP_*` mapped from `GOTRUE_SMTP_*` plus
   `SMTP_FROM`; `RESEND_API_KEY` is optional.
