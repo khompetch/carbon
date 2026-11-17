@@ -23,7 +23,7 @@ the note.
 ## Progress
 - [x] Task 0: Make the branch, copy the plan, correct the spec
 - [x] Task 1: Migration: 400-day history and 2 indexes
-- [ ] Task 2: Move the window helpers to `@carbon/planning`
+- [x] Task 2: Move the window helpers to `@carbon/planning`
 - [ ] Task 3: `standards.ts` (ideal seconds per piece)
 - [ ] Task 4: `intervals.ts` (run intervals and window math)
 - [ ] Task 5: `oee.ts` (parts and ratios)
@@ -561,3 +561,5 @@ ls .ai/playbooks/ | grep -i oee
 
 - 2026-11-17, Task 1: `pnpm db:migrate:new` gave `20261117055352`, which sorts before `20261117091847_printer-api-key-vault.sql` from upstream. The escape hatch fired. The user chose to rename the empty, unapplied file to `20261117092413_oee-dashboard-history.sql`.
 - 2026-11-17, Task 1: `check:workflow-catalog` fails in cmd.exe at `generate:mcp`. Run `scripts/generate-mcp.ts` and `scripts/check-workflow-catalog.ts` with `pnpm exec tsx` in Git Bash instead.
+- 2026-11-17, Task 2: ERP vitest takes a test path only through a local config that turns the backslashes in `include` into slashes: `apps/erp/vitest.win.local.config.ts` (never committed). With it, `capacity-buckets.test.ts` and `forecast.test.ts` pass (23 tests).
+- 2026-11-17, Task 2: `src/mrp/plan-company.test.ts` (golden snapshot) fails in `@carbon/planning` on `develop` too. It is not caused by this work.
