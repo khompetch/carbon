@@ -9,7 +9,7 @@ import { getCompanyTimeZone, getLocationTimeZone } from "@carbon/database";
 import { getLogger } from "@carbon/logger";
 import {
   formatDurationMilliseconds,
-  PERCENT_FORMAT,
+  PROGRESS_FORMAT,
   SCALE_FORMAT
 } from "@carbon/utils";
 import { now } from "@internationalized/date";
@@ -77,7 +77,7 @@ export default function OeeDisplayRoute() {
   const { locale } = useLocale();
   const { workCenter, timeZone, oee } = useLoaderData<typeof loader>();
 
-  const percent = new Intl.NumberFormat(locale, PERCENT_FORMAT);
+  const percent = new Intl.NumberFormat(locale, PROGRESS_FORMAT);
   const pieces = new Intl.NumberFormat(locale, SCALE_FORMAT);
   const time = new Intl.DateTimeFormat(locale, {
     hour: "2-digit",
@@ -137,9 +137,10 @@ export default function OeeDisplayRoute() {
         <ScoreboardRow
           question={<Trans>Run time</Trans>}
           answer={duration(parts?.runMs)}
-          detailLabel={<Trans>Planned</Trans>}
-          detailValue={duration(parts?.plannedMs)}
-          detailWide
+        />
+        <ScoreboardRow
+          question={<Trans>Planned time</Trans>}
+          answer={duration(parts?.plannedMs)}
         />
         <ScoreboardRow
           question={<Trans>Good pieces</Trans>}

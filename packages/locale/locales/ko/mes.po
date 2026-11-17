@@ -2419,6 +2419,9 @@ msgstr "계획됨"
 msgid "Planned duration:"
 msgstr "계획 기간:"
 
+msgid "Planned time"
+msgstr "계획된 시간"
+
 msgid "Please record all steps for this operation before closing."
 msgstr "이 공정작업을 마감하기 전에 모든 단계를 기록하세요."
 

@@ -2419,6 +2419,9 @@ msgstr "Planned"
 msgid "Planned duration:"
 msgstr "Planned duration:"
 
+msgid "Planned time"
+msgstr "Planned time"
+
 msgid "Please record all steps for this operation before closing."
 msgstr "Please record all steps for this operation before closing."
 

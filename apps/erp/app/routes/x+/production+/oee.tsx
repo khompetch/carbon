@@ -95,7 +95,7 @@ export default function ProductionOeeRoute() {
   const { t } = useLingui();
   const { locations, defaultLocationId } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
-  const percent = usePercentFormatter();
+  const percent = usePercentFormatter("progress");
 
   const locationId = searchParams.get("locationId") ?? defaultLocationId;
   const interval = searchParams.get("interval") ?? "week";
@@ -314,28 +314,28 @@ export default function ProductionOeeRoute() {
                       <Th>
                         <Trans>Source</Trans>
                       </Th>
-                      <Th className="text-right">
+                      <Th className="text-right whitespace-nowrap">
                         <Trans>Planned time</Trans>
                       </Th>
-                      <Th className="text-right">
+                      <Th className="text-right whitespace-nowrap">
                         <Trans>Run time</Trans>
                       </Th>
-                      <Th className="text-right">
+                      <Th className="text-right whitespace-nowrap">
                         <Trans>Run outside shifts</Trans>
                       </Th>
-                      <Th className="text-right">
+                      <Th className="text-right whitespace-nowrap">
                         <Trans>Availability</Trans>
                       </Th>
-                      <Th className="text-right">
+                      <Th className="text-right whitespace-nowrap">
                         <Trans>Performance</Trans>
                       </Th>
-                      <Th className="text-right">
+                      <Th className="text-right whitespace-nowrap">
                         <Trans>Standard coverage</Trans>
                       </Th>
-                      <Th className="text-right">
+                      <Th className="text-right whitespace-nowrap">
                         <Trans>Quality</Trans>
                       </Th>
-                      <Th className="text-right">
+                      <Th className="text-right whitespace-nowrap">
                         <Trans>OEE</Trans>
                       </Th>
                     </Tr>
@@ -351,28 +351,28 @@ export default function ProductionOeeRoute() {
                             {row.source === "Sensor" ? t`Sensor` : t`Operator`}
                           </Badge>
                         </Td>
-                        <Td className="text-right tabular-nums">
+                        <Td className="text-right tabular-nums whitespace-nowrap">
                           {formatTime(row.parts.plannedMs)}
                         </Td>
-                        <Td className="text-right tabular-nums">
+                        <Td className="text-right tabular-nums whitespace-nowrap">
                           {formatTime(row.parts.runMs)}
                         </Td>
-                        <Td className="text-right tabular-nums">
+                        <Td className="text-right tabular-nums whitespace-nowrap">
                           {formatTime(row.parts.runOutsideMs)}
                         </Td>
-                        <Td className="text-right tabular-nums">
+                        <Td className="text-right tabular-nums whitespace-nowrap">
                           {formatRatio(row.ratios.availability)}
                         </Td>
-                        <Td className="text-right tabular-nums">
+                        <Td className="text-right tabular-nums whitespace-nowrap">
                           {formatRatio(row.ratios.performance)}
                         </Td>
-                        <Td className="text-right tabular-nums">
+                        <Td className="text-right tabular-nums whitespace-nowrap">
                           {formatRatio(row.ratios.standardCoverage)}
                         </Td>
-                        <Td className="text-right tabular-nums">
+                        <Td className="text-right tabular-nums whitespace-nowrap">
                           {formatRatio(row.ratios.quality)}
                         </Td>
-                        <Td className="text-right tabular-nums font-medium">
+                        <Td className="text-right tabular-nums whitespace-nowrap font-medium">
                           {formatRatio(row.ratios.oee)}
                         </Td>
                       </Tr>

@@ -1,6 +1,6 @@
 # OEE dashboard (Pulse Phase 4)
 
-> Status: draft
+> Status: implemented (the pilot acceptance with real hardware is open)
 > Author: Khompetch Dononsa
 > Date: 2026-11-17
 > Parent spec: `.ai/specs/2026-11-14-pulse-machine-monitoring.md` (Phase 4)
@@ -238,13 +238,14 @@ Deviations:
   `MetricCard`s, a `@carbon/react/Chart` line chart, and a table.
 - ERP: a nav item "OEE" in `useProductionSubmodules`.
 - MES: a display board (archetype: the maintenance display).
+- Ratios show as whole percents (`PROGRESS_FORMAT`, the shared format for headline figures).
 - Every string uses Lingui. Run `pnpm lingui:extract` and `/translate`.
 - An empty state shows when no work center has planned time in the range.
 - A ratio with no denominator shows "—".
 
 ## Acceptance Criteria
 
-- [ ] `pnpm --filter @carbon/planning test` passes, with these cases pinned:
+- [x] `pnpm --filter @carbon/planning test` passes, with these cases pinned:
       a run that crosses a shift end, a run inside a Planned dispatch, a run
       fully outside the shifts, a work center with no standard, and a
       roll-up of 2 work centers that differs from the average of their
@@ -262,7 +263,7 @@ Deviations:
 - [ ] The nav item is hidden with no active `oee` integration.
 - [ ] The MES board changes to the next shift within 30 seconds of the shift
       start.
-- [ ] The ERP and MES typechecks, `pnpm run lint` and
+- [x] The ERP and MES typechecks, `pnpm run lint` and
       `pnpm db:check:datasets && pnpm db:check:backups` pass.
 
 ## Risks
@@ -309,3 +310,8 @@ Deviations:
 - 2026-11-17: Plan `.ai/plans/2026-11-17-oee-dashboard.md`. The calculator
   finds a sensor row by its note, because `util.purge_machine_counts()`
   deletes Posted postings after 90 days.
+- 2026-11-17: Built (plan `.ai/plans/2026-11-17-oee-dashboard.md`). With the
+  simulator data, the OEE pieces equal the raw `pulseCount` totals (248 and
+  76). The pilot shift, the remap check, the hidden nav item and the shift
+  change on the MES board are not verified in a browser yet. Ratios show as
+  whole percents.

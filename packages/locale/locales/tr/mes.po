@@ -2419,6 +2419,9 @@ msgstr "Planlı"
 msgid "Planned duration:"
 msgstr "Planlanan süre:"
 
+msgid "Planned time"
+msgstr "Planlanan Zaman"
+
 msgid "Please record all steps for this operation before closing."
 msgstr "Bu işlemi kapatmadan önce tüm adımları kaydetmeniz gerekmektedir."
 

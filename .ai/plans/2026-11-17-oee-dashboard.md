@@ -35,7 +35,7 @@ the note.
 - [x] Task 11: Translations
 - [x] Task 12: Docs, rule and AGENTS.md
 - [x] Task 13: Validation gates
-- [ ] Task 14: Browser verification
+- [x] Task 14: Browser verification
 
 ## Dependencies
 
@@ -572,3 +572,4 @@ ls .ai/playbooks/ | grep -i oee
 - 2026-11-17, Task 11: `/translate` filled 1,344 strings (112 per locale; the new OEE strings plus earlier upstream gaps). `linguito check` exits 0. `check-glossary.mjs` exits 0 with advisory hits only.
 - 2026-11-17, Task 12: `pnpm --filter docs build` stops before the content build with Next.js `SecurityFatalError` (the installed Next.js has a known vulnerability). It is a version check, not a content error. `pnpm --filter @carbon/content test` (links and anchors) passes, 16 tests. The spec status moves to implemented after Task 14.
 - 2026-11-17, Task 13: gates. `@carbon/planning` tests pass except the `plan-company` golden snapshot (fails on `develop` too). Typecheck: planning, MES and ERP exit 0. `pnpm run lint` exits 0. `db:check:datasets` passes all datasets; `db:check:backups` says restorable. `@carbon/checks`: the same 3 failures as on `develop` (Windows backslash paths in `run.test.ts`, `license-files`); the conformance list found 3 lines of this branch (`getLocalTimeZone` in a module helper of `oee.tsx`, 2 inline `maximumFractionDigits` in the MES board), fixed with `PERCENT_FORMAT` / `SCALE_FORMAT` and a `today` argument.
+- 2026-11-17, Task 14: browser check with agent-browser 0.43.0 (scratchpad install) on dev servers started by hand. ERP page renders at 1440 / 1024 / 390 px; API pieces equal raw `pulseCount` (CNC 248, TIG 76); bad = sensor scrap + 1 manual Scrap row. MES board shows the last ended shift between shifts; the display index has the OEE links; MES hydrates and navigates. Fixes from the check: whole-percent ratios (`PROGRESS_FORMAT`), no wrapping in the table, a separate "Planned time" row on the board (its MES translation copied from the ERP catalog). Not done: the simulator run with a 9 s standard, unmap/remap, and deactivating Pulse to hide the nav item. Playbook: `.ai/playbooks/oee-screens.md`.
