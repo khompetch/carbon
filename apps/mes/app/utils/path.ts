@@ -243,6 +243,8 @@ export const path = {
     mfa: "/mfa",
     newMaintenanceDispatch: `${x}/dispatch/new`,
     newServiceJob: `${x}/service/new`,
+    oeeDisplay: (workCenterId: string) =>
+      generatePath(`${display}/${workCenterId}/oee`),
     onboarding: `${ERP_URL}/onboarding`,
     operation: (id: string) => generatePath(`${x}/operation/${id}`),
     operations: `${x}/operations?saved=1`,

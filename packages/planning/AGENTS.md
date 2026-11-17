@@ -53,7 +53,15 @@ pnpm --filter @carbon/planning typecheck
 
 ## Key Exports
 
-Single subpath `@carbon/planning` (`./src/index.ts`):
+`@carbon/planning` (`./src/index.ts`, server-only) and three pure subpaths:
+
+| Subpath | Provides |
+|--------|----------|
+| `@carbon/planning/work-center-windows` | `getWorkCenterWorkingWindows`, `withoutOutages`, `workingHoursByDay`, `expandShiftRows`, `plantDayBounds`, `workingOverlapMs` (`src/scheduling/work-center-windows.ts`; the ERP's `production.service.ts` re-exports the first three) |
+| `@carbon/planning/oee` | The OEE calculator: `computeOeeParts`, `addOeeParts`, `oeeRatios`, `idealSecondsPerPiece`, `currentShiftPeriod`, `dayPeriods` and the interval helpers (`src/oee/`). No database client, no `@carbon/ee` |
+| `@carbon/planning/oee/load.server` | `loadOeeWorkCenters(client, args)`: the OEE reader both apps call (`src/oee/load.server.ts`) |
+
+The main entry:
 
 | Export | Provides |
 |--------|----------|
@@ -103,10 +111,11 @@ today + 30 for No Deadline, else today — shared by the projection and the acti
 
 - `@carbon/jobs` — `scheduled/mrp.ts` (`runMrp`), `tasks/recalculate.ts` &
   `scheduled/schedule-inputs-changed.ts` (`runLocationSchedule`).
-- `apps/erp` — `production.service.ts` (dynamic imports of `runMrp` /
+- `apps/erp` — `api+/production.oee.ts` (the OEE reader); `production.service.ts` (dynamic imports of `runMrp` /
   `runLocationSchedule` / `runExpediteWhatIf`), `forecast.server.ts`,
   `routes/api+/schedule.ts`, `routes/api+/kanban.$id.tsx`,
   `routes/x+/job+/$jobId.status.tsx`.
+- `apps/mes` — `services/display.server.ts` and `routes/display+/$workCenterId.oee.tsx` (the OEE board).
 
 ## Cross-References
 

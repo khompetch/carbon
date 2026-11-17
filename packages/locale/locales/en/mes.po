@@ -45,6 +45,11 @@ msgstr "(Inactive)"
 msgid "{0} - Set {1}"
 msgstr "{0} - Set {1}"
 
+#. placeholder {0}: time.format(oee.period.start)
+#. placeholder {1}: time.format(oee.period.end)
+msgid "{0} – {1}"
+msgstr "{0} – {1}"
+
 #. placeholder {0}: employeeIds.length
 msgid "{0} Active"
 msgstr "{0} Active"
@@ -95,6 +100,10 @@ msgstr "{0} jobs"
 #. placeholder {0}: workCenter.name
 msgid "{0} maintenance display"
 msgstr "{0} maintenance display"
+
+#. placeholder {0}: workCenter.name
+msgid "{0} OEE display"
+msgstr "{0} OEE display"
 
 #. placeholder {0}: counts.recorded
 #. placeholder {0}: issuedLines.length
@@ -486,6 +495,9 @@ msgstr "Authenticator code"
 
 msgid "Authenticator QR code"
 msgstr "Authenticator QR code"
+
+msgid "Availability"
+msgstr "Availability"
 
 msgid "available"
 msgstr "available"
@@ -1302,6 +1314,9 @@ msgstr "Go to step {0}: {1}"
 msgid "Go to step {0}: {1} (done)"
 msgstr "Go to step {0}: {1} (done)"
 
+msgid "Good pieces"
+msgstr "Good pieces"
+
 msgid "Grab from {source} · {onHand} there"
 msgstr "Grab from {source} · {onHand} there"
 
@@ -2006,6 +2021,9 @@ msgstr "No serial numbers found"
 msgid "No service jobs assigned to you today"
 msgstr "No service jobs assigned to you today"
 
+msgid "No shift"
+msgstr "No shift"
+
 msgid "No shortcuts available on this page."
 msgstr "No shortcuts available on this page."
 
@@ -2094,8 +2112,18 @@ msgstr "Nothing to scrap"
 msgid "Notifications"
 msgstr "Notifications"
 
+msgid "OEE"
+msgstr "OEE"
+
 msgid "OEE Impact"
 msgstr "OEE Impact"
+
+#. placeholder {0}: percent.format(LOW_OEE)
+msgid "OEE is below {0}"
+msgstr "OEE is below {0}"
+
+msgid "OEE this shift"
+msgstr "OEE this shift"
 
 msgid "OEM Required"
 msgstr "OEM Required"
@@ -2299,6 +2327,9 @@ msgstr "Pending"
 msgid "Percentage"
 msgstr "Percentage"
 
+msgid "Performance"
+msgstr "Performance"
+
 msgid "Phone"
 msgstr "Phone"
 
@@ -2387,6 +2418,9 @@ msgstr "Planned"
 
 msgid "Planned duration:"
 msgstr "Planned duration:"
+
+msgid "Planned time"
+msgstr "Planned time"
 
 msgid "Please record all steps for this operation before closing."
 msgstr "Please record all steps for this operation before closing."
@@ -2686,6 +2720,9 @@ msgstr "Rework quantity"
 
 msgid "Rich text"
 msgstr "Rich text"
+
+msgid "Run time"
+msgstr "Run time"
 
 msgid "Running"
 msgstr "Running"

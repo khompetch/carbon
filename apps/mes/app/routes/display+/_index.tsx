@@ -7,7 +7,7 @@ import { requirePermissions } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { Combobox, Heading } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
-import { LuMonitor, LuWrench } from "react-icons/lu";
+import { LuGauge, LuMonitor, LuWrench } from "react-icons/lu";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { Link, useLoaderData, useSearchParams } from "react-router";
 import { userContext } from "~/context";
@@ -123,6 +123,12 @@ export default function DisplayIndexRoute() {
                     icon={<LuWrench />}
                     label={<Trans>Maintenance</Trans>}
                     ariaLabel={t`${workCenter.name} maintenance display`}
+                  />
+                  <DisplayLink
+                    to={path.to.oeeDisplay(workCenter.id!)}
+                    icon={<LuGauge />}
+                    label={<Trans>OEE</Trans>}
+                    ariaLabel={t`${workCenter.name} OEE display`}
                   />
                   <DisplayLink
                     to={path.to.workDisplay(workCenter.id!)}

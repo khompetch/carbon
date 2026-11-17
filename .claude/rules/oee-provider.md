@@ -9,6 +9,10 @@ paths:
   - packages/jobs/src/inngest/functions/integrations/oee-*.ts
   - apps/erp/app/routes/api+/webhook.sense.$companyId.ts
   - packages/database/src/machine-time.ts
+  - packages/planning/src/oee/**
+  - apps/erp/app/routes/x+/production+/oee.tsx
+  - apps/erp/app/routes/api+/production.oee.ts
+  - apps/mes/app/routes/display+/$workCenterId.oee.tsx
 ---
 
 # OEE Providers (machine monitoring)
@@ -519,8 +523,42 @@ answer per row is posted.
 
 **State change retention.** pg_cron `machine-state-change-retention` (04:29
 UTC) runs `util.purge_machine_state_changes()`: it deletes `machineStateChange`
-rows older than 30 days, and rows whose device was unmapped or remapped. The
-engine only reads rows after `appliedThrough`, so neither is ever read again.
+rows older than 400 days (migration `20261117092413_oee-dashboard-history.sql`).
+It keeps the rows of an unmapped or remapped device, because the OEE screens
+read a work center's run time from them. The engine only reads rows after
+`appliedThrough`, so old rows are history, not working data.
+
+## OEE screens
+
+Spec: `.ai/specs/2026-11-14-oee-dashboard.md`. The calculator is pure and
+lives in `@carbon/planning/oee` (`packages/planning/src/oee/`): `intervals.ts`,
+`standards.ts`, `oee.ts` (`computeOeeParts`, `addOeeParts`, `oeeRatios`) and
+`periods.ts`. The reader `loadOeeWorkCenters`
+(`@carbon/planning/oee/load.server`) reads every source with one query per
+table and returns the calculator input per work center.
+
+| Part | Source |
+|---|---|
+| Planned windows | `getWorkCenterWorkingWindows` (`@carbon/planning/work-center-windows`: shifts, holidays closed) minus the `Planned` dispatches from `actualStartTime` |
+| Run intervals | A work center with a device or a state change in the range (Source "Sensor"): the `Running` stretches of `machineStateChange`, with the device's `currentState` as the start state when no change falls in the 7-day lookback. Else (Source "Operator"): the union of its Machine `productionEvent` rows |
+| Owners | Machine `productionEvent` rows on the work center (kept for ever; `workCenterLoad` is purged after 7 days) |
+| Ideal seconds per piece | The owner's `jobOperation.machineTime` / `machineUnit` (`idealSecondsPerPiece`; `Total …` units give none), else the Pulse device's `expectedCycleSeconds ÷ piecesPerPulse` |
+| Counts, Pulse work center | `pulseCount` by `periodEnd` × the device's current `piecesPerPulse`, plus the Scrap and Rework `productionQuantity` rows whose `notes` does not start with `Pulse sensor ` |
+| Counts, other work center | Every `productionQuantity` row on its operations, by `createdAt` |
+
+Planned time = |planned windows| + run time outside them ("Run outside
+shifts"). Availability = run ÷ planned, Performance = Σ ideal × pieces ÷ run
+time with a standard, Quality = good ÷ total. Parts are summed before any
+ratio; a ratio with a 0 denominator is null.
+
+- **ERP** — Production → OEE (`x+/production+/oee.tsx`), nav item in
+  `useProductionSubmodules` behind the same `oee` integration test as
+  Unattributed Time. Data from `api+/production.oee.ts` (`view: production`,
+  one location, at most 92 days, days in the location's timezone).
+- **MES** — `display+/$workCenterId.oee.tsx`, linked from the display index.
+  `getOeeDisplayData` (`apps/mes/app/services/display.server.ts`, not
+  `display.service.ts`, which components import) shows the current shift
+  (`currentShiftPeriod`), else the local day.
 
 ## Sense adapter
 
