@@ -37,18 +37,22 @@ msgstr "この個品には「{0}」による修正が必要です。"
 msgid "\"{column}\" is required."
 msgstr "「{column}」は必須です。"
 
+msgid "(after this shift)"
+msgstr "(このシフト後)"
+
 msgid "(Inactive)"
 msgstr "(無効)"
+
+msgid "(next)"
+msgstr "(次)"
+
+msgid "(now)"
+msgstr "(現在)"
 
 #. placeholder {0}: attribute.name
 #. placeholder {1}: activeStep + 1
 msgid "{0} - Set {1}"
 msgstr "{0} - セット {1}"
-
-#. placeholder {0}: time.format(oee.period.start)
-#. placeholder {1}: time.format(oee.period.end)
-msgid "{0} – {1}"
-msgstr "{0} – {1}"
 
 #. placeholder {0}: employeeIds.length
 msgid "{0} Active"
@@ -69,6 +73,11 @@ msgstr "{0}件の得意先"
 #. placeholder {0}: counts.failed
 msgid "{0} failed"
 msgstr "{0} 件不合格"
+
+#. placeholder {0}: formats.pieces(good)
+#. placeholder {1}: formats.pieces(parts.totalPieces)
+msgid "{0} good of {1} pieces"
+msgstr "{1} 個中 良品 {0} 個"
 
 #. placeholder {0}: formatHours(dayTotals[index] ?? 0)
 #. placeholder {0}: formatHours(hours)
@@ -125,6 +134,11 @@ msgstr "{0} / {1} 完了"
 #. placeholder {1}: attributes.length
 msgid "{0} of {1} completed"
 msgstr "{0} / {1} 完了済み"
+
+#. placeholder {0}: formats.pieces(parts.badPieces)
+#. placeholder {1}: formats.pieces(parts.totalPieces)
+msgid "{0} of {1} pieces"
+msgstr "{1} 個中 {0} 個"
 
 #. placeholder {0}: rows.length
 msgid "{0} queued"
@@ -204,6 +218,15 @@ msgstr "{hours} 時間"
 msgid "{issued} of {required}"
 msgstr "{required}のうち{issued}"
 
+msgid "{job} ends about {at}"
+msgstr "{job} の終了見込み: {at} 頃"
+
+msgid "{job} ends about {at}, get {next} ready"
+msgstr "{job} は {at} 頃に終了予定。{next} の準備をしてください"
+
+msgid "{job} OEE {oee} is below the limit"
+msgstr "{job} の OEE {oee} が下限を下回っています"
+
 msgid "{label}, overdue"
 msgstr "{label}、期限超過"
 
@@ -243,6 +266,9 @@ msgstr "+{overflow} その他"
 #. placeholder {0}: formatDate(moveDate, { dateStyle: "long" }, locale)
 msgid "🚨 Heads up: on {0} your account will be moved to erp.try.carbon.ms"
 msgstr "🚨 お知らせ：{0}にアカウントが erp.try.carbon.ms に移行されます"
+
+msgid "2 minutes or more"
+msgstr "2分以上"
 
 msgid "A color sets the accent. Gradient and solid themes also color the navigation, the sidebar and the page."
 msgstr "カラーはアクセントを設定します。グラデーションと単色のテーマは、ナビゲーション、サイドバー、ページにも色を付けます。"
@@ -318,6 +344,9 @@ msgstr "アクションメニュー"
 msgid "Active"
 msgstr "アクティブ"
 
+msgid "Actual cycle per piece"
+msgstr "実績サイクル（1個あたり）"
+
 msgid "Add"
 msgstr "追加"
 
@@ -384,6 +413,9 @@ msgstr "追加完了"
 msgid "Adjustment Type"
 msgstr "調整タイプ"
 
+msgid "Alerts"
+msgstr "アラート"
+
 msgid "All"
 msgstr "すべて"
 
@@ -408,6 +440,9 @@ msgstr "すべてスクラップ"
 
 msgid "All steps"
 msgstr "全ステップ"
+
+msgid "All within limits"
+msgstr "すべて基準内"
 
 msgid "All work centers"
 msgstr "すべての作業区"
@@ -477,6 +512,10 @@ msgstr "自分に割当"
 
 msgid "Assignee"
 msgstr "担当者"
+
+#. placeholder {0}: formats.whole(3600 / ideal)
+msgid "At standard {0}"
+msgstr "標準 {0} 個/時"
 
 msgid "Attach file"
 msgstr "ファイルを添付"
@@ -575,6 +614,12 @@ msgstr "背景を選択項目の色になじませます。"
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"
 msgstr "{0} によりブロック中"
+
+msgid "Blocked by maintenance"
+msgstr "保全により停止中"
+
+msgid "Blocked by maintenance {dispatch}"
+msgstr "保全により停止中 {dispatch}"
 
 msgid "Blocking"
 msgstr "ブロック中"
@@ -889,6 +934,9 @@ msgstr "品質問題を作成"
 msgid "Create Rework"
 msgstr "手直しを作成"
 
+msgid "Current job"
+msgstr "現在の製造指図"
+
 msgid "Current work"
 msgstr "現在の作業"
 
@@ -984,6 +1032,12 @@ msgstr "ディスプレイ（新しいタブで開きます）"
 
 msgid "Done"
 msgstr "完了"
+
+msgid "Done / plan"
+msgstr "完了 / 計画"
+
+msgid "Done / planned"
+msgstr "完了 / 計画済"
 
 msgid "Down"
 msgstr "停止"
@@ -1129,6 +1183,9 @@ msgstr "特性テーブルを展開"
 
 msgid "Expand panel"
 msgstr "パネルを展開"
+
+msgid "Expected finish"
+msgstr "終了予定"
 
 msgid "Expired"
 msgstr "期限切れ"
@@ -1286,6 +1343,12 @@ msgstr "問題を報告"
 msgid "Forgot to Clock Out?"
 msgstr "作業終了を忘れていませんか？"
 
+msgid "From operator time"
+msgstr "作業者の時間から"
+
+msgid "From the sensor"
+msgstr "センサーから"
+
 msgid "Gauge"
 msgstr "測定器"
 
@@ -1314,8 +1377,8 @@ msgstr "ステップ {0} へ移動: {1}"
 msgid "Go to step {0}: {1} (done)"
 msgstr "ステップ {0} へ移動: {1}（完了）"
 
-msgid "Good pieces"
-msgstr "良品数"
+msgid "Good / scrap (this shift)"
+msgstr "良品 / スクラップ（このシフト）"
 
 msgid "Grab from {source} · {onHand} there"
 msgstr "{source} から取得 · そこに {onHand}"
@@ -1340,6 +1403,9 @@ msgstr "説明を非表示"
 
 msgid "Hide drawing"
 msgstr "図面を非表示"
+
+msgid "Hourly efficiency"
+msgstr "時間あたり効率"
 
 msgid "Hours"
 msgstr "時間"
@@ -1492,11 +1558,23 @@ msgstr "品目"
 msgid "Job"
 msgstr "ジョブ"
 
+msgid "Job / item"
+msgstr "製造指図 / 品目"
+
+msgid "Job and machine state timeline"
+msgstr "製造指図と機械状態のタイムライン"
+
 msgid "Job Details"
 msgstr "ジョブ詳細"
 
 msgid "Job due"
 msgstr "製造指図の納期"
+
+msgid "Job OEE"
+msgstr "製造指図 OEE"
+
+msgid "Job OEE (this shift)"
+msgstr "製造指図 OEE（このシフト）"
 
 msgid "Job Operation"
 msgstr "指図工程"
@@ -1506,6 +1584,12 @@ msgstr "製造指図現品票"
 
 msgid "Jobs"
 msgstr "製造指図"
+
+msgid "Jobs (top) and machine state (bottom)"
+msgstr "製造指図（上）と機械状態（下）"
+
+msgid "Jobs this shift"
+msgstr "このシフトの製造指図"
 
 msgid "Keep navigation open"
 msgstr "ナビゲーションを開いたままにする"
@@ -1678,8 +1762,20 @@ msgstr "低"
 msgid "Machine"
 msgstr "機械"
 
+msgid "Machine down for {length}"
+msgstr "機械が {length} 間停止"
+
 msgid "Machine down for maintenance now?"
 msgstr "機械が今保全中ですか？"
+
+msgid "Machine figures"
+msgstr "機械の実績値"
+
+msgid "Machine offline for {length}"
+msgstr "機械が {length} 間オフライン"
+
+msgid "Machine state since the start of the shift"
+msgstr "シフト開始からの機械状態"
 
 msgid "Machine, timer running"
 msgstr "機械、タイマー実行中"
@@ -1816,6 +1912,9 @@ msgstr "ナビゲーション"
 msgid "Need material"
 msgstr "資材が必要"
 
+msgid "Needs attention"
+msgstr "要確認"
+
 msgid "New"
 msgstr "新規"
 
@@ -1916,6 +2015,12 @@ msgstr "割り当てられた検査はありません"
 msgid "No issue types configured"
 msgstr "構成されたイシュータイプがありません"
 
+msgid "No job has run this shift"
+msgstr "このシフトで稼働した製造指図はありません"
+
+msgid "No job is loaded on this work center"
+msgstr "この作業区には製造指図がセットされていません"
+
 msgid "No kit"
 msgstr "キットなし"
 
@@ -1924,6 +2029,9 @@ msgstr "休暇がまだ設定されていません。マネージャーにERPで
 
 msgid "No lineside storage"
 msgstr "ラインサイドの保管場所がありません"
+
+msgid "No losses yet"
+msgstr "まだロスはありません"
 
 msgid "No maintenance scheduled for today"
 msgstr "本日の保全予定はありません。"
@@ -1982,6 +2090,9 @@ msgstr "ピッキングリストがありません"
 msgid "No printer configured"
 msgstr "プリンターが設定されていません"
 
+msgid "No reason given"
+msgstr "理由の記載なし"
+
 msgid "No recent operations"
 msgstr "最近の工程はありません"
 
@@ -2009,6 +2120,9 @@ msgstr "サンプルは必要ありません。"
 msgid "No scheduled time"
 msgstr "予定時間なし"
 
+msgid "No scrap this shift"
+msgstr "このシフトのスクラップはありません"
+
 msgid "No serial number"
 msgstr "シリアル番号なし"
 
@@ -2024,11 +2138,20 @@ msgstr "今日割り当てられたサービス仕事がありません"
 msgid "No shift"
 msgstr "シフトなし"
 
+msgid "No shift and no data for this work center yet"
+msgstr "この作業区にはまだシフトもデータもありません"
+
 msgid "No shortcuts available on this page."
 msgstr "このページで利用可能なショートカットはありません。"
 
 msgid "No spare parts added yet"
 msgstr "予備品はまだ追加されていません。"
+
+msgid "No standard time"
+msgstr "標準時間なし"
+
+msgid "No state"
+msgstr "状態なし"
 
 msgid "No station"
 msgstr "ステーションなし"
@@ -2038,6 +2161,9 @@ msgstr "この拠点にはステーションがありません"
 
 msgid "No stock"
 msgstr "在庫なし"
+
+msgid "No stops this shift"
+msgstr "今シフトの停止はありません"
 
 msgid "No time entries for this week"
 msgstr "今週のタイムエントリーはありません"
@@ -2074,6 +2200,9 @@ msgstr "通常検査"
 
 msgid "Not in this operation"
 msgstr "この工程にはありません"
+
+msgid "Not planned"
+msgstr "未計画"
 
 msgid "Not scheduled"
 msgstr "スケジュール未設定"
@@ -2118,12 +2247,11 @@ msgstr "OEE"
 msgid "OEE Impact"
 msgstr "OEE影響度"
 
-#. placeholder {0}: percent.format(OEE_LOW)
-msgid "OEE is below {0}"
-msgstr "OEE が {0} を下回っています"
+msgid "OEE is below {low}"
+msgstr "OEEが {low} を下回っています"
 
-msgid "OEE this shift"
-msgstr "今シフトのOEE"
+msgid "OEE this shift (all jobs)"
+msgstr "今シフトのOEE（全製造指図）"
 
 msgid "OEM Required"
 msgstr "OEM対応必要"
@@ -2131,6 +2259,9 @@ msgstr "OEM対応必要"
 #. placeholder {0}: m.operationQuantity ?? 0
 msgid "of {0}"
 msgstr "の{0}"
+
+msgid "Of planned time"
+msgstr "計画時間の"
 
 msgid "Offline"
 msgstr "オフライン"
@@ -2330,6 +2461,12 @@ msgstr "割合"
 msgid "Performance"
 msgstr "性能"
 
+msgid "Performance {performance}: a standard time may be set too slow"
+msgstr "性能 {performance}: 標準時間が遅く設定されている可能性があります"
+
+msgid "Performance counts only this run"
+msgstr "性能は今回の稼働分のみで算出"
+
 msgid "Phone"
 msgstr "電話"
 
@@ -2403,6 +2540,9 @@ msgstr "{substitutedFrom}の代わりにピッキング、当ジョブ上の品�
 
 msgid "picking in place of {substitutedFrom}, the item on the job, for {substitutedAssemblies} assemblies"
 msgstr "{substitutedAssemblies}個のアセンブリ分、{substitutedFrom}の代わりにピッキング、当ジョブ上の品目"
+
+msgid "Pieces per run hour"
+msgstr "稼働1時間あたりの生産数"
 
 msgid "Pin or unpin"
 msgstr "ピン留めまたはピン留め解除"
@@ -2539,6 +2679,11 @@ msgstr "見積"
 
 msgid "Raise quality issue"
 msgstr "品質問題を起票"
+
+#. placeholder {0}: formats.minutes(parts.runMs)
+#. placeholder {1}: formats.minutes(parts.plannedMs)
+msgid "Ran {0} of {1} planned"
+msgstr "計画 {1} のうち {0} 稼働"
 
 msgid "raw bins short"
 msgstr "原材料ビン不足"
@@ -2721,8 +2866,14 @@ msgstr "手直し数量"
 msgid "Rich text"
 msgstr "リッチテキスト"
 
+msgid "Run outside shifts"
+msgstr "シフト外の稼働"
+
 msgid "Run time"
 msgstr "加工時間"
+
+msgid "Run with a standard time"
+msgstr "標準時間ありの稼働"
 
 msgid "Running"
 msgstr "実行中"
@@ -2817,6 +2968,9 @@ msgstr "スケジュール競合"
 msgid "Scrap"
 msgstr "スクラップ"
 
+msgid "Scrap (pieces)"
+msgstr "スクラップ（個数）"
+
 msgid "Scrap {readableId}"
 msgstr "{readableId} をスクラップ"
 
@@ -2825,6 +2979,9 @@ msgstr "材料をスクラップ"
 
 msgid "Scrap quantity"
 msgstr "スクラップ数量"
+
+msgid "Scrap rate"
+msgstr "スクラップ率"
 
 msgid "Scrap Reason"
 msgstr "不良理由"
@@ -3025,6 +3182,9 @@ msgstr "段取り"
 msgid "Setup, timer running"
 msgstr "段取り、タイマー実行中"
 
+msgid "Shift {range}"
+msgstr "シフト {range}"
+
 msgid "short"
 msgstr "短縮"
 
@@ -3133,6 +3293,28 @@ msgstr "予備品"
 msgid "Spare Parts Used"
 msgstr "使用予備品"
 
+msgid "Speed loss"
+msgstr "速度ロス"
+
+#. placeholder {0}: formats.seconds(ideal)
+msgid "Standard {0}"
+msgstr "標準 {0}"
+
+#. placeholder {0}: formats.seconds(job.idealSecondsPerPiece)
+msgid "Standard {0} per piece"
+msgstr "標準 {0} / 個"
+
+msgid "Standard time made"
+msgstr "標準時間の達成"
+
+#. placeholder {0}: formats.minutes(parts.idealMs)
+#. placeholder {1}: formats.minutes(parts.runWithStandardMs)
+msgid "Standard time made {0} in {1} of run"
+msgstr "稼働 {1} 中の標準時間達成 {0}"
+
+msgid "Standard time made ÷ planned time, dashed line = {target}, ⇄ = job change"
+msgstr "達成標準時間 ÷ 計画時間、破線 = {target}、⇄ = 製造指図の切替"
+
 msgid "Start"
 msgstr "開始"
 
@@ -3209,6 +3391,12 @@ msgstr "ステップが未記録です"
 msgid "Stock at:"
 msgstr "在庫場所："
 
+msgid "Stop log"
+msgstr "停止履歴"
+
+msgid "Stopped now {length}"
+msgstr "現在停止中 {length}"
+
 msgid "Storage Unit"
 msgstr "保管ユニット"
 
@@ -3278,6 +3466,12 @@ msgstr "作業区をオフラインにする"
 msgid "Tap a day to add time to {selectedLabel}. Drag the lower edge of a bar to change its hours."
 msgstr "日をタップして{selectedLabel}に時間を追加してください。バーの下部をドラッグして時間を変更してください。"
 
+msgid "Target {target}"
+msgstr "目標 {target}"
+
+msgid "Target {target}, last shift {previous}"
+msgstr "目標 {target}、前シフト {previous}"
+
 msgid "Text color"
 msgstr "文字色"
 
@@ -3309,6 +3503,9 @@ msgstr "検査は合格とされ、個体は利用可能に振り替えられま
 
 msgid "The inspection will be marked Passed. Its units are released to Available, except the {fails} that failed a sample, which stay Rejected."
 msgstr "検査は合格とされます。個体は、サンプルで不合格となった{fails}個を除き利用可能に振り替えられます。その{fails}個は却下済のまま残ります。"
+
+msgid "The job"
+msgstr "製造指図"
 
 msgid "The job is closed"
 msgstr "製造指図はクローズ済です"
@@ -3468,6 +3665,9 @@ msgstr "実行待ち"
 msgid "Today"
 msgstr "今日"
 
+msgid "Today {range}"
+msgstr "本日 {range}"
+
 msgid "Toggle sidebar"
 msgstr "サイドバーを切り替え"
 
@@ -3476,6 +3676,12 @@ msgstr "サイドバーの表示/非表示を切り替える"
 
 msgid "Tools"
 msgstr "工具"
+
+msgid "Top losses"
+msgstr "主な損失"
+
+msgid "Top losses (minutes)"
+msgstr "主な損失（分）"
 
 msgid "Top to Bottom"
 msgstr "上から下へ"
@@ -3488,6 +3694,9 @@ msgstr "トピック"
 
 msgid "Total"
 msgstr "合計"
+
+msgid "Total {total}"
+msgstr "合計 {total}"
 
 msgid "Total hours"
 msgstr "合計時間"
@@ -3581,6 +3790,9 @@ msgstr "不明な測定器"
 
 msgid "Unknown part"
 msgstr "不明な部品"
+
+msgid "Unknown reason"
+msgstr "不明な理由"
 
 msgid "Unlock"
 msgstr "ロック解除"

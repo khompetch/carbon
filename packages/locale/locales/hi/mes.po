@@ -37,18 +37,22 @@ msgstr "इस इकाई पर “{0}” के लिए सुधार �
 msgid "\"{column}\" is required."
 msgstr "«{column}» आवश्यक है।"
 
+msgid "(after this shift)"
+msgstr "(इस शिफ्ट के बाद)"
+
 msgid "(Inactive)"
 msgstr "(निष्क्रिय)"
+
+msgid "(next)"
+msgstr "(अगला)"
+
+msgid "(now)"
+msgstr "(अभी)"
 
 #. placeholder {0}: attribute.name
 #. placeholder {1}: activeStep + 1
 msgid "{0} - Set {1}"
 msgstr "{0} - सेट {1}"
-
-#. placeholder {0}: time.format(oee.period.start)
-#. placeholder {1}: time.format(oee.period.end)
-msgid "{0} – {1}"
-msgstr "{0} – {1}"
 
 #. placeholder {0}: employeeIds.length
 msgid "{0} Active"
@@ -69,6 +73,11 @@ msgstr "{0} ग्राहक"
 #. placeholder {0}: counts.failed
 msgid "{0} failed"
 msgstr "{0} विफल"
+
+#. placeholder {0}: formats.pieces(good)
+#. placeholder {1}: formats.pieces(parts.totalPieces)
+msgid "{0} good of {1} pieces"
+msgstr "{1} में से {0} अच्छे पीस"
 
 #. placeholder {0}: formatHours(dayTotals[index] ?? 0)
 #. placeholder {0}: formatHours(hours)
@@ -125,6 +134,11 @@ msgstr "{0} में से {1} पूर्ण"
 #. placeholder {1}: attributes.length
 msgid "{0} of {1} completed"
 msgstr "{0} में से {1} पूर्ण"
+
+#. placeholder {0}: formats.pieces(parts.badPieces)
+#. placeholder {1}: formats.pieces(parts.totalPieces)
+msgid "{0} of {1} pieces"
+msgstr "{1} में से {0} पीस"
 
 #. placeholder {0}: rows.length
 msgid "{0} queued"
@@ -204,6 +218,15 @@ msgstr "{hours} घंटा"
 msgid "{issued} of {required}"
 msgstr "{required} में से {issued}"
 
+msgid "{job} ends about {at}"
+msgstr "{job} लगभग {at} पर पूरा होगा"
+
+msgid "{job} ends about {at}, get {next} ready"
+msgstr "{job} लगभग {at} पर पूरा होगा, {next} तैयार करें"
+
+msgid "{job} OEE {oee} is below the limit"
+msgstr "{job} का OEE {oee} सीमा से नीचे है"
+
 msgid "{label}, overdue"
 msgstr "{label}, अतिदेय"
 
@@ -243,6 +266,9 @@ msgstr "+{overflow} अधिक"
 #. placeholder {0}: formatDate(moveDate, { dateStyle: "long" }, locale)
 msgid "🚨 Heads up: on {0} your account will be moved to erp.try.carbon.ms"
 msgstr "🚨 ध्यान दें: {0} को आपका खाता erp.try.carbon.ms पर स्थानांतरित कर दिया जाएगा"
+
+msgid "2 minutes or more"
+msgstr "2 मिनट या अधिक"
 
 msgid "A color sets the accent. Gradient and solid themes also color the navigation, the sidebar and the page."
 msgstr "एक रंग एक्सेंट तय करता है। ग्रेडिएंट और ठोस थीम नेविगेशन, साइडबार और पेज को भी रंगती हैं।"
@@ -318,6 +344,9 @@ msgstr "क्रिया मेनू"
 msgid "Active"
 msgstr "सक्रिय"
 
+msgid "Actual cycle per piece"
+msgstr "प्रति पीस वास्तविक साइकल"
+
 msgid "Add"
 msgstr "जोड़ें"
 
@@ -384,6 +413,9 @@ msgstr "जोड़ा गया"
 msgid "Adjustment Type"
 msgstr "समायोजन प्रकार"
 
+msgid "Alerts"
+msgstr "अलर्ट"
+
 msgid "All"
 msgstr "सभी"
 
@@ -408,6 +440,9 @@ msgstr "सभी स्क्रैप"
 
 msgid "All steps"
 msgstr "सभी चरण"
+
+msgid "All within limits"
+msgstr "सभी सीमा के भीतर"
 
 msgid "All work centers"
 msgstr "सभी वर्क सेंटर"
@@ -477,6 +512,10 @@ msgstr "मुझे असाइन किया गया"
 
 msgid "Assignee"
 msgstr "असाइनी"
+
+#. placeholder {0}: formats.whole(3600 / ideal)
+msgid "At standard {0}"
+msgstr "मानक {0} पर"
 
 msgid "Attach file"
 msgstr "फ़ाइल संलग्न करें"
@@ -575,6 +614,12 @@ msgstr "पृष्ठभूमि को चयनित आइटम के �
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"
 msgstr "{0} द्वारा अवरुद्ध"
+
+msgid "Blocked by maintenance"
+msgstr "रखरखाव के कारण रुका"
+
+msgid "Blocked by maintenance {dispatch}"
+msgstr "रखरखाव के कारण रुका ({dispatch})"
 
 msgid "Blocking"
 msgstr "अवरुद्ध"
@@ -889,6 +934,9 @@ msgstr "गुणवत्ता समस्या बनाएं"
 msgid "Create Rework"
 msgstr "पुनः कार्य बनाएँ"
 
+msgid "Current job"
+msgstr "वर्तमान जॉब"
+
 msgid "Current work"
 msgstr "वर्तमान कार्य"
 
@@ -984,6 +1032,12 @@ msgstr "डिस्प्ले (नए टैब में खुलता ह
 
 msgid "Done"
 msgstr "हो गया"
+
+msgid "Done / plan"
+msgstr "हो गया / योजना"
+
+msgid "Done / planned"
+msgstr "हो गया / योजनाबद्ध"
 
 msgid "Down"
 msgstr "डाउन"
@@ -1129,6 +1183,9 @@ msgstr "विशेषताएं तालिका विस्तृत क
 
 msgid "Expand panel"
 msgstr "पैनल विस्तार करें"
+
+msgid "Expected finish"
+msgstr "अपेक्षित समाप्ति"
 
 msgid "Expired"
 msgstr "समाप्त"
@@ -1286,6 +1343,12 @@ msgstr "समस्या चिह्नित करें"
 msgid "Forgot to Clock Out?"
 msgstr "कार्य समाप्त करना भूल गए?"
 
+msgid "From operator time"
+msgstr "ऑपरेटर समय से"
+
+msgid "From the sensor"
+msgstr "सेंसर से"
+
 msgid "Gauge"
 msgstr "गेज"
 
@@ -1314,8 +1377,8 @@ msgstr "चरण {0} पर जाएँ: {1}"
 msgid "Go to step {0}: {1} (done)"
 msgstr "चरण {0} पर जाएँ: {1} (हो गया)"
 
-msgid "Good pieces"
-msgstr "अच्छे पीस"
+msgid "Good / scrap (this shift)"
+msgstr "अच्छा / स्क्रैप (इस शिफ्ट)"
 
 msgid "Grab from {source} · {onHand} there"
 msgstr "{source} से लें · वहाँ {onHand}"
@@ -1340,6 +1403,9 @@ msgstr "विवरण छिपाएं"
 
 msgid "Hide drawing"
 msgstr "ड्राइंग छिपाएं"
+
+msgid "Hourly efficiency"
+msgstr "प्रति घंटा दक्षता"
 
 msgid "Hours"
 msgstr "घंटे"
@@ -1492,11 +1558,23 @@ msgstr "आइटम"
 msgid "Job"
 msgstr "नौकरी"
 
+msgid "Job / item"
+msgstr "जॉब / आइटम"
+
+msgid "Job and machine state timeline"
+msgstr "जॉब और मशीन स्थिति की समय-रेखा"
+
 msgid "Job Details"
 msgstr "नौकरी विवरण"
 
 msgid "Job due"
 msgstr "जॉब की नियत तिथि"
+
+msgid "Job OEE"
+msgstr "जॉब OEE"
+
+msgid "Job OEE (this shift)"
+msgstr "जॉब OEE (इस शिफ्ट)"
 
 msgid "Job Operation"
 msgstr "जॉब ऑपरेशन"
@@ -1506,6 +1584,12 @@ msgstr "जॉब ट्रैवलर"
 
 msgid "Jobs"
 msgstr "जॉब"
+
+msgid "Jobs (top) and machine state (bottom)"
+msgstr "जॉब (ऊपर) और मशीन स्थिति (नीचे)"
+
+msgid "Jobs this shift"
+msgstr "इस शिफ्ट के जॉब"
 
 msgid "Keep navigation open"
 msgstr "नेविगेशन खुला रखें"
@@ -1678,8 +1762,20 @@ msgstr "निम्न"
 msgid "Machine"
 msgstr "मशीन"
 
+msgid "Machine down for {length}"
+msgstr "मशीन {length} से बंद है"
+
 msgid "Machine down for maintenance now?"
 msgstr "मशीन अब रखरखाव के लिए बंद है?"
+
+msgid "Machine figures"
+msgstr "मशीन के आंकड़े"
+
+msgid "Machine offline for {length}"
+msgstr "मशीन {length} से ऑफ़लाइन है"
+
+msgid "Machine state since the start of the shift"
+msgstr "शिफ्ट शुरू होने से मशीन की स्थिति"
 
 msgid "Machine, timer running"
 msgstr "मशीन, टाइमर चल रहा है"
@@ -1816,6 +1912,9 @@ msgstr "नेविगेशन"
 msgid "Need material"
 msgstr "सामग्री की ज़रूरत"
 
+msgid "Needs attention"
+msgstr "ध्यान देने की ज़रूरत"
+
 msgid "New"
 msgstr "नया"
 
@@ -1916,6 +2015,12 @@ msgstr "आपको सौंपा गया कोई निरीक्ष�
 msgid "No issue types configured"
 msgstr "कोई समस्या प्रकार कॉन्फ़िगर नहीं किया गया"
 
+msgid "No job has run this shift"
+msgstr "इस शिफ्ट में कोई जॉब नहीं चला"
+
+msgid "No job is loaded on this work center"
+msgstr "इस वर्क सेंटर पर कोई जॉब लोड नहीं है"
+
 msgid "No kit"
 msgstr "कोई किट नहीं"
 
@@ -1924,6 +2029,9 @@ msgstr "अभी कोई अवकाश सेट नहीं है। अ
 
 msgid "No lineside storage"
 msgstr "कोई लाइनसाइड भंडारण नहीं"
+
+msgid "No losses yet"
+msgstr "अभी कोई हानि नहीं"
 
 msgid "No maintenance scheduled for today"
 msgstr "आज के लिए कोई रखरखाव निर्धारित नहीं है"
@@ -1982,6 +2090,9 @@ msgstr "कोई पिकिंग सूची नहीं"
 msgid "No printer configured"
 msgstr "कोई प्रिंटर कॉन्फ़िगर नहीं किया गया"
 
+msgid "No reason given"
+msgstr "कोई कारण नहीं दिया गया"
+
 msgid "No recent operations"
 msgstr "कोई हाल की ऑपरेशन नहीं"
 
@@ -2009,6 +2120,9 @@ msgstr "कोई नमूना आवश्यक नहीं है।"
 msgid "No scheduled time"
 msgstr "कोई निर्धारित समय नहीं"
 
+msgid "No scrap this shift"
+msgstr "इस शिफ्ट में कोई स्क्रैप नहीं"
+
 msgid "No serial number"
 msgstr "कोई सीरियल नंबर नहीं"
 
@@ -2024,11 +2138,20 @@ msgstr "आज आपको कोई सेवा जॉब असाइन न
 msgid "No shift"
 msgstr "कोई शिफ्ट नहीं"
 
+msgid "No shift and no data for this work center yet"
+msgstr "इस वर्क सेंटर के लिए अभी कोई शिफ्ट और डेटा नहीं है"
+
 msgid "No shortcuts available on this page."
 msgstr "इस पृष्ठ पर कोई शॉर्टकट उपलब्ध नहीं हैं।"
 
 msgid "No spare parts added yet"
 msgstr "अभी तक कोई स्पेयर पार्ट्स नहीं जोड़े गए हैं"
+
+msgid "No standard time"
+msgstr "कोई मानक समय नहीं"
+
+msgid "No state"
+msgstr "कोई स्थिति नहीं"
 
 msgid "No station"
 msgstr "कोई स्टेशन नहीं"
@@ -2038,6 +2161,9 @@ msgstr "इस स्थान पर कोई स्टेशन नहीं"
 
 msgid "No stock"
 msgstr "कोई स्टॉक नहीं"
+
+msgid "No stops this shift"
+msgstr "इस शिफ्ट में कोई ठहराव नहीं"
 
 msgid "No time entries for this week"
 msgstr "इस सप्ताह के लिए कोई समय प्रविष्टि नहीं"
@@ -2074,6 +2200,9 @@ msgstr "सामान्य"
 
 msgid "Not in this operation"
 msgstr "इस ऑपरेशन में नहीं"
+
+msgid "Not planned"
+msgstr "योजनाबद्ध नहीं"
 
 msgid "Not scheduled"
 msgstr "निर्धारित नहीं"
@@ -2118,12 +2247,11 @@ msgstr "OEE"
 msgid "OEE Impact"
 msgstr "OEE प्रभाव"
 
-#. placeholder {0}: percent.format(OEE_LOW)
-msgid "OEE is below {0}"
-msgstr "OEE {0} से नीचे है"
+msgid "OEE is below {low}"
+msgstr "OEE {low} से नीचे है"
 
-msgid "OEE this shift"
-msgstr "इस शिफ्ट का OEE"
+msgid "OEE this shift (all jobs)"
+msgstr "इस शिफ्ट का OEE (सभी जॉब)"
 
 msgid "OEM Required"
 msgstr "OEM आवश्यक"
@@ -2131,6 +2259,9 @@ msgstr "OEM आवश्यक"
 #. placeholder {0}: m.operationQuantity ?? 0
 msgid "of {0}"
 msgstr "का {0}"
+
+msgid "Of planned time"
+msgstr "नियोजित समय का"
 
 msgid "Offline"
 msgstr "ऑफलाइन"
@@ -2330,6 +2461,12 @@ msgstr "प्रतिशत"
 msgid "Performance"
 msgstr "प्रदर्शन"
 
+msgid "Performance {performance}: a standard time may be set too slow"
+msgstr "प्रदर्शन {performance}: मानक समय बहुत धीमा सेट हो सकता है"
+
+msgid "Performance counts only this run"
+msgstr "प्रदर्शन की गणना केवल इस रन के लिए होती है"
+
 msgid "Phone"
 msgstr "फोन"
 
@@ -2403,6 +2540,9 @@ msgstr "पिकिंग {substitutedFrom} की जगह, जॉब पर 
 
 msgid "picking in place of {substitutedFrom}, the item on the job, for {substitutedAssemblies} assemblies"
 msgstr "पिकिंग {substitutedFrom} की जगह, जॉब पर आइटम, {substitutedAssemblies} असेंबलीज के लिए"
+
+msgid "Pieces per run hour"
+msgstr "प्रति रन घंटा पीस"
 
 msgid "Pin or unpin"
 msgstr "पिन करें या अनपिन करें"
@@ -2539,6 +2679,11 @@ msgstr "कोटेशन"
 
 msgid "Raise quality issue"
 msgstr "गुणवत्ता समस्या दर्ज करें"
+
+#. placeholder {0}: formats.minutes(parts.runMs)
+#. placeholder {1}: formats.minutes(parts.plannedMs)
+msgid "Ran {0} of {1} planned"
+msgstr "{0} चला, नियोजित {1}"
 
 msgid "raw bins short"
 msgstr "कच्चे बिन कम हैं"
@@ -2721,8 +2866,14 @@ msgstr "पुनः कार्य की मात्रा"
 msgid "Rich text"
 msgstr "रिच टेक्स्ट"
 
+msgid "Run outside shifts"
+msgstr "शिफ्ट के बाहर चला"
+
 msgid "Run time"
 msgstr "रन समय"
+
+msgid "Run with a standard time"
+msgstr "मानक समय के साथ चला"
 
 msgid "Running"
 msgstr "चल रहा है"
@@ -2817,6 +2968,9 @@ msgstr "शेड्यूलिंग संघर्ष"
 msgid "Scrap"
 msgstr "स्क्रैप"
 
+msgid "Scrap (pieces)"
+msgstr "स्क्रैप (पीस)"
+
 msgid "Scrap {readableId}"
 msgstr "स्क्रैप {readableId}"
 
@@ -2825,6 +2979,9 @@ msgstr "स्क्रैप सामग्री"
 
 msgid "Scrap quantity"
 msgstr "स्क्रैप मात्रा"
+
+msgid "Scrap rate"
+msgstr "स्क्रैप दर"
 
 msgid "Scrap Reason"
 msgstr "स्क्रैप कारण"
@@ -3025,6 +3182,9 @@ msgstr "सेटअप"
 msgid "Setup, timer running"
 msgstr "सेटअप, टाइमर चल रहा है"
 
+msgid "Shift {range}"
+msgstr "शिफ्ट {range}"
+
 msgid "short"
 msgstr "छोटा"
 
@@ -3133,6 +3293,28 @@ msgstr "स्पेयर पार्ट्स"
 msgid "Spare Parts Used"
 msgstr "उपयोग किए गए स्पेयर पार्ट्स"
 
+msgid "Speed loss"
+msgstr "गति हानि"
+
+#. placeholder {0}: formats.seconds(ideal)
+msgid "Standard {0}"
+msgstr "मानक {0}"
+
+#. placeholder {0}: formats.seconds(job.idealSecondsPerPiece)
+msgid "Standard {0} per piece"
+msgstr "प्रति पीस मानक {0}"
+
+msgid "Standard time made"
+msgstr "बनाया गया मानक समय"
+
+#. placeholder {0}: formats.minutes(parts.idealMs)
+#. placeholder {1}: formats.minutes(parts.runWithStandardMs)
+msgid "Standard time made {0} in {1} of run"
+msgstr "रन के {1} में {0} मानक समय बना"
+
+msgid "Standard time made ÷ planned time, dashed line = {target}, ⇄ = job change"
+msgstr "बनाया गया मानक समय ÷ नियोजित समय, धराशायी रेखा = {target}, ⇄ = जॉब बदलाव"
+
 msgid "Start"
 msgstr "शुरू करें"
 
@@ -3209,6 +3391,12 @@ msgstr "चरण गायब हैं"
 msgid "Stock at:"
 msgstr "स्टॉक का स्थान:"
 
+msgid "Stop log"
+msgstr "ठहराव लॉग"
+
+msgid "Stopped now {length}"
+msgstr "अभी ठहराव {length}"
+
 msgid "Storage Unit"
 msgstr "भंडारण इकाई"
 
@@ -3278,6 +3466,12 @@ msgstr "वर्क सेंटर को ऑफ़लाइन ले जा�
 msgid "Tap a day to add time to {selectedLabel}. Drag the lower edge of a bar to change its hours."
 msgstr "{selectedLabel} में समय जोड़ने के लिए किसी दिन को टैप करें। घंटे बदलने के लिए किसी बार के निचले किनारे को ड्रैग करें।"
 
+msgid "Target {target}"
+msgstr "लक्ष्य {target}"
+
+msgid "Target {target}, last shift {previous}"
+msgstr "लक्ष्य {target}, पिछली शिफ्ट {previous}"
+
 msgid "Text color"
 msgstr "टेक्स्ट रंग"
 
@@ -3309,6 +3503,9 @@ msgstr "निरीक्षण को उत्तीर्ण चिह्न
 
 msgid "The inspection will be marked Passed. Its units are released to Available, except the {fails} that failed a sample, which stay Rejected."
 msgstr "निरीक्षण को उत्तीर्ण चिह्नित किया जाएगा। इसकी इकाइयाँ उपलब्ध कर दी जाएँगी, सिवाय उन {fails} इकाइयों के जो एक नमूने में विफल रहीं; वे अस्वीकृत रहेंगी।"
+
+msgid "The job"
+msgstr "यह जॉब"
 
 msgid "The job is closed"
 msgstr "जॉब बंद है"
@@ -3468,6 +3665,9 @@ msgstr "चलाने के लिए"
 msgid "Today"
 msgstr "आज"
 
+msgid "Today {range}"
+msgstr "आज {range}"
+
 msgid "Toggle sidebar"
 msgstr "साइडबार टॉगल करें"
 
@@ -3476,6 +3676,12 @@ msgstr "साइडबार को टॉगल करें"
 
 msgid "Tools"
 msgstr "उपकरण"
+
+msgid "Top losses"
+msgstr "प्रमुख हानियाँ"
+
+msgid "Top losses (minutes)"
+msgstr "प्रमुख हानियाँ (मिनट)"
 
 msgid "Top to Bottom"
 msgstr "ऊपर से नीचे"
@@ -3488,6 +3694,9 @@ msgstr "विषय"
 
 msgid "Total"
 msgstr "कुल"
+
+msgid "Total {total}"
+msgstr "कुल {total}"
 
 msgid "Total hours"
 msgstr "कुल घंटे"
@@ -3581,6 +3790,9 @@ msgstr "अज्ञात गेज"
 
 msgid "Unknown part"
 msgstr "अज्ञात पार्ट"
+
+msgid "Unknown reason"
+msgstr "अज्ञात कारण"
 
 msgid "Unlock"
 msgstr "अनलॉक"

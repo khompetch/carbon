@@ -370,3 +370,103 @@ export function getProgress(
   if (!operationQuantity || operationQuantity <= 0) return null;
   return Math.min(1, Math.max(0, (quantityComplete ?? 0) / operationQuantity));
 }
+
+/** An OEE board alert. The board writes each one in words; this decides which show. */
+export type OeeBoardAlert =
+  | { kind: "Down" | "Offline"; since: number; severity: "danger" }
+  | { kind: "Blocked"; dispatch: string | null; severity: "danger" }
+  | { kind: "JobOeeLow"; job: string | null; oee: number; severity: "warn" }
+  | { kind: "SpeedHigh"; performance: number; severity: "warn" }
+  | {
+      kind: "JobFinishing";
+      job: string | null;
+      at: number;
+      next: string | null;
+      severity: "info";
+    };
+
+/** A job's OEE is judged only after it held the work center this long. */
+export const OEE_ALERT_MIN_JOB_MS = 20 * 60_000;
+/** "Get the next job ready" shows this long before the current one ends. */
+export const OEE_ALERT_FINISHING_MS = 20 * 60_000;
+/** A Performance above this usually means the standard is set too slow. */
+export const OEE_ALERT_PERFORMANCE_HIGH = 1.05;
+const OEE_ALERT_LIMIT = 4;
+const SEVERITY_ORDER = { danger: 0, warn: 1, info: 2 } as const;
+
+/**
+ * The alerts an OEE board shows, the most severe first, at most 4. An empty
+ * list reads as "all within limits".
+ */
+export function getOeeBoardAlerts(args: {
+  now: number;
+  shiftEnd: number;
+  current: { state: string; since: number } | null;
+  isBlocked: boolean;
+  blockingDispatch: string | null;
+  performance: number | null;
+  oeeLow: number;
+  currentJob: {
+    job: string | null;
+    oee: number | null;
+    plannedMs: number;
+    eta: number | null;
+    remaining: number;
+  } | null;
+  nextJob: string | null;
+}): OeeBoardAlert[] {
+  const alerts: OeeBoardAlert[] = [];
+  const state = args.current?.state;
+  if ((state === "Down" || state === "Offline") && args.current) {
+    alerts.push({ kind: state, since: args.current.since, severity: "danger" });
+  }
+  if (args.isBlocked) {
+    alerts.push({
+      kind: "Blocked",
+      dispatch: args.blockingDispatch,
+      severity: "danger"
+    });
+  }
+  const job = args.currentJob;
+  if (
+    job &&
+    job.oee !== null &&
+    job.plannedMs >= OEE_ALERT_MIN_JOB_MS &&
+    job.oee < args.oeeLow
+  ) {
+    alerts.push({
+      kind: "JobOeeLow",
+      job: job.job,
+      oee: job.oee,
+      severity: "warn"
+    });
+  }
+  if (
+    args.performance !== null &&
+    args.performance > OEE_ALERT_PERFORMANCE_HIGH
+  ) {
+    alerts.push({
+      kind: "SpeedHigh",
+      performance: args.performance,
+      severity: "warn"
+    });
+  }
+  if (
+    job &&
+    job.remaining > 0 &&
+    job.eta !== null &&
+    job.eta - args.now <= OEE_ALERT_FINISHING_MS &&
+    job.eta <= args.shiftEnd
+  ) {
+    alerts.push({
+      kind: "JobFinishing",
+      job: job.job,
+      at: job.eta,
+      next: args.nextJob,
+      severity: "info"
+    });
+  }
+  return alerts
+    .sort((a, b) => SEVERITY_ORDER[a.severity] - SEVERITY_ORDER[b.severity])
+    .slice(0, OEE_ALERT_LIMIT);
+}

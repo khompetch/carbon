@@ -27,6 +27,8 @@ type DisplayFrameProps = {
   alertLabel?: React.ReactNode;
   /** Shown in the header band opposite the title when status is ok. */
   okLabel?: React.ReactNode;
+  /** A line under the work center name (the OEE board's state and job). */
+  headerDetail?: React.ReactNode;
   /** Poll interval in ms. `null` disables auto-refresh. */
   refreshInterval?: number | null;
   children: React.ReactNode;
@@ -38,6 +40,7 @@ export function DisplayFrame({
   status,
   alertLabel,
   okLabel,
+  headerDetail,
   refreshInterval = 30_000,
   children
 }: DisplayFrameProps) {
@@ -66,13 +69,23 @@ export function DisplayFrame({
           isAlert ? "bg-red-600" : "bg-emerald-500"
         )}
       >
-        <h1
-          className="truncate font-bold leading-none tracking-tight text-white"
-          style={{ fontSize: "clamp(1.75rem, 4.4vw, 5.5rem)" }}
-          title={workCenterName}
-        >
-          {workCenterName}
-        </h1>
+        <div className="min-w-0">
+          <h1
+            className="truncate font-bold leading-none tracking-tight text-white"
+            style={{ fontSize: "clamp(1.75rem, 4.4vw, 5.5rem)" }}
+            title={workCenterName}
+          >
+            {workCenterName}
+          </h1>
+          {headerDetail ? (
+            <div
+              className="mt-[0.5vh] text-white"
+              style={{ fontSize: "clamp(0.8rem, 1.1vw, 1.6rem)" }}
+            >
+              {headerDetail}
+            </div>
+          ) : null}
+        </div>
         <div
           className="shrink-0 text-right font-semibold uppercase leading-tight tracking-widest text-white/90"
           style={{ fontSize: "clamp(0.7rem, 1.15vw, 1.5rem)" }}

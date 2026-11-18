@@ -37,18 +37,22 @@ msgstr "“{0}” requiere una corrección en esta unidad."
 msgid "\"{column}\" is required."
 msgstr "«{column}» es obligatorio."
 
+msgid "(after this shift)"
+msgstr "(después de este turno)"
+
 msgid "(Inactive)"
 msgstr "(Inactivo)"
+
+msgid "(next)"
+msgstr "(siguiente)"
+
+msgid "(now)"
+msgstr "(ahora)"
 
 #. placeholder {0}: attribute.name
 #. placeholder {1}: activeStep + 1
 msgid "{0} - Set {1}"
 msgstr "{0} - Conjunto {1}"
-
-#. placeholder {0}: time.format(oee.period.start)
-#. placeholder {1}: time.format(oee.period.end)
-msgid "{0} – {1}"
-msgstr "{0} – {1}"
 
 #. placeholder {0}: employeeIds.length
 msgid "{0} Active"
@@ -69,6 +73,11 @@ msgstr "{0} clientes"
 #. placeholder {0}: counts.failed
 msgid "{0} failed"
 msgstr "{0} fallidos"
+
+#. placeholder {0}: formats.pieces(good)
+#. placeholder {1}: formats.pieces(parts.totalPieces)
+msgid "{0} good of {1} pieces"
+msgstr "{0} buenas de {1} piezas"
 
 #. placeholder {0}: formatHours(dayTotals[index] ?? 0)
 #. placeholder {0}: formatHours(hours)
@@ -125,6 +134,11 @@ msgstr "{0} de {1} completados"
 #. placeholder {1}: attributes.length
 msgid "{0} of {1} completed"
 msgstr "{0} de {1} completados"
+
+#. placeholder {0}: formats.pieces(parts.badPieces)
+#. placeholder {1}: formats.pieces(parts.totalPieces)
+msgid "{0} of {1} pieces"
+msgstr "{0} de {1} piezas"
 
 #. placeholder {0}: rows.length
 msgid "{0} queued"
@@ -204,6 +218,15 @@ msgstr "{hours} h"
 msgid "{issued} of {required}"
 msgstr "{issued} de {required}"
 
+msgid "{job} ends about {at}"
+msgstr "{job} termina aprox. {at}"
+
+msgid "{job} ends about {at}, get {next} ready"
+msgstr "{job} termina aprox. {at}, prepare {next}"
+
+msgid "{job} OEE {oee} is below the limit"
+msgstr "El OEE de {job} {oee} está por debajo del límite"
+
 msgid "{label}, overdue"
 msgstr "{label}, atrasado"
 
@@ -243,6 +266,9 @@ msgstr "+{overflow} más"
 #. placeholder {0}: formatDate(moveDate, { dateStyle: "long" }, locale)
 msgid "🚨 Heads up: on {0} your account will be moved to erp.try.carbon.ms"
 msgstr "🚨 Atención: el {0} su cuenta se trasladará a erp.try.carbon.ms"
+
+msgid "2 minutes or more"
+msgstr "2 minutos o más"
 
 msgid "A color sets the accent. Gradient and solid themes also color the navigation, the sidebar and the page."
 msgstr "Un color define el acento. Los temas degradados y sólidos también colorean la navegación, la barra lateral y la página."
@@ -318,6 +344,9 @@ msgstr "Menú de acciones"
 msgid "Active"
 msgstr "Activo"
 
+msgid "Actual cycle per piece"
+msgstr "Ciclo real por pieza"
+
 msgid "Add"
 msgstr "Agregar"
 
@@ -384,6 +413,9 @@ msgstr "Agregado"
 msgid "Adjustment Type"
 msgstr "Tipo de ajuste"
 
+msgid "Alerts"
+msgstr "Alertas"
+
 msgid "All"
 msgstr "Todos"
 
@@ -408,6 +440,9 @@ msgstr "Todo desperdicio"
 
 msgid "All steps"
 msgstr "Todos los pasos"
+
+msgid "All within limits"
+msgstr "Todo dentro de los límites"
 
 msgid "All work centers"
 msgstr "Todos los centros de trabajo"
@@ -477,6 +512,10 @@ msgstr "Asignado a mí"
 
 msgid "Assignee"
 msgstr "Asignado"
+
+#. placeholder {0}: formats.whole(3600 / ideal)
+msgid "At standard {0}"
+msgstr "Al ritmo estándar {0}"
 
 msgid "Attach file"
 msgstr "Adjuntar archivo"
@@ -575,6 +614,12 @@ msgstr "Fundir el fondo con el color de los elementos seleccionados."
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"
 msgstr "Bloqueado por {0}"
+
+msgid "Blocked by maintenance"
+msgstr "Bloqueado por mantenimiento"
+
+msgid "Blocked by maintenance {dispatch}"
+msgstr "Bloqueado por mantenimiento {dispatch}"
 
 msgid "Blocking"
 msgstr "Bloqueando"
@@ -889,6 +934,9 @@ msgstr "Crear Problema de Calidad"
 msgid "Create Rework"
 msgstr "Crear retrabajo"
 
+msgid "Current job"
+msgstr "Orden de trabajo actual"
+
 msgid "Current work"
 msgstr "Trabajo actual"
 
@@ -984,6 +1032,12 @@ msgstr "Se muestra (se abre en una pestaña nueva)"
 
 msgid "Done"
 msgstr "Hecho"
+
+msgid "Done / plan"
+msgstr "Realizado / plan"
+
+msgid "Done / planned"
+msgstr "Realizado / previsto"
 
 msgid "Down"
 msgstr "Fuera de servicio"
@@ -1129,6 +1183,9 @@ msgstr "Expandir tabla de características"
 
 msgid "Expand panel"
 msgstr "Expandir panel"
+
+msgid "Expected finish"
+msgstr "Fin previsto"
 
 msgid "Expired"
 msgstr "Vencido"
@@ -1286,6 +1343,12 @@ msgstr "Marcar incidencia"
 msgid "Forgot to Clock Out?"
 msgstr "¿Olvidó fichar salida?"
 
+msgid "From operator time"
+msgstr "Según tiempo del operario"
+
+msgid "From the sensor"
+msgstr "Desde el sensor"
+
 msgid "Gauge"
 msgstr "Instrumento de medición"
 
@@ -1314,8 +1377,8 @@ msgstr "Ir al paso {0}: {1}"
 msgid "Go to step {0}: {1} (done)"
 msgstr "Ir al paso {0}: {1} (hecho)"
 
-msgid "Good pieces"
-msgstr "Piezas buenas"
+msgid "Good / scrap (this shift)"
+msgstr "Buenas / desperdicio (este turno)"
 
 msgid "Grab from {source} · {onHand} there"
 msgstr "Tomar de {source} · {onHand} disponibles ahí"
@@ -1340,6 +1403,9 @@ msgstr "Ocultar descripción"
 
 msgid "Hide drawing"
 msgstr "Ocultar plano"
+
+msgid "Hourly efficiency"
+msgstr "Eficiencia por hora"
 
 msgid "Hours"
 msgstr "Horas"
@@ -1492,11 +1558,23 @@ msgstr "Artículos"
 msgid "Job"
 msgstr "Trabajo"
 
+msgid "Job / item"
+msgstr "Orden de trabajo / artículo"
+
+msgid "Job and machine state timeline"
+msgstr "Cronología de la orden de trabajo y del estado de la máquina"
+
 msgid "Job Details"
 msgstr "Detalles del trabajo"
 
 msgid "Job due"
 msgstr "Fecha límite de la orden de trabajo"
+
+msgid "Job OEE"
+msgstr "OEE de la orden de trabajo"
+
+msgid "Job OEE (this shift)"
+msgstr "OEE de la orden de trabajo (este turno)"
 
 msgid "Job Operation"
 msgstr "Operación de la orden"
@@ -1506,6 +1584,12 @@ msgstr "Hoja viajera"
 
 msgid "Jobs"
 msgstr "Órdenes de trabajo"
+
+msgid "Jobs (top) and machine state (bottom)"
+msgstr "Órdenes de trabajo (arriba) y estado de la máquina (abajo)"
+
+msgid "Jobs this shift"
+msgstr "Órdenes de trabajo de este turno"
 
 msgid "Keep navigation open"
 msgstr "Mantener navegación abierta"
@@ -1678,8 +1762,20 @@ msgstr "Bajo"
 msgid "Machine"
 msgstr "Máquina"
 
+msgid "Machine down for {length}"
+msgstr "Máquina parada durante {length}"
+
 msgid "Machine down for maintenance now?"
 msgstr "¿Máquina fuera de servicio por mantenimiento ahora?"
+
+msgid "Machine figures"
+msgstr "Cifras de la máquina"
+
+msgid "Machine offline for {length}"
+msgstr "Máquina fuera de línea durante {length}"
+
+msgid "Machine state since the start of the shift"
+msgstr "Estado de la máquina desde el inicio del turno"
 
 msgid "Machine, timer running"
 msgstr "Máquina, temporizador en marcha"
@@ -1816,6 +1912,9 @@ msgstr "Navegación"
 msgid "Need material"
 msgstr "Se necesita material"
 
+msgid "Needs attention"
+msgstr "Requiere atención"
+
 msgid "New"
 msgstr "Nuevo"
 
@@ -1916,6 +2015,12 @@ msgstr "No hay inspecciones a su cargo"
 msgid "No issue types configured"
 msgstr "No hay tipos de problema configurados"
 
+msgid "No job has run this shift"
+msgstr "Ninguna orden de trabajo se ha ejecutado en este turno"
+
+msgid "No job is loaded on this work center"
+msgstr "No hay ninguna orden de trabajo cargada en este centro de trabajo"
+
 msgid "No kit"
 msgstr "Sin kit"
 
@@ -1924,6 +2029,9 @@ msgstr "Todavía no hay permiso configurado. Pida a su gerente que configure uno
 
 msgid "No lineside storage"
 msgstr "No hay almacenamiento en pie de línea"
+
+msgid "No losses yet"
+msgstr "Sin pérdidas todavía"
 
 msgid "No maintenance scheduled for today"
 msgstr "No hay mantenimiento programado para hoy"
@@ -1982,6 +2090,9 @@ msgstr "No hay listas de picking"
 msgid "No printer configured"
 msgstr "Sin impresora configurada"
 
+msgid "No reason given"
+msgstr "Sin motivo indicado"
+
 msgid "No recent operations"
 msgstr "No hay operaciones recientes"
 
@@ -2009,6 +2120,9 @@ msgstr "No se requieren muestras."
 msgid "No scheduled time"
 msgstr "Sin tiempo programado"
 
+msgid "No scrap this shift"
+msgstr "Sin desperdicio en este turno"
+
 msgid "No serial number"
 msgstr "Sin número de serie"
 
@@ -2024,11 +2138,20 @@ msgstr "Sin órdenes de trabajo de servicio asignadas a usted hoy"
 msgid "No shift"
 msgstr "Sin turno"
 
+msgid "No shift and no data for this work center yet"
+msgstr "Sin turno y sin datos para este centro de trabajo todavía"
+
 msgid "No shortcuts available on this page."
 msgstr "No hay atajos disponibles en esta página."
 
 msgid "No spare parts added yet"
 msgstr "Aún no se han agregado repuestos"
+
+msgid "No standard time"
+msgstr "Sin tiempo estándar"
+
+msgid "No state"
+msgstr "Sin estado"
 
 msgid "No station"
 msgstr "No hay estación"
@@ -2038,6 +2161,9 @@ msgstr "No hay estaciones en esta ubicación"
 
 msgid "No stock"
 msgstr "Sin stock"
+
+msgid "No stops this shift"
+msgstr "Sin paradas en este turno"
 
 msgid "No time entries for this week"
 msgstr "No hay registros de tiempo para esta semana"
@@ -2074,6 +2200,9 @@ msgstr "Normal"
 
 msgid "Not in this operation"
 msgstr "No está en esta operación"
+
+msgid "Not planned"
+msgstr "No planificado"
 
 msgid "Not scheduled"
 msgstr "No programado"
@@ -2118,12 +2247,11 @@ msgstr "OEE"
 msgid "OEE Impact"
 msgstr "Impacto OEE"
 
-#. placeholder {0}: percent.format(OEE_LOW)
-msgid "OEE is below {0}"
-msgstr "El OEE está por debajo de {0}"
+msgid "OEE is below {low}"
+msgstr "El OEE está por debajo de {low}"
 
-msgid "OEE this shift"
-msgstr "OEE de este turno"
+msgid "OEE this shift (all jobs)"
+msgstr "OEE de este turno (todas las órdenes de trabajo)"
 
 msgid "OEM Required"
 msgstr "Requiere OEM"
@@ -2131,6 +2259,9 @@ msgstr "Requiere OEM"
 #. placeholder {0}: m.operationQuantity ?? 0
 msgid "of {0}"
 msgstr "de {0}"
+
+msgid "Of planned time"
+msgstr "Del tiempo programado"
 
 msgid "Offline"
 msgstr "Sin conexión"
@@ -2330,6 +2461,12 @@ msgstr "Porcentaje"
 msgid "Performance"
 msgstr "Rendimiento"
 
+msgid "Performance {performance}: a standard time may be set too slow"
+msgstr "Rendimiento {performance}: es posible que el tiempo estándar esté configurado demasiado lento"
+
+msgid "Performance counts only this run"
+msgstr "El rendimiento cuenta solo en esta ejecución"
+
 msgid "Phone"
 msgstr "Teléfono"
 
@@ -2403,6 +2540,9 @@ msgstr "picking en lugar de {substitutedFrom}, el artículo de la orden de traba
 
 msgid "picking in place of {substitutedFrom}, the item on the job, for {substitutedAssemblies} assemblies"
 msgstr "picking en lugar de {substitutedFrom}, el artículo de la orden de trabajo, para {substitutedAssemblies} ensamblajes"
+
+msgid "Pieces per run hour"
+msgstr "Piezas por hora de ejecución"
 
 msgid "Pin or unpin"
 msgstr "Fijar o desfijar"
@@ -2539,6 +2679,11 @@ msgstr "Cotizaciones"
 
 msgid "Raise quality issue"
 msgstr "Abrir incidencia de calidad"
+
+#. placeholder {0}: formats.minutes(parts.runMs)
+#. placeholder {1}: formats.minutes(parts.plannedMs)
+msgid "Ran {0} of {1} planned"
+msgstr "Funcionó {0} de {1} programado"
 
 msgid "raw bins short"
 msgstr "contenedores de materia prima con faltante"
@@ -2721,8 +2866,14 @@ msgstr "Cantidad de retrabajo"
 msgid "Rich text"
 msgstr "Texto enriquecido"
 
+msgid "Run outside shifts"
+msgstr "Ejecución fuera de turnos"
+
 msgid "Run time"
 msgstr "Tiempo de ejecución"
+
+msgid "Run with a standard time"
+msgstr "Ejecución con tiempo estándar"
 
 msgid "Running"
 msgstr "En ejecución"
@@ -2817,6 +2968,9 @@ msgstr "Conflicto de programación"
 msgid "Scrap"
 msgstr "Desperdicio"
 
+msgid "Scrap (pieces)"
+msgstr "Desperdicio (piezas)"
+
 msgid "Scrap {readableId}"
 msgstr "Desperdicio {readableId}"
 
@@ -2825,6 +2979,9 @@ msgstr "Material de desperdicio"
 
 msgid "Scrap quantity"
 msgstr "Cantidad de desperdicio"
+
+msgid "Scrap rate"
+msgstr "Tasa de desperdicio"
 
 msgid "Scrap Reason"
 msgstr "Motivo de desperdicio"
@@ -3025,6 +3182,9 @@ msgstr "Preparación"
 msgid "Setup, timer running"
 msgstr "Preparación, temporizador en marcha"
 
+msgid "Shift {range}"
+msgstr "Turno {range}"
+
 msgid "short"
 msgstr "corto"
 
@@ -3133,6 +3293,28 @@ msgstr "Repuestos"
 msgid "Spare Parts Used"
 msgstr "Repuestos utilizados"
 
+msgid "Speed loss"
+msgstr "Pérdida de velocidad"
+
+#. placeholder {0}: formats.seconds(ideal)
+msgid "Standard {0}"
+msgstr "Estándar {0}"
+
+#. placeholder {0}: formats.seconds(job.idealSecondsPerPiece)
+msgid "Standard {0} per piece"
+msgstr "Estándar {0} por pieza"
+
+msgid "Standard time made"
+msgstr "Tiempo estándar logrado"
+
+#. placeholder {0}: formats.minutes(parts.idealMs)
+#. placeholder {1}: formats.minutes(parts.runWithStandardMs)
+msgid "Standard time made {0} in {1} of run"
+msgstr "Tiempo estándar logrado {0} en {1} de ejecución"
+
+msgid "Standard time made ÷ planned time, dashed line = {target}, ⇄ = job change"
+msgstr "Tiempo estándar logrado ÷ tiempo programado, línea discontinua = {target}, ⇄ = cambio de orden de trabajo"
+
 msgid "Start"
 msgstr "Iniciar"
 
@@ -3209,6 +3391,12 @@ msgstr "Faltan pasos"
 msgid "Stock at:"
 msgstr "Existencias en:"
 
+msgid "Stop log"
+msgstr "Registro de paradas"
+
+msgid "Stopped now {length}"
+msgstr "Detenido ahora {length}"
+
 msgid "Storage Unit"
 msgstr "Unidad de Almacenamiento"
 
@@ -3278,6 +3466,12 @@ msgstr "Pone el centro de trabajo fuera de línea"
 msgid "Tap a day to add time to {selectedLabel}. Drag the lower edge of a bar to change its hours."
 msgstr "Toca un día para agregar tiempo a {selectedLabel}. Arrastra el borde inferior de una barra para cambiar sus horas."
 
+msgid "Target {target}"
+msgstr "Objetivo {target}"
+
+msgid "Target {target}, last shift {previous}"
+msgstr "Objetivo {target}, turno anterior {previous}"
+
 msgid "Text color"
 msgstr "Color del texto"
 
@@ -3309,6 +3503,9 @@ msgstr "La inspección se marcará como Superada y sus unidades pasarán a Dispo
 
 msgid "The inspection will be marked Passed. Its units are released to Available, except the {fails} that failed a sample, which stay Rejected."
 msgstr "La inspección se marcará como Superada. Sus unidades pasarán a Disponibles, excepto las {fails} que fallaron en alguna muestra, que seguirán Rechazadas."
+
+msgid "The job"
+msgstr "La orden de trabajo"
 
 msgid "The job is closed"
 msgstr "La orden de trabajo está cerrada"
@@ -3468,6 +3665,9 @@ msgstr "Por ejecutar"
 msgid "Today"
 msgstr "Hoy"
 
+msgid "Today {range}"
+msgstr "Hoy {range}"
+
 msgid "Toggle sidebar"
 msgstr "Alternar barra lateral"
 
@@ -3476,6 +3676,12 @@ msgstr "Alternar la barra lateral"
 
 msgid "Tools"
 msgstr "Herramientas"
+
+msgid "Top losses"
+msgstr "Principales pérdidas"
+
+msgid "Top losses (minutes)"
+msgstr "Principales pérdidas (minutos)"
 
 msgid "Top to Bottom"
 msgstr "De arriba a abajo"
@@ -3488,6 +3694,9 @@ msgstr "Temas"
 
 msgid "Total"
 msgstr "Total"
+
+msgid "Total {total}"
+msgstr "Total {total}"
 
 msgid "Total hours"
 msgstr "Horas totales"
@@ -3581,6 +3790,9 @@ msgstr "Instrumento de medición desconocido"
 
 msgid "Unknown part"
 msgstr "Pieza desconocida"
+
+msgid "Unknown reason"
+msgstr "Motivo desconocido"
 
 msgid "Unlock"
 msgstr "Desbloquear"
