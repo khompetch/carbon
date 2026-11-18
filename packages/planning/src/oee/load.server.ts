@@ -21,10 +21,12 @@ import {
 import {
   type Interval,
   runIntervalsFromStateChanges,
+  stateSegmentsFromChanges,
   subtractWindows,
   unionIntervals
 } from "./intervals.ts";
 import type { OeeCount, OeeOwner, OeeWorkCenterInput } from "./oee.ts";
+import { shiftStartInstants } from "./periods.ts";
 import {
   deviceIdealSecondsPerPiece,
   idealSecondsPerPiece,
@@ -38,6 +40,10 @@ export type OeeLoadedWorkCenter = {
   source: "Sensor" | "Operator";
   /** The shift windows with the holidays closed, before the Planned stops. */
   workingWindows: Interval[];
+  /** Each moment one of its shifts starts, to cut back-to-back shifts apart. */
+  shiftStarts: number[];
+  /** Every stored machine state as a stretch (Sensor work centers only). */
+  stateSegments: (Interval & { state: string })[];
   input: Omit<OeeWorkCenterInput, "period">;
 };
 
@@ -66,10 +72,16 @@ export async function loadOeeWorkCenters(
     to: number;
     now: number;
     timeZone: string;
+    /**
+     * Build the working windows (and shift starts) up to here, past `to`, so
+     * a board knows when the current shift ends and when a job can finish.
+     */
+    windowsTo?: number;
   }
 ): Promise<{ data: OeeLoadedWorkCenter[]; error: PostgrestError | null }> {
   const { companyId, workCenterIds, from, now, timeZone } = args;
   const to = Math.min(args.to, now);
+  const windowsTo = Math.max(to, args.windowsTo ?? to);
   if (workCenterIds.length === 0 || to <= from) {
     return { data: [], error: null };
   }
@@ -183,7 +195,7 @@ export async function loadOeeWorkCenters(
         .select("id, date")
         .eq("companyId", companyId)
         .gte("date", localDate(from, timeZone).subtract({ days: 1 }).toString())
-        .lte("date", localDate(to, timeZone).add({ days: 1 }).toString())
+        .lte("date", localDate(windowsTo, timeZone).add({ days: 1 }).toString())
         .order("id")
     )
   ]);
@@ -278,13 +290,14 @@ export async function loadOeeWorkCenters(
       type: Database["public"]["Enums"]["productionQuantityType"];
       quantity: number;
       notes: string | null;
+      scrapReasonId: string | null;
       createdAt: string;
       jobOperation: { workCenterId: string | null } | null;
     }>(workCenterIds, (batch) =>
       client
         .from("productionQuantity")
         .select(
-          "id, jobOperationId, type, quantity, notes, createdAt, jobOperation!inner(workCenterId)"
+          "id, jobOperationId, type, quantity, notes, scrapReasonId, createdAt, jobOperation!inner(workCenterId)"
         )
         .eq("companyId", companyId)
         .in("jobOperation.workCenterId", batch)
@@ -334,8 +347,27 @@ export async function loadOeeWorkCenters(
     ),
     timeZone,
     rangeStart: from,
-    rangeEnd: to
+    rangeEnd: windowsTo
   });
+
+  // The shifts a work center works: its own links, else its location's.
+  const shiftsOfWorkCenter = (workCenterId: string) => {
+    const linked = new Set(
+      (links.data ?? [])
+        .filter((link) => link.workCenterId === workCenterId)
+        .map((link) => link.shiftId)
+    );
+    const locationId = (workCenters.data ?? []).find(
+      (wc) => wc.id === workCenterId
+    )?.locationId;
+    return linked.size > 0
+      ? [...(locationShifts.data ?? []), ...(linkedShifts.data ?? [])].filter(
+          (shift) => linked.has(shift.id)
+        )
+      : (locationShifts.data ?? []).filter(
+          (shift) => shift.locationId === locationId
+        );
+  };
 
   const pulseDeviceByKey = new Map(
     (pulseDevices.data ?? []).map((device) => [device.deviceKey, device])
@@ -370,6 +402,7 @@ export async function loadOeeWorkCenters(
       .filter((owner) => owner.end > owner.start);
 
     let runIntervals: Interval[];
+    let stateSegments: (Interval & { state: string })[] = [];
     if (source === "Sensor") {
       // With no change before the range in the lookback, the device's own
       // current state (set before the range) is the state at the start.
@@ -385,6 +418,7 @@ export async function loadOeeWorkCenters(
         [...startState, ...changes],
         to
       );
+      stateSegments = stateSegmentsFromChanges([...startState, ...changes], to);
     } else {
       runIntervals = unionIntervals(owners);
     }
@@ -412,7 +446,8 @@ export async function loadOeeWorkCenters(
           at: toInstantMs(row.createdAt),
           jobOperationId: row.jobOperationId,
           total: 0,
-          bad: row.quantity
+          bad: row.quantity,
+          scrapReasonId: row.scrapReasonId
         });
       }
     } else {
@@ -421,7 +456,8 @@ export async function loadOeeWorkCenters(
           at: toInstantMs(row.createdAt),
           jobOperationId: row.jobOperationId,
           total: row.quantity,
-          bad: row.type === "Production" ? 0 : row.quantity
+          bad: row.type === "Production" ? 0 : row.quantity,
+          scrapReasonId: row.type === "Production" ? null : row.scrapReasonId
         });
       }
     }
@@ -447,6 +483,13 @@ export async function loadOeeWorkCenters(
       alwaysOn: workCenter.alwaysOn,
       source,
       workingWindows: windows,
+      shiftStarts: shiftStartInstants(
+        shiftsOfWorkCenter(id),
+        timeZone,
+        from,
+        windowsTo
+      ),
+      stateSegments,
       input: {
         plannedWindows: subtractWindows(windows, stops),
         runIntervals,

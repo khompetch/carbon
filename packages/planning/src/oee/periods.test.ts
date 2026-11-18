@@ -4,7 +4,15 @@
 
 import { parseZonedDateTime } from "@internationalized/date";
 import { describe, expect, it } from "vitest";
-import { currentShiftPeriod, dayPeriods, localDayPeriod } from "./periods.ts";
+import {
+  currentShiftPeriod,
+  dayPeriods,
+  localDayPeriod,
+  previousShiftWindow,
+  shiftStartInstants,
+  shiftWindowAt,
+  splitAtShiftStarts
+} from "./periods.ts";
 
 const HOUR = 3_600_000;
 const at = (value: string) => parseZonedDateTime(value).toDate().getTime();
@@ -55,5 +63,54 @@ describe("dayPeriods", () => {
   it("gives a 23-hour day at the spring DST change", () => {
     const [day] = dayPeriods("2026-03-08", "2026-03-08", "America/New_York");
     expect(day!.period.end - day!.period.start).toBe(23 * HOUR);
+  });
+});
+
+describe("shift windows", () => {
+  const timeZone = "Asia/Bangkok";
+  const midnight = at("2026-11-18T00:00[Asia/Bangkok]");
+  const everyDay = {
+    monday: true,
+    tuesday: true,
+    wednesday: true,
+    thursday: true,
+    friday: true,
+    saturday: true,
+    sunday: true
+  };
+  const shifts = [
+    { ...everyDay, startTime: "08:00:00", endTime: "20:00:00" },
+    { ...everyDay, startTime: "20:00:00", endTime: "08:00:00" }
+  ];
+
+  it("cuts two shifts that run back to back at each shift start", () => {
+    const starts = shiftStartInstants(
+      shifts,
+      timeZone,
+      midnight,
+      midnight + 24 * HOUR
+    );
+    expect(starts).toEqual([midnight + 8 * HOUR, midnight + 20 * HOUR]);
+    const windows = splitAtShiftStarts(
+      [{ start: midnight, end: midnight + 24 * HOUR }],
+      starts
+    );
+    expect(windows).toEqual([
+      { start: midnight, end: midnight + 8 * HOUR },
+      { start: midnight + 8 * HOUR, end: midnight + 20 * HOUR },
+      { start: midnight + 20 * HOUR, end: midnight + 24 * HOUR }
+    ]);
+    const current = shiftWindowAt(windows, midnight + 10 * HOUR);
+    expect(current).toEqual(windows[1]);
+    expect(previousShiftWindow(windows, current!)).toEqual(windows[0]);
+  });
+
+  it("gives the shift that ended last between shifts", () => {
+    const windows = [
+      { start: midnight + 8 * HOUR, end: midnight + 12 * HOUR },
+      { start: midnight + 13 * HOUR, end: midnight + 17 * HOUR }
+    ];
+    expect(shiftWindowAt(windows, midnight + 12.5 * HOUR)).toEqual(windows[0]);
+    expect(shiftWindowAt(windows, midnight + 7 * HOUR)).toBeNull();
   });
 });

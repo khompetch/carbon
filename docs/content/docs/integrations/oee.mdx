@@ -157,7 +157,20 @@ OEE (Overall Equipment Effectiveness) shows how much of a machine's planned time
 Carbon adds up the times and pieces before it divides, so a busy machine weighs more than a quiet one.
 
 - **Production → OEE** shows the four figures, a chart by day and a row per work center for one location and up to 92 days. It appears once an OEE provider is installed. The menu above the chart picks the figure it shows: OEE, Availability, Performance or Quality. On the OEE chart a dashed line marks 85%, where OEE counts as good. In the table the OEE bar is green from 85%, yellow from 60% and red below 60%, the same as the MES OEE board. The last row adds up every work center. **Source** tells you where the run time came from: **Sensor** (an OEE device) or **Operator** (Machine presses in the MES). **Run outside shifts** is run time that no shift planned. **Standard coverage** is the share of run time with an ideal time; run time without one is left out of Performance.
-- **MES → Display → OEE** shows the current shift on a work center's screen and refreshes every 30 seconds. Between shifts it shows the shift that ended last; a work center that runs all day shows today.
+- **MES → Display → OEE** is a line board for a screen beside the machine. It shows the current shift and refreshes every 30 seconds. Between shifts it shows the shift that ended last; a work center that runs all day shows today. Two shifts that run back to back show as two shifts. The board has ten parts in fixed places:
+  - The header: the machine state now and for how long, the loaded job and the shift times.
+  - OEE for the shift, the target (85%) and the last shift's OEE, with Availability, Performance and Quality and what each one is made of. Performance above 100% (a standard time set too slow) counts as 100% on the board, in the OEE too, and an alert names it.
+  - The current job (the operation loaded on the work center): the done and planned quantity, the good and scrap pieces of this shift, the expected finish and the job's OEE for this shift. The expected finish uses the standard time, the shift's speed (at least 30% of the standard) and the working hours. "(after this shift)" shows when it falls after the shift ends.
+  - A timeline of the shift: the jobs on top and the machine state below (Running, Idle, Down, Offline, No state, Not planned).
+  - Efficiency by hour: the standard time made ÷ the planned time of each hour. A bar is green from 85%, yellow from 70% and red below 70%. ⇄ marks an hour where another job started, * the current hour.
+  - Machine figures: the actual cycle per piece against the standard, pieces per run hour, the scrap rate and the share of run time with a standard time.
+  - Top losses in minutes: Down, Idle, Offline and No state (planned time that did not run), speed loss (run time minus the standard time made) and scrap (the standard time of the bad pieces).
+  - Scrap by scrap reason.
+  - The jobs of this shift with their OEE, and the job queued next.
+  - The last five stops of 2 minutes or more.
+  - Alerts: the machine is down or offline, maintenance blocks the work center, the job's OEE is below 60% after 20 minutes, Performance is above 105% (a standard time may be too slow), or the job ends within 20 minutes. With no alert it shows "All within limits".
+
+  A job holds the work center from its first Machine event until the next job takes over, so the setup before a job counts toward that job. From 1100 pixels wide the board fits one screen; on a narrow screen the parts stack and the page scrolls.
 
 Carbon keeps a year of machine state history, so the OEE of an earlier month stays available after a device is unmapped or mapped again.
 

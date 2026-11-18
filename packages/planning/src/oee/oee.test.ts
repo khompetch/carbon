@@ -8,7 +8,8 @@ import {
   computeOeeParts,
   type OeeWorkCenterInput,
   oeeRatios,
-  oeeTone
+  oeeTone,
+  shownOee
 } from "./oee.ts";
 
 const HOUR = 3_600_000;
@@ -167,6 +168,33 @@ describe("addOeeParts", () => {
     expect(quietOee).toBeCloseTo(0.5, 6);
     expect(rolledUp).toBeCloseTo(8.5 / 9, 6);
     expect(rolledUp).not.toBeCloseTo((busyOee + quietOee) / 2, 3);
+  });
+});
+
+describe("shownOee", () => {
+  it("counts a Performance above 100% as 100% (TC11)", () => {
+    // A 90%, P 110% (a standard set too slow), Q 95%: shown 0.9 × 1 × 0.95.
+    expect(
+      shownOee({
+        availability: 0.9,
+        performance: 1.1,
+        quality: 0.95,
+        oee: 0.9405,
+        standardCoverage: 1
+      })
+    ).toBeCloseTo(0.855, 6);
+  });
+
+  it("is null while any ratio is", () => {
+    expect(
+      shownOee({
+        availability: 0.9,
+        performance: null,
+        quality: 1,
+        oee: null,
+        standardCoverage: null
+      })
+    ).toBeNull();
   });
 });
 

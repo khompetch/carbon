@@ -3,6 +3,7 @@
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import type { Database } from "@carbon/database";
+import type { OeeBoard } from "@carbon/planning/oee";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   type DisplayDispatch,
@@ -415,21 +416,7 @@ export async function getWorkDisplayData(
   // queue below it — the display would otherwise show the running job twice.
   const runningOperationIds = new Set(activeWork.map((w) => w.operationId));
 
-  // Sorted the way the operator's own screens sort it: work already underway
-  // first, then soonest-needed.
-  const queueOrder = ["In Progress", "Paused", "Ready", "Waiting", "Todo"];
-  const orderedQueue = queueRows
-    .filter((row) => !runningOperationIds.has(row.id))
-    .sort((a, b) => {
-      const statusDiff =
-        indexOrLast(queueOrder, a.operationStatus) -
-        indexOrLast(queueOrder, b.operationStatus);
-      if (statusDiff !== 0) return statusDiff;
-      return compareDueDates(
-        a.operationDueDate ?? a.jobDueDate,
-        b.operationDueDate ?? b.jobDueDate
-      );
-    });
+  const orderedQueue = orderQueue(queueRows, runningOperationIds);
 
   return {
     activeWork,
@@ -446,6 +433,37 @@ export async function getWorkDisplayData(
       tags: row.tags ?? null
     }))
   };
+}
+
+type QueueRpcRow = {
+  id: string;
+  operationStatus: string | null;
+  operationDueDate?: string | null;
+  jobDueDate?: string | null;
+};
+
+/**
+ * The work queued at a work center, sorted the way the operator's own screens
+ * sort it: work already underway first, then soonest-needed. Leaves out the
+ * operations already on screen.
+ */
+export function orderQueue<T extends QueueRpcRow>(
+  rows: T[],
+  exclude: Set<string>
+): T[] {
+  const queueOrder = ["In Progress", "Paused", "Ready", "Waiting", "Todo"];
+  return rows
+    .filter((row) => !exclude.has(row.id))
+    .sort((a, b) => {
+      const statusDiff =
+        indexOrLast(queueOrder, a.operationStatus) -
+        indexOrLast(queueOrder, b.operationStatus);
+      if (statusDiff !== 0) return statusDiff;
+      return compareDueDates(
+        a.operationDueDate ?? a.jobDueDate ?? null,
+        b.operationDueDate ?? b.jobDueDate ?? null
+      );
+    });
 }
 
 function indexOrLast(order: string[], value: string | null): number {
@@ -477,3 +495,50 @@ async function getUserNames(
     (data ?? []).map((user) => [user.id, user.fullName ?? ""] as const)
   );
 }
+
+// ── OEE board ─────────────────────────────────────────────
+// Read by `getOeeDisplayData` (display.server.ts); typed here so the board
+// components never import a `.server` module.
+
+export type OeeDisplayJob = {
+  jobOperationId: string;
+  jobReadableId: string | null;
+  itemReadableId: string | null;
+  itemName: string | null;
+  operationDescription: string | null;
+  /** The operation's quantity and how much of it is complete, every shift. */
+  plannedQuantity: number | null;
+  completeQuantity: number;
+  scrappedQuantity: number;
+  /** This shift only. */
+  shiftPieces: number;
+  shiftBad: number;
+  oee: number | null;
+  plannedMs: number;
+};
+
+export type OeeDisplayData = {
+  board: OeeBoard;
+  previousShiftOee: number | null;
+  alwaysOn: boolean;
+  /** Sensor: a device reports the run time. Operator: Machine events do. */
+  source: "Sensor" | "Operator";
+  currentJob:
+    | (OeeDisplayJob & {
+        idealSecondsPerPiece: number | null;
+        /** When the job is expected to finish, or null without a standard. */
+        eta: number | null;
+        /** The expected finish falls after the shift ends (or past the known windows). */
+        etaAfterShift: boolean;
+      })
+    | null;
+  /** The latest jobs of the shift, the newest last. */
+  jobs: OeeDisplayJob[];
+  nextJob: {
+    jobReadableId: string | null;
+    itemReadableId: string | null;
+    itemName: string | null;
+    plannedQuantity: number | null;
+  } | null;
+  scrapReasonNames: Record<string, string>;
+};

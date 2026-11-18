@@ -6,6 +6,7 @@
 // Pure: no database client and no @carbon/ee, so client code can import it.
 // The reader is @carbon/planning/oee/load.server.
 
+export * from "./board.ts";
 export * from "./intervals.ts";
 export * from "./oee.ts";
 export * from "./periods.ts";
