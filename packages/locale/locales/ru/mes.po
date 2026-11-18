@@ -37,18 +37,22 @@ msgstr "«{0}» требует доработки этой единицы."
 msgid "\"{column}\" is required."
 msgstr "«{column}» требуется."
 
+msgid "(after this shift)"
+msgstr "(после этой смены)"
+
 msgid "(Inactive)"
 msgstr "(Неактивный)"
+
+msgid "(next)"
+msgstr "(следующий)"
+
+msgid "(now)"
+msgstr "(сейчас)"
 
 #. placeholder {0}: attribute.name
 #. placeholder {1}: activeStep + 1
 msgid "{0} - Set {1}"
 msgstr "{0} — Набор {1}"
-
-#. placeholder {0}: time.format(oee.period.start)
-#. placeholder {1}: time.format(oee.period.end)
-msgid "{0} – {1}"
-msgstr "{0} – {1}"
 
 #. placeholder {0}: employeeIds.length
 msgid "{0} Active"
@@ -69,6 +73,11 @@ msgstr "{0} покупателей"
 #. placeholder {0}: counts.failed
 msgid "{0} failed"
 msgstr "{0} не прошли"
+
+#. placeholder {0}: formats.pieces(good)
+#. placeholder {1}: formats.pieces(parts.totalPieces)
+msgid "{0} good of {1} pieces"
+msgstr "{0} годных из {1} шт."
 
 #. placeholder {0}: formatHours(dayTotals[index] ?? 0)
 #. placeholder {0}: formatHours(hours)
@@ -125,6 +134,11 @@ msgstr "{0} из {1} завершено"
 #. placeholder {1}: attributes.length
 msgid "{0} of {1} completed"
 msgstr "{0} из {1} завершено"
+
+#. placeholder {0}: formats.pieces(parts.badPieces)
+#. placeholder {1}: formats.pieces(parts.totalPieces)
+msgid "{0} of {1} pieces"
+msgstr "{0} из {1} шт."
 
 #. placeholder {0}: rows.length
 msgid "{0} queued"
@@ -204,6 +218,15 @@ msgstr "{hours} ч"
 msgid "{issued} of {required}"
 msgstr "{issued} из {required}"
 
+msgid "{job} ends about {at}"
+msgstr "{job} завершится примерно в {at}"
+
+msgid "{job} ends about {at}, get {next} ready"
+msgstr "{job} завершится примерно в {at}, подготовьте {next}"
+
+msgid "{job} OEE {oee} is below the limit"
+msgstr "OEE {job}: {oee} ниже допустимого предела"
+
 msgid "{label}, overdue"
 msgstr "{label}, просрочено"
 
@@ -243,6 +266,9 @@ msgstr "+{overflow} ещё"
 #. placeholder {0}: formatDate(moveDate, { dateStyle: "long" }, locale)
 msgid "🚨 Heads up: on {0} your account will be moved to erp.try.carbon.ms"
 msgstr "🚨 Внимание: {0} ваша учётная запись будет перенесена на erp.try.carbon.ms"
+
+msgid "2 minutes or more"
+msgstr "2 минуты и более"
 
 msgid "A color sets the accent. Gradient and solid themes also color the navigation, the sidebar and the page."
 msgstr "Цвет задаёт акцент. Градиентные и сплошные темы также окрашивают навигацию, боковую панель и страницу."
@@ -318,6 +344,9 @@ msgstr "Меню действий"
 msgid "Active"
 msgstr "Активные"
 
+msgid "Actual cycle per piece"
+msgstr "Фактический цикл на деталь"
+
 msgid "Add"
 msgstr "Добавить"
 
@@ -384,6 +413,9 @@ msgstr "Добавлено"
 msgid "Adjustment Type"
 msgstr "Тип корректировки"
 
+msgid "Alerts"
+msgstr "Предупреждения"
+
 msgid "All"
 msgstr "Все"
 
@@ -408,6 +440,9 @@ msgstr "Весь брак"
 
 msgid "All steps"
 msgstr "Все шаги"
+
+msgid "All within limits"
+msgstr "Все в пределах нормы"
 
 msgid "All work centers"
 msgstr "Все рабочие центры"
@@ -477,6 +512,10 @@ msgstr "Назначенные мне"
 
 msgid "Assignee"
 msgstr "Исполнитель"
+
+#. placeholder {0}: formats.whole(3600 / ideal)
+msgid "At standard {0}"
+msgstr "По норме {0}"
 
 msgid "Attach file"
 msgstr "Прикрепить файл"
@@ -575,6 +614,12 @@ msgstr "Плавно переводить фон в цвет выбранных 
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"
 msgstr "Заблокировано {0}"
+
+msgid "Blocked by maintenance"
+msgstr "Остановлен на техобслуживании"
+
+msgid "Blocked by maintenance {dispatch}"
+msgstr "Остановлен на техобслуживании {dispatch}"
 
 msgid "Blocking"
 msgstr "Блокирующие"
@@ -889,6 +934,9 @@ msgstr "Создать проблему качества"
 msgid "Create Rework"
 msgstr "Создать доработку"
 
+msgid "Current job"
+msgstr "Текущий производственный заказ"
+
 msgid "Current work"
 msgstr "Текущая работа"
 
@@ -984,6 +1032,12 @@ msgstr "Экраны (открывается в новой вкладке)"
 
 msgid "Done"
 msgstr "Готово"
+
+msgid "Done / plan"
+msgstr "Готово / план"
+
+msgid "Done / planned"
+msgstr "Готово / запланировано"
 
 msgid "Down"
 msgstr "Простой"
@@ -1129,6 +1183,9 @@ msgstr "Развернуть таблицу характеристик"
 
 msgid "Expand panel"
 msgstr "Развернуть панель"
+
+msgid "Expected finish"
+msgstr "Ожидаемое завершение"
 
 msgid "Expired"
 msgstr "Истек срок"
@@ -1286,6 +1343,12 @@ msgstr "Отметить проблему"
 msgid "Forgot to Clock Out?"
 msgstr "Забыли отметить окончание работы?"
 
+msgid "From operator time"
+msgstr "По времени оператора"
+
+msgid "From the sensor"
+msgstr "По датчику"
+
 msgid "Gauge"
 msgstr "Средство измерения"
 
@@ -1314,8 +1377,8 @@ msgstr "Перейти к шагу {0}: {1}"
 msgid "Go to step {0}: {1} (done)"
 msgstr "Перейти к шагу {0}: {1} (готово)"
 
-msgid "Good pieces"
-msgstr "Годные штуки"
+msgid "Good / scrap (this shift)"
+msgstr "Годные / брак (за смену)"
 
 msgid "Grab from {source} · {onHand} there"
 msgstr "Взять из {source} · там {onHand}"
@@ -1340,6 +1403,9 @@ msgstr "Скрыть описание"
 
 msgid "Hide drawing"
 msgstr "Скрыть чертёж"
+
+msgid "Hourly efficiency"
+msgstr "Почасовая эффективность"
 
 msgid "Hours"
 msgstr "Часы"
@@ -1492,11 +1558,23 @@ msgstr "Номенклатура"
 msgid "Job"
 msgstr "Задание"
 
+msgid "Job / item"
+msgstr "Производственный заказ / номенклатура"
+
+msgid "Job and machine state timeline"
+msgstr "Хронология производственных заказов и состояния станка"
+
 msgid "Job Details"
 msgstr "Детали задания"
 
 msgid "Job due"
 msgstr "Срок производственного заказа"
+
+msgid "Job OEE"
+msgstr "OEE производственного заказа"
+
+msgid "Job OEE (this shift)"
+msgstr "OEE производственного заказа (за смену)"
 
 msgid "Job Operation"
 msgstr "Операция заказа"
@@ -1506,6 +1584,12 @@ msgstr "Маршрутный лист"
 
 msgid "Jobs"
 msgstr "Производственные заказы"
+
+msgid "Jobs (top) and machine state (bottom)"
+msgstr "Производственные заказы (сверху) и состояние станка (снизу)"
+
+msgid "Jobs this shift"
+msgstr "Производственные заказы за смену"
 
 msgid "Keep navigation open"
 msgstr "Не сворачивать навигацию"
@@ -1678,8 +1762,20 @@ msgstr "Низкий"
 msgid "Machine"
 msgstr "Станок"
 
+msgid "Machine down for {length}"
+msgstr "Станок простаивает {length}"
+
 msgid "Machine down for maintenance now?"
 msgstr "Станок на техобслуживание сейчас?"
+
+msgid "Machine figures"
+msgstr "Показатели станка"
+
+msgid "Machine offline for {length}"
+msgstr "Станок недоступен {length}"
+
+msgid "Machine state since the start of the shift"
+msgstr "Состояние станка с начала смены"
 
 msgid "Machine, timer running"
 msgstr "Станок, таймер запущен"
@@ -1816,6 +1912,9 @@ msgstr "Навигация"
 msgid "Need material"
 msgstr "Нужен материал"
 
+msgid "Needs attention"
+msgstr "Требует внимания"
+
 msgid "New"
 msgstr "Новое"
 
@@ -1916,6 +2015,12 @@ msgstr "Вам не назначено ни одного контроля"
 msgid "No issue types configured"
 msgstr "Типы проблем не настроены"
 
+msgid "No job has run this shift"
+msgstr "За смену ни один производственный заказ не запускался"
+
+msgid "No job is loaded on this work center"
+msgstr "На этом рабочем центре нет загруженного производственного заказа"
+
 msgid "No kit"
 msgstr "Нет комплекта"
 
@@ -1924,6 +2029,9 @@ msgstr "Отпуск еще не настроен. Попросите своег
 
 msgid "No lineside storage"
 msgstr "Нет прилинейного хранилища"
+
+msgid "No losses yet"
+msgstr "Потерь пока нет"
 
 msgid "No maintenance scheduled for today"
 msgstr "На сегодня техобслуживание не запланировано"
@@ -1982,6 +2090,9 @@ msgstr "Нет листов отбора"
 msgid "No printer configured"
 msgstr "Принтер не настроен"
 
+msgid "No reason given"
+msgstr "Причина не указана"
+
 msgid "No recent operations"
 msgstr "Нет недавних операций"
 
@@ -2009,6 +2120,9 @@ msgstr "Образцы не требуются."
 msgid "No scheduled time"
 msgstr "Нет запланированного времени"
 
+msgid "No scrap this shift"
+msgstr "За смену брака не было"
+
 msgid "No serial number"
 msgstr "Нет серийного номера"
 
@@ -2024,11 +2138,20 @@ msgstr "Нет заявок на обслуживание, назначенны�
 msgid "No shift"
 msgstr "Нет смены"
 
+msgid "No shift and no data for this work center yet"
+msgstr "Смена не начата, данных по этому рабочему центру пока нет"
+
 msgid "No shortcuts available on this page."
 msgstr "На этой странице нет доступных сокращений."
 
 msgid "No spare parts added yet"
 msgstr "Запасные части ещё не добавлены"
+
+msgid "No standard time"
+msgstr "Нет нормативного времени"
+
+msgid "No state"
+msgstr "Состояние не определено"
 
 msgid "No station"
 msgstr "Нет станции"
@@ -2038,6 +2161,9 @@ msgstr "На этой площадке нет станций"
 
 msgid "No stock"
 msgstr "Нет запасов"
+
+msgid "No stops this shift"
+msgstr "Остановок в этой смене нет"
 
 msgid "No time entries for this week"
 msgstr "Нет записей учёта времени за эту неделю"
@@ -2074,6 +2200,9 @@ msgstr "Нормальный"
 
 msgid "Not in this operation"
 msgstr "Нет в этой операции"
+
+msgid "Not planned"
+msgstr "Не запланировано"
 
 msgid "Not scheduled"
 msgstr "Не запланировано"
@@ -2118,12 +2247,11 @@ msgstr "OEE"
 msgid "OEE Impact"
 msgstr "Влияние на OEE"
 
-#. placeholder {0}: percent.format(OEE_LOW)
-msgid "OEE is below {0}"
-msgstr "OEE ниже {0}"
+msgid "OEE is below {low}"
+msgstr "OEE ниже {low}"
 
-msgid "OEE this shift"
-msgstr "OEE за эту смену"
+msgid "OEE this shift (all jobs)"
+msgstr "OEE за смену (все производственные заказы)"
 
 msgid "OEM Required"
 msgstr "Требуется OEM"
@@ -2131,6 +2259,9 @@ msgstr "Требуется OEM"
 #. placeholder {0}: m.operationQuantity ?? 0
 msgid "of {0}"
 msgstr "из {0}"
+
+msgid "Of planned time"
+msgstr "от запланированного времени"
 
 msgid "Offline"
 msgstr "Отключено"
@@ -2330,6 +2461,12 @@ msgstr "Процент"
 msgid "Performance"
 msgstr "Производительность"
 
+msgid "Performance {performance}: a standard time may be set too slow"
+msgstr "Производительность {performance}: нормативное время, возможно, задано слишком медленным"
+
+msgid "Performance counts only this run"
+msgstr "Производительность учитывает только эту работу"
+
 msgid "Phone"
 msgstr "Телефон"
 
@@ -2403,6 +2540,9 @@ msgstr "Отбор вместо {substitutedFrom}, номенклатура в �
 
 msgid "picking in place of {substitutedFrom}, the item on the job, for {substitutedAssemblies} assemblies"
 msgstr "Отбор вместо {substitutedFrom}, номенклатура в производственном заказе, для {substitutedAssemblies} сборок"
+
+msgid "Pieces per run hour"
+msgstr "Штук в час работы"
 
 msgid "Pin or unpin"
 msgstr "Закрепить или открепить"
@@ -2539,6 +2679,11 @@ msgstr "Коммерческие предложения"
 
 msgid "Raise quality issue"
 msgstr "Создать несоответствие по качеству"
+
+#. placeholder {0}: formats.minutes(parts.runMs)
+#. placeholder {1}: formats.minutes(parts.plannedMs)
+msgid "Ran {0} of {1} planned"
+msgstr "Работа {0} из {1} запланированного"
 
 msgid "raw bins short"
 msgstr "в ячейках не хватает сырья"
@@ -2721,8 +2866,14 @@ msgstr "Количество для доработки"
 msgid "Rich text"
 msgstr "Форматированный текст"
 
+msgid "Run outside shifts"
+msgstr "Работа вне смен"
+
 msgid "Run time"
 msgstr "Время обработки"
+
+msgid "Run with a standard time"
+msgstr "Работа с нормативным временем"
 
 msgid "Running"
 msgstr "Работает"
@@ -2817,6 +2968,9 @@ msgstr "Конфликт расписания"
 msgid "Scrap"
 msgstr "Брак"
 
+msgid "Scrap (pieces)"
+msgstr "Брак (шт.)"
+
 msgid "Scrap {readableId}"
 msgstr "Браковать {readableId}"
 
@@ -2825,6 +2979,9 @@ msgstr "Браковка материала"
 
 msgid "Scrap quantity"
 msgstr "Количество брака"
+
+msgid "Scrap rate"
+msgstr "Процент брака"
 
 msgid "Scrap Reason"
 msgstr "Причина брака"
@@ -3025,6 +3182,9 @@ msgstr "Наладка"
 msgid "Setup, timer running"
 msgstr "Наладка, таймер запущен"
 
+msgid "Shift {range}"
+msgstr "Смена {range}"
+
 msgid "short"
 msgstr "короткий"
 
@@ -3133,6 +3293,28 @@ msgstr "Запасные части"
 msgid "Spare Parts Used"
 msgstr "Использованные запасные части"
 
+msgid "Speed loss"
+msgstr "Потери производительности"
+
+#. placeholder {0}: formats.seconds(ideal)
+msgid "Standard {0}"
+msgstr "Норма {0}"
+
+#. placeholder {0}: formats.seconds(job.idealSecondsPerPiece)
+msgid "Standard {0} per piece"
+msgstr "Норма {0} на штуку"
+
+msgid "Standard time made"
+msgstr "Нормативное время выполнено"
+
+#. placeholder {0}: formats.minutes(parts.idealMs)
+#. placeholder {1}: formats.minutes(parts.runWithStandardMs)
+msgid "Standard time made {0} in {1} of run"
+msgstr "Нормативное время выполнено: {0} за {1} работы"
+
+msgid "Standard time made ÷ planned time, dashed line = {target}, ⇄ = job change"
+msgstr "Нормативное время ÷ запланированное время, пунктир = {target}, ⇄ = смена производственного заказа"
+
 msgid "Start"
 msgstr "Старт"
 
@@ -3209,6 +3391,12 @@ msgstr "Шаги не заполнены"
 msgid "Stock at:"
 msgstr "Запасы в:"
 
+msgid "Stop log"
+msgstr "Журнал остановок"
+
+msgid "Stopped now {length}"
+msgstr "Сейчас простой {length}"
+
 msgid "Storage Unit"
 msgstr "Единица хранения"
 
@@ -3278,6 +3466,12 @@ msgstr "Переводит рабочий центр в режим offline"
 msgid "Tap a day to add time to {selectedLabel}. Drag the lower edge of a bar to change its hours."
 msgstr "Коснитесь дня, чтобы добавить время к {selectedLabel}. Перетащите нижний край столбца, чтобы изменить его часы."
 
+msgid "Target {target}"
+msgstr "Цель {target}"
+
+msgid "Target {target}, last shift {previous}"
+msgstr "Цель {target}, прошлая смена {previous}"
+
 msgid "Text color"
 msgstr "Цвет текста"
 
@@ -3309,6 +3503,9 @@ msgstr "Контроль будет помечен как Пройдено, а �
 
 msgid "The inspection will be marked Passed. Its units are released to Available, except the {fails} that failed a sample, which stay Rejected."
 msgstr "Контроль будет помечен как Пройдено. Его единицы переводятся в Доступно, за исключением не прошедших образец ({fails}) — они останутся отклонёнными."
+
+msgid "The job"
+msgstr "Производственный заказ"
 
 msgid "The job is closed"
 msgstr "Производственный заказ закрыт"
@@ -3468,6 +3665,9 @@ msgstr "Для запуска"
 msgid "Today"
 msgstr "Сегодня"
 
+msgid "Today {range}"
+msgstr "Сегодня {range}"
+
 msgid "Toggle sidebar"
 msgstr "Переключить боковую панель"
 
@@ -3476,6 +3676,12 @@ msgstr "Открыть/закрыть боковую панель"
 
 msgid "Tools"
 msgstr "Инструменты"
+
+msgid "Top losses"
+msgstr "Основные потери"
+
+msgid "Top losses (minutes)"
+msgstr "Основные потери (мин)"
 
 msgid "Top to Bottom"
 msgstr "Сверху вниз"
@@ -3488,6 +3694,9 @@ msgstr "Темы"
 
 msgid "Total"
 msgstr "Итого"
+
+msgid "Total {total}"
+msgstr "Всего {total}"
 
 msgid "Total hours"
 msgstr "Итого часов"
@@ -3581,6 +3790,9 @@ msgstr "Неизвестное средство измерения"
 
 msgid "Unknown part"
 msgstr "Неизвестная деталь"
+
+msgid "Unknown reason"
+msgstr "Причина неизвестна"
 
 msgid "Unlock"
 msgstr "Разблокировать"

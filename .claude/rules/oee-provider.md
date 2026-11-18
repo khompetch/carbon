@@ -560,10 +560,32 @@ table's OEE bar color (green / yellow / red) and the ERP chart's dashed
   `useProductionSubmodules` behind the same `oee` integration test as
   Unattributed Time. Data from `api+/production.oee.ts` (`view: production`,
   one location, at most 92 days, days in the location's timezone).
-- **MES** — `display+/$workCenterId.oee.tsx`, linked from the display index.
+- **MES** — `display+/$workCenterId.oee.tsx`, linked from the display index:
+  the OEE line board (10 zones, `components/Display/OeeBoard/`).
   `getOeeDisplayData` (`apps/mes/app/services/display.server.ts`, not
-  `display.service.ts`, which components import) shows the current shift
-  (`currentShiftPeriod`), else the local day.
+  `display.service.ts`, which components import; its result types
+  `OeeDisplayData` / `OeeDisplayJob` live in `display.service.ts`) loads two
+  days back and builds the working windows two days ahead (`windowsTo`), cuts
+  them at each shift start (`splitAtShiftStarts` with the loader's
+  `shiftStarts`, so back-to-back shifts stay two) and shows the window that
+  holds now (`shiftWindowAt`), else the local day. Every number comes from
+  `buildOeeBoard` (`board.ts`, pure): the ratios, per-hour efficiency, the
+  state timeline (`boardStates`: run first, then Down, Offline, Idle inside the
+  planned windows, the rest Unknown; outside them NotPlanned), the job spans
+  (`spansOfOwners`: a job holds the work center from its first Machine event
+  until the next job's, the first from the shift start), each job's OEE, the
+  losses (state minutes, speed = run with a standard − ideal, scrap = ideal of
+  the bad pieces; with full coverage and P ≤ 1 they add up with the good ideal
+  time to the planned time) and the stop log (≥ 2 min). The ETA is
+  `estimateFinish` over the planned windows at pace max(0.3, A × P). The alert
+  list is `getOeeBoardAlerts` (`apps/mes/app/utils/display.ts`). Thresholds:
+  `OEE_GOOD` / `OEE_LOW`, `RATIO_GOOD` / `RATIO_LOW` (A, P, Q: 90 / 80),
+  `HOURLY_GOOD` / `HOURLY_LOW` (85 / 70) and `ratioTone`, all in `oee.ts`.
+  The board shows `shownOee` (A × min(1, P) × Q) for the shift, each job and
+  the previous shift; the real P stays in `ratios` for the P > 105% alert.
+  The current job is only the loaded operation (`loadedJobOperationId`).
+  The loader also returns `stateSegments` (`stateSegmentsFromChanges`) and,
+  on counts, `scrapReasonId`.
 
 ## Sense adapter
 

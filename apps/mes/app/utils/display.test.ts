@@ -11,6 +11,7 @@ import {
   getInitials,
   getMaintenanceDisplayState,
   getMaintenanceScoreboard,
+  getOeeBoardAlerts,
   getProgress,
   getWorkDisplayState,
   isDispatchOverdue
@@ -419,5 +420,96 @@ describe("decimalInput", () => {
 
   it("leaves a whole number untouched", () => {
     expect(decimalInput("42")).toBe("42");
+  });
+});
+
+describe("getOeeBoardAlerts", () => {
+  const MIN = 60_000;
+  const base = (
+    overrides: Partial<Parameters<typeof getOeeBoardAlerts>[0]>
+  ): Parameters<typeof getOeeBoardAlerts>[0] => ({
+    now: 600 * MIN,
+    shiftEnd: 720 * MIN,
+    current: { state: "Running", since: 590 * MIN },
+    isBlocked: false,
+    blockingDispatch: null,
+    performance: 0.9,
+    oeeLow: 0.6,
+    currentJob: {
+      job: "J-1",
+      oee: 0.8,
+      plannedMs: 60 * MIN,
+      eta: 700 * MIN,
+      remaining: 100
+    },
+    nextJob: "J-2",
+    ...overrides
+  });
+
+  it("shows nothing while the machine runs well", () => {
+    expect(getOeeBoardAlerts(base({}))).toEqual([]);
+  });
+
+  it("puts a stopped machine before a low job OEE", () => {
+    const alerts = getOeeBoardAlerts(
+      base({
+        current: { state: "Down", since: 595 * MIN },
+        currentJob: {
+          job: "J-1",
+          oee: 0.5,
+          plannedMs: 30 * MIN,
+          eta: null,
+          remaining: 100
+        }
+      })
+    );
+    expect(alerts).toEqual([
+      { kind: "Down", since: 595 * MIN, severity: "danger" },
+      { kind: "JobOeeLow", job: "J-1", oee: 0.5, severity: "warn" }
+    ]);
+  });
+
+  it("does not judge a job that started less than 20 minutes ago", () => {
+    const alerts = getOeeBoardAlerts(
+      base({
+        currentJob: {
+          job: "J-1",
+          oee: 0.1,
+          plannedMs: 10 * MIN,
+          eta: null,
+          remaining: 100
+        }
+      })
+    );
+    expect(alerts).toEqual([]);
+  });
+
+  it("asks for the next job 20 minutes before this one ends, inside the shift", () => {
+    const alerts = getOeeBoardAlerts(
+      base({
+        currentJob: {
+          job: "J-1",
+          oee: 0.8,
+          plannedMs: 60 * MIN,
+          eta: 615 * MIN,
+          remaining: 10
+        }
+      })
+    );
+    expect(alerts).toEqual([
+      {
+        kind: "JobFinishing",
+        job: "J-1",
+        at: 615 * MIN,
+        next: "J-2",
+        severity: "info"
+      }
+    ]);
+  });
+
+  it("flags a Performance above 105% (TC11)", () => {
+    expect(getOeeBoardAlerts(base({ performance: 1.1 }))).toEqual([
+      { kind: "SpeedHigh", performance: 1.1, severity: "warn" }
+    ]);
   });
 });

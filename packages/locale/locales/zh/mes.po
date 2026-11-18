@@ -37,18 +37,22 @@ msgstr "“{0}”要求对该件进行纠正。"
 msgid "\"{column}\" is required."
 msgstr "\"{column}\" 是必需的。"
 
+msgid "(after this shift)"
+msgstr "（本班次之后）"
+
 msgid "(Inactive)"
 msgstr "（已停用）"
+
+msgid "(next)"
+msgstr "（下一个）"
+
+msgid "(now)"
+msgstr "（当前）"
 
 #. placeholder {0}: attribute.name
 #. placeholder {1}: activeStep + 1
 msgid "{0} - Set {1}"
 msgstr "{0} - 组 {1}"
-
-#. placeholder {0}: time.format(oee.period.start)
-#. placeholder {1}: time.format(oee.period.end)
-msgid "{0} – {1}"
-msgstr "{0} – {1}"
 
 #. placeholder {0}: employeeIds.length
 msgid "{0} Active"
@@ -69,6 +73,11 @@ msgstr "{0} 个客户"
 #. placeholder {0}: counts.failed
 msgid "{0} failed"
 msgstr "{0} 项不合格"
+
+#. placeholder {0}: formats.pieces(good)
+#. placeholder {1}: formats.pieces(parts.totalPieces)
+msgid "{0} good of {1} pieces"
+msgstr "{1} 件中合格 {0} 件"
 
 #. placeholder {0}: formatHours(dayTotals[index] ?? 0)
 #. placeholder {0}: formatHours(hours)
@@ -125,6 +134,11 @@ msgstr "{0} / {1} 已完成"
 #. placeholder {1}: attributes.length
 msgid "{0} of {1} completed"
 msgstr "{0} / {1} 已完成"
+
+#. placeholder {0}: formats.pieces(parts.badPieces)
+#. placeholder {1}: formats.pieces(parts.totalPieces)
+msgid "{0} of {1} pieces"
+msgstr "{1} 件中的 {0} 件"
 
 #. placeholder {0}: rows.length
 msgid "{0} queued"
@@ -204,6 +218,15 @@ msgstr "{hours} 小时"
 msgid "{issued} of {required}"
 msgstr "{issued} / {required}"
 
+msgid "{job} ends about {at}"
+msgstr "{job} 约于 {at} 结束"
+
+msgid "{job} ends about {at}, get {next} ready"
+msgstr "{job} 约于 {at} 结束，请让 {next} 就绪"
+
+msgid "{job} OEE {oee} is below the limit"
+msgstr "{job} 的 OEE {oee} 低于限值"
+
 msgid "{label}, overdue"
 msgstr "{label}，已逾期"
 
@@ -243,6 +266,9 @@ msgstr "还有 +{overflow} 个"
 #. placeholder {0}: formatDate(moveDate, { dateStyle: "long" }, locale)
 msgid "🚨 Heads up: on {0} your account will be moved to erp.try.carbon.ms"
 msgstr "🚨 提醒：您的账户将于 {0} 迁移至 erp.try.carbon.ms"
+
+msgid "2 minutes or more"
+msgstr "2 分钟或以上"
 
 msgid "A color sets the accent. Gradient and solid themes also color the navigation, the sidebar and the page."
 msgstr "颜色决定强调色。渐变和纯色主题还会为导航栏、侧边栏和页面着色。"
@@ -318,6 +344,9 @@ msgstr "操作菜单"
 msgid "Active"
 msgstr "启用"
 
+msgid "Actual cycle per piece"
+msgstr "每件实际节拍"
+
 msgid "Add"
 msgstr "添加"
 
@@ -384,6 +413,9 @@ msgstr "已添加"
 msgid "Adjustment Type"
 msgstr "调整类型"
 
+msgid "Alerts"
+msgstr "警报"
+
 msgid "All"
 msgstr "全部"
 
@@ -408,6 +440,9 @@ msgstr "全部报废"
 
 msgid "All steps"
 msgstr "所有步骤"
+
+msgid "All within limits"
+msgstr "全部在限值内"
 
 msgid "All work centers"
 msgstr "全部工作中心"
@@ -477,6 +512,10 @@ msgstr "已分配给我"
 
 msgid "Assignee"
 msgstr "经办人"
+
+#. placeholder {0}: formats.whole(3600 / ideal)
+msgid "At standard {0}"
+msgstr "按标准 {0}"
 
 msgid "Attach file"
 msgstr "附加文件"
@@ -575,6 +614,12 @@ msgstr "将背景渐变融入所选项目的颜色。"
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"
 msgstr "被 {0} 阻塞"
+
+msgid "Blocked by maintenance"
+msgstr "因维护而受阻"
+
+msgid "Blocked by maintenance {dispatch}"
+msgstr "因维护而受阻 {dispatch}"
 
 msgid "Blocking"
 msgstr "阻塞中"
@@ -889,6 +934,9 @@ msgstr "创建质量问题"
 msgid "Create Rework"
 msgstr "创建返工"
 
+msgid "Current job"
+msgstr "当前工单"
+
 msgid "Current work"
 msgstr "当前工作"
 
@@ -984,6 +1032,12 @@ msgstr "显示（在新标签页中打开）"
 
 msgid "Done"
 msgstr "完成"
+
+msgid "Done / plan"
+msgstr "完成 / 计划"
+
+msgid "Done / planned"
+msgstr "完成 / 计划"
 
 msgid "Down"
 msgstr "停机"
@@ -1129,6 +1183,9 @@ msgstr "展开特性表格"
 
 msgid "Expand panel"
 msgstr "展开面板"
+
+msgid "Expected finish"
+msgstr "预计完工"
 
 msgid "Expired"
 msgstr "已过期"
@@ -1286,6 +1343,12 @@ msgstr "标记问题"
 msgid "Forgot to Clock Out?"
 msgstr "忘记收工了吗？"
 
+msgid "From operator time"
+msgstr "按操作员工时"
+
+msgid "From the sensor"
+msgstr "来自传感器"
+
 msgid "Gauge"
 msgstr "量具"
 
@@ -1314,8 +1377,8 @@ msgstr "前往步骤 {0}：{1}"
 msgid "Go to step {0}: {1} (done)"
 msgstr "前往步骤 {0}：{1}（已完成）"
 
-msgid "Good pieces"
-msgstr "合格件"
+msgid "Good / scrap (this shift)"
+msgstr "合格 / 报废（本班次）"
 
 msgid "Grab from {source} · {onHand} there"
 msgstr "从 {source} 取料 · 该处现有 {onHand}"
@@ -1340,6 +1403,9 @@ msgstr "隐藏描述"
 
 msgid "Hide drawing"
 msgstr "隐藏图纸"
+
+msgid "Hourly efficiency"
+msgstr "每小时效率"
 
 msgid "Hours"
 msgstr "小时"
@@ -1492,11 +1558,23 @@ msgstr "物料"
 msgid "Job"
 msgstr "工单"
 
+msgid "Job / item"
+msgstr "工单 / 物料"
+
+msgid "Job and machine state timeline"
+msgstr "工单与机器状态时间线"
+
 msgid "Job Details"
 msgstr "工单详情"
 
 msgid "Job due"
 msgstr "工单到期"
+
+msgid "Job OEE"
+msgstr "工单 OEE"
+
+msgid "Job OEE (this shift)"
+msgstr "工单 OEE（本班次）"
 
 msgid "Job Operation"
 msgstr "工单工序"
@@ -1506,6 +1584,12 @@ msgstr "工单流转卡"
 
 msgid "Jobs"
 msgstr "工单"
+
+msgid "Jobs (top) and machine state (bottom)"
+msgstr "工单（上）与机器状态（下）"
+
+msgid "Jobs this shift"
+msgstr "本班次工单"
 
 msgid "Keep navigation open"
 msgstr "保持导航展开"
@@ -1678,8 +1762,20 @@ msgstr "低"
 msgid "Machine"
 msgstr "机器"
 
+msgid "Machine down for {length}"
+msgstr "机器停机 {length}"
+
 msgid "Machine down for maintenance now?"
 msgstr "机器现在正在维护吗？"
+
+msgid "Machine figures"
+msgstr "机器数据"
+
+msgid "Machine offline for {length}"
+msgstr "机器离线 {length}"
+
+msgid "Machine state since the start of the shift"
+msgstr "自本班次开始以来的机器状态"
 
 msgid "Machine, timer running"
 msgstr "机器，计时器运行中"
@@ -1816,6 +1912,9 @@ msgstr "导航"
 msgid "Need material"
 msgstr "需要物料"
 
+msgid "Needs attention"
+msgstr "需要关注"
+
 msgid "New"
 msgstr "新建"
 
@@ -1916,6 +2015,12 @@ msgstr "没有分配给您的检验"
 msgid "No issue types configured"
 msgstr "未配置问题类型"
 
+msgid "No job has run this shift"
+msgstr "本班次没有工单运行"
+
+msgid "No job is loaded on this work center"
+msgstr "该工作中心未加载工单"
+
 msgid "No kit"
 msgstr "无套件"
 
@@ -1924,6 +2029,9 @@ msgstr "尚未设置假期。请您的经理在 ERP 中设置。"
 
 msgid "No lineside storage"
 msgstr "没有线边存储"
+
+msgid "No losses yet"
+msgstr "暂无损失"
 
 msgid "No maintenance scheduled for today"
 msgstr "今天没有计划的维护"
@@ -1982,6 +2090,9 @@ msgstr "没有拣货单"
 msgid "No printer configured"
 msgstr "未配置打印机"
 
+msgid "No reason given"
+msgstr "未填写原因"
+
 msgid "No recent operations"
 msgstr "无近期工序"
 
@@ -2009,6 +2120,9 @@ msgstr "不需要样本。"
 msgid "No scheduled time"
 msgstr "无排定时间"
 
+msgid "No scrap this shift"
+msgstr "本班次无报废"
+
 msgid "No serial number"
 msgstr "无序列号"
 
@@ -2024,11 +2138,20 @@ msgstr "今天没有分配给您的服务工单"
 msgid "No shift"
 msgstr "无班次"
 
+msgid "No shift and no data for this work center yet"
+msgstr "该工作中心暂无班次和数据"
+
 msgid "No shortcuts available on this page."
 msgstr "此页面上无可用的快捷键。"
 
 msgid "No spare parts added yet"
 msgstr "尚未添加备件"
+
+msgid "No standard time"
+msgstr "无标准时间"
+
+msgid "No state"
+msgstr "无状态"
 
 msgid "No station"
 msgstr "没有工位"
@@ -2038,6 +2161,9 @@ msgstr "此地点没有工位"
 
 msgid "No stock"
 msgstr "无库存"
+
+msgid "No stops this shift"
+msgstr "本班次无停机"
 
 msgid "No time entries for this week"
 msgstr "本周无考勤记录"
@@ -2074,6 +2200,9 @@ msgstr "正常检验"
 
 msgid "Not in this operation"
 msgstr "不在此工序中"
+
+msgid "Not planned"
+msgstr "未计划"
 
 msgid "Not scheduled"
 msgstr "未安排"
@@ -2118,12 +2247,11 @@ msgstr "OEE"
 msgid "OEE Impact"
 msgstr "OEE 影响"
 
-#. placeholder {0}: percent.format(OEE_LOW)
-msgid "OEE is below {0}"
-msgstr "OEE 低于 {0}"
+msgid "OEE is below {low}"
+msgstr "OEE 低于 {low}"
 
-msgid "OEE this shift"
-msgstr "本班次 OEE"
+msgid "OEE this shift (all jobs)"
+msgstr "本班次 OEE（所有工单）"
 
 msgid "OEM Required"
 msgstr "需要 OEM"
@@ -2131,6 +2259,9 @@ msgstr "需要 OEM"
 #. placeholder {0}: m.operationQuantity ?? 0
 msgid "of {0}"
 msgstr "/"
+
+msgid "Of planned time"
+msgstr "占计划时间"
 
 msgid "Offline"
 msgstr "离线"
@@ -2330,6 +2461,12 @@ msgstr "百分比"
 msgid "Performance"
 msgstr "性能"
 
+msgid "Performance {performance}: a standard time may be set too slow"
+msgstr "性能 {performance}：标准时间可能设置过慢"
+
+msgid "Performance counts only this run"
+msgstr "性能仅统计本次运行"
+
 msgid "Phone"
 msgstr "电话"
 
@@ -2403,6 +2540,9 @@ msgstr "拣货替代{substitutedFrom}（工单上的物料）"
 
 msgid "picking in place of {substitutedFrom}, the item on the job, for {substitutedAssemblies} assemblies"
 msgstr "拣货替代{substitutedFrom}（工单上的物料），{substitutedAssemblies}个装配"
+
+msgid "Pieces per run hour"
+msgstr "每运行小时件数"
 
 msgid "Pin or unpin"
 msgstr "固定或取消固定"
@@ -2539,6 +2679,11 @@ msgstr "报价单"
 
 msgid "Raise quality issue"
 msgstr "发起质量问题"
+
+#. placeholder {0}: formats.minutes(parts.runMs)
+#. placeholder {1}: formats.minutes(parts.plannedMs)
+msgid "Ran {0} of {1} planned"
+msgstr "已运行 {0}，计划 {1}"
 
 msgid "raw bins short"
 msgstr "原料料箱不足"
@@ -2721,8 +2866,14 @@ msgstr "返工数量"
 msgid "Rich text"
 msgstr "富文本"
 
+msgid "Run outside shifts"
+msgstr "非班次时间运行"
+
 msgid "Run time"
 msgstr "加工时间"
+
+msgid "Run with a standard time"
+msgstr "按标准时间运行"
 
 msgid "Running"
 msgstr "运行中"
@@ -2817,6 +2968,9 @@ msgstr "排程冲突"
 msgid "Scrap"
 msgstr "报废"
 
+msgid "Scrap (pieces)"
+msgstr "报废（件）"
+
 msgid "Scrap {readableId}"
 msgstr "报废 {readableId}"
 
@@ -2825,6 +2979,9 @@ msgstr "报废原材料"
 
 msgid "Scrap quantity"
 msgstr "报废数量"
+
+msgid "Scrap rate"
+msgstr "报废率"
 
 msgid "Scrap Reason"
 msgstr "报废原因"
@@ -3025,6 +3182,9 @@ msgstr "换型"
 msgid "Setup, timer running"
 msgstr "换型，计时器运行中"
 
+msgid "Shift {range}"
+msgstr "班次 {range}"
+
 msgid "short"
 msgstr "短缺"
 
@@ -3133,6 +3293,28 @@ msgstr "备件"
 msgid "Spare Parts Used"
 msgstr "已使用备件"
 
+msgid "Speed loss"
+msgstr "速度损失"
+
+#. placeholder {0}: formats.seconds(ideal)
+msgid "Standard {0}"
+msgstr "标准 {0}"
+
+#. placeholder {0}: formats.seconds(job.idealSecondsPerPiece)
+msgid "Standard {0} per piece"
+msgstr "每件标准 {0}"
+
+msgid "Standard time made"
+msgstr "已完成标准时间"
+
+#. placeholder {0}: formats.minutes(parts.idealMs)
+#. placeholder {1}: formats.minutes(parts.runWithStandardMs)
+msgid "Standard time made {0} in {1} of run"
+msgstr "运行 {1} 中完成标准时间 {0}"
+
+msgid "Standard time made ÷ planned time, dashed line = {target}, ⇄ = job change"
+msgstr "标准时间完成量 ÷ 计划时间，虚线 = {target}，⇄ = 工单切换"
+
 msgid "Start"
 msgstr "开始"
 
@@ -3209,6 +3391,12 @@ msgstr "缺少步骤"
 msgid "Stock at:"
 msgstr "库存位置："
 
+msgid "Stop log"
+msgstr "停机记录"
+
+msgid "Stopped now {length}"
+msgstr "当前已停机 {length}"
+
 msgid "Storage Unit"
 msgstr "存储单元"
 
@@ -3278,6 +3466,12 @@ msgstr "使工作中心离线"
 msgid "Tap a day to add time to {selectedLabel}. Drag the lower edge of a bar to change its hours."
 msgstr "点击一天以向 {selectedLabel} 添加时间。拖动条形的下边缘以更改其小时数。"
 
+msgid "Target {target}"
+msgstr "目标 {target}"
+
+msgid "Target {target}, last shift {previous}"
+msgstr "目标 {target}，上一班次 {previous}"
+
 msgid "Text color"
 msgstr "文本颜色"
 
@@ -3309,6 +3503,9 @@ msgstr "检验将标记为已通过，其件将释放为可用。"
 
 msgid "The inspection will be marked Passed. Its units are released to Available, except the {fails} that failed a sample, which stay Rejected."
 msgstr "检验将标记为已通过。其件将释放为可用，但未通过样本检验的 {fails} 件仍保持已拒绝状态。"
+
+msgid "The job"
+msgstr "该工单"
 
 msgid "The job is closed"
 msgstr "工单已关闭"
@@ -3468,6 +3665,9 @@ msgstr "待启动"
 msgid "Today"
 msgstr "今天"
 
+msgid "Today {range}"
+msgstr "今日 {range}"
+
 msgid "Toggle sidebar"
 msgstr "切换侧边栏"
 
@@ -3476,6 +3676,12 @@ msgstr "切换侧栏"
 
 msgid "Tools"
 msgstr "工具"
+
+msgid "Top losses"
+msgstr "主要损失"
+
+msgid "Top losses (minutes)"
+msgstr "主要损失（分钟）"
 
 msgid "Top to Bottom"
 msgstr "从上到下"
@@ -3488,6 +3694,9 @@ msgstr "话题"
 
 msgid "Total"
 msgstr "总计"
+
+msgid "Total {total}"
+msgstr "合计 {total}"
 
 msgid "Total hours"
 msgstr "总小时数"
@@ -3581,6 +3790,9 @@ msgstr "未知量具"
 
 msgid "Unknown part"
 msgstr "未知零件"
+
+msgid "Unknown reason"
+msgstr "未知原因"
 
 msgid "Unlock"
 msgstr "解锁"

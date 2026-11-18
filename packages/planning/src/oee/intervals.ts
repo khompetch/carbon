@@ -82,3 +82,29 @@ export function runIntervalsFromStateChanges(
   }
   return unionIntervals(runs);
 }
+
+/**
+ * Every stored state of a machine as a stretch: each change holds until the
+ * next one, or until `until` when it is the last. Repeated changes of one
+ * state are one stretch.
+ */
+export function stateSegmentsFromChanges(
+  changes: { changedAt: number; state: string }[],
+  until: number
+): (Interval & { state: string })[] {
+  const sorted = [...changes].sort((a, b) => a.changedAt - b.changedAt);
+  const segments: (Interval & { state: string })[] = [];
+  for (let index = 0; index < sorted.length; index++) {
+    const change = sorted[index]!;
+    const next = sorted[index + 1];
+    const end = Math.min(next ? next.changedAt : until, until);
+    if (end <= change.changedAt) continue;
+    const last = segments[segments.length - 1];
+    if (last && last.state === change.state && last.end >= change.changedAt) {
+      last.end = end;
+    } else {
+      segments.push({ start: change.changedAt, end, state: change.state });
+    }
+  }
+  return segments;
+}

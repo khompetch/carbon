@@ -37,18 +37,22 @@ msgstr "“{0}”(으)로 인해 이 개에 대한 보정이 필요합니다."
 msgid "\"{column}\" is required."
 msgstr "«{column}»은(는) 필수입니다."
 
+msgid "(after this shift)"
+msgstr "(이번 교대조 이후)"
+
 msgid "(Inactive)"
 msgstr "(비활성)"
+
+msgid "(next)"
+msgstr "(다음)"
+
+msgid "(now)"
+msgstr "(지금)"
 
 #. placeholder {0}: attribute.name
 #. placeholder {1}: activeStep + 1
 msgid "{0} - Set {1}"
 msgstr "{0} - {1} 설정"
-
-#. placeholder {0}: time.format(oee.period.start)
-#. placeholder {1}: time.format(oee.period.end)
-msgid "{0} – {1}"
-msgstr "{0} – {1}"
 
 #. placeholder {0}: employeeIds.length
 msgid "{0} Active"
@@ -69,6 +73,11 @@ msgstr "{0} 고객"
 #. placeholder {0}: counts.failed
 msgid "{0} failed"
 msgstr "{0}개 불합격"
+
+#. placeholder {0}: formats.pieces(good)
+#. placeholder {1}: formats.pieces(parts.totalPieces)
+msgid "{0} good of {1} pieces"
+msgstr "{1}개 중 양품 {0}개"
 
 #. placeholder {0}: formatHours(dayTotals[index] ?? 0)
 #. placeholder {0}: formatHours(hours)
@@ -125,6 +134,11 @@ msgstr "{1} 중 {0} 완료"
 #. placeholder {1}: attributes.length
 msgid "{0} of {1} completed"
 msgstr "{1} 중 {0} 완료됨"
+
+#. placeholder {0}: formats.pieces(parts.badPieces)
+#. placeholder {1}: formats.pieces(parts.totalPieces)
+msgid "{0} of {1} pieces"
+msgstr "{1}개 중 불량 {0}개"
 
 #. placeholder {0}: rows.length
 msgid "{0} queued"
@@ -204,6 +218,15 @@ msgstr "{hours} 시간"
 msgid "{issued} of {required}"
 msgstr "{required} 중 {issued}"
 
+msgid "{job} ends about {at}"
+msgstr "{job} 종료 예정 {at}"
+
+msgid "{job} ends about {at}, get {next} ready"
+msgstr "{job} 종료 예정 {at}, {next} 준비하세요"
+
+msgid "{job} OEE {oee} is below the limit"
+msgstr "{job} OEE {oee}이(가) 기준치 미만입니다"
+
 msgid "{label}, overdue"
 msgstr "{label}, 기한 초과"
 
@@ -243,6 +266,9 @@ msgstr "+{overflow} 더 보기"
 #. placeholder {0}: formatDate(moveDate, { dateStyle: "long" }, locale)
 msgid "🚨 Heads up: on {0} your account will be moved to erp.try.carbon.ms"
 msgstr "🚨 안내: {0}에 계정이 erp.try.carbon.ms(으)로 이전됩니다"
+
+msgid "2 minutes or more"
+msgstr "2분 이상"
 
 msgid "A color sets the accent. Gradient and solid themes also color the navigation, the sidebar and the page."
 msgstr "색상은 강조 색을 정합니다. 그라데이션과 단색 테마는 탐색 영역, 사이드바, 페이지에도 색을 입힙니다."
@@ -318,6 +344,9 @@ msgstr "작업 메뉴"
 msgid "Active"
 msgstr "활성"
 
+msgid "Actual cycle per piece"
+msgstr "실제 개당 사이클 시간"
+
 msgid "Add"
 msgstr "추가"
 
@@ -384,6 +413,9 @@ msgstr "추가됨"
 msgid "Adjustment Type"
 msgstr "조정 유형"
 
+msgid "Alerts"
+msgstr "알림"
+
 msgid "All"
 msgstr "전체"
 
@@ -408,6 +440,9 @@ msgstr "모든 스크랩"
 
 msgid "All steps"
 msgstr "모든 단계"
+
+msgid "All within limits"
+msgstr "모두 기준 범위 내"
 
 msgid "All work centers"
 msgstr "모든 작업장"
@@ -477,6 +512,10 @@ msgstr "나에게 배정됨"
 
 msgid "Assignee"
 msgstr "담당자"
+
+#. placeholder {0}: formats.whole(3600 / ideal)
+msgid "At standard {0}"
+msgstr "표준 기준 {0}"
 
 msgid "Attach file"
 msgstr "파일 첨부"
@@ -575,6 +614,12 @@ msgstr "배경을 선택한 항목의 색상으로 자연스럽게 섞습니다.
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"
 msgstr "{0}에 의해 차단됨"
+
+msgid "Blocked by maintenance"
+msgstr "유지보수로 중단됨"
+
+msgid "Blocked by maintenance {dispatch}"
+msgstr "유지보수로 중단됨 {dispatch}"
 
 msgid "Blocking"
 msgstr "차단"
@@ -889,6 +934,9 @@ msgstr "품질 이슈 생성"
 msgid "Create Rework"
 msgstr "재작업 생성"
 
+msgid "Current job"
+msgstr "현재 작업 지시"
+
 msgid "Current work"
 msgstr "현재 작업"
 
@@ -984,6 +1032,12 @@ msgstr "디스플레이 (새 탭에서 열림)"
 
 msgid "Done"
 msgstr "완료"
+
+msgid "Done / plan"
+msgstr "완료 / 계획 수량"
+
+msgid "Done / planned"
+msgstr "완료 / 계획 수량"
 
 msgid "Down"
 msgstr "가동중단"
@@ -1129,6 +1183,9 @@ msgstr "특성 표 확대"
 
 msgid "Expand panel"
 msgstr "패널 확대"
+
+msgid "Expected finish"
+msgstr "예상 완료 시각"
 
 msgid "Expired"
 msgstr "만료됨"
@@ -1286,6 +1343,12 @@ msgstr "문제 표시"
 msgid "Forgot to Clock Out?"
 msgstr "작업 종료를 잊었나요?"
 
+msgid "From operator time"
+msgstr "작업자 시간 기준"
+
+msgid "From the sensor"
+msgstr "센서 기준"
+
 msgid "Gauge"
 msgstr "계측기"
 
@@ -1314,8 +1377,8 @@ msgstr "{0}단계로 이동: {1}"
 msgid "Go to step {0}: {1} (done)"
 msgstr "{0}단계로 이동: {1} (완료)"
 
-msgid "Good pieces"
-msgstr "양품"
+msgid "Good / scrap (this shift)"
+msgstr "양품 / 스크랩 (이번 교대조)"
 
 msgid "Grab from {source} · {onHand} there"
 msgstr "{source}에서 가져오기 · 현재고 {onHand}"
@@ -1340,6 +1403,9 @@ msgstr "설명 숨기기"
 
 msgid "Hide drawing"
 msgstr "도면 숨기기"
+
+msgid "Hourly efficiency"
+msgstr "시간당 효율"
 
 msgid "Hours"
 msgstr "시간"
@@ -1492,11 +1558,23 @@ msgstr "품목"
 msgid "Job"
 msgstr "작업"
 
+msgid "Job / item"
+msgstr "작업 지시 / 품목"
+
+msgid "Job and machine state timeline"
+msgstr "작업 지시 및 기계 상태 타임라인"
+
 msgid "Job Details"
 msgstr "작업 상세정보"
 
 msgid "Job due"
 msgstr "작업 지시 마감"
+
+msgid "Job OEE"
+msgstr "작업 지시 OEE"
+
+msgid "Job OEE (this shift)"
+msgstr "작업 지시 OEE (이번 교대조)"
 
 msgid "Job Operation"
 msgstr "작업 지시 공정"
@@ -1506,6 +1584,12 @@ msgstr "작업 이동표"
 
 msgid "Jobs"
 msgstr "작업 지시"
+
+msgid "Jobs (top) and machine state (bottom)"
+msgstr "작업 지시(상단) 및 기계 상태(하단)"
+
+msgid "Jobs this shift"
+msgstr "이번 교대조 작업 지시"
 
 msgid "Keep navigation open"
 msgstr "탐색 열어 두기"
@@ -1678,8 +1762,20 @@ msgstr "낮음"
 msgid "Machine"
 msgstr "기계"
 
+msgid "Machine down for {length}"
+msgstr "기계 정지 {length}"
+
 msgid "Machine down for maintenance now?"
 msgstr "기계가 지금 유지보수 중인가요?"
+
+msgid "Machine figures"
+msgstr "기계 지표"
+
+msgid "Machine offline for {length}"
+msgstr "기계 오프라인 {length}"
+
+msgid "Machine state since the start of the shift"
+msgstr "교대조 시작 이후 기계 상태"
 
 msgid "Machine, timer running"
 msgstr "기계, 타이머 실행 중"
@@ -1816,6 +1912,9 @@ msgstr "탐색"
 msgid "Need material"
 msgstr "자재 필요"
 
+msgid "Needs attention"
+msgstr "확인 필요"
+
 msgid "New"
 msgstr "신규"
 
@@ -1916,6 +2015,12 @@ msgstr "회원님께 배정된 검사가 없습니다"
 msgid "No issue types configured"
 msgstr "구성된 문제 유형이 없음"
 
+msgid "No job has run this shift"
+msgstr "이번 교대조에 실행된 작업 지시가 없습니다"
+
+msgid "No job is loaded on this work center"
+msgstr "이 작업장에 적재된 작업 지시가 없습니다"
+
 msgid "No kit"
 msgstr "키트 없음"
 
@@ -1924,6 +2029,9 @@ msgstr "아직 휴가가 설정되지 않았습니다. 관리자에게 ERP에서
 
 msgid "No lineside storage"
 msgstr "라인사이드 보관 위치 없음"
+
+msgid "No losses yet"
+msgstr "아직 손실이 없습니다"
 
 msgid "No maintenance scheduled for today"
 msgstr "오늘 예정된 유지보수가 없습니다"
@@ -1982,6 +2090,9 @@ msgstr "피킹 리스트 없음"
 msgid "No printer configured"
 msgstr "설정된 프린터가 없습니다"
 
+msgid "No reason given"
+msgstr "사유 없음"
+
 msgid "No recent operations"
 msgstr "최근 공정작업이 없습니다"
 
@@ -2009,6 +2120,9 @@ msgstr "필요한 샘플이 없습니다."
 msgid "No scheduled time"
 msgstr "예정된 시간 없음"
 
+msgid "No scrap this shift"
+msgstr "이번 교대조 스크랩 없음"
+
 msgid "No serial number"
 msgstr "일련번호 없음"
 
@@ -2024,11 +2138,20 @@ msgstr "오늘 배정된 서비스 작업 지시가 없습니다"
 msgid "No shift"
 msgstr "교대조 없음"
 
+msgid "No shift and no data for this work center yet"
+msgstr "이 작업장의 교대조 및 데이터가 아직 없습니다"
+
 msgid "No shortcuts available on this page."
 msgstr "이 페이지에서는 사용 가능한 바로가기가 없습니다."
 
 msgid "No spare parts added yet"
 msgstr "아직 추가된 예비 부품이 없습니다"
+
+msgid "No standard time"
+msgstr "표준 시간 없음"
+
+msgid "No state"
+msgstr "상태 없음"
 
 msgid "No station"
 msgstr "스테이션 없음"
@@ -2038,6 +2161,9 @@ msgstr "이 사업장에는 스테이션이 없습니다"
 
 msgid "No stock"
 msgstr "재고 없음"
+
+msgid "No stops this shift"
+msgstr "이번 교대조에 정지 없음"
 
 msgid "No time entries for this week"
 msgstr "이번 주 시간 기록이 없습니다"
@@ -2074,6 +2200,9 @@ msgstr "보통 검사"
 
 msgid "Not in this operation"
 msgstr "이 공정에 없음"
+
+msgid "Not planned"
+msgstr "계획되지 않음"
 
 msgid "Not scheduled"
 msgstr "예약되지 않음"
@@ -2118,12 +2247,11 @@ msgstr "OEE"
 msgid "OEE Impact"
 msgstr "OEE 영향"
 
-#. placeholder {0}: percent.format(OEE_LOW)
-msgid "OEE is below {0}"
-msgstr "OEE가 {0} 미만"
+msgid "OEE is below {low}"
+msgstr "OEE가 {low} 미만입니다"
 
-msgid "OEE this shift"
-msgstr "이번 교대조 OEE"
+msgid "OEE this shift (all jobs)"
+msgstr "이번 교대조 OEE(전체 작업 지시)"
 
 msgid "OEM Required"
 msgstr "OEM 필요"
@@ -2131,6 +2259,9 @@ msgstr "OEM 필요"
 #. placeholder {0}: m.operationQuantity ?? 0
 msgid "of {0}"
 msgstr "/{0}"
+
+msgid "Of planned time"
+msgstr "계획 시간 대비"
 
 msgid "Offline"
 msgstr "오프라인"
@@ -2330,6 +2461,12 @@ msgstr "백분율"
 msgid "Performance"
 msgstr "성능"
 
+msgid "Performance {performance}: a standard time may be set too slow"
+msgstr "성능 {performance}: 표준 시간이 너무 길게 설정되었을 수 있음"
+
+msgid "Performance counts only this run"
+msgstr "성능은 이번 가동만 집계"
+
 msgid "Phone"
 msgstr "전화"
 
@@ -2403,6 +2540,9 @@ msgstr "{substitutedFrom} 대신 피킹, 작업의 품목"
 
 msgid "picking in place of {substitutedFrom}, the item on the job, for {substitutedAssemblies} assemblies"
 msgstr "{substitutedFrom} 대신 피킹, 작업의 품목, {substitutedAssemblies}개 조립"
+
+msgid "Pieces per run hour"
+msgstr "가동 시간당 생산 수량"
 
 msgid "Pin or unpin"
 msgstr "고정 또는 고정 해제"
@@ -2539,6 +2679,11 @@ msgstr "견적서"
 
 msgid "Raise quality issue"
 msgstr "품질 이슈 등록"
+
+#. placeholder {0}: formats.minutes(parts.runMs)
+#. placeholder {1}: formats.minutes(parts.plannedMs)
+msgid "Ran {0} of {1} planned"
+msgstr "계획된 {1} 중 {0} 가동"
 
 msgid "raw bins short"
 msgstr "원자재 빈 부족"
@@ -2721,8 +2866,14 @@ msgstr "재작업 수량"
 msgid "Rich text"
 msgstr "리치 텍스트"
 
+msgid "Run outside shifts"
+msgstr "교대조 시간 외 가동"
+
 msgid "Run time"
 msgstr "가공 시간"
+
+msgid "Run with a standard time"
+msgstr "표준 시간이 있는 가동"
 
 msgid "Running"
 msgstr "실행 중"
@@ -2817,6 +2968,9 @@ msgstr "일정 충돌"
 msgid "Scrap"
 msgstr "스크랩"
 
+msgid "Scrap (pieces)"
+msgstr "스크랩(개)"
+
 msgid "Scrap {readableId}"
 msgstr "{readableId} 스크랩"
 
@@ -2825,6 +2979,9 @@ msgstr "자재 스크랩"
 
 msgid "Scrap quantity"
 msgstr "스크랩 수량"
+
+msgid "Scrap rate"
+msgstr "스크랩률"
 
 msgid "Scrap Reason"
 msgstr "스크랩 사유"
@@ -3025,6 +3182,9 @@ msgstr "설정"
 msgid "Setup, timer running"
 msgstr "셋업, 타이머 실행 중"
 
+msgid "Shift {range}"
+msgstr "교대조 {range}"
+
 msgid "short"
 msgstr "부족"
 
@@ -3133,6 +3293,28 @@ msgstr "예비 부품"
 msgid "Spare Parts Used"
 msgstr "사용된 예비 부품"
 
+msgid "Speed loss"
+msgstr "속도 손실"
+
+#. placeholder {0}: formats.seconds(ideal)
+msgid "Standard {0}"
+msgstr "표준 {0}"
+
+#. placeholder {0}: formats.seconds(job.idealSecondsPerPiece)
+msgid "Standard {0} per piece"
+msgstr "개당 표준 {0}"
+
+msgid "Standard time made"
+msgstr "달성한 표준 시간"
+
+#. placeholder {0}: formats.minutes(parts.idealMs)
+#. placeholder {1}: formats.minutes(parts.runWithStandardMs)
+msgid "Standard time made {0} in {1} of run"
+msgstr "가동 {1} 중 표준 시간 {0} 달성"
+
+msgid "Standard time made ÷ planned time, dashed line = {target}, ⇄ = job change"
+msgstr "달성한 표준 시간 ÷ 계획 시간, 점선 = 목표 {target}, ⇄ = 작업 지시 변경"
+
 msgid "Start"
 msgstr "시작"
 
@@ -3209,6 +3391,12 @@ msgstr "단계가 누락되었습니다"
 msgid "Stock at:"
 msgstr "재고 위치:"
 
+msgid "Stop log"
+msgstr "정지 기록"
+
+msgid "Stopped now {length}"
+msgstr "현재 정지 중 {length}"
+
 msgid "Storage Unit"
 msgstr "보관 단위"
 
@@ -3278,6 +3466,12 @@ msgstr "작업장을 오프라인 상태로 변경"
 msgid "Tap a day to add time to {selectedLabel}. Drag the lower edge of a bar to change its hours."
 msgstr "날짜를 누르면 {selectedLabel}에 시간을 추가합니다. 막대의 아래쪽 모서리를 드래그하여 시간을 변경합니다."
 
+msgid "Target {target}"
+msgstr "목표 {target}"
+
+msgid "Target {target}, last shift {previous}"
+msgstr "목표 {target}, 직전 교대조 {previous}"
+
 msgid "Text color"
 msgstr "텍스트 색상"
 
@@ -3309,6 +3503,9 @@ msgstr "검사가 통과 상태로 표시되고, 해당 단위는 가용 상태�
 
 msgid "The inspection will be marked Passed. Its units are released to Available, except the {fails} that failed a sample, which stay Rejected."
 msgstr "검사가 통과 상태로 표시됩니다. 샘플 검사에 실패한 {fails}개 단위를 제외한 나머지 단위는 가용 상태로 전환되며, 해당 {fails}개 단위는 거부됨 상태로 유지됩니다."
+
+msgid "The job"
+msgstr "해당 작업 지시"
 
 msgid "The job is closed"
 msgstr "작업 지시가 마감됨"
@@ -3468,6 +3665,9 @@ msgstr "실행할"
 msgid "Today"
 msgstr "오늘"
 
+msgid "Today {range}"
+msgstr "오늘 {range}"
+
 msgid "Toggle sidebar"
 msgstr "사이드바 전환"
 
@@ -3476,6 +3676,12 @@ msgstr "사이드바 전환"
 
 msgid "Tools"
 msgstr "공구"
+
+msgid "Top losses"
+msgstr "주요 손실"
+
+msgid "Top losses (minutes)"
+msgstr "주요 손실(분)"
 
 msgid "Top to Bottom"
 msgstr "위에서 아래로"
@@ -3488,6 +3694,9 @@ msgstr "주제"
 
 msgid "Total"
 msgstr "총계"
+
+msgid "Total {total}"
+msgstr "합계 {total}"
 
 msgid "Total hours"
 msgstr "전체 시간"
@@ -3581,6 +3790,9 @@ msgstr "알 수 없는 계측기"
 
 msgid "Unknown part"
 msgstr "알 수 없는 부품"
+
+msgid "Unknown reason"
+msgstr "알 수 없는 사유"
 
 msgid "Unlock"
 msgstr "잠금 해제"

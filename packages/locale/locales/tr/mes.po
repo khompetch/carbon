@@ -37,18 +37,22 @@ msgstr "Bu adet için “{0}” düzeltme gerektiriyor."
 msgid "\"{column}\" is required."
 msgstr "\"{column}\" gereklidir."
 
+msgid "(after this shift)"
+msgstr "(bu vardiyadan sonra)"
+
 msgid "(Inactive)"
 msgstr "(Pasif)"
+
+msgid "(next)"
+msgstr "(sonraki)"
+
+msgid "(now)"
+msgstr "(şimdi)"
 
 #. placeholder {0}: attribute.name
 #. placeholder {1}: activeStep + 1
 msgid "{0} - Set {1}"
 msgstr "{0} - Ayarla {1}"
-
-#. placeholder {0}: time.format(oee.period.start)
-#. placeholder {1}: time.format(oee.period.end)
-msgid "{0} – {1}"
-msgstr "{0} – {1}"
 
 #. placeholder {0}: employeeIds.length
 msgid "{0} Active"
@@ -69,6 +73,11 @@ msgstr "{0} müşteri"
 #. placeholder {0}: counts.failed
 msgid "{0} failed"
 msgstr "{0} başarısız"
+
+#. placeholder {0}: formats.pieces(good)
+#. placeholder {1}: formats.pieces(parts.totalPieces)
+msgid "{0} good of {1} pieces"
+msgstr "{1} adetin {0} tanesi iyi"
 
 #. placeholder {0}: formatHours(dayTotals[index] ?? 0)
 #. placeholder {0}: formatHours(hours)
@@ -125,6 +134,11 @@ msgstr "{0} adet / {1} adet tamamlandı"
 #. placeholder {1}: attributes.length
 msgid "{0} of {1} completed"
 msgstr "{0} adet tamamlandı"
+
+#. placeholder {0}: formats.pieces(parts.badPieces)
+#. placeholder {1}: formats.pieces(parts.totalPieces)
+msgid "{0} of {1} pieces"
+msgstr "{1} adetin {0} tanesi hatalı"
 
 #. placeholder {0}: rows.length
 msgid "{0} queued"
@@ -204,6 +218,15 @@ msgstr "{hours} s"
 msgid "{issued} of {required}"
 msgstr "{issued} / {required}"
 
+msgid "{job} ends about {at}"
+msgstr "{job} yaklaşık {at} civarında bitiyor"
+
+msgid "{job} ends about {at}, get {next} ready"
+msgstr "{job} yaklaşık {at} civarında bitiyor, {next} hazır hale getirin"
+
+msgid "{job} OEE {oee} is below the limit"
+msgstr "{job} OEE {oee} sınırın altında"
+
 msgid "{label}, overdue"
 msgstr "{label}, gecikmiş"
 
@@ -243,6 +266,9 @@ msgstr "+{overflow} daha fazla"
 #. placeholder {0}: formatDate(moveDate, { dateStyle: "long" }, locale)
 msgid "🚨 Heads up: on {0} your account will be moved to erp.try.carbon.ms"
 msgstr "🚨 Dikkat: {0} tarihinde hesabınız erp.try.carbon.ms adresine taşınacak"
+
+msgid "2 minutes or more"
+msgstr "2 dakika veya daha fazla"
 
 msgid "A color sets the accent. Gradient and solid themes also color the navigation, the sidebar and the page."
 msgstr "Renk vurguyu belirler. Gradyan ve düz temalar gezinmeyi, kenar çubuğunu ve sayfayı da renklendirir."
@@ -318,6 +344,9 @@ msgstr "İşlem Menüsü"
 msgid "Active"
 msgstr "Aktif"
 
+msgid "Actual cycle per piece"
+msgstr "Parça başına gerçek çevrim süresi"
+
 msgid "Add"
 msgstr "Ekle"
 
@@ -384,6 +413,9 @@ msgstr "Eklendi"
 msgid "Adjustment Type"
 msgstr "Düzeltme türü"
 
+msgid "Alerts"
+msgstr "Uyarılar"
+
 msgid "All"
 msgstr "Tümü"
 
@@ -408,6 +440,9 @@ msgstr "Hepsi fire"
 
 msgid "All steps"
 msgstr "Tüm adımlar"
+
+msgid "All within limits"
+msgstr "Tümü sınırlar içinde"
 
 msgid "All work centers"
 msgstr "Tüm iş merkezleri"
@@ -477,6 +512,10 @@ msgstr "Bana Atananlar"
 
 msgid "Assignee"
 msgstr "Atanan"
+
+#. placeholder {0}: formats.whole(3600 / ideal)
+msgid "At standard {0}"
+msgstr "Standart {0}"
 
 msgid "Attach file"
 msgstr "Dosya ekle"
@@ -575,6 +614,12 @@ msgstr "Arka planı seçili öğelerin rengine karıştırır."
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"
 msgstr "Engelli edildi: {0}"
+
+msgid "Blocked by maintenance"
+msgstr "Bakım nedeniyle engellendi"
+
+msgid "Blocked by maintenance {dispatch}"
+msgstr "Bakım nedeniyle engellendi {dispatch}"
 
 msgid "Blocking"
 msgstr "Bloklayıcı"
@@ -889,6 +934,9 @@ msgstr "Kalite Sorunu Oluştur"
 msgid "Create Rework"
 msgstr "İşlemi Yeniden Oluştur"
 
+msgid "Current job"
+msgstr "Mevcut iş emri"
+
 msgid "Current work"
 msgstr "Mevcut iş"
 
@@ -984,6 +1032,12 @@ msgstr "Ekranlar (yeni sekmede açılır)"
 
 msgid "Done"
 msgstr "Bitti"
+
+msgid "Done / plan"
+msgstr "Bitti / plan"
+
+msgid "Done / planned"
+msgstr "Bitti / planlandı"
 
 msgid "Down"
 msgstr "Düşük"
@@ -1129,6 +1183,9 @@ msgstr "Özellikler tablosunu genişlet"
 
 msgid "Expand panel"
 msgstr "Paneli genişlet"
+
+msgid "Expected finish"
+msgstr "Beklenen bitiş"
 
 msgid "Expired"
 msgstr "Süresi doldu"
@@ -1286,6 +1343,12 @@ msgstr "Sorunu işaretle"
 msgid "Forgot to Clock Out?"
 msgstr "İş bitişini unutmuş musunuz?"
 
+msgid "From operator time"
+msgstr "Operatör süresinden"
+
+msgid "From the sensor"
+msgstr "Sensörden"
+
 msgid "Gauge"
 msgstr "Ölçüm aleti"
 
@@ -1314,8 +1377,8 @@ msgstr "{0}. adıma git: {1}"
 msgid "Go to step {0}: {1} (done)"
 msgstr "{0}. adıma git: {1} (bitti)"
 
-msgid "Good pieces"
-msgstr "Sağlam adetler"
+msgid "Good / scrap (this shift)"
+msgstr "İyi / fire (bu vardiya)"
 
 msgid "Grab from {source} · {onHand} there"
 msgstr "{source} konumundan al · orada {onHand} var"
@@ -1340,6 +1403,9 @@ msgstr "Açıklamayı gizle"
 
 msgid "Hide drawing"
 msgstr "Teknik resmi gizle"
+
+msgid "Hourly efficiency"
+msgstr "Saatlik verimlilik"
 
 msgid "Hours"
 msgstr "Saat"
@@ -1492,11 +1558,23 @@ msgstr "Stok kartları"
 msgid "Job"
 msgstr "İş Emri"
 
+msgid "Job / item"
+msgstr "İş emri / stok kartı"
+
+msgid "Job and machine state timeline"
+msgstr "İş emri ve makine durumu zaman çizelgesi"
+
 msgid "Job Details"
 msgstr "İş Detayları"
 
 msgid "Job due"
 msgstr "İş emri son tarihi"
+
+msgid "Job OEE"
+msgstr "İş emri OEE"
+
+msgid "Job OEE (this shift)"
+msgstr "İş emri OEE (bu vardiya)"
 
 msgid "Job Operation"
 msgstr "İş emri operasyonu"
@@ -1506,6 +1584,12 @@ msgstr "İş emri takip kartı"
 
 msgid "Jobs"
 msgstr "İş emirleri"
+
+msgid "Jobs (top) and machine state (bottom)"
+msgstr "İş emirleri (üstte) ve makine durumu (altta)"
+
+msgid "Jobs this shift"
+msgstr "Bu vardiyadaki iş emirleri"
 
 msgid "Keep navigation open"
 msgstr "Gezinmeyi açık tut"
@@ -1678,8 +1762,20 @@ msgstr "Düşük"
 msgid "Machine"
 msgstr "Makine"
 
+msgid "Machine down for {length}"
+msgstr "Makine {length} süredir durdu"
+
 msgid "Machine down for maintenance now?"
 msgstr "Makine şu anda bakım için kapalı mı?"
+
+msgid "Machine figures"
+msgstr "Makine verileri"
+
+msgid "Machine offline for {length}"
+msgstr "Makine {length} süredir çevrim dışı"
+
+msgid "Machine state since the start of the shift"
+msgstr "Vardiya başlangıcından beri makine durumu"
 
 msgid "Machine, timer running"
 msgstr "Makine, zamanlayıcı çalışıyor"
@@ -1816,6 +1912,9 @@ msgstr "Gezinti"
 msgid "Need material"
 msgstr "Malzeme gerekli"
 
+msgid "Needs attention"
+msgstr "İlgi gerektiriyor"
+
 msgid "New"
 msgstr "Yeni"
 
@@ -1916,6 +2015,12 @@ msgstr "Size atanmış muayene yok"
 msgid "No issue types configured"
 msgstr "Sorun türü yapılandırılmadı"
 
+msgid "No job has run this shift"
+msgstr "Bu vardiyada çalışan iş emri yok"
+
+msgid "No job is loaded on this work center"
+msgstr "Bu iş merkezine yüklü iş emri yok"
+
 msgid "No kit"
 msgstr "Set yok"
 
@@ -1924,6 +2029,9 @@ msgstr "Henüz izin ayarlanmadı. Yöneticinizden ERP'de bir tane ayarlamasını
 
 msgid "No lineside storage"
 msgstr "Hat yanı depolama yok"
+
+msgid "No losses yet"
+msgstr "Henüz kayıp yok"
 
 msgid "No maintenance scheduled for today"
 msgstr "Bugün planlanmış bakım yok"
@@ -1982,6 +2090,9 @@ msgstr "Toplama listesi yok"
 msgid "No printer configured"
 msgstr "Yazıcı yapılandırılmadı"
 
+msgid "No reason given"
+msgstr "Neden belirtilmemiş"
+
 msgid "No recent operations"
 msgstr "Son operasyon yok"
 
@@ -2009,6 +2120,9 @@ msgstr "Örnek gerekli değil."
 msgid "No scheduled time"
 msgstr "Planlanmış zaman yok"
 
+msgid "No scrap this shift"
+msgstr "Bu vardiyada fire yok"
+
 msgid "No serial number"
 msgstr "Seri numarası yok"
 
@@ -2024,11 +2138,20 @@ msgstr "Bugün size atanmış hizmet işi yok"
 msgid "No shift"
 msgstr "Vardiya yok"
 
+msgid "No shift and no data for this work center yet"
+msgstr "Bu iş merkezi için henüz vardiya ve veri yok"
+
 msgid "No shortcuts available on this page."
 msgstr "Bu sayfada kullanılabilir kısayol yoktur."
 
 msgid "No spare parts added yet"
 msgstr "Henüz yedek parça eklenmedi"
+
+msgid "No standard time"
+msgstr "Standart süre yok"
+
+msgid "No state"
+msgstr "Durum yok"
 
 msgid "No station"
 msgstr "İstasyon yok"
@@ -2038,6 +2161,9 @@ msgstr "Bu lokasyonda istasyon yok"
 
 msgid "No stock"
 msgstr "Stok yok"
+
+msgid "No stops this shift"
+msgstr "Bu vardiyada duruş yok"
 
 msgid "No time entries for this week"
 msgstr "Bu hafta için zaman girişi yok"
@@ -2074,6 +2200,9 @@ msgstr "Normal"
 
 msgid "Not in this operation"
 msgstr "Bu operasyonda yok"
+
+msgid "Not planned"
+msgstr "Planlanmadı"
 
 msgid "Not scheduled"
 msgstr "Planlanmamış"
@@ -2118,12 +2247,11 @@ msgstr "OEE"
 msgid "OEE Impact"
 msgstr "OEE Etkisi"
 
-#. placeholder {0}: percent.format(OEE_LOW)
-msgid "OEE is below {0}"
-msgstr "OEE {0} değerinin altında"
+msgid "OEE is below {low}"
+msgstr "OEE {low} değerinin altında"
 
-msgid "OEE this shift"
-msgstr "Bu vardiya OEE"
+msgid "OEE this shift (all jobs)"
+msgstr "Bu vardiyada OEE (tüm iş emirleri)"
 
 msgid "OEM Required"
 msgstr "OEM Gerekli"
@@ -2131,6 +2259,9 @@ msgstr "OEM Gerekli"
 #. placeholder {0}: m.operationQuantity ?? 0
 msgid "of {0}"
 msgstr "/{0}"
+
+msgid "Of planned time"
+msgstr "Planlanan sürenin"
 
 msgid "Offline"
 msgstr "Çevrimdışı"
@@ -2330,6 +2461,12 @@ msgstr "Yüzde"
 msgid "Performance"
 msgstr "Performans"
 
+msgid "Performance {performance}: a standard time may be set too slow"
+msgstr "Performans {performance}: standart süre çok yavaş ayarlanmış olabilir"
+
+msgid "Performance counts only this run"
+msgstr "Performans yalnızca bu çalışmayı sayar"
+
 msgid "Phone"
 msgstr "Telefon"
 
@@ -2403,6 +2540,9 @@ msgstr "{substitutedFrom} yerine toplama, iş emrindeki stok kartı"
 
 msgid "picking in place of {substitutedFrom}, the item on the job, for {substitutedAssemblies} assemblies"
 msgstr "{substitutedFrom} yerine toplama, iş emrindeki stok kartı, {substitutedAssemblies} montaj için"
+
+msgid "Pieces per run hour"
+msgstr "Çalışma saati başına parça"
 
 msgid "Pin or unpin"
 msgstr "Sabitle veya sabitliği kaldır"
@@ -2539,6 +2679,11 @@ msgstr "Teklifler"
 
 msgid "Raise quality issue"
 msgstr "Kalite sorunu bildir"
+
+#. placeholder {0}: formats.minutes(parts.runMs)
+#. placeholder {1}: formats.minutes(parts.plannedMs)
+msgid "Ran {0} of {1} planned"
+msgstr "{0} çalıştı / planlanan {1}"
 
 msgid "raw bins short"
 msgstr "hammadde gözleri eksik"
@@ -2721,8 +2866,14 @@ msgstr "Yeniden işleme miktarı"
 msgid "Rich text"
 msgstr "Zengin metin"
 
+msgid "Run outside shifts"
+msgstr "Vardiya dışında çalışma"
+
 msgid "Run time"
 msgstr "İşleme süresi"
+
+msgid "Run with a standard time"
+msgstr "Standart süreli çalışma"
 
 msgid "Running"
 msgstr "Çalışıyor"
@@ -2817,6 +2968,9 @@ msgstr "Zamanlama çakışması"
 msgid "Scrap"
 msgstr "Fire"
 
+msgid "Scrap (pieces)"
+msgstr "Fire (parça)"
+
 msgid "Scrap {readableId}"
 msgstr "Fire {readableId}"
 
@@ -2825,6 +2979,9 @@ msgstr "Fire malzemesi"
 
 msgid "Scrap quantity"
 msgstr "Fire miktarı"
+
+msgid "Scrap rate"
+msgstr "Fire oranı"
 
 msgid "Scrap Reason"
 msgstr "Fire nedeni"
@@ -3025,6 +3182,9 @@ msgstr "Kurulum"
 msgid "Setup, timer running"
 msgstr "Hazırlık, zamanlayıcı çalışıyor"
 
+msgid "Shift {range}"
+msgstr "Vardiya {range}"
+
 msgid "short"
 msgstr "kısa"
 
@@ -3133,6 +3293,28 @@ msgstr "Yedek Parçalar"
 msgid "Spare Parts Used"
 msgstr "Kullanılan Yedek Parçalar"
 
+msgid "Speed loss"
+msgstr "Hız kaybı"
+
+#. placeholder {0}: formats.seconds(ideal)
+msgid "Standard {0}"
+msgstr "Standart {0}"
+
+#. placeholder {0}: formats.seconds(job.idealSecondsPerPiece)
+msgid "Standard {0} per piece"
+msgstr "Parça başına standart {0}"
+
+msgid "Standard time made"
+msgstr "Üretilen standart süre"
+
+#. placeholder {0}: formats.minutes(parts.idealMs)
+#. placeholder {1}: formats.minutes(parts.runWithStandardMs)
+msgid "Standard time made {0} in {1} of run"
+msgstr "{1} çalışmada üretilen standart süre: {0}"
+
+msgid "Standard time made ÷ planned time, dashed line = {target}, ⇄ = job change"
+msgstr "Üretilen standart süre ÷ planlanan süre, kesikli çizgi = {target}, ⇄ = iş emri değişimi"
+
 msgid "Start"
 msgstr "Başlat"
 
@@ -3209,6 +3391,12 @@ msgstr "Adımlar eksik"
 msgid "Stock at:"
 msgstr "Stok konumu:"
 
+msgid "Stop log"
+msgstr "Duruş kaydı"
+
+msgid "Stopped now {length}"
+msgstr "Şu an durmuş: {length}"
+
 msgid "Storage Unit"
 msgstr "Depolama Birimi"
 
@@ -3278,6 +3466,12 @@ msgstr "İş merkezini çevrimdışı alır"
 msgid "Tap a day to add time to {selectedLabel}. Drag the lower edge of a bar to change its hours."
 msgstr "Bir gün seçerek {selectedLabel} için süre ekleyin. Bir çubuğun alt kenarını sürükleyerek saatlerini değiştirin."
 
+msgid "Target {target}"
+msgstr "Hedef {target}"
+
+msgid "Target {target}, last shift {previous}"
+msgstr "Hedef {target}, önceki vardiya {previous}"
+
 msgid "Text color"
 msgstr "Metin rengi"
 
@@ -3309,6 +3503,9 @@ msgstr "Muayene Geçti olarak işaretlenecek ve birimleri Kullanılabilir durumu
 
 msgid "The inspection will be marked Passed. Its units are released to Available, except the {fails} that failed a sample, which stay Rejected."
 msgstr "Muayene Geçti olarak işaretlenecek. Birimleri Kullanılabilir durumuna geçecek; ancak numune testinde kalan {fails} adet Reddedildi durumunda kalacak."
+
+msgid "The job"
+msgstr "İş emri"
 
 msgid "The job is closed"
 msgstr "İş emri kapatıldı"
@@ -3468,6 +3665,9 @@ msgstr "Çalıştırılacak"
 msgid "Today"
 msgstr "Bugün"
 
+msgid "Today {range}"
+msgstr "Bugün {range}"
+
 msgid "Toggle sidebar"
 msgstr "Kenar çubuğunu aç/kapat"
 
@@ -3476,6 +3676,12 @@ msgstr "Kenar çubuğunu aç/kapat"
 
 msgid "Tools"
 msgstr "Araçlar"
+
+msgid "Top losses"
+msgstr "Başlıca kayıplar"
+
+msgid "Top losses (minutes)"
+msgstr "Başlıca kayıplar (dakika)"
 
 msgid "Top to Bottom"
 msgstr "Yukarıdan Aşağıya"
@@ -3488,6 +3694,9 @@ msgstr "Konular"
 
 msgid "Total"
 msgstr "Toplam"
+
+msgid "Total {total}"
+msgstr "Toplam {total}"
 
 msgid "Total hours"
 msgstr "Toplam saat"
@@ -3581,6 +3790,9 @@ msgstr "Bilinmeyen ölçüm aleti"
 
 msgid "Unknown part"
 msgstr "Bilinmeyen parça"
+
+msgid "Unknown reason"
+msgstr "Bilinmeyen neden"
 
 msgid "Unlock"
 msgstr "Kilit aç"

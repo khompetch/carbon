@@ -25,6 +25,8 @@ export type OeeCount = {
   jobOperationId: string | null;
   total: number;
   bad: number;
+  /** The scrap reason of a posted Scrap or Rework quantity, when it has one. */
+  scrapReasonId?: string | null;
 };
 
 export type OeeWorkCenterInput = {
@@ -77,9 +79,7 @@ export function computeOeeParts(input: OeeWorkCenterInput): OeeParts {
   const runMs = intervalLength(run);
 
   const operationIdeal = (jobOperationId: string | null) =>
-    jobOperationId === null
-      ? null
-      : (input.idealByOperation.get(jobOperationId) ?? null);
+    operationIdealSeconds(input, jobOperationId);
 
   // The ideal of a moment: its owner's operation standard, else the device's.
   // With a device standard every moment has one; without it, only the time
@@ -98,11 +98,6 @@ export function computeOeeParts(input: OeeWorkCenterInput): OeeParts {
           )
         );
 
-  // A pulse bucket is counted at its end, so an owner holds (start, end].
-  const ownerAt = (at: number) =>
-    input.owners.find((owner) => owner.start < at && at <= owner.end)
-      ?.jobOperationId ?? null;
-
   let idealMs = 0;
   let totalPieces = 0;
   let badPieces = 0;
@@ -110,8 +105,7 @@ export function computeOeeParts(input: OeeWorkCenterInput): OeeParts {
     if (count.at < period.start || count.at >= period.end) continue;
     totalPieces += count.total;
     badPieces += count.bad;
-    const operation = count.jobOperationId ?? ownerAt(count.at);
-    const ideal = operationIdeal(operation) ?? input.deviceIdealSeconds;
+    const ideal = countIdealSeconds(input, count);
     if (ideal !== null) idealMs += ideal * count.total * 1000;
   }
 
@@ -124,6 +118,50 @@ export function computeOeeParts(input: OeeWorkCenterInput): OeeParts {
     totalPieces,
     badPieces
   };
+}
+
+type IdealInput = Pick<
+  OeeWorkCenterInput,
+  "owners" | "idealByOperation" | "deviceIdealSeconds"
+>;
+
+function operationIdealSeconds(
+  input: IdealInput,
+  jobOperationId: string | null
+): number | null {
+  return jobOperationId === null
+    ? null
+    : (input.idealByOperation.get(jobOperationId) ?? null);
+}
+
+/** The operation that owns the run at `at`. A pulse bucket is counted at its end, so an owner holds (start, end]. */
+export function ownerAt(input: Pick<OeeWorkCenterInput, "owners">, at: number) {
+  return (
+    input.owners.find((owner) => owner.start < at && at <= owner.end)
+      ?.jobOperationId ?? null
+  );
+}
+
+/** The operation of a count: its own, else the owner of the run at its moment. */
+export function countOperation(
+  input: Pick<OeeWorkCenterInput, "owners">,
+  count: OeeCount
+): string | null {
+  return count.jobOperationId ?? ownerAt(input, count.at);
+}
+
+/**
+ * The ideal seconds per piece of a count: its operation's standard, else the
+ * device's. Null when neither has one.
+ */
+export function countIdealSeconds(
+  input: IdealInput,
+  count: OeeCount
+): number | null {
+  return (
+    operationIdealSeconds(input, countOperation(input, count)) ??
+    input.deviceIdealSeconds
+  );
 }
 
 export function addOeeParts(a: OeeParts, b: OeeParts): OeeParts {
@@ -161,6 +199,19 @@ export function oeeRatios(parts: OeeParts): OeeRatios {
   };
 }
 
+/**
+ * The OEE a screen shows: Performance above 100% (a standard set too slow)
+ * counts as 100%, so OEE never reads above A × Q. The real ratios are kept
+ * for the alert that names the slow standard.
+ */
+export function shownOee(ratios: OeeRatios): number | null {
+  const { availability, performance, quality } = ratios;
+  if (availability === null || performance === null || quality === null) {
+    return null;
+  }
+  return availability * Math.min(1, performance) * quality;
+}
+
 /** OEE at or above this is good (the common world-class mark). */
 export const OEE_GOOD = 0.85;
 /** OEE below this is an alert. */
@@ -168,10 +219,28 @@ export const OEE_LOW = 0.6;
 
 export type OeeTone = "neutral" | "good" | "warn" | "danger";
 
+/** Availability, Performance or Quality at or above this is good. */
+export const RATIO_GOOD = 0.9;
+/** Availability, Performance or Quality below this is an alert. */
+export const RATIO_LOW = 0.8;
+/** An hour's efficiency (ideal time made ÷ planned time) at or above this is good. */
+export const HOURLY_GOOD = OEE_GOOD;
+/** An hour's efficiency below this is an alert. */
+export const HOURLY_LOW = 0.7;
+
+/** How a higher-is-better ratio reads against a good mark and a low mark. */
+export function ratioTone(
+  value: number | null | undefined,
+  good: number,
+  low: number
+): OeeTone {
+  if (value === null || value === undefined) return "neutral";
+  if (value >= good) return "good";
+  if (value >= low) return "warn";
+  return "danger";
+}
+
 /** How an OEE value reads against `OEE_GOOD` and `OEE_LOW`. */
 export function oeeTone(value: number | null | undefined): OeeTone {
-  if (value === null || value === undefined) return "neutral";
-  if (value >= OEE_GOOD) return "good";
-  if (value >= OEE_LOW) return "warn";
-  return "danger";
+  return ratioTone(value, OEE_GOOD, OEE_LOW);
 }

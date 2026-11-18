@@ -37,18 +37,22 @@ msgstr "\"{0}\" calls for a correction on this unit."
 msgid "\"{column}\" is required."
 msgstr "\"{column}\" is required."
 
+msgid "(after this shift)"
+msgstr "(after this shift)"
+
 msgid "(Inactive)"
 msgstr "(Inactive)"
+
+msgid "(next)"
+msgstr "(next)"
+
+msgid "(now)"
+msgstr "(now)"
 
 #. placeholder {0}: attribute.name
 #. placeholder {1}: activeStep + 1
 msgid "{0} - Set {1}"
 msgstr "{0} - Set {1}"
-
-#. placeholder {0}: time.format(oee.period.start)
-#. placeholder {1}: time.format(oee.period.end)
-msgid "{0} – {1}"
-msgstr "{0} – {1}"
 
 #. placeholder {0}: employeeIds.length
 msgid "{0} Active"
@@ -69,6 +73,11 @@ msgstr "{0} customers"
 #. placeholder {0}: counts.failed
 msgid "{0} failed"
 msgstr "{0} failed"
+
+#. placeholder {0}: formats.pieces(good)
+#. placeholder {1}: formats.pieces(parts.totalPieces)
+msgid "{0} good of {1} pieces"
+msgstr "{0} good of {1} pieces"
 
 #. placeholder {0}: formatHours(dayTotals[index] ?? 0)
 #. placeholder {0}: formatHours(hours)
@@ -125,6 +134,11 @@ msgstr "{0} of {1} complete"
 #. placeholder {1}: attributes.length
 msgid "{0} of {1} completed"
 msgstr "{0} of {1} completed"
+
+#. placeholder {0}: formats.pieces(parts.badPieces)
+#. placeholder {1}: formats.pieces(parts.totalPieces)
+msgid "{0} of {1} pieces"
+msgstr "{0} of {1} pieces"
 
 #. placeholder {0}: rows.length
 msgid "{0} queued"
@@ -204,6 +218,15 @@ msgstr "{hours} h"
 msgid "{issued} of {required}"
 msgstr "{issued} of {required}"
 
+msgid "{job} ends about {at}"
+msgstr "{job} ends about {at}"
+
+msgid "{job} ends about {at}, get {next} ready"
+msgstr "{job} ends about {at}, get {next} ready"
+
+msgid "{job} OEE {oee} is below the limit"
+msgstr "{job} OEE {oee} is below the limit"
+
 msgid "{label}, overdue"
 msgstr "{label}, overdue"
 
@@ -243,6 +266,9 @@ msgstr "+{overflow} more"
 #. placeholder {0}: formatDate(moveDate, { dateStyle: "long" }, locale)
 msgid "🚨 Heads up: on {0} your account will be moved to erp.try.carbon.ms"
 msgstr "🚨 Heads up: on {0} your account will be moved to erp.try.carbon.ms"
+
+msgid "2 minutes or more"
+msgstr "2 minutes or more"
 
 msgid "A color sets the accent. Gradient and solid themes also color the navigation, the sidebar and the page."
 msgstr "A color sets the accent. Gradient and solid themes also color the navigation, the sidebar and the page."
@@ -318,6 +344,9 @@ msgstr "Action Menu"
 msgid "Active"
 msgstr "Active"
 
+msgid "Actual cycle per piece"
+msgstr "Actual cycle per piece"
+
 msgid "Add"
 msgstr "Add"
 
@@ -384,6 +413,9 @@ msgstr "Added"
 msgid "Adjustment Type"
 msgstr "Adjustment Type"
 
+msgid "Alerts"
+msgstr "Alerts"
+
 msgid "All"
 msgstr "All"
 
@@ -408,6 +440,9 @@ msgstr "All scrap"
 
 msgid "All steps"
 msgstr "All steps"
+
+msgid "All within limits"
+msgstr "All within limits"
 
 msgid "All work centers"
 msgstr "All work centers"
@@ -477,6 +512,10 @@ msgstr "Assigned to Me"
 
 msgid "Assignee"
 msgstr "Assignee"
+
+#. placeholder {0}: formats.whole(3600 / ideal)
+msgid "At standard {0}"
+msgstr "At standard {0}"
 
 msgid "Attach file"
 msgstr "Attach file"
@@ -575,6 +614,12 @@ msgstr "Blend the background into the selected items color."
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"
 msgstr "Blocked by {0}"
+
+msgid "Blocked by maintenance"
+msgstr "Blocked by maintenance"
+
+msgid "Blocked by maintenance {dispatch}"
+msgstr "Blocked by maintenance {dispatch}"
 
 msgid "Blocking"
 msgstr "Blocking"
@@ -889,6 +934,9 @@ msgstr "Create Quality Issue"
 msgid "Create Rework"
 msgstr "Create Rework"
 
+msgid "Current job"
+msgstr "Current job"
+
 msgid "Current work"
 msgstr "Current work"
 
@@ -984,6 +1032,12 @@ msgstr "Displays (opens in new tab)"
 
 msgid "Done"
 msgstr "Done"
+
+msgid "Done / plan"
+msgstr "Done / plan"
+
+msgid "Done / planned"
+msgstr "Done / planned"
 
 msgid "Down"
 msgstr "Down"
@@ -1129,6 +1183,9 @@ msgstr "Expand characteristics table"
 
 msgid "Expand panel"
 msgstr "Expand panel"
+
+msgid "Expected finish"
+msgstr "Expected finish"
 
 msgid "Expired"
 msgstr "Expired"
@@ -1286,6 +1343,12 @@ msgstr "Flag issue"
 msgid "Forgot to Clock Out?"
 msgstr "Forgot to Clock Out?"
 
+msgid "From operator time"
+msgstr "From operator time"
+
+msgid "From the sensor"
+msgstr "From the sensor"
+
 msgid "Gauge"
 msgstr "Gauge"
 
@@ -1314,8 +1377,8 @@ msgstr "Go to step {0}: {1}"
 msgid "Go to step {0}: {1} (done)"
 msgstr "Go to step {0}: {1} (done)"
 
-msgid "Good pieces"
-msgstr "Good pieces"
+msgid "Good / scrap (this shift)"
+msgstr "Good / scrap (this shift)"
 
 msgid "Grab from {source} · {onHand} there"
 msgstr "Grab from {source} · {onHand} there"
@@ -1340,6 +1403,9 @@ msgstr "Hide description"
 
 msgid "Hide drawing"
 msgstr "Hide drawing"
+
+msgid "Hourly efficiency"
+msgstr "Hourly efficiency"
 
 msgid "Hours"
 msgstr "Hours"
@@ -1492,11 +1558,23 @@ msgstr "Items"
 msgid "Job"
 msgstr "Job"
 
+msgid "Job / item"
+msgstr "Job / item"
+
+msgid "Job and machine state timeline"
+msgstr "Job and machine state timeline"
+
 msgid "Job Details"
 msgstr "Job Details"
 
 msgid "Job due"
 msgstr "Job due"
+
+msgid "Job OEE"
+msgstr "Job OEE"
+
+msgid "Job OEE (this shift)"
+msgstr "Job OEE (this shift)"
 
 msgid "Job Operation"
 msgstr "Job Operation"
@@ -1506,6 +1584,12 @@ msgstr "Job Traveler"
 
 msgid "Jobs"
 msgstr "Jobs"
+
+msgid "Jobs (top) and machine state (bottom)"
+msgstr "Jobs (top) and machine state (bottom)"
+
+msgid "Jobs this shift"
+msgstr "Jobs this shift"
 
 msgid "Keep navigation open"
 msgstr "Keep navigation open"
@@ -1678,8 +1762,20 @@ msgstr "Low"
 msgid "Machine"
 msgstr "Machine"
 
+msgid "Machine down for {length}"
+msgstr "Machine down for {length}"
+
 msgid "Machine down for maintenance now?"
 msgstr "Machine down for maintenance now?"
+
+msgid "Machine figures"
+msgstr "Machine figures"
+
+msgid "Machine offline for {length}"
+msgstr "Machine offline for {length}"
+
+msgid "Machine state since the start of the shift"
+msgstr "Machine state since the start of the shift"
 
 msgid "Machine, timer running"
 msgstr "Machine, timer running"
@@ -1816,6 +1912,9 @@ msgstr "Navigation"
 msgid "Need material"
 msgstr "Need material"
 
+msgid "Needs attention"
+msgstr "Needs attention"
+
 msgid "New"
 msgstr "New"
 
@@ -1916,6 +2015,12 @@ msgstr "No inspections assigned to you"
 msgid "No issue types configured"
 msgstr "No issue types configured"
 
+msgid "No job has run this shift"
+msgstr "No job has run this shift"
+
+msgid "No job is loaded on this work center"
+msgstr "No job is loaded on this work center"
+
 msgid "No kit"
 msgstr "No kit"
 
@@ -1924,6 +2029,9 @@ msgstr "No leave is set up yet. Ask your manager to set one up in the ERP."
 
 msgid "No lineside storage"
 msgstr "No lineside storage"
+
+msgid "No losses yet"
+msgstr "No losses yet"
 
 msgid "No maintenance scheduled for today"
 msgstr "No maintenance scheduled for today"
@@ -1982,6 +2090,9 @@ msgstr "No picking lists"
 msgid "No printer configured"
 msgstr "No printer configured"
 
+msgid "No reason given"
+msgstr "No reason given"
+
 msgid "No recent operations"
 msgstr "No recent operations"
 
@@ -2009,6 +2120,9 @@ msgstr "No samples required."
 msgid "No scheduled time"
 msgstr "No scheduled time"
 
+msgid "No scrap this shift"
+msgstr "No scrap this shift"
+
 msgid "No serial number"
 msgstr "No serial number"
 
@@ -2024,11 +2138,20 @@ msgstr "No service jobs assigned to you today"
 msgid "No shift"
 msgstr "No shift"
 
+msgid "No shift and no data for this work center yet"
+msgstr "No shift and no data for this work center yet"
+
 msgid "No shortcuts available on this page."
 msgstr "No shortcuts available on this page."
 
 msgid "No spare parts added yet"
 msgstr "No spare parts added yet"
+
+msgid "No standard time"
+msgstr "No standard time"
+
+msgid "No state"
+msgstr "No state"
 
 msgid "No station"
 msgstr "No station"
@@ -2038,6 +2161,9 @@ msgstr "No stations at this location"
 
 msgid "No stock"
 msgstr "No stock"
+
+msgid "No stops this shift"
+msgstr "No stops this shift"
 
 msgid "No time entries for this week"
 msgstr "No time entries for this week"
@@ -2074,6 +2200,9 @@ msgstr "Normal"
 
 msgid "Not in this operation"
 msgstr "Not in this operation"
+
+msgid "Not planned"
+msgstr "Not planned"
 
 msgid "Not scheduled"
 msgstr "Not scheduled"
@@ -2118,12 +2247,11 @@ msgstr "OEE"
 msgid "OEE Impact"
 msgstr "OEE Impact"
 
-#. placeholder {0}: percent.format(OEE_LOW)
-msgid "OEE is below {0}"
-msgstr "OEE is below {0}"
+msgid "OEE is below {low}"
+msgstr "OEE is below {low}"
 
-msgid "OEE this shift"
-msgstr "OEE this shift"
+msgid "OEE this shift (all jobs)"
+msgstr "OEE this shift (all jobs)"
 
 msgid "OEM Required"
 msgstr "OEM Required"
@@ -2131,6 +2259,9 @@ msgstr "OEM Required"
 #. placeholder {0}: m.operationQuantity ?? 0
 msgid "of {0}"
 msgstr "of {0}"
+
+msgid "Of planned time"
+msgstr "Of planned time"
 
 msgid "Offline"
 msgstr "Offline"
@@ -2330,6 +2461,12 @@ msgstr "Percentage"
 msgid "Performance"
 msgstr "Performance"
 
+msgid "Performance {performance}: a standard time may be set too slow"
+msgstr "Performance {performance}: a standard time may be set too slow"
+
+msgid "Performance counts only this run"
+msgstr "Performance counts only this run"
+
 msgid "Phone"
 msgstr "Phone"
 
@@ -2403,6 +2540,9 @@ msgstr "picking in place of {substitutedFrom}, the item on the job"
 
 msgid "picking in place of {substitutedFrom}, the item on the job, for {substitutedAssemblies} assemblies"
 msgstr "picking in place of {substitutedFrom}, the item on the job, for {substitutedAssemblies} assemblies"
+
+msgid "Pieces per run hour"
+msgstr "Pieces per run hour"
 
 msgid "Pin or unpin"
 msgstr "Pin or unpin"
@@ -2539,6 +2679,11 @@ msgstr "Quotes"
 
 msgid "Raise quality issue"
 msgstr "Raise quality issue"
+
+#. placeholder {0}: formats.minutes(parts.runMs)
+#. placeholder {1}: formats.minutes(parts.plannedMs)
+msgid "Ran {0} of {1} planned"
+msgstr "Ran {0} of {1} planned"
 
 msgid "raw bins short"
 msgstr "raw bins short"
@@ -2721,8 +2866,14 @@ msgstr "Rework quantity"
 msgid "Rich text"
 msgstr "Rich text"
 
+msgid "Run outside shifts"
+msgstr "Run outside shifts"
+
 msgid "Run time"
 msgstr "Run time"
+
+msgid "Run with a standard time"
+msgstr "Run with a standard time"
 
 msgid "Running"
 msgstr "Running"
@@ -2817,6 +2968,9 @@ msgstr "Scheduling conflict"
 msgid "Scrap"
 msgstr "Scrap"
 
+msgid "Scrap (pieces)"
+msgstr "Scrap (pieces)"
+
 msgid "Scrap {readableId}"
 msgstr "Scrap {readableId}"
 
@@ -2825,6 +2979,9 @@ msgstr "Scrap material"
 
 msgid "Scrap quantity"
 msgstr "Scrap quantity"
+
+msgid "Scrap rate"
+msgstr "Scrap rate"
 
 msgid "Scrap Reason"
 msgstr "Scrap Reason"
@@ -3025,6 +3182,9 @@ msgstr "Setup"
 msgid "Setup, timer running"
 msgstr "Setup, timer running"
 
+msgid "Shift {range}"
+msgstr "Shift {range}"
+
 msgid "short"
 msgstr "short"
 
@@ -3133,6 +3293,28 @@ msgstr "Spare Parts"
 msgid "Spare Parts Used"
 msgstr "Spare Parts Used"
 
+msgid "Speed loss"
+msgstr "Speed loss"
+
+#. placeholder {0}: formats.seconds(ideal)
+msgid "Standard {0}"
+msgstr "Standard {0}"
+
+#. placeholder {0}: formats.seconds(job.idealSecondsPerPiece)
+msgid "Standard {0} per piece"
+msgstr "Standard {0} per piece"
+
+msgid "Standard time made"
+msgstr "Standard time made"
+
+#. placeholder {0}: formats.minutes(parts.idealMs)
+#. placeholder {1}: formats.minutes(parts.runWithStandardMs)
+msgid "Standard time made {0} in {1} of run"
+msgstr "Standard time made {0} in {1} of run"
+
+msgid "Standard time made ÷ planned time, dashed line = {target}, ⇄ = job change"
+msgstr "Standard time made ÷ planned time, dashed line = {target}, ⇄ = job change"
+
 msgid "Start"
 msgstr "Start"
 
@@ -3209,6 +3391,12 @@ msgstr "Steps are missing"
 msgid "Stock at:"
 msgstr "Stock at:"
 
+msgid "Stop log"
+msgstr "Stop log"
+
+msgid "Stopped now {length}"
+msgstr "Stopped now {length}"
+
 msgid "Storage Unit"
 msgstr "Storage Unit"
 
@@ -3278,6 +3466,12 @@ msgstr "Takes the work center offline"
 msgid "Tap a day to add time to {selectedLabel}. Drag the lower edge of a bar to change its hours."
 msgstr "Tap a day to add time to {selectedLabel}. Drag the lower edge of a bar to change its hours."
 
+msgid "Target {target}"
+msgstr "Target {target}"
+
+msgid "Target {target}, last shift {previous}"
+msgstr "Target {target}, last shift {previous}"
+
 msgid "Text color"
 msgstr "Text color"
 
@@ -3309,6 +3503,9 @@ msgstr "The inspection will be marked Passed and its units released to Available
 
 msgid "The inspection will be marked Passed. Its units are released to Available, except the {fails} that failed a sample, which stay Rejected."
 msgstr "The inspection will be marked Passed. Its units are released to Available, except the {fails} that failed a sample, which stay Rejected."
+
+msgid "The job"
+msgstr "The job"
 
 msgid "The job is closed"
 msgstr "The job is closed"
@@ -3468,6 +3665,9 @@ msgstr "To run"
 msgid "Today"
 msgstr "Today"
 
+msgid "Today {range}"
+msgstr "Today {range}"
+
 msgid "Toggle sidebar"
 msgstr "Toggle sidebar"
 
@@ -3476,6 +3676,12 @@ msgstr "Toggle the sidebar"
 
 msgid "Tools"
 msgstr "Tools"
+
+msgid "Top losses"
+msgstr "Top losses"
+
+msgid "Top losses (minutes)"
+msgstr "Top losses (minutes)"
 
 msgid "Top to Bottom"
 msgstr "Top to Bottom"
@@ -3488,6 +3694,9 @@ msgstr "Topics"
 
 msgid "Total"
 msgstr "Total"
+
+msgid "Total {total}"
+msgstr "Total {total}"
 
 msgid "Total hours"
 msgstr "Total hours"
@@ -3581,6 +3790,9 @@ msgstr "Unknown gauge"
 
 msgid "Unknown part"
 msgstr "Unknown part"
+
+msgid "Unknown reason"
+msgstr "Unknown reason"
 
 msgid "Unlock"
 msgstr "Unlock"
