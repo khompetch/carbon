@@ -2556,6 +2556,9 @@ msgstr "双指捏合或滚动以缩放 · 拖动以平移 · 双击以重置"
 msgid "Planned"
 msgstr "已计划"
 
+msgid "Planned downtime"
+msgstr "计划停机时间"
+
 msgid "Planned duration:"
 msgstr "计划时长："
 
@@ -3949,6 +3952,9 @@ msgstr "工作地点"
 
 msgid "Working"
 msgstr "工作中"
+
+msgid "Working time"
+msgstr "工作时间"
 
 msgid "Write a note…"
 msgstr "写备注…"

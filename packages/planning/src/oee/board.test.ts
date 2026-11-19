@@ -65,6 +65,42 @@ describe("boardStates", () => {
   });
 });
 
+describe("buildOeeBoard times", () => {
+  // Run 8:10–9:00 and 9:20–10:30 on a shift that works 8:00–20:00, where the
+  // meeting and lunch are Planned stops; now is 10:30.
+  const timesAt = (workingWindows?: { start: number; end: number }[]) =>
+    buildOeeBoard({
+      input: input({
+        runIntervals: [
+          { start: at(8, 10), end: at(9) },
+          { start: at(9, 20), end: at(10, 30) }
+        ]
+      }),
+      stateSegments: [],
+      shift,
+      now: at(10, 30),
+      workingWindows
+    }).times;
+
+  it("splits working time into planned downtime, run and unplanned downtime", () => {
+    // Working 8:00–10:30 = 150 min; the 8:00–8:10 meeting is planned
+    // downtime; planned 140 − run 120 = 20 min unplanned.
+    expect(timesAt([shift])).toEqual({
+      workingMs: 150 * MIN,
+      plannedDowntimeMs: 10 * MIN,
+      unplannedDowntimeMs: 20 * MIN
+    });
+  });
+
+  it("has no planned downtime without the working windows", () => {
+    expect(timesAt()).toEqual({
+      workingMs: 140 * MIN,
+      plannedDowntimeMs: 0,
+      unplannedDowntimeMs: 20 * MIN
+    });
+  });
+});
+
 describe("buildOeeBoard", () => {
   const run = [
     { start: at(8, 10), end: at(9) },

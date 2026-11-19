@@ -94,6 +94,18 @@ export type OeeBoard = {
   oee: number | null;
   /** The ideal time of the good pieces (the OEE numerator), in ms. */
   goodIdealMs: number;
+  /**
+   * The shift's time split, in ms: working = planned downtime + planned
+   * time, and planned time = run + unplanned downtime.
+   */
+  times: {
+    /** The shift time so far: planned downtime + planned time. */
+    workingMs: number;
+    /** Working time taken by a Planned stop (a Planned maintenance dispatch) that did not run. */
+    plannedDowntimeMs: number;
+    /** Planned time the machine did not run: the Availability loss. */
+    unplannedDowntimeMs: number;
+  };
   states: (Interval & { state: OeeBoardState })[];
   /** The state at the end of the period and when it began. */
   current: { state: OeeBoardState; since: number } | null;
@@ -124,6 +136,11 @@ export function buildOeeBoard(args: {
   stateSegments: OeeStateSegment[];
   shift: Interval;
   now: number;
+  /**
+   * The shift windows before the Planned stops come off. Without them the
+   * planned windows are the working time, so there is no planned downtime.
+   */
+  workingWindows?: Interval[];
 }): OeeBoard {
   const { input, shift, now } = args;
   const period: Interval = {
@@ -149,6 +166,23 @@ export function buildOeeBoard(args: {
     0,
     parts.idealMs - Math.min(badIdealMs, parts.idealMs)
   );
+
+  // Run inside a Planned stop is planned time already ("Run outside
+  // shifts"), so it is not planned downtime as well.
+  const plannedDowntimeMs = intervalLength(
+    subtractWindows(
+      subtractWindows(
+        clipIntervals(args.workingWindows ?? input.plannedWindows, period),
+        input.plannedWindows
+      ),
+      input.runIntervals
+    )
+  );
+  const times = {
+    workingMs: parts.plannedMs + plannedDowntimeMs,
+    plannedDowntimeMs,
+    unplannedDowntimeMs: Math.max(0, parts.plannedMs - parts.runMs)
+  };
 
   const states = boardStates({
     period,
@@ -236,6 +270,7 @@ export function buildOeeBoard(args: {
     ratios,
     oee: shownOee(ratios),
     goodIdealMs,
+    times,
     states,
     current,
     jobSpans,
