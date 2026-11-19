@@ -2556,6 +2556,9 @@ msgstr "Yakınlaştırmak için kıstırın veya kaydırın · kaydırmak için 
 msgid "Planned"
 msgstr "Planlı"
 
+msgid "Planned downtime"
+msgstr "Planlı Duruş"
+
 msgid "Planned duration:"
 msgstr "Planlanan süre:"
 
@@ -3949,6 +3952,9 @@ msgstr "İş Sahanı"
 
 msgid "Working"
 msgstr "Çalışıyor"
+
+msgid "Working time"
+msgstr "Çalışma Süresi"
 
 msgid "Write a note…"
 msgstr "Bir not yazın…"

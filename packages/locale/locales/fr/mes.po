@@ -2556,6 +2556,9 @@ msgstr "Pincez ou faites défiler pour zoomer · faites glisser pour déplacer �
 msgid "Planned"
 msgstr "Planifié"
 
+msgid "Planned downtime"
+msgstr "Temps d'arrêt planifié"
+
 msgid "Planned duration:"
 msgstr "Durée prévue :"
 
@@ -3949,6 +3952,9 @@ msgstr "Chantier"
 
 msgid "Working"
 msgstr "En cours"
+
+msgid "Working time"
+msgstr "Temps de travail"
 
 msgid "Write a note…"
 msgstr "Écrire une note…"

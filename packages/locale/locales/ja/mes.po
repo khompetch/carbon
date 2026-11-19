@@ -2556,6 +2556,9 @@ msgstr "ピンチまたはスクロールで拡大縮小 · ドラッグで移�
 msgid "Planned"
 msgstr "計画済み"
 
+msgid "Planned downtime"
+msgstr "計画停止時間"
+
 msgid "Planned duration:"
 msgstr "計画時間:"
 
@@ -3949,6 +3952,9 @@ msgstr "作業現場"
 
 msgid "Working"
 msgstr "作業中"
+
+msgid "Working time"
+msgstr "稼働可能時間"
 
 msgid "Write a note…"
 msgstr "メモを書く…"

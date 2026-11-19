@@ -2556,6 +2556,9 @@ msgstr "Pellizque o desplácese para hacer zoom · arrastre para mover · toque 
 msgid "Planned"
 msgstr "Planificado"
 
+msgid "Planned downtime"
+msgstr "Tiempo de paro planificado"
+
 msgid "Planned duration:"
 msgstr "Duración planificada:"
 
@@ -3949,6 +3952,9 @@ msgstr "Sitio de trabajo"
 
 msgid "Working"
 msgstr "Trabajando"
+
+msgid "Working time"
+msgstr "Tiempo de trabajo"
 
 msgid "Write a note…"
 msgstr "Escribir una nota…"

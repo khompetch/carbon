@@ -92,7 +92,8 @@ export async function getOeeDisplayData(
     input: workCenter.input,
     stateSegments: workCenter.stateSegments,
     shift,
-    now
+    now,
+    workingWindows: workCenter.workingWindows
   });
   const previousShiftOee = previous
     ? shownOee(

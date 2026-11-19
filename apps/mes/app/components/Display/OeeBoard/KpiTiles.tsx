@@ -81,6 +81,15 @@ export function KpiTiles({
     }
   ];
   const times = [
+    { label: <Trans>Working time</Trans>, ms: board.times.workingMs },
+    {
+      label: <Trans>Planned downtime</Trans>,
+      ms: board.times.plannedDowntimeMs
+    },
+    {
+      label: <Trans>Unplanned downtime</Trans>,
+      ms: board.times.unplannedDowntimeMs
+    },
     { label: <Trans>Planned time</Trans>, ms: parts.plannedMs },
     { label: <Trans>Run time</Trans>, ms: parts.runMs },
     { label: <Trans>Run outside shifts</Trans>, ms: parts.runOutsideMs },
