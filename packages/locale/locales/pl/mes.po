@@ -2556,6 +2556,9 @@ msgstr "Zsuń palce lub przewiń, aby powiększyć · przeciągnij, aby przesun�
 msgid "Planned"
 msgstr "Planowane"
 
+msgid "Planned downtime"
+msgstr "Planowany czas przestoju"
+
 msgid "Planned duration:"
 msgstr "Planowany czas trwania:"
 
@@ -3949,6 +3952,9 @@ msgstr "Stanowisko robocze"
 
 msgid "Working"
 msgstr "W trakcie pracy"
+
+msgid "Working time"
+msgstr "Czas pracy"
 
 msgid "Write a note…"
 msgstr "Napisz notatkę…"

@@ -2556,6 +2556,9 @@ msgstr "Pince ou role para ampliar · arraste para mover · toque duas vezes par
 msgid "Planned"
 msgstr "Planejado"
 
+msgid "Planned downtime"
+msgstr "Tempo de parada planejado"
+
 msgid "Planned duration:"
 msgstr "Duração planejada:"
 
@@ -3949,6 +3952,9 @@ msgstr "Local de trabalho"
 
 msgid "Working"
 msgstr "Trabalhando"
+
+msgid "Working time"
+msgstr "Tempo de trabalho"
 
 msgid "Write a note…"
 msgstr "Escrever uma observação…"

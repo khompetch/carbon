@@ -2556,6 +2556,9 @@ msgstr "ज़ूम करने के लिए पिंच या स्क
 msgid "Planned"
 msgstr "नियोजित"
 
+msgid "Planned downtime"
+msgstr "नियोजित डाउनटाइम"
+
 msgid "Planned duration:"
 msgstr "नियोजित अवधि:"
 
@@ -3949,6 +3952,9 @@ msgstr "कार्य स्थल"
 
 msgid "Working"
 msgstr "काम कर रहा है"
+
+msgid "Working time"
+msgstr "कार्य समय"
 
 msgid "Write a note…"
 msgstr "एक नोट लिखें…"

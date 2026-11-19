@@ -576,7 +576,12 @@ table's OEE bar color (green / yellow / red) and the ERP chart's dashed
   until the next job's, the first from the shift start), each job's OEE, the
   losses (state minutes, speed = run with a standard − ideal, scrap = ideal of
   the bad pieces; with full coverage and P ≤ 1 they add up with the good ideal
-  time to the planned time) and the stop log (≥ 2 min). The ETA is
+  time to the planned time), the stop log (≥ 2 min) and `times`: planned
+  downtime = the loader's `workingWindows` minus the planned windows minus
+  run (a Planned stop that did not run), working time = planned time +
+  planned downtime, unplanned downtime = planned time − run (the
+  Availability loss); without `workingWindows` the planned downtime is 0.
+  The Machine figures panel lists them above Planned time. The ETA is
   `estimateFinish` over the planned windows at pace max(0.3, A × P). The alert
   list is `getOeeBoardAlerts` (`apps/mes/app/utils/display.ts`). Thresholds:
   `OEE_GOOD` / `OEE_LOW`, `RATIO_GOOD` / `RATIO_LOW` (A, P, Q: 90 / 80),

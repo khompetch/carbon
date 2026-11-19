@@ -2556,6 +2556,9 @@ msgstr "Pizzica o scorri per ingrandire · trascina per spostare · tocca due vo
 msgid "Planned"
 msgstr "Pianificato"
 
+msgid "Planned downtime"
+msgstr "Fermo macchina pianificato"
+
 msgid "Planned duration:"
 msgstr "Durata pianificata:"
 
@@ -3949,6 +3952,9 @@ msgstr "Sito di lavoro"
 
 msgid "Working"
 msgstr "In corso"
+
+msgid "Working time"
+msgstr "Tempo di lavoro"
 
 msgid "Write a note…"
 msgstr "Scrivi una Nota…"

@@ -2556,6 +2556,9 @@ msgstr "Pinch or scroll to zoom · drag to pan · double-tap to reset"
 msgid "Planned"
 msgstr "Planned"
 
+msgid "Planned downtime"
+msgstr "Planned downtime"
+
 msgid "Planned duration:"
 msgstr "Planned duration:"
 
@@ -3949,6 +3952,9 @@ msgstr "Work Site"
 
 msgid "Working"
 msgstr "Working"
+
+msgid "Working time"
+msgstr "Working time"
 
 msgid "Write a note…"
 msgstr "Write a note…"

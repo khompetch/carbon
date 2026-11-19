@@ -2556,6 +2556,9 @@ msgstr "핀치하거나 스크롤하여 확대/축소 · 드래그하여 이동 
 msgid "Planned"
 msgstr "계획됨"
 
+msgid "Planned downtime"
+msgstr "계획된 비가동 시간"
+
 msgid "Planned duration:"
 msgstr "계획 기간:"
 
@@ -3949,6 +3952,9 @@ msgstr "작업 현장"
 
 msgid "Working"
 msgstr "작업 중"
+
+msgid "Working time"
+msgstr "근무 시간"
 
 msgid "Write a note…"
 msgstr "메모 작성…"

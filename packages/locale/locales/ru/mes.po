@@ -2556,6 +2556,9 @@ msgstr "Сведите пальцы или прокрутите для масш�
 msgid "Planned"
 msgstr "Плановое"
 
+msgid "Planned downtime"
+msgstr "Плановое время простоя"
+
 msgid "Planned duration:"
 msgstr "Запланированная продолжительность:"
 
@@ -3949,6 +3952,9 @@ msgstr "Объект"
 
 msgid "Working"
 msgstr "В работе"
+
+msgid "Working time"
+msgstr "Рабочее время"
 
 msgid "Write a note…"
 msgstr "Напишите примечание…"
