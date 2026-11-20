@@ -1271,6 +1271,8 @@ export const manifest = {
   oauthClient: serviceOnly(),
   oauthCode: serviceOnly(),
   oauthToken: serviceOnly(),
+  // MES writes stops on the service role after its own check
+  operationStop: company("production"),
   opportunity: company("sales", { read: "sales_view", delete: false }),
   part: company("parts"),
   partner: company("resources"),
@@ -1794,6 +1796,7 @@ export const manifest = {
   ssoReservedDomain: policies({ select: authenticated }),
   stockTransfer: company("inventory"),
   stockTransferLine: company("inventory"),
+  stopReason: company("production"),
   storageType: company("parts"),
   storageUnit: company("parts"),
   suggestion: company("resources", {

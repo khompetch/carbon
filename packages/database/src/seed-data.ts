@@ -52,6 +52,16 @@ export const customerStatuses = [
 
 export const scrapReasons = ["Defective", "Damaged", "Quality"] as const;
 
+// Why an operation stopped, and which of the Six Big Losses it counts toward
+export const stopReasons = [
+  { name: "Machine breakdown", oeeLoss: "Breakdown" },
+  { name: "Tool failure", oeeLoss: "Breakdown" },
+  { name: "Changeover", oeeLoss: "Setup & Adjustment" },
+  { name: "Adjustment", oeeLoss: "Setup & Adjustment" },
+  { name: "Minor jam", oeeLoss: "Small Stop" },
+  { name: "Waiting for material", oeeLoss: "Small Stop" }
+] as const;
+
 export const returnReasons = [
   "Defective",
   "Wrong Item Shipped",

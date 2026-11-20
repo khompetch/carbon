@@ -247,6 +247,8 @@ export const path = {
       generatePath(`${display}/${workCenterId}/oee`),
     onboarding: `${ERP_URL}/onboarding`,
     operation: (id: string) => generatePath(`${x}/operation/${id}`),
+    // fork: Log stop / Resume
+    operationStop: `${x}/stop`,
     operations: `${x}/operations?saved=1`,
     peopleOverride: `${x}/people-override`,
     picking: `${x}/picking`,

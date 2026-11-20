@@ -117,6 +117,7 @@ pnpm --filter erp test
 | `demandForecast` / `demandProjection` | Demand planning data; `demandProjection.consumedQuantity` is MRP-written (forecast consumption), never user-edited |
 | `planningAction` | The MRP worklist: one row per suggestion (`type` Order / Make / Expedite / Defer / Cancel / Increase / Decrease / Release / Transfer / Borrow; `planningSegmentId` (`''` = common, else a project with project stock), `fromProjectId` / `toProjectId` and `projectStockTransferId` for a Transfer, `status` Open / Dismissed / Actioned, `suggestedQuantity`, `suggestedDate`, `horizonDate`, `latestOrderDate`, `isASAP`, `requiresManualAction`, target `jobId` / `purchaseOrderLineId`, `supplierId`, `assignee` + `assigneeOverridden`, the attribution `policyName` / `reason` / `triggerValues`, and the natural key `itemId` / `locationId` / `periodId`). Diff-written by `generatePlanningActions` after every run; read-only through the API (read `production_view` or `purchasing_view`) |
 | `scrapReason` / `maintenanceFailureMode` | Reference data for production and maintenance |
+| `stopReason` | Why an operation stopped; `oeeLoss` (`oeeLossTypes`: Breakdown / Setup & Adjustment / Small Stop) is the OEE loss it counts against. Production → Stop Reasons (`x+/production+/stop-reasons*.tsx`, `ui/StopReasons/`), mirroring Scrap Reasons |
 
 ## Key Service Functions
 

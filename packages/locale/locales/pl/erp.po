@@ -4811,6 +4811,10 @@ msgstr "Czy na pewno chcesz usunąć zmianę: {name} z {locationName}? Tej czynn
 msgid "Are you sure you want to delete the shipping method: {0}? This cannot be undone."
 msgstr "Czy chcesz usunąć sposób wysyłki: {0}? Tej czynności nie można cofnąć."
 
+#. placeholder {0}: stopReason.name
+msgid "Are you sure you want to delete the stop reason: {0}? This cannot be undone."
+msgstr "Czy na pewno chcesz usunąć przyczynę postoju: {0}? Tej operacji nie można cofnąć."
+
 #. placeholder {0}: storageType.name
 msgid "Are you sure you want to delete the storage type: {0}? This cannot be undone."
 msgstr "Czy na pewno chcesz usunąć typ magazynu: {0}? Tej czynności nie można cofnąć."
@@ -6119,6 +6123,9 @@ msgstr "Utwórz edytowalną kopię tej wersji, którą możesz zmienić i opubli
 
 msgid "Breadcrumb"
 msgstr "Nawigacja"
+
+msgid "Breakdown"
+msgstr "Awaria"
 
 msgid "Bring in your parts, BOMs, Bill of Process, and costing — with Carbon's import tools, CSV, or LLM help."
 msgstr "Wprowadź swoje części, BOMy, Listy operacji i kalkulacje kosztów — za pomocą narzędzi importu Carbon, CSV lub pomocy LLM."
@@ -9209,6 +9216,9 @@ msgstr "Utworzono sposób wysyłki"
 msgid "Created stock transfer line"
 msgstr "Utworzono pozycję przesunięcia"
 
+msgid "Created stop reason"
+msgstr "Utworzono przyczynę postoju"
+
 msgid "Created storage type"
 msgstr "Utworzony typ magazynu"
 
@@ -10516,6 +10526,9 @@ msgstr "Usuń krok"
 
 msgid "Delete Stock Transfer"
 msgstr "Usuń transfer magazynowy"
+
+msgid "Delete Stop Reason"
+msgstr "Usuń przyczynę postoju"
 
 msgid "Delete Storage Type"
 msgstr "Usuń typ magazynu"
@@ -12042,6 +12055,9 @@ msgstr "Edytuj rozmiar"
 msgid "Edit Stock Transfer"
 msgstr "Edytuj Transfer Zapasów"
 
+msgid "Edit Stop Reason"
+msgstr "Edytuj przyczynę postoju"
+
 msgid "Edit Storage Type"
 msgstr "Edytuj typ magazynu"
 
@@ -13343,6 +13359,10 @@ msgstr "Nie udało się utworzyć przyczyny zwrotu: {0}"
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create service: {0}"
 msgstr "Nie udało się utworzyć usługi: {0}"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create stop reason: {0}"
+msgstr "Nie udało się utworzyć przyczyny postoju: {0}"
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create supplier stage: {0}"
@@ -17651,6 +17671,9 @@ msgstr "Zajrzyj w przód (tygodnie)"
 msgid "Look back (weeks)"
 msgstr "Zajrzyj wstecz (tygodnie)"
 
+msgid "Loss"
+msgstr "Strata"
+
 msgid "Loss on Disposal"
 msgstr "Strata na likwidacji"
 
@@ -19410,6 +19433,9 @@ msgstr "Nowy rozmiar"
 
 msgid "New Stock Transfer"
 msgstr "Nowe przesunięcie zapasu"
+
+msgid "New Stop Reason"
+msgstr "Nowa przyczyna postoju"
 
 msgid "New Storage Type"
 msgstr "Nowy typ magazynu"
@@ -28103,6 +28129,9 @@ msgstr "Konfiguracja"
 msgid "Setup {0} → {1}"
 msgstr "Przezbrojenie {0} → {1}"
 
+msgid "Setup & Adjustment"
+msgstr "Przezbrojenie i regulacja"
+
 msgid "Setup & Controls"
 msgstr "Konfiguracja i kontrole"
 
@@ -28766,6 +28795,9 @@ msgstr "Mały"
 msgid "Small business"
 msgstr "Mała firma"
 
+msgid "Small Stop"
+msgstr "Krótki postój"
+
 msgid "Smaller"
 msgstr "Mniejszy"
 
@@ -29294,6 +29326,12 @@ msgstr "Zatrzymaj czasomierz i zakończ"
 
 msgid "Stop raising purchase orders after this date"
 msgstr "Przestań wystawiać zamówienia zakupu po tej dacie"
+
+msgid "Stop Reason"
+msgstr "Przyczyna postoju"
+
+msgid "Stop Reasons"
+msgstr "Przyczyny postojów"
 
 msgid "Stop Receiving"
 msgstr "Zatrzymaj Odbieranie"

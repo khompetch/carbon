@@ -1464,6 +1464,18 @@ export const scrapReasonValidator = z.object({
   name: z.string().trim().min(1, { message: "Name is required" })
 });
 
+export const oeeLossTypes = [
+  "Breakdown",
+  "Setup & Adjustment",
+  "Small Stop"
+] as const;
+
+export const stopReasonValidator = z.object({
+  id: zfd.text(z.string().optional()),
+  name: z.string().trim().min(1, { message: "Name is required" }),
+  oeeLoss: z.enum(oeeLossTypes, { message: "Loss is required" })
+});
+
 export const failureModeValidator = z.object({
   id: zfd.text(z.string().optional()),
   name: z.string().trim().min(1, { message: "Name is required" })

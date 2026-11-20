@@ -4811,6 +4811,10 @@ msgstr "您确定要删除班次：{name} 从 {locationName}？此操作无法�
 msgid "Are you sure you want to delete the shipping method: {0}? This cannot be undone."
 msgstr "确定要删除发货方式：{0}吗？此操作无法撤消。"
 
+#. placeholder {0}: stopReason.name
+msgid "Are you sure you want to delete the stop reason: {0}? This cannot be undone."
+msgstr "确定要删除停机原因：{0} 吗？此操作无法撤销。"
+
 #. placeholder {0}: storageType.name
 msgid "Are you sure you want to delete the storage type: {0}? This cannot be undone."
 msgstr "您确定要删除存储类型：{0}？此操作无法撤销。"
@@ -6119,6 +6123,9 @@ msgstr "创建此版本的可编辑副本，您可以对其进行更改和发布
 
 msgid "Breadcrumb"
 msgstr "面包屑"
+
+msgid "Breakdown"
+msgstr "设备故障"
 
 msgid "Bring in your parts, BOMs, Bill of Process, and costing — with Carbon's import tools, CSV, or LLM help."
 msgstr "导入您的零件、BOM、工序清单和成本核算—使用 Carbon 的导入工具、CSV 或 LLM 帮助。"
@@ -9209,6 +9216,9 @@ msgstr "已创建发货方式"
 msgid "Created stock transfer line"
 msgstr "已创建库存调拨行"
 
+msgid "Created stop reason"
+msgstr "已创建停机原因"
+
 msgid "Created storage type"
 msgstr "已创建存储类型"
 
@@ -10516,6 +10526,9 @@ msgstr "删除步骤"
 
 msgid "Delete Stock Transfer"
 msgstr "删除库存转移"
+
+msgid "Delete Stop Reason"
+msgstr "删除停机原因"
 
 msgid "Delete Storage Type"
 msgstr "删除存储类型"
@@ -12042,6 +12055,9 @@ msgstr "编辑尺寸"
 msgid "Edit Stock Transfer"
 msgstr "编辑库存转移"
 
+msgid "Edit Stop Reason"
+msgstr "编辑停机原因"
+
 msgid "Edit Storage Type"
 msgstr "编辑存储类型"
 
@@ -13343,6 +13359,10 @@ msgstr "创建返回原因失败：{0}"
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create service: {0}"
 msgstr "创建服务失败：{0}"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create stop reason: {0}"
+msgstr "创建停机原因失败：{0}"
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create supplier stage: {0}"
@@ -17651,6 +17671,9 @@ msgstr "前瞻（周）"
 msgid "Look back (weeks)"
 msgstr "回顾（周）"
 
+msgid "Loss"
+msgstr "损失"
+
 msgid "Loss on Disposal"
 msgstr "处置亏损"
 
@@ -19410,6 +19433,9 @@ msgstr "新尺寸"
 
 msgid "New Stock Transfer"
 msgstr "新建库存调拨"
+
+msgid "New Stop Reason"
+msgstr "新建停机原因"
 
 msgid "New Storage Type"
 msgstr "新存储类型"
@@ -28103,6 +28129,9 @@ msgstr "换型"
 msgid "Setup {0} → {1}"
 msgstr "设置 {0} → {1}"
 
+msgid "Setup & Adjustment"
+msgstr "换型与调整"
+
 msgid "Setup & Controls"
 msgstr "换型与控制"
 
@@ -28766,6 +28795,9 @@ msgstr "小"
 msgid "Small business"
 msgstr "小企业"
 
+msgid "Small Stop"
+msgstr "小停机"
+
 msgid "Smaller"
 msgstr "较小"
 
@@ -29294,6 +29326,12 @@ msgstr "停止计时器并完成"
 
 msgid "Stop raising purchase orders after this date"
 msgstr "在此日期后停止提出采购订单"
+
+msgid "Stop Reason"
+msgstr "停机原因"
+
+msgid "Stop Reasons"
+msgstr "停机原因"
 
 msgid "Stop Receiving"
 msgstr "停止接收"

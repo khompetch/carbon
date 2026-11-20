@@ -4811,6 +4811,10 @@ msgstr "シフト「{name}」を{locationName}から削除してもよろしい�
 msgid "Are you sure you want to delete the shipping method: {0}? This cannot be undone."
 msgstr "出荷方法: {0} を削除してもよろしいですか?これは元に戻せません。"
 
+#. placeholder {0}: stopReason.name
+msgid "Are you sure you want to delete the stop reason: {0}? This cannot be undone."
+msgstr "停止理由「{0}」を削除してもよろしいですか？この操作は元に戻せません。"
+
 #. placeholder {0}: storageType.name
 msgid "Are you sure you want to delete the storage type: {0}? This cannot be undone."
 msgstr "ストレージタイプ: {0} を削除してもよろしいですか？この操作は取り消せません。"
@@ -6119,6 +6123,9 @@ msgstr "このバージョンの編集可能なコピーをブランチして、
 
 msgid "Breadcrumb"
 msgstr "パンくずリスト"
+
+msgid "Breakdown"
+msgstr "設備故障"
 
 msgid "Bring in your parts, BOMs, Bill of Process, and costing — with Carbon's import tools, CSV, or LLM help."
 msgstr "部品、BOM、工程表、原価計算をインポート — Carbonのツール、CSV、LLM支援で。"
@@ -9209,6 +9216,9 @@ msgstr "出荷方法を作成しました"
 msgid "Created stock transfer line"
 msgstr "在庫転送明細を作成しました"
 
+msgid "Created stop reason"
+msgstr "停止理由を作成しました"
+
 msgid "Created storage type"
 msgstr "ストレージタイプを作成しました"
 
@@ -10516,6 +10526,9 @@ msgstr "ステップを削除"
 
 msgid "Delete Stock Transfer"
 msgstr "在庫移動を削除"
+
+msgid "Delete Stop Reason"
+msgstr "停止理由を削除"
 
 msgid "Delete Storage Type"
 msgstr "ストレージタイプを削除"
@@ -12042,6 +12055,9 @@ msgstr "サイズを編集"
 msgid "Edit Stock Transfer"
 msgstr "在庫移動を編集"
 
+msgid "Edit Stop Reason"
+msgstr "停止理由を編集"
+
 msgid "Edit Storage Type"
 msgstr "ストレージタイプを編集"
 
@@ -13343,6 +13359,10 @@ msgstr "返品理由 {0} を作成できませんでした"
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create service: {0}"
 msgstr "サービスの作成に失敗しました: {0}"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create stop reason: {0}"
+msgstr "停止理由の作成に失敗しました: {0}"
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create supplier stage: {0}"
@@ -17651,6 +17671,9 @@ msgstr "先を見る(週)"
 msgid "Look back (weeks)"
 msgstr "遡る(週)"
 
+msgid "Loss"
+msgstr "ロス"
+
 msgid "Loss on Disposal"
 msgstr "除却損"
 
@@ -19410,6 +19433,9 @@ msgstr "新しいサイズ"
 
 msgid "New Stock Transfer"
 msgstr "新規在庫転送"
+
+msgid "New Stop Reason"
+msgstr "新規停止理由"
 
 msgid "New Storage Type"
 msgstr "新しい保管タイプ"
@@ -28103,6 +28129,9 @@ msgstr "セットアップ"
 msgid "Setup {0} → {1}"
 msgstr "段取り {0} → {1}"
 
+msgid "Setup & Adjustment"
+msgstr "段取り・調整"
+
 msgid "Setup & Controls"
 msgstr "セットアップとコントロール"
 
@@ -28766,6 +28795,9 @@ msgstr "小"
 msgid "Small business"
 msgstr "小規模企業"
 
+msgid "Small Stop"
+msgstr "小停止"
+
 msgid "Smaller"
 msgstr "より小さい"
 
@@ -29294,6 +29326,12 @@ msgstr "タイマーを停止して完了"
 
 msgid "Stop raising purchase orders after this date"
 msgstr "この日付以降の発注書の作成を停止"
+
+msgid "Stop Reason"
+msgstr "停止理由"
+
+msgid "Stop Reasons"
+msgstr "停止理由"
 
 msgid "Stop Receiving"
 msgstr "受信を停止"

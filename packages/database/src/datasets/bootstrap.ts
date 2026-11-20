@@ -28,6 +28,7 @@ import {
   scrapReasons,
   seedUnitsOfMeasure,
   sequences,
+  stopReasons,
   supplierStages
 } from "../seed-data.ts";
 import type { Database } from "../types.ts";
@@ -185,6 +186,13 @@ export async function seedCompanyReferenceData(
     await client.query(
       `INSERT INTO "scrapReason" (name, "companyId", "createdBy") VALUES ($1, $2, 'system')`,
       [name, companyId]
+    );
+  }
+
+  for (const reason of stopReasons) {
+    await client.query(
+      `INSERT INTO "stopReason" (name, "oeeLoss", "companyId", "createdBy") VALUES ($1, $2, $3, 'system')`,
+      [reason.name, reason.oeeLoss, companyId]
     );
   }
 

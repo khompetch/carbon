@@ -12,10 +12,12 @@ import {
   getJobs,
   getProcedures,
   getScrapReasons,
+  getStopReasons,
   JOB_OPERATION_BATCHES_PAGING,
   JOBS_PAGING,
   PROCEDURES_PAGING,
-  SCRAP_REASONS_PAGING
+  SCRAP_REASONS_PAGING,
+  STOP_REASONS_PAGING
 } from "~/modules/production/production.service";
 import { BATCH_LIST_EXPORT_VALUES } from "~/modules/production/ui/Batches/batch-list-export";
 import { JOB_LIST_EXPORT_VALUES } from "~/modules/production/ui/Jobs/job-list-export";
@@ -170,10 +172,18 @@ export const scrapReasonsList = searchList({
   service: getScrapReasons
 });
 
+export const stopReasonsList = searchList({
+  key: "stop-reasons",
+  permission: { view: "production", role: "employee" },
+  paging: STOP_REASONS_PAGING,
+  service: getStopReasons
+});
+
 export const productionLists: Record<string, ListDefinition> = {
   [jobsList.key]: jobsList,
   [assemblyInstructionsList.key]: assemblyInstructionsList,
   [operationBatchesList.key]: operationBatchesList,
   [proceduresList.key]: proceduresList,
-  [scrapReasonsList.key]: scrapReasonsList
+  [scrapReasonsList.key]: scrapReasonsList,
+  [stopReasonsList.key]: stopReasonsList
 };

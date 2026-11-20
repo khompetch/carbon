@@ -116,10 +116,10 @@ msgstr "{0} OEE डिस्प्ले"
 
 #. placeholder {0}: counts.recorded
 #. placeholder {0}: issuedLines.length
-#. placeholder {0}: operation.quantityComplete
+#. placeholder {0}: serialIndex + 1
 #. placeholder {1}: characteristic.sampleSize
 #. placeholder {1}: operation.operationQuantity
-#. placeholder {1}: operation.targetQuantity
+#. placeholder {1}: trackedLines.length
 msgid "{0} of {1}"
 msgstr "{0} में से {1}"
 
@@ -361,6 +361,9 @@ msgstr "जोड़ें {phrase}"
 
 msgid "Add & Issue"
 msgstr "जोड़ें और जारी करें"
+
+msgid "Add a note (optional)"
+msgstr "नोट जोड़ें (वैकल्पिक)"
 
 msgid "Add a printer in the printing settings to print labels directly."
 msgstr "प्रिंटिंग सेटिंग्स में एक प्रिंटर जोड़ें ताकि आप सीधे लेबल प्रिंट कर सकें।"
@@ -629,6 +632,12 @@ msgstr "बोर्ड दृश्य"
 
 msgid "Bold"
 msgstr "बोल्ड"
+
+msgid "Breakdown"
+msgstr "ब्रेकडाउन"
+
+msgid "Breakdowns"
+msgstr "ब्रेकडाउन"
 
 msgid "Bring {quantity}"
 msgstr "{quantity} लाएँ"
@@ -1741,6 +1750,9 @@ msgstr "स्क्रैप लॉग करें"
 msgid "Log scrap for {0}"
 msgstr "{0} के लिए स्क्रैप लॉग करें"
 
+msgid "Log stop"
+msgstr "ठहराव दर्ज करें"
+
 msgid "Login"
 msgstr "लॉगिन"
 
@@ -1846,6 +1858,9 @@ msgstr "संदेश"
 
 msgid "Metric"
 msgstr "मीट्रिक"
+
+msgid "min"
+msgstr "मि."
 
 msgid "Missing"
 msgstr "गायब"
@@ -2054,6 +2069,9 @@ msgstr "कोई सामग्री नहीं"
 msgid "No materials on this batch."
 msgstr "इस बैच पर कोई सामग्री नहीं है।"
 
+msgid "No one is working on this operation."
+msgstr "इस ऑपरेशन पर अभी कोई काम नहीं कर रहा है।"
+
 msgid "No open inspections"
 msgstr "कोई खुला निरीक्षण नहीं"
 
@@ -2147,6 +2165,9 @@ msgstr "इस पृष्ठ पर कोई शॉर्टकट उपल�
 msgid "No spare parts added yet"
 msgstr "अभी तक कोई स्पेयर पार्ट्स नहीं जोड़े गए हैं"
 
+msgid "No standard"
+msgstr "कोई मानक नहीं"
+
 msgid "No standard time"
 msgstr "कोई मानक समय नहीं"
 
@@ -2161,6 +2182,9 @@ msgstr "इस स्थान पर कोई स्टेशन नहीं"
 
 msgid "No stock"
 msgstr "कोई स्टॉक नहीं"
+
+msgid "No stop reasons are set up. Ask a supervisor to add them in Production → Stop Reasons."
+msgstr "कोई ठहराव के कारण सेट नहीं हैं। सुपरवाइज़र से कहें कि उन्हें उत्पादन → ठहराव के कारण में जोड़ें।"
 
 msgid "No stops this shift"
 msgstr "इस शिफ्ट में कोई ठहराव नहीं"
@@ -2259,6 +2283,9 @@ msgstr "OEM आवश्यक"
 #. placeholder {0}: m.operationQuantity ?? 0
 msgid "of {0}"
 msgstr "का {0}"
+
+msgid "of {target}"
+msgstr "{target} में से"
 
 msgid "Of planned time"
 msgstr "नियोजित समय का"
@@ -2452,6 +2479,9 @@ msgstr "{workTypeLabel} टाइमर रोकें"
 msgid "Pause maintenance"
 msgstr "रखरखाव रोकें"
 
+msgid "pcs"
+msgstr "नग"
+
 msgid "Pending"
 msgstr "लंबित"
 
@@ -2634,6 +2664,9 @@ msgstr "प्रक्रिया पैरामीटर"
 msgid "Processes"
 msgstr "प्रक्रियाएं"
 
+msgid "Production rejects"
+msgstr "उत्पादन अस्वीकृतियाँ"
+
 msgid "Profile"
 msgstr "प्रोफाइल"
 
@@ -2762,6 +2795,9 @@ msgstr "रिकॉर्ड किया गया"
 msgid "Reduced"
 msgstr "शिथिल"
 
+msgid "Reduced speed"
+msgstr "कम गति"
+
 msgid "Reference image"
 msgstr "संदर्भ छवि"
 
@@ -2779,6 +2815,9 @@ msgstr "लॉट अस्वीकार करें"
 
 msgid "Released"
 msgstr "जारी"
+
+msgid "Remaining"
+msgstr "शेष"
 
 msgid "Remove"
 msgstr "निकालें"
@@ -2851,6 +2890,9 @@ msgstr "दर्ज परिणाम: {done}"
 msgid "Results recorded: {done}. Values skipped: {skipped}."
 msgstr "दर्ज परिणाम: {done}। छोड़े गए मान: {skipped}।"
 
+msgid "Resume"
+msgstr "फिर शुरू करें"
+
 msgid "Retry Completion"
 msgstr "समापन पुनः प्रयास करें"
 
@@ -2865,6 +2907,9 @@ msgstr "पुनः कार्य सफलतापूर्वक बना
 
 msgid "Rework quantity"
 msgstr "पुनः कार्य की मात्रा"
+
+msgid "Reworked"
+msgstr "दोबारा किया गया"
 
 msgid "Rich text"
 msgstr "रिच टेक्स्ट"
@@ -3182,6 +3227,12 @@ msgstr "जब बैच की योजना बनाई गई थी त�
 msgid "Setup"
 msgstr "सेटअप"
 
+msgid "Setup & adjustment"
+msgstr "सेटअप और समायोजन"
+
+msgid "Setup & adjustments"
+msgstr "सेटअप और समायोजन"
+
 msgid "Setup, timer running"
 msgstr "सेटअप, टाइमर चल रहा है"
 
@@ -3263,6 +3314,9 @@ msgstr "साइन इन करने के लिए अब कोड क�
 msgid "since <0/>"
 msgstr "<0/> के बाद से"
 
+msgid "Six Big Losses"
+msgstr "छह बड़े नुकसान"
+
 msgid "Size"
 msgstr "आकार"
 
@@ -3271,6 +3325,12 @@ msgstr "Slack"
 
 msgid "Small"
 msgstr "छोटा"
+
+msgid "Small stop"
+msgstr "छोटा ठहराव"
+
+msgid "Small stops"
+msgstr "छोटे ठहराव"
 
 msgid "Smaller"
 msgstr "छोटा"
@@ -3357,6 +3417,9 @@ msgstr "ऑपरेशन को शुरू करें या रोके�
 msgid "Start work"
 msgstr "कार्य शुरू करें"
 
+msgid "Startup rejects"
+msgstr "स्टार्टअप अस्वीकृतियाँ"
+
 msgid "Station"
 msgstr "स्टेशन"
 
@@ -3396,6 +3459,9 @@ msgstr "स्टॉक का स्थान:"
 
 msgid "Stop log"
 msgstr "ठहराव लॉग"
+
+msgid "Stopped"
+msgstr "रुका हुआ"
 
 msgid "Stopped now {length}"
 msgstr "अभी ठहराव {length}"
@@ -3598,6 +3664,9 @@ msgstr "यह लॉट समाप्त हो गया है और इ�
 msgid "This marks the dispatch as completed."
 msgstr "यह रखरखाव कार्य को पूर्ण के रूप में चिह्नित करता है।"
 
+msgid "this operation"
+msgstr "यह ऑपरेशन"
+
 msgid "This part was made to order. Scrapping it can reopen its routing to make a replacement."
 msgstr "यह पार्ट ऑर्डर के अनुसार बनाया गया था। इसे स्क्रैप करने से इसकी रूटिंग को फिर से खोला जा सकता है ताकि एक रिप्लेसमेंट बनाया जा सके।"
 
@@ -3788,6 +3857,9 @@ msgstr "इकाई"
 msgid "Unknown"
 msgstr "अज्ञात"
 
+msgid "Unknown employee"
+msgstr "अज्ञात कर्मचारी"
+
 msgid "Unknown gauge"
 msgstr "अज्ञात गेज"
 
@@ -3932,6 +4004,9 @@ msgstr "कब"
 msgid "Whole batch"
 msgstr "पूरा बैच"
 
+msgid "Why did the operation stop?"
+msgstr "ऑपरेशन क्यों रुका?"
+
 msgid "Winding"
 msgstr "घुमावदार"
 
@@ -3952,6 +4027,9 @@ msgstr "कार्य स्थल"
 
 msgid "Working"
 msgstr "काम कर रहा है"
+
+msgid "Working now"
+msgstr "अभी काम चल रहा है"
 
 msgid "Working time"
 msgstr "कार्य समय"

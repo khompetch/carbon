@@ -276,6 +276,7 @@ import {
   type productionEventValidator,
   type productionQuantityValidator,
   type scrapReasonValidator,
+  type stopReasonValidator,
   WEEKDAYS_MONDAY_FIRST
 } from "./production.models";
 import type {
@@ -1095,6 +1096,15 @@ export async function deleteScrapReason(
 ) {
   return requireAffected(
     client.from("scrapReason").delete().eq("id", scrapReasonId).select("id")
+  );
+}
+
+export async function deleteStopReason(
+  client: SupabaseClient<Database>,
+  stopReasonId: string
+) {
+  return requireAffected(
+    client.from("stopReason").delete().eq("id", stopReasonId).select("id")
   );
 }
 
@@ -3085,6 +3095,53 @@ export async function getScrapReason(
     .select("*")
     .eq("id", scrapReasonId)
     .single();
+}
+
+export async function getStopReasonsList(
+  client: SupabaseClient<Database>,
+  companyId: string
+) {
+  return client
+    .from("stopReason")
+    .select("id, name, oeeLoss")
+    .eq("companyId", companyId)
+    .eq("active", true)
+    .order("name");
+}
+
+export async function getStopReason(
+  client: SupabaseClient<Database>,
+  stopReasonId: string
+) {
+  return client.from("stopReason").select("*").eq("id", stopReasonId).single();
+}
+
+export const STOP_REASONS_PAGING: Paging = {
+  defaultSorts: [{ column: "name", ascending: true }]
+};
+
+export async function getStopReasons(
+  client: SupabaseClient<Database>,
+  companyId: string,
+  args?: GenericQueryFilters & { search: string | null }
+) {
+  let query = client
+    .from("stopReason")
+    // Later pages (`cursor`) skip the count: the first page already has it.
+    .select("id, name, oeeLoss, customFields", {
+      count: listCount(args)
+    })
+    .eq("companyId", companyId);
+
+  if (args?.search) {
+    query = query.ilike("name", `%${args.search}%`);
+  }
+
+  if (args) {
+    query = setGenericQueryFilters(query, args, STOP_REASONS_PAGING);
+  }
+
+  return query;
 }
 
 export const SCRAP_REASONS_PAGING: Paging = {
@@ -6049,6 +6106,33 @@ export async function upsertScrapReason(
         .from("scrapReason")
         .update(sanitize(scrapReason))
         .eq("id", scrapReason.id)
+        .select("id")
+    );
+  }
+}
+
+export async function upsertStopReason(
+  client: SupabaseClient<Database>,
+  stopReason:
+    | (Omit<z.infer<typeof stopReasonValidator>, "id"> & {
+        companyId: string;
+        createdBy: string;
+        customFields?: Json;
+      })
+    | (Omit<z.infer<typeof stopReasonValidator>, "id"> & {
+        id: string;
+        updatedBy: string;
+        customFields?: Json;
+      })
+) {
+  if ("createdBy" in stopReason) {
+    return client.from("stopReason").insert([stopReason]).select("id");
+  } else {
+    return requireAffected(
+      client
+        .from("stopReason")
+        .update(sanitize(stopReason))
+        .eq("id", stopReason.id)
         .select("id")
     );
   }

@@ -116,10 +116,10 @@ msgstr "Visualización de OEE de {0}"
 
 #. placeholder {0}: counts.recorded
 #. placeholder {0}: issuedLines.length
-#. placeholder {0}: operation.quantityComplete
+#. placeholder {0}: serialIndex + 1
 #. placeholder {1}: characteristic.sampleSize
 #. placeholder {1}: operation.operationQuantity
-#. placeholder {1}: operation.targetQuantity
+#. placeholder {1}: trackedLines.length
 msgid "{0} of {1}"
 msgstr "{0} de {1}"
 
@@ -361,6 +361,9 @@ msgstr "Agregar {phrase}"
 
 msgid "Add & Issue"
 msgstr "Agregar y emitir"
+
+msgid "Add a note (optional)"
+msgstr "Agregar una nota (opcional)"
 
 msgid "Add a printer in the printing settings to print labels directly."
 msgstr "Agregue una impresora en la configuración de impresión para imprimir etiquetas directamente."
@@ -629,6 +632,12 @@ msgstr "Vista de tablero"
 
 msgid "Bold"
 msgstr "Negrita"
+
+msgid "Breakdown"
+msgstr "Avería"
+
+msgid "Breakdowns"
+msgstr "Averías"
 
 msgid "Bring {quantity}"
 msgstr "Traer {quantity}"
@@ -1741,6 +1750,9 @@ msgstr "Registrar desperdicio"
 msgid "Log scrap for {0}"
 msgstr "Registrar desperdicio para {0}"
 
+msgid "Log stop"
+msgstr "Registrar parada"
+
 msgid "Login"
 msgstr "Iniciar sesión"
 
@@ -1846,6 +1858,9 @@ msgstr "Mensaje"
 
 msgid "Metric"
 msgstr "Métrico"
+
+msgid "min"
+msgstr "min"
 
 msgid "Missing"
 msgstr "Faltante"
@@ -2054,6 +2069,9 @@ msgstr "Sin materiales"
 msgid "No materials on this batch."
 msgstr "Sin materiales en este lote de producción."
 
+msgid "No one is working on this operation."
+msgstr "Nadie está trabajando en esta operación."
+
 msgid "No open inspections"
 msgstr "No hay inspecciones abiertas"
 
@@ -2147,6 +2165,9 @@ msgstr "No hay atajos disponibles en esta página."
 msgid "No spare parts added yet"
 msgstr "Aún no se han agregado repuestos"
 
+msgid "No standard"
+msgstr "Sin estándar"
+
 msgid "No standard time"
 msgstr "Sin tiempo estándar"
 
@@ -2161,6 +2182,9 @@ msgstr "No hay estaciones en esta ubicación"
 
 msgid "No stock"
 msgstr "Sin stock"
+
+msgid "No stop reasons are set up. Ask a supervisor to add them in Production → Stop Reasons."
+msgstr "No hay motivos de parada configurados. Pida a un supervisor que los agregue en Producción → Motivos de parada."
 
 msgid "No stops this shift"
 msgstr "Sin paradas en este turno"
@@ -2259,6 +2283,9 @@ msgstr "Requiere OEM"
 #. placeholder {0}: m.operationQuantity ?? 0
 msgid "of {0}"
 msgstr "de {0}"
+
+msgid "of {target}"
+msgstr "de {target}"
 
 msgid "Of planned time"
 msgstr "Del tiempo programado"
@@ -2452,6 +2479,9 @@ msgstr "Pausar cronómetro de {workTypeLabel}"
 msgid "Pause maintenance"
 msgstr "Pausar mantenimiento"
 
+msgid "pcs"
+msgstr "uds."
+
 msgid "Pending"
 msgstr "Pendiente"
 
@@ -2634,6 +2664,9 @@ msgstr "Parámetros del proceso"
 msgid "Processes"
 msgstr "Procesos"
 
+msgid "Production rejects"
+msgstr "Rechazos de producción"
+
 msgid "Profile"
 msgstr "Perfil"
 
@@ -2762,6 +2795,9 @@ msgstr "Registrado"
 msgid "Reduced"
 msgstr "Reducida"
 
+msgid "Reduced speed"
+msgstr "Velocidad reducida"
+
 msgid "Reference image"
 msgstr "Imagen de referencia"
 
@@ -2779,6 +2815,9 @@ msgstr "Rechazar lote"
 
 msgid "Released"
 msgstr "Liberado"
+
+msgid "Remaining"
+msgstr "Restantes"
 
 msgid "Remove"
 msgstr "Quitar"
@@ -2851,6 +2890,9 @@ msgstr "Resultados registrados: {done}"
 msgid "Results recorded: {done}. Values skipped: {skipped}."
 msgstr "Resultados registrados: {done}. Valores omitidos: {skipped}."
 
+msgid "Resume"
+msgstr "Reanudar"
+
 msgid "Retry Completion"
 msgstr "Reintentar Finalización"
 
@@ -2865,6 +2907,9 @@ msgstr "Retrabajo creado exitosamente"
 
 msgid "Rework quantity"
 msgstr "Cantidad de retrabajo"
+
+msgid "Reworked"
+msgstr "Retrabajadas"
 
 msgid "Rich text"
 msgstr "Texto enriquecido"
@@ -3182,6 +3227,12 @@ msgstr "Se establece cuando el lote de producción fue planificado."
 msgid "Setup"
 msgstr "Preparación"
 
+msgid "Setup & adjustment"
+msgstr "Preparación y ajuste"
+
+msgid "Setup & adjustments"
+msgstr "Preparaciones y ajustes"
+
 msgid "Setup, timer running"
 msgstr "Preparación, temporizador en marcha"
 
@@ -3263,6 +3314,9 @@ msgstr "Iniciar sesión ya no requerirá un código. Ingresa el código de 6 dí
 msgid "since <0/>"
 msgstr "desde <0/>"
 
+msgid "Six Big Losses"
+msgstr "Seis grandes pérdidas"
+
 msgid "Size"
 msgstr "Tamaño"
 
@@ -3271,6 +3325,12 @@ msgstr "Slack"
 
 msgid "Small"
 msgstr "Pequeño"
+
+msgid "Small stop"
+msgstr "Microparada"
+
+msgid "Small stops"
+msgstr "Microparadas"
 
 msgid "Smaller"
 msgstr "Más pequeño"
@@ -3357,6 +3417,9 @@ msgstr "Iniciar o pausar la operación"
 msgid "Start work"
 msgstr "Iniciar trabajo"
 
+msgid "Startup rejects"
+msgstr "Rechazos de arranque"
+
 msgid "Station"
 msgstr "Estación"
 
@@ -3396,6 +3459,9 @@ msgstr "Existencias en:"
 
 msgid "Stop log"
 msgstr "Registro de paradas"
+
+msgid "Stopped"
+msgstr "Detenida"
 
 msgid "Stopped now {length}"
 msgstr "Detenido ahora {length}"
@@ -3598,6 +3664,9 @@ msgstr "Este lote está vencido y no puede ser preparado."
 msgid "This marks the dispatch as completed."
 msgstr "Esto marca la orden de mantenimiento como completada."
 
+msgid "this operation"
+msgstr "esta operación"
+
 msgid "This part was made to order. Scrapping it can reopen its routing to make a replacement."
 msgstr "Esta pieza se fabricó bajo pedido. Descartarla puede reabrir su ruta de fabricación para fabricar un reemplazo."
 
@@ -3788,6 +3857,9 @@ msgstr "Unidad"
 msgid "Unknown"
 msgstr "Desconocido"
 
+msgid "Unknown employee"
+msgstr "Empleado desconocido"
+
 msgid "Unknown gauge"
 msgstr "Instrumento de medición desconocido"
 
@@ -3932,6 +4004,9 @@ msgstr "Cuándo"
 msgid "Whole batch"
 msgstr "Todo el lote de producción"
 
+msgid "Why did the operation stop?"
+msgstr "¿Por qué se detuvo la operación?"
+
 msgid "Winding"
 msgstr "Serpenteante"
 
@@ -3952,6 +4027,9 @@ msgstr "Sitio de trabajo"
 
 msgid "Working"
 msgstr "Trabajando"
+
+msgid "Working now"
+msgstr "Trabajando ahora"
 
 msgid "Working time"
 msgstr "Tiempo de trabajo"

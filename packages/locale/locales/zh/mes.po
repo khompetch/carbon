@@ -116,10 +116,10 @@ msgstr "{0} OEE 显示"
 
 #. placeholder {0}: counts.recorded
 #. placeholder {0}: issuedLines.length
-#. placeholder {0}: operation.quantityComplete
+#. placeholder {0}: serialIndex + 1
 #. placeholder {1}: characteristic.sampleSize
 #. placeholder {1}: operation.operationQuantity
-#. placeholder {1}: operation.targetQuantity
+#. placeholder {1}: trackedLines.length
 msgid "{0} of {1}"
 msgstr "{0} / {1}"
 
@@ -361,6 +361,9 @@ msgstr "添加 {phrase}"
 
 msgid "Add & Issue"
 msgstr "添加并发放"
+
+msgid "Add a note (optional)"
+msgstr "添加备注（可选）"
 
 msgid "Add a printer in the printing settings to print labels directly."
 msgstr "在打印设置中添加打印机以直接打印标签。"
@@ -629,6 +632,12 @@ msgstr "看板视图"
 
 msgid "Bold"
 msgstr "粗体"
+
+msgid "Breakdown"
+msgstr "故障停机"
+
+msgid "Breakdowns"
+msgstr "故障停机"
 
 msgid "Bring {quantity}"
 msgstr "携带 {quantity}"
@@ -1741,6 +1750,9 @@ msgstr "记录报废"
 msgid "Log scrap for {0}"
 msgstr "记录 {0} 的报废"
 
+msgid "Log stop"
+msgstr "记录停机"
+
 msgid "Login"
 msgstr "登录"
 
@@ -1846,6 +1858,9 @@ msgstr "消息"
 
 msgid "Metric"
 msgstr "公制"
+
+msgid "min"
+msgstr "分钟"
 
 msgid "Missing"
 msgstr "缺料"
@@ -2054,6 +2069,9 @@ msgstr "没有原材料"
 msgid "No materials on this batch."
 msgstr "此生产批次上没有物料。"
 
+msgid "No one is working on this operation."
+msgstr "当前没有人在该工序上作业。"
+
 msgid "No open inspections"
 msgstr "没有未结的检验"
 
@@ -2147,6 +2165,9 @@ msgstr "此页面上无可用的快捷键。"
 msgid "No spare parts added yet"
 msgstr "尚未添加备件"
 
+msgid "No standard"
+msgstr "未设定标准值"
+
 msgid "No standard time"
 msgstr "无标准时间"
 
@@ -2161,6 +2182,9 @@ msgstr "此地点没有工位"
 
 msgid "No stock"
 msgstr "无库存"
+
+msgid "No stop reasons are set up. Ask a supervisor to add them in Production → Stop Reasons."
+msgstr "尚未设置停机原因。请主管在“生产 → 停机原因”中添加。"
 
 msgid "No stops this shift"
 msgstr "本班次无停机"
@@ -2259,6 +2283,9 @@ msgstr "需要 OEM"
 #. placeholder {0}: m.operationQuantity ?? 0
 msgid "of {0}"
 msgstr "/"
+
+msgid "of {target}"
+msgstr "共 {target}"
 
 msgid "Of planned time"
 msgstr "占计划时间"
@@ -2452,6 +2479,9 @@ msgstr "暂停{workTypeLabel}计时器"
 msgid "Pause maintenance"
 msgstr "暂停维护"
 
+msgid "pcs"
+msgstr "件"
+
 msgid "Pending"
 msgstr "待处理"
 
@@ -2634,6 +2664,9 @@ msgstr "工艺参数"
 msgid "Processes"
 msgstr "工艺"
 
+msgid "Production rejects"
+msgstr "生产拒绝数"
+
 msgid "Profile"
 msgstr "个人资料"
 
@@ -2762,6 +2795,9 @@ msgstr "已记录"
 msgid "Reduced"
 msgstr "放宽检验"
 
+msgid "Reduced speed"
+msgstr "降低速度"
+
 msgid "Reference image"
 msgstr "参考图像"
 
@@ -2779,6 +2815,9 @@ msgstr "拒绝批次"
 
 msgid "Released"
 msgstr "已下达"
+
+msgid "Remaining"
+msgstr "剩余"
 
 msgid "Remove"
 msgstr "移除"
@@ -2851,6 +2890,9 @@ msgstr "已记录结果: {done}"
 msgid "Results recorded: {done}. Values skipped: {skipped}."
 msgstr "已记录结果: {done}。已跳过的值: {skipped}。"
 
+msgid "Resume"
+msgstr "恢复"
+
 msgid "Retry Completion"
 msgstr "重试完成"
 
@@ -2865,6 +2907,9 @@ msgstr "返工创建成功"
 
 msgid "Rework quantity"
 msgstr "返工数量"
+
+msgid "Reworked"
+msgstr "已返工"
 
 msgid "Rich text"
 msgstr "富文本"
@@ -3182,6 +3227,12 @@ msgstr "在规划生产批次时设置。"
 msgid "Setup"
 msgstr "换型"
 
+msgid "Setup & adjustment"
+msgstr "换型与调整"
+
+msgid "Setup & adjustments"
+msgstr "换型与调整"
+
 msgid "Setup, timer running"
 msgstr "换型，计时器运行中"
 
@@ -3263,6 +3314,9 @@ msgstr "登录将不再需要代码。输入身份验证应用中的当前6位�
 msgid "since <0/>"
 msgstr "自 <0/>"
 
+msgid "Six Big Losses"
+msgstr "六大损失"
+
 msgid "Size"
 msgstr "大小"
 
@@ -3271,6 +3325,12 @@ msgstr "Slack"
 
 msgid "Small"
 msgstr "小"
+
+msgid "Small stop"
+msgstr "小停机"
+
+msgid "Small stops"
+msgstr "小停机"
 
 msgid "Smaller"
 msgstr "更小"
@@ -3357,6 +3417,9 @@ msgstr "开始或暂停工序"
 msgid "Start work"
 msgstr "开工"
 
+msgid "Startup rejects"
+msgstr "开机拒绝数"
+
 msgid "Station"
 msgstr "工位"
 
@@ -3396,6 +3459,9 @@ msgstr "库存位置："
 
 msgid "Stop log"
 msgstr "停机记录"
+
+msgid "Stopped"
+msgstr "已停机"
 
 msgid "Stopped now {length}"
 msgstr "当前已停机 {length}"
@@ -3598,6 +3664,9 @@ msgstr "此批次已过期，无法拣货。"
 msgid "This marks the dispatch as completed."
 msgstr "这将标记维护工单为已完成。"
 
+msgid "this operation"
+msgstr "该工序"
+
 msgid "This part was made to order. Scrapping it can reopen its routing to make a replacement."
 msgstr "此零件是按订单制造的。将其报废可重新打开其工艺路线以制造替换件。"
 
@@ -3788,6 +3857,9 @@ msgstr "件"
 msgid "Unknown"
 msgstr "未知"
 
+msgid "Unknown employee"
+msgstr "未知员工"
+
 msgid "Unknown gauge"
 msgstr "未知量具"
 
@@ -3932,6 +4004,9 @@ msgstr "何时"
 msgid "Whole batch"
 msgstr "整个生产批次"
 
+msgid "Why did the operation stop?"
+msgstr "该工序为何停机？"
+
 msgid "Winding"
 msgstr "蛇形"
 
@@ -3952,6 +4027,9 @@ msgstr "工作地点"
 
 msgid "Working"
 msgstr "工作中"
+
+msgid "Working now"
+msgstr "正在作业"
 
 msgid "Working time"
 msgstr "工作时间"

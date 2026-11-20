@@ -4811,6 +4811,10 @@ msgstr "Вы уверены, что хотите удалить смену: {nam
 msgid "Are you sure you want to delete the shipping method: {0}? This cannot be undone."
 msgstr "Вы уверены, что хотите удалить способ доставки: {0}? Это действие невозможно отменить."
 
+#. placeholder {0}: stopReason.name
+msgid "Are you sure you want to delete the stop reason: {0}? This cannot be undone."
+msgstr "Вы уверены, что хотите удалить причину остановки: {0}? Это действие нельзя отменить."
+
 #. placeholder {0}: storageType.name
 msgid "Are you sure you want to delete the storage type: {0}? This cannot be undone."
 msgstr "Вы уверены, что хотите удалить тип хранилища: {0}? Это действие невозможно отменить."
@@ -6119,6 +6123,9 @@ msgstr "Создайте редактируемую копию этой верс
 
 msgid "Breadcrumb"
 msgstr "Навигационная цепочка"
+
+msgid "Breakdown"
+msgstr "Поломка"
 
 msgid "Bring in your parts, BOMs, Bill of Process, and costing — with Carbon's import tools, CSV, or LLM help."
 msgstr "Импортируйте ваши детали, BOM, перечень операций и калькуляцию — используя инструменты импорта Carbon, CSV или помощь LLM."
@@ -9209,6 +9216,9 @@ msgstr "Способ доставки создан"
 msgid "Created stock transfer line"
 msgstr "Создана строка перемещения запасов"
 
+msgid "Created stop reason"
+msgstr "Причина остановки создана"
+
 msgid "Created storage type"
 msgstr "Тип хранилища создан"
 
@@ -10516,6 +10526,9 @@ msgstr "Удалить шаг"
 
 msgid "Delete Stock Transfer"
 msgstr "Удалить передачу запасов"
+
+msgid "Delete Stop Reason"
+msgstr "Удалить причину остановки"
 
 msgid "Delete Storage Type"
 msgstr "Удалить тип хранилища"
@@ -12042,6 +12055,9 @@ msgstr "Изменить Размер"
 msgid "Edit Stock Transfer"
 msgstr "Изменить Перемещение запаса"
 
+msgid "Edit Stop Reason"
+msgstr "Изменить причину остановки"
+
 msgid "Edit Storage Type"
 msgstr "Изменить Тип хранилища"
 
@@ -13343,6 +13359,10 @@ msgstr "Ошибка при создании причины возврата: {0
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create service: {0}"
 msgstr "Ошибка при создании услуги: {0}"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create stop reason: {0}"
+msgstr "Не удалось создать причину остановки: {0}"
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create supplier stage: {0}"
@@ -17651,6 +17671,9 @@ msgstr "Смотреть вперед (недели)"
 msgid "Look back (weeks)"
 msgstr "Смотреть назад (недели)"
 
+msgid "Loss"
+msgstr "Потери"
+
 msgid "Loss on Disposal"
 msgstr "Убыток от выбытия"
 
@@ -19410,6 +19433,9 @@ msgstr "Новый размер"
 
 msgid "New Stock Transfer"
 msgstr "Новое перемещение запаса"
+
+msgid "New Stop Reason"
+msgstr "Новая причина остановки"
 
 msgid "New Storage Type"
 msgstr "Новый тип хранилища"
@@ -28103,6 +28129,9 @@ msgstr "Настройка"
 msgid "Setup {0} → {1}"
 msgstr "Наладка {0} → {1}"
 
+msgid "Setup & Adjustment"
+msgstr "Наладка и корректировка"
+
 msgid "Setup & Controls"
 msgstr "Настройка и управление"
 
@@ -28766,6 +28795,9 @@ msgstr "Маленький"
 msgid "Small business"
 msgstr "Малое предприятие"
 
+msgid "Small Stop"
+msgstr "Мелкая остановка"
+
 msgid "Smaller"
 msgstr "Меньший"
 
@@ -29294,6 +29326,12 @@ msgstr "Остановить таймер и завершить"
 
 msgid "Stop raising purchase orders after this date"
 msgstr "Прекратить создание заказов поставщику после этой даты"
+
+msgid "Stop Reason"
+msgstr "Причина остановки"
+
+msgid "Stop Reasons"
+msgstr "Причины остановок"
 
 msgid "Stop Receiving"
 msgstr "Остановить получение"
