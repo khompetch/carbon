@@ -4811,6 +4811,10 @@ msgstr "Vardığınız vardiyayı silmek istediğinizden emin misiniz: {name} ad
 msgid "Are you sure you want to delete the shipping method: {0}? This cannot be undone."
 msgstr "{0} sevkiyat yöntemini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
 
+#. placeholder {0}: stopReason.name
+msgid "Are you sure you want to delete the stop reason: {0}? This cannot be undone."
+msgstr "{0} duruş nedenini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+
 #. placeholder {0}: storageType.name
 msgid "Are you sure you want to delete the storage type: {0}? This cannot be undone."
 msgstr "Depolama türünü silmek istediğinizden emin misiniz: {0}? Bu geri alınamaz."
@@ -6119,6 +6123,9 @@ msgstr "Bu sürümün düzenlenebilir bir kopyasını oluşturun, değiştirebil
 
 msgid "Breadcrumb"
 msgstr "Sayfa Yolu"
+
+msgid "Breakdown"
+msgstr "Arıza"
 
 msgid "Bring in your parts, BOMs, Bill of Process, and costing — with Carbon's import tools, CSV, or LLM help."
 msgstr "Parçalarınızı, BOM'ları, Operasyon listesini ve maliyetlendirmeyi getirin — Carbon'ın içe aktarma araçları, CSV veya LLM yardımıyla."
@@ -9209,6 +9216,9 @@ msgstr "Sevkiyat yöntemi oluşturuldu"
 msgid "Created stock transfer line"
 msgstr "Stok transfer satırı oluşturuldu"
 
+msgid "Created stop reason"
+msgstr "Duruş nedeni oluşturuldu"
+
 msgid "Created storage type"
 msgstr "Depolama türü oluşturuldu"
 
@@ -10516,6 +10526,9 @@ msgstr "Adımı Sil"
 
 msgid "Delete Stock Transfer"
 msgstr "Stok Transferini Sil"
+
+msgid "Delete Stop Reason"
+msgstr "Duruş Nedenini Sil"
 
 msgid "Delete Storage Type"
 msgstr "Depolama Türünü Sil"
@@ -12042,6 +12055,9 @@ msgstr "Boyut Düzenle"
 msgid "Edit Stock Transfer"
 msgstr "Stok Transfer Düzenle"
 
+msgid "Edit Stop Reason"
+msgstr "Duruş Nedenini Düzenle"
+
 msgid "Edit Storage Type"
 msgstr "Depolama Türünü Düzenle"
 
@@ -13343,6 +13359,10 @@ msgstr "İade sebebi oluşturma başarısız oldu: {0}"
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create service: {0}"
 msgstr "Hizmet oluşturma başarısız: {0}"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create stop reason: {0}"
+msgstr "Duruş nedeni oluşturulamadı: {0}"
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create supplier stage: {0}"
@@ -17651,6 +17671,9 @@ msgstr "İleri Görüş (haftalar)"
 msgid "Look back (weeks)"
 msgstr "Geriye Görüş (haftalar)"
 
+msgid "Loss"
+msgstr "Kayıp"
+
 msgid "Loss on Disposal"
 msgstr "Elden Çıkarmada Zarar"
 
@@ -19410,6 +19433,9 @@ msgstr "Yeni Boyut"
 
 msgid "New Stock Transfer"
 msgstr "Yeni stok transferi"
+
+msgid "New Stop Reason"
+msgstr "Yeni Duruş Nedeni"
 
 msgid "New Storage Type"
 msgstr "Yeni Depolama Türü"
@@ -28103,6 +28129,9 @@ msgstr "Kurulum"
 msgid "Setup {0} → {1}"
 msgstr "Hazırlık {0} → {1}"
 
+msgid "Setup & Adjustment"
+msgstr "Hazırlık ve Düzeltme"
+
 msgid "Setup & Controls"
 msgstr "Kurulum ve Kontroller"
 
@@ -28766,6 +28795,9 @@ msgstr "Küçük"
 msgid "Small business"
 msgstr "Küçük işletme"
 
+msgid "Small Stop"
+msgstr "Küçük Duruş"
+
 msgid "Smaller"
 msgstr "Daha küçük"
 
@@ -29294,6 +29326,12 @@ msgstr "Saati durdur ve tamamla"
 
 msgid "Stop raising purchase orders after this date"
 msgstr "Bu tarihten sonra satın alma siparişleri vermeyi durdur"
+
+msgid "Stop Reason"
+msgstr "Duruş Nedeni"
+
+msgid "Stop Reasons"
+msgstr "Duruş Nedenleri"
 
 msgid "Stop Receiving"
 msgstr "Alımı Durdur"

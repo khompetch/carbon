@@ -116,10 +116,10 @@ msgstr "{0} OEE göstergesi"
 
 #. placeholder {0}: counts.recorded
 #. placeholder {0}: issuedLines.length
-#. placeholder {0}: operation.quantityComplete
+#. placeholder {0}: serialIndex + 1
 #. placeholder {1}: characteristic.sampleSize
 #. placeholder {1}: operation.operationQuantity
-#. placeholder {1}: operation.targetQuantity
+#. placeholder {1}: trackedLines.length
 msgid "{0} of {1}"
 msgstr "{0} adet {1}"
 
@@ -361,6 +361,9 @@ msgstr "Ekle {phrase}"
 
 msgid "Add & Issue"
 msgstr "Ekle ve Çıkış Yap"
+
+msgid "Add a note (optional)"
+msgstr "Not ekle (isteğe bağlı)"
 
 msgid "Add a printer in the printing settings to print labels directly."
 msgstr "Etiketleri doğrudan yazdırmak için yazdırma ayarlarında bir yazıcı ekleyin."
@@ -629,6 +632,12 @@ msgstr "Pano görünümü"
 
 msgid "Bold"
 msgstr "Kalın"
+
+msgid "Breakdown"
+msgstr "Arıza"
+
+msgid "Breakdowns"
+msgstr "Arızalar"
 
 msgid "Bring {quantity}"
 msgstr "{quantity} getir"
@@ -1741,6 +1750,9 @@ msgstr "Fire kaydı"
 msgid "Log scrap for {0}"
 msgstr "{0} için fire kaydı"
 
+msgid "Log stop"
+msgstr "Duruşu kaydet"
+
 msgid "Login"
 msgstr "Giriş Yap"
 
@@ -1846,6 +1858,9 @@ msgstr "Mesaj"
 
 msgid "Metric"
 msgstr "Metrik"
+
+msgid "min"
+msgstr "dk"
 
 msgid "Missing"
 msgstr "Eksik"
@@ -2054,6 +2069,9 @@ msgstr "Malzeme yok"
 msgid "No materials on this batch."
 msgstr "Bu Partide Malzeme yok."
 
+msgid "No one is working on this operation."
+msgstr "Bu operasyonda çalışan kimse yok."
+
 msgid "No open inspections"
 msgstr "Açık muayene yok"
 
@@ -2147,6 +2165,9 @@ msgstr "Bu sayfada kullanılabilir kısayol yoktur."
 msgid "No spare parts added yet"
 msgstr "Henüz yedek parça eklenmedi"
 
+msgid "No standard"
+msgstr "Standart yok"
+
 msgid "No standard time"
 msgstr "Standart süre yok"
 
@@ -2161,6 +2182,9 @@ msgstr "Bu lokasyonda istasyon yok"
 
 msgid "No stock"
 msgstr "Stok yok"
+
+msgid "No stop reasons are set up. Ask a supervisor to add them in Production → Stop Reasons."
+msgstr "Duruş nedeni tanımlanmamış. Lütfen bir amirden bunları Üretim → Duruş Nedenleri bölümüne eklemesini isteyin."
 
 msgid "No stops this shift"
 msgstr "Bu vardiyada duruş yok"
@@ -2259,6 +2283,9 @@ msgstr "OEM Gerekli"
 #. placeholder {0}: m.operationQuantity ?? 0
 msgid "of {0}"
 msgstr "/{0}"
+
+msgid "of {target}"
+msgstr "/ {target}"
 
 msgid "Of planned time"
 msgstr "Planlanan sürenin"
@@ -2452,6 +2479,9 @@ msgstr "{workTypeLabel} zamanlayıcısını duraklat"
 msgid "Pause maintenance"
 msgstr "Bakımı duraklat"
 
+msgid "pcs"
+msgstr "adet"
+
 msgid "Pending"
 msgstr "Beklemede"
 
@@ -2634,6 +2664,9 @@ msgstr "İşlem Parametreleri"
 msgid "Processes"
 msgstr "Süreçler"
 
+msgid "Production rejects"
+msgstr "Üretim redleri"
+
 msgid "Profile"
 msgstr "Profil"
 
@@ -2762,6 +2795,9 @@ msgstr "Kaydedildi"
 msgid "Reduced"
 msgstr "Gevşetilmiş"
 
+msgid "Reduced speed"
+msgstr "Düşük hız"
+
 msgid "Reference image"
 msgstr "Referans görseli"
 
@@ -2779,6 +2815,9 @@ msgstr "Lotu Reddet"
 
 msgid "Released"
 msgstr "Serbest bırakıldı"
+
+msgid "Remaining"
+msgstr "Kalan"
 
 msgid "Remove"
 msgstr "Kaldır"
@@ -2851,6 +2890,9 @@ msgstr "Kaydedilen sonuçlar: {done}"
 msgid "Results recorded: {done}. Values skipped: {skipped}."
 msgstr "Kaydedilen sonuçlar: {done}. Atlanan değerler: {skipped}."
 
+msgid "Resume"
+msgstr "Devam et"
+
 msgid "Retry Completion"
 msgstr "Tamamlanmayı Yeniden Dene"
 
@@ -2865,6 +2907,9 @@ msgstr "Yeniden işleme başarıyla oluşturuldu"
 
 msgid "Rework quantity"
 msgstr "Yeniden işleme miktarı"
+
+msgid "Reworked"
+msgstr "Yeniden işlenmiş"
 
 msgid "Rich text"
 msgstr "Zengin metin"
@@ -3182,6 +3227,12 @@ msgstr "Parti planlandığında ayarlandı."
 msgid "Setup"
 msgstr "Kurulum"
 
+msgid "Setup & adjustment"
+msgstr "Hazırlık ve ayar"
+
+msgid "Setup & adjustments"
+msgstr "Hazırlık ve ayarlar"
+
 msgid "Setup, timer running"
 msgstr "Hazırlık, zamanlayıcı çalışıyor"
 
@@ -3263,6 +3314,9 @@ msgstr "Oturum açma artık bir kod gerektirmeyecek. Onaylamak için kimlik doğ
 msgid "since <0/>"
 msgstr "<0/> itibaren"
 
+msgid "Six Big Losses"
+msgstr "Altı Büyük Kayıp"
+
 msgid "Size"
 msgstr "Boyut"
 
@@ -3271,6 +3325,12 @@ msgstr "Slack"
 
 msgid "Small"
 msgstr "Küçük"
+
+msgid "Small stop"
+msgstr "Kısa duruş"
+
+msgid "Small stops"
+msgstr "Kısa duruşlar"
 
 msgid "Smaller"
 msgstr "Daha küçük"
@@ -3357,6 +3417,9 @@ msgstr "Operasyonu başlat veya duraklat"
 msgid "Start work"
 msgstr "İşe Başla"
 
+msgid "Startup rejects"
+msgstr "Başlangıç redleri"
+
 msgid "Station"
 msgstr "İstasyon"
 
@@ -3396,6 +3459,9 @@ msgstr "Stok konumu:"
 
 msgid "Stop log"
 msgstr "Duruş kaydı"
+
+msgid "Stopped"
+msgstr "Durduruldu"
 
 msgid "Stopped now {length}"
 msgstr "Şu an durmuş: {length}"
@@ -3598,6 +3664,9 @@ msgstr "Bu lot'un süresi doldu ve toplanamaz."
 msgid "This marks the dispatch as completed."
 msgstr "Bu bakım emrini Tamamlandı olarak işaretler."
 
+msgid "this operation"
+msgstr "bu operasyon"
+
 msgid "This part was made to order. Scrapping it can reopen its routing to make a replacement."
 msgstr "Bu parça siparişe göre yapılmıştır. Hurdalaması, bir yedek yapmak için rotasını yeniden açabilir."
 
@@ -3788,6 +3857,9 @@ msgstr "Adet"
 msgid "Unknown"
 msgstr "Bilinmiyor"
 
+msgid "Unknown employee"
+msgstr "Bilinmeyen çalışan"
+
 msgid "Unknown gauge"
 msgstr "Bilinmeyen ölçüm aleti"
 
@@ -3932,6 +4004,9 @@ msgstr "Ne zaman"
 msgid "Whole batch"
 msgstr "Tüm Parti"
 
+msgid "Why did the operation stop?"
+msgstr "Operasyon neden durdu?"
+
 msgid "Winding"
 msgstr "Kıvrımlı"
 
@@ -3952,6 +4027,9 @@ msgstr "İş Sahanı"
 
 msgid "Working"
 msgstr "Çalışıyor"
+
+msgid "Working now"
+msgstr "Şu an çalışıyor"
 
 msgid "Working time"
 msgstr "Çalışma Süresi"

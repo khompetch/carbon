@@ -4811,6 +4811,10 @@ msgstr "Sind Sie sicher, dass Sie die Schicht: {name} von {locationName} lösche
 msgid "Are you sure you want to delete the shipping method: {0}? This cannot be undone."
 msgstr "Sind Sie sicher, dass Sie die Versandart {0} löschen möchten? Dies kann nicht rückgängig gemacht werden."
 
+#. placeholder {0}: stopReason.name
+msgid "Are you sure you want to delete the stop reason: {0}? This cannot be undone."
+msgstr "Möchten Sie den Stillstandsgrund „{0}“ wirklich löschen? Dies kann nicht rückgängig gemacht werden."
+
 #. placeholder {0}: storageType.name
 msgid "Are you sure you want to delete the storage type: {0}? This cannot be undone."
 msgstr "Sind Sie sicher, dass Sie den Speichertyp: {0} löschen möchten? Dies kann nicht rückgängig gemacht werden."
@@ -6119,6 +6123,9 @@ msgstr "Erstellen Sie einen bearbeitbaren Branch dieser Version, den Sie ändern
 
 msgid "Breadcrumb"
 msgstr "Breadcrumb-Navigation"
+
+msgid "Breakdown"
+msgstr "Störung"
 
 msgid "Bring in your parts, BOMs, Bill of Process, and costing — with Carbon's import tools, CSV, or LLM help."
 msgstr "Importieren Sie Ihre Teile, BOMs, Arbeitsgangliste und Kalkulation — mit Carbons Importwerkzeugen, CSV oder LLM-Hilfe."
@@ -9209,6 +9216,9 @@ msgstr "Versandmethode erstellt"
 msgid "Created stock transfer line"
 msgstr "Umlagerungsposition erstellt"
 
+msgid "Created stop reason"
+msgstr "Stillstandsgrund erstellt"
+
 msgid "Created storage type"
 msgstr "Speichertyp erstellt"
 
@@ -10516,6 +10526,9 @@ msgstr "Schritt löschen"
 
 msgid "Delete Stock Transfer"
 msgstr "Bestandsübertragung löschen"
+
+msgid "Delete Stop Reason"
+msgstr "Stillstandsgrund löschen"
 
 msgid "Delete Storage Type"
 msgstr "Speichertyp löschen"
@@ -12042,6 +12055,9 @@ msgstr "Größe bearbeiten"
 msgid "Edit Stock Transfer"
 msgstr "Lagertransfer bearbeiten"
 
+msgid "Edit Stop Reason"
+msgstr "Stillstandsgrund bearbeiten"
+
 msgid "Edit Storage Type"
 msgstr "Speichertyp bearbeiten"
 
@@ -13343,6 +13359,10 @@ msgstr "Fehler beim Erstellen des Rückgabegrunds: {0}"
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create service: {0}"
 msgstr "Fehler beim Erstellen der Dienstleistung: {0}"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create stop reason: {0}"
+msgstr "Stillstandsgrund konnte nicht erstellt werden: {0}"
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create supplier stage: {0}"
@@ -17651,6 +17671,9 @@ msgstr "Vorausschau (Wochen)"
 msgid "Look back (weeks)"
 msgstr "Rückblick (Wochen)"
 
+msgid "Loss"
+msgstr "Verlust"
+
 msgid "Loss on Disposal"
 msgstr "Verlust bei Abgang"
 
@@ -19410,6 +19433,9 @@ msgstr "Neue Größe"
 
 msgid "New Stock Transfer"
 msgstr "Neue Umlagerung"
+
+msgid "New Stop Reason"
+msgstr "Neuer Stillstandsgrund"
 
 msgid "New Storage Type"
 msgstr "Neuer Speichertyp"
@@ -28103,6 +28129,9 @@ msgstr "Einrichtung"
 msgid "Setup {0} → {1}"
 msgstr "Rüsten {0} → {1}"
 
+msgid "Setup & Adjustment"
+msgstr "Rüsten & Einstellen"
+
 msgid "Setup & Controls"
 msgstr "Setup & Kontrollen"
 
@@ -28766,6 +28795,9 @@ msgstr "Klein"
 msgid "Small business"
 msgstr "Kleinunternehmen"
 
+msgid "Small Stop"
+msgstr "Kleinstillstand"
+
 msgid "Smaller"
 msgstr "Kleiner"
 
@@ -29294,6 +29326,12 @@ msgstr "Uhr stoppen und abschließen"
 
 msgid "Stop raising purchase orders after this date"
 msgstr "Bestellungen nach diesem Datum nicht mehr aufgeben"
+
+msgid "Stop Reason"
+msgstr "Stillstandsgrund"
+
+msgid "Stop Reasons"
+msgstr "Stillstandsgründe"
 
 msgid "Stop Receiving"
 msgstr "Empfang beenden"

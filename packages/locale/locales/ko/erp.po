@@ -4811,6 +4811,10 @@ msgstr "교대조를 삭제하시겠습니까: {name} (사업장: {locationName}
 msgid "Are you sure you want to delete the shipping method: {0}? This cannot be undone."
 msgstr "배송 방법 {0}을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다."
 
+#. placeholder {0}: stopReason.name
+msgid "Are you sure you want to delete the stop reason: {0}? This cannot be undone."
+msgstr "정지 사유 {0}을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다."
+
 #. placeholder {0}: storageType.name
 msgid "Are you sure you want to delete the storage type: {0}? This cannot be undone."
 msgstr "저장 유형 {0}을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다."
@@ -6119,6 +6123,9 @@ msgstr "이 버전의 편집 가능한 복사본을 분기하여 변경 및 게�
 
 msgid "Breadcrumb"
 msgstr "이동 경로"
+
+msgid "Breakdown"
+msgstr "설비 고장"
 
 msgid "Bring in your parts, BOMs, Bill of Process, and costing — with Carbon's import tools, CSV, or LLM help."
 msgstr "부품, BOM, 공정 목록 및 원가 계산을 가져오기 — Carbon의 가져오기 도구, CSV 또는 LLM 도움을 사용합니다."
@@ -9209,6 +9216,9 @@ msgstr "배송 방법 생성됨"
 msgid "Created stock transfer line"
 msgstr "재고 이송 라인이 생성되었습니다."
 
+msgid "Created stop reason"
+msgstr "정지 사유를 생성했습니다"
+
 msgid "Created storage type"
 msgstr "저장 유형 생성됨"
 
@@ -10516,6 +10526,9 @@ msgstr "단계 삭제"
 
 msgid "Delete Stock Transfer"
 msgstr "재고 이동 삭제"
+
+msgid "Delete Stop Reason"
+msgstr "정지 사유 삭제"
 
 msgid "Delete Storage Type"
 msgstr "저장 유형 삭제"
@@ -12042,6 +12055,9 @@ msgstr "크기 편집"
 msgid "Edit Stock Transfer"
 msgstr "재고 이송 편집"
 
+msgid "Edit Stop Reason"
+msgstr "정지 사유 편집"
+
 msgid "Edit Storage Type"
 msgstr "보관 유형 편집"
 
@@ -13343,6 +13359,10 @@ msgstr "반품 사유 생성 실패: {0}"
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create service: {0}"
 msgstr "서비스 생성 실패: {0}"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create stop reason: {0}"
+msgstr "정지 사유 생성에 실패했습니다: {0}"
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create supplier stage: {0}"
@@ -17651,6 +17671,9 @@ msgstr "향후 조회 (주)"
 msgid "Look back (weeks)"
 msgstr "이전 조회 (주)"
 
+msgid "Loss"
+msgstr "손실"
+
 msgid "Loss on Disposal"
 msgstr "처분 손실"
 
@@ -19410,6 +19433,9 @@ msgstr "새 사이즈"
 
 msgid "New Stock Transfer"
 msgstr "새 재고 이송"
+
+msgid "New Stop Reason"
+msgstr "새 정지 사유"
 
 msgid "New Storage Type"
 msgstr "새 저장 유형"
@@ -28103,6 +28129,9 @@ msgstr "설정"
 msgid "Setup {0} → {1}"
 msgstr "셋업 {0} → {1}"
 
+msgid "Setup & Adjustment"
+msgstr "셋업 및 조정"
+
 msgid "Setup & Controls"
 msgstr "설정 및 관리"
 
@@ -28766,6 +28795,9 @@ msgstr "작음"
 msgid "Small business"
 msgstr "소규모 기업"
 
+msgid "Small Stop"
+msgstr "소규모 정지"
+
 msgid "Smaller"
 msgstr "더 작음"
 
@@ -29294,6 +29326,12 @@ msgstr "시계 중지 및 완료 처리"
 
 msgid "Stop raising purchase orders after this date"
 msgstr "이 날짜 이후로 발주서를 발행하지 마십시오"
+
+msgid "Stop Reason"
+msgstr "정지 사유"
+
+msgid "Stop Reasons"
+msgstr "정지 사유"
 
 msgid "Stop Receiving"
 msgstr "수령 중지"

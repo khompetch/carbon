@@ -116,10 +116,10 @@ msgstr "{0} OEE 表示"
 
 #. placeholder {0}: counts.recorded
 #. placeholder {0}: issuedLines.length
-#. placeholder {0}: operation.quantityComplete
+#. placeholder {0}: serialIndex + 1
 #. placeholder {1}: characteristic.sampleSize
 #. placeholder {1}: operation.operationQuantity
-#. placeholder {1}: operation.targetQuantity
+#. placeholder {1}: trackedLines.length
 msgid "{0} of {1}"
 msgstr "{0} / {1}"
 
@@ -361,6 +361,9 @@ msgstr "{phrase}を追加"
 
 msgid "Add & Issue"
 msgstr "追加して払出"
+
+msgid "Add a note (optional)"
+msgstr "メモを追加（任意）"
 
 msgid "Add a printer in the printing settings to print labels directly."
 msgstr "印刷設定でプリンターを追加して、ラベルを直接印刷します。"
@@ -629,6 +632,12 @@ msgstr "ボード表示"
 
 msgid "Bold"
 msgstr "太字"
+
+msgid "Breakdown"
+msgstr "故障"
+
+msgid "Breakdowns"
+msgstr "故障"
 
 msgid "Bring {quantity}"
 msgstr "{quantity}を持参"
@@ -1741,6 +1750,9 @@ msgstr "スクラップを記録"
 msgid "Log scrap for {0}"
 msgstr "{0} のスクラップを記録"
 
+msgid "Log stop"
+msgstr "停止を記録"
+
 msgid "Login"
 msgstr "ログイン"
 
@@ -1846,6 +1858,9 @@ msgstr "メッセージ"
 
 msgid "Metric"
 msgstr "メートル法"
+
+msgid "min"
+msgstr "分"
 
 msgid "Missing"
 msgstr "不足"
@@ -2054,6 +2069,9 @@ msgstr "材料なし"
 msgid "No materials on this batch."
 msgstr "このバッチに材料がありません。"
 
+msgid "No one is working on this operation."
+msgstr "この工程には作業者がいません。"
+
 msgid "No open inspections"
 msgstr "オープン中の検査はありません"
 
@@ -2147,6 +2165,9 @@ msgstr "このページで利用可能なショートカットはありません
 msgid "No spare parts added yet"
 msgstr "予備品はまだ追加されていません。"
 
+msgid "No standard"
+msgstr "標準なし"
+
 msgid "No standard time"
 msgstr "標準時間なし"
 
@@ -2161,6 +2182,9 @@ msgstr "この拠点にはステーションがありません"
 
 msgid "No stock"
 msgstr "在庫なし"
+
+msgid "No stop reasons are set up. Ask a supervisor to add them in Production → Stop Reasons."
+msgstr "停止理由が設定されていません。管理者に依頼して、生産 → 停止理由 で追加してもらってください。"
 
 msgid "No stops this shift"
 msgstr "今シフトの停止はありません"
@@ -2259,6 +2283,9 @@ msgstr "OEM対応必要"
 #. placeholder {0}: m.operationQuantity ?? 0
 msgid "of {0}"
 msgstr "の{0}"
+
+msgid "of {target}"
+msgstr "目標 {target}"
 
 msgid "Of planned time"
 msgstr "計画時間の"
@@ -2452,6 +2479,9 @@ msgstr "{workTypeLabel} タイマーを一時停止"
 msgid "Pause maintenance"
 msgstr "保全を一時停止"
 
+msgid "pcs"
+msgstr "個"
+
 msgid "Pending"
 msgstr "待機中"
 
@@ -2634,6 +2664,9 @@ msgstr "プロセスパラメーター"
 msgid "Processes"
 msgstr "プロセス一覧"
 
+msgid "Production rejects"
+msgstr "生産却下数"
+
 msgid "Profile"
 msgstr "プロフィール"
 
@@ -2762,6 +2795,9 @@ msgstr "記録済"
 msgid "Reduced"
 msgstr "ゆるい検査"
 
+msgid "Reduced speed"
+msgstr "速度低下"
+
 msgid "Reference image"
 msgstr "参照画像"
 
@@ -2779,6 +2815,9 @@ msgstr "ロットを却下"
 
 msgid "Released"
 msgstr "リリース済"
+
+msgid "Remaining"
+msgstr "残り"
 
 msgid "Remove"
 msgstr "除去"
@@ -2851,6 +2890,9 @@ msgstr "記録した結果: {done}"
 msgid "Results recorded: {done}. Values skipped: {skipped}."
 msgstr "記録した結果: {done}。スキップした値: {skipped}。"
 
+msgid "Resume"
+msgstr "再開"
+
 msgid "Retry Completion"
 msgstr "完了を再試行"
 
@@ -2865,6 +2907,9 @@ msgstr "手直しが正常に作成されました"
 
 msgid "Rework quantity"
 msgstr "手直し数量"
+
+msgid "Reworked"
+msgstr "手直し済み"
 
 msgid "Rich text"
 msgstr "リッチテキスト"
@@ -3182,6 +3227,12 @@ msgstr "バッチが計画されたときに設定します。"
 msgid "Setup"
 msgstr "段取り"
 
+msgid "Setup & adjustment"
+msgstr "段取り・調整"
+
+msgid "Setup & adjustments"
+msgstr "段取り・調整"
+
 msgid "Setup, timer running"
 msgstr "段取り、タイマー実行中"
 
@@ -3263,6 +3314,9 @@ msgstr "サインインにコードが不要になります。確認するため
 msgid "since <0/>"
 msgstr "<0/>から"
 
+msgid "Six Big Losses"
+msgstr "六大ロス"
+
 msgid "Size"
 msgstr "サイズ"
 
@@ -3271,6 +3325,12 @@ msgstr "Slack"
 
 msgid "Small"
 msgstr "小"
+
+msgid "Small stop"
+msgstr "小停止"
+
+msgid "Small stops"
+msgstr "小停止"
 
 msgid "Smaller"
 msgstr "より小さい"
@@ -3357,6 +3417,9 @@ msgstr "工程を開始 / 一時停止"
 msgid "Start work"
 msgstr "作業開始"
 
+msgid "Startup rejects"
+msgstr "立ち上げ時却下数"
+
 msgid "Station"
 msgstr "ステーション"
 
@@ -3396,6 +3459,9 @@ msgstr "在庫場所："
 
 msgid "Stop log"
 msgstr "停止履歴"
+
+msgid "Stopped"
+msgstr "停止中"
 
 msgid "Stopped now {length}"
 msgstr "現在停止中 {length}"
@@ -3598,6 +3664,9 @@ msgstr "このロットは期限切れであり、ピックできません。"
 msgid "This marks the dispatch as completed."
 msgstr "この操作により保全指示が完了とマークされます。"
 
+msgid "this operation"
+msgstr "この工程"
+
 msgid "This part was made to order. Scrapping it can reopen its routing to make a replacement."
 msgstr "この部品は受注生産で製造されました。スクラップすると、その工順を再オープンして交換部品を製造できます。"
 
@@ -3788,6 +3857,9 @@ msgstr "個"
 msgid "Unknown"
 msgstr "不明"
 
+msgid "Unknown employee"
+msgstr "不明な従業員"
+
 msgid "Unknown gauge"
 msgstr "不明な測定器"
 
@@ -3932,6 +4004,9 @@ msgstr "いつ"
 msgid "Whole batch"
 msgstr "バッチ全体"
 
+msgid "Why did the operation stop?"
+msgstr "工程はなぜ停止しましたか？"
+
 msgid "Winding"
 msgstr "蛇行"
 
@@ -3951,6 +4026,9 @@ msgid "Work Site"
 msgstr "作業現場"
 
 msgid "Working"
+msgstr "作業中"
+
+msgid "Working now"
 msgstr "作業中"
 
 msgid "Working time"

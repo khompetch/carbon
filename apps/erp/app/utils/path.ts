@@ -407,6 +407,7 @@ export const path = {
         generatePath(`${api}/people/shifts?location=${id}`),
       shippingMethods: `${api}/inventory/shipping-methods`,
       ssoCheck: `${api}/sso/check`,
+      stopReasons: `${api}/production/stop-reasons`,
       storageTypes: `${api}/inventory/storage-types`,
       storageUnitChildren: (parentId: string) =>
         generatePath(
@@ -1138,6 +1139,8 @@ export const path = {
       generatePath(`${x}/stock-transfer/delete/${id}`),
     deleteStockTransferLine: (id: string, lineId: string) =>
       generatePath(`${x}/stock-transfer/${id}/line/${lineId}/delete`),
+    deleteStopReason: (id: string) =>
+      generatePath(`${x}/production/stop-reasons/delete/${id}`),
     deleteStorageRule: (id: string) =>
       generatePath(`${x}/inventory/storage-rules/${id}/delete`),
     deleteStorageType: (id: string) =>
@@ -2088,6 +2091,7 @@ export const path = {
     newStockTransfer: `${x}/stock-transfer/new`,
     newStockTransferLine: (id: string) =>
       generatePath(`${x}/stock-transfer/${id}/line/new`),
+    newStopReason: `${x}/production/stop-reasons/new`,
     newStorageRule: `${x}/inventory/storage-rules/new`,
     newStorageType: `${x}/inventory/storage-types/new`,
     newStorageUnit: `${x}/inventory/storage-units/new`,
@@ -2796,6 +2800,9 @@ export const path = {
     stockTransferStatus: (id: string) =>
       generatePath(`${x}/stock-transfer/${id}/status`),
     stockTransfers: `${x}/inventory/stock-transfers`,
+    stopReason: (id: string) =>
+      generatePath(`${x}/production/stop-reasons/${id}`),
+    stopReasons: `${x}/production/stop-reasons`,
     storageRule: (id: string) =>
       generatePath(`${x}/inventory/storage-rules/${id}`),
     storageRuleAssignItem: (itemId: string) =>

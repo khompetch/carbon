@@ -13,6 +13,7 @@ import {
   LuLayers,
   LuListChecks,
   LuListTodo,
+  LuOctagonPause,
   LuSquareChartGantt,
   LuSquareKanban,
   LuStepForward,
@@ -148,6 +149,12 @@ export default function useProductionSubmodules() {
           to: path.to.scrapReasons,
           role: "employee",
           icon: <LuTrash />
+        },
+        {
+          name: t`Stop Reasons`,
+          to: path.to.stopReasons,
+          role: "employee",
+          icon: <LuOctagonPause />
         }
       ]
     }

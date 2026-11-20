@@ -54,6 +54,7 @@ import {
   scrapReasons,
   seedUnitsOfMeasure,
   sequences,
+  stopReasons,
   supplierStages
 } from "@carbon/database/seed-data";
 import {
@@ -4205,6 +4206,19 @@ export async function seedCompany(
         .values(
           scrapReasons.map((name) => ({
             name,
+            companyId,
+            createdBy: "system"
+          }))
+        )
+        .execute();
+
+      // stop reason codes (MES Log stop, Six Big Losses)
+      await trx
+        .insertInto("stopReason")
+        .values(
+          stopReasons.map((reason) => ({
+            name: reason.name,
+            oeeLoss: reason.oeeLoss,
             companyId,
             createdBy: "system"
           }))

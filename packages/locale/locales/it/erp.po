@@ -4811,6 +4811,10 @@ msgstr "Sei sicuro di voler eliminare il turno: {name} da {locationName}? Questa
 msgid "Are you sure you want to delete the shipping method: {0}? This cannot be undone."
 msgstr "Sei sicuro di voler eliminare il metodo di spedizione: {0}? Questa azione non può essere annullata."
 
+#. placeholder {0}: stopReason.name
+msgid "Are you sure you want to delete the stop reason: {0}? This cannot be undone."
+msgstr "Sei sicuro di voler eliminare il motivo di fermo: {0}? Questa operazione non può essere annullata."
+
 #. placeholder {0}: storageType.name
 msgid "Are you sure you want to delete the storage type: {0}? This cannot be undone."
 msgstr "Sei sicuro di voler eliminare il tipo di archiviazione: {0}? Questa azione non può essere annullata."
@@ -6119,6 +6123,9 @@ msgstr "Crea una copia modificabile di questa versione che puoi cambiare e pubbl
 
 msgid "Breadcrumb"
 msgstr "Breadcrumb"
+
+msgid "Breakdown"
+msgstr "Guasto"
 
 msgid "Bring in your parts, BOMs, Bill of Process, and costing — with Carbon's import tools, CSV, or LLM help."
 msgstr "Importa i tuoi componenti, BOM, lista delle operazioni e calcolo dei costi — con gli strumenti di importazione di Carbon, CSV o aiuto LLM."
@@ -9209,6 +9216,9 @@ msgstr "Metodo di spedizione creato"
 msgid "Created stock transfer line"
 msgstr "Riga di trasferimento creata"
 
+msgid "Created stop reason"
+msgstr "Motivo di fermo creato"
+
 msgid "Created storage type"
 msgstr "Tipo di archiviazione creato"
 
@@ -10516,6 +10526,9 @@ msgstr "Elimina passo"
 
 msgid "Delete Stock Transfer"
 msgstr "Elimina Trasferimento Magazzino"
+
+msgid "Delete Stop Reason"
+msgstr "Elimina Motivo di fermo"
 
 msgid "Delete Storage Type"
 msgstr "Elimina Tipo di Archiviazione"
@@ -12042,6 +12055,9 @@ msgstr "Modifica Dimensione"
 msgid "Edit Stock Transfer"
 msgstr "Modifica Trasferimento Magazzino"
 
+msgid "Edit Stop Reason"
+msgstr "Modifica Motivo di fermo"
+
 msgid "Edit Storage Type"
 msgstr "Modifica Tipo di Archiviazione"
 
@@ -13343,6 +13359,10 @@ msgstr "Impossibile creare motivo del reso: {0}"
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create service: {0}"
 msgstr "Impossibile creare il servizio: {0}"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create stop reason: {0}"
+msgstr "Impossibile creare il motivo di fermo: {0}"
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create supplier stage: {0}"
@@ -17651,6 +17671,9 @@ msgstr "Sguardo in Avanti (settimane)"
 msgid "Look back (weeks)"
 msgstr "Sguardo Indietro (settimane)"
 
+msgid "Loss"
+msgstr "Perdita"
+
 msgid "Loss on Disposal"
 msgstr "Perdita sulla Dismissione"
 
@@ -19410,6 +19433,9 @@ msgstr "Nuova Dimensione"
 
 msgid "New Stock Transfer"
 msgstr "Nuovo trasferimento di giacenza"
+
+msgid "New Stop Reason"
+msgstr "Nuovo Motivo di fermo"
 
 msgid "New Storage Type"
 msgstr "Nuovo Tipo di Archiviazione"
@@ -28103,6 +28129,9 @@ msgstr "Configurazione"
 msgid "Setup {0} → {1}"
 msgstr "Setup {0} → {1}"
 
+msgid "Setup & Adjustment"
+msgstr "Attrezzaggio e Rettifica"
+
 msgid "Setup & Controls"
 msgstr "Configurazione e Controlli"
 
@@ -28766,6 +28795,9 @@ msgstr "Piccolo"
 msgid "Small business"
 msgstr "Piccola azienda"
 
+msgid "Small Stop"
+msgstr "Microfermo"
+
 msgid "Smaller"
 msgstr "Più piccolo"
 
@@ -29294,6 +29326,12 @@ msgstr "Arresta cronometro e completa"
 
 msgid "Stop raising purchase orders after this date"
 msgstr "Smetti di creare ordini di acquisto dopo questa data"
+
+msgid "Stop Reason"
+msgstr "Motivo di fermo"
+
+msgid "Stop Reasons"
+msgstr "Motivi di fermo"
 
 msgid "Stop Receiving"
 msgstr "Interrompi ricezione"

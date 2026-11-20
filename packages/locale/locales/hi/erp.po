@@ -4811,6 +4811,10 @@ msgstr "क्या आप {locationName} से शिफ्ट {name} को 
 msgid "Are you sure you want to delete the shipping method: {0}? This cannot be undone."
 msgstr "क्या आप शिपिंग विधि {0} को हटाना चाहते हैं? इसे पूर्ववत नहीं किया जा सकता।"
 
+#. placeholder {0}: stopReason.name
+msgid "Are you sure you want to delete the stop reason: {0}? This cannot be undone."
+msgstr "क्या आप वाकई ठहराव का कारण हटाना चाहते हैं: {0}? इसे वापस नहीं लिया जा सकता।"
+
 #. placeholder {0}: storageType.name
 msgid "Are you sure you want to delete the storage type: {0}? This cannot be undone."
 msgstr "क्या आप भंडारण प्रकार {0} को हटाना चाहते हैं? इसे पूर्ववत नहीं किया जा सकता।"
@@ -6119,6 +6123,9 @@ msgstr "इस संस्करण की एक संपादन योग�
 
 msgid "Breadcrumb"
 msgstr "ब्रेडक्रम्ब"
+
+msgid "Breakdown"
+msgstr "ब्रेकडाउन"
 
 msgid "Bring in your parts, BOMs, Bill of Process, and costing — with Carbon's import tools, CSV, or LLM help."
 msgstr "अपने पार्ट्स, BOM, प्रक्रिया सूची, और लागत निर्धारण लाएं — Carbon के आयात उपकरण, CSV, या LLM सहायता के साथ।"
@@ -9209,6 +9216,9 @@ msgstr "शिपिंग विधि बनाई गई"
 msgid "Created stock transfer line"
 msgstr "स्टॉक स्थानांतरण पंक्ति बनाई गई"
 
+msgid "Created stop reason"
+msgstr "ठहराव का कारण बनाया गया"
+
 msgid "Created storage type"
 msgstr "भंडारण प्रकार बनाया गया"
 
@@ -10516,6 +10526,9 @@ msgstr "चरण हटाएँ"
 
 msgid "Delete Stock Transfer"
 msgstr "स्टॉक ट्रांसफर हटाएं"
+
+msgid "Delete Stop Reason"
+msgstr "ठहराव का कारण हटाएँ"
 
 msgid "Delete Storage Type"
 msgstr "स्टोरेज प्रकार हटाएं"
@@ -12042,6 +12055,9 @@ msgstr "आकार संपादित करें"
 msgid "Edit Stock Transfer"
 msgstr "स्टॉक ट्रांसफर संपादित करें"
 
+msgid "Edit Stop Reason"
+msgstr "ठहराव का कारण संपादित करें"
+
 msgid "Edit Storage Type"
 msgstr "स्टोरेज प्रकार संपादित करें"
 
@@ -13343,6 +13359,10 @@ msgstr "रिटर्न कारण बनाने में विफल: 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create service: {0}"
 msgstr "सेवा बनाने में विफल: {0}"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create stop reason: {0}"
+msgstr "ठहराव का कारण बनाने में विफल: {0}"
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create supplier stage: {0}"
@@ -17651,6 +17671,9 @@ msgstr "आगे देखें (सप्ताह)"
 msgid "Look back (weeks)"
 msgstr "पीछे देखें (सप्ताह)"
 
+msgid "Loss"
+msgstr "हानि"
+
 msgid "Loss on Disposal"
 msgstr "निपटान पर हानि"
 
@@ -19410,6 +19433,9 @@ msgstr "नया आकार"
 
 msgid "New Stock Transfer"
 msgstr "नया स्टॉक स्थानांतरण"
+
+msgid "New Stop Reason"
+msgstr "नया ठहराव का कारण"
 
 msgid "New Storage Type"
 msgstr "नया स्टोरेज प्रकार"
@@ -28103,6 +28129,9 @@ msgstr "सेटअप"
 msgid "Setup {0} → {1}"
 msgstr "सेटअप {0} → {1}"
 
+msgid "Setup & Adjustment"
+msgstr "सेटअप और समायोजन"
+
 msgid "Setup & Controls"
 msgstr "सेटअप और नियंत्रण"
 
@@ -28766,6 +28795,9 @@ msgstr "छोटा"
 msgid "Small business"
 msgstr "छोटा व्यवसाय"
 
+msgid "Small Stop"
+msgstr "छोटा ठहराव"
+
 msgid "Smaller"
 msgstr "छोटा"
 
@@ -29294,6 +29326,12 @@ msgstr "घड़ी बंद करें और पूर्ण करें"
 
 msgid "Stop raising purchase orders after this date"
 msgstr "इस तारीख के बाद क्रय आदेश जारी करना बंद करें"
+
+msgid "Stop Reason"
+msgstr "ठहराव का कारण"
+
+msgid "Stop Reasons"
+msgstr "ठहराव के कारण"
 
 msgid "Stop Receiving"
 msgstr "प्राप्ति को रोकें"

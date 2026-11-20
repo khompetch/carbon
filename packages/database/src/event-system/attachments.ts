@@ -283,6 +283,7 @@ export const attachments = {
   },
   nonConformanceType: { statement: ["broadcast_reference_changes"] },
   notification: { statement: ["broadcast_user_changes"] },
+  operationStop: { statement: ["broadcast_table_changes"] },
   part: { statement: ["broadcast_table_changes"] },
   payment: {
     before: ["prevent_invalid_deposit_refund"],

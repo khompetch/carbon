@@ -91,7 +91,7 @@ import {
   useState
 } from "react";
 import { flushSync } from "react-dom";
-import { FaCheck, FaPlus, FaTrash } from "react-icons/fa6";
+import { FaPlus, FaTrash } from "react-icons/fa6";
 import {
   LuAxis3D,
   LuBarcode,
@@ -131,6 +131,7 @@ import { MethodItemTypeIcon } from "~/components/Icons";
 import { ReworkBadge } from "~/components/ReworkBadge";
 import { useDateFormatter, useUrlParams, useUser } from "~/hooks";
 import type { productionEventType } from "~/services/models";
+import type { OperationLossData } from "~/services/operation-losses.server";
 import type {
   AbilityShortfall,
   BatchMaterialTotal,
@@ -179,6 +180,9 @@ import { IssueMaterialModal } from "./components/IssueMaterialModal";
 import { MaintenanceDispatch } from "./components/MaintenanceDispatch";
 import { OperationMaterials } from "./components/Materials";
 import { NeedMaterialModal } from "./components/NeedMaterialModal";
+// fork: operation overview, Log stop
+import { OperationOverview } from "./components/OperationOverview";
+import { LogStopControl } from "./components/OperationStops";
 import { ParametersListItem } from "./components/Parameter";
 import { QualityIssueModal } from "./components/QualityIssueModal";
 import { QuantityModal } from "./components/QuantityModal";
@@ -193,6 +197,7 @@ import { TableSkeleton } from "./components/TableSkeleton";
 import { useFiles } from "./hooks/useFiles";
 import { useItemScan } from "./hooks/useItemScan";
 import { useOperation } from "./hooks/useOperation";
+import { useOperationLosses } from "./hooks/useOperationLosses";
 import { useTravelerScan } from "./hooks/useTravelerScan";
 
 const DOCK_COLLAPSED_KEY = "mes:operation-dock-collapsed";
@@ -245,6 +250,8 @@ type JobOperationProps = {
   countMode?: "Off" | "Auto";
   /** The user may log completed quantities by hand in Auto mode. */
   canOverrideCount?: boolean;
+  /** fork: stops, stop reasons and Six Big Losses inputs (deferred). */
+  operationLosses: Promise<OperationLossData>;
   workCenter: Promise<
     PostgrestSingleResponse<{
       name: string;
@@ -285,6 +292,7 @@ export const JobOperation = ({
   requireTrackedMaterialsIssued = false,
   countMode = "Off",
   canOverrideCount = false,
+  operationLosses,
   workCenter
 }: JobOperationProps) => {
   const { t } = useLingui();
@@ -295,6 +303,8 @@ export const JobOperation = ({
 
   const trackedEntityParam = params.get("trackedEntityId");
   const trackedEntityId = trackedEntityParam ?? trackedEntities[0]?.id;
+  // fork: Log stop + Six Big Losses
+  const losses = useOperationLosses(originalOperation.id, operationLosses);
 
   const parentIsSerial = method?.requiresSerialTracking;
   const parentIsBatch = method?.requiresBatchTracking;
@@ -1449,14 +1459,17 @@ export const JobOperation = ({
                     )}
                     <div className="flex flex-col flex-grow min-w-0">
                       <HStack spacing={2}>
-                        <Heading size="h3" className="line-clamp-1">
+                        <Heading
+                          size="h3"
+                          className="line-clamp-1 text-2xl lg:text-3xl"
+                        >
                           {operation.description}
                         </Heading>
                         {operation.reworkId && (
                           <ReworkBadge correctionName={correctionName} />
                         )}
                       </HStack>
-                      <p className="text-muted-foreground line-clamp-1">
+                      <p className="text-lg text-muted-foreground line-clamp-1">
                         {operation.itemReadableId}
                       </p>
                     </div>
@@ -1504,39 +1517,18 @@ export const JobOperation = ({
                   </div>
                 </div>
                 <Separator />
+                {/* fork: big quantities, who is working, Six Big Losses */}
+                <OperationOverview
+                  operationId={originalOperation.id}
+                  batchId={batch?.id ?? null}
+                  events={events}
+                  losses={losses}
+                  quantity={quantityProgress}
+                />
+                <Separator />
                 <div className="flex items-start p-4 lg:p-6">
-                  <div className="grid gap-4 grid-cols-2 xl:grid-cols-3 w-full min-w-0 max-md:hidden">
+                  <div className="grid gap-4 grid-cols-1 w-full min-w-0 max-md:hidden">
                     <Card>
-                      <CardHeader className="flex flex-row items-center gap-2 justify-between">
-                        <CardTitle>
-                          <Trans>Completed</Trans>
-                        </CardTitle>
-                        <FaCheck className="h-3 w-3 text-emerald-500" />
-                      </CardHeader>
-
-                      <CardContent>
-                        <Heading as="p" size="h1" className="font-sans">
-                          <Trans>
-                            {operation.quantityComplete} of{" "}
-                            {operation.targetQuantity}
-                          </Trans>
-                        </Heading>
-                      </CardContent>
-                    </Card>
-                    <Card>
-                      <CardHeader className="flex flex-row items-center gap-2 justify-between">
-                        <CardTitle>
-                          <Trans>Scrapped</Trans>
-                        </CardTitle>
-                        <FaTrash className="h-3 w-3 text-muted-foreground" />
-                      </CardHeader>
-                      <CardContent>
-                        <Heading as="p" size="h1" className="font-sans">
-                          {operation.quantityScrapped}
-                        </Heading>
-                      </CardContent>
-                    </Card>
-                    <Card className="max-md:col-span-2">
                       <CardHeader className="flex flex-row items-center gap-2 justify-between">
                         <CardTitle>
                           <Trans>Due Date</Trans>
@@ -1627,25 +1619,6 @@ export const JobOperation = ({
                   <Card className="md:hidden">
                     <CardContent className="max-md:rounded-xl max-md:border-0 max-md:py-1">
                       <CardAttributes className="divide-y divide-border">
-                        <CardAttribute>
-                          <CardAttributeLabel>
-                            <Trans>Completed</Trans>
-                          </CardAttributeLabel>
-                          <CardAttributeValue className="tabular-nums text-2xl font-semibold">
-                            <Trans>
-                              {operation.quantityComplete} of{" "}
-                              {operation.targetQuantity}
-                            </Trans>
-                          </CardAttributeValue>
-                        </CardAttribute>
-                        <CardAttribute>
-                          <CardAttributeLabel>
-                            <Trans>Scrapped</Trans>
-                          </CardAttributeLabel>
-                          <CardAttributeValue className="tabular-nums">
-                            {operation.quantityScrapped}
-                          </CardAttributeValue>
-                        </CardAttribute>
                         <CardAttribute>
                           <CardAttributeLabel>
                             <Trans>Due Date</Trans>
@@ -2741,7 +2714,7 @@ export const JobOperation = ({
             <div className="flex w-full min-w-0 items-center gap-2 lg:flex-col lg:py-2 max-md:flex-wrap max-md:gap-y-2">
               <dl className="hidden w-full gap-3 rounded-lg border bg-card p-3 lg:grid lg:group-data-[collapsed=true]/dock:hidden">
                 <div className="min-w-0">
-                  <dt className="text-xs text-muted-foreground">
+                  <dt className="text-sm text-muted-foreground">
                     <Trans>Work Center</Trans>
                   </dt>
                   <dd>
@@ -2752,7 +2725,7 @@ export const JobOperation = ({
                       <Await resolve={workCenter}>
                         {(resolvedWorkCenter) =>
                           resolvedWorkCenter.data && (
-                            <span className="line-clamp-1 text-sm font-medium">
+                            <span className="line-clamp-1 text-lg font-semibold">
                               {resolvedWorkCenter.data?.name}
                             </span>
                           )
@@ -2762,10 +2735,10 @@ export const JobOperation = ({
                   </dd>
                 </div>
                 <div className="min-w-0">
-                  <dt className="text-xs text-muted-foreground">
+                  <dt className="text-sm text-muted-foreground">
                     <Trans>Item</Trans>
                   </dt>
-                  <dd className="line-clamp-1 text-sm font-medium">
+                  <dd className="line-clamp-1 text-lg font-semibold">
                     {scope === "batch" && batchFacts
                       ? batchFacts.items.length === 1
                         ? batchFacts.items[0]
@@ -2872,6 +2845,15 @@ export const JobOperation = ({
                     }
                   />
                 </div>
+                {/* fork: Log stop / Resume */}
+                <div className="flex flex-col items-center gap-0.5">
+                  <LogStopControl
+                    layout="icon"
+                    operationId={originalOperation.id}
+                    losses={losses}
+                    disabled={abilityBlocked}
+                  />
+                </div>
                 <div className="flex flex-col items-center gap-0.5">
                   <IconButtonWithTooltip
                     icon={
@@ -2912,6 +2894,13 @@ export const JobOperation = ({
                     <Trans>Log completed</Trans>
                   )}
                 </Button>
+                {/* fork: Log stop / Resume */}
+                <LogStopControl
+                  layout="button"
+                  operationId={originalOperation.id}
+                  losses={losses}
+                  disabled={abilityBlocked}
+                />
                 <Button
                   size="lg"
                   variant="ghost"

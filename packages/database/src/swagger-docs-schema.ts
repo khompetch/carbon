@@ -34272,6 +34272,186 @@ export default {
         tags: ["charge"]
       }
     },
+    "/stopReason": {
+      get: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.stopReason.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.name"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.oeeLoss"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.active"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.createdBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.createdAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.updatedBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.updatedAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.customFields"
+          },
+          {
+            $ref: "#/parameters/select"
+          },
+          {
+            $ref: "#/parameters/order"
+          },
+          {
+            $ref: "#/parameters/range"
+          },
+          {
+            $ref: "#/parameters/rangeUnit"
+          },
+          {
+            $ref: "#/parameters/offset"
+          },
+          {
+            $ref: "#/parameters/limit"
+          },
+          {
+            $ref: "#/parameters/preferCount"
+          }
+        ],
+        responses: {
+          "200": {
+            description: "OK",
+            schema: {
+              items: {
+                $ref: "#/definitions/stopReason"
+              },
+              type: "array"
+            }
+          },
+          "206": {
+            description: "Partial Content"
+          }
+        },
+        tags: ["stopReason"]
+      },
+      post: {
+        parameters: [
+          {
+            $ref: "#/parameters/body.stopReason"
+          },
+          {
+            $ref: "#/parameters/select"
+          },
+          {
+            $ref: "#/parameters/preferPost"
+          }
+        ],
+        responses: {
+          "201": {
+            description: "Created"
+          }
+        },
+        tags: ["stopReason"]
+      },
+      delete: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.stopReason.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.name"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.oeeLoss"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.active"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.createdBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.createdAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.updatedBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.updatedAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.customFields"
+          },
+          {
+            $ref: "#/parameters/preferReturn"
+          }
+        ],
+        responses: {
+          "204": {
+            description: "No Content"
+          }
+        },
+        tags: ["stopReason"]
+      },
+      patch: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.stopReason.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.name"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.oeeLoss"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.active"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.createdBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.createdAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.updatedBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.updatedAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.stopReason.customFields"
+          },
+          {
+            $ref: "#/parameters/body.stopReason"
+          },
+          {
+            $ref: "#/parameters/preferReturn"
+          }
+        ],
+        responses: {
+          "204": {
+            description: "No Content"
+          }
+        },
+        tags: ["stopReason"]
+      }
+    },
     "/process": {
       get: {
         parameters: [
@@ -92884,6 +93064,222 @@ export default {
           }
         },
         tags: ["processes"]
+      }
+    },
+    "/operationStop": {
+      get: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.operationStop.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.jobOperationId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.workCenterId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.stopReasonId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.employeeId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.startTime"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.endTime"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.pausedMachineEventId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.notes"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.createdBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.createdAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.updatedBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.updatedAt"
+          },
+          {
+            $ref: "#/parameters/select"
+          },
+          {
+            $ref: "#/parameters/order"
+          },
+          {
+            $ref: "#/parameters/range"
+          },
+          {
+            $ref: "#/parameters/rangeUnit"
+          },
+          {
+            $ref: "#/parameters/offset"
+          },
+          {
+            $ref: "#/parameters/limit"
+          },
+          {
+            $ref: "#/parameters/preferCount"
+          }
+        ],
+        responses: {
+          "200": {
+            description: "OK",
+            schema: {
+              items: {
+                $ref: "#/definitions/operationStop"
+              },
+              type: "array"
+            }
+          },
+          "206": {
+            description: "Partial Content"
+          }
+        },
+        tags: ["operationStop"]
+      },
+      post: {
+        parameters: [
+          {
+            $ref: "#/parameters/body.operationStop"
+          },
+          {
+            $ref: "#/parameters/select"
+          },
+          {
+            $ref: "#/parameters/preferPost"
+          }
+        ],
+        responses: {
+          "201": {
+            description: "Created"
+          }
+        },
+        tags: ["operationStop"]
+      },
+      delete: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.operationStop.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.jobOperationId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.workCenterId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.stopReasonId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.employeeId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.startTime"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.endTime"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.pausedMachineEventId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.notes"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.createdBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.createdAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.updatedBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.updatedAt"
+          },
+          {
+            $ref: "#/parameters/preferReturn"
+          }
+        ],
+        responses: {
+          "204": {
+            description: "No Content"
+          }
+        },
+        tags: ["operationStop"]
+      },
+      patch: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.operationStop.id"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.companyId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.jobOperationId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.workCenterId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.stopReasonId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.employeeId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.startTime"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.endTime"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.pausedMachineEventId"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.notes"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.createdBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.createdAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.updatedBy"
+          },
+          {
+            $ref: "#/parameters/rowFilter.operationStop.updatedAt"
+          },
+          {
+            $ref: "#/parameters/body.operationStop"
+          },
+          {
+            $ref: "#/parameters/preferReturn"
+          }
+        ],
+        responses: {
+          "204": {
+            description: "No Content"
+          }
+        },
+        tags: ["operationStop"]
       }
     },
     "/shipmentLines": {
@@ -157851,6 +158247,70 @@ export default {
       },
       type: "object"
     },
+    stopReason: {
+      required: [
+        "id",
+        "companyId",
+        "name",
+        "oeeLoss",
+        "active",
+        "createdBy",
+        "createdAt"
+      ],
+      properties: {
+        id: {
+          default: "public.id('sr'::text)",
+          description: "Note:\nThis is a Primary Key.<pk/>",
+          format: "text",
+          type: "string"
+        },
+        companyId: {
+          description:
+            "Note:\nThis is a Primary Key.<pk/>\nThis is a Foreign Key to `company.id`.<fk table='company' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        name: {
+          format: "text",
+          type: "string"
+        },
+        oeeLoss: {
+          enum: ["Breakdown", "Setup & Adjustment", "Small Stop"],
+          format: 'public."oeeLoss"',
+          type: "string"
+        },
+        active: {
+          default: true,
+          format: "boolean",
+          type: "boolean"
+        },
+        createdBy: {
+          description:
+            "Note:\nThis is a Foreign Key to `user.id`.<fk table='user' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        createdAt: {
+          default: "now()",
+          format: "timestamp with time zone",
+          type: "string"
+        },
+        updatedBy: {
+          description:
+            "Note:\nThis is a Foreign Key to `user.id`.<fk table='user' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        updatedAt: {
+          format: "timestamp with time zone",
+          type: "string"
+        },
+        customFields: {
+          format: "jsonb"
+        }
+      },
+      type: "object"
+    },
     process: {
       required: [
         "id",
@@ -185332,6 +185792,97 @@ export default {
         },
         suppliers: {
           format: "jsonb"
+        }
+      },
+      type: "object"
+    },
+    operationStop: {
+      required: [
+        "id",
+        "companyId",
+        "jobOperationId",
+        "stopReasonId",
+        "employeeId",
+        "startTime",
+        "createdBy",
+        "createdAt"
+      ],
+      properties: {
+        id: {
+          default: "public.id('ops'::text)",
+          description: "Note:\nThis is a Primary Key.<pk/>",
+          format: "text",
+          type: "string"
+        },
+        companyId: {
+          description:
+            "Note:\nThis is a Primary Key.<pk/>\nThis is a Foreign Key to `company.id`.<fk table='company' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        jobOperationId: {
+          description:
+            "Note:\nThis is a Foreign Key to `jobOperation.id`.<fk table='jobOperation' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        workCenterId: {
+          description:
+            "Note:\nThis is a Foreign Key to `workCenter.id`.<fk table='workCenter' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        stopReasonId: {
+          description:
+            "Note:\nThis is a Foreign Key to `stopReason.id`.<fk table='stopReason' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        employeeId: {
+          description:
+            "Note:\nThis is a Foreign Key to `user.id`.<fk table='user' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        startTime: {
+          default: "now()",
+          format: "timestamp with time zone",
+          type: "string"
+        },
+        endTime: {
+          format: "timestamp with time zone",
+          type: "string"
+        },
+        pausedMachineEventId: {
+          description:
+            "Note:\nThis is a Foreign Key to `productionEvent.id`.<fk table='productionEvent' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        notes: {
+          format: "text",
+          type: "string"
+        },
+        createdBy: {
+          description:
+            "Note:\nThis is a Foreign Key to `user.id`.<fk table='user' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        createdAt: {
+          default: "now()",
+          format: "timestamp with time zone",
+          type: "string"
+        },
+        updatedBy: {
+          description:
+            "Note:\nThis is a Foreign Key to `user.id`.<fk table='user' column='id'/>",
+          format: "text",
+          type: "string"
+        },
+        updatedAt: {
+          format: "timestamp with time zone",
+          type: "string"
         }
       },
       type: "object"
@@ -218450,6 +219001,75 @@ export default {
       in: "query",
       type: "string"
     },
+    "body.stopReason": {
+      name: "stopReason",
+      description: "stopReason",
+      required: false,
+      in: "body",
+      schema: {
+        $ref: "#/definitions/stopReason"
+      }
+    },
+    "rowFilter.stopReason.id": {
+      name: "id",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.stopReason.companyId": {
+      name: "companyId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.stopReason.name": {
+      name: "name",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.stopReason.oeeLoss": {
+      name: "oeeLoss",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.stopReason.active": {
+      name: "active",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.stopReason.createdBy": {
+      name: "createdBy",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.stopReason.createdAt": {
+      name: "createdAt",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.stopReason.updatedBy": {
+      name: "updatedBy",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.stopReason.updatedAt": {
+      name: "updatedAt",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.stopReason.customFields": {
+      name: "customFields",
+      required: false,
+      in: "query",
+      type: "string"
+    },
     "body.process": {
       name: "process",
       description: "process",
@@ -248872,6 +249492,99 @@ export default {
     },
     "rowFilter.processes.suppliers": {
       name: "suppliers",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "body.operationStop": {
+      name: "operationStop",
+      description: "operationStop",
+      required: false,
+      in: "body",
+      schema: {
+        $ref: "#/definitions/operationStop"
+      }
+    },
+    "rowFilter.operationStop.id": {
+      name: "id",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.operationStop.companyId": {
+      name: "companyId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.operationStop.jobOperationId": {
+      name: "jobOperationId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.operationStop.workCenterId": {
+      name: "workCenterId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.operationStop.stopReasonId": {
+      name: "stopReasonId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.operationStop.employeeId": {
+      name: "employeeId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.operationStop.startTime": {
+      name: "startTime",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.operationStop.endTime": {
+      name: "endTime",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.operationStop.pausedMachineEventId": {
+      name: "pausedMachineEventId",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.operationStop.notes": {
+      name: "notes",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.operationStop.createdBy": {
+      name: "createdBy",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.operationStop.createdAt": {
+      name: "createdAt",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.operationStop.updatedBy": {
+      name: "updatedBy",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.operationStop.updatedAt": {
+      name: "updatedAt",
       required: false,
       in: "query",
       type: "string"
