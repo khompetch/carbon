@@ -6,6 +6,55 @@ Format: `Context → Problem → Rule → Applies to`
 
 ---
 
+## Aging report previews need seeded open documents
+
+**Context:** Sharing a local AR/AP aging UI preview.
+
+**Problem:** The dev server rendered the reports, but the default test company had no sales or purchase invoices, so both reports appeared empty. The dataset seed then failed on `inspectionDocument.drawingNumber`: the local database carried a newer schema from `main` than the branch's own code.
+
+**Rule:** Check the report RPCs for open rows before handing off a preview. Seed an isolated company when the current test company contains unrelated records, and verify both report counts after seeding. When a seed fails on a column, compare the branch's generated types with the local database before editing the dataset: merge `main` (or migrate a clean database) rather than changing the tier.
+
+**Applies to:** Local aging report previews and `packages/database/src/datasets/`.
+
+## Aging summary tables keep document headers inside the expansion
+
+**Context:** Showing AR/AP aging totals by customer or supplier with document details beneath each party.
+
+**Problem:** Putting transaction date, type, and original amount in the shared table header leaves blank cells across every party row and makes the report look unfinished.
+
+**Rule:** On aging report pages, show only party-level fields in the outer table. Render open documents and unapplied payments in an expanded table with its own column headers. Keep the receivables/payables workbench layout unchanged unless that page is explicitly in scope.
+
+**Applies to:** `ARAPWorkbench` on the AR/AP aging report routes.
+
+## Aging CSV exports must follow open documents
+
+**Context:** Exporting AR/AP aging from a summary RPC and a separate open-document RPC.
+
+**Problem:** A counterparty with offsetting open documents can have a zero net balance and disappear from the summary RPC while its documents remain open. Looking up names and building CSV rows only from summary parties silently drops those documents.
+
+**Rule:** Union counterparty IDs from the summary, open-document, and unapplied-payment RPCs. Export one row per open document or payment with the counterparty repeated, including parties whose net summary is zero. Resolve CSV headings from the request locale. Include any RPC migration in the tracked change before relying on regenerated types.
+
+**Applies to:** AR/AP aging CSV routes and report helpers.
+
+## File downloads can link directly to a resource route
+
+**Context:** The AR/AP aging table needs a complete server-generated CSV rather than its currently expanded browser rows.
+
+**Problem:** Adding a separate Export button required turning off the Table's own CSV control with `withCsvExport={false}`, leaving two download mechanisms to coordinate.
+
+**Rule:** For one format, give the Table the download URL and render its Download control as a plain anchor. For multiple formats on a report, use one Export menu whose links each make one browser GET to a server resource route; hide the Table's single-format control there. Keep the client-side Table export for lists without a download URL.
+
+**Applies to:** Table downloads backed by resource routes and AR/AP aging exports.
+
+## Vite plugin wrappers preserve the caller's type
+
+**Context:** Adding an ERP dependency refreshed pnpm peer resolutions, and CI then typechecked the MES Vitest config.
+
+**Problem:** The helper declared its input and output as `Plugin[]` from its own `vite` import. On a clean Linux install, Lingui supplied `Plugin[]` from a different Vite peer instance. Vite's private type members made the two declarations incompatible even though the hooks work the same way.
+
+**Rule:** A wrapper that only changes a plugin hook should infer and return the caller's plugin type. Cast locally only to inspect the hook shape; do not force another Vite instance's `Plugin[]` at the function boundary.
+
+**Applies to:** Vitest and Vite plugin wrappers such as `apps/mes/vitest.config.ts`.
 ## Issue-bin displays preserve stock stripes and picked ownership
 
 **Context:** A batched MES query reports the bins a job can issue from, including stock picked to a work center.
@@ -508,6 +557,20 @@ nothing. After merging main, list main's migrations newer than your branch's old
 them for every function and view your migrations define; for any hit, write a NEW migration
 dated after both that carries both changes (here, since folded into
 `20261006221601_complete-job-to-asset.sql`).
+
+**Context:** Adding aging detail columns to `get_ap_open_by_supplier` kept the
+supplier reference behavior, but changed the line breaks around fields added by
+its previous migration.
+
+**Problem:** `function-redefinition-keeps-changes` compares added SQL lines
+literally, so the harmless layout change failed both CI conformance and tests.
+
+**Rule:** When extending an RPC return shape, retain the exact lines introduced
+by its newest definition where possible, and run the conformance test before
+committing. Put new select expressions on separate lines.
+
+**Applies to:** `packages/database/supabase/migrations/` function redefinitions
+that add return columns.
 
 ## Job-completion side effects must live in complete_job_to_inventory, not in route actions
 
@@ -3418,6 +3481,16 @@ of `salesInvoice`; backfilled by `20261006220901_sales-invoice-opportunity-backf
 
 **Applies to:** every `memo(…)` component in `apps/{erp,mes}/app` and `packages/{react,form}/src` (most ERP tables); any new use of `plural` / `select` from `@lingui/core/macro`.
 
+## Lingui: a string literal with braces inside `<Trans>` loses its braces
+
+**Context:** The sequence forms' week year warning named the tokens in its text: `<Trans>On 1 January 2027 {"%{yy}%{ww}"} gives 2753.</Trans>`.
+
+**Problem:** Lingui inlines a string literal expression into the message, so the msgid became `On 1 January 2027 %{yy}%{ww} gives 2753.` The braces then parse as ICU placeholders `{yy}` and `{ww}` with no value, and the page showed "On 1 January 2027 %% gives 2753." Typecheck, Biome and `lingui:extract` all pass.
+
+**Rule:** Text that contains `{` or `}` goes into `<Trans>` or `t` as a named variable (`const token = "%{yy}"; … {token}`), which Lingui keeps as a placeholder and fills at runtime. Read the rendered text once after adding such a string.
+
+**Applies to:** any `<Trans>` or `` t` ` `` that quotes sequence tokens, template syntax or JSON.
+
 ## A row stayed off a screen only because a column happened to be null
 
 **Context:** The MES Work Centers board, the ERP Priority board and the API read `get_active_job_operations_by_location`. Both boards group operations into work-center columns.
@@ -4763,6 +4836,38 @@ took 20 from the bin and left the 3. TypeScript `id !== null` and SQL
 **Applies to:** `packages/database/src/picked-consumption.ts`, `backflush_job_materials`,
 and any bin or stripe filter where `null` is both a key and "unset".
 
+## Localized CSV exports must translate row values as well as headings
+
+**Context:** The AR/AP aging CSV translated its column headings, while the document
+type column still contained raw `Invoice`, `Credit Memo`, and `Debit Memo` values.
+
+**Problem:** In a non-English locale, the downloaded report mixed translated
+headings with English document types even though the on-screen workbench and
+catalogs already translated those values.
+
+**Rule:** Resolve fixed display values through the same per-request catalog used
+for CSV headings, while retaining raw values for data logic and falling back to
+the raw value for an unknown type. Assert the exported row values with labels
+that differ from the source strings.
+
+**Applies to:** Server-generated localized CSV reports, including AR/AP aging.
+
+## Export permission must cover enrichment reads
+
+**Context:** AR/AP aging CSV downloads admit accounting or invoicing viewers, then
+look up customer or supplier names to label the rows.
+
+**Problem:** Customer RLS requires sales view and supplier RLS requires purchasing
+view. An otherwise authorized export received empty name results and silently
+fell back to party IDs.
+
+**Rule:** Trace every enrichment lookup against the route's permission contract.
+After authorizing the export, use a company-scoped privileged read when the
+related table has a narrower RLS gate than the export itself.
+
+**Applies to:** AR/AP aging CSV routes and other server exports that enrich
+authorized rows from tables protected by different module permissions.
+
 ## The desktop rail can be transparent, and a sortable row can be tall
 
 **Context:** Customize added a tree under each module row in `NavRail`. The rail scrolled as a whole, so the footer with Save and Cancel needed to stay in view.
@@ -5076,3 +5181,61 @@ separately and keep Turbo cache hits distinct from TypeScript incremental runs.
 **Rule:** A file under `apps/mes/app/services/` that is not `*.server.ts` imports only browser-safe modules. Put a helper that both a server path and a MES service need in a module without `.server` in its name (`@carbon/printing/operation-routing`). After a change to a MES service, open one MES operation page and click a button.
 
 **Applies to:** `apps/mes/app/services/*.service.ts`, and any package export that a MES service file imports.
+
+## Two `crbn up` in one worktree take each other down
+
+**Context:** `crbn up` records its pid in `~/.carbon/stacks/<slug>/up`, and its teardown first stops whichever `crbn up` that file names.
+
+**Problem:** An agent started `crbn up` in the background, then the user started another in the same worktree. The second overwrote the marker and reused the first's dev servers. Stopping the agent's run then SIGINT'd the user's run through the marker, and every app went down.
+
+**Rule:** Run one `crbn up` per worktree. Check `ps` for a running one (or ask) before starting it, and never stop it while someone else may be using it.
+
+**Applies to:** Agents and humans booting a stack in a shared worktree.
+
+## A server export mapping cannot add a column the browser omitted
+
+**Context:** Verifying sales-invoice customer names in the CSV (TCK-60).
+**Problem:** The registry resolved both names, but the table's Customer columns had only `id` and `cell`. `buildColumnMaps` excluded them, so the export request never asked for either name.
+**Rule:** A display column needs `meta.exportValue` to participate in CSV export. Check the actual request's column list and the generated file; a registry mapping alone does not prove the column exports.
+**Applies to:** ERP Table display columns, `buildColumnMaps`, and list-registry `exportValues`.
+
+## `openProductionOrders` is MRP supply, not "the open jobs for an item"
+
+**Context:** The Buildable Quantity card lists an item's open jobs and whether stock covers what each still has to issue.
+
+**Problem:** The jobs were read from `openProductionOrders`. That view leaves out every job made for a sales order (`salesOrderId IS NULL`) and every `consumeToProject` job, and its `quantityToReceive` is `productionQuantity` (quantity + scrap) less received. An item made to order showed no jobs in production, and a job with a scrap allowance showed more units than it will make.
+
+**Rule:** To list an item's open jobs, read `job` with the four open statuses. The good units left are `quantity − quantityReceivedToInventory − quantityShipped`, as `openSalesOrderLines` nets a job. Use `openProductionOrders` only where the question is "what supply does MRP count".
+
+**Applies to:** Any report, card or check that shows jobs in production or work in process for an item.
+
+## A posted document's void and anything that adds lines to its journal take one lock
+
+- **Context:** Change GL Account adds two journal lines to a posted sales or purchase invoice; the invoice void reverses every journal line of the document.
+- **Problem:** The change locked the invoice `FOR UPDATE`, but both voids read the lines they reverse before their transaction and never locked the invoice. A change that committed between the void's read and its write survived on a Voided invoice: its amount stayed on the new account with nothing left to reverse it.
+- **Rule:** Anything that adds journal lines to a posted document must be serialized with the void's read under the same lock. Lock the document row `FOR UPDATE` inside the void's transaction, then read and build the reversal from that locked state, taking the lock at the same point in the order as the writer (after the posting-status read, before the period) so neither deadlocks.
+- **Applies to:** `postSalesInvoice` / `postPurchaseInvoice` void, `changeInvoiceLineAccount`, and any future correction that posts onto an existing document's journal (memos, payments, receipts, shipments).
+
+## A job's WIP is not only the lines documented against the job
+
+- **Context:** Finished goods from a job with an outside processing operation came out without the supplier's cost.
+- **Problem:** The receipt of an outside processing purchase order debits WIP with `documentId` = the receipt and the purchase order line in `documentLineReference`. The job completion, `closeJob` and `attachJob` each summed WIP `WHERE documentId = <job>`, so the supplier's cost was never moved to finished goods and never written off. And when the receipt finished the job's last operation, `postReceipt` set the operation Done before it wrote its journal, so the completion that update triggers ran before the debit existed.
+- **Rule:** Read a job's WIP with SQL `job_wip_balance`, never with a `documentId` filter of your own. A reader that cannot call it per job (a set-based read of every job, such as the accounting cutover's per-job WIP items) attributes lines through SQL `job_receipt_line_references`, the rule `job_wip_balance` uses. A posting that can trigger a job completion (any write that sets a `jobOperation` Done) writes its own journal first.
+- **Applies to:** `complete_job_to_inventory`, `closeJob`, `attachJob`, `postReceipt`, `getWorkInProgressItems` (`accounting-cutover/open-items.ts`), and any new reader of a job's cost or writer of a job operation's status.
+
+## A link minted for an API key names its creator, not the key
+
+- **Context:** `generateDownloadToken` signs a `/download/<token>` link for a user; the route re-checks access as that user on every download. For an API key caller, `ctx.auditUserId` is the key's creator.
+- **Problem:** A link without an expiry kept downloading after the key that asked for it was revoked: the creator still had access, and nothing in the token named the key. A link copied into an agent's log or transcript outlived the key.
+- **Rule:** Any link or token minted for an API or MCP caller carries an expiry (`expiresInSeconds`, as `FILE_LINK_SECONDS` sets). Re-checking the named user's access is not enough when that user is not the caller.
+- **Applies to:** `documents_getDocumentDownloadUrl` and any future operation that returns a shareable link, share token or signed URL to an API caller.
+
+## A `NonRetriableError` subclass must keep its name
+
+**Context:** `AssemblerJobError extends NonRetriableError` (`packages/jobs/.../tasks/assembler-client.ts`) set `this.name = "AssemblerJobError"`.
+
+**Problem:** `@carbon/lib` (which creates the Inngest client, so runs the functions) and `@carbon/jobs` resolve different installed copies of `inngest`, so `error instanceof NonRetriableError` is false inside the SDK. Its fallback is `error.name === "NonRetriableError"`, which the rename defeated. Every "give up" error was retried twice, as 500s from `/api/inngest`, before `onFailure` ran.
+
+**Rule:** Never set `name` on a subclass of an Inngest error class (`NonRetriableError`, `RetryAfterError`); carry what tells it apart in another field (`code`). Check it against the client's copy: `createRequire("packages/lib/package.json").resolve("inngest")`.
+
+**Applies to:** Every error class thrown from an Inngest function in `@carbon/jobs` or `@carbon/ee`.
