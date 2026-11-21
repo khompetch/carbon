@@ -12,6 +12,12 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+msgid " · {elsewhere} in {otherBin}"
+msgstr ""
+
+msgid " · {elsewhere} in no bin"
+msgstr ""
+
 msgid " · Kit job open"
 msgstr " · Açık set iş emri"
 
@@ -88,6 +94,11 @@ msgstr "{0} s"
 #. placeholder {0}: unplanned .map( (m) => (m.job as { jobId?: string | null } | null)?.jobId ) .filter(Boolean) .join(", ")
 msgid "{0} has no lot number. Set it on the batch or job in Carbon, then complete."
 msgstr "{0} Lot numarasına sahip değil. Bunu Carbon'da Partide veya İş emrinde ayarla, sonra Tamamla."
+
+#. placeholder {0}: serial.readableId
+#. placeholder {1}: serial.kitReadableId
+msgid "{0} in kit {1}"
+msgstr ""
 
 #. placeholder {0}: result.unit.readableId
 #. placeholder {1}: result.unit.status
@@ -226,9 +237,17 @@ msgstr "{job} yaklaşık {at} civarında bitiyor, {next} hazır hale getirin"
 
 msgid "{job} OEE {oee} is below the limit"
 msgstr "{job} OEE {oee} sınırın altında"
+msgid "{kitsReady} ready"
+msgstr ""
+
+msgid "{label} to scrap"
+msgstr ""
 
 msgid "{label}, overdue"
 msgstr "{label}, gecikmiş"
+
+msgid "{lost} scanned pieces were not issued. Scan them again."
+msgstr "{lost} taranmış adet çıkış yapılmadı. Yeniden tarayın."
 
 msgid "{maxSizeMB}MB limit"
 msgstr "{maxSizeMB}MB sınırı"
@@ -240,6 +259,9 @@ msgstr "{name}, {0}, %{percent} tamamlandı"
 msgid "{name}: {value}"
 msgstr "{name}: {value}"
 
+msgid "{namedParts} and {moreParts} more"
+msgstr ""
+
 msgid "{numerator} of {denominator}"
 msgstr "{denominator} içinde {numerator}"
 
@@ -249,9 +271,21 @@ msgstr "{need} içinden {onHand}"
 msgid "{onHand} on hand · covers {covers} of {demand}"
 msgstr "{onHand} elde · {demand} talebin {covers} kadarını karşılar"
 
+msgid "{open} open"
+msgstr ""
+
+msgid "{quantity} in this operation"
+msgstr ""
+
+msgid "{quantity} used in this operation"
+msgstr ""
+
 #. placeholder {0}: step.perMember.length
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} iş emirleri"
+
+msgid "{unbinned} in stock, in no bin"
+msgstr ""
 
 msgid "{workTypeLabel} timer started"
 msgstr "{workTypeLabel} zamanlayıcısı başlatıldı"
@@ -495,6 +529,9 @@ msgstr "Bu işlemi tamamlandı olarak işaretlemek istediğinizden emin misiniz?
 msgid "Ask a supervisor to add the {processName} ability to your profile."
 msgstr "Yöneticinizden profilinize {processName} yetkinliğini eklemesini isteyin."
 
+msgid "Ask the water spider"
+msgstr ""
+
 msgid "Asked"
 msgstr "Talep edildi"
 
@@ -572,6 +609,12 @@ msgstr "Parti"
 msgid "Batch {0}"
 msgstr "Parti {0}"
 
+msgid "Batch {readableId} · {used} used"
+msgstr ""
+
+msgid "Batch {readableId} · {used} used · in kit {kitReadableId}"
+msgstr ""
+
 msgid "Batch Details"
 msgstr "Parti Detayları"
 
@@ -638,6 +681,12 @@ msgstr "Arıza"
 
 msgid "Breakdowns"
 msgstr "Arızalar"
+msgid "Bring"
+msgstr ""
+
+#. placeholder {0}: lane.toBring
+msgid "Bring {0}"
+msgstr ""
 
 msgid "Bring {quantity}"
 msgstr "{quantity} getir"
@@ -923,6 +972,8 @@ msgstr "Bu etiket aranamadı. Tekrar deneyin."
 
 msgid "Counted by the sensor"
 msgstr "Sensör tarafından sayıldı"
+msgid "Count what is ruined. Replacements come from the shelf."
+msgstr ""
 
 msgid "Country code"
 msgstr "Ülke kodu"
@@ -1008,6 +1059,9 @@ msgstr "Yoğunluk"
 
 msgid "Depot"
 msgstr "Depo"
+
+msgid "Describe it: what, how many, where"
+msgstr ""
 
 msgid "Describe the problem..."
 msgstr "Sorunu açıklayın..."
@@ -1246,6 +1300,9 @@ msgstr "Depolama birimlerini almak başarısız oldu"
 msgid "Failed to get options"
 msgstr "Seçenekler alınamadı"
 
+msgid "Failed to load material requests"
+msgstr ""
+
 msgid "Failed to process image"
 msgstr "Görüntüyü işlemede başarısız oldu"
 
@@ -1367,6 +1424,9 @@ msgstr "Özellik {characteristicLabel} için ölçüm aleti: {currentGauge}"
 msgid "General"
 msgstr "Genel"
 
+msgid "Go back to an earlier operation to redo every operation from there, or send the unit through a correction, such as a rework station."
+msgstr "Oradan itibaren tüm operasyonları yeniden yapmak için önceki bir operasyona geri dönün ya da birimi bir yeniden işleme istasyonu gibi bir düzeltmeye gönderin."
+
 msgid "Go back to operation"
 msgstr "İşleme geri dön"
 
@@ -1388,6 +1448,11 @@ msgstr "{0}. adıma git: {1} (bitti)"
 
 msgid "Good / scrap (this shift)"
 msgstr "İyi / fire (bu vardiya)"
+msgid "goes to {feeds}"
+msgstr ""
+
+msgid "Grab from {source} · {free} of {onHand} left for this station"
+msgstr ""
 
 msgid "Grab from {source} · {onHand} there"
 msgstr "{source} konumundan al · orada {onHand} var"
@@ -1425,6 +1490,9 @@ msgstr "Bu tarayıcıda Carbon'un görünüşü."
 msgid "How many were actually picked?"
 msgstr "Gerçekte kaç tane alındı?"
 
+msgid "How many, where, anything the feeder should know"
+msgstr ""
+
 msgid "How many?"
 msgstr "Kaç tane?"
 
@@ -1433,6 +1501,9 @@ msgstr "Bu beyanı onaylarım"
 
 msgid "I understand and want to complete without issuing"
 msgstr "Anladığımı ve çıkarmadan tamamlamak istediğimi anlıyorum"
+
+msgid "I'll grab it from the shelf"
+msgstr ""
 
 msgid "I'm Still Working"
 msgstr "Hala Çalışıyorum"
@@ -1549,6 +1620,18 @@ msgstr "Çıkış Yapılan {issuedQuantity} / {lotLabel}"
 msgid "Issued {issuedQuantity} of {lotLabel} — {remainingQuantity} remains"
 msgstr "Çıkış Yapılan {issuedQuantity} / {lotLabel} — {remainingQuantity} Kaldı"
 
+msgid "Issued {quantity} {name} ({issued} of {required})"
+msgstr "{quantity} {name} çıkışı yapıldı ({issued} / {required})"
+
+msgid "Issued {quantity} {name} from {batches} ({issued} of {required})"
+msgstr "{batches} partisinden {quantity} {name} çıkışı yapıldı ({issued} / {required})"
+
+msgid "Issuing"
+msgstr "Çıkış yapılıyor"
+
+msgid "Issuing. {waiting} more scanned."
+msgstr "Çıkış yapılıyor. {waiting} adet daha tarandı."
+
 msgid "It is still used by a \"{table}\" record; remove that first."
 msgstr "Hala bir \"{table}\" kaydı tarafından kullanılıyor; önce bunu kaldırın."
 
@@ -1626,6 +1709,9 @@ msgstr "tamamlanacak setler"
 
 msgid "Kitter"
 msgstr "Set hazırlayıcı"
+
+msgid "Kitting and preparation"
+msgstr ""
 
 msgid "Labor"
 msgstr "İşçilik"
@@ -1708,6 +1794,9 @@ msgstr "Yüklendi: {loadedLabel}"
 msgid "Loading item details..."
 msgstr "Ürün detayları yükleniyor..."
 
+msgid "Loading parts..."
+msgstr ""
+
 msgid "Loading. There's no need to scan again."
 msgstr "Yükleniyor. Tekrar taramanıza gerek yok."
 
@@ -1771,6 +1860,9 @@ msgstr "Lot izlendi"
 msgid "Low"
 msgstr "Düşük"
 
+msgid "Low · {kitsReady} ready"
+msgstr ""
+
 msgid "Machine"
 msgstr "Makine"
 
@@ -1791,6 +1883,9 @@ msgstr "Vardiya başlangıcından beri makine durumu"
 
 msgid "Machine, timer running"
 msgstr "Makine, zamanlayıcı çalışıyor"
+
+msgid "Made here"
+msgstr ""
 
 msgid "Main"
 msgstr "Ana"
@@ -1843,6 +1938,9 @@ msgstr "eşleşir"
 
 msgid "Material requested"
 msgstr "Malzeme talep edildi"
+
+msgid "Material requests"
+msgstr ""
 
 msgid "Materials"
 msgstr "Malzemeler"
@@ -1923,6 +2021,9 @@ msgstr "Adı"
 
 msgid "Navigation"
 msgstr "Gezinti"
+
+msgid "Need {quantity}"
+msgstr ""
 
 msgid "Need material"
 msgstr "Malzeme gerekli"
@@ -2078,11 +2179,17 @@ msgstr "Açık muayene yok"
 msgid "No open jobs"
 msgstr "Açık iş emirleri yok"
 
+msgid "No open material requests"
+msgstr ""
+
 msgid "No open service jobs at this location"
 msgstr "Bu lokasyonda açık hizmet işi yok"
 
 msgid "No open units to allocate"
 msgstr "Tahsis edilecek açık birim yok"
+
+msgid "No open work"
+msgstr ""
 
 msgid "No operators"
 msgstr "Operatör bulunamadı"
@@ -2180,6 +2287,9 @@ msgstr "İstasyon yok"
 msgid "No stations at this location"
 msgstr "Bu lokasyonda istasyon yok"
 
+msgid "No stations match"
+msgstr ""
+
 msgid "No stock"
 msgstr "Stok yok"
 
@@ -2216,6 +2326,12 @@ msgstr "MRP dışı"
 msgid "None"
 msgstr "Hiçbiri"
 
+msgid "None in stock · Nothing ordered"
+msgstr ""
+
+msgid "None in stock · On order"
+msgstr ""
+
 msgid "None on the shelf"
 msgstr "Rafta hiç yok"
 
@@ -2227,6 +2343,8 @@ msgstr "Bu operasyonda yok"
 
 msgid "Not planned"
 msgstr "Planlanmadı"
+msgid "Not on the list: describe it below"
+msgstr ""
 
 msgid "Not scheduled"
 msgstr "Planlanmamış"
@@ -2249,6 +2367,9 @@ msgstr "Henüz hiçbir numune kalmadı, bu yüzden birimlerin neden reddedildiğ
 
 msgid "Nothing matches your search."
 msgstr "Aramanızla eşleşen hiçbir şey yok."
+
+msgid "Nothing on this operation can be scrapped yet. Serials and batches show once they are issued."
+msgstr ""
 
 msgid "Nothing on this page uses that barcode"
 msgstr "Bu sayfada hiçbir şey bu barkodu kullanmıyor"
@@ -2307,6 +2428,12 @@ msgstr "Yolda"
 
 msgid "one combined lot · planned"
 msgstr "bir birleştirilmiş Lot · planlandı"
+
+msgid "One less {label}"
+msgstr ""
+
+msgid "One more {label}"
+msgstr ""
 
 msgid "one per job · planned"
 msgstr "İş emri başına bir · planlandı"
@@ -2394,6 +2521,9 @@ msgstr "Ya da bu sırrı manuel olarak girin:"
 #. placeholder {0}: unit.readableId
 msgid "Other operations that need {0}"
 msgstr "{0} gerektiren diğer operasyonlar"
+
+msgid "Other stations"
+msgstr ""
 
 msgid "Out"
 msgstr "Dışarıda"
@@ -2704,6 +2834,9 @@ msgstr "Miktar {0}"
 msgid "Quantity must be greater than 0"
 msgstr "Miktar 0'dan büyük olmalıdır"
 
+msgid "Quantity to move"
+msgstr ""
+
 msgid "Quantity:"
 msgstr "Miktar:"
 
@@ -2732,6 +2865,9 @@ msgstr "Hammadde eksik: {shortParts}"
 
 msgid "Re"
 msgstr "Rd"
+
+msgid "Ready"
+msgstr ""
 
 msgid "Reason"
 msgstr "Neden"
@@ -2860,6 +2996,9 @@ msgstr "Alt montajı yeniden aç ve bir yedek birim oluştur"
 msgid "Repairable"
 msgstr "Onarılabilir"
 
+msgid "Replacement"
+msgstr ""
+
 msgid "Request material"
 msgstr "Malzeme talep et"
 
@@ -2902,9 +3041,6 @@ msgstr "İade Parçası"
 msgid "Rework"
 msgstr "Yeniden işleme"
 
-msgid "Rework created successfully"
-msgstr "Yeniden işleme başarıyla oluşturuldu"
-
 msgid "Rework quantity"
 msgstr "Yeniden işleme miktarı"
 
@@ -2925,9 +3061,6 @@ msgstr "Standart süreli çalışma"
 
 msgid "Running"
 msgstr "Çalışıyor"
-
-msgid "Running low"
-msgstr "Azalıyor"
 
 #. placeholder {0}: runningClock.serviceJob?.serviceJobId
 msgid "Running on <0>{0}</0>"
@@ -3001,6 +3134,9 @@ msgstr "Birimi tarayın veya seçin, ardından kanban kartını yeniden tarayın
 msgid "Scan received"
 msgstr "Tarama alındı"
 
+msgid "Scan the replacement serials and batches in."
+msgstr ""
+
 msgid "Scan this QR code with your authenticator app (e.g. Google Authenticator or 1Password), then enter the 6-digit code it shows."
 msgstr "Bu QR kodunu kimlik doğrulayıcı uygulamanızla tarayın (örn. Google Authenticator veya 1Password), ardından gösterdiği 6 haneli kodu girin."
 
@@ -3022,8 +3158,20 @@ msgstr "Fire (parça)"
 msgid "Scrap {readableId}"
 msgstr "Fire {readableId}"
 
+msgid "Scrap {total}"
+msgstr ""
+
 msgid "Scrap material"
 msgstr "Fire malzemesi"
+
+msgid "Scrap parts"
+msgstr ""
+
+msgid "Scrap parts of {label}"
+msgstr ""
+
+msgid "Scrap parts of {partName}"
+msgstr ""
 
 msgid "Scrap quantity"
 msgstr "Fire miktarı"
@@ -3039,6 +3187,12 @@ msgstr "Adedi fireye ayır"
 
 msgid "Scrapped"
 msgstr "Hurdaya Ayrılan"
+
+msgid "Scrapped. Grab replacements from the shelf."
+msgstr ""
+
+msgid "Scrapped. The water spider is bringing replacements."
+msgstr ""
 
 msgid "Scrapping serial {trackedEntityReadableId}"
 msgstr "Seri hurdası {trackedEntityReadableId}"
@@ -3085,11 +3239,20 @@ msgstr "Operatörlerde Ara"
 msgid "Search operators..."
 msgstr "Operatörleri ara..."
 
+msgid "Search parts, consumables and tools"
+msgstr ""
+
 msgid "Search projects and tasks"
 msgstr "Projeleri ve Görevleri Arayın"
 
+msgid "Search reasons"
+msgstr ""
+
 msgid "Search recent operations"
 msgstr "Son operasyonlarda ara"
+
+msgid "Search stations"
+msgstr ""
 
 msgid "Search..."
 msgstr "Ara..."
@@ -3108,6 +3271,9 @@ msgstr "Bir tamamlama miktarı seçin"
 
 msgid "Select a customer"
 msgstr "Müşteri seçin"
+
+msgid "Select a location to see its material requests"
+msgstr ""
 
 msgid "Select a location to see its stations"
 msgstr "İstasyonları görmek için bir lokasyon seçin"
@@ -3245,6 +3411,9 @@ msgstr "kısa"
 msgid "Short"
 msgstr "Azalt"
 
+msgid "Short {short}"
+msgstr ""
+
 msgid "Short pick {itemName}"
 msgstr "Kısmi toplama {itemName}"
 
@@ -3346,6 +3515,8 @@ msgstr "Sırala: satır sırası"
 
 msgid "Sort: worst first"
 msgstr "Sırala: en kötüden başlayarak"
+msgid "Something else"
+msgstr ""
 
 msgid "Source"
 msgstr "Kaynak"
@@ -3431,6 +3602,8 @@ msgstr "İstasyon: {stationName}"
 
 msgid "stations out"
 msgstr "devre dışı istasyonlar"
+msgid "stations short"
+msgstr ""
 
 #. placeholder {0}: inspection.lotSize
 msgid "Statistical acceptance failed, so the entire lot of {0} is considered non-conforming (ISO 9001:2015 §8.7) — {passes} sampled pass(es) and {fails} failure(s). Route the units below to scrap or rework, or record the verdict only."
@@ -3591,6 +3764,9 @@ msgstr "İş emirleri farklı stok kartları üretir — her iş emrinin parçal
 msgid "the kit"
 msgstr "set"
 
+msgid "The list failed to load. You can still describe what you need."
+msgstr ""
+
 msgid "The lot will be marked Passed and {remaining} remaining unit(s) will be completed at this operation."
 msgstr "Lot Geçti olarak işaretlenecek ve {remaining} kalan birim bu operasyonda tamamlanacak."
 
@@ -3648,6 +3824,9 @@ msgstr "Bu kontrol planında iş talimatı yok."
 
 msgid "This is a pass / fail check. Press P or F."
 msgstr "Bu bir geçti / kaldı kontrolüdür. P veya F tuşuna basın."
+
+msgid "This job"
+msgstr ""
 
 msgid "This job does not use that part"
 msgstr "Bu iş emri o parçayı kullanmıyor"
@@ -3727,6 +3906,9 @@ msgstr "Süre türü"
 
 msgid "Time Worked"
 msgstr "Çalışılan Zaman"
+
+msgid "to bring lineside"
+msgstr ""
 
 msgid "To pick"
 msgstr "Toplanacak"
@@ -3980,6 +4162,9 @@ msgstr "Görüntüle veya aç"
 msgid "View Traceability"
 msgstr "İzlenebilirliği görüntüle"
 
+msgid "Waiting"
+msgstr ""
+
 msgid "Warranty"
 msgstr "Garanti"
 
@@ -3988,9 +4173,6 @@ msgstr "Water spider"
 
 msgid "We've emailed you a sign-in link and a 6-digit code. Follow the link, or enter the code here."
 msgstr "Size oturum açma bağlantısı ve 6 haneli bir kod gönderdik. Bağlantıyı takip edin veya kodu buraya girin."
-
-msgid "Wet"
-msgstr "Islak"
 
 msgid "What do you need?"
 msgstr "Neye ihtiyacınız var?"
