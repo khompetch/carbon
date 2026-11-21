@@ -12,6 +12,12 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+msgid " · {elsewhere} in {otherBin}"
+msgstr ""
+
+msgid " · {elsewhere} in no bin"
+msgstr ""
+
 msgid " · Kit job open"
 msgstr " · Производственный заказ комплекта открыт"
 
@@ -88,6 +94,11 @@ msgstr "{0} ч"
 #. placeholder {0}: unplanned .map( (m) => (m.job as { jobId?: string | null } | null)?.jobId ) .filter(Boolean) .join(", ")
 msgid "{0} has no lot number. Set it on the batch or job in Carbon, then complete."
 msgstr "{0} не имеет номера партии. Установите его в серии или производственном заказе в Carbon, затем завершите."
+
+#. placeholder {0}: serial.readableId
+#. placeholder {1}: serial.kitReadableId
+msgid "{0} in kit {1}"
+msgstr ""
 
 #. placeholder {0}: result.unit.readableId
 #. placeholder {1}: result.unit.status
@@ -226,9 +237,17 @@ msgstr "{job} завершится примерно в {at}, подготовь�
 
 msgid "{job} OEE {oee} is below the limit"
 msgstr "OEE {job}: {oee} ниже допустимого предела"
+msgid "{kitsReady} ready"
+msgstr ""
+
+msgid "{label} to scrap"
+msgstr ""
 
 msgid "{label}, overdue"
 msgstr "{label}, просрочено"
+
+msgid "{lost} scanned pieces were not issued. Scan them again."
+msgstr "{lost} отсканированных единиц не были списаны. Отсканируйте их снова."
 
 msgid "{maxSizeMB}MB limit"
 msgstr "Ограничение {maxSizeMB}МБ"
@@ -240,6 +259,9 @@ msgstr "{name}, {0}, выполнено {percent}%"
 msgid "{name}: {value}"
 msgstr "{name}: {value}"
 
+msgid "{namedParts} and {moreParts} more"
+msgstr ""
+
 msgid "{numerator} of {denominator}"
 msgstr "{numerator} из {denominator}"
 
@@ -249,9 +271,21 @@ msgstr "{onHand} из {need}"
 msgid "{onHand} on hand · covers {covers} of {demand}"
 msgstr "{onHand} в наличии · покрывает {covers} из {demand}"
 
+msgid "{open} open"
+msgstr ""
+
+msgid "{quantity} in this operation"
+msgstr ""
+
+msgid "{quantity} used in this operation"
+msgstr ""
+
 #. placeholder {0}: step.perMember.length
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} производственных заказов"
+
+msgid "{unbinned} in stock, in no bin"
+msgstr ""
 
 msgid "{workTypeLabel} timer started"
 msgstr "Таймер: {workTypeLabel} запущен"
@@ -495,6 +529,9 @@ msgstr "Вы уверены, что хотите отметить эту опе�
 msgid "Ask a supervisor to add the {processName} ability to your profile."
 msgstr "Попросите руководителя добавить навык «{processName}» в ваш профиль."
 
+msgid "Ask the water spider"
+msgstr ""
+
 msgid "Asked"
 msgstr "Запрошено"
 
@@ -572,6 +609,12 @@ msgstr "Партия"
 msgid "Batch {0}"
 msgstr "Серия {0}"
 
+msgid "Batch {readableId} · {used} used"
+msgstr ""
+
+msgid "Batch {readableId} · {used} used · in kit {kitReadableId}"
+msgstr ""
+
 msgid "Batch Details"
 msgstr "Детали серии"
 
@@ -638,6 +681,12 @@ msgstr "Поломка"
 
 msgid "Breakdowns"
 msgstr "Поломки"
+msgid "Bring"
+msgstr ""
+
+#. placeholder {0}: lane.toBring
+msgid "Bring {0}"
+msgstr ""
 
 msgid "Bring {quantity}"
 msgstr "Принести {quantity}"
@@ -923,6 +972,8 @@ msgstr "Не удалось найти эту метку. Попробуйте �
 
 msgid "Counted by the sensor"
 msgstr "Подсчитано датчиком"
+msgid "Count what is ruined. Replacements come from the shelf."
+msgstr ""
 
 msgid "Country code"
 msgstr "Код страны"
@@ -1008,6 +1059,9 @@ msgstr "Плотность"
 
 msgid "Depot"
 msgstr "Депо"
+
+msgid "Describe it: what, how many, where"
+msgstr ""
 
 msgid "Describe the problem..."
 msgstr "Опишите проблему..."
@@ -1246,6 +1300,9 @@ msgstr "Не удалось получить единицы хранения"
 msgid "Failed to get options"
 msgstr "Не удалось получить параметры"
 
+msgid "Failed to load material requests"
+msgstr ""
+
 msgid "Failed to process image"
 msgstr "Не удалось обработать изображение"
 
@@ -1367,6 +1424,9 @@ msgstr "Средство измерения для характеристики 
 msgid "General"
 msgstr "Общие"
 
+msgid "Go back to an earlier operation to redo every operation from there, or send the unit through a correction, such as a rework station."
+msgstr "Вернитесь к более ранней операции, чтобы повторить все операции с этого места, или отправьте единицу на доработку, например на участок доработки."
+
 msgid "Go back to operation"
 msgstr "Вернуться к операции"
 
@@ -1388,6 +1448,11 @@ msgstr "Перейти к шагу {0}: {1} (готово)"
 
 msgid "Good / scrap (this shift)"
 msgstr "Годные / брак (за смену)"
+msgid "goes to {feeds}"
+msgstr ""
+
+msgid "Grab from {source} · {free} of {onHand} left for this station"
+msgstr ""
 
 msgid "Grab from {source} · {onHand} there"
 msgstr "Взять из {source} · там {onHand}"
@@ -1425,6 +1490,9 @@ msgstr "Внешний вид Carbon в этом браузере."
 msgid "How many were actually picked?"
 msgstr "Сколько было фактически собрано?"
 
+msgid "How many, where, anything the feeder should know"
+msgstr ""
+
 msgid "How many?"
 msgstr "Сколько?"
 
@@ -1433,6 +1501,9 @@ msgstr "Я удостоверяю это заявление"
 
 msgid "I understand and want to complete without issuing"
 msgstr "Я понимаю и хочу завершить без выдачи"
+
+msgid "I'll grab it from the shelf"
+msgstr ""
 
 msgid "I'm Still Working"
 msgstr "Я ещё работаю"
@@ -1549,6 +1620,18 @@ msgstr "Выпущено {issuedQuantity} из {lotLabel}"
 msgid "Issued {issuedQuantity} of {lotLabel} — {remainingQuantity} remains"
 msgstr "Выпущено {issuedQuantity} из {lotLabel} — осталось {remainingQuantity}"
 
+msgid "Issued {quantity} {name} ({issued} of {required})"
+msgstr "Списано {quantity} {name} ({issued} из {required})"
+
+msgid "Issued {quantity} {name} from {batches} ({issued} of {required})"
+msgstr "Списано {quantity} {name} из партий {batches} ({issued} из {required})"
+
+msgid "Issuing"
+msgstr "Списание"
+
+msgid "Issuing. {waiting} more scanned."
+msgstr "Списание. Еще отсканировано: {waiting}."
+
 msgid "It is still used by a \"{table}\" record; remove that first."
 msgstr "Он все еще используется записью «{table}»; удалите его сначала."
 
@@ -1626,6 +1709,9 @@ msgstr "комплектов к завершению"
 
 msgid "Kitter"
 msgstr "Комплектовщик"
+
+msgid "Kitting and preparation"
+msgstr ""
 
 msgid "Labor"
 msgstr "Трудозатраты"
@@ -1708,6 +1794,9 @@ msgstr "Загружена: {loadedLabel}"
 msgid "Loading item details..."
 msgstr "Загрузка данных номенклатуры..."
 
+msgid "Loading parts..."
+msgstr ""
+
 msgid "Loading. There's no need to scan again."
 msgstr "Загрузка. Повторно сканировать не нужно."
 
@@ -1771,6 +1860,9 @@ msgstr "Партия отслежена"
 msgid "Low"
 msgstr "Низкий"
 
+msgid "Low · {kitsReady} ready"
+msgstr ""
+
 msgid "Machine"
 msgstr "Станок"
 
@@ -1791,6 +1883,9 @@ msgstr "Состояние станка с начала смены"
 
 msgid "Machine, timer running"
 msgstr "Станок, таймер запущен"
+
+msgid "Made here"
+msgstr ""
 
 msgid "Main"
 msgstr "Основное"
@@ -1843,6 +1938,9 @@ msgstr "соответствует"
 
 msgid "Material requested"
 msgstr "Материал запрошен"
+
+msgid "Material requests"
+msgstr ""
 
 msgid "Materials"
 msgstr "Материалы"
@@ -1923,6 +2021,9 @@ msgstr "Имя"
 
 msgid "Navigation"
 msgstr "Навигация"
+
+msgid "Need {quantity}"
+msgstr ""
 
 msgid "Need material"
 msgstr "Нужен материал"
@@ -2078,11 +2179,17 @@ msgstr "Нет открытых контролей"
 msgid "No open jobs"
 msgstr "Нет открытых производственных заказов"
 
+msgid "No open material requests"
+msgstr ""
+
 msgid "No open service jobs at this location"
 msgstr "Нет открытых заявок на обслуживание на этой площадке"
 
 msgid "No open units to allocate"
 msgstr "Нет открытых единиц для распределения"
+
+msgid "No open work"
+msgstr ""
 
 msgid "No operators"
 msgstr "Нет операторов"
@@ -2180,6 +2287,9 @@ msgstr "Нет станции"
 msgid "No stations at this location"
 msgstr "На этой площадке нет станций"
 
+msgid "No stations match"
+msgstr ""
+
 msgid "No stock"
 msgstr "Нет запасов"
 
@@ -2216,6 +2326,12 @@ msgstr "Не учитывается в MRP"
 msgid "None"
 msgstr "Нет"
 
+msgid "None in stock · Nothing ordered"
+msgstr ""
+
+msgid "None in stock · On order"
+msgstr ""
+
 msgid "None on the shelf"
 msgstr "На полке ничего нет"
 
@@ -2227,6 +2343,8 @@ msgstr "Нет в этой операции"
 
 msgid "Not planned"
 msgstr "Не запланировано"
+msgid "Not on the list: describe it below"
+msgstr ""
 
 msgid "Not scheduled"
 msgstr "Не запланировано"
@@ -2249,6 +2367,9 @@ msgstr "Отказов пока нет, поэтому укажите причи
 
 msgid "Nothing matches your search."
 msgstr "Ничего не совпадает с вашим поиском."
+
+msgid "Nothing on this operation can be scrapped yet. Serials and batches show once they are issued."
+msgstr ""
 
 msgid "Nothing on this page uses that barcode"
 msgstr "На этой странице ничто не использует этот штрихкод"
@@ -2307,6 +2428,12 @@ msgstr "В пути"
 
 msgid "one combined lot · planned"
 msgstr "одна объединённая партия · запланировано"
+
+msgid "One less {label}"
+msgstr ""
+
+msgid "One more {label}"
+msgstr ""
 
 msgid "one per job · planned"
 msgstr "одна на производственный заказ · запланировано"
@@ -2394,6 +2521,9 @@ msgstr "Или введите этот секрет вручную:"
 #. placeholder {0}: unit.readableId
 msgid "Other operations that need {0}"
 msgstr "Другие операции, требующие {0}"
+
+msgid "Other stations"
+msgstr ""
 
 msgid "Out"
 msgstr "Нет"
@@ -2704,6 +2834,9 @@ msgstr "Количество {0}"
 msgid "Quantity must be greater than 0"
 msgstr "Количество должно быть больше 0"
 
+msgid "Quantity to move"
+msgstr ""
+
 msgid "Quantity:"
 msgstr "Количество:"
 
@@ -2732,6 +2865,9 @@ msgstr "Не хватает сырья: {shortParts}"
 
 msgid "Re"
 msgstr "Бр"
+
+msgid "Ready"
+msgstr ""
 
 msgid "Reason"
 msgstr "Причина"
@@ -2860,6 +2996,9 @@ msgstr "Открыть заново узел и создать единицу д
 msgid "Repairable"
 msgstr "Подлежит ремонту"
 
+msgid "Replacement"
+msgstr ""
+
 msgid "Request material"
 msgstr "Запросить материал"
 
@@ -2902,9 +3041,6 @@ msgstr "Возвращаемая деталь"
 msgid "Rework"
 msgstr "Доработка"
 
-msgid "Rework created successfully"
-msgstr "Доработка успешно создана"
-
 msgid "Rework quantity"
 msgstr "Количество для доработки"
 
@@ -2925,9 +3061,6 @@ msgstr "Работа с нормативным временем"
 
 msgid "Running"
 msgstr "Работает"
-
-msgid "Running low"
-msgstr "Заканчивается"
 
 #. placeholder {0}: runningClock.serviceJob?.serviceJobId
 msgid "Running on <0>{0}</0>"
@@ -3001,6 +3134,9 @@ msgstr "Отсканируйте или выберите единицу, зат�
 msgid "Scan received"
 msgstr "Скан получен"
 
+msgid "Scan the replacement serials and batches in."
+msgstr ""
+
 msgid "Scan this QR code with your authenticator app (e.g. Google Authenticator or 1Password), then enter the 6-digit code it shows."
 msgstr "Отсканируйте этот QR код с помощью приложения аутентификации (например, Google Authenticator или 1Password), затем введите 6-значный код, который оно покажет."
 
@@ -3022,8 +3158,20 @@ msgstr "Брак (шт.)"
 msgid "Scrap {readableId}"
 msgstr "Браковать {readableId}"
 
+msgid "Scrap {total}"
+msgstr ""
+
 msgid "Scrap material"
 msgstr "Браковка материала"
+
+msgid "Scrap parts"
+msgstr ""
+
+msgid "Scrap parts of {label}"
+msgstr ""
+
+msgid "Scrap parts of {partName}"
+msgstr ""
 
 msgid "Scrap quantity"
 msgstr "Количество брака"
@@ -3039,6 +3187,12 @@ msgstr "Отправить единицу в брак"
 
 msgid "Scrapped"
 msgstr "Списано в брак"
+
+msgid "Scrapped. Grab replacements from the shelf."
+msgstr ""
+
+msgid "Scrapped. The water spider is bringing replacements."
+msgstr ""
 
 msgid "Scrapping serial {trackedEntityReadableId}"
 msgstr "Списание серийного номера {trackedEntityReadableId}"
@@ -3085,11 +3239,20 @@ msgstr "Поиск операторов"
 msgid "Search operators..."
 msgstr "Поиск операторов..."
 
+msgid "Search parts, consumables and tools"
+msgstr ""
+
 msgid "Search projects and tasks"
 msgstr "Поиск проектов и задач"
 
+msgid "Search reasons"
+msgstr ""
+
 msgid "Search recent operations"
 msgstr "Поиск недавних операций"
+
+msgid "Search stations"
+msgstr ""
 
 msgid "Search..."
 msgstr "Поиск..."
@@ -3108,6 +3271,9 @@ msgstr "Выберите количество готовой продукции"
 
 msgid "Select a customer"
 msgstr "Выберите покупателя"
+
+msgid "Select a location to see its material requests"
+msgstr ""
 
 msgid "Select a location to see its stations"
 msgstr "Выберите площадку, чтобы увидеть её станции"
@@ -3245,6 +3411,9 @@ msgstr "короткий"
 msgid "Short"
 msgstr "Недостача"
 
+msgid "Short {short}"
+msgstr ""
+
 msgid "Short pick {itemName}"
 msgstr "Короткий отбор {itemName}"
 
@@ -3346,6 +3515,8 @@ msgstr "Сортировка: по порядку строк"
 
 msgid "Sort: worst first"
 msgstr "Сортировка: сначала худшие"
+msgid "Something else"
+msgstr ""
 
 msgid "Source"
 msgstr "Источник"
@@ -3431,6 +3602,8 @@ msgstr "Станция: {stationName}"
 
 msgid "stations out"
 msgstr "станции без материалов"
+msgid "stations short"
+msgstr ""
 
 #. placeholder {0}: inspection.lotSize
 msgid "Statistical acceptance failed, so the entire lot of {0} is considered non-conforming (ISO 9001:2015 §8.7) — {passes} sampled pass(es) and {fails} failure(s). Route the units below to scrap or rework, or record the verdict only."
@@ -3591,6 +3764,9 @@ msgstr "Производственные заказы производят ра�
 msgid "the kit"
 msgstr "комплект"
 
+msgid "The list failed to load. You can still describe what you need."
+msgstr ""
+
 msgid "The lot will be marked Passed and {remaining} remaining unit(s) will be completed at this operation."
 msgstr "Партия будет отмечена как Пройдена, и {remaining} оставшихся единиц будут завершены в этой операции."
 
@@ -3648,6 +3824,9 @@ msgstr "В этом плане контроля нет рабочих инстр
 
 msgid "This is a pass / fail check. Press P or F."
 msgstr "Это проверка «годен / не годен». Нажмите P или F."
+
+msgid "This job"
+msgstr ""
 
 msgid "This job does not use that part"
 msgstr "Этот производственный заказ не использует эту деталь"
@@ -3727,6 +3906,9 @@ msgstr "Тип времени"
 
 msgid "Time Worked"
 msgstr "Отработанное время"
+
+msgid "to bring lineside"
+msgstr ""
 
 msgid "To pick"
 msgstr "Для отбора"
@@ -3980,6 +4162,9 @@ msgstr "Просмотр или открытие"
 msgid "View Traceability"
 msgstr "Посмотреть прослеживаемость"
 
+msgid "Waiting"
+msgstr ""
+
 msgid "Warranty"
 msgstr "Гарантия"
 
@@ -3988,9 +4173,6 @@ msgstr "Водяной паук"
 
 msgid "We've emailed you a sign-in link and a 6-digit code. Follow the link, or enter the code here."
 msgstr "Мы отправили вам по электронной почте ссылку для входа и 6-значный код. Перейдите по ссылке или введите код здесь."
-
-msgid "Wet"
-msgstr "Мокрый"
 
 msgid "What do you need?"
 msgstr "Что вам нужно?"

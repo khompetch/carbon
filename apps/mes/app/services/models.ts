@@ -317,24 +317,34 @@ export const completeJobOperationBatchValidator = z.object({
     .min(1)
 });
 
+/** A rework target naming a correction instead of an operation. */
+export const CORRECTION_TARGET_PREFIX = "correction:";
+
+/** The correction a rework target names, or null for an earlier operation. */
+export function correctionIdOfTarget(target: string) {
+  return target.startsWith(CORRECTION_TARGET_PREFIX)
+    ? target.slice(CORRECTION_TARGET_PREFIX.length)
+    : null;
+}
+
 export const triggerReworkValidator = z.object({
   jobId: z.string().min(1),
   triggeredAtJobOperationId: z.string().min(1),
   targetJobOperationId: z
     .string()
-    .min(1, { message: "Target operation is required" }),
+    .min(1, { message: "Target operation is required" })
+    .refine((target) => correctionIdOfTarget(target) !== "", {
+      message: "Choose a correction"
+    }),
   reason: z.string().min(1, { message: "Reason is required" }),
   quantity: zfd.numeric(
     z.number().positive({ message: "Quantity must be greater than 0" })
   ),
-  trackedEntityIds: zfd.text(z.string().optional()),
+  trackedEntityIds: zfd.json(z.array(z.string()).optional()),
   // Provenance link when the rework was triggered by an inspection
   // disposition (stamped on the Rework productionQuantity row).
   inspectionId: zfd.text(z.string().optional())
 });
-
-/** A disposition rework target naming a correction instead of an operation. */
-export const CORRECTION_TARGET_PREFIX = "correction:";
 
 export const triggerCorrectionValidator = z.object({
   jobId: z.string().min(1),
@@ -423,11 +433,43 @@ export const qualityIssueValidator = z.object({
   trackedEntityId: zfd.text(z.string().optional())
 });
 
-export const materialRequestValidator = z.object({
+export const scrapPartsValidator = z.object({
   jobOperationId: z.string().min(1),
-  itemId: zfd.text(z.string().optional()),
-  note: zfd.text(z.string().optional())
+  lines: zfd.json(
+    z
+      .array(
+        z.union([
+          z.object({
+            materialId: z.string().min(1),
+            trackedEntityId: z.string().min(1),
+            quantity: z.number().positive()
+          }),
+          z.object({
+            materialId: z.string().min(1),
+            itemId: z.string().min(1),
+            quantity: z.number().positive()
+          })
+        ])
+      )
+      .min(1, { message: "Pick a part" })
+  ),
+  scrapReasonId: z.string().min(1, { message: "Pick a reason" }),
+  replacement: z.enum(["Shelf", "Water Spider"]),
+  notes: zfd.text(z.string().optional()),
+  idempotencyKey: z.string().min(1)
 });
+
+export const materialRequestValidator = z
+  .object({
+    jobOperationId: z.string().min(1),
+    itemId: zfd.text(z.string().optional()),
+    note: zfd.text(z.string().trim().optional())
+  })
+  // A UI hint: createMaterialRequest enforces it.
+  .refine((request) => request.itemId || request.note, {
+    path: ["note"],
+    message: "Describe what you need"
+  });
 
 export const maintenanceDispatchIssueValidator = z.object({
   maintenanceDispatchItemId: z.string().min(1, {
@@ -458,6 +500,8 @@ export const inspectionSampleValidator = z.object({
   // Optional: serial parts scan a discrete tracked entity; batch / inventory /
   // non-inventory parts record pass/fail without one.
   trackedEntityId: zfd.text(z.string().optional()),
+  // Grid position of a new anonymous sample, so it reloads in the same place.
+  position: zfd.numeric(z.number().int().min(0).optional()),
   // "Pending" registers a sample without a verdict (identify-only scan when an
   // inspection document drives per-feature measurements).
   status: z.enum(["Pending", "Passed", "Failed"], {
@@ -559,6 +603,8 @@ export const inspectionMeasurementValidator = z.object({
   inspectionId: z.string().min(1, { message: "Inspection is required" }),
   // Absent = create an anonymous sample (non-serial grid columns).
   sampleId: zfd.text(z.string().optional()),
+  // Grid position of the anonymous sample this save creates.
+  position: zfd.numeric(z.number().int().min(0).optional()),
   inspectionFeatureId: z.string().min(1, { message: "Feature is required" }),
   // Numeric string for Measurement features; empty clears the reading.
   value: zfd.text(z.string().optional()),

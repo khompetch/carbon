@@ -186,6 +186,10 @@ msgstr "{0, plural, one {# अतिदेय} other {# अतिदेय}}"
 msgid "{0, plural, one {# parameter} other {# parameters}}"
 msgstr "{0, plural, one {# पैरामीटर} other {# पैरामीटर}}"
 
+#. placeholder {0}: job.shortItems
+msgid "{0, plural, one {# part short} other {# parts short}}"
+msgstr "{0, plural, one {# पार्ट कम} other {# पार्ट्स कम}}"
+
 #. placeholder {0}: issues.length
 msgid "{0, plural, one {# record needs attention} other {# records need attention}}"
 msgstr "{0, plural, one {# रिकॉर्ड को ध्यान की आवश्यकता है} other {# रिकॉर्ड को ध्यान की आवश्यकता है}}"
@@ -353,9 +357,22 @@ msgstr "{0} उपलब्ध"
 msgid "{0} available in {owner} here"
 msgstr "{0} {owner} में यहाँ उपलब्ध है"
 
+#. placeholder {0}: formatQuantity(data?.quantityAvailable ?? 0)
+#. placeholder {1}: formatQuantity(data?.quantityCommitted ?? 0)
+msgid "{0} available, {1} committed"
+msgstr "{0} उपलब्ध, {1} आरक्षित"
+
 #. placeholder {0}: unmatched.length
 msgid "{0} BOM lines unmatched: {names}"
 msgstr "{0} BOM पंक्तियाँ मेल नहीं खाईं: {names}"
+
+#. placeholder {0}: selected.label
+msgid "{0} by method version"
+msgstr ""
+
+#. placeholder {0}: selected.label
+msgid "{0} by operator"
+msgstr ""
 
 #. placeholder {0}: unitOfMeasure.name
 msgid "{0} cannot be deleted because it is still in use by {where}. Change those records to a different unit of measure first."
@@ -399,6 +416,10 @@ msgstr "{0} दिन"
 #. placeholder {0}: file.name
 msgid "{0} deleted successfully"
 msgstr "{0} सफलतापूर्वक हटाया गया"
+
+#. placeholder {0}: selected.label
+msgid "{0} distribution"
+msgstr ""
 
 #. placeholder {0}: task.autoCheck.count
 msgid "{0} draft journal entries"
@@ -677,6 +698,9 @@ msgstr "{0} पंक्तियाँ"
 #. placeholder {1}: formatTime(totals.parts.plannedMs)
 msgid "{0} run of {1} planned"
 msgstr "{1} योजनाबद्ध में से {0} रन"
+#. placeholder {0}: selected.label
+msgid "{0} runs over time"
+msgstr ""
 
 #. placeholder {0}: member.quantityScrapped
 msgid "{0} scrapped"
@@ -769,6 +793,10 @@ msgstr "{0} को {name} के रूप में सहेजा जाए�
 msgid "{0}-Year"
 msgstr "{0}-वर्ष"
 
+#. placeholder {0}: typeLabels[data.type]
+msgid "{0}, with the number of runs (n) above each operation. Select an operation to see how it changes."
+msgstr ""
+
 #. placeholder {0}: blocker.description
 msgid "{0}: the payment due {dueDate} is marked paid outside Carbon, but nothing would relieve it from the lease liability. Set Invoice From on or before {dueDate} so it is invoiced."
 msgstr "{0}: {dueDate} को देय भुगतान को Carbon के बाहर भुगतान के रूप में चिह्नित किया गया है, लेकिन कुछ भी इसे पट्टा देयता से राहत नहीं देगा। इसे चालान किया जाए, इसके लिए {dueDate} को या उससे पहले चालान स्रोत सेट करें।"
@@ -838,6 +866,9 @@ msgstr "{alreadyPlannedItemCount} पार्ट्स छोड़ा गय�
 msgid "{amount} of {0} posted to {element}"
 msgstr "{amount} का {0} {element} को पोस्ट किया गया"
 
+msgid "{amount} of the order line's charges not billed"
+msgstr "ऑर्डर पंक्ति के शुल्कों में से {amount} का बिल नहीं बना है"
+
 msgid "{apOverduePct}% of payables"
 msgstr "{apOverduePct}% देय राशि का"
 
@@ -865,14 +896,29 @@ msgstr "{assigned, plural, one {# कार्य दिवस के लिए 
 msgid "{behindDays, plural, one {Behind target by # day} other {Behind target by # days}}"
 msgstr "{behindDays, plural, one {लक्ष्य से # दिन पीछे} other {लक्ष्य से # दिन पीछे}}"
 
+msgid "{billedByContract, plural, one {# line is billed by a contract made from its order} other {# lines are billed by contracts made from their orders}}"
+msgstr "{billedByContract, plural, one {# पंक्ति को उसके ऑर्डर से बनाया गया अनुबंध बिल करता है} other {# पंक्तियों को उनके ऑर्डर से बनाए गए अनुबंध बिल करते हैं}}"
+
 msgid "{billingReviewCount, plural, one {# billable item waits for review} other {# billable items wait for review}}"
 msgstr "{billingReviewCount, plural, one {# बिल योग्य आइटम समीक्षा के लिए प्रतीक्षा करता है} other {# बिल योग्य आइटम समीक्षा के लिए प्रतीक्षा करते हैं}}"
+
+msgid "{bucket2Start}-{b2} Days"
+msgstr "{bucket2Start}–{b2} दिन"
+
+msgid "{bucket3Start}-{b3} Days"
+msgstr "{bucket3Start}–{b3} दिन"
+
+msgid "{bucket4Start}+ Days"
+msgstr "{bucket4Start}+ दिन"
 
 msgid "{categoryLabel} markup for quantity {quantity}"
 msgstr "मात्रा {quantity} के लिए {categoryLabel} मार्कअप"
 
 msgid "{chainLabel}. Consider pointing this part directly at the final successor."
 msgstr "{chainLabel}. इस भाग को सीधे अंतिम उत्तराधिकारी की ओर इंगित करने पर विचार करें।"
+
+msgid "{chargesLeftOff, plural, one {# line leaves off add-ons or shipping from its order} other {# lines leave off add-ons or shipping from their order}}"
+msgstr "{chargesLeftOff, plural, one {# पंक्ति में ऑर्डर के ऐड-ऑन या शिपिंग शामिल नहीं है} other {# पंक्तियों में ऑर्डर के ऐड-ऑन या शिपिंग शामिल नहीं हैं}}"
 
 msgid "{code} counted"
 msgstr "{code} गिना गया"
@@ -919,6 +965,9 @@ msgstr "{count, plural, one {# अधिक {fenceLabel} के बाद} other
 
 msgid "{count, plural, one {# row} other {# rows}}"
 msgstr "{count, plural, one {# पंक्ति} other {# पंक्तियाँ}}"
+
+msgid "{count, plural, one {# tool on this operation is not linked to a step, so it shows on every step.} other {# tools on this operation are not linked to a step, so they show on every step.}}"
+msgstr "{count, plural, one {इस ऑपरेशन का # टूल किसी चरण से जुड़ा नहीं है, इसलिए यह हर चरण में दिखता है।} other {इस ऑपरेशन के # टूल किसी चरण से जुड़े नहीं हैं, इसलिए वे हर चरण में दिखते हैं।}}"
 
 msgid "{count, plural, one {about # row} other {about # rows}}"
 msgstr "{count, plural, one {लगभग # पंक्ति} other {लगभग # पंक्तियाँ}}"
@@ -1205,6 +1254,12 @@ msgstr "{name} लौट गए!"
 msgid "{noDemandItemCount} parts skipped — nothing to make"
 msgstr "{noDemandItemCount} पार्ट्स छोड़ा गया — कुछ भी बनाने के लिए नहीं"
 
+msgid "{noPrice, plural, one {# line has no price} other {# lines have no price}}"
+msgstr "{noPrice, plural, one {# पंक्ति में मूल्य नहीं है} other {# पंक्तियों में मूल्य नहीं है}}"
+
+msgid "{noQuantity, plural, one {# line has no quantity} other {# lines have no quantity}}"
+msgstr "{noQuantity, plural, one {# पंक्ति में मात्रा नहीं है} other {# पंक्तियों में मात्रा नहीं है}}"
+
 msgid "{numerator} of {denominator}"
 msgstr "{denominator} में से {numerator}"
 
@@ -1227,12 +1282,18 @@ msgstr "{openedTotal} खुले, {closedTotal} बंद"
 msgid "{openTimeCount, plural, one {# time entry is not posted yet} other {# time entries are not posted yet}}"
 msgstr "{openTimeCount, plural, one {# समय प्रविष्टि अभी पोस्ट नहीं की गई है} other {# समय प्रविष्टियाँ अभी पोस्ट नहीं की गई हैं}}"
 
+msgid "{order} has {amount} of shipping that is not on any invoice"
+msgstr "{order} में {amount} की शिपिंग है, जो किसी भी चालान में शामिल नहीं है"
+
 #. placeholder {0}: (routeData?.purchaseOrder?.revisionId ?? 0) + 1
 msgid "{orderLabel} will be reopened for editing as revision {0}. The document already sent to the supplier is unchanged until you finalize and resend the order."
 msgstr "{orderLabel} को रिवीजन {0} के रूप में संपादन के लिए फिर से खोला जाएगा। आपूर्तिकर्ता को भेजा गया दस्तावेज़ अपरिवर्तित रहेगा जब तक आप क्रय आदेश को अंतिम रूप न दें और पुनः न भेजें।"
 
 msgid "{overdueBorrowCount, plural, one {# borrow is past its payback date} other {# borrows are past their payback date}}"
 msgstr "{overdueBorrowCount, plural, one {# उधार अपनी भुगतान तिथि से गुजर चुका है} other {# उधार अपनी भुगतान तिथि से गुजर चुके हैं}}"
+
+msgid "{overInvoiced, plural, one {# line bills more than its order has left to invoice} other {# lines bill more than their order has left to invoice}}"
+msgstr "{overInvoiced, plural, one {# पंक्ति ऑर्डर में चालान के लिए बचे हुए से अधिक बिल करती है} other {# पंक्तियाँ ऑर्डर में चालान के लिए बचे हुए से अधिक बिल करती हैं}}"
 
 msgid "{owed} × {itemLabel} — {borrower} owes {lender}, due {due}"
 msgstr "{owed} × {itemLabel} — {borrower} का {lender} पर {due} तक बकाया है"
@@ -1269,6 +1330,9 @@ msgstr "बैच के बिना {quantity}"
 
 msgid "{quantity} without a serial number"
 msgstr "{quantity} बिना सीरियल नंबर के"
+
+msgid "{readyJobs, plural, =0 {No open job has every part} one {In production on # job with every part in stock} other {In production on # jobs with every part in stock}}"
+msgstr "{readyJobs, plural, =0 {कोई भी खुला जॉब सभी पार्ट्स के साथ नहीं है} one {# जॉब पर उत्पादन जारी है, जिसके सभी पार्ट्स स्टॉक में हैं} other {# जॉब्स पर उत्पादन जारी है, जिनके सभी पार्ट्स स्टॉक में हैं}}"
 
 msgid "{received} of {ordered}"
 msgstr "{received} / {ordered}"
@@ -1392,6 +1456,9 @@ msgstr "{value, plural, one {# दिन} other {# दिन}}"
 
 msgid "{variances, plural, one {# line differs from the expected quantity} other {# lines differ from the expected quantity}}"
 msgstr "{variances, plural, one {# पंक्ति अपेक्षित मात्रा से भिन्न है} other {# पंक्तियां अपेक्षित मात्रा से भिन्न हैं}}"
+
+msgid "{waitingJobs, plural, =0 {No open job is short of parts} one {In production on # job short of parts} other {In production on # jobs short of parts}}"
+msgstr "{waitingJobs, plural, =0 {कोई भी खुला जॉब पार्ट्स की कमी में नहीं है} one {# जॉब पर उत्पादन जारी है, जिसमें पार्ट्स कम हैं} other {# जॉब्स पर उत्पादन जारी है, जिनमें पार्ट्स कम हैं}}"
 
 msgid "{warnings} need a follow-up"
 msgstr "{warnings} को अनुवर्ती की आवश्यकता है"
@@ -1546,6 +1613,9 @@ msgstr "1 अपोस्ट किया गया दस्तावेज़"
 msgid "1 year"
 msgstr "1 वर्ष"
 
+msgid "1-{b1} Days"
+msgstr "1–{b1} दिन"
+
 msgid "12 monthly periods"
 msgstr "12 मासिक अवधियाँ"
 
@@ -1563,6 +1633,9 @@ msgstr "2 से 6 बड़े अक्षर या अंक, जैसे S
 
 msgid "2 years"
 msgstr "2 वर्ष"
+
+msgid "25th"
+msgstr ""
 
 msgid "28 Days"
 msgstr "28 दिन"
@@ -1650,6 +1723,9 @@ msgstr "5MB फ़ाइल सीमा"
 
 msgid "6 months"
 msgstr "6 महीने"
+
+msgid "75th"
+msgstr ""
 
 msgid "7D"
 msgstr "7 दिन"
@@ -1758,6 +1834,9 @@ msgstr "एक उपभोग्य सामग्री एक भौति�
 
 msgid "A contract line item number on a contract line: 4 digits, such as 0001. A project billing invoice shows a separate amount per CLIN."
 msgstr "एक अनुबंध पंक्ति पर एक अनुबंध पंक्ति आइटम संख्या: 4 अंक, जैसे 0001। एक परियोजना बिलिंग चालान प्रति CLIN एक अलग राशि दिखाता है।"
+
+msgid "A contract made from the order bills this line"
+msgstr "ऑर्डर से बनाया गया अनुबंध इस पंक्ति को बिल करता है"
 
 msgid "A contract setting for the R&D tax reports. Cost of a Direct project under a funded contract is not a qualified research expense; on Default, a contract with a Cost Plus or Time & Materials line counts as funded."
 msgstr "R&D कर रिपोर्ट के लिए एक अनुबंध सेटिंग। एक वित्तपोषित अनुबंध के तहत एक प्रत्यक्ष परियोजना की लागत एक योग्य अनुसंधान व्यय नहीं है; डिफ़ॉल्ट पर, एक लागत-अतिरिक्त या समय और सामग्री पंक्ति वाला अनुबंध वित्तपोषित के रूप में गिना जाता है।"
@@ -1939,6 +2018,9 @@ msgstr "किसी नौकरी की प्रारंभ तिथि �
 
 msgid "A job's status changes"
 msgstr "किसी नौकरी की स्थिति में परिवर्तन"
+
+msgid "A journal dated on the invoice's posting date moves the line's posted amount to the new account. The period must be open."
+msgstr ""
 
 msgid "A labor category sets the cost and bill rates of the people in it."
 msgstr "एक श्रम श्रेणी इसमें लोगों की लागत और बिलिंग दरें निर्धारित करती है।"
@@ -2625,6 +2707,9 @@ msgstr "खाता और विवरण"
 
 msgid "Account balances with debits and credits"
 msgstr "नामे और जमा के साथ खाता शेष राशि"
+
+msgid "Account changed"
+msgstr ""
 
 msgid "Account for advance payments made before goods or services are received"
 msgstr "माल या सेवाएं प्राप्त होने से पहले किए गए अग्रिम भुगतान के लिए खाता।"
@@ -3557,8 +3642,14 @@ msgstr "परिसंपत्ति को वह लागत जोड़�
 msgid "Adds to an existing batch"
 msgstr "मौजूदा बैच में जोड़ता है"
 
+msgid "Adjust"
+msgstr ""
+
 msgid "Adjust Cost"
 msgstr "लागत समायोजित करें"
+
+msgid "Adjust for Rounding"
+msgstr ""
 
 msgid "Adjustment"
 msgstr "समायोजन"
@@ -3686,6 +3777,9 @@ msgstr "सभी दस्तावेज़"
 
 msgid "All gauges"
 msgstr "सभी गेज"
+
+msgid "All in stock"
+msgstr "सभी स्टॉक में"
 
 msgid "All item types"
 msgstr "सभी आइटम प्रकार"
@@ -3866,6 +3960,9 @@ msgstr "अनुबंध अधिकारी द्वारा अनुम
 #. placeholder {0}: r.memoId
 msgid "Amount to apply for {0}"
 msgstr "{0} के लिए लागू करने की राशि"
+
+msgid "Amount to match"
+msgstr ""
 
 msgid "Amount Type"
 msgstr "राशि प्रकार"
@@ -4440,7 +4537,7 @@ msgid "Approved On"
 msgstr "पर अनुमोदित"
 
 msgid "Approving also reverses its receipts {receipts}: the stock they brought in is removed and their postings are reversed. It is refused if that stock was used since."
-msgstr "अनुमोदन से इसकी प्राप्तियाँ {receipts} भी प्रतिवर्तित होंगी: उनके द्वारा लाया गया स्टॉक हटा दिया जाएगा और उनकी पोस्टिंग प्रतिवर्तित होगी। यदि उस स्टॉक का तब से उपयोग हो चुका है, तो यह अस्वीकार कर दिया जाएगा।"
+msgstr "अनुमोदन करने पर इसकी प्राप्तियाँ {receipts} भी प्रतिवर्तित हो जाती हैं: उनके द्वारा लाया गया स्टॉक हटा दिया जाता है और उनकी पोस्टिंग प्रतिवर्तित कर दी जाती है। यदि उस स्टॉक का तब से उपयोग हो चुका है, तो यह अस्वीकार कर दिया जाता है।"
 
 msgid "Approving deletes {readableId} now. This cannot be undone."
 msgstr "अनुमोदन करते ही {readableId} हट जाएगा। इसे वापस नहीं लाया जा सकता।"
@@ -5608,6 +5705,9 @@ msgstr "बैंक कोड"
 msgid "Bank Name"
 msgstr "बैंक का नाम"
 
+msgid "Bank, Cash or Card Account"
+msgstr ""
+
 msgid "Banner content (optional)"
 msgstr "बैनर सामग्री (वैकल्पिक)"
 
@@ -6419,6 +6519,8 @@ msgstr "कैमरा"
 
 msgid "Can Make Now"
 msgstr "अभी बनाया जा सकता है"
+msgid "Can Start More"
+msgstr "और शुरू हो सकते हैं"
 
 msgid "Can't be restored"
 msgstr "पुनः स्थापित नहीं किया जा सकता"
@@ -6779,6 +6881,9 @@ msgstr "चैंपियन"
 msgid "Change"
 msgstr "बदलें"
 
+msgid "Change Account"
+msgstr ""
+
 msgid "Change cancelled"
 msgstr "परिवर्तन रद्द"
 
@@ -6787,6 +6892,9 @@ msgstr "तिथि बदलें"
 
 msgid "Change Document"
 msgstr "परिवर्तन दस्तावेज़"
+
+msgid "Change GL Account"
+msgstr ""
 
 msgid "Change Inspection Plan"
 msgstr "निरीक्षण योजना बदलें"
@@ -7007,11 +7115,17 @@ msgstr "चैट"
 msgid "Check"
 msgstr "जाँच"
 
+msgid "Check before posting"
+msgstr "पोस्टिंग से पहले जाँचें"
+
 msgid "Check operations on the left to build the batch."
 msgstr "बैच बनाने के लिए बाईं ओर ऑपरेशन की जांच करें।"
 
 msgid "Check Quantity"
 msgstr "मात्रा जाँचें"
+
+msgid "Check the details below. A posted invoice can't be edited."
+msgstr "नीचे दिए गए विवरण जाँचें। पोस्ट किया गया चालान संपादित नहीं किया जा सकता।"
 
 msgid "Check the item ledger for any items with a negative on-hand quantity as of period end — usually a missing receipt or an out-of-order posting that distorts inventory value and cost of goods sold. Mark it done once reviewed, or skip with a reason."
 msgstr "अवधि के अंत तक किसी भी आइटम के लिए आइटम लेजर की जांच करें जिसमें नकारात्मक ऑन-हैंड मात्रा है — आमतौर पर एक लापता प्राप्ति या एक गलत क्रम में पोस्टिंग जो इन्वेंटरी मूल्य और बेचे गए माल की लागत को विकृत करती है। एक बार समीक्षा के बाद इसे हो गया के रूप में चिह्नित करें, या कारण के साथ छोड़ दें।"
@@ -7362,6 +7476,9 @@ msgstr "स्थिति बंद करें"
 
 msgid "Closed"
 msgstr "बंद"
+
+msgid "Closed {periodLabel}"
+msgstr ""
 
 msgid "Closed at"
 msgstr "द्वारा बंद किया गया"
@@ -9387,6 +9504,9 @@ msgstr "वर्तमान"
 msgid "Current"
 msgstr "वर्तमान"
 
+msgid "Current account: {account}"
+msgstr ""
+
 msgid "Current Net Book Value:"
 msgstr "वर्तमान शुद्ध बही मूल्य:"
 
@@ -9401,6 +9521,10 @@ msgstr "वर्तमान प्रक्षेपण"
 
 msgid "Current quantity"
 msgstr "वर्तमान मात्रा"
+
+#. placeholder {0}: formatter.format(total)
+msgid "Current total: {0}"
+msgstr ""
 
 msgid "Custom"
 msgstr "कस्टम"
@@ -9870,6 +9994,9 @@ msgstr "किसी हिस्से को ऑर्डर करने स�
 
 msgid "Days Off"
 msgstr "दिन बंद"
+
+msgid "Days Past Due"
+msgstr "देय तिथि से बीते दिन"
 
 msgid "Days Remaining"
 msgstr "शेष दिन"
@@ -10989,6 +11116,9 @@ msgstr "अक्षम करें"
 msgid "Disabled"
 msgstr "अक्षम"
 
+msgid "Disbursement"
+msgstr "संवितरण"
+
 msgid "Discard"
 msgstr "त्यागें"
 
@@ -11239,6 +11369,9 @@ msgstr "ठीक करने के लिए {0} पंक्ति(यों
 
 msgid "Download CSV"
 msgstr "CSV डाउनलोड करें"
+
+msgid "Download Excel"
+msgstr "Excel डाउनलोड करें"
 
 msgid "Download Labels"
 msgstr "लेबल डाउनलोड करें"
@@ -11613,6 +11746,9 @@ msgstr "प्रत्येक अवधि एक महीना है, म
 
 msgid "Each physical unit gets its own tracked entity and unique number — one entity, one unit."
 msgstr "प्रत्येक भौतिक इकाई को अपनी खुद की ट्रैक की गई इकाई और अद्वितीय संख्या मिलती है — एक इकाई, एक इकाई।"
+
+msgid "Each point is one run. The dotted lines are the average of each method version across the runs made with it."
+msgstr ""
 
 msgid "Each released job gets one picking list. Its parts go to the lineside storage unit of each work center that uses them."
 msgstr "हर जारी किए गए जॉब को एक पिकिंग सूची मिलती है। इसके पार्ट्स उन सभी वर्क सेंटर की लाइनसाइड भंडारण इकाई पर जाते हैं जो उन्हें उपयोग करते हैं।"
@@ -12521,6 +12657,10 @@ msgstr "अपने प्रमाणकर्ता ऐप से 6-अंक
 
 msgid "Enter the 6-digit code from your authenticator app to resume."
 msgstr "पुनः शुरू करने के लिए अपने ऑथेंटिकेटर ऐप से 6-अंकीय कोड दर्ज करें।"
+
+#. placeholder {0}: formatter.format(MAX_ROUNDING_MINOR_UNITS / 10 ** decimals)
+msgid "Enter the amount the supplier charged. The difference is added as a line on the Rounding Account, up to {0}. Other lines keep their prices."
+msgstr ""
 
 msgid "Enter the Onshape URL, client ID and client secret of your private OAuth application, then save."
 msgstr "अपने निजी OAuth एप्लिकेशन का Onshape URL, क्लाइंट ID और क्लाइंट सीक्रेट दर्ज करें, फिर सहेजें।"
@@ -13880,6 +14020,9 @@ msgstr "समाप्त करने के लिए"
 msgid "Finish with material unpicked?"
 msgstr "सामग्री अनचुनी के साथ समाप्त करें?"
 
+msgid "Finished"
+msgstr ""
+
 msgid "Finished goods"
 msgstr "तैयार माल"
 
@@ -14100,7 +14243,7 @@ msgid "Force Delete"
 msgstr "ज़बरदस्ती हटाएँ"
 
 msgid "Force Delete (Admin)"
-msgstr "ज़बरदस्ती हटाएँ (व्यवस्थापक)"
+msgstr "ज़बरदस्ती हटाएँ (एडमिन)"
 
 msgid "Force delete {purchaseOrderReadableId}"
 msgstr "{purchaseOrderReadableId} को ज़बरदस्ती हटाएँ"
@@ -14249,6 +14392,13 @@ msgstr "अवधि से"
 msgid "From previous week"
 msgstr "पिछले सप्ताह से"
 
+msgid "From stock no job or order has claimed"
+msgstr "वह स्टॉक जिसे किसी जॉब या ऑर्डर ने आरक्षित नहीं किया है"
+
+#. placeholder {0}: formatQuantity(data.quantityBuildableFromOnHand)
+msgid "From stock no job or order has claimed. {0} if committed stock were used"
+msgstr "वह स्टॉक जिसे किसी जॉब या ऑर्डर ने आरक्षित नहीं किया है। आरक्षित स्टॉक इस्तेमाल होता तो {0}"
+
 msgid "From Storage Unit"
 msgstr "भंडारण इकाई से"
 
@@ -14272,6 +14422,9 @@ msgstr "पूरा नाम"
 
 msgid "Full setup and migrations"
 msgstr "पूर्ण सेटअप और माइग्रेशन"
+
+msgid "Full Year"
+msgstr "पूर्ण वर्ष"
 
 msgid "Fully Depreciated"
 msgstr "पूर्ण मूल्यह्रासित"
@@ -14588,6 +14741,9 @@ msgstr "GL खाता जहां ग्राहकों को दी ग�
 
 msgid "GL account where early-payment discounts taken from suppliers are recorded."
 msgstr "GL खाता जहां आपूर्तिकर्ताओं से ली गई जल्दी भुगतान छूट दर्ज की जाती है।"
+
+msgid "GL Codes"
+msgstr "जीएल कोड"
 
 msgid "GL contra-asset account credited as depreciation posts each period and debited in full when the asset is sold or scrapped."
 msgstr "लेजर विरोधी-संपत्ति खाता जमा किया जाता है जब प्रत्येक अवधि में मूल्यह्रास पोस्ट होता है और पूरी तरह से डेबिट किया जाता है जब संपत्ति को बेचा या स्क्रैप किया जाता है।"
@@ -15034,6 +15190,9 @@ msgstr "घंटे/1000 पीस"
 msgid "Hours/Piece"
 msgstr "घंटे/टुकड़ा"
 
+msgid "How {week} counts weeks in document, serial and batch numbers."
+msgstr "दस्तावेज़, सीरियल और बैच नंबरों में {week} सप्ताहों की गिनती इस प्रकार होती है।"
+
 msgid "How a batchable process runs its grouped work: Sequential runs parts one after another on one machine (a saw or laser table), while Simultaneous runs them together in a single load (a furnace, oven, or plating bath)."
 msgstr "एक बैचयोग्य प्रक्रिया अपने समूहीकृत कार्य को कैसे चलाती है: अनुक्रमिक एक मशीन (एक आरा या लेजर टेबल) पर पार्ट्स को एक के बाद एक चलाता है, जबकि समवर्ती उन्हें एक ही लोड (एक भट्टी, ओवन, या प्लेटिंग बाथ) में एक साथ चलाता है।"
 
@@ -15204,6 +15363,9 @@ msgstr "हम कैसे काम करते हैं"
 
 msgid "How We Work Together"
 msgstr "हम कैसे एक साथ काम करते हैं"
+
+msgid "How weeks are numbered"
+msgstr "सप्ताह कैसे क्रमांकित होते हैं"
 
 msgid "How will you use {integrationName}?"
 msgstr "आप {integrationName} का उपयोग कैसे करेंगे?"
@@ -15573,6 +15735,9 @@ msgstr "ट्रैवलर पर सामग्री शामिल क�
 
 msgid "Include operations on the traveler"
 msgstr "ट्रैवलर पर ऑपरेशन शामिल करें"
+
+msgid "Include outliers"
+msgstr ""
 
 msgid "Included"
 msgstr "शामिल"
@@ -16228,6 +16393,9 @@ msgstr "आपूर्तिकर्ता संगठन समूह है
 msgid "Is supplier type group"
 msgstr "आपूर्तिकर्ता प्रकार समूह है"
 
+msgid "ISO 8601"
+msgstr "ISO 8601"
+
 msgid "Issue"
 msgstr "समस्या"
 
@@ -16355,7 +16523,7 @@ msgid "It is still used by a \"{table}\" record; remove that first."
 msgstr "इसका उपयोग अभी भी एक \"{table}\" रिकॉर्ड द्वारा किया जा रहा है; पहले उसे निकालें।"
 
 msgid "It never touches the supplier's side of the books. Void the order's shipments and prepayments first, and remove its lines from purchase invoices. The request is refused until you do."
-msgstr "यह आपूर्तिकर्ता की ओर के खातों को कभी नहीं छूता। पहले आदेश की शिपमेंट और अग्रिम भुगतान अमान्य करें, और उसकी पंक्तियाँ क्रय चालान से निकालें। जब तक आप ऐसा नहीं करते, अनुरोध अस्वीकार रहेगा।"
+msgstr "इससे आपूर्तिकर्ता की ओर के खाते कभी प्रभावित नहीं होते। पहले आदेश के शिपमेंट और अग्रिम भुगतान अमान्य करें, और क्रय चालानों से उसकी पंक्तियाँ हटाएँ। जब तक ऐसा नहीं किया जाता, अनुरोध अस्वीकार रहेगा।"
 
 msgid "It permanently deletes {readableId}, whatever its status. It cannot be undone."
 msgstr "इसकी स्थिति चाहे जो हो, यह {readableId} को स्थायी रूप से हटा देता है। इसे वापस नहीं लाया जा सकता।"
@@ -16598,11 +16766,17 @@ msgstr "{orderId} के लिए जॉब"
 msgid "Jobs for {orderId}: {jobCount}, {jobsStatusLabel}"
 msgstr "{orderId} के लिए जॉब: {jobCount}, {jobsStatusLabel}"
 
+msgid "Jobs in Production"
+msgstr "उत्पादन में जॉब्स"
+
 msgid "Jobs Required"
 msgstr "आवश्यक जॉब"
 
 msgid "Jobs that have this item on their bill of materials"
 msgstr "जॉब जिनकी सामग्री सूची में यह आइटम है"
+
+msgid "Jobs Waiting"
+msgstr "प्रतीक्षारत जॉब्स"
 
 #. placeholder {0}: company?.name ?? "Company"
 msgid "Join {0}"
@@ -16850,6 +17024,9 @@ msgstr "श्रम समय"
 
 msgid "Labor Time"
 msgstr "श्रम समय"
+
+msgid "Labor time per unit"
+msgstr ""
 
 msgid "Labor transfer"
 msgstr "श्रम स्थानांतरण"
@@ -17577,6 +17754,9 @@ msgstr "स्थान"
 msgid "Location / Item"
 msgstr "स्थान / आइटम"
 
+msgid "Location code"
+msgstr "स्थान कोड"
+
 msgid "Location Name"
 msgstr "स्थान का नाम"
 
@@ -17776,6 +17956,9 @@ msgstr "मशीन समय"
 
 msgid "Machine Time"
 msgstr "मशीन समय"
+
+msgid "Machine time per unit"
+msgstr ""
 
 msgid "Machine unit"
 msgstr "मशीन इकाई"
@@ -18310,6 +18493,9 @@ msgstr "मैट्रिक्स"
 msgid "Maturity Analysis"
 msgstr "परिपक्वता विश्लेषण"
 
+msgid "Max"
+msgstr ""
+
 #. placeholder {0}: correction.maxAttempts
 msgid "Max {0} per unit"
 msgstr "प्रति इकाई अधिकतम {0}"
@@ -18347,6 +18533,9 @@ msgstr "कीमत का अधिकतम हिस्सा (PBP)"
 msgid "MCP Command"
 msgstr "MCP कमांड"
 
+msgid "Mean"
+msgstr ""
+
 msgid "Mean Time Between Failures"
 msgstr "विफलताओं के बीच औसत समय"
 
@@ -18358,6 +18547,9 @@ msgstr "मापन मानक"
 
 msgid "Media Size"
 msgstr "मीडिया आकार"
+
+msgid "Median"
+msgstr ""
 
 msgid "Medium"
 msgstr "मध्यम"
@@ -18907,6 +19099,17 @@ msgstr "मेरा सहेजा गया दृश्य"
 msgid "My Time"
 msgstr "मेरा समय"
 
+#. placeholder {0}: payload.count
+msgid "n = {0}"
+msgstr ""
+
+#. placeholder {0}: payload.count
+#. placeholder {0}: row.count
+#. placeholder {1}: payload.excluded
+#. placeholder {1}: row.excluded
+msgid "n = {0}, {1} excluded"
+msgstr ""
+
 msgid "Name"
 msgstr "नाम"
 
@@ -19205,6 +19408,9 @@ msgstr "नया गेज अंशांकन रिकॉर्ड"
 
 msgid "New Gauge Type"
 msgstr "नया गेज प्रकार"
+
+msgid "New GL Account"
+msgstr ""
 
 msgid "New Group"
 msgstr "नया समूह"
@@ -20028,6 +20234,9 @@ msgstr "कोई फ़ाइल अपलोड नहीं की गई"
 msgid "No findings"
 msgstr "कोई निष्कर्ष नहीं"
 
+msgid "No finished operations with clocked time in this range"
+msgstr ""
+
 msgid "No fixed asset was acquired before the cutover date."
 msgstr "कटऑवर तारीख से पहले कोई अचल संपत्ति खरीदी नहीं गई थी।"
 
@@ -20368,6 +20577,9 @@ msgstr "कोई पोस्ट किया गया प्रतिपू�
 msgid "No posted supplier invoice lines"
 msgstr "कोई पोस्ट किया गया आपूर्तिकर्ता चालान पंक्ति नहीं"
 
+msgid "No price"
+msgstr "मूल्य नहीं"
+
 msgid "No pricing for selected quantity"
 msgstr "चयनित मात्रा के लिए कोई मूल्य निर्धारण नहीं"
 
@@ -20418,6 +20630,9 @@ msgstr "अभी कोई प्रोजेक्ट नहीं"
 
 msgid "No purchases in this period"
 msgstr "इस अवधि में कोई खरीद नहीं"
+
+msgid "No quantity"
+msgstr "मात्रा नहीं"
 
 msgid "No Quote"
 msgstr "कोई कोटेशन नहीं"
@@ -20490,6 +20705,9 @@ msgstr "यहाँ कोई पंक्तियाँ नहीं है�
 
 msgid "No rules assigned"
 msgstr "कोई नियम असाइन नहीं किया गया"
+
+msgid "No run in this range was worked by one operator alone"
+msgstr ""
 
 msgid "No running job to cancel"
 msgstr "रद्द करने के लिए कोई चल रहा जॉब नहीं"
@@ -20777,6 +20995,12 @@ msgstr "गैर-कार्य दिन जिन्हें शेड्�
 msgid "None"
 msgstr "कोई नहीं"
 
+msgid "None (full page)"
+msgstr ""
+
+msgid "None (Net {defaultTermDays})"
+msgstr "कोई नहीं (Net {defaultTermDays})"
+
 msgid "None available"
 msgstr "कोई उपलब्ध नहीं"
 
@@ -20836,6 +21060,9 @@ msgstr "अभी नहीं"
 
 msgid "Not on the page"
 msgstr "पृष्ठ पर नहीं"
+
+msgid "Not posted"
+msgstr ""
 
 msgid "Not Qualified"
 msgstr "योग्य नहीं"
@@ -20950,7 +21177,7 @@ msgid "Nothing in the archive"
 msgstr "आर्काइव में कुछ नहीं है"
 
 msgid "Nothing is deleted yet. The request goes to the other Admins' approvals, and it is deleted when one of them approves it."
-msgstr "अभी कुछ भी हटाया नहीं गया है। अनुरोध अन्य एडमिन के अनुमोदन के लिए जाता है, और जब उनमें से कोई एक इसे अनुमोदित करता है, तब यह हटाया जाता है।"
+msgstr "अभी कुछ भी नहीं हटाया गया है। अनुरोध अन्य एडमिन के अनुमोदनों के पास जाता है, और उनमें से किसी एक के अनुमोदन करने पर इसे हटाया जाएगा।"
 
 msgid "Nothing is deleted yet. The request goes to the other Admins' approvals, and the order is deleted when one of them approves it."
 msgstr "अभी कुछ भी हटाया नहीं गया है। अनुरोध अन्य एडमिन के अनुमोदन के लिए जाता है, और जब उनमें से कोई एक इसे अनुमोदित करता है, तब ऑर्डर हटाया जाता है।"
@@ -21068,6 +21295,11 @@ msgstr "खुले कार्यों की संख्या"
 msgid "Number of operations"
 msgstr "ऑपरेशन की संख्या"
 
+#. placeholder {0}: formatSeconds(selected.mean)
+#. placeholder {1}: formatSeconds(selected.median)
+msgid "Number of runs by time taken. Average {0}, median {1}."
+msgstr ""
+
 msgid "Number weeks by calendar week"
 msgstr "सप्ताहों को कैलेंडर सप्ताह के अनुसार क्रमांकित करें"
 
@@ -21079,6 +21311,8 @@ msgstr "संख्या अनुक्रम"
 
 msgid "OEE"
 msgstr "OEE"
+msgid "Numbers issued after you save count weeks this way. Numbers already issued keep their week."
+msgstr "सहेजने के बाद जारी होने वाले नंबर इसी तरह सप्ताह गिनेंगे। पहले से जारी नंबर अपना सप्ताह बनाए रखेंगे।"
 
 msgid "OEE Impact"
 msgstr "OEE प्रभाव"
@@ -21365,6 +21599,9 @@ msgstr "वहाँ केवल {quantity}"
 msgid "Only {quantity} with a serial number there"
 msgstr "वहाँ सीरियल नंबर वाले केवल {quantity}"
 
+msgid "Only {remaining} left to invoice on the order"
+msgstr "ऑर्डर पर चालान के लिए केवल {remaining} बचा है"
+
 msgid "Only Draft procedures are editable. Create a new version to change an Active or Archived procedure."
 msgstr "केवल ड्राफ्ट कार्यविधियाँ संपादन योग्य हैं। सक्रिय या संग्रहीत कार्यविधि को बदलने के लिए एक नया संस्करण बनाएँ।"
 
@@ -21394,6 +21631,9 @@ msgstr "केवल योग्य कर्मचारी ही इस प�
 
 msgid "Only serialized units capitalized as fixed assets can be rented. To add one, open the part's Inventory tab, find the serial number under Storage Units, and choose Capitalize as Fixed Asset."
 msgstr "केवल सीरियल नंबर वाली इकाइयों को अचल संपत्ति के रूप में पूंजीकृत करके ही किराए पर दिया जा सकता है। एक जोड़ने के लिए, पार्ट के इन्वेंटरी टैब को खोलें, भंडारण इकाई के तहत सीरियल नंबर खोजें, और अचल संपत्ति के रूप में पूंजीकृत करें विकल्प चुनें।"
+
+msgid "Only the latest {RUN_LIMIT} runs are plotted."
+msgstr ""
 
 msgid "Only these employees can charge time to the project in DCAA timekeeping."
 msgstr "केवल ये कर्मचारी DCAA समयपत्रण में परियोजना के लिए समय प्रभारित कर सकते हैं।"
@@ -21494,6 +21734,9 @@ msgstr "खाता मैपिंग खोलें"
 
 msgid "Open Actions"
 msgstr "खुली कार्रवाइयाँ"
+
+msgid "Open Amount"
+msgstr "बकाया राशि"
 
 msgid "Open an NCR for MRB disposition"
 msgstr "MRB निपटान के लिए एक NCR खोलें"
@@ -21757,6 +22000,9 @@ msgstr "ऑपरेशन मात्रा"
 msgid "Operation supplier process"
 msgstr "ऑपरेशन आपूर्तिकर्ता प्रक्रिया"
 
+msgid "Operation time overview"
+msgstr ""
+
 msgid "Operation timer auto-start disabled"
 msgstr "ऑपरेशन टाइमर ऑटो-स्टार्ट अक्षम"
 
@@ -21952,6 +22198,9 @@ msgstr "मूल"
 msgid "Original"
 msgstr "मूल"
 
+msgid "Original Amount"
+msgstr "मूल राशि"
+
 msgid "Original Count"
 msgstr "मूल गणना"
 
@@ -22017,6 +22266,9 @@ msgstr "निर्गामी"
 
 msgid "Outgoing"
 msgstr "बाहर जाने वाला"
+
+msgid "Outliers"
+msgstr ""
 
 msgid "Output"
 msgstr "आउटपुट"
@@ -22522,11 +22774,11 @@ msgstr "आपूर्तिकर्ता को भुगतान"
 msgid "Payments"
 msgstr "भुगतान"
 
-msgid "Payments and credits applied to this invoice. Applied amounts and FX are in company base currency. Click a row to open the source document."
-msgstr "इस चालान के लिए आवंटित भुगतान और क्रेडिट। आवंटित राशियाँ और विनिमय अंतर की राशियाँ कंपनी की आधार मुद्रा में हैं। स्रोत दस्तावेज़ खोलने के लिए किसी पंक्ति पर क्लिक करें।"
+msgid "Payments and credits applied to this invoice. A pending row is from a Draft payment and pays nothing until it is posted. Applied amounts and FX are in company base currency. Click a row to open the source document."
+msgstr ""
 
 msgid "Payments and memos applied to it are unapplied first: each payment stays posted, as unapplied credit you can apply elsewhere or force delete. Revenue already recognized from it is reversed."
-msgstr "इस पर लागू भुगतान और मेमो पहले अलग किए जाते हैं: हर भुगतान पोस्ट किया गया रहता है, अप्रयुक्त जमा के रूप में, जिसे आप कहीं और लागू कर सकते हैं या ज़बरन हटा सकते हैं। इससे पहले पहचाया गया राजस्व प्रतिवर्तित हो जाता है।"
+msgstr "इस पर लागू भुगतान और मेमो पहले अलग किए जाते हैं: हर भुगतान पोस्ट रहता है, जो अनलागू जमा के रूप में रहता है जिसे आप अन्यत्र लागू कर सकते हैं या ज़बरदस्ती हटा सकते हैं। इससे पहले मान्य किया गया राजस्व प्रतिवर्तित हो जाता है।"
 
 msgid "Payments and memos applied to it are unapplied first: each payment stays posted, as unapplied credit you can apply elsewhere or force delete. Value it added to a capitalized fixed asset is taken back out; depreciation already posted stays."
 msgstr "इस पर लागू भुगतान और मेमो पहले अलग किए जाते हैं: हर भुगतान पोस्ट किया गया रहता है, अप्रयुक्त जमा के रूप में, जिसे आप कहीं और लागू कर सकते हैं या ज़बरन हटा सकते हैं। इससे किसी पूंजीकृत अचल संपत्ति में जोड़ा गया मूल्य वापस निकाल लिया जाता है; पहले से पोस्ट किया गया मूल्यह्रास बना रहता है।"
@@ -22591,6 +22843,9 @@ msgstr "निरीक्षण लंबित"
 
 msgid "Pending Inspection"
 msgstr "निरीक्षण लंबित"
+
+msgid "Pending payment, not posted"
+msgstr ""
 
 msgid "people"
 msgstr "लोग"
@@ -24599,6 +24854,9 @@ msgstr "पुटअवे के लिए तैयार"
 msgid "Ready for Quote"
 msgstr "कोटेशन के लिए तैयार"
 
+msgid "Ready to Finish"
+msgstr "पूरा करने के लिए तैयार"
+
 msgid "ready to keep or revert"
 msgstr "रखने या पूर्ववत् करने के लिए तैयार"
 
@@ -25104,6 +25362,9 @@ msgstr "समय को अस्वीकार करें"
 msgid "Rejected"
 msgstr "अस्वीकृत"
 
+msgid "Rejected at Inspection"
+msgstr "निरीक्षण में अस्वीकृत"
+
 msgid "Rejected By"
 msgstr "द्वारा अस्वीकृत"
 
@@ -25498,6 +25759,9 @@ msgstr "फिर से खोलें"
 msgid "Reopen as Revision"
 msgstr "रिवीजन के रूप में फिर से खोलें"
 
+msgid "Reopen Period"
+msgstr ""
+
 msgid "Reopen Training"
 msgstr "प्रशिक्षण फिर से खोलें"
 
@@ -25794,7 +26058,7 @@ msgid "Required in a controlled environment — audit logging cannot be turned o
 msgstr "नियंत्रित वातावरण में आवश्यक — ऑडिट लॉगिंग को बंद नहीं किया जा सकता।"
 
 msgid "Required tracked parts disabled"
-msgstr "ट्रैक किए गए पार्ट्स की आवश्यकता बंद"
+msgstr "आवश्यक ट्रैक किए गए पार्ट्स बंद"
 
 msgid "Required tracked parts enabled"
 msgstr "ट्रैक किए गए पार्ट्स की आवश्यकता चालू"
@@ -26485,6 +26749,9 @@ msgstr "राउंडिंग खाता"
 msgid "Rounding Account (default)"
 msgstr "राउंडिंग खाता (डिफ़ॉल्ट)"
 
+msgid "Rounding adjusted"
+msgstr ""
+
 msgid "Route all AP invoices to one address (e.g. corporate headquarters) instead of individual purchasers."
 msgstr "सभी देय खाते चालान को एक पते पर मार्गित करें (उदाहरण के लिए कॉर्पोरेट मुख्यालय) व्यक्तिगत खरीदारों के बजाय।"
 
@@ -26611,8 +26878,14 @@ msgstr "24 घंटे चलता है"
 msgid "Runs during every shift at the location."
 msgstr "स्थान पर हर शिफ्ट के दौरान चलता है।"
 
+msgid "Runs far outside the usual range for their operation. Open the job's events to correct a wrong clock-in or clock-out."
+msgstr ""
+
 msgid "Runs only during the shifts you select."
 msgstr "केवल आपके द्वारा चुनी गई शिफ्टों के दौरान चलता है।"
+
+msgid "Runs shared between operators are left out"
+msgstr ""
 
 msgid "Runs to an end date. A unit still out after it keeps billing."
 msgstr "एक अंतिम तारीख तक चलता है। एक इकाई अभी भी इसके बाद बिलिंग जारी रखती है।"
@@ -26859,6 +27132,9 @@ msgstr "सहेजें और अधिलेखित करें"
 
 msgid "Save and post"
 msgstr "सहेजें और पोस्ट करें"
+
+msgid "Save and Post"
+msgstr ""
 
 msgid "Save applications"
 msgstr "आवेदन सहेजें"
@@ -27335,6 +27611,9 @@ msgstr "खोजें..."
 msgid "Search…"
 msgstr "खोजें…"
 
+msgid "Second"
+msgstr "दूसरा"
+
 msgid "Seconds to complete"
 msgstr "पूरा करने के सेकंड"
 
@@ -27418,6 +27697,8 @@ msgstr "एक दस्तावेज़ चुनें"
 
 msgid "Select a location"
 msgstr "एक स्थान चुनें"
+msgid "Select a label size"
+msgstr ""
 
 msgid "Select a new owner"
 msgstr "एक नया स्वामी चुनें"
@@ -27427,6 +27708,9 @@ msgstr "इस खाते के लिए एक नया पैरेंट
 
 msgid "Select a plan"
 msgstr "एक योजना चुनें"
+
+msgid "Select a plan to get started. Switch or cancel anytime."
+msgstr "एक योजना चुनें शुरुआत करने के लिए। किसी भी समय स्विच या रद्द करें।"
 
 #. placeholder {0}: plans[0].stripeTrialPeriodDays
 msgid "Select a plan to get started. You won't be charged for the first {0} days. Switch or cancel anytime."
@@ -27483,6 +27767,9 @@ msgstr "सभी पंक्तियाँ चुनें"
 msgid "Select all service lines"
 msgstr "सभी सेवा पंक्तियाँ चुनें"
 
+msgid "Select an account"
+msgstr ""
+
 msgid "Select an action…"
 msgstr "एक क्रिया चुनें…"
 
@@ -27498,11 +27785,17 @@ msgstr "एक घटना चुनें…"
 msgid "Select an issue type"
 msgstr "एक समस्या प्रकार चुनें"
 
+msgid "Select an item"
+msgstr ""
+
 msgid "Select an item and specify the quantity to issue"
 msgstr "एक आइटम चुनें और जारी करने के लिए मात्रा निर्दिष्ट करें"
 
 msgid "Select an item first"
 msgstr "पहले एक आइटम चुनें"
+
+msgid "Select an item to compare its operation times"
+msgstr ""
 
 msgid "Select an item to configure"
 msgstr "कॉन्फ़िगर करने के लिए एक आइटम चुनें"
@@ -28150,6 +28443,9 @@ msgstr "सेटअप समय"
 msgid "Setup Time"
 msgstr "सेटअप समय"
 
+msgid "Setup time per run"
+msgstr ""
+
 msgid "Setup unit"
 msgstr "सेटअप इकाई"
 
@@ -28460,6 +28756,9 @@ msgstr "{0} कम"
 msgid "Short Description"
 msgstr "संक्षिप्त विवरण"
 
+msgid "Short for Jobs in Production"
+msgstr "उत्पादन में जॉब्स के लिए कमी"
+
 msgid "Short pick {itemName}"
 msgstr "Short pick {itemName}"
 
@@ -28595,6 +28894,12 @@ msgstr "{1} में से {0} दिखाए जा रहे हैं। �
 #. placeholder {0}: visible.length
 msgid "Showing {0} of {totalFiltered} — refine your search"
 msgstr "{0} of {totalFiltered} दिखा रहे हैं — अपनी खोज को परिष्कृत करें"
+
+msgid "Showing {shown} of {total}"
+msgstr ""
+
+msgid "Showing {shown} of {total}, through {last}"
+msgstr ""
 
 msgid "Showing in {parentCurrency}"
 msgstr "में दिखाई दे रहा है {parentCurrency}"
@@ -29853,6 +30158,9 @@ msgstr "आपूर्तिकर्ता भाग संख्या"
 msgid "Supplier part updated"
 msgstr "आपूर्तिकर्ता पार्ट अपडेट किया गया"
 
+msgid "Supplier Part: {supplierPartId}"
+msgstr ""
+
 msgid "Supplier Parts"
 msgstr "आपूर्तिकर्ता पार्ट्स"
 
@@ -30777,6 +31085,9 @@ msgstr "CSV को आयात नहीं किया गया था।"
 msgid "The currencies you trade in and their rates"
 msgstr "आप जिन मुद्राओं में व्यापार करते हैं और उनकी दरें"
 
+msgid "The current account could not be loaded."
+msgstr ""
+
 msgid "The current plan changed under this change request"
 msgstr "इस परिवर्तन अनुरोध के तहत वर्तमान योजना बदल गई"
 
@@ -31107,6 +31418,9 @@ msgstr "शिपमेंट पोस्ट होने पर मान्�
 
 msgid "The invoice for this payment is drafted on this date"
 msgstr "इस भुगतान के लिए चालान इस तारीख पर बनाया जाता है"
+
+msgid "The invoice is posted, so the change is also posted to the Rounding Account and Accounts Payable on the invoice's posting date."
+msgstr ""
 
 msgid "The IRS recovery-period class for this asset under MACRS (3, 5, 7, 10, 15, 20, 27.5, 39-year)."
 msgstr "MACRS के तहत इस संपत्ति के लिए IRS पुनर्प्राप्ति-अवधि वर्ग (3, 5, 7, 10, 15, 20, 27.5, 39-वर्ष)।"
@@ -31669,6 +31983,9 @@ msgstr "पार्ट की रिवीजन संख्या"
 msgid "The right-of-use asset and the lease liability are on the balance sheet, and one straight-line lease cost is booked each month."
 msgstr "उपयोग अधिकार संपत्ति और पट्टा दायित्व तुलन पत्र पर हैं, और एक सीधी रेखा पट्टा लागत हर महीने बुक की जाती है।"
 
+msgid "The sales order could not be read, so it was not checked against this invoice."
+msgstr "विक्रय आदेश पढ़ा नहीं जा सका, इसलिए इस चालान से उसकी जाँच नहीं की गई।"
+
 msgid "The sales order line this job was created to supply, tying the job to the customer demand behind it."
 msgstr "विक्रय आदेश पंक्ति जिसे आपूर्ति के लिए यह जॉब बनाया गया था, जॉब को इसके पीछे ग्राहक मांग से जोड़ता है।"
 
@@ -32199,6 +32516,8 @@ msgstr "इस विभाग के पास इस स्थान पर �
 #. placeholder {0}: deleting.workCenterName ?? ""
 msgid "This device is mapped to {0}. Unmap it on the Devices tab first."
 msgstr "यह डिवाइस {0} से जुड़ा है। पहले डिवाइस टैब पर इसका जुड़ाव हटाएँ।"
+msgid "This download link has expired. Ask for a new one."
+msgstr ""
 
 msgid "This download link is invalid or has been tampered with."
 msgstr "यह डाउनलोड लिंक अमान्य है या इसके साथ छेड़छाड़ की गई है।"
@@ -32255,6 +32574,9 @@ msgstr "यह आमंत्रण {0} में शामिल होने 
 
 msgid "This invoice has no usable due date — choose one for Stripe."
 msgstr "इस चालान का कोई उपयोगी नियत तिथि नहीं है — Stripe के लिए एक चुनें।"
+
+msgid "This invoice uses a rate of 1 for {currencyCode}, but today's rate is {currentRate}"
+msgstr "इस चालान में {currencyCode} के लिए 1 की दर का उपयोग किया गया है, लेकिन आज की दर {currentRate} है"
 
 msgid "This invoice will be billed to the Stripe customer already linked to this Carbon customer. To change its details, edit it in the Stripe dashboard."
 msgstr "इस चालान को Stripe ग्राहक को बिल दिया जाएगा जो पहले से इस Carbon ग्राहक से जुड़ा हुआ है। इसके विवरण को बदलने के लिए, Stripe डैशबोर्ड में संपादित करें।"
@@ -32383,8 +32705,17 @@ msgstr "केवल यह पार्ट"
 msgid "This path only decides what runs next"
 msgstr "यह path केवल यह तय करता है कि आगे क्या चलेगा"
 
+msgid "This payment did not post"
+msgstr ""
+
+msgid "This payment is a Draft. Its applications do not pay the invoices until it is posted."
+msgstr ""
+
 msgid "This period has no journal entries posted to it and can be permanently deleted. This cannot be undone."
 msgstr "इस अवधि में कोई जर्नल प्रविष्टि पोस्ट नहीं की गई है और इसे स्थायी रूप से हटाया जा सकता है। इसे पूर्ववत नहीं किया जा सकता।"
+
+msgid "This period is closed, so its checklist is read-only."
+msgstr ""
 
 msgid "This PIN will not be shown again."
 msgstr "यह PIN फिर से नहीं दिखाया जाएगा।"
@@ -32681,6 +33012,9 @@ msgstr "समय और सामग्री और Cost Plus पंक्त�
 msgid "Time & Materials and Cost Plus lines show here. Fixed Price lines bill on billing events."
 msgstr "समय और सामग्री और Cost Plus पंक्तियां यहां दिखाई देती हैं। निश्चित मूल्य पंक्तियां बिलिंग घटनाओं पर चालान करती हैं।"
 
+msgid "Time Analysis"
+msgstr ""
+
 msgid "Time and dollar utilization of the rental fleet by asset and class"
 msgstr "संपत्ति और वर्ग द्वारा किराया बेड़े का समय और डॉलर उपयोग"
 
@@ -32771,6 +33105,9 @@ msgstr "घटना का शीर्षक"
 msgid "Title passes to the customer when the term ends."
 msgstr "अवधि समाप्त होने पर शीर्षक ग्राहक को हस्तांतरित हो जाता है।"
 
+msgid "to"
+msgstr ""
+
 msgid "To"
 msgstr "को"
 
@@ -32816,6 +33153,9 @@ msgstr "भेजने के लिए"
 
 msgid "To Ship and Receive"
 msgstr "भेजने और प्राप्त करने के लिए"
+
+msgid "To Start More"
+msgstr "और शुरू करने के लिए"
 
 msgid "To Storage Unit"
 msgstr "भंडारण इकाई के लिए"
@@ -33409,6 +33749,9 @@ msgstr "प्रकार:"
 
 msgid "Types"
 msgstr "प्रकार"
+
+msgid "Typical"
+msgstr ""
 
 msgid "U.S. Person Attestation"
 msgstr "U.S. व्यक्ति साक्ष्य"
@@ -34025,6 +34368,9 @@ msgstr "तत्काल"
 
 msgid "URL"
 msgstr "यूआरएल"
+
+msgid "US"
+msgstr "US"
 
 msgid "Usage/Day (30d)"
 msgstr "उपयोग/दिन (30d)"
@@ -34654,6 +35000,9 @@ msgstr "प्रतीक्षा में"
 msgid "Waiting for the first sync"
 msgstr "पहले सिंक की प्रतीक्षा है"
 
+msgid "Waiting on Parts"
+msgstr "पार्ट्स की प्रतीक्षा"
+
 msgid "Walk each area with your champion and toggle anything out of scope. Codes read Module.Area.Number (ACC.GL.01 = Accounting, General Ledger, item 1)."
 msgstr "अपने चैंपियन के साथ प्रत्येक क्षेत्र पर चलें और स्कोप से बाहर कुछ भी टॉगल करें। कोड मॉड्यूल.क्षेत्र.संख्या पढ़ता है (ACC.GL.01 = लेखांकन, सामान्य खाता बही, आइटम 1)।"
 
@@ -34772,6 +35121,9 @@ msgstr "बुधवार"
 msgid "Week"
 msgstr "सप्ताह"
 
+msgid "Week ({numbering})"
+msgstr "सप्ताह ({numbering})"
+
 #. placeholder {0}: d.week
 msgid "Week {0}"
 msgstr "सप्ताह {0}"
@@ -34784,6 +35136,9 @@ msgstr "सप्ताह {weekNumber} ({formattedDate})"
 
 msgid "Week 8 cutover"
 msgstr "सप्ताह 8 कटओवर"
+
+msgid "Week Numbering"
+msgstr "सप्ताह क्रमांकन"
 
 #. placeholder {0}: dateFormatter.format(parseDate(d.startDate).toDate(getLocalTimeZone()))
 msgid "Week of {0}"
@@ -34827,8 +35182,17 @@ msgstr "सप्ताह कैलेंडर सप्ताह के अ�
 msgid "Weeks are numbered from the present week"
 msgstr "सप्ताह वर्तमान सप्ताह से क्रमांकित हैं"
 
+msgid "Weeks are numbered in Settings → Company."
+msgstr "सप्ताह क्रमांकन ‘सेटिंग्स → कंपनी’ में होता है।"
+
 msgid "Weeks Open"
 msgstr "हफ्ते खुले"
+
+msgid "Weeks start on Monday. Week 1 is the week with the year's first Thursday, so a week is never split: Friday 1 January 2027 is in week 53 of 2026."
+msgstr "सप्ताह सोमवार से शुरू होते हैं। सप्ताह 1 वह सप्ताह है जिसमें वर्ष का पहला गुरुवार पड़ता है, ताकि कोई सप्ताह कभी विभाजित न हो: शुक्रवार 1 जनवरी 2027 वर्ष 2026 के सप्ताह 53 में आता है।"
+
+msgid "Weeks start on Sunday. Week 1 is the week of 1 January, so the weeks around a new year are short: 1–2 January 2027 is week 1."
+msgstr "सप्ताह रविवार से शुरू होते हैं। सप्ताह 1 वह सप्ताह है जिसमें 1 जनवरी पड़ती है, इसलिए नए वर्ष के आसपास के सप्ताह छोटे होते हैं: 1–2 जनवरी 2027 सप्ताह 1 में आते हैं।"
 
 msgid "Weighted Average"
 msgstr "भारित औसत"
@@ -34908,6 +35272,9 @@ msgstr "{translatedTerm} क्या है?"
 msgid "What is leased, for example Forklift FL-12"
 msgstr "पट्टे पर क्या है, उदाहरण के लिए Forklift FL-12"
 
+msgid "What is on hand at this location, which open jobs have the parts to finish, and what the others are short of. Starting more is checked through every level of the bill of materials, with each item's scrap."
+msgstr "इस स्थान पर स्टॉक में क्या है, कौन से खुले जॉब्स को पूरा करने के लिए पार्ट्स मौजूद हैं, और बाकी में किसकी कमी है। और जॉब शुरू करने की जाँच सामग्री सूची के हर स्तर से होती है, हर आइटम के स्क्रैप सहित।"
+
 msgid "What is the primary contact?"
 msgstr "प्राथमिक संपर्क कौन है?"
 
@@ -34928,6 +35295,9 @@ msgstr "यह किस प्रकार का PO है — मानक �
 
 msgid "What kind of quote this is — standard supplier quote, blanket-agreement priced quote, or contract-manufacturing quote; drives the PO line layout when converted."
 msgstr "यह किस प्रकार का कोटेशन है — मानक आपूर्तिकर्ता कोटेशन, व्यापक समझौता मूल्य वाला कोटेशन, या अनुबंध विनिर्माण कोटेशन; रूपांतरण के समय PO पंक्ति लेआउट को संचालित करता है।"
+
+msgid "What limits new jobs, from stock no job or order has claimed."
+msgstr "नए जॉब्स की सीमा तय करने वाला स्टॉक, यानी वह जिसे किसी जॉब या ऑर्डर ने आरक्षित नहीं किया है।"
 
 msgid "What posting this run will write, by account."
 msgstr "यह रन प्रत्येक खाते के लिए क्या पोस्ट करेगा।"
@@ -34952,6 +35322,9 @@ msgstr "ग्राहक क्या देता है, पंक्ति 
 
 msgid "What the due-date countdown starts from (invoice date, end of month, etc.)."
 msgstr "नियत तारीख की गिनती किससे शुरू होती है (चालान की तारीख, महीने का अंत, आदि)।"
+
+msgid "What the jobs waiting on parts still need after stock. Buy or make these to finish them."
+msgstr "स्टॉक के बाद भी पार्ट्स की प्रतीक्षा कर रहे जॉब्स को अभी क्या चाहिए। इन्हें पूरा करने के लिए खरीदें या बनाएँ।"
 
 msgid "What the lease pays and when. Activation values the lease liability from these rows. Click a cell to change it."
 msgstr "पट्टा क्या भुगतान करता है और कब। सक्रियण इन पंक्तियों से पट्टा दायित्व को मूल्य देता है। इसे बदलने के लिए एक सेल पर क्लिक करें।"
@@ -34984,7 +35357,7 @@ msgid "What to set up"
 msgstr "सेटअप करने के लिए क्या"
 
 msgid "What was entered wrongly, and why it cannot be corrected or voided instead"
-msgstr "क्या गलत दर्ज हुआ, और क्यों इसे सुधारा या अमान्य नहीं किया जा सकता"
+msgstr "क्या गलत दर्ज हुआ, और उसे सुधारा या अमान्य क्यों नहीं किया जा सकता"
 
 msgid "What was entered wrongly, and why the order cannot be corrected or closed instead"
 msgstr "क्या गलत दर्ज हुआ, और क्यों ऑर्डर को इसके बजाय सुधारा या बंद नहीं किया जा सकता"
@@ -35424,6 +35797,9 @@ msgstr "WIP"
 #. placeholder {0}: percentFormatter.format(contingency)
 msgid "with {0} contingency"
 msgstr "के साथ {0} आकस्मिकता"
+
+msgid "With {week} and no {month} or {day}, the year is the year the week belongs to: 1 January 2027 is in week 53 of 2026."
+msgstr "{week} के साथ, और {month} या {day} के बिना, वर्ष वही होता है जिसमें वह सप्ताह आता है: 1 जनवरी 2027 वर्ष 2026 के सप्ताह 53 में आता है।"
 
 msgid "With Previous"
 msgstr "पिछले के साथ"

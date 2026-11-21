@@ -12,6 +12,12 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+msgid " · {elsewhere} in {otherBin}"
+msgstr ""
+
+msgid " · {elsewhere} in no bin"
+msgstr ""
+
 msgid " · Kit job open"
 msgstr " · 套件工单未结"
 
@@ -88,6 +94,11 @@ msgstr "{0} 小时"
 #. placeholder {0}: unplanned .map( (m) => (m.job as { jobId?: string | null } | null)?.jobId ) .filter(Boolean) .join(", ")
 msgid "{0} has no lot number. Set it on the batch or job in Carbon, then complete."
 msgstr "{0}没有批次号。在Carbon中的生产批次或工单上设置，然后完成。"
+
+#. placeholder {0}: serial.readableId
+#. placeholder {1}: serial.kitReadableId
+msgid "{0} in kit {1}"
+msgstr ""
 
 #. placeholder {0}: result.unit.readableId
 #. placeholder {1}: result.unit.status
@@ -226,9 +237,17 @@ msgstr "{job} 约于 {at} 结束，请让 {next} 就绪"
 
 msgid "{job} OEE {oee} is below the limit"
 msgstr "{job} 的 OEE {oee} 低于限值"
+msgid "{kitsReady} ready"
+msgstr ""
+
+msgid "{label} to scrap"
+msgstr ""
 
 msgid "{label}, overdue"
 msgstr "{label}，已逾期"
+
+msgid "{lost} scanned pieces were not issued. Scan them again."
+msgstr "有 {lost} 件已扫码的件未领料，请重新扫码。"
 
 msgid "{maxSizeMB}MB limit"
 msgstr "{maxSizeMB}MB 限制"
@@ -240,6 +259,9 @@ msgstr "{name}, {0}, 已完成 {percent}%"
 msgid "{name}: {value}"
 msgstr "{name}: {value}"
 
+msgid "{namedParts} and {moreParts} more"
+msgstr ""
+
 msgid "{numerator} of {denominator}"
 msgstr "{numerator}/{denominator}"
 
@@ -249,9 +271,21 @@ msgstr "{onHand} / {need}"
 msgid "{onHand} on hand · covers {covers} of {demand}"
 msgstr "现有 {onHand} · 可覆盖 {covers} / 需求 {demand}"
 
+msgid "{open} open"
+msgstr ""
+
+msgid "{quantity} in this operation"
+msgstr ""
+
+msgid "{quantity} used in this operation"
+msgstr ""
+
 #. placeholder {0}: step.perMember.length
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} 个工单"
+
+msgid "{unbinned} in stock, in no bin"
+msgstr ""
 
 msgid "{workTypeLabel} timer started"
 msgstr "{workTypeLabel}计时已开始"
@@ -495,6 +529,9 @@ msgstr "您确定要将此工序标记为完成吗？这会结束此工序的所
 msgid "Ask a supervisor to add the {processName} ability to your profile."
 msgstr "要求主管将 {processName} 技能添加到您的档案。"
 
+msgid "Ask the water spider"
+msgstr ""
+
 msgid "Asked"
 msgstr "已请求"
 
@@ -572,6 +609,12 @@ msgstr "批次"
 msgid "Batch {0}"
 msgstr "生产批次 {0}"
 
+msgid "Batch {readableId} · {used} used"
+msgstr ""
+
+msgid "Batch {readableId} · {used} used · in kit {kitReadableId}"
+msgstr ""
+
 msgid "Batch Details"
 msgstr "生产批次详情"
 
@@ -638,6 +681,12 @@ msgstr "故障停机"
 
 msgid "Breakdowns"
 msgstr "故障停机"
+msgid "Bring"
+msgstr ""
+
+#. placeholder {0}: lane.toBring
+msgid "Bring {0}"
+msgstr ""
 
 msgid "Bring {quantity}"
 msgstr "携带 {quantity}"
@@ -923,6 +972,8 @@ msgstr "无法查询此标签，请重试。"
 
 msgid "Counted by the sensor"
 msgstr "由传感器计数"
+msgid "Count what is ruined. Replacements come from the shelf."
+msgstr ""
 
 msgid "Country code"
 msgstr "国家代码"
@@ -1008,6 +1059,9 @@ msgstr "密度"
 
 msgid "Depot"
 msgstr "仓库"
+
+msgid "Describe it: what, how many, where"
+msgstr ""
 
 msgid "Describe the problem..."
 msgstr "描述问题..."
@@ -1246,6 +1300,9 @@ msgstr "获取存储单位失败"
 msgid "Failed to get options"
 msgstr "获取选项失败"
 
+msgid "Failed to load material requests"
+msgstr ""
+
 msgid "Failed to process image"
 msgstr "处理图像失败"
 
@@ -1367,6 +1424,9 @@ msgstr "特性 {characteristicLabel} 对应的量具: {currentGauge}"
 msgid "General"
 msgstr "常规"
 
+msgid "Go back to an earlier operation to redo every operation from there, or send the unit through a correction, such as a rework station."
+msgstr "返回之前的工序，从该点重做所有工序；或将该单元送去纠正，例如返工工位。"
+
 msgid "Go back to operation"
 msgstr "返回操作"
 
@@ -1388,6 +1448,11 @@ msgstr "前往步骤 {0}：{1}（已完成）"
 
 msgid "Good / scrap (this shift)"
 msgstr "合格 / 报废（本班次）"
+msgid "goes to {feeds}"
+msgstr ""
+
+msgid "Grab from {source} · {free} of {onHand} left for this station"
+msgstr ""
 
 msgid "Grab from {source} · {onHand} there"
 msgstr "从 {source} 取料 · 该处现有 {onHand}"
@@ -1425,6 +1490,9 @@ msgstr "Carbon 在此浏览器中的外观。"
 msgid "How many were actually picked?"
 msgstr "实际拣了多少？"
 
+msgid "How many, where, anything the feeder should know"
+msgstr ""
+
 msgid "How many?"
 msgstr "多少个？"
 
@@ -1433,6 +1501,9 @@ msgstr "我认证此声明"
 
 msgid "I understand and want to complete without issuing"
 msgstr "我理解并希望在不发放物料的情况下完成"
+
+msgid "I'll grab it from the shelf"
+msgstr ""
 
 msgid "I'm Still Working"
 msgstr "我还在工作"
@@ -1549,6 +1620,18 @@ msgstr "已发放 {issuedQuantity} 个 {lotLabel}"
 msgid "Issued {issuedQuantity} of {lotLabel} — {remainingQuantity} remains"
 msgstr "已发放 {issuedQuantity} 个 {lotLabel} — 还剩 {remainingQuantity} 件"
 
+msgid "Issued {quantity} {name} ({issued} of {required})"
+msgstr "已领 {quantity} {name}（{issued} / {required}）"
+
+msgid "Issued {quantity} {name} from {batches} ({issued} of {required})"
+msgstr "已从 {batches} 领出 {quantity} {name}（{issued} / {required}）"
+
+msgid "Issuing"
+msgstr "领料中"
+
+msgid "Issuing. {waiting} more scanned."
+msgstr "领料中，另有 {waiting} 件已扫码。"
+
 msgid "It is still used by a \"{table}\" record; remove that first."
 msgstr "它仍在 \"{table}\" 记录中使用；请先移除那个。"
 
@@ -1626,6 +1709,9 @@ msgstr "待完成套件"
 
 msgid "Kitter"
 msgstr "套件员"
+
+msgid "Kitting and preparation"
+msgstr ""
 
 msgid "Labor"
 msgstr "人工"
@@ -1708,6 +1794,9 @@ msgstr "已加载: {loadedLabel}"
 msgid "Loading item details..."
 msgstr "正在加载物料详情..."
 
+msgid "Loading parts..."
+msgstr ""
+
 msgid "Loading. There's no need to scan again."
 msgstr "正在加载，无需再次扫码。"
 
@@ -1771,6 +1860,9 @@ msgstr "批次已追踪"
 msgid "Low"
 msgstr "低"
 
+msgid "Low · {kitsReady} ready"
+msgstr ""
+
 msgid "Machine"
 msgstr "机器"
 
@@ -1791,6 +1883,9 @@ msgstr "自本班次开始以来的机器状态"
 
 msgid "Machine, timer running"
 msgstr "机器，计时器运行中"
+
+msgid "Made here"
+msgstr ""
 
 msgid "Main"
 msgstr "主菜单"
@@ -1843,6 +1938,9 @@ msgstr "匹配"
 
 msgid "Material requested"
 msgstr "已申请物料"
+
+msgid "Material requests"
+msgstr ""
 
 msgid "Materials"
 msgstr "原材料"
@@ -1923,6 +2021,9 @@ msgstr "名称"
 
 msgid "Navigation"
 msgstr "导航"
+
+msgid "Need {quantity}"
+msgstr ""
 
 msgid "Need material"
 msgstr "需要物料"
@@ -2078,11 +2179,17 @@ msgstr "没有未结的检验"
 msgid "No open jobs"
 msgstr "没有未结的工单"
 
+msgid "No open material requests"
+msgstr ""
+
 msgid "No open service jobs at this location"
 msgstr "此地点没有打开的服务工单"
 
 msgid "No open units to allocate"
 msgstr "没有未结的件可分配"
+
+msgid "No open work"
+msgstr ""
 
 msgid "No operators"
 msgstr "无操作员"
@@ -2180,6 +2287,9 @@ msgstr "没有工位"
 msgid "No stations at this location"
 msgstr "此地点没有工位"
 
+msgid "No stations match"
+msgstr ""
+
 msgid "No stock"
 msgstr "无库存"
 
@@ -2216,6 +2326,12 @@ msgstr "不计入MRP"
 msgid "None"
 msgstr "无"
 
+msgid "None in stock · Nothing ordered"
+msgstr ""
+
+msgid "None in stock · On order"
+msgstr ""
+
 msgid "None on the shelf"
 msgstr "货架上无库存"
 
@@ -2227,6 +2343,8 @@ msgstr "不在此工序中"
 
 msgid "Not planned"
 msgstr "未计划"
+msgid "Not on the list: describe it below"
+msgstr ""
 
 msgid "Not scheduled"
 msgstr "未安排"
@@ -2249,6 +2367,9 @@ msgstr "尚无失败项，因此请说明这些件被拒绝的原因。全部 {0
 
 msgid "Nothing matches your search."
 msgstr "没有匹配您搜索的内容。"
+
+msgid "Nothing on this operation can be scrapped yet. Serials and batches show once they are issued."
+msgstr ""
 
 msgid "Nothing on this page uses that barcode"
 msgstr "此页面上没有使用该条码的内容"
@@ -2307,6 +2428,12 @@ msgstr "在途中"
 
 msgid "one combined lot · planned"
 msgstr "一个组合批次 · 已计划"
+
+msgid "One less {label}"
+msgstr ""
+
+msgid "One more {label}"
+msgstr ""
 
 msgid "one per job · planned"
 msgstr "每个工单一个 · 已计划"
@@ -2394,6 +2521,9 @@ msgstr "或手动输入此密钥:"
 #. placeholder {0}: unit.readableId
 msgid "Other operations that need {0}"
 msgstr "需要 {0} 的其他工序"
+
+msgid "Other stations"
+msgstr ""
 
 msgid "Out"
 msgstr "缺料"
@@ -2704,6 +2834,9 @@ msgstr "数量 {0}"
 msgid "Quantity must be greater than 0"
 msgstr "数量必须大于 0"
 
+msgid "Quantity to move"
+msgstr ""
+
 msgid "Quantity:"
 msgstr "数量："
 
@@ -2732,6 +2865,9 @@ msgstr "原料短缺：{shortParts}"
 
 msgid "Re"
 msgstr "拒收数"
+
+msgid "Ready"
+msgstr ""
 
 msgid "Reason"
 msgstr "原因"
@@ -2860,6 +2996,9 @@ msgstr "重新打开子装配件并创建替代件"
 msgid "Repairable"
 msgstr "可修复"
 
+msgid "Replacement"
+msgstr ""
+
 msgid "Request material"
 msgstr "申请物料"
 
@@ -2902,9 +3041,6 @@ msgstr "退回零件"
 msgid "Rework"
 msgstr "返工"
 
-msgid "Rework created successfully"
-msgstr "返工创建成功"
-
 msgid "Rework quantity"
 msgstr "返工数量"
 
@@ -2925,9 +3061,6 @@ msgstr "按标准时间运行"
 
 msgid "Running"
 msgstr "运行中"
-
-msgid "Running low"
-msgstr "库存偏低"
 
 #. placeholder {0}: runningClock.serviceJob?.serviceJobId
 msgid "Running on <0>{0}</0>"
@@ -3001,6 +3134,9 @@ msgstr "请扫描或选择该单元，然后再次扫描看板卡"
 msgid "Scan received"
 msgstr "已收到扫码"
 
+msgid "Scan the replacement serials and batches in."
+msgstr ""
+
 msgid "Scan this QR code with your authenticator app (e.g. Google Authenticator or 1Password), then enter the 6-digit code it shows."
 msgstr "使用身份验证应用（如 Google Authenticator 或 1Password）扫码此 QR 代码，然后输入它显示的6位数代码。"
 
@@ -3022,8 +3158,20 @@ msgstr "报废（件）"
 msgid "Scrap {readableId}"
 msgstr "报废 {readableId}"
 
+msgid "Scrap {total}"
+msgstr ""
+
 msgid "Scrap material"
 msgstr "报废原材料"
+
+msgid "Scrap parts"
+msgstr ""
+
+msgid "Scrap parts of {label}"
+msgstr ""
+
+msgid "Scrap parts of {partName}"
+msgstr ""
 
 msgid "Scrap quantity"
 msgstr "报废数量"
@@ -3039,6 +3187,12 @@ msgstr "报废该件"
 
 msgid "Scrapped"
 msgstr "已报废"
+
+msgid "Scrapped. Grab replacements from the shelf."
+msgstr ""
+
+msgid "Scrapped. The water spider is bringing replacements."
+msgstr ""
 
 msgid "Scrapping serial {trackedEntityReadableId}"
 msgstr "报废序列号 {trackedEntityReadableId}"
@@ -3085,11 +3239,20 @@ msgstr "搜索操作员"
 msgid "Search operators..."
 msgstr "搜索操作员..."
 
+msgid "Search parts, consumables and tools"
+msgstr ""
+
 msgid "Search projects and tasks"
 msgstr "搜索项目和任务"
 
+msgid "Search reasons"
+msgstr ""
+
 msgid "Search recent operations"
 msgstr "搜索近期工序"
+
+msgid "Search stations"
+msgstr ""
 
 msgid "Search..."
 msgstr "搜索..."
@@ -3108,6 +3271,9 @@ msgstr "选择完成数量"
 
 msgid "Select a customer"
 msgstr "选择客户"
+
+msgid "Select a location to see its material requests"
+msgstr ""
 
 msgid "Select a location to see its stations"
 msgstr "选择地点以查看其工位"
@@ -3245,6 +3411,9 @@ msgstr "短缺"
 msgid "Short"
 msgstr "缺货"
 
+msgid "Short {short}"
+msgstr ""
+
 msgid "Short pick {itemName}"
 msgstr "短缺拣货 {itemName}"
 
@@ -3346,6 +3515,8 @@ msgstr "排序：按行顺序"
 
 msgid "Sort: worst first"
 msgstr "排序：最差优先"
+msgid "Something else"
+msgstr ""
 
 msgid "Source"
 msgstr "来源"
@@ -3431,6 +3602,8 @@ msgstr "工位：{stationName}"
 
 msgid "stations out"
 msgstr "工位缺料"
+msgid "stations short"
+msgstr ""
 
 #. placeholder {0}: inspection.lotSize
 msgid "Statistical acceptance failed, so the entire lot of {0} is considered non-conforming (ISO 9001:2015 §8.7) — {passes} sampled pass(es) and {fails} failure(s). Route the units below to scrap or rework, or record the verdict only."
@@ -3591,6 +3764,9 @@ msgstr "各工单生产不同的物料 — 保持每个工单的零件分开。"
 msgid "the kit"
 msgstr "该套件"
 
+msgid "The list failed to load. You can still describe what you need."
+msgstr ""
+
 msgid "The lot will be marked Passed and {remaining} remaining unit(s) will be completed at this operation."
 msgstr "批次将标记为已通过，{remaining} 个剩余件将在此工序完成。"
 
@@ -3648,6 +3824,9 @@ msgstr "此检验计划没有作业指导书。"
 
 msgid "This is a pass / fail check. Press P or F."
 msgstr "这是合格 / 不合格检查。请按 P 或 F。"
+
+msgid "This job"
+msgstr ""
 
 msgid "This job does not use that part"
 msgstr "此工单不使用该零件"
@@ -3727,6 +3906,9 @@ msgstr "时间类型"
 
 msgid "Time Worked"
 msgstr "工作时间"
+
+msgid "to bring lineside"
+msgstr ""
 
 msgid "To pick"
 msgstr "待拣货"
@@ -3980,6 +4162,9 @@ msgstr "查看或打开"
 msgid "View Traceability"
 msgstr "查看可追溯性"
 
+msgid "Waiting"
+msgstr ""
+
 msgid "Warranty"
 msgstr "保修"
 
@@ -3988,9 +4173,6 @@ msgstr "水蜘蛛（物料补给）"
 
 msgid "We've emailed you a sign-in link and a 6-digit code. Follow the link, or enter the code here."
 msgstr "我们已向您发送了登录链接和6位代码。点击该链接或在此处输入代码。"
-
-msgid "Wet"
-msgstr "湿式"
 
 msgid "What do you need?"
 msgstr "您需要什么？"
