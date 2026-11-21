@@ -717,6 +717,7 @@ export const Constants = {
         "Skipped",
       ],
       oeeImpact: ["Down", "Planned", "Impact", "No Impact"],
+      oeeLoss: ["Breakdown", "Setup & Adjustment", "Small Stop"],
       operationType: [
         "Process",
         "Assembly",

@@ -10,4 +10,5 @@ export * from "./board.ts";
 export * from "./intervals.ts";
 export * from "./oee.ts";
 export * from "./periods.ts";
+export * from "./six-big-losses.ts";
 export * from "./standards.ts";

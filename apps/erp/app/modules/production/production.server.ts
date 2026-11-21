@@ -100,6 +100,7 @@ import {
   jobValidator,
   makeToAssetItemError,
   nothingOrderedMessage,
+  oeeLossTypes,
   PLANNING_EDITABLE_JOB_STATUSES,
   pastStartRefusalMessages,
   peopleAbsenceRangeValidator,
@@ -6696,6 +6697,25 @@ export const deleteScrapReason = defineServiceFn({
 });
 
 /**
+ * Delete stop reason
+ *
+ * @mcp destructive
+ */
+export const deleteStopReason = defineServiceFn({
+  input: z.looseObject({ stopReasonId: z.string() }),
+  permission: { delete: "production" },
+  async run(ctx, input) {
+    return unwrap(
+      ctx,
+      await service.deleteStopReason(
+        ctx.asCaller.supabase,
+        input.stopReasonId as never
+      )
+    );
+  }
+});
+
+/**
  * Delete failure mode
  *
  * @mcp destructive
@@ -7842,6 +7862,69 @@ export const getScrapReasons = defineServiceFn({
     return paged(
       ctx,
       await service.getScrapReasons(
+        ctx.asCaller.supabase,
+        ctx.company.id,
+        payload(ctx, input).build() as never
+      )
+    );
+  }
+});
+
+/**
+ * Get stop reasons list
+ *
+ * @mcp read
+ */
+export const getStopReasonsList = defineServiceFn({
+  input: z.record(z.string(), z.unknown()),
+  permission: { view: "production" },
+  async run(ctx) {
+    return unwrap(
+      ctx,
+      await service.getStopReasonsList(ctx.asCaller.supabase, ctx.company.id)
+    );
+  }
+});
+
+/**
+ * Get stop reason
+ *
+ * @mcp read
+ */
+export const getStopReason = defineServiceFn({
+  input: z.looseObject({ stopReasonId: z.string() }),
+  permission: { view: "production" },
+  async run(ctx, input) {
+    return unwrap(
+      ctx,
+      await service.getStopReason(
+        ctx.asCaller.supabase,
+        input.stopReasonId as never
+      )
+    );
+  }
+});
+
+/**
+ * Get stop reasons
+ *
+ * @mcp read
+ */
+export const getStopReasons = defineServiceFn({
+  input: z.looseObject({
+    limit: z
+      .number()
+      .int()
+      .describe("Rows per page. Left out, the read is not paged.")
+      .optional(),
+    offset: z.number().int().default(0),
+    search: z.string().nullable().optional()
+  }),
+  permission: { view: "production" },
+  async run(ctx, input) {
+    return paged(
+      ctx,
+      await service.getStopReasons(
         ctx.asCaller.supabase,
         ctx.company.id,
         payload(ctx, input).build() as never
@@ -9120,6 +9203,68 @@ export const updateScrapReason = defineServiceFn({
     return unwrap(
       ctx,
       await service.upsertScrapReason(
+        ctx.asCaller.supabase,
+        payload(ctx, input).forUpdate() as never
+      )
+    );
+  }
+});
+
+/**
+ * Create a stop reason
+ *
+ * @remarks
+ * Upsert stop reason
+ *
+ * @mcp
+ */
+export const createStopReason = defineServiceFn({
+  input: z.looseObject({
+    name: z.string().min(1),
+    oeeLoss: z.enum(oeeLossTypes),
+    customFields: z.unknown().optional(),
+    id: z
+      .string()
+      .describe("Send to update that record; omit to create a new one.")
+      .optional()
+  }),
+  permission: { create: "production" },
+  async run(ctx, input) {
+    return unwrap(
+      ctx,
+      await service.upsertStopReason(
+        ctx.asCaller.supabase,
+        payload(ctx, input).forCreate() as never
+      )
+    );
+  }
+});
+
+/**
+ * Update a stop reason
+ *
+ * @remarks
+ * Upsert stop reason
+ *
+ * @mcp
+ */
+export const updateStopReason = defineServiceFn({
+  input: z
+    .looseObject({
+      name: z.string().min(1),
+      oeeLoss: z.enum(oeeLossTypes),
+      customFields: z.unknown().optional(),
+      id: z
+        .string()
+        .describe("Send to update that record; omit to create a new one.")
+        .optional()
+    })
+    .required({ id: true }),
+  permission: { update: "production" },
+  async run(ctx, input) {
+    return unwrap(
+      ctx,
+      await service.upsertStopReason(
         ctx.asCaller.supabase,
         payload(ctx, input).forUpdate() as never
       )

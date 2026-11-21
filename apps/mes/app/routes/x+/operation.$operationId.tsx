@@ -12,6 +12,7 @@ import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { useLoaderData, useParams } from "react-router";
 import { JobOperation } from "~/components/JobOperation";
 import { getCompanySettings } from "~/services/inventory.service";
+import { getOperationLossData } from "~/services/operation-losses.server";
 import {
   getAbilityShortfall,
   getBatchMaterialTotals,
@@ -514,8 +515,26 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
       "production",
       "delete",
       companyId
-    )
+    ),
+    // fork: Log stop + Six Big Losses (deferred)
+    operationLosses: getOperationLossData(serviceRole, {
+      companyId,
+      jobOperationId: operationId,
+      workCenterId: operation.data?.[0]?.workCenterId ?? null,
+      firstMachineStart: firstMachineStart(events.data ?? []),
+      now: Date.now()
+    })
   };
+}
+
+/** Epoch ms of the earliest Machine event, or null when the machine never ran. */
+function firstMachineStart(
+  events: { type: string | null; startTime: string | null }[]
+): number | null {
+  const starts = events
+    .filter((event) => event.type === "Machine" && event.startTime)
+    .map((event) => Date.parse(event.startTime as string));
+  return starts.length > 0 ? Math.min(...starts) : null;
 }
 
 export default function OperationRoute() {
@@ -546,7 +565,8 @@ export default function OperationRoute() {
     workCenter,
     nonConformanceActions,
     countMode,
-    canOverrideCount
+    canOverrideCount,
+    operationLosses
   } = useLoaderData<typeof loader>();
 
   return (
@@ -578,6 +598,7 @@ export default function OperationRoute() {
       workCenter={workCenter}
       countMode={countMode}
       canOverrideCount={canOverrideCount}
+      operationLosses={operationLosses}
     />
   );
 }

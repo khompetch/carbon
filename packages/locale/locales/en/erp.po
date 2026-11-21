@@ -4811,6 +4811,10 @@ msgstr "Are you sure you want to delete the shift: {name} from {locationName}? T
 msgid "Are you sure you want to delete the shipping method: {0}? This cannot be undone."
 msgstr "Are you sure you want to delete the shipping method: {0}? This cannot be undone."
 
+#. placeholder {0}: stopReason.name
+msgid "Are you sure you want to delete the stop reason: {0}? This cannot be undone."
+msgstr "Are you sure you want to delete the stop reason: {0}? This cannot be undone."
+
 #. placeholder {0}: storageType.name
 msgid "Are you sure you want to delete the storage type: {0}? This cannot be undone."
 msgstr "Are you sure you want to delete the storage type: {0}? This cannot be undone."
@@ -6119,6 +6123,9 @@ msgstr "Branch an editable copy of this version that you can change and publish.
 
 msgid "Breadcrumb"
 msgstr "Breadcrumb"
+
+msgid "Breakdown"
+msgstr "Breakdown"
 
 msgid "Bring in your parts, BOMs, Bill of Process, and costing — with Carbon's import tools, CSV, or LLM help."
 msgstr "Bring in your parts, BOMs, Bill of Process, and costing — with Carbon's import tools, CSV, or LLM help."
@@ -9209,6 +9216,9 @@ msgstr "Created shipping method"
 msgid "Created stock transfer line"
 msgstr "Created stock transfer line"
 
+msgid "Created stop reason"
+msgstr "Created stop reason"
+
 msgid "Created storage type"
 msgstr "Created storage type"
 
@@ -10516,6 +10526,9 @@ msgstr "Delete Step"
 
 msgid "Delete Stock Transfer"
 msgstr "Delete Stock Transfer"
+
+msgid "Delete Stop Reason"
+msgstr "Delete Stop Reason"
 
 msgid "Delete Storage Type"
 msgstr "Delete Storage Type"
@@ -12042,6 +12055,9 @@ msgstr "Edit Size"
 msgid "Edit Stock Transfer"
 msgstr "Edit Stock Transfer"
 
+msgid "Edit Stop Reason"
+msgstr "Edit Stop Reason"
+
 msgid "Edit Storage Type"
 msgstr "Edit Storage Type"
 
@@ -13343,6 +13359,10 @@ msgstr "Failed to create return reason: {0}"
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create service: {0}"
 msgstr "Failed to create service: {0}"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create stop reason: {0}"
+msgstr "Failed to create stop reason: {0}"
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create supplier stage: {0}"
@@ -17651,6 +17671,9 @@ msgstr "Look ahead (weeks)"
 msgid "Look back (weeks)"
 msgstr "Look back (weeks)"
 
+msgid "Loss"
+msgstr "Loss"
+
 msgid "Loss on Disposal"
 msgstr "Loss on Disposal"
 
@@ -19410,6 +19433,9 @@ msgstr "New Size"
 
 msgid "New Stock Transfer"
 msgstr "New Stock Transfer"
+
+msgid "New Stop Reason"
+msgstr "New Stop Reason"
 
 msgid "New Storage Type"
 msgstr "New Storage Type"
@@ -28103,6 +28129,9 @@ msgstr "Setup"
 msgid "Setup {0} → {1}"
 msgstr "Setup {0} → {1}"
 
+msgid "Setup & Adjustment"
+msgstr "Setup & Adjustment"
+
 msgid "Setup & Controls"
 msgstr "Setup & Controls"
 
@@ -28766,6 +28795,9 @@ msgstr "Small"
 msgid "Small business"
 msgstr "Small business"
 
+msgid "Small Stop"
+msgstr "Small Stop"
+
 msgid "Smaller"
 msgstr "Smaller"
 
@@ -29294,6 +29326,12 @@ msgstr "Stop clock and complete"
 
 msgid "Stop raising purchase orders after this date"
 msgstr "Stop raising purchase orders after this date"
+
+msgid "Stop Reason"
+msgstr "Stop Reason"
+
+msgid "Stop Reasons"
+msgstr "Stop Reasons"
 
 msgid "Stop Receiving"
 msgstr "Stop Receiving"

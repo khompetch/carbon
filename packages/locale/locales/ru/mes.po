@@ -116,10 +116,10 @@ msgstr "Показатель OEE: {0}"
 
 #. placeholder {0}: counts.recorded
 #. placeholder {0}: issuedLines.length
-#. placeholder {0}: operation.quantityComplete
+#. placeholder {0}: serialIndex + 1
 #. placeholder {1}: characteristic.sampleSize
 #. placeholder {1}: operation.operationQuantity
-#. placeholder {1}: operation.targetQuantity
+#. placeholder {1}: trackedLines.length
 msgid "{0} of {1}"
 msgstr "{0} из {1}"
 
@@ -361,6 +361,9 @@ msgstr "Добавить {phrase}"
 
 msgid "Add & Issue"
 msgstr "Добавить и выдать"
+
+msgid "Add a note (optional)"
+msgstr "Добавить примечание (необязательно)"
 
 msgid "Add a printer in the printing settings to print labels directly."
 msgstr "Добавьте принтер в настройки печати, чтобы печатать наклейки непосредственно."
@@ -629,6 +632,12 @@ msgstr "Вид доски"
 
 msgid "Bold"
 msgstr "Полужирный"
+
+msgid "Breakdown"
+msgstr "Поломка"
+
+msgid "Breakdowns"
+msgstr "Поломки"
 
 msgid "Bring {quantity}"
 msgstr "Принести {quantity}"
@@ -1741,6 +1750,9 @@ msgstr "Записать брак"
 msgid "Log scrap for {0}"
 msgstr "Записать брак для {0}"
 
+msgid "Log stop"
+msgstr "Зафиксировать остановку"
+
 msgid "Login"
 msgstr "Вход"
 
@@ -1846,6 +1858,9 @@ msgstr "Сообщение"
 
 msgid "Metric"
 msgstr "Метрическая"
+
+msgid "min"
+msgstr "мин"
 
 msgid "Missing"
 msgstr "Отсутствует"
@@ -2054,6 +2069,9 @@ msgstr "Нет материалов"
 msgid "No materials on this batch."
 msgstr "На этой серии нет материалов."
 
+msgid "No one is working on this operation."
+msgstr "Над этой операцией никто не работает."
+
 msgid "No open inspections"
 msgstr "Нет открытых контролей"
 
@@ -2147,6 +2165,9 @@ msgstr "На этой странице нет доступных сокраще�
 msgid "No spare parts added yet"
 msgstr "Запасные части ещё не добавлены"
 
+msgid "No standard"
+msgstr "Нет норматива"
+
 msgid "No standard time"
 msgstr "Нет нормативного времени"
 
@@ -2161,6 +2182,9 @@ msgstr "На этой площадке нет станций"
 
 msgid "No stock"
 msgstr "Нет запасов"
+
+msgid "No stop reasons are set up. Ask a supervisor to add them in Production → Stop Reasons."
+msgstr "Причины остановок не настроены. Попросите мастера добавить их в разделе Производство → Причины остановок."
 
 msgid "No stops this shift"
 msgstr "Остановок в этой смене нет"
@@ -2259,6 +2283,9 @@ msgstr "Требуется OEM"
 #. placeholder {0}: m.operationQuantity ?? 0
 msgid "of {0}"
 msgstr "из {0}"
+
+msgid "of {target}"
+msgstr "из {target}"
 
 msgid "Of planned time"
 msgstr "от запланированного времени"
@@ -2452,6 +2479,9 @@ msgstr "Приостановить таймер: {workTypeLabel}"
 msgid "Pause maintenance"
 msgstr "Приостановить техобслуживание"
 
+msgid "pcs"
+msgstr "шт."
+
 msgid "Pending"
 msgstr "В ожидании"
 
@@ -2634,6 +2664,9 @@ msgstr "Параметры процесса"
 msgid "Processes"
 msgstr "Процессы"
 
+msgid "Production rejects"
+msgstr "Брак производства"
+
 msgid "Profile"
 msgstr "Профиль"
 
@@ -2762,6 +2795,9 @@ msgstr "Записано"
 msgid "Reduced"
 msgstr "Ослабленный"
 
+msgid "Reduced speed"
+msgstr "Пониженная скорость"
+
 msgid "Reference image"
 msgstr "Справочное изображение"
 
@@ -2779,6 +2815,9 @@ msgstr "Отклонить партию"
 
 msgid "Released"
 msgstr "Запущено"
+
+msgid "Remaining"
+msgstr "Осталось"
 
 msgid "Remove"
 msgstr "Убрать"
@@ -2851,6 +2890,9 @@ msgstr "Записано результатов: {done}"
 msgid "Results recorded: {done}. Values skipped: {skipped}."
 msgstr "Записано результатов: {done}. Пропущено значений: {skipped}."
 
+msgid "Resume"
+msgstr "Возобновить"
+
 msgid "Retry Completion"
 msgstr "Повторить выполнение"
 
@@ -2865,6 +2907,9 @@ msgstr "Доработка успешно создана"
 
 msgid "Rework quantity"
 msgstr "Количество для доработки"
+
+msgid "Reworked"
+msgstr "Переделано"
 
 msgid "Rich text"
 msgstr "Форматированный текст"
@@ -3182,6 +3227,12 @@ msgstr "Установлено при планировании серии."
 msgid "Setup"
 msgstr "Наладка"
 
+msgid "Setup & adjustment"
+msgstr "Наладка и регулировка"
+
+msgid "Setup & adjustments"
+msgstr "Наладки и регулировки"
+
 msgid "Setup, timer running"
 msgstr "Наладка, таймер запущен"
 
@@ -3263,6 +3314,9 @@ msgstr "Вход больше не будет требовать код. Вве�
 msgid "since <0/>"
 msgstr "с <0/>"
 
+msgid "Six Big Losses"
+msgstr "Шесть больших потерь"
+
 msgid "Size"
 msgstr "Размер"
 
@@ -3271,6 +3325,12 @@ msgstr "Slack"
 
 msgid "Small"
 msgstr "Маленький"
+
+msgid "Small stop"
+msgstr "Короткая остановка"
+
+msgid "Small stops"
+msgstr "Короткие остановки"
 
 msgid "Smaller"
 msgstr "Меньше"
@@ -3357,6 +3417,9 @@ msgstr "Запустить или приостановить операцию"
 msgid "Start work"
 msgstr "Начать работу"
 
+msgid "Startup rejects"
+msgstr "Брак при запуске"
+
 msgid "Station"
 msgstr "Станция"
 
@@ -3396,6 +3459,9 @@ msgstr "Запасы в:"
 
 msgid "Stop log"
 msgstr "Журнал остановок"
+
+msgid "Stopped"
+msgstr "Остановлено"
 
 msgid "Stopped now {length}"
 msgstr "Сейчас простой {length}"
@@ -3598,6 +3664,9 @@ msgstr "Срок этой партии истек, и она не может б�
 msgid "This marks the dispatch as completed."
 msgstr "Это отмечает заявку на техобслуживание как завершённую."
 
+msgid "this operation"
+msgstr "эта операция"
+
 msgid "This part was made to order. Scrapping it can reopen its routing to make a replacement."
 msgstr "Эта деталь была произведена на заказ. Списание может открыть заново ее маршрут для создания замены."
 
@@ -3788,6 +3857,9 @@ msgstr "Единица"
 msgid "Unknown"
 msgstr "Неизвестно"
 
+msgid "Unknown employee"
+msgstr "Неизвестный сотрудник"
+
 msgid "Unknown gauge"
 msgstr "Неизвестное средство измерения"
 
@@ -3932,6 +4004,9 @@ msgstr "Когда"
 msgid "Whole batch"
 msgstr "Вся серия"
 
+msgid "Why did the operation stop?"
+msgstr "Почему остановилась операция?"
+
 msgid "Winding"
 msgstr "Змейкой"
 
@@ -3952,6 +4027,9 @@ msgstr "Объект"
 
 msgid "Working"
 msgstr "В работе"
+
+msgid "Working now"
+msgstr "Работает сейчас"
 
 msgid "Working time"
 msgstr "Рабочее время"

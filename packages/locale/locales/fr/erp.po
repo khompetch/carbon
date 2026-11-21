@@ -4811,6 +4811,10 @@ msgstr "Êtes-vous sûr de vouloir supprimer l'équipe : {name} du site {locatio
 msgid "Are you sure you want to delete the shipping method: {0}? This cannot be undone."
 msgstr "Êtes-vous sûr de vouloir supprimer le mode d'expédition : {0} ? Cette action ne peut pas être annulée."
 
+#. placeholder {0}: stopReason.name
+msgid "Are you sure you want to delete the stop reason: {0}? This cannot be undone."
+msgstr "Êtes-vous sûr de vouloir supprimer le motif d'arrêt : {0} ? Cette action est irréversible."
+
 #. placeholder {0}: storageType.name
 msgid "Are you sure you want to delete the storage type: {0}? This cannot be undone."
 msgstr "Êtes-vous sûr de vouloir supprimer le type de stockage : {0}? Cette action ne peut pas être annulée."
@@ -6119,6 +6123,9 @@ msgstr "Créer une copie modifiable de cette version que vous pouvez modifier et
 
 msgid "Breadcrumb"
 msgstr "Fil d'Ariane"
+
+msgid "Breakdown"
+msgstr "Panne"
 
 msgid "Bring in your parts, BOMs, Bill of Process, and costing — with Carbon's import tools, CSV, or LLM help."
 msgstr "Apportez vos pièces, BOMs, Listes des opérations et calcul des coûts — avec les outils d'importation de Carbon, CSV ou aide LLM."
@@ -9209,6 +9216,9 @@ msgstr "Mode d'expédition créé"
 msgid "Created stock transfer line"
 msgstr "Ligne de transfert de stock créée"
 
+msgid "Created stop reason"
+msgstr "Motif d'arrêt créé"
+
 msgid "Created storage type"
 msgstr "Type de stockage créé"
 
@@ -10516,6 +10526,9 @@ msgstr "Supprimer l'étape"
 
 msgid "Delete Stock Transfer"
 msgstr "Supprimer le transfert de stock"
+
+msgid "Delete Stop Reason"
+msgstr "Supprimer le motif d'arrêt"
 
 msgid "Delete Storage Type"
 msgstr "Supprimer le type de stockage"
@@ -12042,6 +12055,9 @@ msgstr "Modifier la taille"
 msgid "Edit Stock Transfer"
 msgstr "Modifier le transfert de stock"
 
+msgid "Edit Stop Reason"
+msgstr "Modifier le motif d'arrêt"
+
 msgid "Edit Storage Type"
 msgstr "Modifier le type de stockage"
 
@@ -13343,6 +13359,10 @@ msgstr "Échec de la création de la raison de retour : {0}"
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create service: {0}"
 msgstr "Échec de la création de la prestation : {0}"
+
+#. placeholder {0}: fetcher.data.error.message
+msgid "Failed to create stop reason: {0}"
+msgstr "Impossible de créer le motif d'arrêt : {0}"
 
 #. placeholder {0}: fetcher.data.error.message
 msgid "Failed to create supplier stage: {0}"
@@ -17651,6 +17671,9 @@ msgstr "Horizon prévisionnel (semaines)"
 msgid "Look back (weeks)"
 msgstr "Historique (semaines)"
 
+msgid "Loss"
+msgstr "Perte"
+
 msgid "Loss on Disposal"
 msgstr "Perte à la cession"
 
@@ -19410,6 +19433,9 @@ msgstr "Nouvelle Taille"
 
 msgid "New Stock Transfer"
 msgstr "Nouveau transfert de stock"
+
+msgid "New Stop Reason"
+msgstr "Nouveau motif d'arrêt"
 
 msgid "New Storage Type"
 msgstr "Nouveau Type de Stockage"
@@ -28103,6 +28129,9 @@ msgstr "Configuration"
 msgid "Setup {0} → {1}"
 msgstr "Réglage {0} → {1}"
 
+msgid "Setup & Adjustment"
+msgstr "Réglage et ajustement"
+
 msgid "Setup & Controls"
 msgstr "Configuration et contrôles"
 
@@ -28766,6 +28795,9 @@ msgstr "Petit"
 msgid "Small business"
 msgstr "Petite entreprise"
 
+msgid "Small Stop"
+msgstr "Micro-arrêt"
+
 msgid "Smaller"
 msgstr "Plus petit"
 
@@ -29294,6 +29326,12 @@ msgstr "Arrêter l'horloge et terminer"
 
 msgid "Stop raising purchase orders after this date"
 msgstr "Cesser de lever des bons de commande après cette date"
+
+msgid "Stop Reason"
+msgstr "Motif d'arrêt"
+
+msgid "Stop Reasons"
+msgstr "Motifs d'arrêt"
 
 msgid "Stop Receiving"
 msgstr "Arrêter la réception"

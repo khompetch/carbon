@@ -43,6 +43,7 @@ import type {
   getProductionProjections,
   getProductionQuantities,
   getScrapReasons,
+  getStopReasons,
   JobOperationBatchListMember
 } from "./production.service";
 import type { getJobMethodTree } from "./production.utils";
@@ -232,6 +233,10 @@ export type PlanningAction = NonNullable<
 
 export type ScrapReason = NonNullable<
   Awaited<ReturnType<typeof getScrapReasons>>["data"]
+>[number];
+
+export type StopReason = NonNullable<
+  Awaited<ReturnType<typeof getStopReasons>>["data"]
 >[number];
 
 export type JobOperationBatch = NonNullable<
