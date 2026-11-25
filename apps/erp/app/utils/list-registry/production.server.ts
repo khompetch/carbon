@@ -174,7 +174,7 @@ export const scrapReasonsList = searchList({
 
 export const stopReasonsList = searchList({
   key: "stop-reasons",
-  permission: { view: "production", role: "employee" },
+  gate: { "production.stopReasons": "View" },
   paging: STOP_REASONS_PAGING,
   service: getStopReasons
 });

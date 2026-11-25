@@ -3430,7 +3430,7 @@ export const saveOeeDeviceCounting = defineServiceFn({
     scrapReasonId: z.string().optional(),
     labelEveryQuantity: z.number().positive().optional()
   }),
-  permission: { update: "settings" },
+  permission: { "settings.integrations": "Edit" },
   async run(ctx, input) {
     let result: { error: string | null };
     try {
@@ -3487,7 +3487,7 @@ export const savePulseDevice = defineServiceFn({
     sendEachPulse: z.boolean(),
     active: z.boolean()
   }),
-  permission: { update: "settings" },
+  permission: { "settings.integrations": "Edit" },
   async run(ctx, { id, deviceKey, ...settings }) {
     let result: Awaited<ReturnType<typeof savePulseDeviceRow>>;
     try {
@@ -3530,7 +3530,7 @@ export const savePulseDevice = defineServiceFn({
  */
 export const deletePulseDevice = defineServiceFn({
   input: z.object({ id: z.string().min(1) }),
-  permission: { update: "settings" },
+  permission: { "settings.integrations": "Edit" },
   async run(ctx, { id }) {
     let result: Awaited<ReturnType<typeof deletePulseDeviceRow>>;
     try {

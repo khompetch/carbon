@@ -6779,7 +6779,7 @@ export const deleteScrapReason = defineServiceFn({
  */
 export const deleteStopReason = defineServiceFn({
   input: z.looseObject({ stopReasonId: z.string() }),
-  permission: { delete: "production" },
+  permission: { "production.stopReasons": "Full" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -7953,7 +7953,7 @@ export const getScrapReasons = defineServiceFn({
  */
 export const getStopReasonsList = defineServiceFn({
   input: z.record(z.string(), z.unknown()),
-  permission: { view: "production" },
+  permission: "employee",
   async run(ctx) {
     return unwrap(
       ctx,
@@ -7969,7 +7969,7 @@ export const getStopReasonsList = defineServiceFn({
  */
 export const getStopReason = defineServiceFn({
   input: z.looseObject({ stopReasonId: z.string() }),
-  permission: { view: "production" },
+  permission: { "production.stopReasons": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -7996,7 +7996,7 @@ export const getStopReasons = defineServiceFn({
     offset: z.number().int().default(0),
     search: z.string().nullable().optional()
   }),
-  permission: { view: "production" },
+  permission: { "production.stopReasons": "View" },
   async run(ctx, input) {
     return paged(
       ctx,
@@ -9313,7 +9313,7 @@ export const createStopReason = defineServiceFn({
       .describe("Send to update that record; omit to create a new one.")
       .optional()
   }),
-  permission: { create: "production" },
+  permission: { "production.stopReasons": "Create" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -9345,7 +9345,7 @@ export const updateStopReason = defineServiceFn({
         .optional()
     })
     .required({ id: true }),
-  permission: { update: "production" },
+  permission: { "production.stopReasons": "Edit" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -11321,7 +11321,7 @@ export const assignUnattributedMachineCount = defineServiceFn({
     unattributedMachineCountId: z.string().min(1),
     jobOperationId: z.string().min(1)
   }),
-  permission: { update: "production" },
+  permission: { "production.unattributedTime": "Edit" },
   async run(ctx, input) {
     const target = await service.getMachineTimeAssignTarget(
       ctx.asCaller.supabase,
@@ -11386,7 +11386,7 @@ export const assignUnattributedMachineCount = defineServiceFn({
  */
 export const dismissUnattributedMachineCount = defineServiceFn({
   input: z.object({ unattributedMachineCountId: z.string().min(1) }),
-  permission: { update: "production" },
+  permission: { "production.unattributedTime": "Edit" },
   async run(ctx, input) {
     try {
       const dismissal = await dismissUnattributedMachineCountRow(

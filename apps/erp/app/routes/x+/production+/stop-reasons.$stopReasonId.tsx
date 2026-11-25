@@ -3,7 +3,7 @@
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { assertIsPost, error, notFound, success } from "@carbon/auth";
-import { requirePermissions } from "@carbon/auth/auth.server";
+import { authorize } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { validationError, validator } from "@carbon/form";
 import { useRouteDialog } from "@carbon/react";
@@ -20,9 +20,8 @@ import { getCustomFields, setCustomFields } from "~/utils/form";
 import { path } from "~/utils/path";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const { client } = await requirePermissions(request, {
-    view: "production",
-    role: "employee"
+  const { client } = await authorize(request, {
+    "production.stopReasons": "View"
   });
 
   const { stopReasonId } = params;
@@ -44,8 +43,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
 export async function action({ request }: ActionFunctionArgs) {
   assertIsPost(request);
-  const { client, userId } = await requirePermissions(request, {
-    update: "production"
+  const { client, userId } = await authorize(request, {
+    "production.stopReasons": "Edit"
   });
 
   const formData = await request.formData();
