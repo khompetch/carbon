@@ -430,9 +430,9 @@ describe("sharedComposeEnv", () => {
       SystemRoot: "C:\\WINDOWS",
       SYSTEMROOT: "C:\\WINDOWS"
     };
-    expect(
-      sharedComposeEnv({ ...windows, PG_MAX_CONNECTIONS: "100" })
-    ).toEqual(windows);
+    expect(sharedComposeEnv({ ...windows, PG_MAX_CONNECTIONS: "100" })).toEqual(
+      windows
+    );
   });
 });
 
