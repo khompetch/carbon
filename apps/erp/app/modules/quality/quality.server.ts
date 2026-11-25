@@ -45,7 +45,10 @@ import {
   setPurchaseReturnOrderLineTrackedEntities,
   upsertPurchaseReturnOrderLine
 } from "~/modules/purchasing/purchasing.service";
-import { optionalTiptapDoc } from "~/modules/shared/shared.models";
+import {
+  issueNameNote,
+  optionalTiptapDoc
+} from "~/modules/shared/shared.models";
 import { refuseUnlessOwned } from "~/modules/shared/shared.service";
 import { updateSortOrder } from "~/modules/shared/sort-order";
 import { ERP_URL, path } from "~/utils/path";
@@ -53,6 +56,9 @@ import {
   disposition,
   inspectionDocumentParametersValidator,
   inspectionDocumentSamplingValidator,
+  inspectionGaugeValidator,
+  inspectionMeasurementValidator,
+  inspectionSampleValidator,
   inspectionSaveAnchorsPayloadValidator,
   inspectionSaveBalloonsGeometryPayloadValidator,
   inspectionSaveBalloonsPayloadValidator,
@@ -60,6 +66,7 @@ import {
   isIssueLocked,
   issueAssociationValidator,
   issueValidator,
+  nonConformanceAssociationType,
   nonConformanceStatus,
   nonConformanceTaskStatus,
   qualityDocumentStatus,
@@ -103,11 +110,12 @@ const customFieldValues = z.record(
  */
 export const createIssue = defineServiceFn({
   input: issueValidator.extend({
+    name: issueValidator.shape.name.describe(issueNameNote),
     customFields: customFieldValues.optional(),
     trackedEntityIds: z.array(z.string()).optional(),
     changeOrderId: z.string().optional()
   }),
-  permission: { create: "quality" },
+  permission: { "quality.issues": "Create" },
 
   async run(ctx, input) {
     const client = ctx.asCaller.supabase;
@@ -194,7 +202,7 @@ export const createIssue = defineServiceFn({
           trackedEntityIds
         });
       } catch (err) {
-        const removed = await service.deleteIssue(serviceRole, issueId);
+        const removed = await service.deleteIssue(ctx, issueId);
         if (removed.error) {
           logger.error("Failed to remove an issue whose units did not link", {
             companyId,
@@ -216,13 +224,14 @@ export const createIssue = defineServiceFn({
     if (input.jobOperationId) {
       await service.linkJobOperationLot(ctx, {
         nonConformanceId: issueId,
-        jobOperationId: input.jobOperationId
+        jobOperationId: input.jobOperationId,
+        trackedEntityIds
       });
     }
 
     const tasks = await service.createIssueTasks(ctx, issueId);
     if (tasks.error) {
-      await service.deleteIssue(serviceRole, issueId);
+      await service.deleteIssue(ctx, issueId);
       return ctx.error("internal", "Failed to create tasks", tasks.error);
     }
 
@@ -299,7 +308,7 @@ export const updateIssueField = defineServiceFn({
     // A list field takes a list, or the form's comma-separated text.
     value: z.union([z.string(), z.array(z.string())]).nullish()
   }),
-  permission: { update: "quality" },
+  permission: { "quality.issues": "Edit" },
 
   async run(ctx, { ids, field, value }) {
     const client = ctx.asCaller.supabase;
@@ -375,7 +384,7 @@ export const setIssueStatus = defineServiceFn({
     id: z.string(),
     status: z.enum(nonConformanceStatus).exclude(["Closed"])
   }),
-  permission: { update: "quality" },
+  permission: { "quality.issues": "Edit" },
 
   async run(ctx, { id, status }) {
     const companyId = ctx.company.id;
@@ -478,7 +487,7 @@ export const setIssueStatus = defineServiceFn({
  */
 export const completeIssue = defineServiceFn({
   input: z.object({ id: z.string() }),
-  permission: { update: "quality" },
+  permission: { "quality.issues": "Edit" },
 
   async run(ctx, { id }) {
     const companyId = ctx.company.id;
@@ -538,7 +547,7 @@ export const setIssueTaskStatus = defineServiceFn({
     type: issueTaskType,
     assignee: z.string().nullish()
   }),
-  permission: { update: "quality" },
+  permission: { "quality.issues": "Edit" },
 
   async run(ctx, { id, status, type, assignee }) {
     const companyId = ctx.company.id;
@@ -586,7 +595,7 @@ export const setIssueTaskStatus = defineServiceFn({
  */
 export const setIssueTaskSupplier = defineServiceFn({
   input: z.object({ id: z.string(), supplierId: z.string().nullish() }),
-  permission: { update: "quality" },
+  permission: { "quality.issues": "Edit" },
 
   async run(ctx, { id, supplierId }) {
     if (supplierId) {
@@ -621,7 +630,7 @@ export const setIssueTaskSupplier = defineServiceFn({
  */
 export const setIssueActionDueDate = defineServiceFn({
   input: z.object({ id: z.string(), dueDate: z.string().nullish() }),
-  permission: { update: "quality" },
+  permission: { "quality.issues": "Edit" },
 
   async run(ctx, { id, dueDate }) {
     const { error } = await requireAffected(
@@ -645,7 +654,7 @@ export const setIssueActionDueDate = defineServiceFn({
  */
 export const reorderIssueActionTasks = defineServiceFn({
   input: z.object({ updates: z.record(z.string(), z.number()) }),
-  permission: { update: "quality" },
+  permission: { "quality.issues": "Edit" },
 
   async run(ctx, { updates }) {
     const ids = Object.keys(updates);
@@ -711,7 +720,7 @@ export const updateIssueItemField = defineServiceFn({
       expectedQuantity: z.number()
     })
   ]),
-  permission: { update: "quality" },
+  permission: { "quality.issues": "Edit" },
 
   async run(ctx, input) {
     const client = ctx.asCaller.supabase;
@@ -784,7 +793,7 @@ const associatedRecordTable = {
  */
 export const createIssueAssociation = defineServiceFn({
   input: issueAssociationValidator.safeExtend({ nonConformanceId: z.string() }),
-  permission: { update: "quality" },
+  permission: { "quality.issues": "Edit" },
 
   async run(ctx, { nonConformanceId, type, id, lineId, quantity }) {
     const client = ctx.asCaller.supabase;
@@ -858,11 +867,20 @@ export const createIssueAssociation = defineServiceFn({
         }
         break;
       }
+      case "jobOperations": {
+        const refusal = await service.attachJobOperationToIssue(ctx, {
+          nonConformanceId,
+          jobId: id,
+          jobOperationId: lineId!
+        });
+        if (refusal) return refusal;
+        break;
+      }
       default: {
         const { table, readable, noun } = service.associationHeaders[type];
         let headerQuery = client
-          .from(table as "job")
-          .select(`id, ${readable}${table === "job" ? ", itemId" : ""}`)
+          .from(table as "purchaseOrder")
+          .select(`id, ${readable}`)
           .eq("id", id);
         // The return orders were the only headers the route scoped; RLS
         // scopes the rest.
@@ -880,14 +898,6 @@ export const createIssueAssociation = defineServiceFn({
           readableId: row[readable] ?? null
         });
         if (insert.error) return failed(noun, insert.error);
-
-        if (type === "jobOperations") {
-          await service.linkJobOperationContext(ctx, {
-            nonConformanceId,
-            jobItemId: row.itemId ?? null,
-            jobOperationId: lineId!
-          });
-        }
       }
     }
 
@@ -917,7 +927,7 @@ export const draftIssueSupplierReturn = defineServiceFn({
     nonConformanceId: z.string(),
     supplierId: z.string().nullish()
   }),
-  permission: { create: "purchasing" },
+  permission: { "purchasing.returns": "Create" },
 
   async run(ctx, { nonConformanceId: id, supplierId: explicitSupplierId }) {
     const client = ctx.asCaller.supabase;
@@ -1345,7 +1355,7 @@ export const createManualInspection = defineServiceFn({
     assignee: z.string().nullish(),
     notes: z.string().trim().max(2000).nullish()
   }),
-  permission: { create: "quality" },
+  permission: { "quality.inspections": "Create" },
 
   async run(ctx, input) {
     const created = await engine.createManualInspection(ctx.asSystem.pg, {
@@ -1372,7 +1382,7 @@ export const createManualInspection = defineServiceFn({
  */
 export const deleteManualInspection = defineServiceFn({
   input: z.object({ inspectionId: z.string().min(1) }),
-  permission: { delete: "quality" },
+  permission: { "quality.inspections": "Full" },
 
   async run(ctx, { inspectionId }) {
     const deleted = await engine.deleteManualInspection(ctx.asSystem.pg, {
@@ -1399,7 +1409,7 @@ export const deleteManualInspection = defineServiceFn({
  */
 export const cancelManualInspection = defineServiceFn({
   input: z.object({ inspectionId: z.string().min(1) }),
-  permission: { update: "quality" },
+  permission: { "quality.inspections": "Edit" },
 
   async run(ctx, { inspectionId }) {
     const cancelled = await engine.cancelManualInspection(ctx.asSystem.pg, {
@@ -1443,7 +1453,7 @@ export const cancelManualInspection = defineServiceFn({
 export const rejectInspection = defineServiceFn({
   // Shared with the `reject-inspection` posting MES sends.
   input: rejectInspectionInput,
-  permission: { update: "quality" },
+  permission: { "quality.inspections": "Edit" },
 
   async run(ctx, { id, nonConformanceTypeId, createNcr, reason, requireOpen }) {
     const companyId = ctx.company.id;
@@ -1548,7 +1558,7 @@ export const partialInspection = defineServiceFn({
     createNcr: z.boolean().default(true),
     reason: z.string().trim().max(2000).nullish()
   }),
-  permission: { update: "quality" },
+  permission: { "quality.inspections": "Edit" },
 
   async run(
     ctx,
@@ -1742,6 +1752,112 @@ export const partialInspection = defineServiceFn({
     return { id, issueId: opened.issueId, ncrOpened: true };
   }
 });
+
+/**
+ * Accept a receipt or manual inspection lot: its tracked entities become
+ * Available and the lot Passed. A Job Operation lot is accepted from the shop
+ * floor, with its production outcome.
+ */
+export const acceptInspection = defineServiceFn({
+  input: z.object({ id: z.string().min(1) }),
+  permission: { "quality.inspections": "Edit" },
+
+  async run(ctx, { id }) {
+    const accepted = await engine.dispositionInspection(ctx.asSystem.pg, {
+      id,
+      decision: "Accept",
+      companyId: ctx.company.id,
+      dispositionedBy: ctx.auditUserId,
+      requireSource: ["Receipt", "Manual"]
+    });
+    if (accepted.error) {
+      return ctx.error("rule", accepted.error.message, accepted.error);
+    }
+    return { id: accepted.data.id };
+  }
+});
+
+/** Record a sample of an open lot, with its verdict or as Pending. */
+export const recordInspectionSample = defineServiceFn({
+  input: inspectionSampleValidator,
+  permission: { "quality.inspections": "Edit" },
+
+  async run(ctx, input) {
+    const saved = await engine.upsertInspectionSample(ctx.asSystem.pg, {
+      ...input,
+      companyId: ctx.company.id,
+      inspectedBy: ctx.auditUserId
+    });
+    if (saved.error) {
+      return ctx.error("rule", saved.error.message, saved.error);
+    }
+    return saved.data;
+  }
+});
+
+/** Record one reading of a feature on a sample of an open lot. */
+export const recordInspectionMeasurement = defineServiceFn({
+  input: inspectionMeasurementValidator,
+  permission: { "quality.inspections": "Edit" },
+
+  async run(ctx, input) {
+    const saved = await engine.upsertInspectionMeasurement(ctx.asSystem.pg, {
+      ...input,
+      companyId: ctx.company.id,
+      userId: ctx.auditUserId
+    });
+    if (saved.error) {
+      return ctx.error("rule", saved.error.message, saved.error);
+    }
+    return saved.data;
+  }
+});
+
+/** Record the gauge used for one feature of a lot; no `gaugeId` clears it. */
+export const setInspectionGauge = defineServiceFn({
+  input: inspectionGaugeValidator,
+  permission: { "quality.inspections": "Edit" },
+
+  async run(ctx, { inspectionId, inspectionFeatureId, gaugeId }) {
+    const saved = await engine.recordInspectionGauge(ctx.asSystem.pg, {
+      inspectionId,
+      inspectionFeatureId,
+      gaugeId: gaugeId || null,
+      companyId: ctx.company.id,
+      userId: ctx.auditUserId
+    });
+    if (saved.error) {
+      return ctx.error("rule", saved.error.message, saved.error);
+    }
+    return saved.data;
+  }
+});
+
+/**
+ * Swap the inspection plan an open lot follows, while it has no readings; no
+ * plan returns it to manual Pass/Fail.
+ */
+export const setInspectionDocument = defineServiceFn({
+  input: z.object({
+    inspectionId: z.string().min(1),
+    inspectionDocumentId: z.string().nullish()
+  }),
+  permission: { "quality.inspections": "Edit" },
+
+  async run(ctx, { inspectionId, inspectionDocumentId }) {
+    const changed = await engine.changeInspectionDocument(ctx.asSystem.pg, {
+      inspectionId,
+      inspectionDocumentId: inspectionDocumentId ?? null,
+      companyId: ctx.company.id,
+      userId: ctx.auditUserId
+    });
+    if (changed.error) {
+      return ctx.error("rule", changed.error.message, changed.error);
+    }
+    return changed.data;
+  }
+});
+
 // --- Inspection documents ---------------------------------------------------------
 
 const emptyInspectionSave = { create: [], update: [], delete: [] };
@@ -1780,7 +1896,7 @@ export const saveInspectionDocument = defineServiceFn({
     samplingDefault: inspectionDocumentSamplingValidator.optional(),
     parameters: inspectionDocumentParametersValidator.optional()
   }),
-  permission: { update: "quality" },
+  permission: { "quality.inspectionPlans": "Edit" },
 
   async run(ctx, input) {
     const client = ctx.asCaller.supabase;
@@ -1928,7 +2044,7 @@ export const saveInspectionDocument = defineServiceFn({
  */
 export const setInspectionDocumentName = defineServiceFn({
   input: z.object({ id: z.string(), name: z.string().nullish() }),
-  permission: { update: "quality" },
+  permission: { "quality.inspectionPlans": "Edit" },
 
   async run(ctx, { id, name }) {
     // Only a Draft version is editable.
@@ -1968,7 +2084,7 @@ export const setInspectionDocumentName = defineServiceFn({
  */
 export const setInspectionDocumentWorkInstruction = defineServiceFn({
   input: z.object({ id: z.string(), workInstruction: optionalTiptapDoc }),
-  permission: { update: "quality" },
+  permission: { "quality.inspectionPlans": "Edit" },
 
   async run(ctx, { id, workInstruction }) {
     // Only a Draft version is editable.
@@ -2020,7 +2136,7 @@ export const attachInspectionDocumentModel = defineServiceFn({
     name: z.string().min(1),
     size: z.number().nonnegative()
   }),
-  permission: { update: "quality" },
+  permission: { "quality.inspectionPlans": "Edit" },
 
   async run(ctx, { id, modelId, path, name, size }) {
     // The path comes from the caller: it must be the one minted for this
@@ -2098,7 +2214,7 @@ export const updateQualityDocumentField = defineServiceFn({
     field: z.enum(["name", "content", "status", "tags"]),
     value: z.union([z.string(), z.array(z.string())]).nullish()
   }),
-  permission: { update: "quality" },
+  permission: { "quality.qualityDocuments": "Edit" },
 
   async run(ctx, { ids, field, value }) {
     const client = ctx.asCaller.supabase;
@@ -2193,7 +2309,7 @@ export const updateQualityDocumentField = defineServiceFn({
  */
 export const decideQualityDocumentApproval = defineServiceFn({
   input: approvalDecisionValidator.extend({ qualityDocumentId: z.string() }),
-  permission: { update: "quality" },
+  permission: { "quality.qualityDocuments": "Edit" },
 
   async run(ctx, { qualityDocumentId, approvalRequestId, decision, notes }) {
     const companyId = ctx.company.id;
@@ -2260,7 +2376,7 @@ export const decideQualityDocumentApproval = defineServiceFn({
  */
 export const seedQualityDocuments = defineServiceFn({
   input: z.object({}),
-  permission: { create: "quality" },
+  permission: { "quality.qualityDocuments": "Create" },
 
   async run(ctx) {
     const client = ctx.asCaller.supabase;
@@ -2314,7 +2430,7 @@ export const updateIssueWorkflowField = defineServiceFn({
     field: z.enum(["name"]),
     value: z.string()
   }),
-  permission: { update: "production" },
+  permission: { "quality.issueWorkflows": "Edit" },
 
   async run(ctx, { ids, field, value }) {
     const { error } = await ctx.asCaller.supabase
@@ -2353,7 +2469,7 @@ const riskInput = riskRegisterValidator
  */
 export const createRisk = defineServiceFn({
   input: riskInput,
-  permission: {},
+  permission: "employee",
 
   async run(ctx, input) {
     const result = await service.upsertRisk(ctx.asCaller.supabase, {
@@ -2383,7 +2499,7 @@ export const createRisk = defineServiceFn({
  */
 export const updateRisk = defineServiceFn({
   input: riskInput.extend({ id: z.string() }),
-  permission: { update: "quality" },
+  permission: { "quality.risks": "Edit" },
 
   async run(ctx, { id, ...input }) {
     const client = ctx.asCaller.supabase;
@@ -2472,7 +2588,7 @@ export const updateScarTaskNotes = defineServiceFn({
 export const activateGauge = defineServiceFn({
   input: z.looseObject({ gaugeId: z.string() }),
   // The route gated on delete; the write runs under the update policy.
-  permission: { update: "quality", delete: "quality" },
+  permission: { "quality.gauges": "Full" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2489,7 +2605,7 @@ export const activateGauge = defineServiceFn({
 export const deactivateGauge = defineServiceFn({
   input: z.looseObject({ gaugeId: z.string() }),
   // The route gated on delete; the write runs under the update policy.
-  permission: { update: "quality", delete: "quality" },
+  permission: { "quality.gauges": "Full" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2508,7 +2624,7 @@ export const deactivateGauge = defineServiceFn({
  */
 export const deleteGauge = defineServiceFn({
   input: z.looseObject({ gaugeId: z.string() }),
-  permission: { delete: "quality" },
+  permission: { "quality.gauges": "Full" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2524,7 +2640,7 @@ export const deleteGauge = defineServiceFn({
  */
 export const deleteGaugeCalibrationRecord = defineServiceFn({
   input: z.looseObject({ gaugeCalibrationRecordId: z.string() }),
-  permission: { delete: "quality" },
+  permission: { "quality.records": "Full" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2543,7 +2659,7 @@ export const deleteGaugeCalibrationRecord = defineServiceFn({
  */
 export const deleteGaugeType = defineServiceFn({
   input: z.looseObject({ gaugeTypeId: z.string() }),
-  permission: { delete: "quality" },
+  permission: { "quality.gaugeTypes": "Full" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2562,15 +2678,9 @@ export const deleteGaugeType = defineServiceFn({
  */
 export const deleteIssue = defineServiceFn({
   input: z.looseObject({ nonConformanceId: z.string() }),
-  permission: { delete: "quality" },
+  permission: { "quality.issues": "Full" },
   async run(ctx, input) {
-    return unwrap(
-      ctx,
-      await service.deleteIssue(
-        ctx.asCaller.supabase,
-        input.nonConformanceId as never
-      )
-    );
+    return unwrap(ctx, await service.deleteIssue(ctx, input.nonConformanceId));
   }
 });
 
@@ -2580,14 +2690,19 @@ export const deleteIssue = defineServiceFn({
  * @mcp destructive
  */
 export const deleteIssueAssociation = defineServiceFn({
-  input: z.looseObject({ type: z.string(), associationId: z.string() }),
-  permission: { delete: "quality" },
+  input: z.looseObject({
+    type: z.enum(nonConformanceAssociationType),
+    associationId: z.string()
+  }),
+  permission: { "quality.issues": "Full" },
   async run(ctx, input) {
-    return await service.deleteIssueAssociation(
-      ctx.asCaller.supabase,
-      input.type as never,
-      input.associationId as never
+    const result = await service.deleteIssueAssociation(
+      ctx,
+      input.type,
+      input.associationId
     );
+    if (result.error) return ctx.error("rule", result.error.message);
+    return result;
   }
 });
 
@@ -2598,7 +2713,7 @@ export const deleteIssueAssociation = defineServiceFn({
  */
 export const deleteIssueType = defineServiceFn({
   input: z.looseObject({ nonConformanceTypeId: z.string() }),
-  permission: { delete: "quality" },
+  permission: { "quality.issueTypes": "Full" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2617,7 +2732,7 @@ export const deleteIssueType = defineServiceFn({
  */
 export const deleteIssueWorkflow = defineServiceFn({
   input: z.looseObject({ nonConformanceWorkflowId: z.string() }),
-  permission: { delete: "quality" },
+  permission: { "quality.issueWorkflows": "Full" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2636,7 +2751,7 @@ export const deleteIssueWorkflow = defineServiceFn({
  */
 export const deleteRequiredAction = defineServiceFn({
   input: z.looseObject({ requiredActionId: z.string() }),
-  permission: { delete: "quality" },
+  permission: { "quality.actionTypes": "Full" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2655,7 +2770,7 @@ export const deleteRequiredAction = defineServiceFn({
  */
 export const deleteQualityDocument = defineServiceFn({
   input: z.looseObject({ qualityDocumentId: z.string() }),
-  permission: { delete: "quality" },
+  permission: { "quality.qualityDocuments": "Full" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2674,7 +2789,7 @@ export const deleteQualityDocument = defineServiceFn({
  */
 export const deleteRisk = defineServiceFn({
   input: z.looseObject({ riskId: z.string() }),
-  permission: { delete: "quality" },
+  permission: { "quality.risks": "Full" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2690,7 +2805,7 @@ export const deleteRisk = defineServiceFn({
  */
 export const getIssueFromExternalLink = defineServiceFn({
   input: z.looseObject({ id: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.issues": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2709,7 +2824,7 @@ export const getIssueFromExternalLink = defineServiceFn({
  */
 export const getGauge = defineServiceFn({
   input: z.looseObject({ gaugeId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.gauges": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2733,7 +2848,7 @@ export const getGauges = defineServiceFn({
     offset: z.number().int().default(0),
     search: z.string().nullable().optional()
   }),
-  permission: { view: "quality" },
+  permission: { "quality.gauges": "View" },
   async run(ctx, input) {
     return paged(
       ctx,
@@ -2753,7 +2868,7 @@ export const getGauges = defineServiceFn({
  */
 export const getGaugesList = defineServiceFn({
   input: z.record(z.string(), z.unknown()),
-  permission: { view: "quality" },
+  permission: { "quality.gauges": "View" },
   async run(ctx) {
     return unwrap(
       ctx,
@@ -2769,7 +2884,7 @@ export const getGaugesList = defineServiceFn({
  */
 export const getGaugeCalibrationRecord = defineServiceFn({
   input: z.looseObject({ id: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.records": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2796,7 +2911,7 @@ export const getGaugeCalibrationRecords = defineServiceFn({
     offset: z.number().int().default(0),
     search: z.string().nullable().optional()
   }),
-  permission: { view: "quality" },
+  permission: { "quality.records": "View" },
   async run(ctx, input) {
     return paged(
       ctx,
@@ -2816,7 +2931,7 @@ export const getGaugeCalibrationRecords = defineServiceFn({
  */
 export const getGaugeCalibrationRecordsByGaugeId = defineServiceFn({
   input: z.looseObject({ gaugeId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.records": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2835,7 +2950,7 @@ export const getGaugeCalibrationRecordsByGaugeId = defineServiceFn({
  */
 export const getGaugeTypesList = defineServiceFn({
   input: z.record(z.string(), z.unknown()),
-  permission: { view: "quality" },
+  permission: "employee",
   async run(ctx) {
     return unwrap(
       ctx,
@@ -2851,7 +2966,7 @@ export const getGaugeTypesList = defineServiceFn({
  */
 export const getGaugeType = defineServiceFn({
   input: z.looseObject({ gaugeTypeId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.gaugeTypes": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2878,7 +2993,7 @@ export const getGaugeTypes = defineServiceFn({
     offset: z.number().int().default(0),
     search: z.string().nullable().optional()
   }),
-  permission: { view: "quality" },
+  permission: { "quality.gaugeTypes": "View" },
   async run(ctx, input) {
     return paged(
       ctx,
@@ -2898,7 +3013,7 @@ export const getGaugeTypes = defineServiceFn({
  */
 export const getIssue = defineServiceFn({
   input: z.looseObject({ nonConformanceId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.issues": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2925,7 +3040,7 @@ export const getIssues = defineServiceFn({
     offset: z.number().int().default(0),
     search: z.string().nullable().optional()
   }),
-  permission: { view: "quality" },
+  permission: { "quality.issues": "View" },
   async run(ctx, input) {
     return paged(
       ctx,
@@ -2945,7 +3060,7 @@ export const getIssues = defineServiceFn({
  */
 export const getIssueWorkflow = defineServiceFn({
   input: z.looseObject({ nonConformanceWorkflowId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.issueWorkflows": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2964,7 +3079,7 @@ export const getIssueWorkflow = defineServiceFn({
  */
 export const getIssueActionTasks = defineServiceFn({
   input: z.looseObject({ id: z.string(), supplierId: z.string().optional() }),
-  permission: { view: "quality" },
+  permission: { "quality.issues": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -2985,7 +3100,7 @@ export const getIssueActionTasks = defineServiceFn({
  */
 export const getIssueApprovalTasks = defineServiceFn({
   input: z.looseObject({ id: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.issues": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3005,7 +3120,7 @@ export const getIssueApprovalTasks = defineServiceFn({
  */
 export const getIssueItems = defineServiceFn({
   input: z.looseObject({ id: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.issues": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3025,7 +3140,7 @@ export const getIssueItems = defineServiceFn({
  */
 export const getIssueAssociations = defineServiceFn({
   input: z.looseObject({ nonConformanceId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.issues": "View" },
   async run(ctx, input) {
     return await service.getIssueAssociations(
       ctx.asCaller.supabase,
@@ -3042,7 +3157,7 @@ export const getIssueAssociations = defineServiceFn({
  */
 export const getIssueReviewers = defineServiceFn({
   input: z.looseObject({ id: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.issues": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3062,7 +3177,7 @@ export const getIssueReviewers = defineServiceFn({
  */
 export const getIssueSuppliers = defineServiceFn({
   input: z.looseObject({ id: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.issues": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3082,7 +3197,7 @@ export const getIssueSuppliers = defineServiceFn({
  */
 export const getIssueType = defineServiceFn({
   input: z.looseObject({ nonConformanceTypeId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.issueTypes": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3101,7 +3216,7 @@ export const getIssueType = defineServiceFn({
  */
 export const getIssueTypeByName = defineServiceFn({
   input: z.looseObject({ name: z.string(), excludeId: z.string().optional() }),
-  permission: { view: "quality" },
+  permission: { "quality.issueTypes": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3130,7 +3245,7 @@ export const getIssueTypes = defineServiceFn({
     offset: z.number().int().default(0),
     search: z.string().nullable().optional()
   }),
-  permission: { view: "quality" },
+  permission: { "quality.issueTypes": "View" },
   async run(ctx, input) {
     return paged(
       ctx,
@@ -3158,7 +3273,7 @@ export const getIssueWorkflows = defineServiceFn({
     offset: z.number().int().default(0),
     search: z.string().nullable().optional()
   }),
-  permission: { view: "quality" },
+  permission: { "quality.issueWorkflows": "View" },
   async run(ctx, input) {
     return paged(
       ctx,
@@ -3178,7 +3293,7 @@ export const getIssueWorkflows = defineServiceFn({
  */
 export const getIssueWorkflowsList = defineServiceFn({
   input: z.record(z.string(), z.unknown()),
-  permission: { view: "quality" },
+  permission: { "quality.issues": "View" },
   async run(ctx) {
     return unwrap(
       ctx,
@@ -3194,7 +3309,7 @@ export const getIssueWorkflowsList = defineServiceFn({
  */
 export const getIssueTypesList = defineServiceFn({
   input: z.record(z.string(), z.unknown()),
-  permission: { view: "quality" },
+  permission: "employee",
   async run(ctx) {
     return unwrap(
       ctx,
@@ -3218,7 +3333,7 @@ export const getQualityActions = defineServiceFn({
     offset: z.number().int().default(0),
     search: z.string().nullable().optional()
   }),
-  permission: { view: "quality" },
+  permission: { "quality.actions": "View" },
   async run(ctx, input) {
     return paged(
       ctx,
@@ -3238,7 +3353,7 @@ export const getQualityActions = defineServiceFn({
  */
 export const getQualityDocument = defineServiceFn({
   input: z.looseObject({ id: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.qualityDocuments": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3254,7 +3369,7 @@ export const getQualityDocument = defineServiceFn({
  */
 export const getQualityDocumentVersions = defineServiceFn({
   input: z.looseObject({ name: z.string(), version: z.number() }),
-  permission: { view: "quality" },
+  permission: { "quality.qualityDocuments": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3282,7 +3397,7 @@ export const getQualityDocuments = defineServiceFn({
       .optional(),
     offset: z.number().int().default(0)
   }),
-  permission: { view: "quality" },
+  permission: { "quality.qualityDocuments": "View" },
   async run(ctx, input) {
     return paged(
       ctx,
@@ -3302,7 +3417,7 @@ export const getQualityDocuments = defineServiceFn({
  */
 export const getQualityFiles = defineServiceFn({
   input: z.looseObject({ id: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.records": "View" },
   async run(ctx, input) {
     return await service.getQualityFiles(
       ctx.asCaller.supabase,
@@ -3319,7 +3434,7 @@ export const getQualityFiles = defineServiceFn({
  */
 export const getRequiredActionsList = defineServiceFn({
   input: z.record(z.string(), z.unknown()),
-  permission: { view: "quality" },
+  permission: { "quality.actionTypes": "View" },
   async run(ctx) {
     return unwrap(
       ctx,
@@ -3346,7 +3461,7 @@ export const getRequiredActions = defineServiceFn({
     offset: z.number().int().default(0),
     search: z.string().nullable().optional()
   }),
-  permission: { view: "quality" },
+  permission: { "quality.actionTypes": "View" },
   async run(ctx, input) {
     return paged(
       ctx,
@@ -3366,7 +3481,7 @@ export const getRequiredActions = defineServiceFn({
  */
 export const getRequiredAction = defineServiceFn({
   input: z.looseObject({ requiredActionId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.actionTypes": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3385,7 +3500,7 @@ export const getRequiredAction = defineServiceFn({
  */
 export const getRisk = defineServiceFn({
   input: z.looseObject({ riskId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.risks": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3428,7 +3543,7 @@ export const getRisks = defineServiceFn({
       .optional(),
     assignee: z.array(z.string()).optional()
   }),
-  permission: { view: "quality" },
+  permission: { "quality.risks": "View" },
   async run(ctx, input) {
     return paged(
       ctx,
@@ -3451,7 +3566,7 @@ export const insertIssueReviewer = defineServiceFn({
     title: z.string().min(1),
     nonConformanceId: z.string()
   }),
-  permission: { create: "quality" },
+  permission: { "quality.issues": "Create" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3473,7 +3588,7 @@ export const updateIssueActionProcesses = defineServiceFn({
     actionTaskId: z.string(),
     processIds: z.array(z.string())
   }),
-  permission: { update: "quality" },
+  permission: { "quality.issues": "Edit" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3512,7 +3627,7 @@ export const insertGauge = defineServiceFn({
     calibrationIntervalInMonths: z.number().optional(),
     customFields: z.unknown().optional()
   }),
-  permission: { create: "quality" },
+  permission: { "quality.gauges": "Create" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3550,7 +3665,7 @@ export const updateGauge = defineServiceFn({
     calibrationIntervalInMonths: z.number().optional(),
     customFields: z.unknown().optional()
   }),
-  permission: { update: "quality" },
+  permission: { "quality.gauges": "Edit" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3593,14 +3708,11 @@ export const createGaugeCalibrationRecord = defineServiceFn({
       .describe("Send to update that record; omit to create a new one.")
       .optional()
   }),
-  permission: { create: "quality" },
+  permission: { "quality.records": "Create" },
   async run(ctx, input) {
-    return unwrap(
+    return await service.saveGaugeCalibration(
       ctx,
-      await service.upsertGaugeCalibrationRecord(
-        ctx.asCaller.supabase,
-        payload(ctx, input).forCreate() as never
-      )
+      payload(ctx, input).forCreate() as never
     );
   }
 });
@@ -3639,14 +3751,11 @@ export const updateGaugeCalibrationRecord = defineServiceFn({
     })
     .required({ id: true }),
   // The route gated on create; the write runs under the update policy.
-  permission: { create: "quality", update: "quality" },
+  permission: { "quality.records": "Edit" },
   async run(ctx, input) {
-    return unwrap(
+    return await service.saveGaugeCalibration(
       ctx,
-      await service.upsertGaugeCalibrationRecord(
-        ctx.asCaller.supabase,
-        payload(ctx, input).forUpdate() as never
-      )
+      payload(ctx, input).forUpdate() as never
     );
   }
 });
@@ -3668,7 +3777,7 @@ export const createGaugeType = defineServiceFn({
       .describe("Send to update that record; omit to create a new one.")
       .optional()
   }),
-  permission: { create: "quality" },
+  permission: { "quality.gaugeTypes": "Create" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3699,7 +3808,7 @@ export const updateGaugeType = defineServiceFn({
         .optional()
     })
     .required({ id: true }),
-  permission: { update: "quality" },
+  permission: { "quality.gaugeTypes": "Edit" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3719,7 +3828,7 @@ export const updateGaugeType = defineServiceFn({
 export const insertIssue = defineServiceFn({
   input: z.looseObject({
     nonConformanceId: z.string().optional(),
-    name: z.string(),
+    name: z.string().describe(issueNameNote),
     priority: z.enum(["Low", "Medium", "High", "Critical"]),
     source: z.enum(["Internal", "External"]),
     locationId: z.string(),
@@ -3739,7 +3848,7 @@ export const insertIssue = defineServiceFn({
     operationSupplierProcessId: z.string().optional(),
     customFields: z.unknown().optional()
   }),
-  permission: { create: "quality" },
+  permission: { "quality.issues": "Create" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3760,7 +3869,7 @@ export const updateIssue = defineServiceFn({
   input: z.looseObject({
     id: z.string(),
     nonConformanceId: z.string().optional(),
-    name: z.string().optional(),
+    name: z.string().optional().describe(issueNameNote),
     priority: z.enum(["Low", "Medium", "High", "Critical"]).optional(),
     source: z.enum(["Internal", "External"]).optional(),
     locationId: z.string().optional(),
@@ -3775,7 +3884,7 @@ export const updateIssue = defineServiceFn({
     approvalRequirements: z.array(z.literal("MRB")).optional(),
     customFields: z.unknown().optional()
   }),
-  permission: { update: "quality" },
+  permission: { "quality.issues": "Edit" },
   async run(ctx, input) {
     const issue = await ctx.asCaller.supabase
       .from("nonConformance")
@@ -3821,7 +3930,7 @@ export const createIssueWorkflow = defineServiceFn({
       .describe("Send to update that record; omit to create a new one.")
       .optional()
   }),
-  permission: { create: "quality" },
+  permission: { "quality.issueWorkflows": "Create" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3857,7 +3966,7 @@ export const updateIssueWorkflow = defineServiceFn({
     })
     .required({ id: true }),
   // The route gated on create; the write runs under the update policy.
-  permission: { create: "quality", update: "quality" },
+  permission: { "quality.issueWorkflows": "Edit" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3886,7 +3995,7 @@ export const createIssueType = defineServiceFn({
       .describe("Send to update that record; omit to create a new one.")
       .optional()
   }),
-  permission: { create: "quality" },
+  permission: { "quality.issueTypes": "Create" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3917,7 +4026,7 @@ export const updateIssueType = defineServiceFn({
         .optional()
     })
     .required({ id: true }),
-  permission: { update: "quality" },
+  permission: { "quality.issueTypes": "Edit" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3946,7 +4055,7 @@ export const createRequiredAction = defineServiceFn({
       .describe("Send to update that record; omit to create a new one.")
       .optional()
   }),
-  permission: { create: "quality" },
+  permission: { "quality.actionTypes": "Create" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -3977,7 +4086,7 @@ export const updateRequiredAction = defineServiceFn({
         .optional()
     })
     .required({ id: true }),
-  permission: { update: "quality" },
+  permission: { "quality.actionTypes": "Edit" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -4008,7 +4117,7 @@ export const createQualityDocument = defineServiceFn({
       .describe("Send to update that record; omit to create a new one.")
       .optional()
   }),
-  permission: { create: "quality" },
+  permission: { "quality.qualityDocuments": "Create" },
   // Only these fields: a document's status moves through approvals
   // (`updateQualityDocumentField`), and an id would turn the create into an
   // update.
@@ -4048,7 +4157,7 @@ export const updateQualityDocument = defineServiceFn({
         .optional()
     })
     .required({ id: true }),
-  permission: { update: "quality" },
+  permission: { "quality.qualityDocuments": "Edit" },
   // Only these fields: a document's status moves through approvals
   // (`updateQualityDocumentField`).
   async run(ctx, input) {
@@ -4081,7 +4190,7 @@ export const getInspections = defineServiceFn({
     status: z.string().nullable().optional(),
     source: z.string().nullable().optional()
   }),
-  permission: { view: "quality" },
+  permission: { "quality.inspections": "View" },
   async run(ctx, input) {
     return paged(
       ctx,
@@ -4101,12 +4210,52 @@ export const getInspections = defineServiceFn({
  */
 export const getInspection = defineServiceFn({
   input: z.looseObject({ id: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.inspections": "View" },
   async run(ctx, input) {
     return await service.getInspection(
       ctx.asCaller.supabase,
       input.id as never
     );
+  }
+});
+
+/**
+ * Fill in what a lot needs before it is shown. A serial lot whose plan
+ * inspects every unit gets every unit as a sample, so the inspector records
+ * results without scanning. A lot whose inspection document gained features
+ * after receipt gets their plan rows (the lot reads its document live). A
+ * failure only leaves the inspector to add them, so it is logged, not returned.
+ */
+export const prepareInspection = defineServiceFn({
+  input: z.object({ id: z.string().min(1) }),
+  permission: { "quality.inspections": "View" },
+  async run(ctx, { id }) {
+    const companyId = ctx.company.id;
+    const prefill = await engine.prefillInspectionSamples(ctx.asSystem.pg, {
+      inspectionId: id,
+      companyId,
+      userId: ctx.auditUserId
+    });
+    if (prefill.error) {
+      logger.error("Failed to prefill the inspection samples", {
+        companyId,
+        inspectionId: id,
+        error: prefill.error
+      });
+    }
+    const reconciled = await service.reconcileInspectionSamplingPlans(
+      ctx.asSystem.pg,
+      id,
+      companyId
+    );
+    if (reconciled.error) {
+      logger.error("Failed to add the inspection's new plan rows", {
+        companyId,
+        inspectionId: id,
+        error: reconciled.error
+      });
+    }
+    return { id };
   }
 });
 
@@ -4117,7 +4266,7 @@ export const getInspection = defineServiceFn({
  */
 export const getReceiptInspections = defineServiceFn({
   input: z.looseObject({ receiptId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.inspections": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -4137,7 +4286,7 @@ export const getReceiptInspections = defineServiceFn({
  */
 export const getInspectionTrackedEntities = defineServiceFn({
   input: z.looseObject({ receiptLineId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.inspections": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -4157,7 +4306,7 @@ export const getInspectionTrackedEntities = defineServiceFn({
  */
 export const getInspectionSamplingPlans = defineServiceFn({
   input: z.looseObject({ inspectionId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.inspectionPlans": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -4177,7 +4326,7 @@ export const getInspectionSamplingPlans = defineServiceFn({
  */
 export const getInspectionGauges = defineServiceFn({
   input: z.looseObject({ inspectionId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.inspections": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -4197,7 +4346,7 @@ export const getInspectionGauges = defineServiceFn({
  */
 export const getInspectionMeasurements = defineServiceFn({
   input: z.looseObject({ inspectionId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.inspections": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -4217,7 +4366,7 @@ export const getInspectionMeasurements = defineServiceFn({
  */
 export const getItemInspectionDocumentAssignments = defineServiceFn({
   input: z.looseObject({ itemId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.inspectionPlans": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -4241,7 +4390,7 @@ export const upsertItemInspectionDocumentAssignment = defineServiceFn({
     usage: z.literal("Receipt"),
     inspectionDocumentId: z.string().optional()
   }),
-  permission: { create: "quality", update: "quality" },
+  permission: { "quality.inspectionPlans": "Edit" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -4268,7 +4417,7 @@ export const getInspectionDocuments = defineServiceFn({
       .optional(),
     offset: z.number().int().default(0)
   }),
-  permission: { view: "quality" },
+  permission: { "quality.inspectionPlans": "View" },
   async run(ctx, input) {
     return paged(
       ctx,
@@ -4288,7 +4437,7 @@ export const getInspectionDocuments = defineServiceFn({
  */
 export const getInspectionDocumentsForItem = defineServiceFn({
   input: z.looseObject({ itemId: z.string() }),
-  permission: { view: "quality" },
+  permission: "employee",
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -4308,7 +4457,7 @@ export const getInspectionDocumentsForItem = defineServiceFn({
  */
 export const getInspectionDocument = defineServiceFn({
   input: z.looseObject({ id: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.inspectionPlans": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -4338,7 +4487,7 @@ export const upsertInspectionDocument = defineServiceFn({
     defaultPageWidth: z.number().optional(),
     defaultPageHeight: z.number().optional()
   }),
-  permission: { create: "quality", update: "quality" },
+  permission: { "quality.inspectionPlans": "Edit" },
   async run(ctx, input) {
     const upserted = await service.upsertInspectionDocument(
       ctx.asCaller.supabase,
@@ -4366,7 +4515,7 @@ export const upsertInspectionDocument = defineServiceFn({
  */
 export const deleteInspectionDocument = defineServiceFn({
   input: z.looseObject({ id: z.string() }),
-  permission: { delete: "quality" },
+  permission: { "quality.inspectionPlans": "Full" },
   async run(ctx, input) {
     let deleted: Awaited<ReturnType<typeof service.deleteInspectionDocument>>;
     try {
@@ -4408,7 +4557,7 @@ export const deleteInspectionDocument = defineServiceFn({
  */
 export const getInspectionDocumentVersions = defineServiceFn({
   input: z.object({ id: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.inspectionPlans": "View" },
   async run(ctx, input) {
     const plan = await ctx.asCaller.supabase
       .from("inspectionDocument")
@@ -4450,7 +4599,7 @@ export const getInspectionDocumentVersions = defineServiceFn({
  */
 export const createInspectionDocumentVersion = defineServiceFn({
   input: z.object({ copyFromId: z.string() }),
-  permission: { create: "quality" },
+  permission: { "quality.inspectionPlans": "Create" },
   async run(ctx, input) {
     let created: Awaited<
       ReturnType<typeof service.copyInspectionDocumentAsVersion>
@@ -4484,7 +4633,7 @@ export const createInspectionDocumentVersion = defineServiceFn({
  */
 export const activateInspectionDocumentVersion = defineServiceFn({
   input: z.object({ id: z.string() }),
-  permission: { update: "quality" },
+  permission: { "quality.inspectionPlans": "Edit" },
   async run(ctx, input) {
     let activated: Awaited<
       ReturnType<typeof service.activateInspectionDocumentVersion>
@@ -4511,7 +4660,7 @@ export const activateInspectionDocumentVersion = defineServiceFn({
  */
 export const getInspectionFeatures = defineServiceFn({
   input: z.looseObject({ inspectionDocumentId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.inspectionPlans": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -4530,7 +4679,7 @@ export const getInspectionFeatures = defineServiceFn({
  */
 export const getBalloons = defineServiceFn({
   input: z.looseObject({ inspectionDocumentId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.inspectionPlans": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -4549,7 +4698,7 @@ export const getBalloons = defineServiceFn({
  */
 export const getInspectionPlan = defineServiceFn({
   input: z.looseObject({ inspectionDocumentId: z.string() }),
-  permission: { view: "quality" },
+  permission: { "quality.inspections": "View" },
   async run(ctx, input) {
     return unwrap(
       ctx,
@@ -4578,7 +4727,7 @@ export const updateInspectionDocumentSampling = defineServiceFn({
     samplingSeverity: z.enum(["Normal", "Tightened", "Reduced"]).nullable(),
     inspectionDocumentId: z.string()
   }),
-  permission: { update: "quality" },
+  permission: { "quality.inspectionPlans": "Edit" },
   async run(ctx, input) {
     const updated = await service.updateInspectionDocumentSampling(
       ctx.asCaller.supabase,
@@ -4610,7 +4759,7 @@ export const saveInspectionDocumentAtomic = defineServiceFn({
     features: z.unknown(),
     balloons: z.unknown()
   }),
-  permission: { update: "quality" },
+  permission: { "quality.inspectionPlans": "Edit" },
   async run(ctx, input) {
     const locked = await service.inspectionDocumentLockRefusal(
       ctx,

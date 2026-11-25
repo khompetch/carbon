@@ -3,7 +3,7 @@
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { assertIsPost, error, success } from "@carbon/auth";
-import { requirePermissions } from "@carbon/auth/auth.server";
+import { authorize } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { flash } from "@carbon/auth/session.server";
 import { validationError, validator } from "@carbon/form";
@@ -43,8 +43,8 @@ export async function action({ request }: ActionFunctionArgs) {
   assertIsPost(request);
   // Stops close and open Machine events, so they need the same permission
   // as the Machine button.
-  const { companyId, userId } = await requirePermissions(request, {
-    update: "production"
+  const { companyId, userId } = await authorize(request, {
+    "production.jobs": "Edit"
   });
 
   const validation = await validator(operationStopValidator).validate(
