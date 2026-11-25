@@ -68,8 +68,8 @@ const StopReasonForm = ({
 
   const isEditing = initialValues.id !== undefined;
   const isDisabled = isEditing
-    ? !permissions.can("update", "production")
-    : !permissions.can("create", "production");
+    ? !permissions.has({ "production.stopReasons": "Edit" })
+    : !permissions.has({ "production.stopReasons": "Create" });
 
   return (
     <ModalDrawerProvider type={type}>

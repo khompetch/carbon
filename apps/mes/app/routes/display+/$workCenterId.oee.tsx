@@ -3,7 +3,7 @@
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { notFound } from "@carbon/auth";
-import { requirePermissions } from "@carbon/auth/auth.server";
+import { authorize } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { getCompanyTimeZone, getLocationTimeZone } from "@carbon/database";
 import { getLogger } from "@carbon/logger";
@@ -30,7 +30,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) =>
   recordMeta(data?.workCenter?.name, "OEE Display");
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
-  const { companyId } = await requirePermissions(request, {});
+  const { companyId } = await authorize(request, {});
   const { workCenterId } = params;
   if (!workCenterId) throw notFound("workCenterId not found");
 

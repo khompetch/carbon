@@ -2,9 +2,9 @@
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
-import { carbon, respond } from "@carbon/api/carbon.server";
+import { respond } from "@carbon/api/carbon.server";
 import { error, notFound } from "@carbon/auth";
-import { requirePermissions } from "@carbon/auth/auth.server";
+import { authorize } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { validator } from "@carbon/form";
 import { getLogger } from "@carbon/logger";
@@ -54,9 +54,8 @@ export const meta: MetaFunction<typeof loader> = ({ data }) =>
   recordMeta(data?.machineCount?.workCenter?.name, "Machine Count");
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const { client, companyId } = await requirePermissions(request, {
-    view: "production",
-    role: "employee"
+  const { client, companyId } = await authorize(request, {
+    "production.unattributedTime": "View"
   });
 
   const { id } = params;
@@ -173,7 +172,7 @@ export async function action(args: ActionFunctionArgs) {
   if (intent === "assign") {
     const input = await validator(assignMachineCountForm).request(args);
     if ("invalid" in input) return input.invalid;
-    const api = await carbon(args.request);
+    const { api } = await authorize(args.request);
     const result = await api.production.assignUnattributedMachineCount({
       unattributedMachineCountId: id,
       jobOperationId: input.data.jobOperationId
@@ -187,7 +186,7 @@ export async function action(args: ActionFunctionArgs) {
 
   const input = await validator(dismissMachineCountForm).request(args);
   if ("invalid" in input) return input.invalid;
-  const api = await carbon(args.request);
+  const { api } = await authorize(args.request);
   return answer(
     await api.production.dismissUnattributedMachineCount({
       unattributedMachineCountId: id

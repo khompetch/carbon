@@ -132,6 +132,12 @@ type IssueMaterialModalProps = {
   batchRemainingQuantity?: number;
   parentId?: string;
   parentIdIsSerialized?: boolean;
+  // The parent unit is complete at this operation (a finished unit looked
+  // back at): nothing is issued to it, but its parts can still be unconsumed.
+  issueBlocked?: boolean;
+  // Why it is blocked: the parent unit is on hold for an open quality issue,
+  // not complete here. Changes the notice's title only.
+  parentOnHold?: boolean;
   // Assembly view only: the step + 1-based unit the operator is on, stamped onto the
   // consume so issued quantities can be attributed per-unit/per-step even for a batch
   // parent (where all units share one lot entity). Omitted by the operation view.
@@ -175,6 +181,8 @@ function IssueMaterialBody({
   batchRemainingQuantity,
   parentId,
   parentIdIsSerialized,
+  issueBlocked = false,
+  parentOnHold = false,
   jobOperationStepId,
   unitNumber,
   trackedInputs = [],
@@ -429,7 +437,9 @@ function IssueMaterialBody({
 
   // The Scan tab starts empty: only the Select tab is filled in for the
   // operator, so a scan always records the lot in their hands.
-  const [activeTab, setActiveTab] = useState("scan");
+  const [activeTab, setActiveTab] = useState(
+    issueBlocked && trackedInputs.length > 0 ? "unconsume" : "scan"
+  );
   const isScanning = activeTab === "scan";
 
   // Serial numbers selection state
@@ -634,7 +644,7 @@ function IssueMaterialBody({
           : [];
   const hasSeededSuggestionRef = useRef(false);
   const seedSelection = () => {
-    if (!seedAllocation.length) return;
+    if (issueBlocked || !seedAllocation.length) return;
     // Intersect the seed with what is actually still available before
     // applying it. The picked allocation is NOT netted by consumption
     // (pickingListLineTrackedEntity keeps the original picked qty, and a
@@ -1063,6 +1073,7 @@ function IssueMaterialBody({
 
   // Submit handlers
   const handleSubmitSerial = useCallback(() => {
+    if (issueBlocked) return;
     if (!parentId) {
       toast.error("Parent tracking ID is required for serial tracked items.");
       return;
@@ -1131,6 +1142,7 @@ function IssueMaterialBody({
       });
     }
   }, [
+    issueBlocked,
     issueSerialNumbers,
     validateSerialNumber,
     parentId,
@@ -1146,6 +1158,7 @@ function IssueMaterialBody({
   ]);
 
   const handleSubmitBatch = useCallback(() => {
+    if (issueBlocked) return;
     if (!batchId && !parentId) {
       toast.error("Parent tracking ID is required for batch tracked items.");
       return;
@@ -1224,6 +1237,7 @@ function IssueMaterialBody({
       });
     }
   }, [
+    issueBlocked,
     issueBatchNumbers,
     validateBatchNumber,
     batchId,
@@ -1621,6 +1635,18 @@ function IssueMaterialBody({
                       )}
                   </>
                 )}
+              {issueBlocked && inventoryMode === "issue" && (
+                <Alert variant="warning">
+                  <AlertTitle>
+                    {parentOnHold
+                      ? t`This unit is on hold`
+                      : t`This unit is complete here`}
+                  </AlertTitle>
+                  <AlertDescription>
+                    {t`Pick an open unit to issue parts.`}
+                  </AlertDescription>
+                </Alert>
+              )}
             </div>
           </ModalBody>
           <ModalFooter>
@@ -1633,6 +1659,7 @@ function IssueMaterialBody({
               size="lg"
               isLoading={inventoryFetcher.state !== "idle"}
               isDisabled={
+                (issueBlocked && inventoryMode === "issue") ||
                 inventoryFetcher.state !== "idle" ||
                 !selectedItemId ||
                 isLoadingItem
@@ -2302,6 +2329,18 @@ function IssueMaterialBody({
                   </AlertDescription>
                 </Alert>
               )}
+              {issueBlocked && activeTab !== "unconsume" && (
+                <Alert variant="warning">
+                  <AlertTitle>
+                    {parentOnHold
+                      ? t`This unit is on hold`
+                      : t`This unit is complete here`}
+                  </AlertTitle>
+                  <AlertDescription>
+                    {t`Pick an open unit to issue parts. Parts already in this unit can still be unconsumed.`}
+                  </AlertDescription>
+                </Alert>
+              )}
               {overIssueRefusal && activeTab !== "unconsume" && (
                 <Alert variant="warning">
                   <AlertTitle>{overIssueRefusal}</AlertTitle>
@@ -2346,7 +2385,10 @@ function IssueMaterialBody({
                 }
                 isLoading={fetcher.state !== "idle"}
                 isDisabled={
-                  fetcher.state !== "idle" || !selectedItemId || isLoadingItem
+                  issueBlocked ||
+                  fetcher.state !== "idle" ||
+                  !selectedItemId ||
+                  isLoadingItem
                 }
               >
                 {overIssueRefusal ? "Issue anyway" : "Issue"}
@@ -2363,6 +2405,7 @@ function IssueMaterialBody({
           trackedEntityId={scrapEntityTarget.id}
           readableId={scrapEntityTarget.readableId}
           parentId={parentId}
+          operationId={operationId}
           isMakeToOrder={material?.methodType === "Make to Order"}
           onClose={() => setIsScrapEntityOpen(false)}
         />
