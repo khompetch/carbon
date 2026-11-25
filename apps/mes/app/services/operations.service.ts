@@ -9,6 +9,7 @@ import {
   getCompanyTimeZone
 } from "@carbon/database";
 import type { Kysely, KyselyDatabase } from "@carbon/database/client";
+import { fetchAll } from "@carbon/database/fetch-all";
 import { toJson } from "@carbon/database/json";
 import {
   lockMachinePress,
@@ -44,6 +45,7 @@ import {
   requiredScanMessage,
   requiredScanShortfall
 } from "~/utils/trackedMaterials";
+import { completedAtOperation } from "~/utils/workUnit";
 import { getPickedQuantitiesByJobMaterial } from "./inventory.service";
 import type {
   batchStepRecordsValidator,
@@ -366,12 +368,9 @@ export async function getJobOperationDependencies(
     .eq("jobId", jobId);
 }
 
-// First/last operation of a make method's routing: shared with the label
-// auto-print in `@carbon/printing`.
-export {
-  isFirstOperationOfMakeMethod,
-  isLastOperationOfMakeMethod
-} from "@carbon/printing/operation-routing";
+// Last operation of a make method's routing: shared with the label auto-print
+// in `@carbon/printing`. The first-operation read is `work-unit.server`'s.
+export { isLastOperationOfMakeMethod } from "@carbon/printing/operation-routing";
 
 const REQUIRED_SCAN_CHECK_FAILED = "Could not check the scanned parts";
 
@@ -801,18 +800,11 @@ export async function finishJobOperation(
     companyId: string;
   }
 ) {
-  // Callers pass a service-role client, so the companyId filter is the tenant
-  // check: an operation id from another company updates nothing, and nothing
-  // downstream (GL posting, picked-material returns, moments) may run for it.
-  const result = await client
-    .from("jobOperation")
-    .update({
-      status: "Done",
-      updatedBy: args.userId
-    })
-    .eq("id", args.jobOperationId)
-    .eq("companyId", args.companyId)
-    .select("id, jobId");
+  const result = await client.rpc("finish_mes_job_operation", {
+    p_job_operation_id: args.jobOperationId,
+    p_company_id: args.companyId,
+    p_user_id: args.userId
+  });
 
   if (!result.error && result.data.length === 0) {
     log.warning("finishJobOperation: job operation not found in company", {
@@ -1260,7 +1252,9 @@ export async function getJobOperationForCompany(
 ) {
   return client
     .from("jobOperation")
-    .select("id, jobId, jobMakeMethodId, jobOperationBatchId, operationType")
+    .select(
+      "id, jobId, jobMakeMethodId, jobOperationBatchId, operationType, jobMakeMethod(requiresSerialTracking)"
+    )
     .eq("id", operationId)
     .eq("companyId", companyId)
     .maybeSingle();
@@ -2091,6 +2085,9 @@ export async function backflushUntrackedMaterialsOnStepRecord(
     records: records.data ?? []
   });
 
+  const issuedById = new Map(
+    materials.data.map((m) => [m.id, m.quantityIssued ?? 0])
+  );
   const failures: string[] = [];
   for (const issue of issues) {
     const issued = await erpPosting(
@@ -2102,7 +2099,11 @@ export async function backflushUntrackedMaterialsOnStepRecord(
         itemId: issue.itemId,
         materialId: issue.materialId,
         quantity: issue.quantity,
-        adjustmentType: "Negative Adjmt."
+        adjustmentType: "Negative Adjmt.",
+        // quantityIssued was read with no lock: the ERP issues only what
+        // still reaches the step's target under the material's lock.
+        maxQuantityIssued:
+          (issuedById.get(issue.materialId) ?? 0) + issue.quantity
       }
     );
     if (issued.error) failures.push(issued.error.message || issue.itemId);
@@ -2501,7 +2502,7 @@ export async function getTrackedEntitiesByMakeMethodId(
     .order("id", { ascending: true });
 }
 
-type SerialEntityForSelection = Pick<
+export type SerialEntityForSelection = Pick<
   Database["public"]["Tables"]["trackedEntity"]["Row"],
   "attributes" | "status"
 > & {
@@ -2511,11 +2512,12 @@ type SerialEntityForSelection = Pick<
    * absent means the operation applies to every unit.
    */
   inOperationScope?: boolean;
+  completedOperationId?: string;
 };
 
 /**
  * A serial tracked entity is still "incomplete" for a job operation when its
- * attributes carry no `Operation ${jobOperationId}` completion marker and it has
+ * attributes and production genealogy carry no completion here and it has
  * not been consumed. Shared by the serial auto-selection (routes) and the manual
  * serial picker (`useOperation`) so both agree on "done for this operation".
  */
@@ -2523,49 +2525,25 @@ export function isSerialEntityIncompleteForOperation(
   entity: SerialEntityForSelection,
   jobOperationId: string
 ): boolean {
-  const attributes = (entity.attributes ?? {}) as Record<string, unknown>;
   // Scrapped is terminal like Consumed — a scrapped unit is never a work
   // candidate; its replacement is the spawned Reserved entity.
   return (
     entity.inOperationScope !== false &&
-    !(`Operation ${jobOperationId}` in attributes) &&
+    !completedAtOperation(entity, jobOperationId) &&
     entity.status !== "Consumed" &&
     entity.status !== "Scrapped"
   );
 }
 
-/**
- * The next serial unit an operator should work on for a job operation. Entities
- * must be ordered by `createdAt` ascending (as `getTrackedEntitiesByMakeMethodId`
- * returns them). Returns the first entity still incomplete for this operation;
- * when every entity is already complete it falls back to the last entity, which
- * preserves the prior end-state behavior. This unifies both the pre-split flow
- * (all N `quantity=1` entities exist up front) and the old lazy-split flow (the
- * `issue` posting spawns the next entity on each completion).
- */
-export function getNextIncompleteSerialEntity<
-  T extends SerialEntityForSelection
->(entities: T[], jobOperationId: string): T | undefined {
-  if (entities.length === 0) return undefined;
-  // Prefer a non-terminal (not Consumed/Scrapped) unit for the end-state
-  // fallback so we never seed work onto a scrapped/consumed serial. But keep
-  // the guaranteed last-entity fallback for a fully-terminal make method (every
-  // unit Consumed on a finished subassembly), preserving the prior behavior of
-  // always returning something when entities exist.
-  const selectable = entities.filter(
-    (entity) =>
-      entity.inOperationScope !== false &&
-      entity.status !== "Consumed" &&
-      entity.status !== "Scrapped"
-  );
-  return (
-    selectable.find((entity) =>
-      isSerialEntityIncompleteForOperation(entity, jobOperationId)
-    ) ??
-    selectable[selectable.length - 1] ??
-    entities[entities.length - 1]
-  );
-}
+type TrackedEntityRow = Database["public"]["Tables"]["trackedEntity"]["Row"];
+
+type OperationUnitRead = {
+  jobId: string;
+  operationId: string;
+  jobMakeMethodId: string;
+  companyId: string;
+  includeSerialOutputs: boolean;
+};
 
 /**
  * The units of an operation's make method, in unit-axis order, each flagged
@@ -2576,38 +2554,145 @@ export function getNextIncompleteSerialEntity<
  * The list is never narrowed: step records are keyed by a unit's position in
  * the full axis, so a filtered list would shift every position after a skipped
  * unit. Consumers read `inOperationScope` (via
- * `isSerialEntityIncompleteForOperation`) instead.
+ * `isSerialEntityIncompleteForOperation`) instead. Paged past PostgREST's
+ * 1000-row cap, like `getOperationUnitAxis`, so the screens and the server
+ * see the same units.
  */
 export async function getTrackedEntitiesForOperation(
   client: SupabaseClient<Database>,
-  args: { operationId: string; jobMakeMethodId: string; companyId: string }
+  args: OperationUnitRead
 ) {
-  const [entities, scope] = await Promise.all([
-    getTrackedEntitiesByMakeMethodId(
-      client,
-      args.jobMakeMethodId,
-      args.companyId
+  return readOperationUnits<TrackedEntityRow>(client, args, "*");
+}
+
+/**
+ * `getTrackedEntitiesForOperation` for the unit-write gate: only the columns
+ * the rule reads.
+ */
+export async function getOperationUnitAxis(
+  client: SupabaseClient<Database>,
+  args: OperationUnitRead
+) {
+  return readOperationUnits<
+    Pick<TrackedEntityRow, "id" | "status" | "attributes">
+  >(client, args, "id, status, attributes");
+}
+
+/** The one paged read of an operation's units, in unit-axis order. */
+async function readOperationUnits<T extends { id: string }>(
+  client: SupabaseClient<Database>,
+  args: OperationUnitRead,
+  columns: string
+) {
+  const [entities, scope, outputs, receipts] = await Promise.all([
+    fetchAll<T>(() =>
+      client
+        .from("trackedEntity")
+        .select(columns)
+        .eq("attributes->>Job Make Method", args.jobMakeMethodId)
+        .eq("companyId", args.companyId)
+        .order("createdAt", { ascending: true })
+        .order("readableId", { ascending: true })
+        .order("id", { ascending: true })
     ),
-    client
-      .from("jobOperationTrackedEntity")
-      .select("trackedEntityId")
-      .eq("jobOperationId", args.operationId)
-      .eq("companyId", args.companyId)
+    fetchAll<{ trackedEntityId: string }>(() =>
+      client
+        .from("jobOperationTrackedEntity")
+        .select("trackedEntityId")
+        .eq("jobOperationId", args.operationId)
+        .eq("companyId", args.companyId)
+        .order("trackedEntityId", { ascending: true })
+    ),
+    // Older serial production can have an activity output without a unit
+    // attribute. Posting treats either as completion at this operation.
+    args.includeSerialOutputs
+      ? fetchAll<{ trackedEntityId: string }>(() =>
+          client
+            .from("trackedActivityOutput")
+            .select("trackedEntityId, trackedActivity!inner(id)")
+            .eq("companyId", args.companyId)
+            .eq("trackedActivity.companyId", args.companyId)
+            .eq("trackedActivity.sourceDocument", "Job Operation")
+            .eq("trackedActivity.sourceDocumentId", args.operationId)
+            .in("trackedActivity.type", ["Complete", "Produce"])
+            .order("trackedActivityId")
+            .order("trackedEntityId")
+        )
+      : { data: [], error: null },
+    args.includeSerialOutputs
+      ? fetchAll<{ trackedEntityId: string }>(() =>
+          client
+            .from("jobReceivedSerial")
+            .select("trackedEntityId")
+            .eq("companyId", args.companyId)
+            .eq("jobId", args.jobId)
+            .order("trackedEntityId")
+        )
+      : { data: [], error: null }
   ]);
 
   if (entities.error) return { data: null, error: entities.error };
   if (scope.error) return { data: null, error: scope.error };
 
-  const scopedIds =
-    scope.data.length > 0
-      ? new Set(scope.data.map((row) => row.trackedEntityId))
-      : null;
-
+  if (outputs.error) return { data: null, error: outputs.error };
+  if (receipts.error) return { data: null, error: receipts.error };
+  const scopedIds = new Set(scope.data?.map((row) => row.trackedEntityId));
+  const completedIds = new Set(outputs.data?.map((row) => row.trackedEntityId));
+  for (const receipt of receipts.data ?? []) {
+    completedIds.add(receipt.trackedEntityId);
+  }
   return {
-    data: entities.data.map((entity) => ({
+    data: (entities.data ?? []).map((entity) => ({
       ...entity,
-      inOperationScope: scopedIds ? scopedIds.has(entity.id) : true
+      inOperationScope: scopedIds.size === 0 || scopedIds.has(entity.id),
+      completedOperationId: completedIds.has(entity.id)
+        ? args.operationId
+        : undefined
     })),
+    error: null
+  };
+}
+
+/**
+ * Were these units consumed into `parentTrackedEntityId`? Each unit's newest
+ * Consume activity must output that parent. One read.
+ */
+export async function childrenConsumedInto(
+  client: SupabaseClient<Database>,
+  args: { companyId: string; parentTrackedEntityId: string; childIds: string[] }
+): Promise<{ data: boolean; error: PostgrestError | null }> {
+  const childIds = [...new Set(args.childIds)];
+  if (childIds.length === 0) return { data: false, error: null };
+  const read = await client
+    .from("trackedActivityInput")
+    .select(
+      "trackedEntityId, trackedActivity!inner(type, createdAt, trackedActivityOutput(trackedEntityId))"
+    )
+    .in("trackedEntityId", childIds)
+    .eq("companyId", args.companyId)
+    .eq("trackedActivity.type", "Consume");
+  if (read.error) return { data: false, error: read.error };
+
+  const newest = new Map<
+    string,
+    { createdAt: string; outputs: (string | null)[] }
+  >();
+  for (const row of read.data ?? []) {
+    const activity = row.trackedActivity;
+    if (!activity || activity.type !== "Consume") continue;
+    const seen = newest.get(row.trackedEntityId);
+    if (seen && seen.createdAt >= activity.createdAt) continue;
+    newest.set(row.trackedEntityId, {
+      createdAt: activity.createdAt,
+      outputs: (activity.trackedActivityOutput ?? []).map(
+        (output) => output.trackedEntityId
+      )
+    });
+  }
+  return {
+    data: childIds.every((id) =>
+      newest.get(id)?.outputs.includes(args.parentTrackedEntityId)
+    ),
     error: null
   };
 }
@@ -3044,7 +3129,7 @@ export async function getWorkCentersByCompany(
 // value.
 export async function insertAttributeRecord(
   client: SupabaseClient<Database>,
-  data: z.infer<typeof stepRecordValidator> & {
+  data: Omit<z.infer<typeof stepRecordValidator>, "trackedEntityId"> & {
     companyId: string;
     createdBy: string;
   }
@@ -3296,64 +3381,6 @@ export async function insertProductionQuantity(
   }
 
   return result;
-}
-
-/**
- * Records one completion only while the operation's completed quantity is
- * still `expectedQuantityComplete`, read under the operation's row lock, so
- * two requests for one unit record it once. Kysely bypasses RLS: the caller
- * checks `create: production` (the productionQuantity insert policy) first.
- */
-export async function insertProductionQuantityIfCurrent(
-  db: Kysely<KyselyDatabase>,
-  data: z.infer<typeof nonScrapQuantityValidator> & {
-    companyId: string;
-    createdBy: string;
-  },
-  expectedQuantityComplete: number
-): Promise<{ id: string } | null> {
-  const inserted = await db.transaction().execute(async (trx) => {
-    const operation = await trx
-      .selectFrom("jobOperation")
-      .select("quantityComplete")
-      .where("id", "=", data.jobOperationId)
-      .where("companyId", "=", data.companyId)
-      .forUpdate()
-      .executeTakeFirst();
-    if (
-      !operation ||
-      Number(operation.quantityComplete ?? 0) !== expectedQuantityComplete
-    ) {
-      return null;
-    }
-    return trx
-      .insertInto("productionQuantity")
-      .values({
-        jobOperationId: data.jobOperationId,
-        type: "Production",
-        quantity: data.quantity,
-        notes: data.notes ?? null,
-        setupProductionEventId: data.setupProductionEventId ?? null,
-        laborProductionEventId: data.laborProductionEventId ?? null,
-        machineProductionEventId: data.machineProductionEventId ?? null,
-        companyId: data.companyId,
-        createdBy: data.createdBy
-      })
-      .returning("id")
-      .executeTakeFirstOrThrow();
-  });
-
-  if (inserted) {
-    trackWorkEvent("production_quantity_reported", {
-      companyId: data.companyId,
-      userId: data.createdBy,
-      productionQuantityId: inserted.id,
-      jobOperationId: data.jobOperationId,
-      quantity: data.quantity,
-      source: "mes"
-    });
-  }
-  return inserted;
 }
 
 export async function insertScrapQuantity(

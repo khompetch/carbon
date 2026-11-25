@@ -145,7 +145,7 @@ export function PulseDevices({
             devices={devices}
             locations={locations}
             ingestHeartbeatAt={ingestHeartbeatAt}
-            canUpdate={permissions.can("update", "settings")}
+            canUpdate={permissions.has({ "settings.integrations": "Edit" })}
           />
         </>
       )}

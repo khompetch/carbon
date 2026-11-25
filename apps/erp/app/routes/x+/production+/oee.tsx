@@ -2,7 +2,7 @@
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
-import { requirePermissions } from "@carbon/auth/auth.server";
+import { authorize } from "@carbon/auth/auth.server";
 import { OEE_GOOD, type OeeTone, oeeTone } from "@carbon/planning/oee";
 import { useLoaderQuery } from "@carbon/query";
 import {
@@ -98,8 +98,8 @@ const TONE_FILL: Record<OeeTone, string> = {
 const PERIOD_DAYS: Record<string, number> = { week: 7, month: 30, quarter: 90 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const { client, companyId, userId } = await requirePermissions(request, {
-    view: "production"
+  const { client, companyId, userId } = await authorize(request, {
+    "production.unattributedTime": "View"
   });
 
   const [locations, defaults] = await Promise.all([

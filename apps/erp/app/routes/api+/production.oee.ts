@@ -2,7 +2,7 @@
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
-import { requirePermissions } from "@carbon/auth/auth.server";
+import { authorize } from "@carbon/auth/auth.server";
 import { getLocationTimeZone } from "@carbon/database";
 import { getLogger } from "@carbon/logger";
 import {
@@ -48,8 +48,8 @@ const empty: OeeResponse = {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const { client, companyId } = await requirePermissions(request, {
-    view: "production"
+  const { client, companyId } = await authorize(request, {
+    "production.unattributedTime": "View"
   });
   const searchParams = new URL(request.url).searchParams;
   const locationId = searchParams.get("locationId");

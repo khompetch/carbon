@@ -27,6 +27,7 @@ import { usePermissions } from "~/hooks";
 import { useIntegrations } from "~/hooks/useIntegrations";
 import { useSavedViews } from "~/hooks/useSavedViews";
 import type { AuthenticatedRouteGroup } from "~/types";
+import { visibleGroups } from "~/utils/nav";
 import { path } from "~/utils/path";
 
 export default function useProductionSubmodules() {
@@ -68,20 +69,17 @@ export default function useProductionSubmodules() {
               {
                 name: t`OEE`,
                 to: path.to.productionOee,
-                icon: <LuGauge />,
-                role: "employee" as const
+                icon: <LuGauge />
               },
               {
                 name: t`Unattributed Time`,
                 to: path.to.unattributedMachineTimes,
-                icon: <LuTimerOff />,
-                role: "employee" as const
+                icon: <LuTimerOff />
               },
               {
                 name: t`Unattributed Counts`,
                 to: path.to.unattributedMachineCounts,
-                icon: <LuHash />,
-                role: "employee" as const
+                icon: <LuHash />
               }
             ]
           : [])
@@ -135,15 +133,13 @@ export default function useProductionSubmodules() {
         {
           name: t`Assemblies`,
           to: path.to.assemblyInstructions,
-          icon: <LuStepForward />,
-          role: "employee"
+          icon: <LuStepForward />
         },
         {
           name: t`Procedures`,
           to: path.to.procedures,
           icon: <LuListChecks />,
-          table: "procedure",
-          role: "employee"
+          table: "procedure"
         }
       ]
     },
@@ -153,13 +149,11 @@ export default function useProductionSubmodules() {
         {
           name: t`Scrap Reasons`,
           to: path.to.scrapReasons,
-          role: "employee",
           icon: <LuTrash />
         },
         {
           name: t`Stop Reasons`,
           to: path.to.stopReasons,
-          role: "employee",
           icon: <LuOctagonPause />
         }
       ]
@@ -167,25 +161,16 @@ export default function useProductionSubmodules() {
   ];
   const { addSavedViewsToRoutes } = useSavedViews();
 
-  const isRouteVisible = (route: AuthenticatedRouteGroup["routes"][number]) => {
-    if (route.role && !permissions.is(route.role)) return false;
-    if (route.permission && !permissions.can("view", route.permission))
-      return false;
-    return true;
-  };
-
   return {
-    groups: productionRoutes
-      .filter((group) => group.routes.some(isRouteVisible))
-      .map((group) => ({
-        ...group,
-        routes: group.routes.filter(isRouteVisible).map(addSavedViewsToRoutes)
-      }))
+    groups: visibleGroups(productionRoutes, permissions).map((group) => ({
+      ...group,
+      routes: group.routes.map(addSavedViewsToRoutes)
+    }))
   };
 }
 
-/** Phones: the module's section switcher, for routes outside the module's
- *  own layout (`handle.compactSidebar`). */
+/** The module sidebar for its boards outside the module layout
+ *  (`handle.boardSidebar`): the phone switcher, and the desktop sidebar when shown. */
 export function ProductionSections() {
   const { groups } = useProductionSubmodules();
   return <GroupedContentSidebar groups={groups} />;

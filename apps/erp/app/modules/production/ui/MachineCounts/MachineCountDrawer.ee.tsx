@@ -74,7 +74,7 @@ const MachineCountDrawer = ({
   const fetcher = useFetcher();
 
   const isBusy = fetcher.state !== "idle";
-  const canAnswer = permissions.can("update", "production");
+  const canAnswer = permissions.has({ "production.unattributedTime": "Edit" });
   const isDismissing = fetcher.formData?.get("intent") === "dismiss";
   const workCenterName =
     machineCount.workCenter?.name ?? machineCount.workCenterId;

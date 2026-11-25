@@ -2,6 +2,9 @@
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
+import type { Database } from "@carbon/database";
+import { niceAxis } from "~/utils/chart";
+
 /**
  * The issue type a receipt inspection lot's NCR opens with: one for supplier or
  * receiving problems, else the first.
@@ -15,4 +18,99 @@ export function receiptLotIssueType<Type extends { id: string; name: string }>(
       /supplier|vendor|receiv|incoming|goods.in/i.test(type.name)
     ) ?? list[0]
   );
+}
+
+type Tables = Database["public"]["Tables"];
+
+export type ScarIssue = Pick<
+  Tables["nonConformance"]["Row"],
+  "nonConformanceId" | "name" | "status"
+>;
+
+export type ScarActionTask = Pick<
+  Tables["nonConformanceActionTask"]["Row"],
+  "id" | "status" | "supplierId" | "notes"
+> & { name?: string | null };
+
+export type ScarCompany = Pick<
+  Tables["company"]["Row"],
+  "name" | "logoLight" | "logoDark"
+>;
+
+/**
+ * What a SCAR link sends the logged-out supplier: the issue's number, name and
+ * status, and the supplier's own action tasks. The issue's description,
+ * dispositions, assignees and integration links stay internal.
+ */
+export function scarForSupplier({
+  issue,
+  company,
+  supplier,
+  actionTasks
+}: {
+  issue: ScarIssue;
+  company: ScarCompany | null;
+  supplier: { name: string | null } | null;
+  actionTasks: ScarActionTask[];
+}): {
+  issue: ScarIssue;
+  company: ScarCompany | null;
+  supplier: { name: string | null } | null;
+  actionTasks: ScarActionTask[];
+} {
+  return {
+    issue: {
+      nonConformanceId: issue.nonConformanceId,
+      name: issue.name,
+      status: issue.status
+    },
+    company: company
+      ? {
+          name: company.name,
+          logoLight: company.logoLight,
+          logoDark: company.logoDark
+        }
+      : null,
+    supplier: supplier ? { name: supplier.name } : null,
+    actionTasks: actionTasks.map((task) => ({
+      id: task.id,
+      name: task.name ?? null,
+      status: task.status,
+      supplierId: task.supplierId,
+      notes: task.notes
+    }))
+  };
+}
+
+export type IssueTrendSeries = "opened" | "closed" | "target";
+
+/**
+ * The Issue Trend chart's Y axis, from 0 to the busiest week or the issue
+ * target, whichever is higher. Recharts drops a reference line outside the
+ * axis, so an axis fitted to the weeks alone hides a target above them.
+ * A series the legend hides is left out, so hiding the target fits the axis
+ * to the weeks.
+ * `showCounts`: every bar is at most a quarter of the axis, too short to read
+ * against the gridlines, so the bars print their counts.
+ */
+export function issueTrendAxis(
+  weeks: readonly { opened?: number; closed?: number }[],
+  target: number | null | undefined,
+  hidden: { has(series: IssueTrendSeries): boolean } = new Set()
+) {
+  const busiestWeek = weeks.reduce(
+    (max, week) =>
+      Math.max(
+        max,
+        hidden.has("opened") ? 0 : (week.opened ?? 0),
+        hidden.has("closed") ? 0 : (week.closed ?? 0)
+      ),
+    0
+  );
+  const shownTarget = hidden.has("target") ? 0 : (target ?? 0);
+  const axis = niceAxis(0, Math.max(busiestWeek, shownTarget), 5);
+  return {
+    ...axis,
+    showCounts: busiestWeek > 0 && busiestWeek * 4 <= axis.niceMax
+  };
 }

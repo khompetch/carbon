@@ -167,7 +167,7 @@ export function OeeDevices({
             workCenters={workCenters}
             providesCounts={providesCounts}
             scrapReasons={scrapReasons}
-            canUpdate={permissions.can("update", "settings")}
+            canUpdate={permissions.has({ "settings.integrations": "Edit" })}
           />
         </>
       )}

@@ -81,7 +81,7 @@ const StopReasonsTable = memo((props: StopReasonsTableProps) => {
           <MenuItem
             shortcut={MENU_ITEM_SHORTCUTS.delete}
             destructive
-            disabled={!permissions.can("delete", "production")}
+            disabled={!permissions.has({ "production.stopReasons": "Full" })}
             onClick={() => {
               navigate(
                 `${path.to.deleteStopReason(row.id)}?${params.toString()}`
@@ -104,7 +104,7 @@ const StopReasonsTable = memo((props: StopReasonsTableProps) => {
       count={count}
       infinite={infinite}
       primaryAction={
-        permissions.can("create", "production") && (
+        permissions.has({ "production.stopReasons": "Create" }) && (
           <New
             label={t`Stop Reason`}
             to={`${path.to.newStopReason}?${params.toString()}`}
