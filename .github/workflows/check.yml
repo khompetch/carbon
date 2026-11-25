@@ -4,7 +4,8 @@ name: Checks
 # push to main goes straight to Build images.
 on:
   pull_request:
-    branches: [main]
+    # fork: also gate PRs into develop and production (the fork never targets main)
+    branches: [main, develop, production]
 
 permissions:
   contents: read
