@@ -141,6 +141,14 @@ async function getSpeedLossMs(
     .eq("id", args.workCenterId)
     .eq("companyId", args.companyId)
     .maybeSingle();
+  if (workCenter.error) {
+    log.error("Failed to read the work center for operation losses", {
+      companyId: args.companyId,
+      workCenterId: args.workCenterId,
+      error: workCenter.error
+    });
+    return null;
+  }
   const locationId = workCenter.data?.locationId ?? null;
   const timeZone = locationId
     ? await getLocationTimeZone(client, locationId, args.companyId)

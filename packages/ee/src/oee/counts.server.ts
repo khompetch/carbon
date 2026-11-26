@@ -11,6 +11,7 @@ import {
   type SensorProductionChange
 } from "@carbon/database/machine-counts";
 import { getLogger } from "@carbon/logger";
+import { RoundingMode, round } from "@carbon/utils";
 import { sql } from "kysely";
 import { machineTimeRefusal } from "./assignable";
 import type { CountTracking } from "./counts";
@@ -77,7 +78,8 @@ export function batchLabelCount(args: {
   if (!labelEvery || labelEvery <= 0) return before <= 0 && after > 0 ? 1 : 0;
   return Math.max(
     0,
-    Math.floor(after / labelEvery) - Math.floor(before / labelEvery)
+    round(after / labelEvery, 0, RoundingMode.Down) -
+      round(before / labelEvery, 0, RoundingMode.Down)
   );
 }
 
@@ -234,7 +236,7 @@ async function postPendingCounts(
     productionQuantityId: string | null,
     trackedEntityId: string | null = null
   ) => {
-    await db
+    const moved = await db
       .updateTable("machineCountPosting")
       .set({
         status: "Posted",
@@ -246,7 +248,14 @@ async function postPendingCounts(
       })
       .where("id", "=", row.id)
       .where("companyId", "=", companyId)
-      .execute();
+      .where("status", "=", "Pending")
+      .executeTakeFirst();
+    if (Number(moved.numUpdatedRows) === 0) {
+      logger.warning("Machine count was no longer pending when marked posted", {
+        companyId,
+        machineCountPostingId: row.id
+      });
+    }
   };
 
   /** A refusal goes to the queue; anything else waits for the next sync. */
@@ -476,7 +485,7 @@ async function postPendingCounts(
           })
           .returning("id")
           .executeTakeFirstOrThrow();
-        await trx
+        const moved = await trx
           .updateTable("machineCountPosting")
           .set({
             status: "Posted",
@@ -487,7 +496,13 @@ async function postPendingCounts(
           })
           .where("id", "=", row.id)
           .where("companyId", "=", companyId)
-          .execute();
+          .where("status", "=", "Pending")
+          .executeTakeFirst();
+        // Another poster moved the row: roll the insert back, or the pieces
+        // would count twice.
+        if (Number(moved.numUpdatedRows) === 0) {
+          throw new Error("The machine count is no longer pending");
+        }
         return productionQuantity;
       });
 
