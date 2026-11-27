@@ -76,7 +76,10 @@ export const UNIT_WRITE_ALLOW_LIST: Record<string, string> = {
   "apps/mes/app/services/quality.server.ts#createInspectionRejectionIssue":
     "inspection lot: the rejection NCR takes the lot's sampled units",
   "apps/mes/app/services/operations.service.ts#insertBatchStepRecords":
-    "a batch records index 0 on every member operation and names no unit"
+    "a batch records index 0 on every member operation and names no unit",
+  // fork: Log stop
+  "apps/mes/app/services/operation-stops.service.ts#endOperationStop":
+    "resumes the Machine timer the stop paused, on its work center and batch; names no unit"
 };
 
 /**

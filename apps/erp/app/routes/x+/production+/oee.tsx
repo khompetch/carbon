@@ -71,7 +71,6 @@ import {
 } from "recharts";
 import { DateSelect, Empty, MetricCard } from "~/components";
 import { usePercentFormatter, useQuantityFormatter } from "~/hooks";
-import { getLocationsList } from "~/modules/resources/resources.service";
 import { getUserDefaults } from "~/modules/users/users.service";
 import type { OeeResponse } from "~/routes/api+/production.oee";
 import type { Handle } from "~/utils/handle";
@@ -98,12 +97,12 @@ const TONE_FILL: Record<OeeTone, string> = {
 const PERIOD_DAYS: Record<string, number> = { week: 7, month: 30, quarter: 90 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const { client, companyId, userId } = await authorize(request, {
+  const { client, companyId, userId, api } = await authorize(request, {
     "production.unattributedTime": "View"
   });
 
   const [locations, defaults] = await Promise.all([
-    getLocationsList(client, companyId),
+    api.resources.getLocationsList({}),
     getUserDefaults(client, userId, companyId)
   ]);
 

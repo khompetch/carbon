@@ -11,20 +11,17 @@ import { useLingui } from "@lingui/react/macro";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { useLoaderData, useParams } from "react-router";
 import { ConfirmDelete } from "~/components/Modals";
-import {
-  deleteStopReason,
-  getStopReason
-} from "~/modules/production/production.service";
+import { deleteStopReason } from "~/modules/production/production.service";
 import { getParams, path } from "~/utils/path";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const { client } = await authorize(request, {
+  const { api } = await authorize(request, {
     "production.stopReasons": "View"
   });
   const { stopReasonId } = params;
   if (!stopReasonId) throw notFound("stopReasonId not found");
 
-  const stopReason = await getStopReason(client, stopReasonId);
+  const stopReason = await api.production.getStopReason({ stopReasonId });
   if (stopReason.error) {
     throw redirect(
       `${path.to.stopReasons}?${getParams(request)}`,

@@ -183,6 +183,7 @@ describe("the MES unit writers", () => {
       "apps/mes/app/services/issue.server.ts#unconsumeFromUnit",
       "apps/mes/app/services/kanban-scan.server.ts#endOperationByScan",
       "apps/mes/app/services/kanban-scan.server.ts#startOperationByScan",
+      "apps/mes/app/services/operation-stops.service.ts#endOperationStop",
       "apps/mes/app/services/operations.service.ts#insertBatchStepRecords",
       "apps/mes/app/services/production-event.server.ts#productionEventAction",
       "apps/mes/app/services/quality.server.ts#createInspectionRejectionIssue",

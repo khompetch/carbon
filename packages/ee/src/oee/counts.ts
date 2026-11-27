@@ -2,6 +2,7 @@
 // Carbon Enterprise file, licensed only under the Carbon Commercial License
 // (packages/ee/LICENSE). Not AGPL. Running, modifying, or copying it beyond those terms requires a commercial license.
 
+import { RoundingMode, round } from "@carbon/utils";
 import type { BlockPeriod, LoadPeriod } from "./engine";
 
 /**
@@ -89,7 +90,9 @@ const at = (iso: string) => Date.parse(iso);
 /** The middle of a bucket's period, in epoch milliseconds. */
 function midpoint(bucket: CountBucket): number {
   const start = at(bucket.periodStart);
-  return start + Math.floor((at(bucket.periodEnd) - start) / 2);
+  return (
+    start + round((at(bucket.periodEnd) - start) / 2, 0, RoundingMode.Down)
+  );
 }
 
 /** Whether `instant` is in `[from, to)`, as `contains` in `engine.ts`. */

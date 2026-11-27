@@ -8,7 +8,8 @@ name: Database types
 # hold the workflow catalog and its labels to the committed swagger schema.
 on:
   pull_request:
-    branches: [main]
+    # fork: also gate PRs into develop and production (the fork never targets main)
+    branches: [main, develop, production]
     paths:
       - "packages/database/supabase/migrations/**"
       - "packages/database/src/types.ts"

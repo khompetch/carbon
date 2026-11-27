@@ -11,23 +11,20 @@ import { redirect } from "@carbon/utils";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { data, useLoaderData } from "react-router";
 import { stopReasonValidator } from "~/modules/production/production.models";
-import {
-  getStopReason,
-  upsertStopReason
-} from "~/modules/production/production.service";
+import { upsertStopReason } from "~/modules/production/production.service";
 import StopReasonForm from "~/modules/production/ui/StopReasons/StopReasonForm";
 import { getCustomFields, setCustomFields } from "~/utils/form";
 import { path } from "~/utils/path";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const { client } = await authorize(request, {
+  const { api } = await authorize(request, {
     "production.stopReasons": "View"
   });
 
   const { stopReasonId } = params;
   if (!stopReasonId) throw notFound("stopReasonId not found");
 
-  const stopReason = await getStopReason(client, stopReasonId);
+  const stopReason = await api.production.getStopReason({ stopReasonId });
 
   if (stopReason.error) {
     throw redirect(
