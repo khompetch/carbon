@@ -263,6 +263,7 @@
   "loader-reads-through-api::apps/erp/app/routes/x+/production+/_index.tsx::resources.getWorkCentersListWithBlockingStatus",
   "loader-reads-through-api::apps/erp/app/routes/x+/production+/batches.new.tsx::resources.getWorkCentersList",
   "loader-reads-through-api::apps/erp/app/routes/x+/production+/demand-forecasts.tsx::production.getProductionProjections",
+  "loader-reads-through-api::apps/erp/app/routes/x+/production+/machine-counts.tsx::resources.getWorkCentersList",
   "loader-reads-through-api::apps/erp/app/routes/x+/production+/machine-time.tsx::resources.getWorkCentersList",
   "loader-reads-through-api::apps/erp/app/routes/x+/production+/planning.tsx::production.getProductionPlanning",
   "loader-reads-through-api::apps/erp/app/routes/x+/production+/planning.tsx::projects.getProjectBorrows",
