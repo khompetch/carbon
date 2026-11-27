@@ -9,7 +9,8 @@ name: Database tests
 # pull request does not wait 20 minutes for them.
 on:
   pull_request:
-    branches: [main]
+    # fork: also gate PRs into develop and production (the fork never targets main)
+    branches: [main, develop, production]
     paths:
       - "apps/erp/**"
       - "packages/**"

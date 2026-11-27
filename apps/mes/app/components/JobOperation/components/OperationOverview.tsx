@@ -11,7 +11,7 @@ import {
 } from "@carbon/planning/oee";
 import { useChangedRows } from "@carbon/query";
 import { cn, useInterval } from "@carbon/react";
-import { formatDurationMilliseconds } from "@carbon/utils";
+import { formatDurationMilliseconds, round } from "@carbon/utils";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { type ReactNode, useMemo, useState } from "react";
 import Avatar from "~/components/Avatar";
@@ -128,7 +128,7 @@ function QuantityHero({
   const remaining = Math.max(0, target - complete);
   const total = Math.max(target, complete + scrapped + reworked, 1);
   const percent =
-    target > 0 ? Math.min(100, Math.round((complete / target) * 100)) : 0;
+    target > 0 ? Math.min(100, round((complete / target) * 100, 0)) : 0;
   const segment = (value: number) => `${(value / total) * 100}%`;
 
   return (

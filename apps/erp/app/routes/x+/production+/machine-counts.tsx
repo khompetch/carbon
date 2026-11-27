@@ -19,10 +19,7 @@ import {
 import MachineCountTable from "~/modules/production/ui/MachineCounts/MachineCountTable.ee";
 import MachineCountUpgradeOverlay from "~/modules/production/ui/MachineCounts/MachineCountUpgradeOverlay.ee";
 import { parseMachineCountListFilters } from "~/modules/production/ui/MachineCounts/machine-count-filters.ee";
-import {
-  getLocationsList,
-  getWorkCentersList
-} from "~/modules/resources/resources.service";
+import { getWorkCentersList } from "~/modules/resources/resources.service";
 import { toPage } from "~/utils/cursor";
 import type { Handle } from "~/utils/handle";
 import { listErrorPage } from "~/utils/list-registry/load.server";
@@ -37,7 +34,7 @@ export const handle: Handle = {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const { client, companyId } = await authorize(request, {
+  const { client, companyId, api } = await authorize(request, {
     "production.unattributedTime": "View"
   });
 
@@ -49,7 +46,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const [machineCounts, workCenters, locations] = await Promise.all([
     getUnattributedMachineCounts(client, companyId, { filters, limit, cursor }),
     getWorkCentersList(client, companyId),
-    getLocationsList(client, companyId)
+    api.resources.getLocationsList({})
   ]);
 
   if (machineCounts.error) {
