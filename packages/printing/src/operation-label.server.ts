@@ -130,12 +130,20 @@ export async function printOperationLabel({
     });
     if (!print) return;
 
-    const { data: workCenter } = await serviceRole
+    const { data: workCenter, error: workCenterError } = await serviceRole
       .from("workCenter")
       .select("locationId")
       .eq("id", workCenterId)
       .eq("companyId", companyId)
       .maybeSingle();
+    if (workCenterError) {
+      log.error("Failed to read the work center for a label print", {
+        companyId,
+        workCenterId,
+        error: workCenterError
+      });
+      return;
+    }
     const locationId = workCenter?.locationId ?? undefined;
     if (!locationId) return;
 

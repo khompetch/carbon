@@ -350,9 +350,7 @@ export type IntegrationInstallMode = {
  * This is what you pass to defineIntegration().
  */
 export interface IntegrationOptions
-  extends IntegrationConfig,
-    IntegrationClientHooks,
-    IntegrationServerHooks {}
+  extends IntegrationConfig, IntegrationClientHooks, IntegrationServerHooks {}
 
 /**
  * The return type of defineIntegration().

@@ -22,8 +22,8 @@ import {
   getUnattributedMachineCount,
   getUnattributedMachineCountNeighbors
 } from "~/modules/production/production.service";
-import MachineCountDrawer from "~/modules/production/ui/MachineCounts/MachineCountDrawer.ee";
 import { parseMachineCountListFilters } from "~/modules/production/ui/MachineCounts/machine-count-filters.ee";
+import MachineCountDrawer from "~/modules/production/ui/MachineCounts/MachineCountDrawer.ee";
 import {
   getCompanyTimeZone,
   getLocationTimeZone

@@ -3,7 +3,7 @@
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import type { OeeBoardState, OeeTone } from "@carbon/planning/oee";
-import { PROGRESS_FORMAT, SCALE_FORMAT } from "@carbon/utils";
+import { PROGRESS_FORMAT, round, SCALE_FORMAT } from "@carbon/utils";
 import { useLocale } from "@react-aria/i18n";
 import { useMemo } from "react";
 
@@ -13,18 +13,20 @@ export function useOeeFormats(timeZone: string) {
   return useMemo(() => {
     const percent = new Intl.NumberFormat(locale, PROGRESS_FORMAT);
     const pieces = new Intl.NumberFormat(locale, SCALE_FORMAT);
-    const whole = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
+    // Rounded first, then formatted at the storage scale, which shows no
+    // trailing zeros: whole pieces and minutes, seconds to a tenth.
+    const whole = new Intl.NumberFormat(locale, SCALE_FORMAT);
     const seconds = new Intl.NumberFormat(locale, {
+      ...SCALE_FORMAT,
       style: "unit",
       unit: "second",
-      unitDisplay: "narrow",
-      maximumFractionDigits: 1
+      unitDisplay: "narrow"
     });
     const minutes = new Intl.NumberFormat(locale, {
+      ...SCALE_FORMAT,
       style: "unit",
       unit: "minute",
-      unitDisplay: "short",
-      maximumFractionDigits: 0
+      unitDisplay: "short"
     });
     const clock = new Intl.DateTimeFormat(locale, {
       hour: "2-digit",
@@ -42,10 +44,10 @@ export function useOeeFormats(timeZone: string) {
       ratio: (value: number | null | undefined) =>
         value === null || value === undefined ? "—" : percent.format(value),
       pieces: (value: number) => pieces.format(value),
-      whole: (value: number) => whole.format(value),
+      whole: (value: number) => whole.format(round(value, 0)),
       seconds: (value: number | null) =>
-        value === null ? "—" : seconds.format(value),
-      minutes: (ms: number) => minutes.format(ms / 60_000),
+        value === null ? "—" : seconds.format(round(value, 1)),
+      minutes: (ms: number) => minutes.format(round(ms / 60_000, 0)),
       clock: (at: number) => clock.format(at),
       hour: (at: number) => hour.format(at)
     };

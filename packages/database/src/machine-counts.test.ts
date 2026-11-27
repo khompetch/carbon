@@ -190,16 +190,14 @@ describe.skipIf(!url)("machine counts against a migrated database", () => {
   }
 
   const lower = (quantity: number) =>
-    db
-      .transaction()
-      .execute((trx) =>
-        lowerSensorProduction(trx, {
-          companyId,
-          jobOperationId,
-          quantity,
-          userId
-        })
-      );
+    db.transaction().execute((trx) =>
+      lowerSensorProduction(trx, {
+        companyId,
+        jobOperationId,
+        quantity,
+        userId
+      })
+    );
 
   beforeAll(async () => {
     await client.connect();
