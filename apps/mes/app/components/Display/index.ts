@@ -5,10 +5,7 @@
 export { ActiveWorkPanel } from "./ActiveWorkPanel";
 export { DeviceStateBadge } from "./DeviceStateBadge";
 export { DisplayFrame } from "./DisplayFrame";
-export {
-  OeeBoardHeaderDetail,
-  OeeBoardView
-} from "./OeeBoard/OeeBoardView";
+export { OeeBoardHeaderDetail, OeeBoardView } from "./OeeBoard/OeeBoardView";
 export type { QueueRow } from "./QueueTable";
 export { QueueTable } from "./QueueTable";
 export type { AnswerTone } from "./Scoreboard";
