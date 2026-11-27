@@ -16,9 +16,9 @@ import {
   getUnattributedMachineCounts,
   UNATTRIBUTED_MACHINE_COUNTS_PAGING
 } from "~/modules/production/production.service";
+import { parseMachineCountListFilters } from "~/modules/production/ui/MachineCounts/machine-count-filters.ee";
 import MachineCountTable from "~/modules/production/ui/MachineCounts/MachineCountTable.ee";
 import MachineCountUpgradeOverlay from "~/modules/production/ui/MachineCounts/MachineCountUpgradeOverlay.ee";
-import { parseMachineCountListFilters } from "~/modules/production/ui/MachineCounts/machine-count-filters.ee";
 import { getWorkCentersList } from "~/modules/resources/resources.service";
 import { toPage } from "~/utils/cursor";
 import type { Handle } from "~/utils/handle";

@@ -299,7 +299,7 @@ msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} ordens de produção"
 
 msgid "{scrapped} scrapped"
-msgstr ""
+msgstr "{scrapped} sucateado(s)"
 
 msgid "{serialNumber} is on hold"
 msgstr "{serialNumber} está suspensa"
@@ -784,9 +784,6 @@ msgstr "Gráfico"
 
 msgid "Chart of {series}"
 msgstr "Gráfico de {series}"
-
-msgid "Chat"
-msgstr "Chat"
 
 msgid "Check your email"
 msgstr "Verifique seu e-mail"
@@ -1429,7 +1426,7 @@ msgid "Flag issue"
 msgstr "Sinalizar problema"
 
 msgid "Flow chart view"
-msgstr ""
+msgstr "Visualização de fluxograma"
 
 msgid "Forgot to Clock Out?"
 msgstr "Esqueceu de apontar fim?"
@@ -1861,7 +1858,7 @@ msgid "Log completed for {0}"
 msgstr "Registrar concluído para {0}"
 
 msgid "Log completed for {trackedEntityReadableId}"
-msgstr ""
+msgstr "Registro concluído para {trackedEntityReadableId}"
 
 msgid "Log Rework"
 msgstr "Registrar Retrabalho"
@@ -2346,7 +2343,7 @@ msgid "No unit"
 msgstr "Sem unidade"
 
 msgid "No unit selected"
-msgstr ""
+msgstr "Nenhuma unidade selecionada"
 
 msgid "No warehouse stock is on record for this item. You can still pick it — on-hand will go negative until the count is reconciled."
 msgstr "Nenhum estoque de armazém está registrado para este item. Você ainda pode coletá-lo — o estoque disponível ficará negativo até que a contagem seja reconciliada."
@@ -2530,7 +2527,7 @@ msgstr "Abrir sub-montagem {0}: {1}"
 msgid "Operation"
 msgstr "Operação"
 msgid "Open the operation to pick the unit"
-msgstr ""
+msgstr "Abra a operação para escolher a unidade"
 
 msgid "Operation"
 msgstr "Operação"
@@ -2705,10 +2702,10 @@ msgid "Pick a style, a color and a face."
 msgstr "Separe um estilo, uma cor e um rosto."
 
 msgid "Pick an open unit to issue parts."
-msgstr ""
+msgstr "Escolha uma unidade aberta para requisitar peças."
 
 msgid "Pick an open unit to issue parts. Parts already in this unit can still be unconsumed."
-msgstr ""
+msgstr "Escolha uma unidade aberta para requisitar peças. Peças já nesta unidade ainda podem ser desconsumidas."
 
 msgid "Pick the job. It shows with no hours until you add some."
 msgstr "Selecione a ordem de produção. Ela aparece sem horas até que você adicione algumas."
@@ -3348,10 +3345,10 @@ msgid "Select a serial number to continue with this operation"
 msgstr "Selecione um número de série para continuar com esta operação"
 
 msgid "Select a unit"
-msgstr ""
+msgstr "Selecione uma unidade"
 
 msgid "Select a unit first"
-msgstr ""
+msgstr "Selecione uma unidade primeiro"
 
 msgid "Select an issue type"
 msgstr "Selecionar um tipo de problema"
@@ -3901,7 +3898,7 @@ msgid "This job has no bill rate. Ask the office to set it before the time is bi
 msgstr "Esta ordem de produção não tem taxa de faturamento. Peça ao escritório que a defina antes que o tempo seja faturado."
 
 msgid "This job has no operations"
-msgstr ""
+msgstr "Esta ordem de produção não tem operações"
 
 msgid "This label does not belong to a unit in this company"
 msgstr "Esta etiqueta não pertence a uma unidade desta empresa"
@@ -3934,10 +3931,10 @@ msgid "This unit has used this correction its limit number of times. Scrap it or
 msgstr "Esta unidade já usou esta correção o número máximo de vezes. Refugue-a ou registre um problema de qualidade."
 
 msgid "This unit is complete here"
-msgstr ""
+msgstr "Esta unidade está concluída aqui"
 
 msgid "This unit is not part of this operation"
-msgstr ""
+msgstr "Esta unidade não faz parte desta operação"
 
 msgid "This unit is on hold"
 msgstr "Esta unidade está suspensa"
@@ -4162,7 +4159,7 @@ msgid "Until <0/>"
 msgstr "Até <0/>"
 
 msgid "Untitled"
-msgstr ""
+msgstr "Sem título"
 
 msgid "Up next"
 msgstr "Próximo"

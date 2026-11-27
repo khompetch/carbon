@@ -8500,6 +8500,7 @@ export type Database = {
           invoiceNotificationGroup: string[]
           kanbanLabelSize: Database["public"]["Enums"]["kanbanLabelSize"]
           kanbanOutput: Database["public"]["Enums"]["kanbanOutput"]
+          lastMrpRunStartedAt: string | null
           leaseDefaultDiscountRate: number
           leaseIncrementalBorrowingRate: number
           leaseMajorPartThresholdPercent: number
@@ -8605,6 +8606,7 @@ export type Database = {
           invoiceNotificationGroup?: string[]
           kanbanLabelSize?: Database["public"]["Enums"]["kanbanLabelSize"]
           kanbanOutput?: Database["public"]["Enums"]["kanbanOutput"]
+          lastMrpRunStartedAt?: string | null
           leaseDefaultDiscountRate?: number
           leaseIncrementalBorrowingRate?: number
           leaseMajorPartThresholdPercent?: number
@@ -8710,6 +8712,7 @@ export type Database = {
           invoiceNotificationGroup?: string[]
           kanbanLabelSize?: Database["public"]["Enums"]["kanbanLabelSize"]
           kanbanOutput?: Database["public"]["Enums"]["kanbanOutput"]
+          lastMrpRunStartedAt?: string | null
           leaseDefaultDiscountRate?: number
           leaseIncrementalBorrowingRate?: number
           leaseMajorPartThresholdPercent?: number
@@ -37746,6 +37749,60 @@ export type Database = {
           }
         ]
       }
+      locationScheduleRun: {
+        Row: {
+          companyId: string
+          lastRunStartedAt: string
+          locationId: string
+        }
+        Insert: {
+          companyId: string
+          lastRunStartedAt: string
+          locationId: string
+        }
+        Update: {
+          companyId?: string
+          lastRunStartedAt?: string
+          locationId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "locationScheduleRun_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "locationScheduleRun_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "company"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "locationScheduleRun_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "customFieldTables"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "locationScheduleRun_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "integrations"
+            referencedColumns: ["companyId"]
+          },
+          {
+            foreignKeyName: "locationScheduleRun_locationId_fkey"
+            columns: ["locationId"]
+            isOneToOne: false
+            referencedRelation: "location"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       machineCountPosting: {
         Row: {
           attempts: number
@@ -65205,6 +65262,7 @@ export type Database = {
           quoteId: string
           revisionId: number
           salesPersonId: string | null
+          sendViaEmail: boolean
           status: Database["public"]["Enums"]["quoteStatus"]
           tags: string[] | null
           updatedAt: string | null
@@ -65242,6 +65300,7 @@ export type Database = {
           quoteId: string
           revisionId?: number
           salesPersonId?: string | null
+          sendViaEmail?: boolean
           status?: Database["public"]["Enums"]["quoteStatus"]
           tags?: string[] | null
           updatedAt?: string | null
@@ -65279,6 +65338,7 @@ export type Database = {
           quoteId?: string
           revisionId?: number
           salesPersonId?: string | null
+          sendViaEmail?: boolean
           status?: Database["public"]["Enums"]["quoteStatus"]
           tags?: string[] | null
           updatedAt?: string | null
@@ -107149,6 +107209,14 @@ export type Database = {
           paymentCustomerName: string | null
           paymentPostalCode: string | null
           paymentStateProvince: string | null
+          shipToAddressLine1: string | null
+          shipToAddressLine2: string | null
+          shipToCity: string | null
+          shipToCountryCode: string | null
+          shipToCountryName: string | null
+          shipToCustomerName: string | null
+          shipToPostalCode: string | null
+          shipToStateProvince: string | null
         }
         Relationships: [
           {
@@ -107161,6 +107229,13 @@ export type Database = {
           {
             foreignKeyName: "address_countryCode_fkey"
             columns: ["paymentCountryCode"]
+            isOneToOne: false
+            referencedRelation: "country"
+            referencedColumns: ["alpha2"]
+          },
+          {
+            foreignKeyName: "address_countryCode_fkey"
+            columns: ["shipToCountryCode"]
             isOneToOne: false
             referencedRelation: "country"
             referencedColumns: ["alpha2"]
@@ -112132,9 +112207,20 @@ export type Database = {
           unitOfMeasureCode: string
         }[]
       }
+      get_item_type: {
+        Args: { company_id: string; item_id: string }
+        Returns: Database["public"]["Enums"]["itemType"]
+      }
       get_item_used_in: {
         Args: { company_id: string; item_id: string }
         Returns: Json
+      }
+      get_items_used_in: {
+        Args: { company_id: string; item_ids: string[] }
+        Returns: {
+          itemId: string
+          usedIn: Json
+        }[]
       }
       get_job_issue_bins: {
         Args: { p_company_id: string; p_item_ids: string[]; p_job_id: string }
@@ -114678,6 +114764,20 @@ export type Database = {
         }
         Returns: undefined
       }
+      set_record_custom_fields: {
+        Args: {
+          p_clear: string[]
+          p_ids: string[]
+          p_scope_column: string
+          p_scope_id: string
+          p_set: Json
+          p_table: string
+          p_updated_by: string
+        }
+        Returns: {
+          id: string
+        }[]
+      }
       set_shelf_life_for_operation: {
         Args: {
           p_event: Database["public"]["Enums"]["shelfLifeTriggerTiming"]
@@ -115527,6 +115627,7 @@ export type Database = {
         | "Capitalization"
       inventoryCountStatus: "Draft" | "Pending" | "Posted"
       invoiceAutomation:
+        | "Manual"
         | "Draft Only"
         | "Post"
         | "Post and Email"
